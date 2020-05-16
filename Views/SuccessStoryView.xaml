@@ -1,0 +1,81 @@
+﻿<Window x:Class="SuccessStory.SuccessView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuccessStory"
+             mc:Ignorable="d" Height="800" Width="1260" Background="{DynamicResource WindowBackgourndBrush}"
+             ResizeMode="NoResize" Title="Success Story" WindowStartupLocation="CenterScreen">
+
+    <Grid>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="108,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="488"  KeyUp="Search_KeyUp" />
+        <Label Content="Search" HorizontalAlignment="Left" Margin="28,10,0,0" VerticalAlignment="Top" Width="80" FontSize="16"/>
+
+        <ListView x:Name="lvGames" HorizontalAlignment="Left" Width="610" SelectionChanged="LvGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="onHeaderClick" Margin="10,50,0,0" VerticalAlignment="Top" Height="711">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="{Binding lvGamesIcon}" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="hGameTitle" Header="{Binding lvGamesName}" Width="Auto" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="{Binding lvGamesLastActivity}" Width="Auto" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}" />
+                    <GridViewColumn Header="{Binding lvGamesSourceName}" Width="30" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding SourceName}" FontFamily="/SuccessStory;component/Ressources/#font" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Grid Margin="0,50,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="178" Width="594">
+            <Label x:Name="lInfo" Content="Informations" VerticalAlignment="Top" Margin="10,0" FontSize="24" HorizontalAlignment="Center"/>
+
+            <Grid Margin="0,69,0,0" Height="35" VerticalAlignment="Top">
+                <Label x:Name="lTotalCount" Content="Achievements number" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                <Label x:Name="totalCount" Content="totalCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,269,0"></Label>
+            </Grid>
+
+            <Grid Margin="0,104,0,0" Height="35" VerticalAlignment="Top">
+                <Label x:Name="ltotalCountUnlock"  Content="Achievements unlocked" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                <Label x:Name="totalCountUnlock" Content="totalCountUser" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,269,0"></Label>
+            </Grid>
+
+            <Grid Margin="0,139,0,0" Height="35" VerticalAlignment="Top">
+                <Label x:Name="lProgression"  Content="Progression" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                <Label x:Name="lProgressionCount" Content="ProgressionCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,269,0"></Label>
+            </Grid>
+        </Grid>
+
+        <ListBox x:Name="lbAchievements" Height="528" Margin="650,0,32,10" VerticalAlignment="Bottom">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Margin="3">
+                            <DockPanel>
+                                <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}" Margin="5,0,10,0"/>
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="{Binding DateUnlock, StringFormat='dd/MM/yyyy HH:mm:ss'}" HorizontalAlignment="Right" />
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="500" Margin="5,5,5,0" />
+                            </DockPanel>
+                        </StackPanel>
+
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>

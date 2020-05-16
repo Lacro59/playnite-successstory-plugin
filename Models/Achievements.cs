@@ -12,7 +12,6 @@ namespace SuccessStory.Models
         urlUnlocked,
         urlLocked,
         dateUnlocked
-
     }
 
     /// <summary>
@@ -24,6 +23,6 @@ namespace SuccessStory.Models
         public string Description { get; set; }
         public string UrlUnlocked { get; set; }
         public string UrlLocked { get; set; }
-        public DateTime DateUnlocked { get; set; }
+        public DateTime? DateUnlocked { get; set; }
     }
 }

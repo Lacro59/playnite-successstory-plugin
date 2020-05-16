@@ -1,18 +1,10 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
+using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using GogLibrary;
-using GogLibrary.Services;
-using Newtonsoft.Json;
-using System.Net;
-using SuccessStory.Models;
-using SteamLibrary;
 
 namespace SuccessStory
 {
@@ -34,12 +26,12 @@ namespace SuccessStory
             return new List<ExtensionFunction>
             {
                 new ExtensionFunction(
-                    "Success Story",
+                    "SuccessStory",
                     () =>
                     {
                         // Add code to be execute when user invokes this menu entry.
                         //PlayniteApi.Dialogs.ShowMessage("Code executed from a plugin!");
-                        logger.Info("SuccessStory plugin - SuccessView");
+                        logger.Info("SuccessStory - SuccessView");
 
                         // Show SuccessView
                         new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
@@ -75,6 +67,12 @@ namespace SuccessStory
         public override void OnApplicationStarted()
         {
             // Add code to be executed when Playnite is initialized.
+
+            // Create database if not exist (so long...).
+            foreach (var Game in PlayniteApi.Database.Games)
+            {
+                AchievementsCollection.AddAchievements(Game, PlayniteApi, this.GetPluginUserDataPath());
+            }
         }
 
         public override void OnApplicationStopped()
