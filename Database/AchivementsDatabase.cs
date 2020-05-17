@@ -14,18 +14,61 @@ using SuccessStory.Database;
 
 namespace SuccessStory.Models
 {
-    class AchievementsCollection
+    class AchievementsDatabase
     {
+        // Variable Playnite
         private static ILogger logger = LogManager.GetLogger();
+        private IPlayniteAPI PlayniteApi { get; set; }
 
-        private ConcurrentDictionary<Guid, List<Achievements>> Database { get; set; }
-        private string DatabasePath { get; set; }
+        // Variable AchievementsCollection
+        private ConcurrentDictionary<Guid, GameAchievements> PluginDatabase { get; set; }
+        private string PluginUserDataPath { get; set; }
+        private string PluginDatabasePath { get; set; }
 
 
-
-        public List<Achievements> GetAchievementsList(Guid gameId)
+        /// <summary>
+        /// Initialize database / create directory.
+        /// </summary>
+        /// <param name="PlayniteApi"></param>
+        /// <param name="PluginUserDataPath"></param>
+        public void Initialize(IPlayniteAPI PlayniteApi, string PluginUserDataPath)
         {
-            if (Database.TryGetValue(gameId, out var item))
+            this.PlayniteApi = PlayniteApi;
+            this.PluginUserDataPath = PluginUserDataPath;
+            PluginDatabasePath = PluginUserDataPath + "\\achievements\\";
+
+            PluginDatabase = new ConcurrentDictionary<Guid, GameAchievements>();
+
+            if (!Directory.Exists(PluginDatabasePath))
+                Directory.CreateDirectory(PluginDatabasePath);
+
+            Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
+            {
+                try
+                {
+                    // Get game achievements.
+                    Guid gameId = Guid.Parse(objectFile.Replace(PluginDatabasePath, "").Replace(".json", ""));
+                    GameAchievements objGameAchievements = JsonConvert.DeserializeObject<GameAchievements>(File.ReadAllText(objectFile));
+
+                    // Set game achievements in database.
+                    PluginDatabase.TryAdd(gameId, objGameAchievements);
+                }
+                catch (Exception e)
+                {
+                    PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                    logger.Error(e, $"SuccessStory - Failed to load item from {objectFile}");
+                }
+            });
+        }
+
+        /// <summary>
+        /// Get Config and Achivements for a game.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public GameAchievements Get(Guid id)
+        {
+            if (PluginDatabase.TryGetValue(id, out var item))
             {
                 return item;
             }
@@ -35,56 +78,11 @@ namespace SuccessStory.Models
             }
         }
 
-
-
-        public void Load(string Path)
-        {
-            DatabasePath = Path + "\\achievements\\";
-
-            if (!Directory.Exists(DatabasePath))
-                Directory.CreateDirectory(DatabasePath);
-
-            Parallel.ForEach(Directory.EnumerateFiles(DatabasePath, "*.json"), (objectFile) =>
-            {
-                try
-                {
-                    // Get game achievements.
-                    Guid gameId = Guid.Parse(objectFile.Replace(DatabasePath, "").Replace(".json", ""));
-                    List<Achievements> objGameAchievements = JsonConvert.DeserializeObject<List<Achievements>>(File.ReadAllText(objectFile));
-
-                    // Set game achievements in database.
-                    Database.TryAdd(gameId, objGameAchievements);
-                }
-                catch (Exception e)
-                {
-                    logger.Error(e, $"Failed to load item from {objectFile}");
-                }
-            });
-        }
-
-        public void Save()
-        {
-            foreach (var gameAchievements in Database)
-            {
-                string gameID = ((Guid)gameAchievements.Key).ToString();
-                List<Achievements> Achievements = gameAchievements.Value;
-
-                File.WriteAllText(DatabasePath + gameID + ".json", JsonConvert.SerializeObject(Achievements));
-            }
-
-        }
-
-
-
-
-
         /// <summary>
-        /// Generate database for the game.
+        /// Generate database achivements for the game if achievement exist and game not exist in database.
         /// </summary>
         /// <param name="GameAdded"></param>
-        /// <param name="PlayniteApi"></param>
-        /// <param name="PluginUserDataPath"></param>
-        public static void AddAchievements(Game GameAdded, IPlayniteAPI PlayniteApi, string PluginUserDataPath)
+        public void Add(Game GameAdded)
         {
             string ResultWeb = "";
             string ClientId = GameAdded.GameId;
@@ -98,17 +96,19 @@ namespace SuccessStory.Models
             else
                 GameSourceName = "Playnite";
 
-            string PathPluginDb = PluginUserDataPath + "\\achievements\\";
-            string PathPluginGameDb = PathPluginDb + GameId.ToString() + ".json";
+            string PluginDatabaseGamePath = PluginDatabasePath + GameId.ToString() + ".json";
 
             bool HaveAchivements = false;
+            int Total = 0;            
+            int Unlocked = 0;            
+            int Locked = 0;            
+            List<Achievements> Achievements = new List<Achievements>();
 
+            // Generate database only this source
             if (GameSourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") && (GameSourceName.ToLower() == "gog" || GameSourceName.ToLower() == "steam"))
             {
-                if (!Directory.Exists(PathPluginDb))
-                    Directory.CreateDirectory(PathPluginDb);
-
-                if (!File.Exists(PathPluginGameDb))
+                // Generate only not exist
+                if (!File.Exists(PluginDatabaseGamePath))
                 {
                     // TODO one func
                     if (GameSourceName.ToLower() == "gog")
@@ -129,10 +129,22 @@ namespace SuccessStory.Models
                                     webClient.Headers.Add("Authorization: Bearer " + accessToken);
                                     ResultWeb = webClient.DownloadString(url);
                                 }
-                                catch (Exception e)
+                                catch (WebException e)
                                 {
-                                    logger.Error(e, $"Failed to load from {url}");
-                                    PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "error");
+                                    if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                                    {
+                                        var resp = (HttpWebResponse)e.Response;
+                                        switch (resp.StatusCode)
+                                        {
+                                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                                                logger.Error(e, $"HTTP 503 to load from {url}");
+                                                return;
+                                            default:
+                                                logger.Error(e, $"Failed to load from {url}");
+                                                PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                                                break;
+                                        }
+                                    }
                                 }
                             }
 
@@ -145,12 +157,32 @@ namespace SuccessStory.Models
                                     if (resultItems.Count > 0)
                                     {
                                         HaveAchivements = true;
+
+                                        for (int i = 0; i < resultItems.Count; i++)
+                                        {
+                                            Achievements temp = new Achievements
+                                            {
+                                                Name = (string)resultItems[i]["name"],
+                                                Description = (string)resultItems[i]["description"],
+                                                UrlUnlocked = (string)resultItems[i]["image_url_unlocked"],
+                                                UrlLocked = (string)resultItems[i]["image_url_locked"],
+                                                DateUnlocked = ((string)resultItems[i]["date_unlocked"] == null) ? default(DateTime) : (DateTime)resultItems[i]["date_unlocked"]
+                                            };
+
+                                            Total += 1;
+                                            if ((string)resultItems[i]["date_unlocked"] == null)
+                                                Locked += 1;
+                                            else
+                                                Unlocked += 1;
+
+                                            Achievements.Add(temp);
+                                        }
                                     }
                                 }
                                 catch (Exception e)
                                 {
                                     logger.Error(e, $"Failed to parse.");
-                                    PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "error");
+                                    PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
                                 }
                             }
 
@@ -178,9 +210,16 @@ namespace SuccessStory.Models
                                 if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
                                 {
                                     var resp = (HttpWebResponse)e.Response;
-                                    if (resp.StatusCode != HttpStatusCode.BadRequest) // HTTP 404
+                                    switch (resp.StatusCode)
                                     {
-                                        logger.Error(e, $"Failed to load from {url}");
+                                        case HttpStatusCode.BadRequest: // HTTP 400
+                                            break;
+                                        case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                                            return;
+                                        default:
+                                            logger.Error(e, $"Failed to load from {url}");
+                                            PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                                            break;
                                     }
                                 }
                             }
@@ -202,7 +241,109 @@ namespace SuccessStory.Models
                             catch (Exception e)
                             {
                                 logger.Error(e, $"Failed to parse.");
-                                PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "error");
+                                PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                            }
+
+
+                            try
+                            {
+                                resultItems = (JArray)resultObj["playerstats"]["achievements"];
+                                if (resultItems.Count > 0)
+                                {
+                                    HaveAchivements = true;
+
+                                    for (int i = 0; i < resultItems.Count; i++)
+                                    {
+                                        Achievements temp = new Achievements
+                                        {
+                                            Name = (string)resultItems[i]["apiname"],
+                                            Description = "",
+                                            UrlUnlocked = "",
+                                            UrlLocked = "",
+                                            DateUnlocked = ((int)resultItems[i]["unlocktime"] == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)resultItems[i]["unlocktime"])
+                                        };
+
+                                        Total += 1;
+                                        if ((int)resultItems[i]["unlocktime"] == 0)
+                                            Locked += 1;
+                                        else
+                                            Unlocked += 1;
+
+                                        Achievements.Add(temp);
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                logger.Error(e, $"Failed to parse.");
+                                PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                            }
+
+
+                            // List details acheviements
+                            url = "https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=" + apiKey + "&appid=" + ClientId;
+
+                            using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
+                            {
+                                try
+                                {
+                                    webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
+                                    ResultWeb = webClient.DownloadString(url);
+                                }
+                                catch (WebException e)
+                                {
+                                    if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                                    {
+                                        var resp = (HttpWebResponse)e.Response;
+                                        switch (resp.StatusCode)
+                                        {
+                                            case HttpStatusCode.BadRequest: // HTTP 400
+                                                break;
+                                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                                                return;
+                                            default:
+                                                logger.Error(e, $"Failed to load from {url}");
+                                                PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (ResultWeb != "")
+                            {
+                                resultObj = JObject.Parse(ResultWeb);
+
+                                try
+                                {
+                                    resultItems = (JArray)resultObj["game"]["availableGameStats"]["achievements"];
+
+                                    for (int i = 0; i < resultItems.Count; i++)
+                                    {
+                                        for (int j = 0; j < Achievements.Count; j++)
+                                        {
+                                            if (Achievements[j].Name.ToLower() == ((string)resultItems[i]["name"]).ToLower())
+                                            {
+                                                Achievements temp = new Achievements
+                                                {
+                                                    Name = (string)resultItems[i]["displayName"],
+                                                    Description = (string)resultItems[i]["description"],
+                                                    UrlUnlocked = (string)resultItems[i]["icon"],
+                                                    UrlLocked = (string)resultItems[i]["icongray"],
+                                                    DateUnlocked = Achievements[j].DateUnlocked
+                                                };
+
+                                                Achievements[j] = temp;
+                                                j = Achievements.Count;
+                                            }
+                                        }
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    logger.Error(e, $"Failed to parse.");
+                                    PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                                }
                             }
                         }
                     }
@@ -210,35 +351,118 @@ namespace SuccessStory.Models
                     GameAchievements GameAchievements = new GameAchievements
                     {
                         Name = GameName,
-                        HaveAchivements = HaveAchivements
+                        HaveAchivements = HaveAchivements,
+                        Total = Total,
+                        Unlocked = Unlocked,
+                        Locked = Locked,
+                        Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
+                        Achievements = Achievements
                     };
-                    File.WriteAllText(PathPluginGameDb, JsonConvert.SerializeObject(GameAchievements));
+                    File.WriteAllText(PluginDatabaseGamePath, JsonConvert.SerializeObject(GameAchievements));
                 }
             }
+        }
+
+
+        public ProgressionAchievements Progession()
+        {
+            ProgressionAchievements Result = new ProgressionAchievements();
+            int Total = 0;
+            int Locked = 0;
+            int Unlocked = 0;
+
+            foreach(var item in PluginDatabase)
+            {
+                GameAchievements GameAchievements = item.Value;
+
+                if (GameAchievements.HaveAchivements)
+                {
+                    Total += GameAchievements.Total;
+                    Locked += GameAchievements.Locked;
+                    Unlocked += GameAchievements.Unlocked;
+                }
+            }
+
+            Result.Total = Total;
+            Result.Locked = Locked;
+            Result.Unlocked = Unlocked;
+            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
+
+            return Result;
+        }
+
+        public ProgressionAchievements ProgessionGame(Guid GameId)
+        {
+            ProgressionAchievements Result = new ProgressionAchievements();
+            int Total = 0;
+            int Locked = 0;
+            int Unlocked = 0;
+
+            foreach (var item in PluginDatabase)
+            {
+                Guid Id = item.Key;
+                GameAchievements GameAchievements = item.Value;
+
+                if (GameAchievements.HaveAchivements && Id == GameId)
+                {
+                    Total += GameAchievements.Total;
+                    Locked += GameAchievements.Locked;
+                    Unlocked += GameAchievements.Unlocked;
+                }
+            }
+
+            Result.Total = Total;
+            Result.Locked = Locked;
+            Result.Unlocked = Unlocked;
+            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
+
+            return Result;
+        }
+
+        public ProgressionAchievements ProgessionSource(Guid GameSourceId)
+        {
+            ProgressionAchievements Result = new ProgressionAchievements();
+            int Total = 0;
+            int Locked = 0;
+            int Unlocked = 0;
+
+            foreach (var item in PluginDatabase)
+            {
+                Guid Id = item.Key;
+                Game Game = PlayniteApi.Database.Games.Get(Id);
+                GameAchievements GameAchievements = item.Value;
+
+                if (GameAchievements.HaveAchivements && Game.SourceId == GameSourceId)
+                {
+                    Total += GameAchievements.Total;
+                    Locked += GameAchievements.Locked;
+                    Unlocked += GameAchievements.Unlocked;
+                }
+            }
+
+            Result.Total = Total;
+            Result.Locked = Locked;
+            Result.Unlocked = Unlocked;
+            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
+
+            return Result;
         }
 
         /// <summary>
         /// Control game have achieveements.
         /// </summary>
         /// <param name="GameId"></param>
-        /// <param name="PluginUserDataPath"></param>
         /// <returns></returns>
-        public static bool HaveAchievements(Guid GameId, string PluginUserDataPath)
+        public bool HaveAchievements(Guid GameId)
         {
-            bool Result = false;
-            string PathPluginDb = PluginUserDataPath + "\\achievements\\";
-            string PathPluginGameDb = PathPluginDb + GameId.ToString() + ".json";
-
-            if (!Directory.Exists(PathPluginDb))
-                Directory.CreateDirectory(PathPluginDb);
-
-            if (File.Exists(PathPluginGameDb)) {
-                GameAchievements GameAchievements = JsonConvert.DeserializeObject<GameAchievements>(File.ReadAllText(PathPluginGameDb));
-                Result = GameAchievements.HaveAchivements;
-            }
-
-            return Result;
+            if (Get(GameId) != null)
+                return Get(GameId).HaveAchivements;
+            else
+                return false;
         }
+
+
+
 
         /// <summary>
         /// Get Achievements for a game on the web.
@@ -282,7 +506,7 @@ namespace SuccessStory.Models
                         catch (Exception e)
                         {
                             logger.Error(e, $"Failed to load from {url}");
-                            PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "error");
+                            PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
                         }
                     }
 
@@ -336,7 +560,7 @@ namespace SuccessStory.Models
                         catch (Exception e)
                         {
                             logger.Error(e, $"Failed to parse.");
-                            PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "error");
+                            PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
                         }
                     }
 
@@ -371,7 +595,7 @@ namespace SuccessStory.Models
 
 
                 //error 400
-                //{"playerstats":{"error":"Requested app has no stats","success":false}}
+                //{"playerstats":{"SuccessStory error":"Requested app has no stats","success":false}}
 
                 // List acheviements
                 string url = "http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=" + clientId + "&key=" + apiKey + "&steamid=" + userId;
@@ -391,7 +615,7 @@ namespace SuccessStory.Models
                             if (resp.StatusCode != HttpStatusCode.BadRequest) // HTTP 404
                             {
                                 logger.Error(e, $"Failed to load from {url}");
-                                PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "error");
+                                PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
                             }
                         }
                     }
@@ -425,7 +649,7 @@ namespace SuccessStory.Models
                     catch (Exception e)
                     {
                         logger.Error(e, $"Failed to parse.");
-                        PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "error");
+                        PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
                     }
 
 
@@ -470,7 +694,7 @@ namespace SuccessStory.Models
                         catch (Exception e)
                         {
                             logger.Error(e, $"Failed to parse.");
-                            PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "error");
+                            PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
                         }
                     }
                 }

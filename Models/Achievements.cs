@@ -3,18 +3,6 @@
 namespace SuccessStory.Models
 {
     /// <summary>
-    /// Specifies <see cref="Achievements"/> fields.
-    /// </summary>
-    public enum AchievementsField
-    {
-        name,
-        description,
-        urlUnlocked,
-        urlLocked,
-        dateUnlocked
-    }
-
-    /// <summary>
     /// Represents achievements object.
     /// </summary>
     class Achievements

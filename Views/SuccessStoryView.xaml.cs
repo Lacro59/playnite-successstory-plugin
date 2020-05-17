@@ -29,27 +29,39 @@ namespace SuccessStory
         public readonly IGameDatabaseAPI PlayniteApiDatabase;
         public readonly IPlaynitePathsAPI PlayniteApiPaths;
 
-        public readonly string pathExtData;
+        public readonly string PluginUserDataPath;
         SuccessStorySettings settings { get; set; }
+
+        AchievementsDatabase AchievementsDatabase = new AchievementsDatabase();
 
         // Variables list games.
         public string lvGamesIcon { get; set; }
         public string lvGamesName { get; set; }
         public string lvGamesLastActivity { get; set; }
         public string lvGamesSourceName { get; set; }
+        public string lvGamesProgression { get; set; }
+
+        public string labelProgressionGlobal { get; set; }
+        public int ProgressionGlobalCount { get; set; }
 
         // Variables "Informations"
-        string totalCountLabel;
-        string totalCountUnlockLabel;
-        string totalProgressionCount;
+        public string totalCountLabel;
+        public string totalCountUnlockLabel;
+        public string totalProgressionCount;
 
-        public SuccessView(SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string pathExtData)
+
+        public SuccessView(SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string PluginUserDataPath)
         {
             this.PlayniteApi = PlayniteApi;
             PlayniteApiDatabase = PlayniteApi.Database;
             PlayniteApiPaths = PlayniteApi.Paths;
             this.settings = settings;
-            this.pathExtData = pathExtData;
+            this.PluginUserDataPath = PluginUserDataPath;
+
+
+            AchievementsDatabase = new AchievementsDatabase();
+            AchievementsDatabase.Initialize(PlayniteApi, PluginUserDataPath);
+
 
             #region text localization
             //Informations
@@ -63,11 +75,16 @@ namespace SuccessStory
             lvGamesName = "Name";
             lvGamesLastActivity = "Last session";
             lvGamesSourceName = "Source";
+            lvGamesProgression = "Progression";
+
+            labelProgressionGlobal = "Global progression";
             #endregion
 
 
             InitializeComponent();
 
+
+            ProgressionGlobalCount = AchievementsDatabase.Progession().Progression;
 
             // Informations panel
             lInfo.Content = infoLabel;
@@ -96,7 +113,7 @@ namespace SuccessStory
             List<listGame> ListGames = new List<listGame>();
             foreach (var item in PlayniteApiDatabase.Games)
             {
-                if (item.Name.ToLower().Contains(SearchGameName.ToLower()) && AchievementsCollection.HaveAchievements(item.Id, pathExtData))
+                if (item.Name.ToLower().Contains(SearchGameName.ToLower()) && AchievementsDatabase.HaveAchievements(item.Id))
                 {
                     if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") && (item.Source.Name.ToLower() == "gog" || item.Source.Name.ToLower() == "steam"))
                     {
@@ -105,6 +122,8 @@ namespace SuccessStory
                         string GameIcon;
                         DateTime? GameLastActivity = null;
                         string SourceName = item.Source.Name;
+
+                        GameAchievements GameAchievements = AchievementsDatabase.Get(item.Id);
 
                         if (item.LastActivity != null)
                         {
@@ -126,7 +145,8 @@ namespace SuccessStory
                             Name = GameName,
                             Icon = iconImage,
                             LastActivity = GameLastActivity,
-                            SourceName = TransformIcon.Get(SourceName)
+                            SourceName = TransformIcon.Get(SourceName),
+                            Progression = GameAchievements.Progression
                         });
 
                         iconImage = null;
@@ -153,12 +173,8 @@ namespace SuccessStory
             {
                 Guid GameId = Guid.Parse(GameSelected.Id);
 
-                int countAchievementsNumber = 0;
-                int countAchievementsUnlocked = 0;
-                int countAchievementsLocked = 0;
-
-                List<Achievements> ListAchievements;
-                ListAchievements = AchievementsCollection.GetAchievementsListWEB(GameId, PlayniteApi, pathExtData);
+                GameAchievements GameAchievements = AchievementsDatabase.Get(GameId);
+                List<Achievements> ListAchievements = GameAchievements.Achievements;
 
                 List<listAchievements> ListBoxAchievements = new List<listAchievements>();
 
@@ -172,13 +188,11 @@ namespace SuccessStory
                     {
                         iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
                         dateUnlock = null;
-                        countAchievementsNumber += 1;
                     }
                     else
                     {
                         iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
                         dateUnlock = ListAchievements[i].DateUnlocked;
-                        countAchievementsUnlocked += 1;
                     }
                     iconImage.EndInit();
 
@@ -193,15 +207,13 @@ namespace SuccessStory
                     iconImage = null;
                 }
 
-                countAchievementsLocked = countAchievementsNumber - countAchievementsUnlocked;
-
                 // Informations panel
                 lTotalCount.Content = totalCountLabel;
                 ltotalCountUnlock.Content = totalCountUnlockLabel;
-                totalCount.Content = countAchievementsNumber;
-                totalCountUnlock.Content = countAchievementsUnlocked;
+                totalCount.Content = GameAchievements.Total;
+                totalCountUnlock.Content = GameAchievements.Unlocked;
                 lProgression.Content = totalProgressionCount;
-                lProgressionCount.Content = (int)Math.Round((double)(countAchievementsUnlocked * 100 / countAchievementsNumber)) + "%";
+                lProgressionCount.Content = GameAchievements.Progression + "%";
 
                 // Sorting default.
                 lbAchievements.ItemsSource = ListBoxAchievements;
@@ -261,6 +273,7 @@ namespace SuccessStory
         }
     }
 
+
     /// <summary>
     /// Class for the listview games
     /// </summary>
@@ -271,6 +284,7 @@ namespace SuccessStory
         public string Name { get; set; }
         public DateTime? LastActivity { get; set; }
         public string SourceName { get; set; }
+        public int Progression { get; set; }
     }
 
     /// <summary>

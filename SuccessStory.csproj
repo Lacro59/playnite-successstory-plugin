@@ -63,9 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commons\TransformIcon.cs" />
-    <Compile Include="Database\GameAchievements.cs" />
+    <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\Achievements.cs" />
-    <Compile Include="Database\AchievementsCollection.cs" />
+    <Compile Include="Database\AchivementsDatabase.cs" />
+    <Compile Include="Models\ProgressionAchievements.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
     <Compile Include="Views\SuccessStorySettingsView.xaml.cs">

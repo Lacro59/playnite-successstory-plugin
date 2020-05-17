@@ -68,10 +68,13 @@ namespace SuccessStory
         {
             // Add code to be executed when Playnite is initialized.
 
+            AchievementsDatabase AchievementsDatabase = new AchievementsDatabase();
+            AchievementsDatabase.Initialize(PlayniteApi, this.GetPluginUserDataPath());
+
             // Create database if not exist (so long...).
             foreach (var Game in PlayniteApi.Database.Games)
             {
-                AchievementsCollection.AddAchievements(Game, PlayniteApi, this.GetPluginUserDataPath());
+                AchievementsDatabase.Add(Game);
             }
         }
 

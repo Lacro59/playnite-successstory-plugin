@@ -11,7 +11,7 @@
         <TextBox HorizontalAlignment="Left" Height="23" Margin="108,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="488"  KeyUp="Search_KeyUp" />
         <Label Content="Search" HorizontalAlignment="Left" Margin="28,10,0,0" VerticalAlignment="Top" Width="80" FontSize="16"/>
 
-        <ListView x:Name="lvGames" HorizontalAlignment="Left" Width="610" SelectionChanged="LvGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="onHeaderClick" Margin="10,50,0,0" VerticalAlignment="Top" Height="711">
+        <ListView x:Name="lvGames" HorizontalAlignment="Left" Width="667" SelectionChanged="LvGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="onHeaderClick" Margin="10,50,0,0" VerticalAlignment="Top" Height="626">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="{Binding lvGamesIcon}" Width="50">
@@ -30,30 +30,46 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+                    <GridViewColumn Header="{Binding lvGamesProgression}" Width="100" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ProgressBar Minimum="0" Maximum="100" Height="28" Value="{Binding Progression}" VerticalAlignment="Center" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
 
-        <Grid Margin="0,50,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="178" Width="594">
-            <Label x:Name="lInfo" Content="Informations" VerticalAlignment="Top" Margin="10,0" FontSize="24" HorizontalAlignment="Center"/>
-
-            <Grid Margin="0,69,0,0" Height="35" VerticalAlignment="Top">
-                <Label x:Name="lTotalCount" Content="Achievements number" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                <Label x:Name="totalCount" Content="totalCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,269,0"></Label>
-            </Grid>
-
-            <Grid Margin="0,104,0,0" Height="35" VerticalAlignment="Top">
-                <Label x:Name="ltotalCountUnlock"  Content="Achievements unlocked" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                <Label x:Name="totalCountUnlock" Content="totalCountUser" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,269,0"></Label>
-            </Grid>
-
-            <Grid Margin="0,139,0,0" Height="35" VerticalAlignment="Top">
-                <Label x:Name="lProgression"  Content="Progression" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                <Label x:Name="lProgressionCount" Content="ProgressionCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,269,0"></Label>
+        <Grid Margin="10,681,577,10">
+            <Grid VerticalAlignment="Top">
+                <Label x:Name="lProgressionGlobal" Content="Global progression" HorizontalAlignment="Left" Width="200" FontSize="16" VerticalAlignment="Center" Margin="10,9,0,9"></Label>
+                <ProgressBar Minimum="0" Maximum="100" Height="28" Value="{Binding ProgressionGlobalCount}" VerticalAlignment="Center" Margin="210,10,10,11" />
             </Grid>
         </Grid>
 
-        <ListBox x:Name="lbAchievements" Height="528" Margin="650,0,32,10" VerticalAlignment="Bottom">
+
+
+        <Grid Margin="0,50,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="178" Width="532">
+            <Label x:Name="lInfo" Content="Informations" VerticalAlignment="Top" Margin="10,0" FontSize="24" HorizontalAlignment="Center"/>
+
+            <Grid Margin="0,47,0,0" Height="35" VerticalAlignment="Top">
+                <Label x:Name="lTotalCount" Content="Achievements number" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                <Label x:Name="totalCount" Content="totalCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
+            </Grid>
+
+            <Grid Margin="0,87,0,0" Height="35" VerticalAlignment="Top">
+                <Label x:Name="ltotalCountUnlock"  Content="Achievements unlocked" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                <Label x:Name="totalCountUnlock" Content="totalCountUser" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
+            </Grid>
+
+            <Grid Margin="0,127,0,0" Height="35" VerticalAlignment="Top">
+                <Label x:Name="lProgression"  Content="Progression" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                <Label x:Name="lProgressionCount" Content="ProgressionCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
+            </Grid>
+        </Grid>
+
+        <ListBox x:Name="lbAchievements" Height="528" Margin="712,0,32,10" VerticalAlignment="Bottom">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,2">
@@ -69,7 +85,7 @@
                                 <TextBlock Text="{Binding DateUnlock, StringFormat='dd/MM/yyyy HH:mm:ss'}" HorizontalAlignment="Right" />
                             </DockPanel>
                             <DockPanel>
-                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="500" Margin="5,5,5,0" />
+                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="450" Margin="5,5,5,0" />
                             </DockPanel>
                         </StackPanel>
 
