@@ -20,5 +20,5 @@ namespace SuccessStory.Database
         public int Locked { get; set; }
         public int Progression { get; set; }
         public List<Achievements> Achievements  { get; set; }
-}
+    }
 }

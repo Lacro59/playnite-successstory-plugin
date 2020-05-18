@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Dashboard.Commons;
-using Newtonsoft.Json;
 using Playnite.SDK;
-using Playnite.SDK.Models;
-using Playnite.SDK.Plugins;
 using SuccessStory.Database;
 using SuccessStory.Models;
 
@@ -35,11 +30,11 @@ namespace SuccessStory
         AchievementsDatabase AchievementsDatabase = new AchievementsDatabase();
 
         // Variables list games.
-        public string lvGamesIcon { get; set; }
-        public string lvGamesName { get; set; }
-        public string lvGamesLastActivity { get; set; }
-        public string lvGamesSourceName { get; set; }
-        public string lvGamesProgression { get; set; }
+        public string ListviewGamesIcon { get; set; }
+        public string ListviewGamesName { get; set; }
+        public string ListviewGamesLastActivity { get; set; }
+        public string ListviewGamesSourceName { get; set; }
+        public string ListviewGamesProgression { get; set; }
 
         public string labelProgressionGlobal { get; set; }
         public int ProgressionGlobalCount { get; set; }
@@ -64,18 +59,18 @@ namespace SuccessStory
 
 
             #region text localization
-            //Informations
+            // Informations
             string infoLabel = "Informations";
             totalCountLabel = "Number achievements";
             totalCountUnlockLabel = "Unlocked achievements";
             totalProgressionCount = "Progression";
 
-            // listViewGames
-            lvGamesIcon = "Icon";
-            lvGamesName = "Name";
-            lvGamesLastActivity = "Last session";
-            lvGamesSourceName = "Source";
-            lvGamesProgression = "Progression";
+            // ListviewGames
+            ListviewGamesIcon = "Icon";
+            ListviewGamesName = "Name";
+            ListviewGamesLastActivity = "Last session";
+            ListviewGamesSourceName = "Source";
+            ListviewGamesProgression = "Progression";
 
             labelProgressionGlobal = "Global progression";
             #endregion
@@ -84,7 +79,10 @@ namespace SuccessStory
             InitializeComponent();
 
 
-            ProgressionGlobalCount = AchievementsDatabase.Progession().Progression;
+            //ProgressionGlobalCount = AchievementsDatabase.Progession().Progression;
+            pbProgressionGlobalCount.Value = AchievementsDatabase.Progession().Unlocked;
+            pbProgressionGlobalCount.Maximum = AchievementsDatabase.Progession().Total;
+
 
             // Informations panel
             lInfo.Content = infoLabel;
@@ -92,8 +90,8 @@ namespace SuccessStory
             ltotalCountUnlock.Content = "";
             totalCount.Content = "";
             totalCountUnlock.Content = "";
-            lProgression.Content = "";
-            lProgressionCount.Content = "";
+            labelProgression.Content = "";
+            ProgressionCount.Visibility = Visibility.Hidden;
 
 
             GetListGame();
@@ -155,8 +153,8 @@ namespace SuccessStory
             }
 
             // Sorting default.
-            lvGames.ItemsSource = ListGames;
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lvGames.ItemsSource);
+            ListviewGames.ItemsSource = ListGames;
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
             view.SortDescriptions.Add(new SortDescription("LastActivity", ListSortDirection.Descending));
         }
 
@@ -165,7 +163,7 @@ namespace SuccessStory
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void LvGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListviewGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             listGame GameSelected = (listGame)((ListBox)sender).SelectedItem;
 
@@ -212,8 +210,10 @@ namespace SuccessStory
                 ltotalCountUnlock.Content = totalCountUnlockLabel;
                 totalCount.Content = GameAchievements.Total;
                 totalCountUnlock.Content = GameAchievements.Unlocked;
-                lProgression.Content = totalProgressionCount;
-                lProgressionCount.Content = GameAchievements.Progression + "%";
+                labelProgression.Content = totalProgressionCount;
+                ProgressionCount.Visibility = Visibility.Visible;
+                ProgressionCount.Value = GameAchievements.Unlocked;
+                ProgressionCount.Maximum = GameAchievements.Total;
 
                 // Sorting default.
                 lbAchievements.ItemsSource = ListBoxAchievements;
@@ -227,19 +227,19 @@ namespace SuccessStory
                 ltotalCountUnlock.Content = "";
                 totalCount.Content = "";
                 totalCountUnlock.Content = "";
-                lProgression.Content = "";
-                lProgressionCount.Content = "";
+                labelProgression.Content = "";
+                ProgressionCount.Visibility = Visibility.Hidden;
 
                 lbAchievements.ItemsSource = null;
             }
         }
 
-        #region Functions sorting lvGames.
+        #region Functions sorting ListviewGames.
         //https://stackoverflow.com/questions/30787068/wpf-listview-sorting-on-column-click
         private GridViewColumnHeader lastHeaderClicked = null;
         private ListSortDirection lastDirection = ListSortDirection.Ascending;
 
-        private void onHeaderClick(object sender, RoutedEventArgs e)
+        private void ListviewGames_onHeaderClick(object sender, RoutedEventArgs e)
         {
             if (!(e.OriginalSource is GridViewColumnHeader ch)) return;
             var dir = ListSortDirection.Ascending;
@@ -253,7 +253,7 @@ namespace SuccessStory
         {
             var bn = (ch.Column.DisplayMemberBinding as Binding)?.Path.Path;
             bn = bn ?? ch.Column.Header as string;
-            var dv = CollectionViewSource.GetDefaultView(lvGames.ItemsSource);
+            var dv = CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
             dv.SortDescriptions.Clear();
             var sd = new SortDescription(bn, dir);
             dv.SortDescriptions.Add(sd);
@@ -266,11 +266,12 @@ namespace SuccessStory
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Search_KeyUp(object sender, RoutedEventArgs e)
+        private void TextboxSearch_KeyUp(object sender, RoutedEventArgs e)
         {
             string SearchGameName = ((TextBox)sender).Text;
             GetListGame(SearchGameName);
         }
+
     }
 
 

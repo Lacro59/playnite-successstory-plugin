@@ -26,12 +26,12 @@ namespace SuccessStory
             return new List<ExtensionFunction>
             {
                 new ExtensionFunction(
-                    "SuccessStory",
+                    "Success Story",
                     () =>
                     {
                         // Add code to be execute when user invokes this menu entry.
-                        //PlayniteApi.Dialogs.ShowMessage("Code executed from a plugin!");
-                        logger.Info("SuccessStory - SuccessView");
+
+                        logger.Info("SuccessStory - SuccessStoryView");
 
                         // Show SuccessView
                         new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
@@ -93,9 +93,9 @@ namespace SuccessStory
             return settings;
         }
 
-        public override UserControl GetSettingsView(bool firstRunSettings)
-        {
-            return new SuccessStorySettingsView();
-        }
+        //public override UserControl GetSettingsView(bool firstRunSettings)
+        //{
+        //    return new SuccessStorySettingsView();
+        //}
     }
 }

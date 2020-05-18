@@ -8,29 +8,29 @@
              ResizeMode="NoResize" Title="Success Story" WindowStartupLocation="CenterScreen">
 
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="108,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="488"  KeyUp="Search_KeyUp" />
+        <TextBox x:Name="TextboxSearch" HorizontalAlignment="Left" Height="23" Margin="113,10,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="488" KeyUp="TextboxSearch_KeyUp" />
         <Label Content="Search" HorizontalAlignment="Left" Margin="28,10,0,0" VerticalAlignment="Top" Width="80" FontSize="16"/>
 
-        <ListView x:Name="lvGames" HorizontalAlignment="Left" Width="667" SelectionChanged="LvGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="onHeaderClick" Margin="10,50,0,0" VerticalAlignment="Top" Height="626">
+        <ListView x:Name="ListviewGames" HorizontalAlignment="Left" Width="667" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick" Margin="10,50,0,0" VerticalAlignment="Top" Height="626">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="{Binding lvGamesIcon}" Width="50">
+                    <GridViewColumn Header="{Binding ListviewGamesIcon}" Width="50">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn x:Name="hGameTitle" Header="{Binding lvGamesName}" Width="Auto" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="{Binding lvGamesLastActivity}" Width="Auto" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}" />
-                    <GridViewColumn Header="{Binding lvGamesSourceName}" Width="30" >
+                    <GridViewColumn x:Name="hGameTitle" Header="{Binding ListviewGamesName}" Width="292" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="{Binding ListviewGamesLastActivity}" Width="Auto" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}" />
+                    <GridViewColumn Header="{Binding ListviewGamesSourceName}" Width="60" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Label Content="{Binding SourceName}" FontFamily="/SuccessStory;component/Ressources/#font" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="{Binding lvGamesProgression}" Width="100" >
+                    <GridViewColumn Header="{Binding ListviewGamesProgression}" Width="100" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <ProgressBar Minimum="0" Maximum="100" Height="28" Value="{Binding Progression}" VerticalAlignment="Center" />
@@ -41,11 +41,9 @@
             </ListView.View>
         </ListView>
 
-        <Grid Margin="10,681,577,10">
-            <Grid VerticalAlignment="Top">
-                <Label x:Name="lProgressionGlobal" Content="Global progression" HorizontalAlignment="Left" Width="200" FontSize="16" VerticalAlignment="Center" Margin="10,9,0,9"></Label>
-                <ProgressBar Minimum="0" Maximum="100" Height="28" Value="{Binding ProgressionGlobalCount}" VerticalAlignment="Center" Margin="210,10,10,11" />
-            </Grid>
+        <Grid Margin="10,681,577,10" VerticalAlignment="Bottom">
+            <Label x:Name="lProgressionGlobal" Content="Global progression" HorizontalAlignment="Left" Width="200" FontSize="16" VerticalAlignment="Center" Margin="10,9,0,9"></Label>
+            <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" Height="28" VerticalAlignment="Center" Margin="210,10,0,11" HorizontalAlignment="Right" Width="457" />
         </Grid>
 
 
@@ -64,12 +62,12 @@
             </Grid>
 
             <Grid Margin="0,127,0,0" Height="35" VerticalAlignment="Top">
-                <Label x:Name="lProgression"  Content="Progression" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                <Label x:Name="lProgressionCount" Content="ProgressionCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
+                <Label x:Name="labelProgression"  Content="Progression" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                <ProgressBar x:Name="ProgressionCount" Minimum="0" Maximum="100" Height="28" VerticalAlignment="Center" Margin="210,3,40,4" />
             </Grid>
         </Grid>
 
-        <ListBox x:Name="lbAchievements" Height="528" Margin="712,0,32,10" VerticalAlignment="Bottom">
+        <ListBox x:Name="lbAchievements" Height="528" Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="532">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="0,2">
@@ -78,17 +76,24 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Margin="3">
+                        <StackPanel Margin="3" Orientation="Horizontal">
                             <DockPanel>
-                                <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}" Margin="5,0,10,0"/>
-                                <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text="{Binding DateUnlock, StringFormat='dd/MM/yyyy HH:mm:ss'}" HorizontalAlignment="Right" />
+                                <Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Source="{Binding Icon}" Margin="5,0,10,0"/>
                             </DockPanel>
+
                             <DockPanel>
-                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="450" Margin="5,5,5,0" />
+                                <StackPanel DockPanel.Dock="Top">
+                                    <Grid>
+                                        <TextBlock Text="{Binding Name}" />
+                                        <TextBlock TextAlignment="Right" Text="{Binding DateUnlock, StringFormat='dd/MM/yyyy HH:mm'}" />
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel DockPanel.Dock="Bottom">
+                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="395" Foreground="#FF8F8B8B" />
+                                </StackPanel>
                             </DockPanel>
                         </StackPanel>
-
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
