@@ -61,6 +61,11 @@ namespace SuccessStory
         public override void OnGameStopped(Game game, long elapsedSeconds)
         {
             // Add code to be executed when game is preparing to be started.
+
+            // Refresh Achievements database.
+            AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
+            AchievementsDatabase.Remove(game);
+            AchievementsDatabase.Add(game);
         }
 
         public override void OnGameUninstalled(Game game)
@@ -73,13 +78,12 @@ namespace SuccessStory
             // Add code to be executed when Playnite is initialized.
 
             // Get achivements for game listed in database.
-            AchievementsDatabase AchievementsDatabase = new AchievementsDatabase();
-            AchievementsDatabase.Initialize(PlayniteApi, this.GetPluginUserDataPath());
+            AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
 
             // Create database if not exist (so long...).
-            foreach (var Game in PlayniteApi.Database.Games)
+            foreach (var game in PlayniteApi.Database.Games)
             {
-                AchievementsDatabase.Add(Game);
+                AchievementsDatabase.Add(game);
             }
         }
 
@@ -98,9 +102,9 @@ namespace SuccessStory
             return settings;
         }
 
-        //public override UserControl GetSettingsView(bool firstRunSettings)
-        //{
-        //    return new SuccessStorySettingsView();
-        //}
+        public override UserControl GetSettingsView(bool firstRunSettings)
+        {
+            return new SuccessStorySettingsView(PlayniteApi, this.GetPluginUserDataPath());
+        }
     }
 }

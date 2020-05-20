@@ -27,7 +27,7 @@ namespace SuccessStory
         public readonly string PluginUserDataPath;
         SuccessStorySettings settings { get; set; }
 
-        AchievementsDatabase AchievementsDatabase = new AchievementsDatabase();
+        AchievementsDatabase AchievementsDatabase;
 
         // Variables list games.
         public string ListviewGamesIcon { get; set; }
@@ -54,8 +54,8 @@ namespace SuccessStory
             this.PluginUserDataPath = PluginUserDataPath;
 
 
-            AchievementsDatabase = new AchievementsDatabase();
-            AchievementsDatabase.Initialize(PlayniteApi, PluginUserDataPath);
+            AchievementsDatabase = new AchievementsDatabase(PlayniteApi, PluginUserDataPath);
+            AchievementsDatabase.Initialize();
 
 
             #region text localization

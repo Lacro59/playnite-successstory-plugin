@@ -1,25 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Playnite.SDK;
+using SuccessStory.Models;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace SuccessStory
 {
     public partial class SuccessStorySettingsView : UserControl
     {
-        public SuccessStorySettingsView()
+        IPlayniteAPI PlayniteApi;
+        string PluginUserDataPath;
+
+        public SuccessStorySettingsView(IPlayniteAPI PlayniteApi, string PluginUserDataPath)
         {
+            this.PlayniteApi = PlayniteApi;
+            this.PluginUserDataPath = PluginUserDataPath;
+
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, PluginUserDataPath);
+
+            AchievementsDatabase.ResetData();
+
+            foreach (var game in PlayniteApi.Database.Games)
+            {
+                AchievementsDatabase.Add(game);
+            }
+
+            PlayniteApi.Dialogs.ShowMessage("Database has been reset.", "Success Story");
         }
     }
 }

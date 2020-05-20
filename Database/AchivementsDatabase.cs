@@ -27,22 +27,34 @@ namespace SuccessStory.Models
         private string PluginDatabasePath { get; set; }
 
 
-        /// <summary>
-        /// Initialize database / create directory.
-        /// </summary>
-        /// <param name="PlayniteApi"></param>
-        /// <param name="PluginUserDataPath"></param>
-        public void Initialize(IPlayniteAPI PlayniteApi, string PluginUserDataPath)
+        public AchievementsDatabase(IPlayniteAPI PlayniteApi, string PluginUserDataPath)
         {
             this.PlayniteApi = PlayniteApi;
             this.PluginUserDataPath = PluginUserDataPath;
             PluginDatabasePath = PluginUserDataPath + "\\achievements\\";
 
-            PluginDatabase = new ConcurrentDictionary<Guid, GameAchievements>();
-
             if (!Directory.Exists(PluginDatabasePath))
                 Directory.CreateDirectory(PluginDatabasePath);
 
+            PluginDatabase = new ConcurrentDictionary<Guid, GameAchievements>();
+        }
+
+        public void ResetData()
+        {
+            Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
+            {
+                File.Delete(objectFile);
+            });
+        }
+
+
+        /// <summary>
+        /// Initialize database / create directory.
+        /// </summary>
+        /// <param name="PlayniteApi"></param>
+        /// <param name="PluginUserDataPath"></param>
+        public void Initialize()
+        {
             Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
             {
                 try
@@ -380,6 +392,19 @@ namespace SuccessStory.Models
                 }
             }
         }
+
+
+        public void Remove(Game GameRemoved)
+        {
+            Guid GameId = GameRemoved.Id;
+            string PluginDatabaseGamePath = PluginDatabasePath + GameId.ToString() + ".json";
+
+            if (File.Exists(PluginDatabaseGamePath))
+            {
+                File.Delete(PluginDatabaseGamePath);
+            }
+        }
+
 
 
         public ProgressionAchievements Progession()
