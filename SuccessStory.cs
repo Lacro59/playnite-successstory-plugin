@@ -1,6 +1,8 @@
-﻿using Playnite.SDK;
+﻿using Newtonsoft.Json;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
+using SuccessStory.Clients;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,8 @@ namespace SuccessStory
                         // Add code to be execute when user invokes this menu entry.
 
                         logger.Info("SuccessStory - SuccessStoryView");
+                        
+                        //resources.GetString("LOCUpdateProgressCancelAsk")
 
                         // Show SuccessView
                         new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
@@ -68,6 +72,7 @@ namespace SuccessStory
         {
             // Add code to be executed when Playnite is initialized.
 
+            // Get achivements for game listed in database.
             AchievementsDatabase AchievementsDatabase = new AchievementsDatabase();
             AchievementsDatabase.Initialize(PlayniteApi, this.GetPluginUserDataPath());
 

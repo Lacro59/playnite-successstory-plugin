@@ -11,6 +11,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using SuccessStory.Database;
+using SuccessStory.Clients;
 
 namespace SuccessStory.Models
 {
@@ -84,6 +85,8 @@ namespace SuccessStory.Models
         /// <param name="GameAdded"></param>
         public void Add(Game GameAdded)
         {
+            GameAchievements GameAchievements = new GameAchievements();
+
             string ResultWeb = "";
             string ClientId = GameAdded.GameId;
             Guid GameId = GameAdded.Id;
@@ -105,7 +108,7 @@ namespace SuccessStory.Models
             List<Achievements> Achievements = new List<Achievements>();
 
             // Generate database only this source
-            if (GameSourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") && (GameSourceName.ToLower() == "gog" || GameSourceName.ToLower() == "steam"))
+            if (GameSourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") && (GameSourceName.ToLower() == "origin" || GameSourceName.ToLower() == "gog" || GameSourceName.ToLower() == "steam"))
             {
                 // Generate only not exist
                 if (!File.Exists(PluginDatabaseGamePath))
@@ -348,16 +351,31 @@ namespace SuccessStory.Models
                         }
                     }
 
-                    GameAchievements GameAchievements = new GameAchievements
+                    if (GameSourceName.ToLower() == "origin")
                     {
-                        Name = GameName,
-                        HaveAchivements = HaveAchivements,
-                        Total = Total,
-                        Unlocked = Unlocked,
-                        Locked = Locked,
-                        Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
-                        Achievements = Achievements
-                    };
+                        Origin originAPI = new Origin();
+                        GameAchievements = originAPI.GetAchievements(PlayniteApi, GameId);
+
+                        if (Achievements.Count > 0)
+                        {
+                            HaveAchivements = true;
+                        }
+                    }
+                    else
+                    {
+                        GameAchievements = new GameAchievements
+                        {
+                            Name = GameName,
+                            HaveAchivements = HaveAchivements,
+                            Total = Total,
+                            Unlocked = Unlocked,
+                            Locked = Locked,
+                            Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
+                            Achievements = Achievements
+                        };
+                    }
+
+
                     File.WriteAllText(PluginDatabaseGamePath, JsonConvert.SerializeObject(GameAchievements));
                 }
             }

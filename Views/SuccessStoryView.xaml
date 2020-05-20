@@ -43,7 +43,7 @@
 
         <Grid Margin="10,681,577,10" VerticalAlignment="Bottom">
             <Label x:Name="lProgressionGlobal" Content="Global progression" HorizontalAlignment="Left" Width="200" FontSize="16" VerticalAlignment="Center" Margin="10,9,0,9"></Label>
-            <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" Height="28" VerticalAlignment="Center" Margin="210,10,0,11" HorizontalAlignment="Right" Width="457" />
+            <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" Height="28" VerticalAlignment="Center" Margin="0,10,0,11" HorizontalAlignment="Right" Width="452" />
         </Grid>
 
 

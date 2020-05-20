@@ -113,7 +113,7 @@ namespace SuccessStory
             {
                 if (item.Name.ToLower().Contains(SearchGameName.ToLower()) && AchievementsDatabase.HaveAchievements(item.Id))
                 {
-                    if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") && (item.Source.Name.ToLower() == "gog" || item.Source.Name.ToLower() == "steam"))
+                    if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") && (item.Source.Name.ToLower() == "origin" || item.Source.Name.ToLower() == "gog" || item.Source.Name.ToLower() == "steam"))
                     {
                         string GameId = item.Id.ToString();
                         string GameName = item.Name;
