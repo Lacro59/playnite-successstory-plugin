@@ -106,7 +106,7 @@ namespace SuccessStory.Clients
                             Name = (string)item.Value["name"],
                             Description = (string)item.Value["desc"],
                             UrlUnlocked = (string)item.Value["icons"]["208"],
-                            UrlLocked = (string)item.Value["icons"]["208"],
+                            UrlLocked = "",
                             DateUnlocked = ((string)item.Value["state"]["a_st"] == "ACTIVE") ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)item.Value["u"])
                         });
 

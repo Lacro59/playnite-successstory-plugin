@@ -78,7 +78,12 @@
 
                         <StackPanel Margin="3" Orientation="Horizontal">
                             <DockPanel>
-                                <Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Source="{Binding Icon}" Margin="5,0,10,0"/>
+                                <!--Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Source="{Binding Icon}" Margin="5,0,10,0"/-->
+                                <Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Margin="5,0,10,0">
+                                    <Image.Source>
+                                        <FormatConvertedBitmap Source="{Binding Icon}"/>
+                                    </Image.Source>
+                                </Image>
                             </DockPanel>
 
                             <DockPanel>

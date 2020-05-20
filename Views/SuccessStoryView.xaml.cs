@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Dashboard.Commons;
 using Playnite.SDK;
 using SuccessStory.Database;
 using SuccessStory.Models;
+
 
 namespace SuccessStory
 {
@@ -180,12 +182,23 @@ namespace SuccessStory
                 {
                     DateTime? dateUnlock;
                     BitmapImage iconImage = new BitmapImage();
+                    FormatConvertedBitmap ConvertBitmapSource = new FormatConvertedBitmap();
+
+                    bool isGray = false;
 
                     iconImage.BeginInit();
                     if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
                     {
-                        iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
                         dateUnlock = null;
+                        if (ListAchievements[i].UrlLocked != "")
+                        {
+                            iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
+                            isGray = true;
+                        }
+                        else
+                        {
+                            iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
+                        }
                     }
                     else
                     {
@@ -194,16 +207,27 @@ namespace SuccessStory
                     }
                     iconImage.EndInit();
 
+                    ConvertBitmapSource.BeginInit();
+                    ConvertBitmapSource.Source = iconImage;
+                    if (isGray)
+                    {
+                        ConvertBitmapSource.DestinationFormat = PixelFormats.Gray32Float;
+                        ConvertBitmapSource.AlphaThreshold = 100;
+                    }
+                    ConvertBitmapSource.EndInit();
+
                     ListBoxAchievements.Add(new listAchievements()
                     {
                         Name = ListAchievements[i].Name,
                         DateUnlock = dateUnlock,
-                        Icon = iconImage,
+                        //Icon = iconImage,
+                        Icon = ConvertBitmapSource,
                         Description = ListAchievements[i].Description
                     });
 
                     iconImage = null;
                 }
+
 
                 // Informations panel
                 lTotalCount.Content = totalCountLabel;
@@ -233,6 +257,9 @@ namespace SuccessStory
                 lbAchievements.ItemsSource = null;
             }
         }
+
+
+
 
         #region Functions sorting ListviewGames.
         //https://stackoverflow.com/questions/30787068/wpf-listview-sorting-on-column-click
@@ -293,7 +320,8 @@ namespace SuccessStory
     /// </summary>
     public class listAchievements
     {
-        public BitmapImage Icon { get; set; }
+        //public BitmapImage Icon { get; set; }
+        public FormatConvertedBitmap Icon { get; set; }
         public string Name { get; set; }
         public DateTime? DateUnlock { get; set; }
         public string Description { get; set; }
