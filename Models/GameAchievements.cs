@@ -1,10 +1,5 @@
-﻿using Newtonsoft.Json;
-using SuccessStory.Models;
-using System;
+﻿using SuccessStory.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuccessStory.Database
 {
@@ -13,12 +8,33 @@ namespace SuccessStory.Database
     /// </summary>
     class GameAchievements
     {
+        /// <summary>
+        /// Game Name in the Playnite database.
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public bool HaveAchivements { get; set; }
+        /// <summary>
+        /// Total achievements for the game.
+        /// </summary>
         public int Total { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int Unlocked { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int Locked { get; set; }
+        /// <summary>
+        /// Percentage
+        /// </summary>
         public int Progression { get; set; }
-        public List<Achievements> Achievements  { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<Achievements> Achievements { get; set; }
     }
 }

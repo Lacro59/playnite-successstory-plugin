@@ -6,6 +6,6 @@
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="600">
     <StackPanel Margin="10">
-        <Button Content="Refresh achivements data" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" FontSize="18" Click="Button_Click" />
+        <Button Content="{DynamicResource LOCSucessStoryRefreshAllData}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" FontSize="18" Click="Button_Click" />
     </StackPanel>
 </UserControl>

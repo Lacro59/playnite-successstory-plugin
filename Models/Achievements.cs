@@ -7,10 +7,25 @@ namespace SuccessStory.Models
     /// </summary>
     class Achievements
     {
+        /// <summary>
+        /// Achievement's name.
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string UrlUnlocked { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string UrlLocked { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public DateTime? DateUnlocked { get; set; }
     }
 }

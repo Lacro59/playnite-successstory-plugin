@@ -31,12 +31,6 @@ namespace SuccessStory
 
         AchievementsDatabase AchievementsDatabase;
 
-        // Variables list games.
-        public string ListviewGamesIcon { get; set; }
-        public string ListviewGamesName { get; set; }
-        public string ListviewGamesLastActivity { get; set; }
-        public string ListviewGamesSourceName { get; set; }
-        public string ListviewGamesProgression { get; set; }
 
         public string labelProgressionGlobal { get; set; }
         public int ProgressionGlobalCount { get; set; }
@@ -62,19 +56,9 @@ namespace SuccessStory
 
             #region text localization
             // Informations
-            string infoLabel = "Informations";
             totalCountLabel = "Number achievements";
             totalCountUnlockLabel = "Unlocked achievements";
             totalProgressionCount = "Progression";
-
-            // ListviewGames
-            ListviewGamesIcon = "Icon";
-            ListviewGamesName = "Name";
-            ListviewGamesLastActivity = "Last session";
-            ListviewGamesSourceName = "Source";
-            ListviewGamesProgression = "Progression";
-
-            labelProgressionGlobal = "Global progression";
             #endregion
 
 
@@ -87,13 +71,7 @@ namespace SuccessStory
 
 
             // Informations panel
-            lInfo.Content = infoLabel;
-            lTotalCount.Content = "";
-            ltotalCountUnlock.Content = "";
-            totalCount.Content = "";
-            totalCountUnlock.Content = "";
-            labelProgression.Content = "";
-            ProgressionCount.Visibility = Visibility.Hidden;
+            scGameInformation.Visibility = Visibility.Hidden;
 
 
             GetListGame();
@@ -230,14 +208,15 @@ namespace SuccessStory
 
 
                 // Informations panel
+                scGameInformation.Visibility = Visibility.Visible;
                 lTotalCount.Content = totalCountLabel;
                 ltotalCountUnlock.Content = totalCountUnlockLabel;
                 totalCount.Content = GameAchievements.Total;
                 totalCountUnlock.Content = GameAchievements.Unlocked;
                 labelProgression.Content = totalProgressionCount;
-                ProgressionCount.Visibility = Visibility.Visible;
                 ProgressionCount.Value = GameAchievements.Unlocked;
                 ProgressionCount.Maximum = GameAchievements.Total;
+
 
                 // Sorting default.
                 lbAchievements.ItemsSource = ListBoxAchievements;
@@ -247,12 +226,7 @@ namespace SuccessStory
             else
             {
                 // Informations panel
-                lTotalCount.Content = "";
-                ltotalCountUnlock.Content = "";
-                totalCount.Content = "";
-                totalCountUnlock.Content = "";
-                labelProgression.Content = "";
-                ProgressionCount.Visibility = Visibility.Hidden;
+                scGameInformation.Visibility = Visibility.Hidden;
 
                 lbAchievements.ItemsSource = null;
             }

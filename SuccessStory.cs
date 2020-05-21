@@ -3,9 +3,12 @@ using Playnite.SDK;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 using SuccessStory.Clients;
+using SuccessStory.Commons;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Windows.Controls;
 
 namespace SuccessStory
@@ -21,6 +24,12 @@ namespace SuccessStory
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
             settings = new SuccessStorySettings(this);
+
+            // Get plugin's location 
+            string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            // Add plugin localization in application ressource.
+            Localization.SetLanguage(pluginFolder, api.Paths.ConfigurationPath);
         }
 
         public override IEnumerable<ExtensionFunction> GetFunctions()
@@ -34,8 +43,6 @@ namespace SuccessStory
                         // Add code to be execute when user invokes this menu entry.
 
                         logger.Info("SuccessStory - SuccessStoryView");
-                        
-                        //resources.GetString("LOCUpdateProgressCancelAsk")
 
                         // Show SuccessView
                         new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
