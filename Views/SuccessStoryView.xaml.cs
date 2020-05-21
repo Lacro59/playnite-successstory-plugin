@@ -124,7 +124,8 @@ namespace SuccessStory
                             Icon = iconImage,
                             LastActivity = GameLastActivity,
                             SourceName = TransformIcon.Get(SourceName),
-                            Progression = GameAchievements.Progression
+                            Total = GameAchievements.Total,
+                            Unlocked = GameAchievements.Unlocked
                         });
 
                         iconImage = null;
@@ -286,7 +287,8 @@ namespace SuccessStory
         public string Name { get; set; }
         public DateTime? LastActivity { get; set; }
         public string SourceName { get; set; }
-        public int Progression { get; set; }
+        public int Total { get; set; }
+        public int Unlocked { get; set; }
     }
 
     /// <summary>

@@ -21,7 +21,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesName}" Width="292" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesName}" Width="280" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesLastActivity}" Width="Auto" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}" />
                     <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesSourceName}" Width="60" >
                         <GridViewColumn.CellTemplate>
@@ -33,7 +33,7 @@
                     <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesProgression}" Width="100" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ProgressBar Minimum="0" Maximum="100" Height="28" Value="{Binding Progression}" VerticalAlignment="Center" />
+                                <ProgressBar Minimum="0" Maximum="{Binding Total}" Height="28" Value="{Binding Unlocked}" VerticalAlignment="Center" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
