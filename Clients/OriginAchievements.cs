@@ -54,54 +54,56 @@ namespace SuccessStory.Clients
 
                 logger.Debug($"SuccessStory - Origin.GetAchievements {url}");
 
-                var client = new WebClient { Encoding = Encoding.UTF8 };
-                client.Headers.Add("X-AuthToken", accessToken);
-                client.Headers.Add("accept", "application/vnd.origin.v3+json; x-cache/force-write");
-
-                try
+                using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
                 {
-                    var stringData = client.DownloadString(url);
-
-                    JObject AchievementsData = JObject.Parse(stringData);
-
-                    foreach (var item in (JObject)AchievementsData["achievements"])
+                    try
                     {
-                        var val = item.Value;
-                        HaveAchivements = true;
+                        webClient.Headers.Add("X-AuthToken", accessToken);
+                        webClient.Headers.Add("accept", "application/vnd.origin.v3+json; x-cache/force-write");
 
-                        Achievements.Add(new Achievements
-                        {
-                            Name = (string)item.Value["name"],
-                            Description = (string)item.Value["desc"],
-                            UrlUnlocked = (string)item.Value["icons"]["208"],
-                            UrlLocked = "",
-                            DateUnlocked = ((string)item.Value["state"]["a_st"] == "ACTIVE") ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)item.Value["u"])
-                        });
+                        var stringData = webClient.DownloadString(url);
 
-                        Total += 1;
-                        if ((string)item.Value["state"]["a_st"] == "ACTIVE")
+                        JObject AchievementsData = JObject.Parse(stringData);
+
+                        foreach (var item in (JObject)AchievementsData["achievements"])
                         {
-                            Locked += 1;
-                        }
-                        else
-                        {
-                            Unlocked += 1;
+                            var val = item.Value;
+                            HaveAchivements = true;
+
+                            Achievements.Add(new Achievements
+                            {
+                                Name = (string)item.Value["name"],
+                                Description = (string)item.Value["desc"],
+                                UrlUnlocked = (string)item.Value["icons"]["208"],
+                                UrlLocked = "",
+                                DateUnlocked = ((string)item.Value["state"]["a_st"] == "ACTIVE") ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)item.Value["u"])
+                            });
+
+                            Total += 1;
+                            if ((string)item.Value["state"]["a_st"] == "ACTIVE")
+                            {
+                                Locked += 1;
+                            }
+                            else
+                            {
+                                Unlocked += 1;
+                            }
                         }
                     }
-                }
-                catch (WebException e)
-                {
-                    if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                    catch (WebException e)
                     {
-                        var resp = (HttpWebResponse)e.Response;
-                        switch (resp.StatusCode)
+                        if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
                         {
-                            case HttpStatusCode.NotFound: // HTTP 404
-                                break;
-                            default:
-                                logger.Error(e, $"Failed to load from {url}");
-                                PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
-                                break;
+                            var resp = (HttpWebResponse)e.Response;
+                            switch (resp.StatusCode)
+                            {
+                                case HttpStatusCode.NotFound: // HTTP 404
+                                    break;
+                                default:
+                                    logger.Error(e, $"SuccessStory - Failed to load from {url}");
+                                    PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                                    break;
+                            }
                         }
                     }
                 }

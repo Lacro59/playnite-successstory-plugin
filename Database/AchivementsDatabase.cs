@@ -34,8 +34,6 @@ namespace SuccessStory.Models
 
             if (!Directory.Exists(PluginDatabasePath))
                 Directory.CreateDirectory(PluginDatabasePath);
-
-            PluginDatabase = new ConcurrentDictionary<Guid, GameAchievements>();
         }
 
         public void ResetData()
@@ -54,6 +52,8 @@ namespace SuccessStory.Models
         /// <param name="PluginUserDataPath"></param>
         public void Initialize()
         {
+            PluginDatabase = new ConcurrentDictionary<Guid, GameAchievements>();
+
             Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
             {
                 try
@@ -98,10 +98,7 @@ namespace SuccessStory.Models
         {
             GameAchievements GameAchievements = new GameAchievements();
 
-            string ResultWeb = "";
-            string ClientId = GameAdded.GameId;
             Guid GameId = GameAdded.Id;
-            string GameName = GameAdded.Name;
             Guid GameSourceId = GameAdded.SourceId;
             string GameSourceName = "";
 
@@ -111,11 +108,7 @@ namespace SuccessStory.Models
                 GameSourceName = "Playnite";
 
             string PluginDatabaseGamePath = PluginDatabasePath + GameId.ToString() + ".json";
-
-            bool HaveAchivements = false;
-            int Total = 0;            
-            int Unlocked = 0;            
-            int Locked = 0;            
+      
             List<Achievements> Achievements = new List<Achievements>();
 
             // Generate database only this source
@@ -142,7 +135,6 @@ namespace SuccessStory.Models
                         OriginAchievements originAPI = new OriginAchievements();
                         GameAchievements = originAPI.GetAchievements(PlayniteApi, GameId);
                     }
-
 
                     File.WriteAllText(PluginDatabaseGamePath, JsonConvert.SerializeObject(GameAchievements));
                 }

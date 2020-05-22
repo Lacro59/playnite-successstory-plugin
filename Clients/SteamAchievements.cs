@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using Playnite.Common.Web;
 using Playnite.SDK;
 using SuccessStory.Database;
 using SuccessStory.Models;
@@ -42,12 +43,22 @@ namespace SuccessStory.Clients
 
             logger.Debug($"SuccessStory - Steam.GetAchievements {url}");
 
+            //if (HttpDownloader.GetResponseCode(url) == System.Net.HttpStatusCode.OK)
+            //{
+            //    var stringData = Encoding.UTF8.GetString(HttpDownloader.DownloadData(url));
+            //    return JsonConvert.DeserializeObject<StorePageMetadata>(stringData);
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+
             using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
             {
                 try
-                {
-                    webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
-                    ResultWeb = webClient.DownloadString(url);
+                    {
+                        webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
+                        ResultWeb = webClient.DownloadString(url);
                 }
                 catch (WebException e)
                 {
@@ -131,13 +142,14 @@ namespace SuccessStory.Clients
 
                 logger.Debug($"SuccessStory - Steam.GetAchievements {url}");
 
+
                 using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
                 {
                     try
                     {
                         webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
                         ResultWeb = webClient.DownloadString(url);
-                    }
+                }
                     catch (WebException e)
                     {
                         if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)

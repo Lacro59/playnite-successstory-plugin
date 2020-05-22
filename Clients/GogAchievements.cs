@@ -49,6 +49,7 @@ namespace SuccessStory.Clients
                     ClientId, userId);
 
                 logger.Debug($"SuccessStory - GOG.GetAchievements {url}");
+                logger.Debug($"SuccessStoryToken - {accessToken}");
 
                 using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
                 {
@@ -65,10 +66,10 @@ namespace SuccessStory.Clients
                             switch (resp.StatusCode)
                             {
                                 case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                    logger.Error(e, $"HTTP 503 to load from {url}");
+                                    logger.Error(e, $"SuccessStory - HTTP 503 to load from {url}");
                                     break;
                                 default:
-                                    logger.Error(e, $"Failed to load from {url}");
+                                    logger.Error(e, $"SuccessStory - Failed to load from {url}");
                                     PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
                                     break;
                             }
@@ -109,7 +110,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception e)
                     {
-                        logger.Error(e, $"Failed to parse.");
+                        logger.Error(e, $"SuccessStory - Failed to parse.");
                         PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
                     }
                 }

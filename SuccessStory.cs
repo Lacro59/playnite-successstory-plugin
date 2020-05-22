@@ -44,6 +44,11 @@ namespace SuccessStory
 
                         logger.Info("SuccessStory - SuccessStoryView");
 
+
+                        //AchievementsDatabase test = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
+                        //test.Add(PlayniteApi.Database.Games.Get(Guid.Parse("5af07455-c0d1-4acb-9246-9afbb31539be")));
+
+
                         // Show SuccessView
                         new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
                     })
