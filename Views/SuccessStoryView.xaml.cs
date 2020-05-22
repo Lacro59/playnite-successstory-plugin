@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Dashboard.Commons;
-using Newtonsoft.Json;
 using Playnite.SDK;
+using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
-
 
 namespace SuccessStory
 {
@@ -174,14 +171,14 @@ namespace SuccessStory
                     if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
                     {
                         dateUnlock = null;
-                        if (ListAchievements[i].UrlLocked != "")
+                        if (ListAchievements[i].UrlLocked == "")
                         {
-                            iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
+                            iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
                             isGray = true;
                         }
                         else
                         {
-                            iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
+                            iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
                         }
                     }
                     else
@@ -191,12 +188,21 @@ namespace SuccessStory
                     }
                     iconImage.EndInit();
 
+
+                    //Bitmap iconBitmap = BitmapImage2Bitmap(iconImage);
+                    //iconBitmap.MakeTransparent(iconBitmap.GetPixel(1, 1));
+                    //iconImage = BitmapToImageSource(iconBitmap);
+
+                    //FormatConvertedBitmap _sourceGray = new FormatConvertedBitmap(
+                    //    new BitmapImage(new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute)), 
+                    //    PixelFormats.Gray32Float, null, 100);
+
+
                     ConvertBitmapSource.BeginInit();
                     ConvertBitmapSource.Source = iconImage;
                     if (isGray)
                     {
                         ConvertBitmapSource.DestinationFormat = PixelFormats.Gray32Float;
-                        ConvertBitmapSource.AlphaThreshold = 100;
                     }
                     ConvertBitmapSource.EndInit();
 
@@ -238,6 +244,36 @@ namespace SuccessStory
             }
         }
 
+        //private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        //{
+        //    // BitmapImage bitmapImage = new BitmapImage(new Uri("../Images/test.png", UriKind.Relative));
+        //
+        //    using (MemoryStream outStream = new MemoryStream())
+        //    {
+        //        BitmapEncoder enc = new BmpBitmapEncoder();
+        //        enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+        //        enc.Save(outStream);
+        //        System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
+        //
+        //        return new Bitmap(bitmap);
+        //    }
+        //}
+        //
+        //private BitmapImage BitmapToImageSource(Bitmap bitmap)
+        //{
+        //    using (MemoryStream memory = new MemoryStream())
+        //    {
+        //        bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+        //        memory.Position = 0;
+        //        BitmapImage bitmapimage = new BitmapImage();
+        //        bitmapimage.BeginInit();
+        //        bitmapimage.StreamSource = memory;
+        //        bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+        //        bitmapimage.EndInit();
+        //
+        //        return bitmapimage;
+        //    }
+        //}
 
 
 

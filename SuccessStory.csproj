@@ -64,6 +64,10 @@
       <HintPath>Ressources\OriginLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="playnite-plugincommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Ressources\playnite-plugincommon.dll</HintPath>
+    </Reference>
     <Reference Include="Playnite.Common">
       <HintPath>Ressources\Playnite.Common.dll</HintPath>
       <Private>False</Private>
@@ -82,6 +86,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xaml" />
@@ -97,8 +102,6 @@
     <Compile Include="Clients\GogAchievements.cs" />
     <Compile Include="Clients\OriginAchievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
-    <Compile Include="Commons\Localization.cs" />
-    <Compile Include="Commons\TransformIcon.cs" />
     <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\Achievements.cs" />
     <Compile Include="Database\AchivementsDatabase.cs" />
@@ -276,6 +279,7 @@
     <Content Include="Ressources\GogLibrary.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Ressources\playnite-plugincommon.dll" />
     <Content Include="Ressources\SteamLibrary.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

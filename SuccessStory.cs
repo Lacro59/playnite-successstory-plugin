@@ -2,8 +2,8 @@
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
+using PluginCommon;
 using SuccessStory.Clients;
-using SuccessStory.Commons;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace SuccessStory
             string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Add plugin localization in application ressource.
-            Localization.SetLanguage(pluginFolder, api.Paths.ConfigurationPath);
+            Localization.SetPluginLanguage(pluginFolder, api.Paths.ConfigurationPath);
         }
 
         public override IEnumerable<ExtensionFunction> GetFunctions()
