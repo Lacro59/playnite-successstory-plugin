@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Dashboard.Commons;
+using Newtonsoft.Json;
 using Playnite.SDK;
 using SuccessStory.Database;
 using SuccessStory.Models;
@@ -31,9 +33,6 @@ namespace SuccessStory
 
         AchievementsDatabase AchievementsDatabase;
 
-
-        public string labelProgressionGlobal { get; set; }
-        public int ProgressionGlobalCount { get; set; }
 
         // Variables "Informations"
         public string totalCountLabel;
@@ -63,6 +62,10 @@ namespace SuccessStory
 
 
             InitializeComponent();
+
+            // Block hidden column.
+            lvProgressionValue.IsEnabled = false;
+            lvSourceName.IsEnabled = false;
 
 
             //ProgressionGlobalCount = AchievementsDatabase.Progession().Progression;
@@ -123,7 +126,9 @@ namespace SuccessStory
                             Name = GameName,
                             Icon = iconImage,
                             LastActivity = GameLastActivity,
-                            SourceName = TransformIcon.Get(SourceName),
+                            SourceName = SourceName,
+                            SourceIcon = TransformIcon.Get(SourceName),
+                            ProgressionValue = GameAchievements.Progression,
                             Total = GameAchievements.Total,
                             Unlocked = GameAchievements.Unlocked
                         });
@@ -237,29 +242,101 @@ namespace SuccessStory
 
 
         #region Functions sorting ListviewGames.
-        //https://stackoverflow.com/questions/30787068/wpf-listview-sorting-on-column-click
-        private GridViewColumnHeader lastHeaderClicked = null;
-        private ListSortDirection lastDirection = ListSortDirection.Ascending;
+        private GridViewColumnHeader _lastHeaderClicked = null;
+        private ListSortDirection _lastDirection ;
 
         private void ListviewGames_onHeaderClick(object sender, RoutedEventArgs e)
         {
-            if (!(e.OriginalSource is GridViewColumnHeader ch)) return;
-            var dir = ListSortDirection.Ascending;
-            if (ch == lastHeaderClicked && lastDirection == ListSortDirection.Ascending)
-                dir = ListSortDirection.Descending;
-            sort(ch, dir);
-            lastHeaderClicked = ch; lastDirection = dir;
+            lvProgressionValue.IsEnabled = true;
+            lvSourceName.IsEnabled = true;
+
+            var headerClicked = e.OriginalSource as GridViewColumnHeader;
+            ListSortDirection direction;
+
+            logger.Info(headerClicked.Name);
+
+            // No sort
+            if (headerClicked.Name == "lvGameIcon")
+            {
+                headerClicked = null;
+            }
+
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
+                    var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+
+                    // Specific sort with another column
+                    if (headerClicked.Name == "lvSourceIcon")
+                    {
+                        columnBinding = lvSourceName.Column.DisplayMemberBinding as Binding;
+                        sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+                    }
+                    if (headerClicked.Name == "lvProgression")
+                    {
+                        columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
+                        sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+                    }
+
+
+                    Sort(sortBy, direction);
+
+                    if (_lastHeaderClicked != null)
+                    {
+                        _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▲", "");
+                        _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▼", "");
+                    }
+
+                    if (direction == ListSortDirection.Ascending)
+                    {
+                        headerClicked.Content += " ▲";
+                    }
+                    else
+                    {
+                        headerClicked.Content += " ▼";
+                    }
+
+                    // Remove arrow from previously sorted header
+                    if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
+                    {
+                        _lastHeaderClicked.Column.HeaderTemplate = null;
+                    }
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
+            }
+
+            lvProgressionValue.IsEnabled = false;
+            lvSourceName.IsEnabled = false;
         }
 
-        private void sort(GridViewColumnHeader ch, ListSortDirection dir)
+        private void Sort(string sortBy, ListSortDirection direction)
         {
-            var bn = (ch.Column.DisplayMemberBinding as Binding)?.Path.Path;
-            bn = bn ?? ch.Column.Header as string;
-            var dv = CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
-            dv.SortDescriptions.Clear();
-            var sd = new SortDescription(bn, dir);
-            dv.SortDescriptions.Add(sd);
-            dv.Refresh();
+            ICollectionView dataView = CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
+
+            dataView.SortDescriptions.Clear();
+            SortDescription sd = new SortDescription(sortBy, direction);
+            dataView.SortDescriptions.Add(sd);
+            dataView.Refresh();
         }
         #endregion
 
@@ -287,6 +364,8 @@ namespace SuccessStory
         public string Name { get; set; }
         public DateTime? LastActivity { get; set; }
         public string SourceName { get; set; }
+        public string SourceIcon { get; set; }
+        public int ProgressionValue { get; set; }
         public int Total { get; set; }
         public int Unlocked { get; set; }
     }

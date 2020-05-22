@@ -28,7 +28,7 @@
     <!-- ListViewGames -->
     <sys:String x:Key="LOCSucessStorylvGamesIcon">Icon</sys:String>
     <sys:String x:Key="LOCSucessStorylvGamesName">Name</sys:String>
-    <sys:String x:Key="LOCSucessStorylvGamesLastActivity">Last session start</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesLastActivity">Last session</sys:String>
     <sys:String x:Key="LOCSucessStorylvGamesSourceName">Source</sys:String>
     <sys:String x:Key="LOCSucessStorylvGamesProgression">Progression</sys:String>
 

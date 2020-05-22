@@ -7,30 +7,44 @@
              mc:Ignorable="d" Height="800" Width="1260" Background="{DynamicResource WindowBackgourndBrush}"
              ResizeMode="NoResize" Title="Success Story" WindowStartupLocation="CenterScreen">
 
+    
+
     <Grid>
         <TextBox x:Name="TextboxSearch" HorizontalAlignment="Left" Height="23" Margin="130,10,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="547" KeyUp="TextboxSearch_KeyUp" />
-        <Label Content="{DynamicResource LOCSucessStorySearch}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="115" FontSize="16" Height="35"/>
+        <Label Content="{DynamicResource LOCSucessStorySearch}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="115" FontSize="16" Height="28"/>
 
-        <ListView x:Name="ListviewGames" HorizontalAlignment="Left" Width="667" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick" Margin="10,50,0,0" VerticalAlignment="Top" Height="649">
+        <ListView x:Name="ListviewGames" HorizontalAlignment="Left" Width="667" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24"
+                  GridViewColumnHeader.Click="ListviewGames_onHeaderClick" Margin="10,50,0,0" VerticalAlignment="Top" Height="649">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesIcon}" Width="50">
+                    <GridViewColumn  Width="50">
+                        <GridViewColumnHeader Name="lvGameIcon" Content="{DynamicResource LOCSucessStorylvGamesIcon}"></GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesName}" Width="280" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesLastActivity}" Width="Auto" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}" />
-                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesSourceName}" Width="60" >
+                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesName}" Width="266" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesLastActivity}" Width="150" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}" />
+
+                    <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
+                        <GridViewColumnHeader Name="lvSourceName">SourceName</GridViewColumnHeader>
+                    </GridViewColumn>
+                    <GridViewColumn Width="75">
+                        <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSucessStorylvGamesSourceName}"></GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding SourceName}" FontFamily="/SuccessStory;component/Ressources/#font" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+                                <Label Content="{Binding SourceIcon}" FontFamily="/SuccessStory;component/Ressources/#font" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesProgression}" Width="100" >
+
+                    <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProgressionValue}">
+                        <GridViewColumnHeader Name="lvProgressionValue">Progression value</GridViewColumnHeader>
+                    </GridViewColumn>
+                    <GridViewColumn Width="105" >
+                        <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSucessStorylvGamesProgression}"></GridViewColumnHeader>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <ProgressBar Minimum="0" Maximum="{Binding Total}" Height="28" Value="{Binding Unlocked}" VerticalAlignment="Center" />

@@ -24,7 +24,9 @@ namespace SuccessStory.Commons
 
             var langFile = Path.Combine(pluginFolder, "localization\\" + language + ".xaml");
 
-            if (File.Exists(langFile))
+            logger.Debug($"SuccessStory - Parse localization file {langFile}");
+
+            if (!File.Exists(langFile))
             {
                 language = "LocSource";
                 langFile = Path.Combine(pluginFolder, "localization\\" + language + ".xaml");
