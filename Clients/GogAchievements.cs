@@ -71,7 +71,7 @@ namespace SuccessStory.Clients
                                 default:
                                     logger.Error(e, $"SuccessStory - Failed to load from {url}");
                                     //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on GogAchievements");
-                                    SuccessStory.ListErrors.Add("Error on GogAchievements: " + e.Message);
+                                    AchievementsDatabase.ListErrors.Add("Error on GogAchievements: " + e.Message);
                                     break;
                             }
                         }

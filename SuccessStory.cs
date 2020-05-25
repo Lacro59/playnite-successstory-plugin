@@ -19,7 +19,7 @@ namespace SuccessStory
 
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
-        public static CumulErrors ListErrors = new CumulErrors();
+        //public static CumulErrors ListErrors = new CumulErrors();
 
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
@@ -43,11 +43,6 @@ namespace SuccessStory
                         // Add code to be execute when user invokes this menu entry.
 
                         logger.Info("SuccessStory - SuccessStoryView");
-
-
-                        //AchievementsDatabase test = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
-                        //test.Add(PlayniteApi.Database.Games.Get(Guid.Parse("5af07455-c0d1-4acb-9246-9afbb31539be")));
-
 
                         // Show SuccessView
                         new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
@@ -77,7 +72,7 @@ namespace SuccessStory
             // Refresh Achievements database.
             AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
             AchievementsDatabase.Remove(game);
-            AchievementsDatabase.Add(game);
+            AchievementsDatabase.Add(game, settings);
         }
 
         public override void OnGameUninstalled(Game game)
@@ -90,12 +85,13 @@ namespace SuccessStory
             // Add code to be executed when Playnite is initialized.
 
             // Get achivements for game listed in database.
-            AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
+            //AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
 
             // Create database if not exist (so long...).
+            /*
             foreach (var game in PlayniteApi.Database.Games)
             {
-                AchievementsDatabase.Add(game);
+                AchievementsDatabase.Add(game, settings);
             }
 
             if (ListErrors.Get() != "")
@@ -103,6 +99,7 @@ namespace SuccessStory
                 PlayniteApi.Dialogs.ShowErrorMessage(ListErrors.Get(), "SuccesStory errors");
             }
             ListErrors = null;
+            */
         }
 
         public override void OnApplicationStopped()
@@ -122,7 +119,7 @@ namespace SuccessStory
 
         public override UserControl GetSettingsView(bool firstRunSettings)
         {
-            return new SuccessStorySettingsView(PlayniteApi, this.GetPluginUserDataPath());
+            return new SuccessStorySettingsView(PlayniteApi, this.GetPluginUserDataPath(), settings);
         }
     }
 }

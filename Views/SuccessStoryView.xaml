@@ -18,7 +18,11 @@
 
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Height="30" Orientation="Horizontal">
                 <Label x:Name="lProgressionGlobal" Content="{DynamicResource LOCSucessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" Width="150" />
-                <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" HorizontalAlignment="Right" Width="517"/>
+                <Grid HorizontalAlignment="Right" Width="517">
+                    <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" />
+                    <Label x:Name="labelProgressionGlobalCount" HorizontalAlignment="Center">
+                    </Label>
+                </Grid>
             </StackPanel>
 
             <StackPanel Margin="10,0,10,0">

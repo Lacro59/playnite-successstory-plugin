@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuccessStory
 {
@@ -12,6 +8,9 @@ namespace SuccessStory
     {
         private readonly SuccessStory plugin;
 
+        public bool enableSteam { get; set; } = false;
+        public bool enableGog { get; set; } = false;
+        public bool enableOrigin { get; set; } = false;
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonIgnore` ignore attribute.
@@ -34,7 +33,9 @@ namespace SuccessStory
             // LoadPluginSettings returns null if not saved data is available.
             if (savedSettings != null)
             {
-
+                enableSteam = savedSettings.enableSteam;
+                enableGog = savedSettings.enableGog;
+                enableOrigin = savedSettings.enableOrigin;
             }
         }
 

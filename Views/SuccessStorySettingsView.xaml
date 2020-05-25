@@ -5,7 +5,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="600">
-    <StackPanel Margin="10">
-        <Button Content="{DynamicResource LOCSucessStoryRefreshAllData}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" FontSize="18" Click="Button_Click" />
-    </StackPanel>
+    
+    <DockPanel Margin="10" Name="SuccessStorySettings">
+        <StackPanel DockPanel.Dock="Top" Height="342">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                <CheckBox IsChecked="{Binding enableSteam}" Width="400">
+                    <Label Content="{DynamicResource LOCSucessStoryEnableSteam}"></Label>
+                </CheckBox>
+                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Steam"></Button>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                <CheckBox IsChecked="{Binding enableGog}" Width="400">
+                    <Label Content="{DynamicResource LOCSucessStoryEnableGog}"></Label>
+                </CheckBox>
+                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Gog"></Button>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                <CheckBox IsChecked="{Binding enableOrigin}" Width="400">
+                    <Label Content="{DynamicResource LOCSucessStoryEnableOrigin}"></Label>
+                </CheckBox>
+                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Origin"></Button>
+            </StackPanel>
+
+
+            <StackPanel>
+                <ProgressBar Name="SuccessStoryLoad" Height="28" Margin="50,20,50,20"></ProgressBar>
+            </StackPanel>
+        </StackPanel>
+       
+        <StackPanel DockPanel.Dock="Bottom">
+            <Button Content="{DynamicResource LOCSucessStoryRefreshAllData}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" FontSize="18" Click="Button_Click" />
+        </StackPanel>
+    </DockPanel>
 </UserControl>

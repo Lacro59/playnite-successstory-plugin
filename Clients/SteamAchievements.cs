@@ -71,7 +71,7 @@ namespace SuccessStory.Clients
                             default:
                                 logger.Error(e, $"SuccessStory - Failed to load from {url}");
                                 //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
-                                SuccessStory.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                                AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
                                 break;
                         }
                     }
@@ -95,7 +95,7 @@ namespace SuccessStory.Clients
                 {
                     logger.Error(e, $"SuccessStory - Failed to parse.");
                     //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
-                    SuccessStory.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                    AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
                 }
 
 
@@ -131,7 +131,7 @@ namespace SuccessStory.Clients
                 {
                     logger.Error(e, $"SuccessStory - Failed to parse.");
                     //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
-                    SuccessStory.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                    AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
                 }
 
 
@@ -164,7 +164,7 @@ namespace SuccessStory.Clients
                                 default:
                                     logger.Error(e, $"SuccessStory - Failed to load from {url}");
                                     //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
-                                    SuccessStory.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                                    AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
                                     break;
                             }
                         }
@@ -204,7 +204,7 @@ namespace SuccessStory.Clients
                     {
                         logger.Error(e, $"SuccessStory - Failed to parse.");
                         //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
-                        SuccessStory.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                        AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
                     }
                 }
             }

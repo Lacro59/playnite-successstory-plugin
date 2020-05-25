@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading.Tasks;
 using SuccessStory.Database;
 using SuccessStory.Clients;
+using PluginCommon;
 
 namespace SuccessStory.Models
 {
@@ -21,6 +22,8 @@ namespace SuccessStory.Models
         private ConcurrentDictionary<Guid, GameAchievements> PluginDatabase { get; set; }
         private string PluginUserDataPath { get; set; }
         private string PluginDatabasePath { get; set; }
+
+        public static CumulErrors ListErrors = new CumulErrors();
 
 
         public AchievementsDatabase(IPlayniteAPI PlayniteApi, string PluginUserDataPath)
@@ -108,11 +111,31 @@ namespace SuccessStory.Models
             }
         }
 
+        public static bool VerifToAddOrShow(string GameSourceName, SuccessStorySettings settings)
+        {
+            bool Result = false;
+
+            if (settings.enableSteam && GameSourceName.ToLower() == "steam")
+            {
+                return true;
+            }
+            if (settings.enableGog && GameSourceName.ToLower() == "gog")
+            {
+                return true;
+            }
+            if (settings.enableOrigin && GameSourceName.ToLower() == "origin")
+            {
+                return true;
+            }
+
+            return Result;
+        }
+
         /// <summary>
         /// Generate database achivements for the game if achievement exist and game not exist in database.
         /// </summary>
         /// <param name="GameAdded"></param>
-        public void Add(Game GameAdded)
+        public void Add(Game GameAdded, SuccessStorySettings settings)
         {
             GameAchievements GameAchievements = new GameAchievements();
 
@@ -121,16 +144,20 @@ namespace SuccessStory.Models
             string GameSourceName = "";
 
             if (GameSourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+            {
                 GameSourceName = GameAdded.Source.Name;
+            }
             else
+            {
                 GameSourceName = "Playnite";
+            }
 
             string PluginDatabaseGamePath = PluginDatabasePath + GameId.ToString() + ".json";
       
             List<Achievements> Achievements = new List<Achievements>();
 
             // Generate database only this source
-            if (GameSourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") && (GameSourceName.ToLower() == "origin" || GameSourceName.ToLower() == "gog" || GameSourceName.ToLower() == "steam"))
+            if (VerifToAddOrShow(GameSourceName, settings))
             {
                 // Generate only not exist
                 if (!File.Exists(PluginDatabaseGamePath))

@@ -102,7 +102,7 @@ namespace SuccessStory.Clients
                                 default:
                                     logger.Error(e, $"SuccessStory - Failed to load from {url}");
                                     //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on OriginAchievements");
-                                    SuccessStory.ListErrors.Add("Error on OriginAchievements: " + e.Message);
+                                    AchievementsDatabase.ListErrors.Add("Error on OriginAchievements: " + e.Message);
                                     break;
                             }
                         }

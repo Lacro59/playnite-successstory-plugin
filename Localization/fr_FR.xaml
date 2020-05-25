@@ -15,7 +15,14 @@
     SuccessStorySettingsView
     -->
 
-    <sys:String x:Key="LOCSucessStoryRefreshAllData">Rafraîchir la base des succès.</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableSteam">Activier les succès Steam.</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableGog">Activier les succès GOG.</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier les succès Origin.</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshData">Rafraîchir les données</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllData">Rafraîchir la base de données.</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 
     <!-- 
     SuccessStoryView 
