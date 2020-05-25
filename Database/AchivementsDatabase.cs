@@ -1,13 +1,10 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using SuccessStory.Database;
 using SuccessStory.Clients;
@@ -36,15 +33,6 @@ namespace SuccessStory.Models
                 Directory.CreateDirectory(PluginDatabasePath);
         }
 
-        public void ResetData()
-        {
-            Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
-            {
-                File.Delete(objectFile);
-            });
-        }
-
-
         /// <summary>
         /// Initialize database / create directory.
         /// </summary>
@@ -71,6 +59,36 @@ namespace SuccessStory.Models
                     logger.Error(e, $"SuccessStory - Failed to load item from {objectFile}");
                 }
             });
+        }
+
+        /// <summary>
+        /// Get number achievements unlock by month.
+        /// </summary>
+        /// <returns></returns>
+        public ConcurrentDictionary<string, int> GetCountByMonth()
+        {
+            ConcurrentDictionary<string, int> CountByMonth = new ConcurrentDictionary<string, int>();
+            for (int i = 11; i >= 0 ; i--)
+            {
+                CountByMonth.TryAdd(DateTime.Now.AddMonths(-i).ToString("yyyy-MM"), 0);
+            }
+
+            foreach (var item in PluginDatabase)
+            {
+                List<Achievements> temp = item.Value.Achievements;
+                foreach (Achievements itemAchievements in temp)
+                {
+                    if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime)) {
+                        string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+
+                        if (CountByMonth.ContainsKey(tempDate))
+                        {
+                            CountByMonth[tempDate] = CountByMonth[tempDate] + 1;
+                        }
+                    }
+                }
+            }
+            return CountByMonth;
         }
 
         /// <summary>
@@ -141,7 +159,10 @@ namespace SuccessStory.Models
             }
         }
 
-
+        /// <summary>
+        /// Remove game achievements in database for a game.
+        /// </summary>
+        /// <param name="GameRemoved"></param>
         public void Remove(Game GameRemoved)
         {
             Guid GameId = GameRemoved.Id;
@@ -153,6 +174,29 @@ namespace SuccessStory.Models
             }
         }
 
+        /// <summary>
+        /// Delete achievements database.
+        /// </summary>
+        public void ResetData()
+        {
+            Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
+            {
+                File.Delete(objectFile);
+            });
+        }
+
+        /// <summary>
+        /// Control game have achieveements.
+        /// </summary>
+        /// <param name="GameId"></param>
+        /// <returns></returns>
+        public bool HaveAchievements(Guid GameId)
+        {
+            if (Get(GameId) != null)
+                return Get(GameId).HaveAchivements;
+            else
+                return false;
+        }
 
 
         public ProgressionAchievements Progession()
@@ -177,7 +221,7 @@ namespace SuccessStory.Models
             Result.Total = Total;
             Result.Locked = Locked;
             Result.Unlocked = Unlocked;
-            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
+            Result.Progression = (Total != 0) ? (int)Math.Round((double)(Unlocked * 100 / Total)) : 0;
 
             return Result;
         }
@@ -238,19 +282,5 @@ namespace SuccessStory.Models
 
             return Result;
         }
-
-        /// <summary>
-        /// Control game have achieveements.
-        /// </summary>
-        /// <param name="GameId"></param>
-        /// <returns></returns>
-        public bool HaveAchievements(Guid GameId)
-        {
-            if (Get(GameId) != null)
-                return Get(GameId).HaveAchivements;
-            else
-                return false;
-        }
-
     }
 }

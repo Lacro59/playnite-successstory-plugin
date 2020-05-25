@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using LiveCharts;
+using LiveCharts.Wpf;
 using Playnite.SDK;
 using PluginCommon;
 using SuccessStory.Database;
@@ -31,12 +33,6 @@ namespace SuccessStory
         AchievementsDatabase AchievementsDatabase;
 
 
-        // Variables "Informations"
-        public string totalCountLabel;
-        public string totalCountUnlockLabel;
-        public string totalProgressionCount;
-
-
         public SuccessView(SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string PluginUserDataPath)
         {
             this.PlayniteApi = PlayniteApi;
@@ -49,15 +45,6 @@ namespace SuccessStory
             AchievementsDatabase = new AchievementsDatabase(PlayniteApi, PluginUserDataPath);
             AchievementsDatabase.Initialize();
 
-
-            #region text localization
-            // Informations
-            totalCountLabel = "Number achievements";
-            totalCountUnlockLabel = "Unlocked achievements";
-            totalProgressionCount = "Progression";
-            #endregion
-
-
             InitializeComponent();
 
             // Block hidden column.
@@ -65,13 +52,8 @@ namespace SuccessStory
             lvSourceName.IsEnabled = false;
 
 
-            //ProgressionGlobalCount = AchievementsDatabase.Progession().Progression;
             pbProgressionGlobalCount.Value = AchievementsDatabase.Progession().Unlocked;
             pbProgressionGlobalCount.Maximum = AchievementsDatabase.Progession().Total;
-
-
-            // Informations panel
-            scGameInformation.Visibility = Visibility.Hidden;
 
 
             GetListGame();
@@ -86,8 +68,6 @@ namespace SuccessStory
         /// <param name="SearchGameName"></param>
         public void GetListGame(string SearchGameName = "")
         {
-            logger.Info("getListGame()");
-
             List<listGame> ListGames = new List<listGame>();
             foreach (var item in PlayniteApiDatabase.Games)
             {
@@ -127,6 +107,7 @@ namespace SuccessStory
                             SourceIcon = TransformIcon.Get(SourceName),
                             ProgressionValue = GameAchievements.Progression,
                             Total = GameAchievements.Total,
+                            TotalPercent = GameAchievements.Progression + "%",
                             Unlocked = GameAchievements.Unlocked
                         });
 
@@ -135,10 +116,37 @@ namespace SuccessStory
                 }
             }
 
+
+            // Graphic
+            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+            string[] StatsGraphicsAchievementsLabels = new string[12];
+            ChartValues<double> SourceAchievementsSeries = new ChartValues<double>();
+            int counter = 0;
+            foreach (var item in AchievementsDatabase.GetCountByMonth())
+            {
+                    SourceAchievementsSeries.Add(item.Value);
+                    StatsGraphicsAchievementsLabels[counter] = item.Key;
+                    counter += 1;
+            }
+
+            StatsGraphicAchievementsSeries.Add(new LineSeries
+            {
+                Title = "",
+                Values = SourceAchievementsSeries
+            });
+
+            StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
+            //StatsGraphicAchievementsX.LabelFormatter = value => value;
+            StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
+
+
             // Sorting default.
             ListviewGames.ItemsSource = ListGames;
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
             view.SortDescriptions.Add(new SortDescription("LastActivity", ListSortDirection.Descending));
+            _lastDirection = ListSortDirection.Descending;
+            _lastHeaderClicked = lvLastActivity;
+            _lastHeaderClicked.Content += " ▼";
         }
 
         /// <summary>
@@ -219,17 +227,6 @@ namespace SuccessStory
                 }
 
 
-                // Informations panel
-                scGameInformation.Visibility = Visibility.Visible;
-                lTotalCount.Content = totalCountLabel;
-                ltotalCountUnlock.Content = totalCountUnlockLabel;
-                totalCount.Content = GameAchievements.Total;
-                totalCountUnlock.Content = GameAchievements.Unlocked;
-                labelProgression.Content = totalProgressionCount;
-                ProgressionCount.Value = GameAchievements.Unlocked;
-                ProgressionCount.Maximum = GameAchievements.Total;
-
-
                 // Sorting default.
                 lbAchievements.ItemsSource = ListBoxAchievements;
                 CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
@@ -237,9 +234,6 @@ namespace SuccessStory
             }
             else
             {
-                // Informations panel
-                scGameInformation.Visibility = Visibility.Hidden;
-
                 lbAchievements.ItemsSource = null;
             }
         }
@@ -407,6 +401,7 @@ namespace SuccessStory
         public string SourceIcon { get; set; }
         public int ProgressionValue { get; set; }
         public int Total { get; set; }
+        public string TotalPercent { get; set; }
         public int Unlocked { get; set; }
     }
 

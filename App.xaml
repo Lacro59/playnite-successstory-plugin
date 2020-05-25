@@ -38,6 +38,8 @@
                 <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/TreeView.xaml" />
                 <!--Playnite Default localization-->
                 <ResourceDictionary Source="Ressources/PlayniteRessources/LocSource.xaml" />
+                <!--Plugin default localization-->
+                <ResourceDictionary Source="Localization/LocSource.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

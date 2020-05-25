@@ -4,118 +4,143 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" Height="800" Width="1260" Background="{DynamicResource WindowBackgourndBrush}"
              ResizeMode="NoResize" Title="Success Story" WindowStartupLocation="CenterScreen">
 
-    
+    <DockPanel>
+        <!--List games with achievements-->
+        <DockPanel DockPanel.Dock="Left" Width="687">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10">
+                <Label Content="{DynamicResource LOCSucessStorySearch}" FontSize="16" Width="100"/>
+                <TextBox x:Name="TextboxSearch" TextWrapping="NoWrap" KeyUp="TextboxSearch_KeyUp" Width="567"/>
+            </StackPanel>
 
-    <Grid>
-        <TextBox x:Name="TextboxSearch" HorizontalAlignment="Left" Height="23" Margin="130,10,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="547" KeyUp="TextboxSearch_KeyUp" />
-        <Label Content="{DynamicResource LOCSucessStorySearch}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="115" FontSize="16" Height="28"/>
+            <StackPanel DockPanel.Dock="Bottom" Margin="10" Height="30" Orientation="Horizontal">
+                <Label x:Name="lProgressionGlobal" Content="{DynamicResource LOCSucessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" Width="150" />
+                <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" HorizontalAlignment="Right" Width="517"/>
+            </StackPanel>
 
-        <ListView x:Name="ListviewGames" HorizontalAlignment="Left" Width="667" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24"
-                  GridViewColumnHeader.Click="ListviewGames_onHeaderClick" Margin="10,50,0,0" VerticalAlignment="Top" Height="649">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn  Width="50">
-                        <GridViewColumnHeader Name="lvGameIcon" Content="{DynamicResource LOCSucessStorylvGamesIcon}"></GridViewColumnHeader>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesName}" Width="266" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesLastActivity}" Width="150" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}" />
+            <StackPanel Margin="10,0,10,0">
+                <ListView Height="665" x:Name="ListviewGames" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn  Width="50">
+                                <GridViewColumnHeader Name="lvGameIcon" Content="{DynamicResource LOCSucessStorylvGamesIcon}"></GridViewColumnHeader>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesName}" Width="266" DisplayMemberBinding="{Binding Name}" />
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}">
+                                <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCSucessStorylvGamesLastActivity}"></GridViewColumnHeader>
+                            </GridViewColumn>
 
-                    <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
-                        <GridViewColumnHeader Name="lvSourceName">SourceName</GridViewColumnHeader>
-                    </GridViewColumn>
-                    <GridViewColumn Width="75">
-                        <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSucessStorylvGamesSourceName}"></GridViewColumnHeader>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Label Content="{Binding SourceIcon}" FontFamily="/SuccessStory;component/Ressources/#font" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
+                                <GridViewColumnHeader Name="lvSourceName">SourceName</GridViewColumnHeader>
+                            </GridViewColumn>
+                            <GridViewColumn Width="75">
+                                <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSucessStorylvGamesSourceName}"></GridViewColumnHeader>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label Content="{Binding SourceIcon}" FontFamily="/SuccessStory;component/Ressources/#font" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
-                    <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProgressionValue}">
-                        <GridViewColumnHeader Name="lvProgressionValue">Progression value</GridViewColumnHeader>
-                    </GridViewColumn>
-                    <GridViewColumn Width="105" >
-                        <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSucessStorylvGamesProgression}"></GridViewColumnHeader>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <ProgressBar Minimum="0" Maximum="{Binding Total}" Height="28" Value="{Binding Unlocked}" VerticalAlignment="Center" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProgressionValue}">
+                                <GridViewColumnHeader Name="lvProgressionValue">Progression value</GridViewColumnHeader>
+                            </GridViewColumn>
+                            <GridViewColumn Width="105" >
+                                <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSucessStorylvGamesProgression}"></GridViewColumnHeader>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <ProgressBar Minimum="0" Maximum="{Binding Total}" Height="28" Value="{Binding Unlocked}" VerticalAlignment="Center" />
+                                            <Label Content="{Binding TotalPercent}" HorizontalAlignment="Center"></Label>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </DockPanel>
 
-        <Grid Margin="10,0,0,10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="667" Height="28">
-            <Label x:Name="lProgressionGlobal" Content="{DynamicResource LOCSucessStoryGlobalProgression}" HorizontalAlignment="Left" Width="210" FontSize="16"/>
-            <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" HorizontalAlignment="Right" Width="452" />
-        </Grid>
+        <!--Details achievements-->
+        <DockPanel DockPanel.Dock="Right" Margin="0">
+            <!--StackPanel DockPanel.Dock="Top" Margin="10" x:Name="scGameInformation" Height="200">
+                <Label x:Name="lInfo" Content="{DynamicResource LOCSucessStoryGameInformation}" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Center" Height="45" MinWidth="50"/>
 
+                <Grid Height="35" VerticalAlignment="Top">
+                    <Label x:Name="lTotalCount" Content="Achievements number" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                    <Label x:Name="totalCount" Content="totalCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
+                </Grid>
 
+                <Grid Height="35" VerticalAlignment="Top">
+                    <Label x:Name="ltotalCountUnlock"  Content="Achievements unlocked" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                    <Label x:Name="totalCountUnlock" Content="totalCountUser" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
+                </Grid>
 
-        <Grid x:Name="scGameInformation" Margin="0,50,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Height="178" Width="532">
-            <Label x:Name="lInfo" Content="{DynamicResource LOCSucessStoryGameInformation}" VerticalAlignment="Top" Margin="10,0" FontSize="24" HorizontalAlignment="Center" Height="45" MinWidth="50"/>
+                <Grid Height="35" VerticalAlignment="Top">
+                    <Label x:Name="labelProgression"  Content="Progression" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
+                    <ProgressBar x:Name="ProgressionCount" Minimum="0" Maximum="100" Height="28" VerticalAlignment="Center" Margin="210,3,40,4" />
+                </Grid>
+            </-->
 
-            <Grid Margin="0,47,0,0" Height="35" VerticalAlignment="Top">
-                <Label x:Name="lTotalCount" Content="Achievements number" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                <Label x:Name="totalCount" Content="totalCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
-            </Grid>
+            <StackPanel DockPanel.Dock="Top" Margin="10,44.5,10,10" Height="510">
+                <ListBox x:Name="lbAchievements" Height="510">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel Margin="3,0,3,3" Orientation="Horizontal">
+                                    <DockPanel>
+                                        <!--Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Source="{Binding Icon}" Margin="5,0,10,0"/-->
+                                        <Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Margin="5,0,10,0">
+                                            <Image.Source>
+                                                <FormatConvertedBitmap Source="{Binding Icon}"/>
+                                            </Image.Source>
+                                        </Image>
+                                    </DockPanel>
 
-            <Grid Margin="0,87,0,0" Height="35" VerticalAlignment="Top">
-                <Label x:Name="ltotalCountUnlock"  Content="Achievements unlocked" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                <Label x:Name="totalCountUnlock" Content="totalCountUser" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
-            </Grid>
+                                    <DockPanel>
+                                        <StackPanel DockPanel.Dock="Top">
+                                            <Grid>
+                                                <TextBlock Text="{Binding Name}" />
+                                                <TextBlock TextAlignment="Right" Text="{Binding DateUnlock, StringFormat='dd/MM/yyyy HH:mm'}" />
+                                            </Grid>
+                                        </StackPanel>
 
-            <Grid Margin="0,127,0,0" Height="35" VerticalAlignment="Top">
-                <Label x:Name="labelProgression"  Content="Progression" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                <ProgressBar x:Name="ProgressionCount" Minimum="0" Maximum="100" Height="28" VerticalAlignment="Center" Margin="210,3,40,4" />
-            </Grid>
-        </Grid>
-
-        <ListBox x:Name="lbAchievements" Height="528" Margin="0,0,10,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5" Width="532">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Margin="0,2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Margin="3" Orientation="Horizontal">
-                            <DockPanel>
-                                <!--Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Source="{Binding Icon}" Margin="5,0,10,0"/-->
-                                <Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Margin="5,0,10,0">
-                                    <Image.Source>
-                                        <FormatConvertedBitmap Source="{Binding Icon}"/>
-                                    </Image.Source>
-                                </Image>
-                            </DockPanel>
-
-                            <DockPanel>
-                                <StackPanel DockPanel.Dock="Top">
-                                    <Grid>
-                                        <TextBlock Text="{Binding Name}" />
-                                        <TextBlock TextAlignment="Right" Text="{Binding DateUnlock, StringFormat='dd/MM/yyyy HH:mm'}" />
-                                    </Grid>
+                                        <StackPanel DockPanel.Dock="Bottom">
+                                            <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="420" Foreground="#FF8F8B8B" />
+                                        </StackPanel>
+                                    </DockPanel>
                                 </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
 
-                                <StackPanel DockPanel.Dock="Bottom">
-                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="395" Foreground="#FF8F8B8B" />
-                                </StackPanel>
-                            </DockPanel>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+            <StackPanel DockPanel.Dock="Bottom" Margin="10,0">
+                <Label Content="{DynamicResource LOCSucessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                <lvc:CartesianChart x:Name="StatsGraphicAchievements" LegendLocation="None" Height="156" Margin="0">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis x:Name="StatsGraphicAchievementsX" MinValue="0">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator Step="1" />
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis x:Name="StatsGraphicAchievementsY" ShowLabels="False">
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+            </StackPanel>
+        </DockPanel>
+    </DockPanel>
 </Window>
