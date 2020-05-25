@@ -261,6 +261,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Ressources\playnite-plugincommon.dll" />
     <None Include="Ressources\PlayniteRessources\DefaultControls\Border.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -411,7 +412,6 @@
     <Content Include="Ressources\GogLibrary.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Ressources\playnite-plugincommon.dll" />
     <Content Include="Ressources\SteamLibrary.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

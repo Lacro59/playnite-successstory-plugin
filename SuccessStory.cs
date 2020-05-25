@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using Playnite.SDK;
+﻿using Playnite.SDK;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 using PluginCommon;
-using SuccessStory.Clients;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -20,6 +18,8 @@ namespace SuccessStory
         private SuccessStorySettings settings { get; set; }
 
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
+
+        public static CumulErrors ListErrors = new CumulErrors();
 
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
@@ -97,6 +97,12 @@ namespace SuccessStory
             {
                 AchievementsDatabase.Add(game);
             }
+
+            if (ListErrors.Get() != "")
+            {
+                PlayniteApi.Dialogs.ShowErrorMessage(ListErrors.Get(), "SuccesStory errors");
+            }
+            ListErrors = null;
         }
 
         public override void OnApplicationStopped()

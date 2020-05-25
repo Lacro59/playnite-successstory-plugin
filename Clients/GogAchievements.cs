@@ -70,7 +70,8 @@ namespace SuccessStory.Clients
                                     break;
                                 default:
                                     logger.Error(e, $"SuccessStory - Failed to load from {url}");
-                                    PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                                    //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on GogAchievements");
+                                    SuccessStory.ListErrors.Add("Error on GogAchievements: " + e.Message);
                                     break;
                             }
                         }
@@ -111,7 +112,7 @@ namespace SuccessStory.Clients
                     catch (Exception e)
                     {
                         logger.Error(e, $"SuccessStory - Failed to parse.");
-                        PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
+                        PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on GogAchievements");
                     }
                 }
             }
