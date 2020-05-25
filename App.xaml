@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application x:Class="Statistics" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+  <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--Playnite Ressources-->
+                <ResourceDictionary Source="Ressources/PlayniteRessources/Constants.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/Common.xaml" />
+                <!--Playnite Default Controls-->
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/Border.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/TextBlock.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/TextBox.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/Button.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/ComboBox.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/ContextMenu.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/DatePicker.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/Expander.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/GridSplitter.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/GroupBox.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/Hyperlink.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/CheckBox.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/Label.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/ListBox.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/ListView.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/Menu.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/PasswordBox.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/Popup.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/ProgressBar.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/RadioButton.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/RepeatButton.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/RichTextBox.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/ScrollViewer.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/Slider.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/TabControl.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/Thumb.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/ToggleButton.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/ToolTip.xaml" />
+                <ResourceDictionary Source="Ressources/PlayniteRessources/DefaultControls/TreeView.xaml" />
+                <!--Playnite Default localization-->
+                <ResourceDictionary Source="Ressources/PlayniteRessources/LocSource.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
+    
