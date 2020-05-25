@@ -14,23 +14,23 @@
     SuccessStorySettingsView
     -->
 
-    <sys:String x:Key="LOCSucessStoryRefreshAllData">Refresh all achievements data</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllData">Actualizar todos los datos de logros</sys:String>
 
     <!-- 
     SuccessStoryView 
     -->
 
     <!-- UI -->
-    <sys:String x:Key="LOCSucessStorySearch">Search</sys:String>
-    <sys:String x:Key="LOCSucessStoryGlobalProgression">Global progression</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameInformation">Information</sys:String>
+    <sys:String x:Key="LOCSucessStorySearch">Buscar</sys:String>
+    <sys:String x:Key="LOCSucessStoryGlobalProgression">Progresión global</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameInformation">Información</sys:String>
 
     <!-- ListViewGames -->
-    <sys:String x:Key="LOCSucessStorylvGamesIcon">Icon</sys:String>
-    <sys:String x:Key="LOCSucessStorylvGamesName">Name</sys:String>
-    <sys:String x:Key="LOCSucessStorylvGamesLastActivity">Last session start</sys:String>
-    <sys:String x:Key="LOCSucessStorylvGamesSourceName">Source</sys:String>
-    <sys:String x:Key="LOCSucessStorylvGamesProgression">Progression</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesIcon">Icono</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesName">Nombre</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesLastActivity">Última sesión iniciada</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesSourceName">Fuente</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesProgression">Progresión</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGraphicTitle">Achievements unllock by month</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitle">Logros desbloqueados por mes</sys:String>
 </ResourceDictionary>
