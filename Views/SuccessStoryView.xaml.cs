@@ -387,6 +387,10 @@ namespace SuccessStory
             GetListGame(SearchGameName);
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            AchievementsDatabase = null;
+        }
     }
 
 
