@@ -48,11 +48,20 @@ namespace SuccessStory.Clients
                 string origineGameId = GetOrigineGameAchievementId(PlayniteApi, Id);
                 string lang = resources.GetString("LOCLanguageCode");
 
+                //string[] arrayLang = { "ar_SA", "ca_ES", "cs_CZ", "da_DK", "de_DE", "el_GR", "en_US", "es_ES", "fi_FL","fr_FR",
+                //    "hu_HU", "it_IT", "ja_JP", "nl_NL", "no_NO", "pl_PL", "pt_BR", "pt_PT", "ro_RO","ru_RU", "sv_SE",
+                //    "zh_CN", "zh_TW" };
+                //if (!arrayLang.ContainsString(lang))
+                //{
+                //    lang = "en";
+                //}
+
                 // Achievements
                 var url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",
                     personasId, origineGameId, lang);
 
                 logger.Debug($"SuccessStory - Origin.GetAchievements {url}");
+                logger.Debug($"SuccessStory - Origin.GetAchievements {accessToken}");
 
                 using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
                 {
@@ -107,6 +116,8 @@ namespace SuccessStory.Clients
                             }
                         }
                     }
+
+                    webClient.Dispose();
                 }
             }
 

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 
 namespace SuccessStory.Clients
 {
@@ -36,6 +35,12 @@ namespace SuccessStory.Clients
             string userId = (string)SteamConfig["UserId"];
             string apiKey = (string)SteamConfig["ApiKey"];
 
+            if (userId == "" || apiKey == "")
+            {
+                logger.Debug($"SuccessStory - No Steam configuration.");
+                return Result;
+            }
+
             // List acheviements
             var url = string.Format(@"http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}",
                 ClientId, apiKey, userId);
@@ -50,12 +55,14 @@ namespace SuccessStory.Clients
             //    return null;
             //}
 
-            using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
-            {
+            //using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
+            //{
                 try
-                    {
-                        webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
-                        ResultWeb = webClient.DownloadString(url);
+                {
+                    //webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
+                    //ResultWeb = webClient.DownloadString(url);
+
+                    ResultWeb = HttpDownloader.DownloadString(url);
                 }
                 catch (WebException e)
                 {
@@ -76,7 +83,7 @@ namespace SuccessStory.Clients
                         }
                     }
                 }
-            }
+            //}
 
             if (ResultWeb != "")
             {
@@ -143,13 +150,15 @@ namespace SuccessStory.Clients
                 logger.Debug($"SuccessStory - Steam.GetAchievements {url}");
 
 
-                using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
-                {
+                //using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
+                //{
                     try
                     {
-                        webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
-                        ResultWeb = webClient.DownloadString(url);
-                }
+                        //webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
+                        //ResultWeb = webClient.DownloadString(url);
+
+                        ResultWeb = HttpDownloader.DownloadString(url);
+                    }
                     catch (WebException e)
                     {
                         if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
@@ -169,7 +178,7 @@ namespace SuccessStory.Clients
                             }
                         }
                     }
-                }
+                //}
 
                 if (ResultWeb != "")
                 {

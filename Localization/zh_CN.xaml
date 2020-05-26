@@ -8,7 +8,7 @@
     <!-- StoreLocalization -->
     <sys:String x:Key="LOCLanguageNameEnglish">schinese</sys:String>
     <sys:String x:Key="LOCLanguageCode">zh_CN</sys:String>
-    <sys:String x:Key="LOCLanguageCountry">zh-CN</sys:String>
+    <sys:String x:Key="LOCLanguageCountry">zh</sys:String>
 
     <!--  
     SuccessStorySettingsView

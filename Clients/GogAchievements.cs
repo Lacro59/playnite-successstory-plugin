@@ -6,7 +6,9 @@ using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
@@ -18,6 +20,20 @@ namespace SuccessStory.Clients
         private static IResourceProvider resources = new ResourceProvider();
 
         private GogAccountClient gogAPI;
+
+        internal async Task<string> DonwloadStringData(string url1, string url2, string token)
+        {
+            using (var client = new HttpClient())
+            {
+                string resultLang = await client.GetStringAsync(url1).ConfigureAwait(false);
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                string result = await client.GetStringAsync(url2).ConfigureAwait(false);
+
+                return result;
+            }
+        }
+
 
         public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id)
         {
@@ -44,39 +60,49 @@ namespace SuccessStory.Clients
                 string userId = gogAPI.GetAccountInfo().userId;
                 string lang = resources.GetString("LOCLanguageCode");
 
+                string[] arrayLang = { "de", "en", "fr", "ru", "zh", "zh-Hans" };
+                if (!arrayLang.ContainsString(lang))
+                {
+                    lang = "en";
+                }
+
                 // Achievements
-                string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements",
+                    string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements",
                     ClientId, userId);
 
-                logger.Debug($"SuccessStory - GOG.GetAchievements {url}");
-                logger.Debug($"SuccessStoryToken - {accessToken}");
+                //logger.Debug($"SuccessStory - GOG.GetAchievements {url}");
+                //logger.Debug($"SuccessStoryToken - {accessToken}");
 
-                using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
+                try
                 {
-                    try
+                    string urlLang = string.Format(@"https://www.gog.com/user/changeLanguage/{0}", lang.ToLower());  
+                    ResultWeb = DonwloadStringData(urlLang, url, accessToken).GetAwaiter().GetResult();
+
+                    //logger.Debug(ResultWeb);
+                }
+                // TODO Environnement
+                //catch (Exception e) when (!Environment.IsDebugBuild)
+                catch (WebException e)
+                {
+                    if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
                     {
-                        webClient.Headers.Add("Authorization: Bearer " + accessToken);
-                        ResultWeb = webClient.DownloadString(url);
-                    }
-                    catch (WebException e)
-                    {
-                        if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                        var resp = (HttpWebResponse)e.Response;
+                        switch (resp.StatusCode)
                         {
-                            var resp = (HttpWebResponse)e.Response;
-                            switch (resp.StatusCode)
-                            {
-                                case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                    logger.Error(e, $"SuccessStory - HTTP 503 to load from {url}");
-                                    break;
-                                default:
-                                    logger.Error(e, $"SuccessStory - Failed to load from {url}");
-                                    //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on GogAchievements");
-                                    AchievementsDatabase.ListErrors.Add("Error on GogAchievements: " + e.Message);
-                                    break;
-                            }
+                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                                logger.Error(e, $"SuccessStory - HTTP 503 to load from {url}");
+                                break;
+                            default:
+                                logger.Error(e, $"SuccessStory - Failed to load from {url}");
+                                //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on GogAchievements");
+                                AchievementsDatabase.ListErrors.Add("Error on GogAchievements: " + e.Message);
+                                break;
                         }
                     }
                 }
+
+                    //webClient.Dispose();
+                //}
 
                 if (ResultWeb != "")
                 {
@@ -112,7 +138,8 @@ namespace SuccessStory.Clients
                     catch (Exception e)
                     {
                         logger.Error(e, $"SuccessStory - Failed to parse.");
-                        PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on GogAchievements");
+                        //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on GogAchievements");
+                        AchievementsDatabase.ListErrors.Add("Error on GogAchievements: " + e.Message);
                     }
                 }
             }
