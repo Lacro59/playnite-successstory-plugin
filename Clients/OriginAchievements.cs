@@ -20,8 +20,9 @@ namespace SuccessStory.Clients
 
         OriginAccountClient originAPI;
 
+
         /// <summary>
-        /// Get all achievements for a origin game.
+        /// Get all achievements for a Origin game.
         /// </summary>
         /// <param name="PlayniteApi"></param>
         /// <param name="Id"></param>
@@ -43,25 +44,16 @@ namespace SuccessStory.Clients
             // Only if user is logged. 
             if (originAPI.GetIsUserLoggedIn())
             {
+                // Get informations from Origin plugin.
                 string accessToken = originAPI.GetAccessToken().access_token;
                 string personasId = GetPersonas(originAPI.GetAccessToken());
                 string origineGameId = GetOrigineGameAchievementId(PlayniteApi, Id);
+
                 string lang = resources.GetString("LOCLanguageCode");
 
-                //string[] arrayLang = { "ar_SA", "ca_ES", "cs_CZ", "da_DK", "de_DE", "el_GR", "en_US", "es_ES", "fi_FL","fr_FR",
-                //    "hu_HU", "it_IT", "ja_JP", "nl_NL", "no_NO", "pl_PL", "pt_BR", "pt_PT", "ro_RO","ru_RU", "sv_SE",
-                //    "zh_CN", "zh_TW" };
-                //if (!arrayLang.ContainsString(lang))
-                //{
-                //    lang = "en";
-                //}
-
-                // Achievements
+                // Achievements (default return in english)
                 var url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",
                     personasId, origineGameId, lang);
-
-                logger.Debug($"SuccessStory - Origin.GetAchievements {url}");
-                logger.Debug($"SuccessStory - Origin.GetAchievements {accessToken}");
 
                 using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
                 {
@@ -110,14 +102,11 @@ namespace SuccessStory.Clients
                                     break;
                                 default:
                                     logger.Error(e, $"SuccessStory - Failed to load from {url}");
-                                    //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on OriginAchievements");
                                     AchievementsDatabase.ListErrors.Add("Error on OriginAchievements: " + e.Message);
                                     break;
                             }
                         }
                     }
-
-                    webClient.Dispose();
                 }
             }
 

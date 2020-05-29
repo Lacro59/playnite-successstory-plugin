@@ -36,7 +36,7 @@
         </StackPanel>
        
         <StackPanel DockPanel.Dock="Bottom">
-            <Button Content="{DynamicResource LOCSucessStoryRefreshAllData}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" FontSize="18" Click="Button_Click" />
+            <Button Content="{DynamicResource LOCSucessStoryRefreshAllData}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" FontSize="18" Click="Button_Click_All" />
         </StackPanel>
     </DockPanel>
 </UserControl>

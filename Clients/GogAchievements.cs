@@ -7,13 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
     //https://gogapidocs.readthedocs.io/en/latest/
-    // TODO GOG localization
     class GogAchievements
     {
         private static readonly ILogger logger = LogManager.GetLogger();
@@ -21,20 +19,33 @@ namespace SuccessStory.Clients
 
         private GogAccountClient gogAPI;
 
-        internal async Task<string> DonwloadStringData(string url1, string url2, string token)
+
+        /// <summary>
+        /// Get achievements after change language.
+        /// </summary>
+        /// <param name="UrlChangeLang"></param>
+        /// <param name="UrlAchievements"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        internal async Task<string> DonwloadStringData(string UrlChangeLang, string UrlAchievements, string token)
         {
             using (var client = new HttpClient())
             {
-                string resultLang = await client.GetStringAsync(url1).ConfigureAwait(false);
+                string resultLang = await client.GetStringAsync(UrlChangeLang).ConfigureAwait(false);
 
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                string result = await client.GetStringAsync(url2).ConfigureAwait(false);
+                string result = await client.GetStringAsync(UrlAchievements).ConfigureAwait(false);
 
                 return result;
             }
         }
 
-
+        /// <summary>
+        /// Get all achievements for a GOG game.
+        /// </summary>
+        /// <param name="PlayniteApi"></param>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id)
         {
             GameAchievements Result = new GameAchievements();
@@ -60,6 +71,7 @@ namespace SuccessStory.Clients
                 string userId = gogAPI.GetAccountInfo().userId;
                 string lang = resources.GetString("LOCLanguageCode");
 
+                // Only languages available
                 string[] arrayLang = { "de", "en", "fr", "ru", "zh", "zh-Hans" };
                 if (!arrayLang.ContainsString(lang))
                 {
@@ -67,18 +79,13 @@ namespace SuccessStory.Clients
                 }
 
                 // Achievements
-                    string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements",
+                string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements",
                     ClientId, userId);
-
-                //logger.Debug($"SuccessStory - GOG.GetAchievements {url}");
-                //logger.Debug($"SuccessStoryToken - {accessToken}");
 
                 try
                 {
                     string urlLang = string.Format(@"https://www.gog.com/user/changeLanguage/{0}", lang.ToLower());  
                     ResultWeb = DonwloadStringData(urlLang, url, accessToken).GetAwaiter().GetResult();
-
-                    //logger.Debug(ResultWeb);
                 }
                 // TODO Environnement
                 //catch (Exception e) when (!Environment.IsDebugBuild)
@@ -94,15 +101,11 @@ namespace SuccessStory.Clients
                                 break;
                             default:
                                 logger.Error(e, $"SuccessStory - Failed to load from {url}");
-                                //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on GogAchievements");
                                 AchievementsDatabase.ListErrors.Add("Error on GogAchievements: " + e.Message);
                                 break;
                         }
                     }
                 }
-
-                    //webClient.Dispose();
-                //}
 
                 if (ResultWeb != "")
                 {
@@ -138,7 +141,6 @@ namespace SuccessStory.Clients
                     catch (Exception e)
                     {
                         logger.Error(e, $"SuccessStory - Failed to parse.");
-                        //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on GogAchievements");
                         AchievementsDatabase.ListErrors.Add("Error on GogAchievements: " + e.Message);
                     }
                 }

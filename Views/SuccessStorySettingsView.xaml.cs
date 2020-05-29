@@ -1,9 +1,6 @@
 ﻿using Playnite.SDK;
-using Playnite.SDK.Models;
-using PluginCommon;
 using SuccessStory.Models;
 using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -32,7 +29,7 @@ namespace SuccessStory
             SuccessStoryLoad.Visibility = Visibility.Hidden;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click_All(object sender, RoutedEventArgs e)
         {
             RefreshData("All");
         }
@@ -54,11 +51,13 @@ namespace SuccessStory
 
         internal void RefreshData(string SourceName)
         {
+            // ProgressBar
             SuccessStoryLoad.Visibility = Visibility.Visible;
             SuccessStoryLoad.Value = 0;
             SuccessStoryLoad.Maximum = PlayniteApi.Database.Games.Count;
 
             SuccessStorySettings.IsEnabled = false;
+
 
             foreach (var game in PlayniteApi.Database.Games)
             {
@@ -72,6 +71,8 @@ namespace SuccessStory
                 }
                 SuccessStoryLoad.Value += 1;
             }
+
+
             if (AchievementsDatabase.ListErrors.Get() != "")
             {
                 PlayniteApi.Dialogs.ShowErrorMessage(AchievementsDatabase.ListErrors.Get(), "SuccesStory errors on " + SourceName);
@@ -80,6 +81,7 @@ namespace SuccessStory
             {
                 PlayniteApi.Dialogs.ShowMessage((string)ResourceProvider.GetResource("LOCSucessStoryRefreshDataMessage"), "Success Story");
             }
+
 
             SuccessStoryLoad.Visibility = Visibility.Hidden;
             SuccessStorySettings.IsEnabled = true;

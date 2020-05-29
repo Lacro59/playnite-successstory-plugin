@@ -83,23 +83,6 @@ namespace SuccessStory
         public override void OnApplicationStarted()
         {
             // Add code to be executed when Playnite is initialized.
-
-            // Get achivements for game listed in database.
-            //AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
-
-            // Create database if not exist (so long...).
-            /*
-            foreach (var game in PlayniteApi.Database.Games)
-            {
-                AchievementsDatabase.Add(game, settings);
-            }
-
-            if (ListErrors.Get() != "")
-            {
-                PlayniteApi.Dialogs.ShowErrorMessage(ListErrors.Get(), "SuccesStory errors");
-            }
-            ListErrors = null;
-            */
         }
 
         public override void OnApplicationStopped()

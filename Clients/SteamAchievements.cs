@@ -16,6 +16,14 @@ namespace SuccessStory.Clients
         private static readonly ILogger logger = LogManager.GetLogger();
         private static IResourceProvider resources = new ResourceProvider();
 
+
+        /// <summary>
+        /// Get all achievements for a Steam game.
+        /// </summary>
+        /// <param name="PlayniteApi"></param>
+        /// <param name="Id"></param>
+        /// <param name="PluginUserDataPath"></param>
+        /// <returns></returns>
         public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id, string PluginUserDataPath)
         {
             GameAchievements Result = new GameAchievements();
@@ -31,9 +39,18 @@ namespace SuccessStory.Clients
             string ResultWeb = "";
 
 
-            JObject SteamConfig = JObject.Parse(File.ReadAllText(PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"));
-            string userId = (string)SteamConfig["UserId"];
-            string apiKey = (string)SteamConfig["ApiKey"];
+            // Get Steam configuration if exist.
+            string userId = "";
+            string apiKey = "";
+            try
+            {
+                JObject SteamConfig = JObject.Parse(File.ReadAllText(PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"));
+                userId = (string)SteamConfig["UserId"];
+                apiKey = (string)SteamConfig["ApiKey"];
+            }
+            catch (Exception e)
+            {
+            }
 
             if (userId == "" || apiKey == "")
             {
@@ -41,49 +58,33 @@ namespace SuccessStory.Clients
                 return Result;
             }
 
-            // List acheviements
+
+            // List acheviements (default return in english)
             var url = string.Format(@"http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}",
                 ClientId, apiKey, userId);
 
-            //if (HttpDownloader.GetResponseCode(url) == System.Net.HttpStatusCode.OK)
-            //{
-            //    var stringData = Encoding.UTF8.GetString(HttpDownloader.DownloadData(url));
-            //    return JsonConvert.DeserializeObject<StorePageMetadata>(stringData);
-            //}
-            //else
-            //{
-            //    return null;
-            //}
-
-            //using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
-            //{
-                try
+            try
+            {
+                ResultWeb = HttpDownloader.DownloadString(url);
+            }
+            catch (WebException e)
+            {
+                if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
                 {
-                    //webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
-                    //ResultWeb = webClient.DownloadString(url);
-
-                    ResultWeb = HttpDownloader.DownloadString(url);
-                }
-                catch (WebException e)
-                {
-                    if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                    var resp = (HttpWebResponse)e.Response;
+                    switch (resp.StatusCode)
                     {
-                        var resp = (HttpWebResponse)e.Response;
-                        switch (resp.StatusCode)
-                        {
-                            case HttpStatusCode.BadRequest: // HTTP 400
-                                break;
-                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                break;
-                            default:
-                                logger.Error(e, $"SuccessStory - Failed to load from {url}");
-                                //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
-                                AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
-                                break;
-                        }
+                        case HttpStatusCode.BadRequest: // HTTP 400
+                            break;
+                        case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                            break;
+                        default:
+                            logger.Error(e, $"SuccessStory - Failed to load from {url}");
+                            AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                            break;
                     }
                 }
-            //}
+            }
 
             if (ResultWeb != "")
             {
@@ -101,7 +102,6 @@ namespace SuccessStory.Clients
                 catch (Exception e)
                 {
                     logger.Error(e, $"SuccessStory - Failed to parse.");
-                    //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
                     AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
                 }
 
@@ -137,7 +137,6 @@ namespace SuccessStory.Clients
                 catch (Exception e)
                 {
                     logger.Error(e, $"SuccessStory - Failed to parse.");
-                    //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
                     AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
                 }
 
@@ -150,35 +149,28 @@ namespace SuccessStory.Clients
                 logger.Debug($"SuccessStory - Steam.GetAchievements {url}");
 
 
-                //using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
-                //{
-                    try
+                try
+                {
+                    ResultWeb = HttpDownloader.DownloadString(url);
+                }
+                catch (WebException e)
+                {
+                    if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
                     {
-                        //webClient.Headers["Content-Type"] = "application/json;charset=UTF-8";
-                        //ResultWeb = webClient.DownloadString(url);
-
-                        ResultWeb = HttpDownloader.DownloadString(url);
-                    }
-                    catch (WebException e)
-                    {
-                        if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                        var resp = (HttpWebResponse)e.Response;
+                        switch (resp.StatusCode)
                         {
-                            var resp = (HttpWebResponse)e.Response;
-                            switch (resp.StatusCode)
-                            {
-                                case HttpStatusCode.BadRequest: // HTTP 400
-                                    break;
-                                case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                    break;
-                                default:
-                                    logger.Error(e, $"SuccessStory - Failed to load from {url}");
-                                    //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
-                                    AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
-                                    break;
-                            }
+                            case HttpStatusCode.BadRequest: // HTTP 400
+                                break;
+                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                                break;
+                            default:
+                                logger.Error(e, $"SuccessStory - Failed to load from {url}");
+                                AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                                break;
                         }
                     }
-                //}
+                }
 
                 if (ResultWeb != "")
                 {
@@ -212,7 +204,6 @@ namespace SuccessStory.Clients
                     catch (Exception e)
                     {
                         logger.Error(e, $"SuccessStory - Failed to parse.");
-                        //PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error on SteamAchievements");
                         AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
                     }
                 }
