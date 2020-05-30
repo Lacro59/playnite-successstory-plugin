@@ -60,7 +60,7 @@ namespace SuccessStory.Clients
 
 
             // List acheviements (default return in english)
-            var url = string.Format(@"http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}",
+            var url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}",
                 ClientId, apiKey, userId);
 
             try
