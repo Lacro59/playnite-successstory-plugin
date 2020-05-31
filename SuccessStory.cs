@@ -19,7 +19,6 @@ namespace SuccessStory
 
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
-        //public static CumulErrors ListErrors = new CumulErrors();
 
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
@@ -69,7 +68,7 @@ namespace SuccessStory
         {
             // Add code to be executed when game is preparing to be started.
 
-            // Refresh Achievements database.
+            // Refresh Achievements database for game played.
             AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
             AchievementsDatabase.Remove(game);
             AchievementsDatabase.Add(game, settings);

@@ -83,11 +83,6 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SteamLibrary, Version=1.0.0.26790, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Ressources\SteamLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -419,7 +414,7 @@
     <Content Include="Ressources\GogLibrary.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Ressources\SteamLibrary.dll" />
+    <Content Include="Ressources\OriginLibrary.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

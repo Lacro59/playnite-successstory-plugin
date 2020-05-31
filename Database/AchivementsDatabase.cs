@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using SuccessStory.Database;
 using SuccessStory.Clients;
 using PluginCommon;
+using System.Diagnostics;
 
 namespace SuccessStory.Models
 {
@@ -56,10 +57,11 @@ namespace SuccessStory.Models
                     // Set game achievements in database.
                     PluginDatabase.TryAdd(gameId, objGameAchievements);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    PlayniteApi.Dialogs.ShowErrorMessage(e.Message, "SuccessStory error");
-                    logger.Error(e, $"SuccessStory - Failed to load item from {objectFile}");
+                    var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                    PlayniteApi.Dialogs.ShowErrorMessage(ex.Message, $"SuccessStory error {LineNumber}");
+                    logger.Error(ex, $"SuccessStory - Failed to load item from {objectFile}");
                 }
             });
         }
@@ -111,6 +113,12 @@ namespace SuccessStory.Models
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="GameSourceName"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         public static bool VerifToAddOrShow(string GameSourceName, SuccessStorySettings settings)
         {
             bool Result = false;
