@@ -57,7 +57,13 @@ namespace SuccessStory
             labelProgressionGlobalCount.Content = AchievementsDatabase.Progession().Progression + "%";
 
 
+            // Sorting default.
+            _lastDirection = ListSortDirection.Descending;
+            _lastHeaderClicked = lvLastActivity;
+            _lastHeaderClicked.Content += " ▼";
+
             GetListGame();
+
 
             // Set Binding data
             DataContext = this;
@@ -127,6 +133,33 @@ namespace SuccessStory
                 }
             }
 
+            ListviewGames.ItemsSource = ListGames;
+
+            // Sorting
+            try
+            {
+                var columnBinding = _lastHeaderClicked.Column.DisplayMemberBinding as Binding;
+                var sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
+
+                // Specific sort with another column
+                if (_lastHeaderClicked.Name == "lvSourceIcon")
+                {
+                    columnBinding = lvSourceName.Column.DisplayMemberBinding as Binding;
+                    sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
+                }
+                if (_lastHeaderClicked.Name == "lvProgression")
+                {
+                    columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
+                    sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
+                }
+                Sort(sortBy, _lastDirection);
+            }
+            // If first view
+            catch
+            {
+                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
+                view.SortDescriptions.Add(new SortDescription("LastActivity", ListSortDirection.Descending));
+            }
 
             // Graphic
             SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
@@ -149,15 +182,6 @@ namespace SuccessStory
             StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
             //StatsGraphicAchievementsX.LabelFormatter = value => value;
             StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
-
-
-            // Sorting default.
-            ListviewGames.ItemsSource = ListGames;
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
-            view.SortDescriptions.Add(new SortDescription("LastActivity", ListSortDirection.Descending));
-            _lastDirection = ListSortDirection.Descending;
-            _lastHeaderClicked = lvLastActivity;
-            _lastHeaderClicked.Content += " ▼";
         }
 
         /// <summary>

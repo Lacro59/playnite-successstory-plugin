@@ -49,7 +49,7 @@
                                 <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSucessStorylvGamesSourceName}"></GridViewColumnHeader>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Content="{Binding SourceIcon}" FontFamily="/SuccessStory;component/Ressources/#font" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+                                        <Label Content="{Binding SourceIcon}" FontFamily="/SuccessStory;component/Resources/#font" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

@@ -54,7 +54,7 @@
   <ItemGroup>
     <Reference Include="GogLibrary, Version=1.0.0.26791, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Ressources\GogLibrary.dll</HintPath>
+      <HintPath>Resources\GogLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
@@ -76,7 +76,7 @@
       <HintPath>Ressources\playnite-plugincommon.dll</HintPath>
     </Reference>
     <Reference Include="Playnite.Common">
-      <HintPath>Ressources\Playnite.Common.dll</HintPath>
+      <HintPath>Resources\Playnite.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Playnite.SDK, Version=5.2.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -124,7 +124,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-    <Resource Include="Ressources\font.ttf">
+    <Resource Include="Resources\font.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
@@ -265,16 +265,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="README.md" />
-    <None Include="Ressources\playnite-plugincommon.dll" />
-    <None Include="Ressources\PlayniteRessources\Common.xaml">
+    <None Include="Resources\playnite-plugincommon.dll" />
+    <None Include="Resources\PlayniteResources\Common.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\Constants.xaml">
+    <None Include="Resources\PlayniteResources\Constants.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\LocSource.xaml">
+    <None Include="Resources\PlayniteResources\LocSource.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
@@ -282,119 +282,119 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\Border.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\Border.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\Button.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\CheckBox.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\CheckBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\ComboBox.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\ComboBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\ContextMenu.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\ContextMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\DatePicker.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\DatePicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\Expander.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\Expander.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\GridSplitter.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\GridSplitter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\GroupBox.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\GroupBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\Hyperlink.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\Hyperlink.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\Label.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\Label.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\ListBox.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\ListBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\ListView.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\ListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\Menu.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\Menu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\PasswordBox.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\PasswordBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\Popup.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\Popup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\ProgressBar.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\ProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\RadioButton.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\RadioButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\RepeatButton.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\RepeatButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\RichTextBox.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\RichTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\ScrollViewer.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\ScrollViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\Slider.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\Slider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\TabControl.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\TabControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\TextBlock.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\TextBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\TextBox.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\Thumb.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\Thumb.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\ToggleButton.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\ToggleButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\ToolTip.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\ToolTip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Ressources\PlayniteRessources\DefaultControls\TreeView.xaml">
+    <None Include="Resources\PlayniteResources\DefaultControls\TreeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
@@ -413,10 +413,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Ressources\GogLibrary.dll" />
+    <Content Include="Resources\GogLibrary.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Ressources\OriginLibrary.dll" />
+    <Content Include="Resources\OriginLibrary.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
