@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace SuccessStory
 {
@@ -92,6 +93,17 @@ namespace SuccessStory
         public override void OnLibraryUpdated()
         {
             // Add code to be executed when library is updated.
+
+            // Get achievements for the new game added int he library.
+            AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
+            foreach (var game in PlayniteApi.Database.Games)
+            {
+                if (game.Added == null && ((DateTime)game.Added).ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd"))
+                {
+                    AchievementsDatabase.Remove(game);
+                    AchievementsDatabase.Add(game, settings);
+                }
+            }
         }
 
         public override ISettings GetSettings(bool firstRunSettings)
