@@ -30,14 +30,23 @@ namespace SuccessStory.Clients
         /// <returns></returns>
         public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id)
         {
-            GameAchievements Result = new GameAchievements();
-
             List<Achievements> Achievements = new List<Achievements>();
             string GameName = PlayniteApi.Database.Games.Get(Id).Name;
             bool HaveAchivements = false;
             int Total = 0;
             int Unlocked = 0;
             int Locked = 0;
+
+            GameAchievements Result = new GameAchievements
+            {
+                Name = GameName,
+                HaveAchivements = HaveAchivements,
+                Total = Total,
+                Unlocked = Unlocked,
+                Locked = Locked,
+                Progression = 0,
+                Achievements = Achievements
+            };
 
             var view = PlayniteApi.WebViews.CreateOffscreenView();
             originAPI = new OriginAccountClient(view);
@@ -102,11 +111,12 @@ namespace SuccessStory.Clients
                                 case HttpStatusCode.NotFound: // HTTP 404
                                     break;
                                 default:
-                                    logger.Error(ex, $"SuccessStory - Failed to load from {url}");
                                     var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                    AchievementsDatabase.ListErrors.Add($"Error on OriginAchievements [{LineNumber}]: " + ex.Message);
+                                    logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to load from {url}");
+                                    //AchievementsDatabase.ListErrors.Add($"Error on OriginAchievements [{LineNumber}]: " + ex.Message);
                                     break;
                             }
+                            return Result;
                         }
                     }
                 }
@@ -137,8 +147,6 @@ namespace SuccessStory.Clients
             var userId = originAPI.GetAccountInfo(originAPI.GetAccessToken()).pid.pidId;
             var url = string.Format(@"https://gateway.ea.com/proxy/identity/pids/{0}/personas?namespaceName=cem_ea_id", userId);
 
-            logger.Debug($"SuccessStory - Origin.GetPersonas {url}");
-
             client.Headers.Add("Authorization", token.token_type + " " + token.access_token);
             var stringData = client.DownloadString(url);
 
@@ -166,8 +174,6 @@ namespace SuccessStory.Clients
             string lang = resources.GetString("LOCLanguageCode");
             string langShort = resources.GetString("LOCLanguageCountry");
             var url = string.Format(@"https://api2.origin.com/ecommerce2/public/supercat/{0}/{1}?country={2}", gameId, lang, langShort);
-
-            logger.Debug($"SuccessStory - Origin.GameStoreDataResponse {url}");
 
             var stringData = Encoding.UTF8.GetString(HttpDownloader.DownloadData(url));
             return JsonConvert.DeserializeObject<GameStoreDataResponse>(stringData);

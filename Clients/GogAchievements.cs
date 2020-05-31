@@ -49,8 +49,6 @@ namespace SuccessStory.Clients
         /// <returns></returns>
         public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id)
         {
-            GameAchievements Result = new GameAchievements();
-
             List<Achievements> Achievements = new List<Achievements>();
             string GameName = PlayniteApi.Database.Games.Get(Id).Name;
             string ClientId = PlayniteApi.Database.Games.Get(Id).GameId;
@@ -58,6 +56,17 @@ namespace SuccessStory.Clients
             int Total = 0;
             int Unlocked = 0;
             int Locked = 0;
+
+            GameAchievements Result = new GameAchievements
+            {
+                Name = GameName,
+                HaveAchivements = HaveAchivements,
+                Total = Total,
+                Unlocked = Unlocked,
+                Locked = Locked,
+                Progression = 0,
+                Achievements = Achievements
+            };
 
             string ResultWeb = "";
 
@@ -101,12 +110,13 @@ namespace SuccessStory.Clients
                                 logger.Error(ex, $"SuccessStory - HTTP 503 to load from {url}");
                                 break;
                             default:
-                                logger.Error(ex, $"SuccessStory - Failed to load from {url}");
                                 var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                AchievementsDatabase.ListErrors.Add($"Error on GogAchievements [{LineNumber}]: " + ex.Message);
+                                logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to load from {url}");
+                                //AchievementsDatabase.ListErrors.Add($"Error on GogAchievements [{LineNumber}]: " + ex.Message);
                                 break;
                         }
                     }
+                    return Result;
                 }
 
                 if (ResultWeb != "")
@@ -142,9 +152,10 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        logger.Error(ex, $"SuccessStory - Failed to parse.");
                         var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                        AchievementsDatabase.ListErrors.Add($"Error on GogAchievements [{LineNumber}]: " + ex.Message);
+                        logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to parse.");
+                        //AchievementsDatabase.ListErrors.Add($"Error on GogAchievements [{LineNumber}]: " + ex.Message);
+                        return Result;
                     }
                 }
             }

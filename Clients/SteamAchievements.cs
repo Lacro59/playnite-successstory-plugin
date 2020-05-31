@@ -27,8 +27,6 @@ namespace SuccessStory.Clients
         /// <returns></returns>
         public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id, string PluginUserDataPath)
         {
-            GameAchievements Result = new GameAchievements();
-
             List<Achievements> Achievements = new List<Achievements>();
             string GameName = PlayniteApi.Database.Games.Get(Id).Name;
             string ClientId = PlayniteApi.Database.Games.Get(Id).GameId;
@@ -36,6 +34,17 @@ namespace SuccessStory.Clients
             int Total = 0;
             int Unlocked = 0;
             int Locked = 0;
+
+            GameAchievements Result = new GameAchievements
+            {
+                Name = GameName,
+                HaveAchivements = HaveAchivements,
+                Total = Total,
+                Unlocked = Unlocked,
+                Locked = Locked,
+                Progression = 0,
+                Achievements = Achievements
+            };
 
             string ResultWeb = "";
 
@@ -55,7 +64,8 @@ namespace SuccessStory.Clients
 
             if (userId == "" || apiKey == "")
             {
-                logger.Debug($"SuccessStory - No Steam configuration.");
+                logger.Error($"SuccessStory - No Steam configuration.");
+                AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration.");
                 return Result;
             }
 
@@ -64,6 +74,7 @@ namespace SuccessStory.Clients
             var url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}",
                 ClientId, apiKey, userId);
 
+            ResultWeb = "";
             try
             {
                 ResultWeb = HttpDownloader.DownloadString(url);
@@ -80,11 +91,12 @@ namespace SuccessStory.Clients
                         case HttpStatusCode.ServiceUnavailable: // HTTP 503
                             break;
                         default:
-                            logger.Error(ex, $"SuccessStory - Failed to load from {url}");
                             var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                            AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
+                            logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to load from {url}");
+                            //AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                             break;
                     }
+                    return Result;
                 }
             }
 
@@ -95,53 +107,49 @@ namespace SuccessStory.Clients
 
                 try
                 {
-                    resultItems = (JArray)resultObj["playerstats"]["achievements"];
-                    if (resultItems.Count > 0)
+                    if ((bool)resultObj["playerstats"]["success"])
                     {
-                        HaveAchivements = true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    logger.Error(ex, $"SuccessStory - Failed to parse.");
-                    var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                    AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
-                }
-
-
-                try
-                {
-                    resultItems = (JArray)resultObj["playerstats"]["achievements"];
-                    if (resultItems.Count > 0)
-                    {
-                        HaveAchivements = true;
-
-                        for (int i = 0; i < resultItems.Count; i++)
+                        resultItems = (JArray)resultObj["playerstats"]["achievements"];
+                        if (resultItems.Count > 0)
                         {
-                            Achievements temp = new Achievements
+                            HaveAchivements = true;
+
+                            for (int i = 0; i < resultItems.Count; i++)
                             {
-                                Name = (string)resultItems[i]["apiname"],
-                                Description = "",
-                                UrlUnlocked = "",
-                                UrlLocked = "",
-                                DateUnlocked = ((int)resultItems[i]["unlocktime"] == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)resultItems[i]["unlocktime"])
-                            };
+                                Achievements temp = new Achievements
+                                {
+                                    Name = (string)resultItems[i]["apiname"],
+                                    Description = "",
+                                    UrlUnlocked = "",
+                                    UrlLocked = "",
+                                    DateUnlocked = ((int)resultItems[i]["unlocktime"] == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)resultItems[i]["unlocktime"])
+                                };
 
-                            Total += 1;
-                            if ((int)resultItems[i]["unlocktime"] == 0)
-                                Locked += 1;
-                            else
-                                Unlocked += 1;
+                                Total += 1;
+                                if ((int)resultItems[i]["unlocktime"] == 0)
+                                    Locked += 1;
+                                else
+                                    Unlocked += 1;
 
-                            Achievements.Add(temp);
+                                Achievements.Add(temp);
+                            }
+                        }
+                        else
+                        {
+                            return Result;
                         }
                     }
+                    else
+                    {
+                        return Result;
+                    }
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, $"SuccessStory - Failed to parse.");
                     var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                    AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
+                    logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to parse.");
+                    //AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
+                    return Result;
                 }
 
 
@@ -150,9 +158,7 @@ namespace SuccessStory.Clients
                 url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}",
                     apiKey, ClientId, lang);
 
-                logger.Debug($"SuccessStory - Steam.GetAchievements {url}");
-
-
+                ResultWeb = "";
                 try
                 {
                     ResultWeb = HttpDownloader.DownloadString(url);
@@ -169,11 +175,12 @@ namespace SuccessStory.Clients
                             case HttpStatusCode.ServiceUnavailable: // HTTP 503
                                 break;
                             default:
-                                logger.Error(ex, $"SuccessStory - Failed to load from {url}");
                                 var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
+                                logger.Error(ex, $"SuccessStory  [{LineNumber}] - Failed to load from {url}");
+                                //AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                                 break;
                         }
+                        return Result;
                     }
                 }
 
@@ -208,9 +215,10 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        logger.Error(ex, $"SuccessStory - Failed to parse.");
                         var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                        AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
+                        logger.Error(ex, $"SuccessStory  [{LineNumber}] - Failed to parse.");
+                        //AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
+                        return Result;
                     }
                 }
             }
