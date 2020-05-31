@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using LiveCharts;
 using LiveCharts.Wpf;
+using Newtonsoft.Json;
 using Playnite.SDK;
 using PluginCommon;
 using SuccessStory.Database;
@@ -63,6 +64,31 @@ namespace SuccessStory
             _lastHeaderClicked.Content += " ▼";
 
             GetListGame();
+
+
+            // Graphic
+            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+            string[] StatsGraphicsAchievementsLabels = new string[12];
+            ChartValues<double> SourceAchievementsSeries = new ChartValues<double>();
+            int counter = 0;
+
+            var ListData = AchievementsDatabase.GetCountByMonth();
+            for (int i = 11; i >= 0; i--)
+            {
+                SourceAchievementsSeries.Add(ListData[DateTime.Now.AddMonths(-i).ToString("yyyy-MM")]);
+                StatsGraphicsAchievementsLabels[counter] = DateTime.Now.AddMonths(-i).ToString("yyyy-MM");
+                counter += 1;
+            }
+
+            StatsGraphicAchievementsSeries.Add(new LineSeries
+            {
+                Title = "",
+                Values = SourceAchievementsSeries
+            });
+
+            StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
+            //StatsGraphicAchievementsX.LabelFormatter = value => value;
+            StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
 
 
             // Set Binding data
@@ -160,28 +186,6 @@ namespace SuccessStory
                 CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
                 view.SortDescriptions.Add(new SortDescription("LastActivity", ListSortDirection.Descending));
             }
-
-            // Graphic
-            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-            string[] StatsGraphicsAchievementsLabels = new string[12];
-            ChartValues<double> SourceAchievementsSeries = new ChartValues<double>();
-            int counter = 0;
-            foreach (var item in AchievementsDatabase.GetCountByMonth())
-            {
-                    SourceAchievementsSeries.Add(item.Value);
-                    StatsGraphicsAchievementsLabels[counter] = item.Key;
-                    counter += 1;
-            }
-
-            StatsGraphicAchievementsSeries.Add(new LineSeries
-            {
-                Title = "",
-                Values = SourceAchievementsSeries
-            });
-
-            StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
-            //StatsGraphicAchievementsX.LabelFormatter = value => value;
-            StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
         }
 
         /// <summary>
