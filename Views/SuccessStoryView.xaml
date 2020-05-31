@@ -8,6 +8,10 @@
              mc:Ignorable="d" Height="800" Width="1260" Background="{DynamicResource WindowBackgourndBrush}"
              ResizeMode="NoResize" Title="Success Story" WindowStartupLocation="CenterScreen">
 
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    
     <DockPanel>
         <!--List games with achievements-->
         <DockPanel DockPanel.Dock="Left" Width="687">
@@ -100,6 +104,11 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
+                                <Grid.ToolTip>
+                                    <ToolTip Name="ttName" Visibility="{Binding IsTrimmed, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                             Content="{Binding NameToolTip}"></ToolTip>
+                                </Grid.ToolTip>
+                                
                                 <StackPanel Margin="3,0,3,3" Orientation="Horizontal">
                                     <DockPanel>
                                         <!--Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Source="{Binding Icon}" Margin="5,0,10,0"/-->
@@ -113,6 +122,7 @@
                                     <DockPanel>
                                         <StackPanel DockPanel.Dock="Top">
                                             <Grid>
+                                                <!--TextBlock Text="{Binding Name}" Width="300" TextTrimming="WordEllipsis" TextWrapping="NoWrap" HorizontalAlignment="Left" /-->
                                                 <TextBlock Text="{Binding Name}" />
                                                 <TextBlock TextAlignment="Right" Text="{Binding DateUnlock, StringFormat='dd/MM/yyyy HH:mm'}" />
                                             </Grid>

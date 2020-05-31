@@ -249,9 +249,17 @@ namespace SuccessStory
                     }
                     ConvertBitmapSource.EndInit();
 
+                    string NameAchievement = ListAchievements[i].Name;
+                    if (NameAchievement.Length > 35)
+                    {
+                        NameAchievement = NameAchievement.Substring(0, 35).Trim() + "...";
+                    }
+
                     ListBoxAchievements.Add(new listAchievements()
                     {
-                        Name = ListAchievements[i].Name,
+                        Name = NameAchievement,
+                        NameToolTip = ListAchievements[i].Name,
+                        IsTrimmed = (NameAchievement != ListAchievements[i].Name),
                         DateUnlock = dateUnlock,
                         //Icon = iconImage,
                         Icon = ConvertBitmapSource,
@@ -448,6 +456,8 @@ namespace SuccessStory
         //public BitmapImage Icon { get; set; }
         public FormatConvertedBitmap Icon { get; set; }
         public string Name { get; set; }
+        public string NameToolTip { get; set; }
+        public Boolean IsTrimmed { get; set; }
         public DateTime? DateUnlock { get; set; }
         public string Description { get; set; }
     }
