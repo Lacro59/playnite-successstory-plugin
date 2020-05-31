@@ -1,6 +1,7 @@
 ﻿using Playnite.SDK;
 using SuccessStory.Models;
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -64,6 +65,9 @@ namespace SuccessStory
                 if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") 
                     && (game.Source.Name.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all"))
                 {
+                    // Prevent HTTP 429 with 60 request max per minutes.
+                    Thread.Sleep(1000);
+
                     Dispatcher.Invoke(new Action(() => {
                         AchievementsDatabase.Remove(game);
                         AchievementsDatabase.Add(game, settings);

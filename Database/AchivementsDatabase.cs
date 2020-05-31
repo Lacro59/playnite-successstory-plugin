@@ -60,7 +60,7 @@ namespace SuccessStory.Models
                 catch (Exception ex)
                 {
                     var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                    PlayniteApi.Dialogs.ShowErrorMessage(ex.Message, $"SuccessStory error {LineNumber}");
+                    PlayniteApi.Dialogs.ShowErrorMessage(ex.Message, $"SuccessStory error [{LineNumber}]");
                     logger.Error(ex, $"SuccessStory - Failed to load item from {objectFile}");
                 }
             });

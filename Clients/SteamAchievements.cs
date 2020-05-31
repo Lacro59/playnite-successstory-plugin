@@ -5,6 +5,7 @@ using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 
@@ -48,7 +49,7 @@ namespace SuccessStory.Clients
                 userId = (string)SteamConfig["UserId"];
                 apiKey = (string)SteamConfig["ApiKey"];
             }
-            catch (Exception e)
+            catch
             {
             }
 
@@ -67,11 +68,11 @@ namespace SuccessStory.Clients
             {
                 ResultWeb = HttpDownloader.DownloadString(url);
             }
-            catch (WebException e)
+            catch (WebException ex)
             {
-                if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
                 {
-                    var resp = (HttpWebResponse)e.Response;
+                    var resp = (HttpWebResponse)ex.Response;
                     switch (resp.StatusCode)
                     {
                         case HttpStatusCode.BadRequest: // HTTP 400
@@ -79,8 +80,9 @@ namespace SuccessStory.Clients
                         case HttpStatusCode.ServiceUnavailable: // HTTP 503
                             break;
                         default:
-                            logger.Error(e, $"SuccessStory - Failed to load from {url}");
-                            AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                            logger.Error(ex, $"SuccessStory - Failed to load from {url}");
+                            var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                            AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                             break;
                     }
                 }
@@ -99,10 +101,11 @@ namespace SuccessStory.Clients
                         HaveAchivements = true;
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    logger.Error(e, $"SuccessStory - Failed to parse.");
-                    AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                    logger.Error(ex, $"SuccessStory - Failed to parse.");
+                    var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                    AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                 }
 
 
@@ -134,10 +137,11 @@ namespace SuccessStory.Clients
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    logger.Error(e, $"SuccessStory - Failed to parse.");
-                    AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                    logger.Error(ex, $"SuccessStory - Failed to parse.");
+                    var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                    AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                 }
 
 
@@ -153,11 +157,11 @@ namespace SuccessStory.Clients
                 {
                     ResultWeb = HttpDownloader.DownloadString(url);
                 }
-                catch (WebException e)
+                catch (WebException ex)
                 {
-                    if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                    if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
                     {
-                        var resp = (HttpWebResponse)e.Response;
+                        var resp = (HttpWebResponse)ex.Response;
                         switch (resp.StatusCode)
                         {
                             case HttpStatusCode.BadRequest: // HTTP 400
@@ -165,8 +169,9 @@ namespace SuccessStory.Clients
                             case HttpStatusCode.ServiceUnavailable: // HTTP 503
                                 break;
                             default:
-                                logger.Error(e, $"SuccessStory - Failed to load from {url}");
-                                AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                                logger.Error(ex, $"SuccessStory - Failed to load from {url}");
+                                var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                                AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                                 break;
                         }
                     }
@@ -201,10 +206,11 @@ namespace SuccessStory.Clients
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        logger.Error(e, $"SuccessStory - Failed to parse.");
-                        AchievementsDatabase.ListErrors.Add("Error on SteamAchievements: " + e.Message);
+                        logger.Error(ex, $"SuccessStory - Failed to parse.");
+                        var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                        AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                     }
                 }
             }

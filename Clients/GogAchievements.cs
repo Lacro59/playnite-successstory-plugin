@@ -5,6 +5,7 @@ using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -89,19 +90,20 @@ namespace SuccessStory.Clients
                 }
                 // TODO Environnement
                 //catch (Exception e) when (!Environment.IsDebugBuild)
-                catch (WebException e)
+                catch (WebException ex)
                 {
-                    if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                    if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
                     {
-                        var resp = (HttpWebResponse)e.Response;
+                        var resp = (HttpWebResponse)ex.Response;
                         switch (resp.StatusCode)
                         {
                             case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                logger.Error(e, $"SuccessStory - HTTP 503 to load from {url}");
+                                logger.Error(ex, $"SuccessStory - HTTP 503 to load from {url}");
                                 break;
                             default:
-                                logger.Error(e, $"SuccessStory - Failed to load from {url}");
-                                AchievementsDatabase.ListErrors.Add("Error on GogAchievements: " + e.Message);
+                                logger.Error(ex, $"SuccessStory - Failed to load from {url}");
+                                var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                                AchievementsDatabase.ListErrors.Add($"Error on GogAchievements [{LineNumber}]: " + ex.Message);
                                 break;
                         }
                     }
@@ -138,10 +140,11 @@ namespace SuccessStory.Clients
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        logger.Error(e, $"SuccessStory - Failed to parse.");
-                        AchievementsDatabase.ListErrors.Add("Error on GogAchievements: " + e.Message);
+                        logger.Error(ex, $"SuccessStory - Failed to parse.");
+                        var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                        AchievementsDatabase.ListErrors.Add($"Error on GogAchievements [{LineNumber}]: " + ex.Message);
                     }
                 }
             }
