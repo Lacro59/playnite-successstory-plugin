@@ -24,9 +24,9 @@ namespace SuccessStory
         private static readonly ILogger logger = LogManager.GetLogger();
 
         // Variables api.
-        public readonly IPlayniteAPI PlayniteApi;
-        public readonly IGameDatabaseAPI PlayniteApiDatabase;
-        public readonly IPlaynitePathsAPI PlayniteApiPaths;
+        public IPlayniteAPI PlayniteApi;
+        public IGameDatabaseAPI PlayniteApiDatabase;
+        public IPlaynitePathsAPI PlayniteApiPaths;
 
         public readonly string PluginUserDataPath;
         SuccessStorySettings settings { get; set; }
@@ -330,8 +330,6 @@ namespace SuccessStory
             var headerClicked = e.OriginalSource as GridViewColumnHeader;
             ListSortDirection direction;
 
-            logger.Info(headerClicked.Name);
-
             // No sort
             if (headerClicked.Name == "lvGameIcon")
             {
@@ -431,6 +429,10 @@ namespace SuccessStory
         protected override void OnClosing(CancelEventArgs e)
         {
             AchievementsDatabase = null;
+            PlayniteApi = null;
+            PlayniteApiDatabase = null;
+            PlayniteApiPaths = null;
+            GC.Collect();
         }
     }
 

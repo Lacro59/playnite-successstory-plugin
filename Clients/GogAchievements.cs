@@ -94,7 +94,7 @@ namespace SuccessStory.Clients
 
                 try
                 {
-                    string urlLang = string.Format(@"https://www.gog.com/user/changeLanguage/{0}", lang.ToLower());  
+                    string urlLang = string.Format(@"https://www.gog.com/user/changeLanguage/{0}", lang.ToLower());
                     ResultWeb = DonwloadStringData(urlLang, url, accessToken).GetAwaiter().GetResult();
                 }
                 // TODO Environnement

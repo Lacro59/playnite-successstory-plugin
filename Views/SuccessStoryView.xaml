@@ -33,7 +33,7 @@
                 <ListView Height="665" x:Name="ListviewGames" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn  Width="50">
+                            <GridViewColumn Width="50">
                                 <GridViewColumnHeader Name="lvGameIcon" Content="{DynamicResource LOCSucessStorylvGamesIcon}"></GridViewColumnHeader>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
