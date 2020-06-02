@@ -17,6 +17,14 @@ namespace SuccessStory
         string PluginUserDataPath;
         AchievementsDatabase AchievementsDatabase;
 
+        int SteamTotal;
+        int SteamTotalAchievements;
+        int GogTotal;
+        int GogTotalAchievements;
+        int OriginTotal;
+        int OriginTotalAchievements;
+
+
         public SuccessStorySettingsView(IPlayniteAPI PlayniteApi, string PluginUserDataPath, SuccessStorySettings settings)
         {
             this.PlayniteApi = PlayniteApi;
@@ -27,27 +35,82 @@ namespace SuccessStory
 
             InitializeComponent();
 
+            SetTotal();
+
             SuccessStoryLoad.Visibility = Visibility.Hidden;
+        }
+
+        internal void SetTotal()
+        {
+            SteamTotal = 0;
+            SteamTotalAchievements = 0;
+            GogTotal = 0;
+            GogTotalAchievements = 0;
+            OriginTotal = 0;
+            OriginTotalAchievements = 0;
+            foreach (var game in PlayniteApi.Database.Games)
+            {
+                if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                {
+                    switch (game.Source.Name.ToLower())
+                    {
+                        case "steam":
+                            SteamTotal += 1;
+                            if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                SteamTotalAchievements += 1;
+                            }
+                            break;
+                        case "gog":
+                            GogTotal += 1;
+                            if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                GogTotalAchievements += 1;
+                            }
+                            break;
+                        case "origin":
+                            OriginTotal += 1;
+                            if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                OriginTotalAchievements += 1;
+                            }
+                            break;
+                    }
+                }
+            }
+            SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
+            GogLoad.Content = GogTotalAchievements + "/" + GogTotal;
+            OriginLoad.Content = OriginTotalAchievements + "/" + OriginTotal;
         }
 
         private void Button_Click_All(object sender, RoutedEventArgs e)
         {
+            SteamLoad.Content = 0 + "/" + SteamTotal;
+            GogLoad.Content = 0 + "/" + GogTotal;
+            OriginLoad.Content = 0 + "/" + OriginTotal;
             RefreshData("All");
+            SetTotal();
         }
 
         private void Button_Click_Steam(object sender, RoutedEventArgs e)
         {
+            SteamLoad.Content = 0 + "/" + SteamTotal;
             RefreshData("Steam");
+            SetTotal();
         }
 
         private void Button_Click_Gog(object sender, RoutedEventArgs e)
         {
+            GogLoad.Content = 0 + "/" + GogTotal;
             RefreshData("GOG");
+            SetTotal();
         }
 
         private void Button_Click_Origin(object sender, RoutedEventArgs e)
         {
+            OriginLoad.Content = 0 + "/" + OriginTotal;
             RefreshData("Origin");
+            SetTotal();
         }
 
         internal void RefreshData(string SourceName)
@@ -65,8 +128,8 @@ namespace SuccessStory
                 if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") 
                     && (game.Source.Name.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all"))
                 {
-                    // Prevent HTTP 429 with 60 request max per minutes.
-                    Thread.Sleep(1000);
+                    // Prevent HTTP 429 with limit request per minutes.
+                    Thread.Sleep(1200);
 
                     Dispatcher.Invoke(new Action(() => {
                         AchievementsDatabase.Remove(game);

@@ -27,6 +27,14 @@ namespace SuccessStory.Models
         public static CumulErrors ListErrors = new CumulErrors();
 
 
+
+        public bool VerifAchievementsLoad(Guid gameID)
+        {
+            return File.Exists(PluginDatabasePath + gameID.ToString() + ".json");
+        }
+
+
+
         public AchievementsDatabase(IPlayniteAPI PlayniteApi, string PluginUserDataPath)
         {
             this.PlayniteApi = PlayniteApi;

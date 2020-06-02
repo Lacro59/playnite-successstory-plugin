@@ -6,26 +6,29 @@
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="600">
     
-    <DockPanel Margin="10" Name="SuccessStorySettings">
+    <DockPanel Margin="20" Name="SuccessStorySettings">
         <StackPanel DockPanel.Dock="Top" Height="342">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableSteam}" Width="400">
+                <CheckBox IsChecked="{Binding enableSteam}" Width="300">
                     <Label Content="{DynamicResource LOCSucessStoryEnableSteam}"></Label>
                 </CheckBox>
+                <Label x:Name="SteamLoad" Width="100">xxx / xxx</Label>
                 <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Steam"></Button>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableGog}" Width="400">
+                <CheckBox IsChecked="{Binding enableGog}" Width="300">
                     <Label Content="{DynamicResource LOCSucessStoryEnableGog}"></Label>
                 </CheckBox>
+                <Label x:Name="GogLoad" Width="100">xxx / xxx</Label>
                 <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Gog"></Button>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableOrigin}" Width="400">
+                <CheckBox IsChecked="{Binding enableOrigin}" Width="300">
                     <Label Content="{DynamicResource LOCSucessStoryEnableOrigin}"></Label>
                 </CheckBox>
+                <Label x:Name="OriginLoad" Width="100">xxx / xxx</Label>
                 <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Origin"></Button>
             </StackPanel>
 
