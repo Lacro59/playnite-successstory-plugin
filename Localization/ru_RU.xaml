@@ -19,6 +19,7 @@
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Enable Origin achievements.</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshData">Refresh data</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Refresh all recent achievements data</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllData">Refresh all achievements data</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">Achievements database has been reset.</sys:String>

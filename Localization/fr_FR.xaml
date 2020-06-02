@@ -19,7 +19,8 @@
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier les succès Origin.</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshData">Rafraîchir les données</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllData">Rafraîchir la base de données.</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Rafraîchir les achievements récents</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllData">Rafraîchir tous les achievements</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 

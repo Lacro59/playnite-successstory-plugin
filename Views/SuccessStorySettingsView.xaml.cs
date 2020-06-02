@@ -92,6 +92,16 @@ namespace SuccessStory
             SetTotal();
         }
 
+
+        private void Button_Click_All_Recent(object sender, RoutedEventArgs e)
+        {
+            SteamLoad.Content = 0 + "/" + SteamTotal;
+            GogLoad.Content = 0 + "/" + GogTotal;
+            OriginLoad.Content = 0 + "/" + OriginTotal;
+            RefreshData("AllRecent");
+            SetTotal();
+        }
+
         private void Button_Click_Steam(object sender, RoutedEventArgs e)
         {
             SteamLoad.Content = 0 + "/" + SteamTotal;
@@ -126,15 +136,35 @@ namespace SuccessStory
             foreach (var game in PlayniteApi.Database.Games)
             {
                 if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") 
-                    && (game.Source.Name.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all"))
+                    && (game.Source.Name.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all" || SourceName.ToLower() == "allrecent"))
                 {
-                    // Prevent HTTP 429 with limit request per minutes.
-                    Thread.Sleep(1200);
+                    bool isOK = true;
+                    if (SourceName.ToLower() == "allrecent")
+                    {
+                        if (
+                            (game.LastActivity != null && game.LastActivity > DateTime.Now.AddMonths(-1)) ||
+                            (game.Added != null && game.Added > DateTime.Now.AddMonths(-1))
+                            )
+                        {
+                            isOK = true;
+                        }
+                        else
+                        {
+                            isOK = false;
+                        }
+                    }
 
-                    Dispatcher.Invoke(new Action(() => {
-                        AchievementsDatabase.Remove(game);
-                        AchievementsDatabase.Add(game, settings);
-                    }), DispatcherPriority.ContextIdle, null);
+                    if (isOK)
+                    {
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            // Prevent HTTP 429 with limit request per minutes.
+                            Thread.Sleep(1000);
+
+                            AchievementsDatabase.Remove(game);
+                            AchievementsDatabase.Add(game, settings);
+                        }), DispatcherPriority.ContextIdle, null);
+                    }
                 }
                 SuccessStoryLoad.Value += 1;
             }

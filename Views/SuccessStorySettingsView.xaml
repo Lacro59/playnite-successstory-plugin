@@ -7,39 +7,41 @@
              d:DesignHeight="400" d:DesignWidth="600">
     
     <DockPanel Margin="20" Name="SuccessStorySettings">
-        <StackPanel DockPanel.Dock="Top" Height="342">
+        <StackPanel DockPanel.Dock="Top" Height="250">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableSteam}" Width="300">
+                <CheckBox IsChecked="{Binding enableSteam}" Width="280">
                     <Label Content="{DynamicResource LOCSucessStoryEnableSteam}"></Label>
                 </CheckBox>
-                <Label x:Name="SteamLoad" Width="100">xxx / xxx</Label>
+                <Label x:Name="SteamLoad" Width="90">xxx / xxx</Label>
                 <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Steam"></Button>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableGog}" Width="300">
+                <CheckBox IsChecked="{Binding enableGog}" Width="280">
                     <Label Content="{DynamicResource LOCSucessStoryEnableGog}"></Label>
                 </CheckBox>
-                <Label x:Name="GogLoad" Width="100">xxx / xxx</Label>
+                <Label x:Name="GogLoad" Width="90">xxx / xxx</Label>
                 <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Gog"></Button>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableOrigin}" Width="300">
+                <CheckBox IsChecked="{Binding enableOrigin}" Width="280">
                     <Label Content="{DynamicResource LOCSucessStoryEnableOrigin}"></Label>
                 </CheckBox>
-                <Label x:Name="OriginLoad" Width="100">xxx / xxx</Label>
+                <Label x:Name="OriginLoad" Width="90">xxx / xxx</Label>
                 <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Origin"></Button>
             </StackPanel>
 
-
             <StackPanel>
-                <ProgressBar Name="SuccessStoryLoad" Height="28" Margin="50,20,50,20"></ProgressBar>
+                <ProgressBar Name="SuccessStoryLoad" Height="28" Margin="50,50,50,20"></ProgressBar>
             </StackPanel>
         </StackPanel>
        
         <StackPanel DockPanel.Dock="Bottom">
-            <Button Content="{DynamicResource LOCSucessStoryRefreshAllData}" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" FontSize="18" Click="Button_Click_All" />
+            <Button Content="{DynamicResource LOCSucessStoryRefreshAllDataRecent}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Height="40" FontSize="18" Click="Button_Click_All_Recent" Margin="0,0,0,20"/>
+            <Button Content="{DynamicResource LOCSucessStoryRefreshAllData}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Height="40" FontSize="18" Click="Button_Click_All" />
         </StackPanel>
     </DockPanel>
 </UserControl>
