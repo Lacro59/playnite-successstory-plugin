@@ -1,13 +1,21 @@
-﻿using Playnite.SDK;
+﻿using Newtonsoft.Json;
+using Playnite.SDK;
+using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 using PluginCommon;
+using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace SuccessStory
@@ -29,7 +37,7 @@ namespace SuccessStory
             string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Add plugin localization in application ressource.
-            Localization.SetPluginLanguage(pluginFolder, api.Paths.ConfigurationPath);
+            PluginCommon.Localization.SetPluginLanguage(pluginFolder, api.Paths.ConfigurationPath);
         }
 
         public override IEnumerable<ExtensionFunction> GetFunctions()
@@ -105,6 +113,137 @@ namespace SuccessStory
                 }
             }
         }
+
+        public override void OnGameSelected(GameSelectionEventArgs args)
+        {
+            if (args.NewValue != null)
+            {
+                if (args.NewValue.Count == 1)
+                {
+                    foreach (ListBox lb in FindVisualChildren<ListBox>(Application.Current.MainWindow))
+                    {
+                        if (lb.Name == "PART_lbAchievements")
+                        {
+                            List<listAchievements> ListBoxAchievements = new List<listAchievements>();
+                            lb.ItemsSource = ListBoxAchievements;
+
+                            try
+                            {
+                                Game SelectedGame = args.NewValue[0];
+
+                                AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
+                                AchievementsDatabase.Initialize();
+                                GameAchievements SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
+
+                                if (SelectedGameAchievements.HaveAchivements)
+                                {
+                                    List<Achievements> ListAchievements = SelectedGameAchievements.Achievements;
+
+
+
+                                    for (int i = 0; i < ListAchievements.Count; i++)
+                                    {
+                                        DateTime? dateUnlock;
+                                        BitmapImage iconImage = new BitmapImage();
+                                        FormatConvertedBitmap ConvertBitmapSource = new FormatConvertedBitmap();
+
+                                        bool isGray = false;
+
+                                        iconImage.BeginInit();
+                                        if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
+                                        {
+                                            dateUnlock = null;
+                                            if (ListAchievements[i].UrlLocked == "")
+                                            {
+                                                iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
+                                                isGray = true;
+                                            }
+                                            else
+                                            {
+                                                iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
+                                            dateUnlock = ListAchievements[i].DateUnlocked;
+                                        }
+                                        iconImage.EndInit();
+
+                                        ConvertBitmapSource.BeginInit();
+                                        ConvertBitmapSource.Source = iconImage;
+                                        if (isGray)
+                                        {
+                                            ConvertBitmapSource.DestinationFormat = PixelFormats.Gray32Float;
+                                        }
+                                        ConvertBitmapSource.EndInit();
+
+                                        string NameAchievement = ListAchievements[i].Name;
+                                        //if (NameAchievement.Length > 35)
+                                        //{
+                                        //    NameAchievement = NameAchievement.Substring(0, 35).Trim() + "...";
+                                        //}
+
+                                        ListBoxAchievements.Add(new listAchievements()
+                                        {
+                                            Name = NameAchievement,
+                                            NameToolTip = ListAchievements[i].Name,
+                                            IsTrimmed = (NameAchievement != ListAchievements[i].Name),
+                                            DateUnlock = dateUnlock,
+                                            Icon = ConvertBitmapSource,
+                                            Description = ListAchievements[i].Description
+                                        });
+
+                                        iconImage = null;
+                                    }
+
+
+                                    // Sorting default.
+                                    lb.ItemsSource = ListBoxAchievements;
+                                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lb.ItemsSource);
+                                    view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
+                                    lb.UpdateLayout();
+                                }
+
+                                AchievementsDatabase = null;
+                            }
+                            catch
+                            {
+
+                            }
+                            //logger.Debug("test: " + SelectedGame.Name + " - " + SelectedGameAchievements.Total);
+
+                            //Label countAchievements = new Label();
+                            //countAchievements.Content = SelectedGame.Name + " - " + SelectedGameAchievements.Total;
+                            //tb.Children.Clear();
+                            //tb.Children.Add(countAchievements);
+                            //tb.UpdateLayout();
+                        }
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
+        }
+
 
         public override ISettings GetSettings(bool firstRunSettings)
         {
