@@ -45,5 +45,6 @@
     <sys:String x:Key="LOCSucessStorylvGamesSourceName">Fuente</sys:String>
     <sys:String x:Key="LOCSucessStorylvGamesProgression">Progresión</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">All achievements unlocked by month</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Logros desbloqueados por mes</sys:String>
 </ResourceDictionary>

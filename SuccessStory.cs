@@ -129,6 +129,7 @@ namespace SuccessStory
                     AchievementsDatabase.Initialize();
 
                     Game SelectedGame = args.NewValue[0];
+                    GameAchievements SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
 
                     foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Application.Current.MainWindow))
                     {
@@ -140,8 +141,6 @@ namespace SuccessStory
                             try
                             {
                                 List<listAchievements> ListBoxAchievements = new List<listAchievements>();
-
-                                GameAchievements SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
 
                                 // Download Achievements if not exist in database.
                                 if (SelectedGameAchievements == null)
@@ -157,8 +156,6 @@ namespace SuccessStory
                                     if (SelectedGameAchievements.HaveAchivements)
                                     {
                                         AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
-
-
                                         sp.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements));
                                     }
                                 }
@@ -179,18 +176,19 @@ namespace SuccessStory
 
                             try
                             {
-                                AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
-                                string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
-                                SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-                                StatsGraphicAchievementsSeries.Add(new LineSeries
+                                if (SelectedGameAchievements.HaveAchivements)
                                 {
-                                    Title = "",
-                                    Values = GraphicsData.Series
-                                });
+                                    AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
+                                    string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+                                    SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+                                    StatsGraphicAchievementsSeries.Add(new LineSeries
+                                    {
+                                        Title = "",
+                                        Values = GraphicsData.Series
+                                    });
 
-                                sp.Children.Clear();
-                                sp.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
-                                sp.UpdateLayout();
+                                    sp.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
+                                }
                             }
                             catch (Exception ex)
                             {

@@ -76,13 +76,9 @@ namespace SuccessStory
                 Values = GraphicsData.Series
             });
 
-            //var acGraphics = new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, this);
             SuccessStory_Achievements_Graphics.Children.Clear();
             SuccessStory_Achievements_Graphics.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, this));
             SuccessStory_Achievements_Graphics.UpdateLayout();
-
-            //Dispatcher.BeginInvoke(new Action(() => { acGraphics.ForceHeight(SuccessStory_Achievements_Graphics.MaxHeight + 7); }));
-
 
             // Set Binding data
             DataContext = this;
@@ -200,6 +196,20 @@ namespace SuccessStory
                 SuccessStory_Achievements_List.Children.Clear();
                 SuccessStory_Achievements_List.Children.Add(new SuccessStoryAchievementsList(ListAchievements, this));
                 SuccessStory_Achievements_List.UpdateLayout();
+
+
+                AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth(GameId);
+                string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+                SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+                StatsGraphicAchievementsSeries.Add(new LineSeries
+                {
+                    Title = "",
+                    Values = GraphicsData.Series
+                });
+
+                SuccessStory_Achievements_Graphics_Game.Children.Clear();
+                SuccessStory_Achievements_Graphics_Game.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, this));
+                SuccessStory_Achievements_Graphics_Game.UpdateLayout();
             }
         }
 

@@ -29,8 +29,17 @@
                 </Grid>
             </StackPanel>
 
-            <StackPanel Margin="10,0,10,0">
-                <ListView Height="665" x:Name="ListviewGames" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
+            <DockPanel DockPanel.Dock="Bottom" Margin="10,0,10,0">
+                <StackPanel DockPanel.Dock="Top">
+                    <Label Content="{DynamicResource LOCSucessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                </StackPanel>
+
+                <StackPanel x:Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
+                </StackPanel>
+            </DockPanel>
+
+            <StackPanel Margin="10,0,10,10">
+                <ListView Height="458" x:Name="ListviewGames" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="50">
@@ -80,21 +89,21 @@
 
         <!--Details achievements-->
         <DockPanel DockPanel.Dock="Right" Margin="0">
-            <Border DockPanel.Dock="Top" Margin="10,44.5,10,10" Height="510" MaxHeight="510" 
-                    BorderBrush="{DynamicResource NormalBorderBrush}" BorderThickness="{DynamicResource ControlBorderThickness}">
-
-                <StackPanel x:Name="SuccessStory_Achievements_List" Height="510" MaxHeight="510" >
-                </StackPanel>
-            </Border>
-
-            <DockPanel DockPanel.Dock="Bottom" Margin="10,0,10,10">
+            <DockPanel  DockPanel.Dock="Top" Margin="10,44.5,10,0">
                 <StackPanel DockPanel.Dock="Top">
-                    <Label Content="{DynamicResource LOCSucessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                    <Label Content="{DynamicResource LOCSucessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
                 </StackPanel>
 
-                <StackPanel x:Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
+                <StackPanel x:Name="SuccessStory_Achievements_Graphics_Game" DockPanel.Dock="Bottom" Height="168">
                 </StackPanel>
             </DockPanel>
+
+            <Border DockPanel.Dock="Bottom" Margin="10,10,10,0" Height="490" MaxHeight="490" 
+                    BorderBrush="{DynamicResource NormalBorderBrush}" BorderThickness="{DynamicResource ControlBorderThickness}">
+
+                <StackPanel x:Name="SuccessStory_Achievements_List" Height="490" MaxHeight="490">
+                </StackPanel>
+            </Border>
         </DockPanel>
     </DockPanel>
 </Window>

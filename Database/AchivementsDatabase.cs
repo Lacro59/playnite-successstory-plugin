@@ -12,6 +12,7 @@ using PluginCommon;
 using System.Diagnostics;
 using LiveCharts;
 using Newtonsoft.Json.Linq;
+using PluginCommon.LiveChartsCommon;
 
 namespace SuccessStory.Models
 {
@@ -84,7 +85,7 @@ namespace SuccessStory.Models
         public AchievementsGraphicsDataCount GetCountByMonth(Guid? GameID = null)
         {
             string[] GraphicsAchievementsLabels = new string[12];
-            ChartValues<int> SourceAchievementsSeries = new ChartValues<int>();
+            ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
 
             // All achievements
             if (GameID == null)
@@ -92,7 +93,11 @@ namespace SuccessStory.Models
                 for (int i = 11; i >= 0; i--)
                 {
                     GraphicsAchievementsLabels[(11 - i)] = DateTime.Now.AddMonths(-i).ToString("yyyy-MM");
-                    SourceAchievementsSeries.Add(0);
+                    SourceAchievementsSeries.Add(new CustomerForSingle
+                    {
+                        Name = DateTime.Now.AddMonths(-i).ToString("yyyy-MM"),
+                        Values = 0
+                    });
                 }
 
                 foreach (var item in PluginDatabase)
@@ -107,7 +112,7 @@ namespace SuccessStory.Models
 
                             if (index >= 0 && index < 12)
                             {
-                                SourceAchievementsSeries[index] += 1;
+                                SourceAchievementsSeries[index].Values += 1;
                             }
                         }
                     }
@@ -118,27 +123,34 @@ namespace SuccessStory.Models
             {
                 List<Achievements> Achievements = Get((Guid)GameID).Achievements;
 
-                Achievements.Sort((x, y) => ((DateTime)x.DateUnlocked).CompareTo((DateTime)y.DateUnlocked));
-
-                DateTime TempDateTime = DateTime.Now;
-                if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "0001-01") {
-                    TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
-                }
-
-                for (int i = 11; i >= 0; i--)
+                if (Achievements != null && Achievements.Count > 0)
                 {
-                    GraphicsAchievementsLabels[(11 - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
-                    SourceAchievementsSeries.Add(0);
-                }
-
-                for (int i = 0; i < Achievements.Count; i++)
-                {
-                    string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM");
-                    int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
-
-                    if (index >= 0 && index < 12)
+                    Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
+                    DateTime TempDateTime = DateTime.Now;
+                    if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "0001-01")
                     {
-                        SourceAchievementsSeries[index] += 1;
+                        TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
+                    }
+
+                    for (int i = 11; i >= 0; i--)
+                    {
+                        GraphicsAchievementsLabels[(11 - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
+                        SourceAchievementsSeries.Add(new CustomerForSingle
+                        {
+                            Name = TempDateTime.AddMonths(-i).ToString("yyyy-MM"),
+                            Values = 0
+                        });
+                    }
+
+                    for (int i = 0; i < Achievements.Count; i++)
+                    {
+                        string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                        int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
+
+                        if (index >= 0 && index < 12)
+                        {
+                            SourceAchievementsSeries[index].Values += 1;
+                        }
                     }
                 }
             }
@@ -372,6 +384,6 @@ namespace SuccessStory.Models
     public class AchievementsGraphicsDataCount
     {
         public string[] Labels { get; set; }
-        public ChartValues<int> Series { get; set; }
+        public ChartValues<CustomerForSingle> Series { get; set; }
     }
 }

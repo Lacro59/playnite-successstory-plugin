@@ -45,5 +45,6 @@
     <sys:String x:Key="LOCSucessStorylvGamesSourceName">Source</sys:String>
     <sys:String x:Key="LOCSucessStorylvGamesProgression">Progression</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Tous les succès obtenus par mois</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Succès obtenus par mois</sys:String>
 </ResourceDictionary>
