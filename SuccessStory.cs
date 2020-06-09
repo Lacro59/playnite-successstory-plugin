@@ -176,18 +176,30 @@ namespace SuccessStory
 
                             try
                             {
-                                if (SelectedGameAchievements.HaveAchivements)
+                                // Download Achievements if not exist in database.
+                                if (SelectedGameAchievements == null)
                                 {
-                                    AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
-                                    string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
-                                    SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-                                    StatsGraphicAchievementsSeries.Add(new LineSeries
-                                    {
-                                        Title = "",
-                                        Values = GraphicsData.Series
-                                    });
+                                    logger.Info("SuccesStory - Download achievements for " + SelectedGame.Name);
+                                    AchievementsDatabase.Add(SelectedGame, settings);
+                                    AchievementsDatabase.Initialize();
+                                    SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
+                                }
 
-                                    sp.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
+                                if (SelectedGameAchievements != null)
+                                {
+                                    if (SelectedGameAchievements.HaveAchivements)
+                                    {
+                                        AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
+                                        string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+                                        SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+                                        StatsGraphicAchievementsSeries.Add(new LineSeries
+                                        {
+                                            Title = "",
+                                            Values = GraphicsData.Series
+                                        });
+
+                                        sp.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
+                                    }
                                 }
                             }
                             catch (Exception ex)

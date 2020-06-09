@@ -201,6 +201,41 @@ namespace SuccessStory.Models
             return Result;
         }
 
+
+        private GogAchievements gogAPI { get; set; }
+        private OriginAchievements originAPI { get; set; }
+
+        public void InitializeMultipleAdd(SuccessStorySettings settings, string GameSourceName = "all")
+        {
+            switch (GameSourceName.ToLower())
+            {
+                case "all":
+                    InitializeMultipleAdd(settings, "Steam");
+                    InitializeMultipleAdd(settings, "GOG");
+                    InitializeMultipleAdd(settings, "Origin");
+                    break;
+
+                case "steam":
+                    break;
+
+                case "gog":
+                    if (settings.enableGog && gogAPI == null)
+                    {
+                        gogAPI = new GogAchievements(PlayniteApi);
+                    }
+                    break;
+
+                case "origin":
+                    if (settings.enableOrigin && originAPI == null)
+                    {
+                        originAPI = new OriginAchievements(PlayniteApi);
+                    }
+                    break;
+            }
+        }
+
+
+
         /// <summary>
         /// Generate database achivements for the game if achievement exist and game not exist in database.
         /// </summary>
@@ -235,7 +270,10 @@ namespace SuccessStory.Models
                     // TODO one func
                     if (GameSourceName.ToLower() == "gog")
                     {
-                        GogAchievements gogAPI = new GogAchievements();
+                        if (gogAPI == null)
+                        {
+                            gogAPI = new GogAchievements(PlayniteApi);
+                        }
                         GameAchievements = gogAPI.GetAchievements(PlayniteApi, GameId);
                     }
 
@@ -247,7 +285,10 @@ namespace SuccessStory.Models
 
                     if (GameSourceName.ToLower() == "origin")
                     {
-                        OriginAchievements originAPI = new OriginAchievements();
+                        if (originAPI == null)
+                        {
+                            originAPI = new OriginAchievements(PlayniteApi);
+                        }
                         GameAchievements = originAPI.GetAchievements(PlayniteApi, GameId);
                     }
 

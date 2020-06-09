@@ -21,6 +21,12 @@ namespace SuccessStory.Clients
 
         private GogAccountClient gogAPI;
 
+        public GogAchievements(IPlayniteAPI PlayniteApi)
+        {
+            var view = PlayniteApi.WebViews.CreateOffscreenView();
+            gogAPI = new GogAccountClient(view);
+        }
+
 
         /// <summary>
         /// Get achievements after change language.
@@ -71,9 +77,6 @@ namespace SuccessStory.Clients
 
             string ResultWeb = "";
 
-            var view = PlayniteApi.WebViews.CreateOffscreenView();
-            gogAPI = new GogAccountClient(view);
-
             // Only if user is logged. 
             if (gogAPI.GetIsUserLoggedIn())
             {
@@ -113,7 +116,6 @@ namespace SuccessStory.Clients
                             default:
                                 var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
                                 logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to load from {url}");
-                                //AchievementsDatabase.ListErrors.Add($"Error on GogAchievements [{LineNumber}]: " + ex.Message);
                                 break;
                         }
                     }
@@ -155,7 +157,6 @@ namespace SuccessStory.Clients
                     {
                         var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
                         logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to parse.");
-                        //AchievementsDatabase.ListErrors.Add($"Error on GogAchievements [{LineNumber}]: " + ex.Message);
                         return Result;
                     }
                 }

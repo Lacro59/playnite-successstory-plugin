@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Text;
 
 namespace SuccessStory.Clients
 {
@@ -78,7 +79,7 @@ namespace SuccessStory.Clients
             ResultWeb = "";
             try
             {
-                ResultWeb = HttpDownloader.DownloadString(url);
+                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
             }
             catch (WebException ex)
             {
@@ -94,7 +95,6 @@ namespace SuccessStory.Clients
                         default:
                             var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
                             logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to load from {url}");
-                            //AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                             break;
                     }
                     return Result;
@@ -149,7 +149,6 @@ namespace SuccessStory.Clients
                 {
                     var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
                     logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to parse.");
-                    //AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                     return Result;
                 }
 
@@ -162,7 +161,7 @@ namespace SuccessStory.Clients
                 ResultWeb = "";
                 try
                 {
-                    ResultWeb = HttpDownloader.DownloadString(url);
+                    ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
                 }
                 catch (WebException ex)
                 {
@@ -178,7 +177,6 @@ namespace SuccessStory.Clients
                             default:
                                 var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
                                 logger.Error(ex, $"SuccessStory  [{LineNumber}] - Failed to load from {url}");
-                                //AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                                 break;
                         }
                         return Result;
@@ -218,7 +216,6 @@ namespace SuccessStory.Clients
                     {
                         var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
                         logger.Error(ex, $"SuccessStory  [{LineNumber}] - Failed to parse.");
-                        //AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements [{LineNumber}]: " + ex.Message);
                         return Result;
                     }
                 }

@@ -95,6 +95,8 @@ namespace SuccessStory
 
         private void Button_Click_All_Recent(object sender, RoutedEventArgs e)
         {
+            AchievementsDatabase.InitializeMultipleAdd(settings);
+
             SteamLoad.Content = 0 + "/" + SteamTotal;
             GogLoad.Content = 0 + "/" + GogTotal;
             OriginLoad.Content = 0 + "/" + OriginTotal;
@@ -104,6 +106,8 @@ namespace SuccessStory
 
         private void Button_Click_Steam(object sender, RoutedEventArgs e)
         {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "Steam");
+
             SteamLoad.Content = 0 + "/" + SteamTotal;
             RefreshData("Steam");
             SetTotal();
@@ -111,6 +115,8 @@ namespace SuccessStory
 
         private void Button_Click_Gog(object sender, RoutedEventArgs e)
         {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "GOG");
+
             GogLoad.Content = 0 + "/" + GogTotal;
             RefreshData("GOG");
             SetTotal();
@@ -118,6 +124,8 @@ namespace SuccessStory
 
         private void Button_Click_Origin(object sender, RoutedEventArgs e)
         {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "Origin");
+
             OriginLoad.Content = 0 + "/" + OriginTotal;
             RefreshData("Origin");
             SetTotal();

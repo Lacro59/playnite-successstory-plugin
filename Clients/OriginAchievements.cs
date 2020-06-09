@@ -22,6 +22,12 @@ namespace SuccessStory.Clients
 
         OriginAccountClient originAPI;
 
+        public OriginAchievements(IPlayniteAPI PlayniteApi)
+        {
+            var view = PlayniteApi.WebViews.CreateOffscreenView();
+            originAPI = new OriginAccountClient(view);
+        }
+
 
         /// <summary>
         /// Get all achievements for a Origin game.
@@ -48,9 +54,6 @@ namespace SuccessStory.Clients
                 Progression = 0,
                 Achievements = Achievements
             };
-
-            var view = PlayniteApi.WebViews.CreateOffscreenView();
-            originAPI = new OriginAccountClient(view);
 
             // Only if user is logged. 
             if (originAPI.GetIsUserLoggedIn())
@@ -113,7 +116,6 @@ namespace SuccessStory.Clients
                                 default:
                                     var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
                                     logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to load from {url}");
-                                    //AchievementsDatabase.ListErrors.Add($"Error on OriginAchievements [{LineNumber}]: " + ex.Message);
                                     break;
                             }
                             return Result;
