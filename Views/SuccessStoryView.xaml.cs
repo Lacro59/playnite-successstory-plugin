@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using LiveCharts;
 using LiveCharts.Wpf;
-using Newtonsoft.Json;
 using Playnite.SDK;
 using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
+using SuccessStory.Views.Interface;
 
 namespace SuccessStory
 {
@@ -66,29 +67,21 @@ namespace SuccessStory
             GetListGame();
 
 
-            // Graphic
+            AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth();
+            string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
             SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-            string[] StatsGraphicsAchievementsLabels = new string[12];
-            ChartValues<double> SourceAchievementsSeries = new ChartValues<double>();
-            int counter = 0;
-
-            var ListData = AchievementsDatabase.GetCountByMonth();
-            for (int i = 11; i >= 0; i--)
-            {
-                SourceAchievementsSeries.Add(ListData[DateTime.Now.AddMonths(-i).ToString("yyyy-MM")]);
-                StatsGraphicsAchievementsLabels[counter] = DateTime.Now.AddMonths(-i).ToString("yyyy-MM");
-                counter += 1;
-            }
-
             StatsGraphicAchievementsSeries.Add(new LineSeries
             {
                 Title = "",
-                Values = SourceAchievementsSeries
+                Values = GraphicsData.Series
             });
 
-            StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
-            //StatsGraphicAchievementsX.LabelFormatter = value => value;
-            StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
+            //var acGraphics = new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, this);
+            SuccessStory_Achievements_Graphics.Children.Clear();
+            SuccessStory_Achievements_Graphics.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, this));
+            SuccessStory_Achievements_Graphics.UpdateLayout();
+
+            //Dispatcher.BeginInvoke(new Action(() => { acGraphics.ForceHeight(SuccessStory_Achievements_Graphics.MaxHeight + 7); }));
 
 
             // Set Binding data
@@ -101,7 +94,7 @@ namespace SuccessStory
         /// <param name="SearchGameName"></param>
         public void GetListGame(string SearchGameName = "")
         {
-            List<listGame> ListGames = new List<listGame>();
+            List<ListGames> ListGames = new List<ListGames>();
             foreach (var item in PlayniteApiDatabase.Games)
             {
                 if (item.Name.ToLower().Contains(SearchGameName.ToLower()) && AchievementsDatabase.HaveAchievements(item.Id))
@@ -140,7 +133,7 @@ namespace SuccessStory
                             iconImage.EndInit();
                         }
 
-                        ListGames.Add(new listGame()
+                        ListGames.Add(new ListGames()
                         {
                             Id = GameId,
                             Name = GameName,
@@ -195,7 +188,7 @@ namespace SuccessStory
         /// <param name="e"></param>
         private void ListviewGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            listGame GameSelected = (listGame)((ListBox)sender).SelectedItem;
+            ListGames GameSelected = (ListGames)((ListBox)sender).SelectedItem;
 
             if (GameSelected != null)
             {
@@ -204,84 +197,9 @@ namespace SuccessStory
                 GameAchievements GameAchievements = AchievementsDatabase.Get(GameId);
                 List<Achievements> ListAchievements = GameAchievements.Achievements;
 
-                List<listAchievements> ListBoxAchievements = new List<listAchievements>();
-
-                for (int i = 0; i < ListAchievements.Count; i++)
-                {
-                    DateTime? dateUnlock;
-                    BitmapImage iconImage = new BitmapImage();
-                    FormatConvertedBitmap ConvertBitmapSource = new FormatConvertedBitmap();
-
-                    bool isGray = false;
-
-                    iconImage.BeginInit();
-                    if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
-                    {
-                        dateUnlock = null;
-                        if (ListAchievements[i].UrlLocked == "")
-                        {
-                            iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
-                            isGray = true;
-                        }
-                        else
-                        {
-                            iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
-                        }
-                    }
-                    else
-                    {
-                        iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
-                        dateUnlock = ListAchievements[i].DateUnlocked;
-                    }
-                    iconImage.EndInit();
-
-
-                    //Bitmap iconBitmap = BitmapImage2Bitmap(iconImage);
-                    //iconBitmap.MakeTransparent(iconBitmap.GetPixel(1, 1));
-                    //iconImage = BitmapToImageSource(iconBitmap);
-
-                    //FormatConvertedBitmap _sourceGray = new FormatConvertedBitmap(
-                    //    new BitmapImage(new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute)), 
-                    //    PixelFormats.Gray32Float, null, 100);
-
-
-                    ConvertBitmapSource.BeginInit();
-                    ConvertBitmapSource.Source = iconImage;
-                    if (isGray)
-                    {
-                        ConvertBitmapSource.DestinationFormat = PixelFormats.Gray32Float;
-                    }
-                    ConvertBitmapSource.EndInit();
-
-                    string NameAchievement = ListAchievements[i].Name;
-                    if (NameAchievement.Length > 35)
-                    {
-                        NameAchievement = NameAchievement.Substring(0, 35).Trim() + "...";
-                    }
-
-                    ListBoxAchievements.Add(new listAchievements()
-                    {
-                        Name = NameAchievement,
-                        NameToolTip = ListAchievements[i].Name,
-                        IsTrimmed = (NameAchievement != ListAchievements[i].Name),
-                        DateUnlock = dateUnlock,
-                        //Icon = iconImage,
-                        Icon = ConvertBitmapSource,
-                        Description = ListAchievements[i].Description
-                    });
-
-                    iconImage = null;
-                }
-
-
-                // Sorting default.
-                lbAchievements.ItemsSource = ListBoxAchievements;
-                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
-                view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
-            }
-            else
-            {
-                lbAchievements.ItemsSource = null;
+                SuccessStory_Achievements_List.Children.Clear();
+                SuccessStory_Achievements_List.Children.Add(new SuccessStoryAchievementsList(ListAchievements, this));
+                SuccessStory_Achievements_List.UpdateLayout();
             }
         }
 
@@ -320,6 +238,7 @@ namespace SuccessStory
 
         #region Functions sorting ListviewGames.
         private GridViewColumnHeader _lastHeaderClicked = null;
+
         private ListSortDirection _lastDirection ;
 
         private void ListviewGames_onHeaderClick(object sender, RoutedEventArgs e)
@@ -434,37 +353,5 @@ namespace SuccessStory
             PlayniteApiPaths = null;
             GC.Collect();
         }
-    }
-
-
-    /// <summary>
-    /// Class for the listview games
-    /// </summary>
-    public class listGame
-    {
-        public string Id { get; set; }
-        public BitmapImage Icon { get; set; }
-        public string Name { get; set; }
-        public DateTime? LastActivity { get; set; }
-        public string SourceName { get; set; }
-        public string SourceIcon { get; set; }
-        public int ProgressionValue { get; set; }
-        public int Total { get; set; }
-        public string TotalPercent { get; set; }
-        public int Unlocked { get; set; }
-    }
-
-    /// <summary>
-    /// Class for the listbox achievements
-    /// </summary>
-    public class listAchievements
-    {
-        //public BitmapImage Icon { get; set; }
-        public FormatConvertedBitmap Icon { get; set; }
-        public string Name { get; set; }
-        public string NameToolTip { get; set; }
-        public Boolean IsTrimmed { get; set; }
-        public DateTime? DateUnlock { get; set; }
-        public string Description { get; set; }
     }
 }

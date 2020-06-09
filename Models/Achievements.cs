@@ -5,7 +5,7 @@ namespace SuccessStory.Models
     /// <summary>
     /// Represents achievements object.
     /// </summary>
-    class Achievements
+    public class Achievements
     {
         /// <summary>
         /// Achievement's name.

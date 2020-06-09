@@ -71,10 +71,6 @@
       <HintPath>Ressources\OriginLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="playnite-plugincommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Ressources\playnite-plugincommon.dll</HintPath>
-    </Reference>
     <Reference Include="Playnite.Common">
       <HintPath>Resources\Playnite.Common.dll</HintPath>
       <Private>False</Private>
@@ -82,6 +78,10 @@
     <Reference Include="Playnite.SDK, Version=5.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\PlayniteSDK.5.2.0\lib\net462\Playnite.SDK.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="PluginCommon, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\PluginCommon.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -107,9 +107,17 @@
     <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\Achievements.cs" />
     <Compile Include="Database\AchivementsDatabase.cs" />
+    <Compile Include="Models\ListAchievements.cs" />
+    <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
+    <Compile Include="Views\Interface\SuccessStoryAchievementsGraphics.xaml.cs">
+      <DependentUpon>SuccessStoryAchievementsGraphics.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Interface\SuccessStoryAchievementsList.xaml.cs">
+      <DependentUpon>SuccessStoryAchievementsList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SuccessStorySettingsView.xaml.cs">
       <DependentUpon>SuccessStorySettingsView.xaml</DependentUpon>
     </Compile>
@@ -265,7 +273,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="README.md" />
-    <None Include="Resources\playnite-plugincommon.dll" />
     <None Include="Resources\PlayniteResources\Common.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -398,6 +405,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="Views\Interface\SuccessStoryAchievementsGraphics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Interface\SuccessStoryAchievementsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SuccessStorySettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -414,6 +429,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\GogLibrary.dll" />
+    <Content Include="Resources\PluginCommon.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\OriginLibrary.dll" />

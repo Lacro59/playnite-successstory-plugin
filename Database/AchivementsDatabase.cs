@@ -10,6 +10,8 @@ using SuccessStory.Database;
 using SuccessStory.Clients;
 using PluginCommon;
 using System.Diagnostics;
+using LiveCharts;
+using Newtonsoft.Json.Linq;
 
 namespace SuccessStory.Models
 {
@@ -75,33 +77,73 @@ namespace SuccessStory.Models
         }
 
         /// <summary>
-        /// Get number achievements unlock by month.
+        /// Get number achievements unlock by month for a game or not.
         /// </summary>
+        /// <param name="GameID"></param>
         /// <returns></returns>
-        public ConcurrentDictionary<string, int> GetCountByMonth()
+        public AchievementsGraphicsDataCount GetCountByMonth(Guid? GameID = null)
         {
-            ConcurrentDictionary<string, int> CountByMonth = new ConcurrentDictionary<string, int>();
-            for (int i = 11; i >= 0 ; i--)
-            {
-                CountByMonth.TryAdd(DateTime.Now.AddMonths(-i).ToString("yyyy-MM"), 0);
-            }
+            string[] GraphicsAchievementsLabels = new string[12];
+            ChartValues<int> SourceAchievementsSeries = new ChartValues<int>();
 
-            foreach (var item in PluginDatabase)
+            // All achievements
+            if (GameID == null)
             {
-                List<Achievements> temp = item.Value.Achievements;
-                foreach (Achievements itemAchievements in temp)
+                for (int i = 11; i >= 0; i--)
                 {
-                    if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime)) {
-                        string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                    GraphicsAchievementsLabels[(11 - i)] = DateTime.Now.AddMonths(-i).ToString("yyyy-MM");
+                    SourceAchievementsSeries.Add(0);
+                }
 
-                        if (CountByMonth.ContainsKey(tempDate))
+                foreach (var item in PluginDatabase)
+                {
+                    List<Achievements> temp = item.Value.Achievements;
+                    foreach (Achievements itemAchievements in temp)
+                    {
+                        if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
                         {
-                            CountByMonth[tempDate] = CountByMonth[tempDate] + 1;
+                            string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                            int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
+
+                            if (index >= 0 && index < 12)
+                            {
+                                SourceAchievementsSeries[index] += 1;
+                            }
                         }
                     }
                 }
             }
-            return CountByMonth;
+            // Achievement for a game
+            else
+            {
+                List<Achievements> Achievements = Get((Guid)GameID).Achievements;
+
+                Achievements.Sort((x, y) => ((DateTime)x.DateUnlocked).CompareTo((DateTime)y.DateUnlocked));
+
+                DateTime TempDateTime = DateTime.Now;
+                if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "0001-01") {
+                    TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
+                }
+
+                for (int i = 11; i >= 0; i--)
+                {
+                    GraphicsAchievementsLabels[(11 - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
+                    SourceAchievementsSeries.Add(0);
+                }
+
+                for (int i = 0; i < Achievements.Count; i++)
+                {
+                    string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                    int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
+
+                    if (index >= 0 && index < 12)
+                    {
+                        SourceAchievementsSeries[index] += 1;
+                    }
+                }
+            }
+
+            return new AchievementsGraphicsDataCount { Labels = GraphicsAchievementsLabels, Series = SourceAchievementsSeries };
         }
 
         /// <summary>
@@ -325,5 +367,11 @@ namespace SuccessStory.Models
 
             return Result;
         }
+    }
+
+    public class AchievementsGraphicsDataCount
+    {
+        public string[] Labels { get; set; }
+        public ChartValues<int> Series { get; set; }
     }
 }

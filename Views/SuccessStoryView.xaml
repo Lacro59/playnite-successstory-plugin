@@ -80,85 +80,19 @@
 
         <!--Details achievements-->
         <DockPanel DockPanel.Dock="Right" Margin="0">
-            <!--StackPanel DockPanel.Dock="Top" Margin="10" x:Name="scGameInformation" Height="200">
-                <Label x:Name="lInfo" Content="{DynamicResource LOCSucessStoryGameInformation}" VerticalAlignment="Top" FontSize="24" HorizontalAlignment="Center" Height="45" MinWidth="50"/>
+            <Border DockPanel.Dock="Top" Margin="10,44.5,10,10" Height="510" MaxHeight="510" 
+                    BorderBrush="{DynamicResource NormalBorderBrush}" BorderThickness="{DynamicResource ControlBorderThickness}">
 
-                <Grid Height="35" VerticalAlignment="Top">
-                    <Label x:Name="lTotalCount" Content="Achievements number" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                    <Label x:Name="totalCount" Content="totalCount" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
-                </Grid>
-
-                <Grid Height="35" VerticalAlignment="Top">
-                    <Label x:Name="ltotalCountUnlock"  Content="Achievements unlocked" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                    <Label x:Name="totalCountUnlock" Content="totalCountUser" HorizontalAlignment="Right" Width="115" FontSize="16" Margin="0,0,207,0"></Label>
-                </Grid>
-
-                <Grid Height="35" VerticalAlignment="Top">
-                    <Label x:Name="labelProgression"  Content="Progression" HorizontalAlignment="Left" Width="210" FontSize="16"></Label>
-                    <ProgressBar x:Name="ProgressionCount" Minimum="0" Maximum="100" Height="28" VerticalAlignment="Center" Margin="210,3,40,4" />
-                </Grid>
-            </-->
-
-            <StackPanel DockPanel.Dock="Top" Margin="10,44.5,10,10" Height="510">
-                <ListBox x:Name="lbAchievements" Height="510">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ToolTip>
-                                    <ToolTip Name="ttName" Visibility="{Binding IsTrimmed, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                             Content="{Binding NameToolTip}"></ToolTip>
-                                </Grid.ToolTip>
-                                
-                                <StackPanel Margin="3,0,3,3" Orientation="Horizontal">
-                                    <DockPanel>
-                                        <!--Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Source="{Binding Icon}" Margin="5,0,10,0"/-->
-                                        <Image HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="48" Margin="5,0,10,0">
-                                            <Image.Source>
-                                                <FormatConvertedBitmap Source="{Binding Icon}"/>
-                                            </Image.Source>
-                                        </Image>
-                                    </DockPanel>
-
-                                    <DockPanel>
-                                        <StackPanel DockPanel.Dock="Top">
-                                            <Grid>
-                                                <!--TextBlock Text="{Binding Name}" Width="300" TextTrimming="WordEllipsis" TextWrapping="NoWrap" HorizontalAlignment="Left" /-->
-                                                <TextBlock Text="{Binding Name}" />
-                                                <TextBlock TextAlignment="Right" Text="{Binding DateUnlock, StringFormat='dd/MM/yyyy HH:mm'}" />
-                                            </Grid>
-                                        </StackPanel>
-
-                                        <StackPanel DockPanel.Dock="Bottom">
-                                            <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="420" Foreground="#FF8F8B8B" />
-                                        </StackPanel>
-                                    </DockPanel>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
+                <StackPanel x:Name="SuccessStory_Achievements_List" Height="510" MaxHeight="510" >
+                </StackPanel>
+            </Border>
 
             <DockPanel DockPanel.Dock="Bottom" Margin="10,0,10,10">
                 <StackPanel DockPanel.Dock="Top">
                     <Label Content="{DynamicResource LOCSucessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
                 </StackPanel>
 
-                <StackPanel DockPanel.Dock="Bottom">
-                    <!-- TODO https://github.com/Live-Charts/Live-Charts/issues/619 -->
-                    <lvc:CartesianChart x:Name="StatsGraphicAchievements" LegendLocation="Bottom" Margin="0" Height="175" MinHeight="50">
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis x:Name="StatsGraphicAchievementsX" MinValue="0" ShowLabels="True">
-                                <lvc:Axis.Separator>
-                                    <lvc:Separator Step="1" />
-                                </lvc:Axis.Separator>
-                            </lvc:Axis>
-                        </lvc:CartesianChart.AxisX>
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis x:Name="StatsGraphicAchievementsY" ShowLabels="False">
-                            </lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-                    </lvc:CartesianChart>
+                <StackPanel x:Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
                 </StackPanel>
             </DockPanel>
         </DockPanel>

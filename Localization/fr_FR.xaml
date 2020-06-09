@@ -11,6 +11,11 @@
     <sys:String x:Key="LOCLanguageCountry">FR</sys:String>
 
     <!--  
+    MainView
+    -->
+    <sys:String x:Key="LOCSucessStoryAchievements">Succès</sys:String>
+
+    <!--  
     SuccessStorySettingsView
     -->
 

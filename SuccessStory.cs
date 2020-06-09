@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using LiveCharts;
+using LiveCharts.Wpf;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
@@ -6,9 +9,11 @@ using Playnite.SDK.Plugins;
 using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
+using SuccessStory.Views.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -120,130 +125,87 @@ namespace SuccessStory
             {
                 if (args.NewValue.Count == 1)
                 {
-                    foreach (ListBox lb in FindVisualChildren<ListBox>(Application.Current.MainWindow))
+                    AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
+                    AchievementsDatabase.Initialize();
+
+                    Game SelectedGame = args.NewValue[0];
+
+                    foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Application.Current.MainWindow))
                     {
-                        if (lb.Name == "PART_lbAchievements")
+                        // List achievements
+                        if (sp.Name == "PART_Achievements_List")
                         {
-                            List<listAchievements> ListBoxAchievements = new List<listAchievements>();
-                            lb.ItemsSource = ListBoxAchievements;
+                            sp.Children.Clear();
 
                             try
                             {
-                                Game SelectedGame = args.NewValue[0];
+                                List<listAchievements> ListBoxAchievements = new List<listAchievements>();
 
-                                AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
-                                AchievementsDatabase.Initialize();
                                 GameAchievements SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
 
-                                if (SelectedGameAchievements.HaveAchivements)
+                                // Download Achievements if not exist in database.
+                                if (SelectedGameAchievements == null)
                                 {
-                                    List<Achievements> ListAchievements = SelectedGameAchievements.Achievements;
-
-
-
-                                    for (int i = 0; i < ListAchievements.Count; i++)
-                                    {
-                                        DateTime? dateUnlock;
-                                        BitmapImage iconImage = new BitmapImage();
-                                        FormatConvertedBitmap ConvertBitmapSource = new FormatConvertedBitmap();
-
-                                        bool isGray = false;
-
-                                        iconImage.BeginInit();
-                                        if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
-                                        {
-                                            dateUnlock = null;
-                                            if (ListAchievements[i].UrlLocked == "")
-                                            {
-                                                iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
-                                                isGray = true;
-                                            }
-                                            else
-                                            {
-                                                iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
-                                            dateUnlock = ListAchievements[i].DateUnlocked;
-                                        }
-                                        iconImage.EndInit();
-
-                                        ConvertBitmapSource.BeginInit();
-                                        ConvertBitmapSource.Source = iconImage;
-                                        if (isGray)
-                                        {
-                                            ConvertBitmapSource.DestinationFormat = PixelFormats.Gray32Float;
-                                        }
-                                        ConvertBitmapSource.EndInit();
-
-                                        string NameAchievement = ListAchievements[i].Name;
-                                        //if (NameAchievement.Length > 35)
-                                        //{
-                                        //    NameAchievement = NameAchievement.Substring(0, 35).Trim() + "...";
-                                        //}
-
-                                        ListBoxAchievements.Add(new listAchievements()
-                                        {
-                                            Name = NameAchievement,
-                                            NameToolTip = ListAchievements[i].Name,
-                                            IsTrimmed = (NameAchievement != ListAchievements[i].Name),
-                                            DateUnlock = dateUnlock,
-                                            Icon = ConvertBitmapSource,
-                                            Description = ListAchievements[i].Description
-                                        });
-
-                                        iconImage = null;
-                                    }
-
-
-                                    // Sorting default.
-                                    lb.ItemsSource = ListBoxAchievements;
-                                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lb.ItemsSource);
-                                    view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
-                                    lb.UpdateLayout();
+                                    logger.Info("SuccesStory - Download achievements for " + SelectedGame.Name);
+                                    AchievementsDatabase.Add(SelectedGame, settings);
+                                    AchievementsDatabase.Initialize();
+                                    SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
                                 }
 
-                                AchievementsDatabase = null;
+                                if (SelectedGameAchievements != null)
+                                {
+                                    if (SelectedGameAchievements.HaveAchivements)
+                                    {
+                                        AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
+
+
+                                        sp.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements));
+                                    }
+                                }
                             }
-                            catch
+                            catch (Exception ex)
                             {
-
+                                var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                                logger.Error(ex, $"SuccesStory [{LineNumber}] - {SelectedGame.Name}: ");
                             }
-                            //logger.Debug("test: " + SelectedGame.Name + " - " + SelectedGameAchievements.Total);
 
-                            //Label countAchievements = new Label();
-                            //countAchievements.Content = SelectedGame.Name + " - " + SelectedGameAchievements.Total;
-                            //tb.Children.Clear();
-                            //tb.Children.Add(countAchievements);
-                            //tb.UpdateLayout();
+                            sp.UpdateLayout();
+                        }
+
+                        // Graphic
+                        if (sp.Name == "PART_Achievements_Graphics")
+                        {
+                            sp.Children.Clear();
+
+                            try
+                            {
+                                AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
+                                string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+                                SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+                                StatsGraphicAchievementsSeries.Add(new LineSeries
+                                {
+                                    Title = "",
+                                    Values = GraphicsData.Series
+                                });
+
+                                sp.Children.Clear();
+                                sp.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
+                                sp.UpdateLayout();
+                            }
+                            catch (Exception ex)
+                            {
+                                var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                                logger.Error(ex, $"SuccesStory [{LineNumber}] - {SelectedGame.Name}: ");
+                            }
+
+                            sp.UpdateLayout();
                         }
                     }
+
+                    AchievementsDatabase = null;
                 }
             }
         }
-
-        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
-        {
-            if (depObj != null)
-            {
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-                {
-                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child != null && child is T)
-                    {
-                        yield return (T)child;
-                    }
-
-                    foreach (T childOfChild in FindVisualChildren<T>(child))
-                    {
-                        yield return childOfChild;
-                    }
-                }
-            }
-        }
-
 
         public override ISettings GetSettings(bool firstRunSettings)
         {
