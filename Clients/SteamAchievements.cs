@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Playnite.Common.Web;
 using Playnite.SDK;
+using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
@@ -154,7 +155,7 @@ namespace SuccessStory.Clients
 
 
                 // List details acheviements
-                string lang = resources.GetString("LOCLanguageNameEnglish");
+                string lang = CodeLang.GetSteamLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
                 url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}",
                     apiKey, ClientId, lang);
 

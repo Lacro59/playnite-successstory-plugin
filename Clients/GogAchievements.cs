@@ -1,6 +1,7 @@
 ﻿using GogLibrary.Services;
 using Newtonsoft.Json.Linq;
 using Playnite.SDK;
+using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
@@ -79,7 +80,7 @@ namespace SuccessStory.Clients
                 string accessToken = gogAPI.GetAccountInfo().accessToken;
 
                 string userId = gogAPI.GetAccountInfo().userId;
-                string lang = resources.GetString("LOCLanguageCode");
+                string lang = CodeLang.GetGogLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
 
                 // Only languages available
                 string[] arrayLang = { "de", "en", "fr", "ru", "zh", "zh-Hans" };

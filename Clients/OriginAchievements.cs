@@ -4,6 +4,7 @@ using OriginLibrary.Models;
 using OriginLibrary.Services;
 using Playnite.Common.Web;
 using Playnite.SDK;
+using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
@@ -59,8 +60,7 @@ namespace SuccessStory.Clients
                 string personasId = GetPersonas(originAPI.GetAccessToken());
                 string origineGameId = GetOrigineGameAchievementId(PlayniteApi, Id);
 
-                string lang = resources.GetString("LOCLanguageCode");
-
+                string lang = CodeLang.GetOriginLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
                 // Achievements (default return in english)
                 var url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",
                     personasId, origineGameId, lang);
@@ -164,15 +164,16 @@ namespace SuccessStory.Clients
         internal string GetOrigineGameAchievementId(IPlayniteAPI PlayniteApi, Guid Id)
         {
             string GameId = PlayniteApi.Database.Games.Get(Id).GameId;
-            GameStoreDataResponse StoreDetails = GetGameStoreData(GameId);
+            GameStoreDataResponse StoreDetails = GetGameStoreData(GameId, PlayniteApi);
 
             return StoreDetails.platforms[0].achievementSetOverride;
         }
 
-        internal static GameStoreDataResponse GetGameStoreData(string gameId)
+        internal static GameStoreDataResponse GetGameStoreData(string gameId, IPlayniteAPI PlayniteApi)
         {
-            string lang = resources.GetString("LOCLanguageCode");
-            string langShort = resources.GetString("LOCLanguageCountry");
+            string lang = CodeLang.GetOriginLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
+            string langShort = CodeLang.GetOriginLangCountry(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
+
             var url = string.Format(@"https://api2.origin.com/ecommerce2/public/supercat/{0}/{1}?country={2}", gameId, lang, langShort);
 
             var stringData = Encoding.UTF8.GetString(HttpDownloader.DownloadData(url));
