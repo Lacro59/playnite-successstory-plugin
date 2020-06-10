@@ -71,6 +71,11 @@
       <HintPath>Ressources\OriginLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Playnite, Version=7.7.0.26797, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\PlayniteResources\Playnite.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Playnite.Common">
       <HintPath>Resources\Playnite.Common.dll</HintPath>
       <Private>False</Private>
@@ -290,6 +295,18 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\PlayniteResources\DerivedStyles\MainWindowStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\PlayniteResources\DerivedStyles\StandardWindowStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\PlayniteResources\DerivedStyles\WindowBarButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
     <Page Include="Views\Interface\SuccessStoryAchievementsGraphics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -314,10 +331,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\GogLibrary.dll" />
+    <None Include="Resources\PlayniteResources\Playnite.Common.dll" />
+    <None Include="Resources\PlayniteResources\Playnite.dll" />
     <Content Include="Resources\PluginCommon.dll" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\OriginLibrary.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

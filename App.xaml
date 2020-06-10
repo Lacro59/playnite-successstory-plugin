@@ -6,7 +6,13 @@
                 <!--Playnite Resources-->
                 <ResourceDictionary Source="Resources/PlayniteResources/Constants.xaml" />
                 <ResourceDictionary Source="Resources/PlayniteResources/Common.xaml" />
-                <!--Playnite Default Controls-->
+                <!--Playnite Default localization-->
+                <ResourceDictionary Source="Resources/PlayniteResources/LocSource.xaml" />
+                <!--DerivedStyles-->
+                <ResourceDictionary Source="Resources/PlayniteResources/DerivedStyles/MainWindowStyle.xaml" />
+                <ResourceDictionary Source="Resources/PlayniteResources/DerivedStyles/StandardWindowStyle.xaml" />
+                <ResourceDictionary Source="Resources/PlayniteResources/DerivedStyles/WindowBarButton.xaml" />
+                <!--Default Controls-->
                 <ResourceDictionary Source="Resources/PlayniteResources/DefaultControls/Border.xaml" />
                 <ResourceDictionary Source="Resources/PlayniteResources/DefaultControls/TextBlock.xaml" />
                 <ResourceDictionary Source="Resources/PlayniteResources/DefaultControls/TextBox.xaml" />
@@ -36,8 +42,10 @@
                 <ResourceDictionary Source="Resources/PlayniteResources/DefaultControls/ToggleButton.xaml" />
                 <ResourceDictionary Source="Resources/PlayniteResources/DefaultControls/ToolTip.xaml" />
                 <ResourceDictionary Source="Resources/PlayniteResources/DefaultControls/TreeView.xaml" />
-                <!--Playnite Default localization-->
-                <ResourceDictionary Source="Resources/PlayniteResources/LocSource.xaml" />
+
+                <!--PluginCommon-->
+                <ResourceDictionary Source="Resources/LiveChartsCommon/Common.xaml" />
+                
                 <!--Plugin default localization-->
                 <ResourceDictionary Source="Localization/LocSource.xaml" />
             </ResourceDictionary.MergedDictionaries>

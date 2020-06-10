@@ -11,7 +11,7 @@
     <!-- TODO https://github.com/Live-Charts/Live-Charts/issues/619 -->
     <lvc:CartesianChart x:Name="StatsGraphicAchievements" LegendLocation="Bottom" Loaded="StatsGraphicAchievements_Loaded">
         <lvc:CartesianChart.DataTooltip>
-            <localLVC:CustomersTooltipForSingle />
+            <localLVC:CustomerToolTipForSingle />
         </lvc:CartesianChart.DataTooltip>
         
         <lvc:CartesianChart.AxisX>

@@ -43,6 +43,8 @@ namespace SuccessStory
 
             // Add plugin localization in application ressource.
             PluginCommon.Localization.SetPluginLanguage(pluginFolder, api.Paths.ConfigurationPath);
+            // Add common in application ressource.
+            PluginCommon.Common.Load(pluginFolder);
         }
 
         public override IEnumerable<ExtensionFunction> GetFunctions()

@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using LiveCharts;
 using LiveCharts.Wpf;
+using Playnite.Controls;
 using Playnite.SDK;
 using PluginCommon;
 using SuccessStory.Database;
@@ -18,7 +19,7 @@ namespace SuccessStory
     /// <summary>
     /// Logique d'interaction pour SuccessView.xaml
     /// </summary>
-    public partial class SuccessView : Window
+    public partial class SuccessView : WindowBase
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
@@ -360,6 +361,11 @@ namespace SuccessStory
             PlayniteApiDatabase = null;
             PlayniteApiPaths = null;
             GC.Collect();
+        }
+
+        private void Label_Loaded(object sender, RoutedEventArgs e)
+        {
+            Tools.DesactivePlayniteWindowControl(this);
         }
     }
 }
