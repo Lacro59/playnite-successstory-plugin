@@ -1,0 +1,50 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!--
+    THIS FILE IS NOT PART OF THE THEME, DO NOT MODIFY!
+    -->
+
+    <!-- StoreLocalization -->
+    <sys:String x:Key="LOCLanguageNameEnglish">Português</sys:String>
+    <sys:String x:Key="LOCLanguageCode">pt_Br</sys:String>
+    <sys:String x:Key="LOCLanguageCountry">BR</sys:String>
+
+    <!--  
+    MainView
+    -->
+    <sys:String x:Key="LOCSucessStoryAchievements">Conquistas</sys:String>
+
+    <!--  
+    SuccessStorySettingsView
+    -->
+
+    <sys:String x:Key="LOCSucessStoryEnableSteam">Habilitar Conquistas Steam.</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableGog">Habilitar Conquistas GOG.</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableOrigin">Habilitar Conquistas Origin.</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshData">Recarregar dados</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Recarregar todos as conquistas recentes</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllData">Recarregar todas as conquistas</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshDataMessage">Database de conquistas foi restaurada.</sys:String>
+
+    <!-- 
+    SuccessStoryView 
+    -->
+
+    <!-- UI -->
+    <sys:String x:Key="LOCSucessStorySearch">Procurar</sys:String>
+    <sys:String x:Key="LOCSucessStoryGlobalProgression">Progressão Global</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameInformation">Informação</sys:String>
+
+    <!-- ListViewGames -->
+    <sys:String x:Key="LOCSucessStorylvGamesIcon">Icone</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesName">Nome</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesLastActivity">Última Sessão</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesSourceName">Fonte</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesProgression">Progressão</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Todos as conquistas desbloqueadas por mês</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitle">Conquistas desbloqueadas por mês</sys:String>
+</ResourceDictionary>
