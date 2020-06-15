@@ -13,7 +13,7 @@
     <!--  
     MainView
     -->
-    <sys:String x:Key="LOCSucessStoryAchievements">Achievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryAchievements">Logros</sys:String>
 
     <!--  
     SuccessStorySettingsView
@@ -24,7 +24,7 @@
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Habilitar logros de Origin</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshData">Actualizar datos</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Refresh all recent achievements data</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Actualizar todos los datos de logros recientes</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllData">Actualizar todos los datos de logros</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de datos de logros se ha restablecido.</sys:String>
@@ -45,6 +45,6 @@
     <sys:String x:Key="LOCSucessStorylvGamesSourceName">Fuente</sys:String>
     <sys:String x:Key="LOCSucessStorylvGamesProgression">Progresión</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">All achievements unlocked by month</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Todos los logros desbloqueados por mes</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Logros desbloqueados por mes</sys:String>
 </ResourceDictionary>
