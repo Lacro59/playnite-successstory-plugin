@@ -165,7 +165,8 @@ namespace SuccessStory
                             catch (Exception ex)
                             {
                                 var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                logger.Error(ex, $"SuccesStory [{LineNumber}] - {SelectedGame.Name}: ");
+                                string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
+                                logger.Error(ex, $"SuccesStory [{FileName} {LineNumber}] - {SelectedGame.Name}: ");
                             }
 
                             sp.UpdateLayout();
@@ -207,7 +208,8 @@ namespace SuccessStory
                             catch (Exception ex)
                             {
                                 var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                logger.Error(ex, $"SuccesStory [{LineNumber}] - {SelectedGame.Name}: ");
+                                string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
+                                logger.Error(ex, $"SuccesStory [{FileName} {LineNumber}] - {SelectedGame.Name}: ");
                             }
 
                             sp.UpdateLayout();

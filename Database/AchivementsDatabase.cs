@@ -71,8 +71,9 @@ namespace SuccessStory.Models
                 catch (Exception ex)
                 {
                     var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                    string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
                     PlayniteApi.Dialogs.ShowErrorMessage(ex.Message, $"SuccessStory error [{LineNumber}]");
-                    logger.Error(ex, $"SuccessStory - Failed to load item from {objectFile}");
+                    logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to load item from {objectFile}. ");
                 }
             });
         }

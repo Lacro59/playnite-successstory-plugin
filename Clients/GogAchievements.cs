@@ -115,7 +115,8 @@ namespace SuccessStory.Clients
                                 break;
                             default:
                                 var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to load from {url}");
+                                string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
+                                logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to load from {url}. ");
                                 break;
                         }
                     }
@@ -156,7 +157,8 @@ namespace SuccessStory.Clients
                     catch (Exception ex)
                     {
                         var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                        logger.Error(ex, $"SuccessStory [{LineNumber}] - Failed to parse.");
+                        string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
+                        logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to parse. ");
                         return Result;
                     }
                 }
