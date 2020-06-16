@@ -1,0 +1,50 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <!--
+    THIS FILE IS NOT PART OF THE THEME, DO NOT MODIFY!
+    -->
+
+    <!-- StoreLocalization -->
+    <sys:String x:Key="LOCLanguageNameEnglish">Russian</sys:String>
+    <sys:String x:Key="LOCLanguageCode">ru_Ru</sys:String>
+    <sys:String x:Key="LOCLanguageCountry">RU</sys:String>
+
+    <!--  
+    MainView
+    -->
+    <sys:String x:Key="LOCSucessStoryAchievements">Достижения</sys:String>
+
+    <!--  
+    SuccessStorySettingsView
+    -->
+
+    <sys:String x:Key="LOCSucessStoryEnableSteam">Включить достижения Steam.</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableGog">Включить достижения GOG.</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin.</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshData">Обновить данные</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Обновить все последние достижения</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllData">Обновить все достиженияa</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshDataMessage">База достижений была сброшена.</sys:String>
+
+    <!-- 
+    SuccessStoryView 
+    -->
+
+    <!-- UI -->
+    <sys:String x:Key="LOCSucessStorySearch">Поиск</sys:String>
+    <sys:String x:Key="LOCSucessStoryGlobalProgression">Глобальный прогрес</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameInformation">Информация</sys:String>
+
+    <!-- ListViewGames -->
+    <sys:String x:Key="LOCSucessStorylvGamesIcon">Иконка</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesName">Название</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesLastActivity">Последняя сессия</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesSourceName">Source</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesProgression">Прогрес</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Все достижения разблокированы по месяцам</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitle">Достижения разблокированы по месяцам</sys:String>
+</ResourceDictionary>

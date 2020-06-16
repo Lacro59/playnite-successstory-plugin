@@ -307,6 +307,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Localization\ru_RU.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Page Include="Views\Interface\SuccessStoryAchievementsGraphics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
