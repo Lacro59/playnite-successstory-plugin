@@ -106,11 +106,11 @@ namespace SuccessStory.Clients
 
                 if (ResultWeb != "")
                 {
-                    JObject resultObj = JObject.Parse(ResultWeb);
-                    JArray resultItems = new JArray();
-
                     try
                     {
+                        JObject resultObj = JObject.Parse(ResultWeb);
+                        JArray resultItems = new JArray();
+
                         if ((bool)resultObj["playerstats"]["success"])
                         {
                             resultItems = (JArray)resultObj["playerstats"]["achievements"];
@@ -140,11 +140,13 @@ namespace SuccessStory.Clients
                             }
                             else
                             {
+                                logger.Info($"SuccessStory - No list achievement for {ClientId}. ");
                                 return Result;
                             }
                         }
                         else
                         {
+                            logger.Info($"SuccessStory - No Succes for {ClientId}. ");
                             return Result;
                         }
                     }
@@ -152,7 +154,7 @@ namespace SuccessStory.Clients
                     {
                         var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
                         string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                        logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to parse. ");
+                        logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - [{ClientId}] Failed to parse {ResultWeb}. ");
                         return Result;
                     }
 
@@ -226,6 +228,8 @@ namespace SuccessStory.Clients
                         }
                     }
                 }
+
+                logger.Info($"SuccessStory - No data for {ClientId}. ");
 
                 Result = new GameAchievements
                 {
