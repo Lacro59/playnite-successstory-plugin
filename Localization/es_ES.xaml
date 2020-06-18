@@ -1,9 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    <!--
-    THIS FILE IS NOT PART OF THE THEME, DO NOT MODIFY!
-    -->
 
     <!-- StoreLocalization -->
     <sys:String x:Key="LOCLanguageNameEnglish">spanish</sys:String>
@@ -24,8 +21,11 @@
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Habilitar logros de Origin</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshData">Actualizar datos</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetMissing">Get missing</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataRecent">Get all recent achievements</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Actualizar todos los datos de logros recientes</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllData">Actualizar todos los datos de logros</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllData">Get all missing achievements</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de datos de logros se ha restablecido.</sys:String>
 
@@ -47,4 +47,5 @@
 
     <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Todos los logros desbloqueados por mes</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Logros desbloqueados por mes</sys:String>
+    
 </ResourceDictionary>

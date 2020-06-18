@@ -106,10 +106,13 @@ namespace SuccessStory.Clients
 
                 if (ResultWeb != "")
                 {
+                    JObject resultObj = new JObject();
+                    JArray resultItems = new JArray();
+
                     try
                     {
-                        JObject resultObj = JObject.Parse(ResultWeb);
-                        JArray resultItems = new JArray();
+                        resultObj = JObject.Parse(ResultWeb);
+                        
 
                         if ((bool)resultObj["playerstats"]["success"])
                         {

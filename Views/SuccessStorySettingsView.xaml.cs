@@ -24,6 +24,9 @@ namespace SuccessStory
         int OriginTotal;
         int OriginTotalAchievements;
 
+        int LocalTotal;
+        int LocalTotalAchievements;
+
 
         public SuccessStorySettingsView(IPlayniteAPI PlayniteApi, string PluginUserDataPath, SuccessStorySettings settings)
         {
@@ -48,41 +51,68 @@ namespace SuccessStory
             GogTotalAchievements = 0;
             OriginTotal = 0;
             OriginTotalAchievements = 0;
+
+            LocalTotal = 0;
+            LocalTotalAchievements = 0;
+
             foreach (var game in PlayniteApi.Database.Games)
             {
+                string GameSourceName = "";
                 if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
-                    switch (game.Source.Name.ToLower())
-                    {
-                        case "steam":
-                            SteamTotal += 1;
-                            if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                SteamTotalAchievements += 1;
-                            }
-                            break;
-                        case "gog":
-                            GogTotal += 1;
-                            if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                GogTotalAchievements += 1;
-                            }
-                            break;
-                        case "origin":
-                            OriginTotal += 1;
-                            if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                OriginTotalAchievements += 1;
-                            }
-                            break;
-                    }
+                    GameSourceName = game.Source.Name;
+                }
+                else
+                {
+                    GameSourceName = "Playnite";
+                }
+
+                switch (GameSourceName.ToLower())
+                {
+                    case "steam":
+                        SteamTotal += 1;
+                        if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
+                        {
+                            SteamTotalAchievements += 1;
+                        }
+                        break;
+                    case "gog":
+                        GogTotal += 1;
+                        if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
+                        {
+                            GogTotalAchievements += 1;
+                        }
+                        break;
+                    case "origin":
+                        OriginTotal += 1;
+                        if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
+                        {
+                            OriginTotalAchievements += 1;
+                        }
+                        break;
+                    case "playnite":
+                        LocalTotal += 1;
+                        if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
+                        {
+                            LocalTotalAchievements += 1;
+                        }
+                        break;
                 }
             }
             SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
             GogLoad.Content = GogTotalAchievements + "/" + GogTotal;
             OriginLoad.Content = OriginTotalAchievements + "/" + OriginTotal;
+            LocalLoad.Content = LocalTotalAchievements + "/" + LocalTotal;
         }
 
+        private void Button_Click_Get_All(object sender, RoutedEventArgs e)
+        {
+            SteamLoad.Content = 0 + "/" + SteamTotal;
+            GogLoad.Content = 0 + "/" + GogTotal;
+            OriginLoad.Content = 0 + "/" + OriginTotal;
+            RefreshData("All", true);
+            SetTotal();
+        }
         private void Button_Click_All(object sender, RoutedEventArgs e)
         {
             SteamLoad.Content = 0 + "/" + SteamTotal;
@@ -92,7 +122,16 @@ namespace SuccessStory
             SetTotal();
         }
 
+        private void Button_Click_Get_Recent(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings);
 
+            SteamLoad.Content = 0 + "/" + SteamTotal;
+            GogLoad.Content = 0 + "/" + GogTotal;
+            OriginLoad.Content = 0 + "/" + OriginTotal;
+            RefreshData("AllRecent", true);
+            SetTotal();
+        }
         private void Button_Click_All_Recent(object sender, RoutedEventArgs e)
         {
             AchievementsDatabase.InitializeMultipleAdd(settings);
@@ -104,6 +143,14 @@ namespace SuccessStory
             SetTotal();
         }
 
+        private void Button_Click_Get_Steam(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "Steam");
+
+            SteamLoad.Content = 0 + "/" + SteamTotal;
+            RefreshData("Steam", true);
+            SetTotal();
+        }
         private void Button_Click_Steam(object sender, RoutedEventArgs e)
         {
             AchievementsDatabase.InitializeMultipleAdd(settings, "Steam");
@@ -113,6 +160,14 @@ namespace SuccessStory
             SetTotal();
         }
 
+        private void Button_Click_Get_Gog(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "GOG");
+
+            GogLoad.Content = 0 + "/" + GogTotal;
+            RefreshData("GOG", true);
+            SetTotal();
+        }
         private void Button_Click_Gog(object sender, RoutedEventArgs e)
         {
             AchievementsDatabase.InitializeMultipleAdd(settings, "GOG");
@@ -122,6 +177,14 @@ namespace SuccessStory
             SetTotal();
         }
 
+        private void Button_Click_Get_Origin(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "Origin");
+
+            OriginLoad.Content = 0 + "/" + OriginTotal;
+            RefreshData("Origin", true);
+            SetTotal();
+        }
         private void Button_Click_Origin(object sender, RoutedEventArgs e)
         {
             AchievementsDatabase.InitializeMultipleAdd(settings, "Origin");
@@ -131,16 +194,24 @@ namespace SuccessStory
             SetTotal();
         }
 
+        private void Button_Click_Get_Local(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "Playnite");
+
+            LocalLoad.Content = 0 + "/" + LocalTotal;
+            RefreshData("Playnite", true);
+            SetTotal();
+        }
         private void Button_Click_Local(object sender, RoutedEventArgs e)
         {
-            AchievementsDatabase.InitializeMultipleAdd(settings, "Steam");
+            AchievementsDatabase.InitializeMultipleAdd(settings, "Playnite");
 
-            LocalLoad.Content = 0 + "/" + SteamTotal;
+            LocalLoad.Content = 0 + "/" + LocalTotal;
             RefreshData("Playnite");
             SetTotal();
         }
 
-        internal void RefreshData(string SourceName)
+        internal void RefreshData(string SourceName, bool IsGet = false)
         {
             // ProgressBar
             SuccessStoryLoad.Visibility = Visibility.Visible;
@@ -153,7 +224,6 @@ namespace SuccessStory
             foreach (var game in PlayniteApi.Database.Games)
             {
                 string GameSourceName = "";
-
                 if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
                     GameSourceName = game.Source.Name;
@@ -168,10 +238,7 @@ namespace SuccessStory
                     bool isOK = true;
                     if (SourceName.ToLower() == "allrecent")
                     {
-                        if (
-                            (game.LastActivity != null && game.LastActivity > DateTime.Now.AddMonths(-1)) ||
-                            (game.Added != null && game.Added > DateTime.Now.AddMonths(-1))
-                            )
+                        if ((game.LastActivity != null && game.LastActivity > DateTime.Now.AddMonths(-1)) || (game.Added != null && game.Added > DateTime.Now.AddMonths(-1)))
                         {
                             isOK = true;
                         }
@@ -188,8 +255,19 @@ namespace SuccessStory
                             // Prevent HTTP 429 with limit request per minutes.
                             Thread.Sleep(1000);
 
-                            AchievementsDatabase.Remove(game);
-                            AchievementsDatabase.Add(game, settings);
+                            if (IsGet)
+                            {
+                                // Add only it's not loaded
+                                if (!AchievementsDatabase.VerifAchievementsLoad(game.Id))
+                                {
+                                    AchievementsDatabase.Add(game, settings);
+                                }
+                            }
+                            else
+                            {
+                                AchievementsDatabase.Remove(game);
+                                AchievementsDatabase.Add(game, settings);
+                            }
                         }), DispatcherPriority.ContextIdle, null);
                     }
                 }

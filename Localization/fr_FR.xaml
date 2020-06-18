@@ -1,9 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    <!--
-    THIS FILE IS NOT PART OF THE THEME, DO NOT MODIFY!
-    -->
 
     <!-- LibraryLocalization -->
     <sys:String x:Key="LOCLanguageNameEnglish">french</sys:String>
@@ -23,9 +20,12 @@
     <sys:String x:Key="LOCSucessStoryEnableGog">Activier les succès GOG.</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier les succès Origin.</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryRefreshData">Rafraîchir les données</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Rafraîchir les achievements récents</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllData">Rafraîchir tous les achievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshData">Rafraîchir</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetMissing">Manquants</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataRecent">Récupérer les récents manquants</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Rafraîchir les récents</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllData">Rafraîchir tous les succès</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllData">Récupérer tous les récents manquants</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 
@@ -47,4 +47,5 @@
 
     <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Tous les succès obtenus par mois</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Succès obtenus par mois</sys:String>
+    
 </ResourceDictionary>

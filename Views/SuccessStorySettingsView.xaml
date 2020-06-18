@@ -13,34 +13,38 @@
     <DockPanel Margin="20" Name="SuccessStorySettings">
         <StackPanel DockPanel.Dock="Top" Height="250">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableSteam}" Width="280">
+                <CheckBox IsChecked="{Binding enableSteam}" Width="250">
                     <Label Content="{DynamicResource LOCSucessStoryEnableSteam}"></Label>
                 </CheckBox>
                 <Label x:Name="SteamLoad" Width="90">xxx / xxx</Label>
-                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Steam"></Button>
+                <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="105" Margin="0,0,5,0" Click="Button_Click_Get_Steam"></Button>
+                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="105" Click="Button_Click_Steam"></Button>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableGog}" Width="280">
+                <CheckBox IsChecked="{Binding enableGog}" Width="250">
                     <Label Content="{DynamicResource LOCSucessStoryEnableGog}"></Label>
                 </CheckBox>
                 <Label x:Name="GogLoad" Width="90">xxx / xxx</Label>
-                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Gog"></Button>
+                <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="105" Margin="0,0,5,0" Click="Button_Click_Get_Gog"></Button>
+                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="105" Click="Button_Click_Gog"></Button>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableOrigin}" Width="280">
+                <CheckBox IsChecked="{Binding enableOrigin}" Width="250">
                     <Label Content="{DynamicResource LOCSucessStoryEnableOrigin}"></Label>
                 </CheckBox>
                 <Label x:Name="OriginLoad" Width="90">xxx / xxx</Label>
-                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Origin"></Button>
+                <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="105" Margin="0,0,5,0" Click="Button_Click_Get_Origin"></Button>
+                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="105" Click="Button_Click_Origin"></Button>
             </StackPanel>
 
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15" Visibility="{Binding enableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Label Content="Local Achievements" Width="255" Margin="25,0,0,0"></Label>
+                <Label Content="Local Achievements" Width="225" Margin="25,0,0,0"></Label>
                 <Label x:Name="LocalLoad" Width="90">xxx / xxx</Label>
-                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Local"></Button>
+                <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="105" Margin="0,0,5,0" Click="Button_Click_Get_Local"></Button>
+                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="105" Click="Button_Click_Local"></Button>
             </StackPanel>
 
             <StackPanel Margin="0,20,0,0">
@@ -48,11 +52,30 @@
             </StackPanel>
         </StackPanel>
        
-        <StackPanel DockPanel.Dock="Bottom">
-            <Button Content="{DynamicResource LOCSucessStoryRefreshAllDataRecent}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                    Height="40" FontSize="18" Click="Button_Click_All_Recent" Margin="0,0,0,20"/>
-            <Button Content="{DynamicResource LOCSucessStoryRefreshAllData}" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                    Height="40" FontSize="18" Click="Button_Click_All" />
-        </StackPanel>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="6" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="0" Grid.Row="0"
+                Content="{DynamicResource LOCSucessStoryGetDataRecent}" VerticalAlignment="Center" 
+                Height="40" FontSize="16" Click="Button_Click_Get_Recent" Margin="0,0,0,20"/>
+            <Button Grid.Column="2" Grid.Row="0"
+                Content="{DynamicResource LOCSucessStoryRefreshAllDataRecent}" VerticalAlignment="Center" 
+                Height="40" FontSize="16" Click="Button_Click_All_Recent" Margin="0,0,0,20"/>
+
+            <Button Grid.Column="0" Grid.Row="1"
+                Content="{DynamicResource LOCSucessStoryGetAllData}" VerticalAlignment="Center" 
+                Height="40" FontSize="16" Click="Button_Click_Get_All" />
+            <Button Grid.Column="2" Grid.Row="1"
+                Content="{DynamicResource LOCSucessStoryRefreshAllData}" VerticalAlignment="Center" 
+                Height="40" FontSize="16" Click="Button_Click_All" />
+        </Grid>
     </DockPanel>
 </UserControl>
