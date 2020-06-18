@@ -218,6 +218,8 @@ namespace SuccessStory
                 SuccessStory_Achievements_Graphics_Game.Children.Clear();
                 SuccessStory_Achievements_Graphics_Game.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, this));
                 SuccessStory_Achievements_Graphics_Game.UpdateLayout();
+
+                GC.Collect();
             }
         }
 
@@ -369,6 +371,15 @@ namespace SuccessStory
             PlayniteApi = null;
             PlayniteApiDatabase = null;
             PlayniteApiPaths = null;
+
+            ListviewGames.ItemsSource = null;
+            ListviewGames.UpdateLayout();
+
+            SuccessStory_Achievements_List.Children.Clear();
+            SuccessStory_Achievements_List.UpdateLayout();
+            SuccessStory_Achievements_Graphics_Game.Children.Clear();
+            SuccessStory_Achievements_Graphics_Game.UpdateLayout();
+
             GC.Collect();
         }
 

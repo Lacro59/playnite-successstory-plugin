@@ -65,17 +65,17 @@
 
             <Button Grid.Column="0" Grid.Row="0"
                 Content="{DynamicResource LOCSucessStoryGetDataRecent}" VerticalAlignment="Center" 
-                Height="40" FontSize="16" Click="Button_Click_Get_Recent" Margin="0,0,0,20"/>
+                FontSize="16" Click="Button_Click_Get_Recent" Margin="0,0,0,20"/>
             <Button Grid.Column="2" Grid.Row="0"
                 Content="{DynamicResource LOCSucessStoryRefreshAllDataRecent}" VerticalAlignment="Center" 
-                Height="40" FontSize="16" Click="Button_Click_All_Recent" Margin="0,0,0,20"/>
+                FontSize="16" Click="Button_Click_All_Recent" Margin="0,0,0,20"/>
 
             <Button Grid.Column="0" Grid.Row="1"
                 Content="{DynamicResource LOCSucessStoryGetAllData}" VerticalAlignment="Center" 
-                Height="40" FontSize="16" Click="Button_Click_Get_All" />
+                FontSize="16" Click="Button_Click_Get_All" />
             <Button Grid.Column="2" Grid.Row="1"
                 Content="{DynamicResource LOCSucessStoryRefreshAllData}" VerticalAlignment="Center" 
-                Height="40" FontSize="16" Click="Button_Click_All" />
+                FontSize="16" Click="Button_Click_All" />
         </Grid>
     </DockPanel>
 </UserControl>
