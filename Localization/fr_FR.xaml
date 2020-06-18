@@ -26,6 +26,8 @@
     <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Rafraîchir les récents</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllData">Rafraîchir tous les succès</sys:String>
     <sys:String x:Key="LOCSucessStoryGetAllData">Récupérer tous les récents manquants</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Récupérer manquants des jeux installés</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Rafraîchir pour les jeux installés</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 

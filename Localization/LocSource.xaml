@@ -22,10 +22,12 @@
 
     <sys:String x:Key="LOCSucessStoryRefreshData">Refresh data</sys:String>
     <sys:String x:Key="LOCSucessStoryGetMissing">Get missing</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataRecent">Get all recent achievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataRecent">Get missing recent achievements</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Refresh all recent achievements</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllData">Refresh all achievements</sys:String>
     <sys:String x:Key="LOCSucessStoryGetAllData">Get all missing achievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Get missing from installed games</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Refresh from installed games</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">Achievements database has been reset.</sys:String>
 

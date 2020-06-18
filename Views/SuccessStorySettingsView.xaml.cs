@@ -122,6 +122,27 @@ namespace SuccessStory
             SetTotal();
         }
 
+        private void Button_Click_Get_Installed(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings);
+
+            SteamLoad.Content = 0 + "/" + SteamTotal;
+            GogLoad.Content = 0 + "/" + GogTotal;
+            OriginLoad.Content = 0 + "/" + OriginTotal;
+            RefreshData("AllInstalled", true);
+            SetTotal();
+        }
+        private void Button_Click_All_Installed(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings);
+
+            SteamLoad.Content = 0 + "/" + SteamTotal;
+            GogLoad.Content = 0 + "/" + GogTotal;
+            OriginLoad.Content = 0 + "/" + OriginTotal;
+            RefreshData("AllInstalled");
+            SetTotal();
+        }
+
         private void Button_Click_Get_Recent(object sender, RoutedEventArgs e)
         {
             AchievementsDatabase.InitializeMultipleAdd(settings);
@@ -233,12 +254,23 @@ namespace SuccessStory
                     GameSourceName = "Playnite";
                 }
 
-                if (GameSourceName.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all" || SourceName.ToLower() == "allrecent")
+                if (GameSourceName.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all" || SourceName.ToLower() == "allrecent" || SourceName.ToLower() == "allinstalled")
                 {
                     bool isOK = true;
                     if (SourceName.ToLower() == "allrecent")
                     {
                         if ((game.LastActivity != null && game.LastActivity > DateTime.Now.AddMonths(-1)) || (game.Added != null && game.Added > DateTime.Now.AddMonths(-1)))
+                        {
+                            isOK = true;
+                        }
+                        else
+                        {
+                            isOK = false;
+                        }
+                    }
+                    if (SourceName.ToLower() == "allinstalled")
+                    {
+                        if (game.IsInstalled)
                         {
                             isOK = true;
                         }
