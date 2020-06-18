@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             mc:Ignorable="d" Height="800" Width="1260" Background="{DynamicResource WindowBackgourndBrush}"
+             mc:Ignorable="d" Height="740" Width="1260" Background="{DynamicResource WindowBackgourndBrush}"
              Title="Success Story"              
              d:DesignStyle="{StaticResource WindowDesignStyle}"
              Style="{DynamicResource StandardWindowStyle}"
@@ -43,7 +43,7 @@
             </DockPanel>
 
             <StackPanel Margin="10,0,10,10">
-                <ListView Height="458" x:Name="ListviewGames" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
+                <ListView Height="398" x:Name="ListviewGames" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="50">
@@ -102,10 +102,10 @@
                 </StackPanel>
             </DockPanel>
 
-            <Border DockPanel.Dock="Bottom" Margin="10,10,10,0" Height="490" MaxHeight="490" 
+            <Border DockPanel.Dock="Bottom" Margin="10,10,10,0" Height="442" MaxHeight="442" 
                     BorderBrush="{DynamicResource NormalBorderBrush}" BorderThickness="{DynamicResource ControlBorderThickness}">
 
-                <StackPanel x:Name="SuccessStory_Achievements_List" Height="490" MaxHeight="490">
+                <StackPanel x:Name="SuccessStory_Achievements_List" Height="442" MaxHeight="442">
                 </StackPanel>
             </Border>
         </DockPanel>
