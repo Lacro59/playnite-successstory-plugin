@@ -5,6 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     
     <DockPanel Margin="20" Name="SuccessStorySettings">
         <StackPanel DockPanel.Dock="Top" Height="250">
@@ -32,8 +36,15 @@
                 <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Origin"></Button>
             </StackPanel>
 
-            <StackPanel>
-                <ProgressBar Name="SuccessStoryLoad" Height="28" Margin="50,50,50,20"></ProgressBar>
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,15" Visibility="{Binding enableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Label Content="Local Achievements" Width="255" Margin="25,0,0,0"></Label>
+                <Label x:Name="LocalLoad" Width="90">xxx / xxx</Label>
+                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Local"></Button>
+            </StackPanel>
+
+            <StackPanel Margin="0,20,0,0">
+                <ProgressBar Name="SuccessStoryLoad" Height="28" Margin="20,0"></ProgressBar>
             </StackPanel>
         </StackPanel>
        

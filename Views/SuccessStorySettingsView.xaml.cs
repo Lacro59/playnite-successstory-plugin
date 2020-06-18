@@ -131,6 +131,15 @@ namespace SuccessStory
             SetTotal();
         }
 
+        private void Button_Click_Local(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "Steam");
+
+            LocalLoad.Content = 0 + "/" + SteamTotal;
+            RefreshData("Playnite");
+            SetTotal();
+        }
+
         internal void RefreshData(string SourceName)
         {
             // ProgressBar
@@ -143,8 +152,18 @@ namespace SuccessStory
 
             foreach (var game in PlayniteApi.Database.Games)
             {
-                if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000") 
-                    && (game.Source.Name.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all" || SourceName.ToLower() == "allrecent"))
+                string GameSourceName = "";
+
+                if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                {
+                    GameSourceName = game.Source.Name;
+                }
+                else
+                {
+                    GameSourceName = "Playnite";
+                }
+
+                if (GameSourceName.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all" || SourceName.ToLower() == "allrecent")
                 {
                     bool isOK = true;
                     if (SourceName.ToLower() == "allrecent")

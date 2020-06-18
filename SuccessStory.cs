@@ -1,4 +1,5 @@
-﻿using LiveCharts;
+﻿using AchievementsLocal;
+using LiveCharts;
 using LiveCharts.Wpf;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

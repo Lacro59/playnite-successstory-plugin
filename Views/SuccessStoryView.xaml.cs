@@ -110,7 +110,16 @@ namespace SuccessStory
                         string GameName = item.Name;
                         string GameIcon;
                         DateTime? GameLastActivity = null;
-                        string SourceName = item.Source.Name;
+
+                        string SourceName = "";
+                        if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                        {
+                            SourceName = item.Source.Name;
+                        }
+                        else
+                        {
+                            SourceName = "Playnite";
+                        }
 
                         GameAchievements GameAchievements = AchievementsDatabase.Get(item.Id);
 

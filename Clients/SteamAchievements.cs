@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using AchievementsLocal;
 
 namespace SuccessStory.Clients
 {
@@ -27,7 +28,7 @@ namespace SuccessStory.Clients
         /// <param name="Id"></param>
         /// <param name="PluginUserDataPath"></param>
         /// <returns></returns>
-        public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id, string PluginUserDataPath)
+        public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id, string PluginUserDataPath, bool isLocal = false)
         {
             List<Achievements> Achievements = new List<Achievements>();
             string GameName = PlayniteApi.Database.Games.Get(Id).Name;
@@ -48,8 +49,8 @@ namespace SuccessStory.Clients
                 Achievements = Achievements
             };
 
-            string ResultWeb = "";
 
+            string ResultWeb = "";
 
             // Get Steam configuration if exist.
             string userId = "";
@@ -71,94 +72,11 @@ namespace SuccessStory.Clients
                 return Result;
             }
 
-
-            // List acheviements (default return in english)
-            var url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}",
-                ClientId, apiKey, userId);
-
-            ResultWeb = "";
-            try
+            if (!isLocal)
             {
-                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
-            }
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                {
-                    var resp = (HttpWebResponse)ex.Response;
-                    switch (resp.StatusCode)
-                    {
-                        case HttpStatusCode.BadRequest: // HTTP 400
-                            break;
-                        case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                            break;
-                        default:
-                            var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                            string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                            logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to load from {url}. ");
-                            break;
-                    }
-                    return Result;
-                }
-            }
-
-            if (ResultWeb != "")
-            {
-                JObject resultObj = JObject.Parse(ResultWeb);
-                JArray resultItems = new JArray();
-
-                try
-                {
-                    if ((bool)resultObj["playerstats"]["success"])
-                    {
-                        resultItems = (JArray)resultObj["playerstats"]["achievements"];
-                        if (resultItems.Count > 0)
-                        {
-                            HaveAchivements = true;
-
-                            for (int i = 0; i < resultItems.Count; i++)
-                            {
-                                Achievements temp = new Achievements
-                                {
-                                    Name = (string)resultItems[i]["apiname"],
-                                    Description = "",
-                                    UrlUnlocked = "",
-                                    UrlLocked = "",
-                                    DateUnlocked = ((int)resultItems[i]["unlocktime"] == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)resultItems[i]["unlocktime"])
-                                };
-
-                                Total += 1;
-                                if ((int)resultItems[i]["unlocktime"] == 0)
-                                    Locked += 1;
-                                else
-                                    Unlocked += 1;
-
-                                Achievements.Add(temp);
-                            }
-                        }
-                        else
-                        {
-                            return Result;
-                        }
-                    }
-                    else
-                    {
-                        return Result;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                    string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                    logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to parse. ");
-                    return Result;
-                }
-
-
-                // List details acheviements
-                string lang = CodeLang.GetSteamLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
-                url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}",
-                    apiKey, ClientId, lang);
+                // List acheviements (default return in english)
+                var url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}",
+                    ClientId, apiKey, userId);
 
                 ResultWeb = "";
                 try
@@ -179,7 +97,7 @@ namespace SuccessStory.Clients
                             default:
                                 var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
                                 string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                                logger.Error(ex, $"SuccessStory  [{FileName} {LineNumber}] - Failed to load from {url}. ");
+                                logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to load from {url}. ");
                                 break;
                         }
                         return Result;
@@ -188,31 +106,46 @@ namespace SuccessStory.Clients
 
                 if (ResultWeb != "")
                 {
-                    resultObj = JObject.Parse(ResultWeb);
+                    JObject resultObj = JObject.Parse(ResultWeb);
+                    JArray resultItems = new JArray();
 
                     try
                     {
-                        resultItems = (JArray)resultObj["game"]["availableGameStats"]["achievements"];
-
-                        for (int i = 0; i < resultItems.Count; i++)
+                        if ((bool)resultObj["playerstats"]["success"])
                         {
-                            for (int j = 0; j < Achievements.Count; j++)
+                            resultItems = (JArray)resultObj["playerstats"]["achievements"];
+                            if (resultItems.Count > 0)
                             {
-                                if (Achievements[j].Name.ToLower() == ((string)resultItems[i]["name"]).ToLower())
+                                HaveAchivements = true;
+
+                                for (int i = 0; i < resultItems.Count; i++)
                                 {
                                     Achievements temp = new Achievements
                                     {
-                                        Name = (string)resultItems[i]["displayName"],
-                                        Description = (string)resultItems[i]["description"],
-                                        UrlUnlocked = (string)resultItems[i]["icon"],
-                                        UrlLocked = (string)resultItems[i]["icongray"],
-                                        DateUnlocked = Achievements[j].DateUnlocked
+                                        Name = (string)resultItems[i]["apiname"],
+                                        Description = "",
+                                        UrlUnlocked = "",
+                                        UrlLocked = "",
+                                        DateUnlocked = ((int)resultItems[i]["unlocktime"] == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)resultItems[i]["unlocktime"])
                                     };
 
-                                    Achievements[j] = temp;
-                                    j = Achievements.Count;
+                                    Total += 1;
+                                    if ((int)resultItems[i]["unlocktime"] == 0)
+                                        Locked += 1;
+                                    else
+                                        Unlocked += 1;
+
+                                    Achievements.Add(temp);
                                 }
                             }
+                            else
+                            {
+                                return Result;
+                            }
+                        }
+                        else
+                        {
+                            return Result;
                         }
                     }
                     catch (Exception ex)
@@ -222,21 +155,124 @@ namespace SuccessStory.Clients
                         logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to parse. ");
                         return Result;
                     }
+
+
+                    // List details acheviements
+                    string lang = CodeLang.GetSteamLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
+                    url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}",
+                        apiKey, ClientId, lang);
+
+                    ResultWeb = "";
+                    try
+                    {
+                        ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                    }
+                    catch (WebException ex)
+                    {
+                        if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
+                        {
+                            var resp = (HttpWebResponse)ex.Response;
+                            switch (resp.StatusCode)
+                            {
+                                case HttpStatusCode.BadRequest: // HTTP 400
+                                    break;
+                                case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                                    break;
+                                default:
+                                    var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                                    string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
+                                    logger.Error(ex, $"SuccessStory  [{FileName} {LineNumber}] - Failed to load from {url}. ");
+                                    break;
+                            }
+                            return Result;
+                        }
+                    }
+
+                    if (ResultWeb != "")
+                    {
+                        resultObj = JObject.Parse(ResultWeb);
+
+                        try
+                        {
+                            resultItems = (JArray)resultObj["game"]["availableGameStats"]["achievements"];
+
+                            for (int i = 0; i < resultItems.Count; i++)
+                            {
+                                for (int j = 0; j < Achievements.Count; j++)
+                                {
+                                    if (Achievements[j].Name.ToLower() == ((string)resultItems[i]["name"]).ToLower())
+                                    {
+                                        Achievements temp = new Achievements
+                                        {
+                                            Name = (string)resultItems[i]["displayName"],
+                                            Description = (string)resultItems[i]["description"],
+                                            UrlUnlocked = (string)resultItems[i]["icon"],
+                                            UrlLocked = (string)resultItems[i]["icongray"],
+                                            DateUnlocked = Achievements[j].DateUnlocked
+                                        };
+
+                                        Achievements[j] = temp;
+                                        j = Achievements.Count;
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                            string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
+                            logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to parse. ");
+                            return Result;
+                        }
+                    }
+                }
+
+                Result = new GameAchievements
+                {
+                    Name = GameName,
+                    HaveAchivements = HaveAchivements,
+                    Total = Total,
+                    Unlocked = Unlocked,
+                    Locked = Locked,
+                    Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
+                    Achievements = Achievements
+                };
+
+                return Result;
+            }
+            else
+            {
+                SteamEmulators se = new SteamEmulators(PlayniteApi);
+
+                var temp = se.GetAchievementsLocal(GameName, apiKey);
+               
+                if (temp.Achievements.Count > 0)
+                {
+                    Result.HaveAchivements = true;
+                    Result.Total = temp.Total;
+                    Result.Locked = temp.Locked;
+                    Result.Unlocked = temp.Unlocked;
+                    Result.Progression = temp.Progression;
+
+                    for (int i = 0; i < temp.Achievements.Count; i++)
+                    {
+                        Result.Achievements.Add(new Achievements
+                        {
+                            Name = temp.Achievements[i].Name,
+                            Description = temp.Achievements[i].Description,
+                            UrlUnlocked = temp.Achievements[i].UrlUnlocked,
+                            UrlLocked = temp.Achievements[i].UrlLocked,
+                            DateUnlocked = temp.Achievements[i].DateUnlocked
+                        });
+                    }
+
+                    return Result;
+                }
+                else
+                {
+                    return Result;
                 }
             }
-
-            Result = new GameAchievements
-            {
-                Name = GameName,
-                HaveAchivements = HaveAchivements,
-                Total = Total,
-                Unlocked = Unlocked,
-                Locked = Locked,
-                Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
-                Achievements = Achievements
-            };
-
-            return Result;
         }
     }
 }

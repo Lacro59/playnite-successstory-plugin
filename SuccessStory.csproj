@@ -52,6 +52,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Achievements, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Achievements.dll</HintPath>
+    </Reference>
     <Reference Include="GogLibrary, Version=1.0.0.26791, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\GogLibrary.dll</HintPath>
@@ -335,6 +339,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Achievements.dll" />
     <Content Include="Resources\GogLibrary.dll" />
     <None Include="Resources\PlayniteResources\Playnite.Common.dll" />
     <None Include="Resources\PlayniteResources\Playnite.dll" />

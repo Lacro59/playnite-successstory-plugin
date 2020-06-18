@@ -12,6 +12,8 @@ namespace SuccessStory
         public bool enableGog { get; set; } = false;
         public bool enableOrigin { get; set; } = false;
 
+        public bool enableLocal { get; set; } = false;
+
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonIgnore` ignore attribute.
         [JsonIgnore]
@@ -36,6 +38,8 @@ namespace SuccessStory
                 enableSteam = savedSettings.enableSteam;
                 enableGog = savedSettings.enableGog;
                 enableOrigin = savedSettings.enableOrigin;
+
+                enableLocal = savedSettings.enableLocal;
             }
         }
 

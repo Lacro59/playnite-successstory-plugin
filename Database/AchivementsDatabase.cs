@@ -198,6 +198,10 @@ namespace SuccessStory.Models
             {
                 return true;
             }
+            if (settings.enableLocal && GameSourceName.ToLower() == "playnite")
+            {
+                return true;
+            }
 
             return Result;
         }
@@ -231,6 +235,10 @@ namespace SuccessStory.Models
                     {
                         originAPI = new OriginAchievements(PlayniteApi);
                     }
+                    break;
+
+                case "playnite":
+
                     break;
             }
         }
@@ -291,6 +299,12 @@ namespace SuccessStory.Models
                             originAPI = new OriginAchievements(PlayniteApi);
                         }
                         GameAchievements = originAPI.GetAchievements(PlayniteApi, GameId);
+                    }
+
+                    if (GameSourceName.ToLower() == "playnite")
+                    {
+                        SteamAchievements steamAPI = new SteamAchievements();
+                        GameAchievements = steamAPI.GetAchievements(PlayniteApi, GameId, PluginUserDataPath, settings.enableLocal);
                     }
 
                     File.WriteAllText(PluginDatabaseGamePath, JsonConvert.SerializeObject(GameAchievements));
