@@ -13,22 +13,19 @@ using SuccessStory.Models;
 using SuccessStory.Views.Interface;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
+
 
 namespace SuccessStory
 {
     public class SuccessStory : Plugin
     {
         private static readonly ILogger logger = LogManager.GetLogger();
+        private static IResourceProvider resources = new ResourceProvider();
 
         private SuccessStorySettings settings { get; set; }
 
@@ -99,6 +96,7 @@ namespace SuccessStory
         public override void OnApplicationStarted()
         {
             // Add code to be executed when Playnite is initialized.
+
         }
 
         public override void OnApplicationStopped()
@@ -122,104 +120,220 @@ namespace SuccessStory
             }
         }
 
+        //public void tb_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if ((bool)((ToggleButton)sender).IsChecked)
+        //    {
+        //        PART_ElemDescription.Visibility = Visibility.Hidden;
+        //
+        //        StackPanel sp = (StackPanel)LogicalTreeHelper.FindLogicalNode(PART_ElemDescription.Parent, "PART_Achievements");
+        //        sp.Visibility = Visibility.Visible;
+        //    }
+        //    else
+        //    {
+        //        PART_ElemDescription.Visibility = Visibility.Visible;
+        //
+        //        StackPanel sp = (StackPanel)LogicalTreeHelper.FindLogicalNode(PART_ElemDescription.Parent, "PART_Achievements");
+        //        sp.Visibility = Visibility.Hidden;
+        //    }
+        //}
+
+        //private StackPanel spButtons = null;
+        private StackPanel PART_ElemDescription = null;
+
         public override void OnGameSelected(GameSelectionEventArgs args)
         {
+            logger.Debug("OnGameSelected Start");
+
+            //// Search parent buttons in game details
+            //if (spButtons == null)
+            //{
+            //    foreach (Button bt in Tools.FindVisualChildren<Button>(Application.Current.MainWindow))
+            //    {
+            //        if (bt.Name == "PART_ButtonPlayAction")
+            //        {
+            //            spButtons = (StackPanel)bt.Parent;
+            //            break;
+            //        }
+            //    }
+            //}
+
+            // Search parent game description
+            if (PART_ElemDescription == null)
+            {
+                foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Application.Current.MainWindow))
+                {
+                    if (sp.Name == "PART_ElemDescription")
+                    {
+                        PART_ElemDescription = sp;
+                        break;
+                    }
+                }
+            }
+
+            //if (spButtons.ActualWidth == 356)
+            //{
+            //    ToggleButton tb = new ToggleButton();
+            //    tb.IsChecked = false;
+            //    tb.Name = "PART_SuccessStoryButton";
+            //    tb.Content = resources.GetString("LOCSucessStoryAchievements");
+            //    tb.Width = 150;
+            //    tb.Height = 40;
+            //    tb.HorizontalAlignment = HorizontalAlignment.Right;
+            //    tb.VerticalAlignment = VerticalAlignment.Stretch;
+            //    tb.Margin = new Thickness(40, 0, 0, 0);
+            //    tb.Click += tb_Click;
+            //    
+            //    spButtons.Children.Add(tb);
+            //    spButtons.UpdateLayout();
+            //
+            //
+            //    DockPanel dp = (DockPanel)(PART_ElemDescription).Parent;
+            //    
+            //    // StackPanel
+            //    StackPanel spA = new StackPanel();
+            //    spA.Name = "PART_Achievements";
+            //    DockPanel.SetDock(spA, Dock.Right);
+            //    spA.Margin = new Thickness(10, 0, 2, 0);
+            //    //spA.Visibility = Visibility.Hidden;
+            //    
+            //    TextBlock tbA = new TextBlock();
+            //    tbA.Text = resources.GetString("LOCSucessStoryAchievements");
+            //    tbA.Style = (Style)resources.GetResource("BaseTextBlockStyle");
+            //    
+            //    Separator sep = new Separator();
+            //    sep.Background = (Brush)resources.GetResource("PanelSeparatorBrush");
+            //    
+            //    //< StackPanel x: Name = "PART_Achievements_Graphics" Height = "120" MaxHeight = "120" Margin = "0,5,0,5" ></ StackPanel >
+            //    StackPanel spAG = new StackPanel();
+            //    spAG.Name = "PART_Achievements_Graphics";
+            //    spAG.Height = 120;
+            //    spAG.MaxHeight = 120;
+            //    spAG.Margin = new Thickness(0, 5, 0, 5);
+            //    
+            //    //< StackPanel x: Name = "PART_Achievements_List" MaxHeight = "300" Margin = "0,5,0,5" ></ StackPanel >
+            //    StackPanel spAL = new StackPanel();
+            //    spAL.Name = "PART_Achievements_List";
+            //    spAL.MaxHeight = 300;
+            //    spAL.Margin = new Thickness(0, 5, 0, 5);
+            //    
+            //    spA.Children.Add(tbA);
+            //    spA.Children.Add(sep);
+            //    spA.Children.Add(spAG);
+            //    spA.Children.Add(spAL);
+            //    spA.UpdateLayout();
+            //
+            //    dp.Children.Add(spA);
+            //    dp.UpdateLayout();
+            //
+            //    //PART_ElemDescription.Children.Add(spA);
+            //    //PART_ElemDescription.UpdateLayout();
+            //    
+            //}
+
             if (args.NewValue != null)
             {
                 if (args.NewValue.Count == 1)
                 {
+                    logger.Debug("OnGameSelected load game achievement");
+
                     AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
                     AchievementsDatabase.Initialize();
 
                     Game SelectedGame = args.NewValue[0];
                     GameAchievements SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
 
-                    foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Application.Current.MainWindow))
+                    StackPanel sp = (StackPanel)LogicalTreeHelper.FindLogicalNode(PART_ElemDescription.Parent, "PART_Achievements_List");
+
+                    // List achievements
+                    logger.Debug("OnGameSelected add list game achievement");
+                    if (sp != null)
                     {
-                        // List achievements
-                        if (sp.Name == "PART_Achievements_List")
+                        sp.Children.Clear();
+
+                        try
                         {
-                            sp.Children.Clear();
+                            List<listAchievements> ListBoxAchievements = new List<listAchievements>();
 
-                            try
+                            // Download Achievements if not exist in database.
+                            if (SelectedGameAchievements == null)
                             {
-                                List<listAchievements> ListBoxAchievements = new List<listAchievements>();
-
-                                // Download Achievements if not exist in database.
-                                if (SelectedGameAchievements == null)
-                                {
-                                    logger.Info("SuccesStory - Download achievements for " + SelectedGame.Name);
-                                    AchievementsDatabase.Add(SelectedGame, settings);
-                                    AchievementsDatabase.Initialize();
-                                    SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
-                                }
-
-                                if (SelectedGameAchievements != null)
-                                {
-                                    if (SelectedGameAchievements.HaveAchivements)
-                                    {
-                                        AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
-                                        sp.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements));
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                                logger.Error(ex, $"SuccesStory [{FileName} {LineNumber}] - {SelectedGame.Name}: ");
+                                logger.Info("SuccesStory - Download achievements for " + SelectedGame.Name);
+                                AchievementsDatabase.Add(SelectedGame, settings);
+                                AchievementsDatabase.Initialize();
+                                SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
                             }
 
-                            sp.UpdateLayout();
+                            if (SelectedGameAchievements != null)
+                            {
+                                if (SelectedGameAchievements.HaveAchivements)
+                                {
+                                    AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
+                                    sp.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements));
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                            string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
+                            logger.Error(ex, $"SuccesStory [{FileName} {LineNumber}] - {SelectedGame.Name}: ");
                         }
 
-                        // Graphic
-                        if (sp.Name == "PART_Achievements_Graphics")
+                        sp.UpdateLayout();
+                    }
+
+                    // Graphic
+                    logger.Debug("OnGameSelected add graphic game achievement");
+                    sp = (StackPanel)LogicalTreeHelper.FindLogicalNode(PART_ElemDescription.Parent, "PART_Achievements_Graphics");
+
+                    if (sp != null)
+                    {
+                        sp.Children.Clear();
+
+                        try
                         {
-                            sp.Children.Clear();
-
-                            try
+                            // Download Achievements if not exist in database.
+                            if (SelectedGameAchievements == null)
                             {
-                                // Download Achievements if not exist in database.
-                                if (SelectedGameAchievements == null)
-                                {
-                                    logger.Info("SuccesStory - Download achievements for " + SelectedGame.Name);
-                                    AchievementsDatabase.Add(SelectedGame, settings);
-                                    AchievementsDatabase.Initialize();
-                                    SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
-                                }
+                                logger.Info("SuccesStory - Download achievements for " + SelectedGame.Name);
+                                AchievementsDatabase.Add(SelectedGame, settings);
+                                AchievementsDatabase.Initialize();
+                                SelectedGameAchievements = AchievementsDatabase.Get(SelectedGame.Id);
+                            }
 
-                                if (SelectedGameAchievements != null)
+                            if (SelectedGameAchievements != null)
+                            {
+                                if (SelectedGameAchievements.HaveAchivements)
                                 {
-                                    if (SelectedGameAchievements.HaveAchivements)
+                                    AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
+                                    string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+                                    SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+                                    StatsGraphicAchievementsSeries.Add(new LineSeries
                                     {
-                                        AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth(SelectedGame.Id);
-                                        string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
-                                        SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-                                        StatsGraphicAchievementsSeries.Add(new LineSeries
-                                        {
-                                            Title = "",
-                                            Values = GraphicsData.Series
-                                        });
+                                        Title = "",
+                                        Values = GraphicsData.Series
+                                    });
 
-                                        sp.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
-                                    }
+                                    sp.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
                                 }
                             }
-                            catch (Exception ex)
-                            {
-                                var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                                logger.Error(ex, $"SuccesStory [{FileName} {LineNumber}] - {SelectedGame.Name}: ");
-                            }
-
-                            sp.UpdateLayout();
                         }
+                        catch (Exception ex)
+                        {
+                            var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
+                            string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
+                            logger.Error(ex, $"SuccesStory [{FileName} {LineNumber}] - {SelectedGame.Name}: ");
+                        }
+
+                        sp.UpdateLayout();
                     }
 
                     AchievementsDatabase = null;
                 }
             }
+
+            logger.Debug("OnGameSelected End");
         }
 
         public override ISettings GetSettings(bool firstRunSettings)
