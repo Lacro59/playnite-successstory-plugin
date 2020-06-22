@@ -4,87 +4,156 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="500" d:DesignWidth="630">
+             d:DesignWidth="630">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
-    
-    <DockPanel Margin="20" Name="SuccessStorySettings">
-        <StackPanel DockPanel.Dock="Top" Height="250">
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableSteam}" Width="260">
-                    <Label Content="{DynamicResource LOCSucessStoryEnableSteam}"></Label>
-                </CheckBox>
-                <Label x:Name="SteamLoad" Width="90">xxx / xxx</Label>
-                <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="110" Margin="0,0,10,0" Click="Button_Click_Get_Steam"></Button>
-                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="110" Click="Button_Click_Steam"></Button>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+        <DockPanel Margin="20" Name="SuccessStorySettings">
+            <StackPanel DockPanel.Dock="Top" Height="180">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <CheckBox IsChecked="{Binding EnableSteam}" Width="260" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryEnableSteam}"></Label>
+                    </CheckBox>
+                    <Label x:Name="SteamLoad" Width="90">xxx / xxx</Label>
+                    <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="110" Margin="0,0,10,0" Click="Button_Click_Get_Steam"></Button>
+                    <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="110" Click="Button_Click_Steam"></Button>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <CheckBox IsChecked="{Binding EnableGog}" Width="260" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryEnableGog}"></Label>
+                    </CheckBox>
+                    <Label x:Name="GogLoad" Width="90">xxx / xxx</Label>
+                    <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="110" Margin="0,0,10,0" Click="Button_Click_Get_Gog"></Button>
+                    <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="110" Click="Button_Click_Gog"></Button>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <CheckBox IsChecked="{Binding EnableOrigin}" Width="260" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryEnableOrigin}"></Label>
+                    </CheckBox>
+                    <Label x:Name="OriginLoad" Width="90">xxx / xxx</Label>
+                    <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="110" Margin="0,0,10,0" Click="Button_Click_Get_Origin"></Button>
+                    <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="110" Click="Button_Click_Origin"></Button>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Label Content="Local Achievements" Width="235" Margin="25,0,0,0"></Label>
+                    <Label x:Name="LocalLoad" Width="90">xxx / xxx</Label>
+                    <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="110" Margin="0,0,10,0" Click="Button_Click_Get_Local"></Button>
+                    <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="110" Click="Button_Click_Local"></Button>
+                </StackPanel>
+
+                <StackPanel Margin="0,10,0,0">
+                    <ProgressBar Name="SuccessStoryLoad" Height="28" Margin="20,0"></ProgressBar>
+                </StackPanel>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableGog}" Width="260">
-                    <Label Content="{DynamicResource LOCSucessStoryEnableGog}"></Label>
-                </CheckBox>
-                <Label x:Name="GogLoad" Width="90">xxx / xxx</Label>
-                <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="110" Margin="0,0,10,0" Click="Button_Click_Get_Gog"></Button>
-                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="110" Click="Button_Click_Gog"></Button>
+            <StackPanel DockPanel.Dock="Bottom" Height="280" Margin="0,20,0,0">
+                <Label Content="{DynamicResource LOCSucessStoryIntegration}" FontSize="18" />
+                <Separator Margin="0,0,0,10" />
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                    </Grid.RowDefinitions>
+
+                    <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableIntegrationInDescription}" Name="Sc_IntegrationInDescription" Margin="0,5,0,0" Click="Checkbox_Click" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationInDescription}" />
+                    </CheckBox>
+                    <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding EnableIntegrationInDescriptionWithToggle}" Name="Sc_IntegrationInDescriptionWithToggle" Margin="0,5,0,0" Click="Checkbox_Click" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationInDescriptionWithToggle}" />
+                    </CheckBox>
+                    
+                    <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding IntegrationTopGameDetails}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationTopGameDetails}" />
+                    </CheckBox>
+                    <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding IntegrationShowTitle}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationShowTitle}" />
+                    </CheckBox>
+                    <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding IntegrationShowGraphic}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationShowGraphic}" />
+                    </CheckBox>
+                    <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding IntegrationShowAchievements}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationShowAchievements}" />
+                    </CheckBox>
+
+                    <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding IntegrationToggleDetails}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationToggleDetails}" />
+                    </CheckBox>
+                    <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding IntegrationShowTitle}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationShowTitle}" />
+                    </CheckBox>
+                    <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding IntegrationShowGraphic}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationShowGraphic}" />
+                    </CheckBox>
+                    <CheckBox Grid.Column="2" Grid.Row="4" IsChecked="{Binding IntegrationShowAchievements}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationShowAchievements}" />
+                    </CheckBox>
+
+
+                    <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding EnableIntegrationButton}" Margin="0,0,0,0" Name="Sc_IntegrationInButton" Click="Checkbox_Click" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationButton}" />
+                    </CheckBox>
+                    <CheckBox Grid.Column="2" Grid.Row="5" IsChecked="{Binding EnableIntegrationButtonDetails}" Margin="0,0,0,0" Name="Sc_IntegrationInButtonDetails" Click="Checkbox_Click" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationButtonDetails}" />
+                    </CheckBox>
+
+                    <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding EnableIntegrationInCustomTheme}" Margin="0,0,0,0" Name="Sc_IntegrationInCustomTheme" Click="Checkbox_Click" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationInCustomTheme}" />
+                    </CheckBox>
+                </Grid>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                <CheckBox IsChecked="{Binding enableOrigin}" Width="260">
-                    <Label Content="{DynamicResource LOCSucessStoryEnableOrigin}"></Label>
-                </CheckBox>
-                <Label x:Name="OriginLoad" Width="90">xxx / xxx</Label>
-                <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="110" Margin="0,0,10,0" Click="Button_Click_Get_Origin"></Button>
-                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="110" Click="Button_Click_Origin"></Button>
-            </StackPanel>
+            <Grid Height="110">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,15" Visibility="{Binding enableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Label Content="Local Achievements" Width="235" Margin="25,0,0,0"></Label>
-                <Label x:Name="LocalLoad" Width="90">xxx / xxx</Label>
-                <Button Content="{DynamicResource LOCSucessStoryGetMissing}" Width="110" Margin="0,0,10,0" Click="Button_Click_Get_Local"></Button>
-                <Button Content="{DynamicResource LOCSucessStoryRefreshData}" Width="110" Click="Button_Click_Local"></Button>
-            </StackPanel>
-
-            <StackPanel Margin="0,20,0,0">
-                <ProgressBar Name="SuccessStoryLoad" Height="28" Margin="20,0"></ProgressBar>
-            </StackPanel>
-        </StackPanel>
-       
-        <Grid DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="10" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="10" />
-                <RowDefinition Height="40" />
-                <RowDefinition Height="10" />
-                <RowDefinition Height="40" />
-            </Grid.RowDefinitions>
-
-            <Button Grid.Column="0" Grid.Row="0"
+                <Button Grid.Column="0" Grid.Row="0"
                 Content="{DynamicResource LOCSucessStoryGetDataRecent}" 
-                FontSize="16" Click="Button_Click_Get_Recent"/>
-            <Button Grid.Column="2" Grid.Row="0"
+                FontSize="14" Click="Button_Click_Get_Recent"/>
+                <Button Grid.Column="2" Grid.Row="0"
                 Content="{DynamicResource LOCSucessStoryRefreshAllDataRecent}" 
-                FontSize="16" Click="Button_Click_All_Recent"/>
+                FontSize="14" Click="Button_Click_All_Recent"/>
 
-            <Button Grid.Column="0" Grid.Row="2"
+                <Button Grid.Column="0" Grid.Row="2"
                 Content="{DynamicResource LOCSucessStoryGetDataInstalled}" 
-                FontSize="16" Click="Button_Click_Get_Installed"/>
-            <Button Grid.Column="2" Grid.Row="2"
+                FontSize="14" Click="Button_Click_Get_Installed"/>
+                <Button Grid.Column="2" Grid.Row="2"
                 Content="{DynamicResource LOCSucessStoryRefreshDataInstalledRecent}" 
-                FontSize="16" Click="Button_Click_All_Installed"/>
-            
-            <Button Grid.Column="0" Grid.Row="4"
+                FontSize="14" Click="Button_Click_All_Installed"/>
+
+                <Button Grid.Column="0" Grid.Row="4"
                 Content="{DynamicResource LOCSucessStoryGetAllData}" 
-                FontSize="16" Click="Button_Click_Get_All" />
-            <Button Grid.Column="2" Grid.Row="4"
+                FontSize="14" Click="Button_Click_Get_All" />
+                <Button Grid.Column="2" Grid.Row="4"
                 Content="{DynamicResource LOCSucessStoryRefreshAllData}" 
-                FontSize="16" Click="Button_Click_All" />
-        </Grid>
-    </DockPanel>
+                FontSize="14" Click="Button_Click_All" />
+            </Grid>
+        </DockPanel>
+    </ScrollViewer>
 </UserControl>

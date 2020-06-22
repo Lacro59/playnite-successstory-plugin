@@ -127,10 +127,16 @@
     <Compile Include="Views\Interface\SuccessStoryAchievementsList.xaml.cs">
       <DependentUpon>SuccessStoryAchievementsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Interface\SuccessStoryButtonDetails.xaml.cs">
+      <DependentUpon>SuccessStoryButtonDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SuccessStorySettingsView.xaml.cs">
       <DependentUpon>SuccessStorySettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Interface\SuccessStoryToggleButtonDetails.xaml.cs">
+      <DependentUpon>SuccessStoryToggleButtonDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SuccessStoryView.xaml.cs">
       <DependentUpon>SuccessStoryView.xaml</DependentUpon>
     </Compile>
@@ -324,7 +330,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Interface\SuccessStoryButtonDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SuccessStorySettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Interface\SuccessStoryToggleButtonDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -29,6 +29,18 @@
     <sys:String x:Key="LOCSucessStoryGetDataInstalled">Récupérer manquants des jeux installés</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Rafraîchir pour les jeux installés</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryIntegration">Intégration dans l'interface (expérimental)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescription">Intégration dans la description du jeu</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">Intégration avec un bouton à bascule</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowTitle">Afficher le titre</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphic">Afficher le graphique</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievements">Afficher la liste des succès</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">Intégrer au dessus de la description du jeu</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationToggleDetails">Bouton à bascule avec détails</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInCustomTheme">Intgération dans les thèmes personnalisés (si intégré)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButton">Ajouter un bouton</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Ajouter un bouton avec détails</sys:String>
+
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 
     <!-- 

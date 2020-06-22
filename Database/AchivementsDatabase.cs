@@ -11,12 +11,12 @@ using SuccessStory.Clients;
 using PluginCommon;
 using System.Diagnostics;
 using LiveCharts;
-using Newtonsoft.Json.Linq;
 using PluginCommon.LiveChartsCommon;
+
 
 namespace SuccessStory.Models
 {
-    class AchievementsDatabase
+    public class AchievementsDatabase
     {
         // Variable Playnite
         private static ILogger logger = LogManager.GetLogger();
@@ -186,19 +186,19 @@ namespace SuccessStory.Models
         {
             bool Result = false;
 
-            if (settings.enableSteam && GameSourceName.ToLower() == "steam")
+            if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
                 return true;
             }
-            if (settings.enableGog && GameSourceName.ToLower() == "gog")
+            if (settings.EnableGog && GameSourceName.ToLower() == "gog")
             {
                 return true;
             }
-            if (settings.enableOrigin && GameSourceName.ToLower() == "origin")
+            if (settings.EnableOrigin && GameSourceName.ToLower() == "origin")
             {
                 return true;
             }
-            if (settings.enableLocal && GameSourceName.ToLower() == "playnite")
+            if (settings.EnableLocal && GameSourceName.ToLower() == "playnite")
             {
                 return true;
             }
@@ -224,14 +224,14 @@ namespace SuccessStory.Models
                     break;
 
                 case "gog":
-                    if (settings.enableGog && gogAPI == null)
+                    if (settings.EnableGog && gogAPI == null)
                     {
                         gogAPI = new GogAchievements(PlayniteApi);
                     }
                     break;
 
                 case "origin":
-                    if (settings.enableOrigin && originAPI == null)
+                    if (settings.EnableOrigin && originAPI == null)
                     {
                         originAPI = new OriginAchievements(PlayniteApi);
                     }
@@ -304,7 +304,7 @@ namespace SuccessStory.Models
                     if (GameSourceName.ToLower() == "playnite")
                     {
                         SteamAchievements steamAPI = new SteamAchievements();
-                        GameAchievements = steamAPI.GetAchievements(PlayniteApi, GameId, PluginUserDataPath, settings.enableLocal);
+                        GameAchievements = steamAPI.GetAchievements(PlayniteApi, GameId, PluginUserDataPath, settings.EnableLocal);
                     }
 
                     File.WriteAllText(PluginDatabaseGamePath, JsonConvert.SerializeObject(GameAchievements));

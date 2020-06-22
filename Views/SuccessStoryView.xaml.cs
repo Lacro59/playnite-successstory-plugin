@@ -9,6 +9,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using Playnite.Controls;
 using Playnite.SDK;
+using Playnite.SDK.Models;
 using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
@@ -34,7 +35,7 @@ namespace SuccessStory
         AchievementsDatabase AchievementsDatabase;
 
 
-        public SuccessView(SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string PluginUserDataPath)
+        public SuccessView(SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string PluginUserDataPath, Game GameSelected = null)
         {
             this.PlayniteApi = PlayniteApi;
             PlayniteApiDatabase = PlayniteApi.Database;
@@ -78,6 +79,18 @@ namespace SuccessStory
             SuccessStory_Achievements_Graphics.Children.Clear();
             SuccessStory_Achievements_Graphics.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, this));
             SuccessStory_Achievements_Graphics.UpdateLayout();
+
+            // Set game selected
+            if (GameSelected != null)
+            {
+                for (int i = 0; i < ListviewGames.Items.Count; i++)
+                {
+                    if (((ListGames)ListviewGames.Items[i]).Name == GameSelected.Name)
+                    {
+                        ListviewGames.SelectedIndex = i;
+                    }
+                }
+            }
 
             // Set Binding data
             DataContext = this;

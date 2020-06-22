@@ -29,6 +29,18 @@
     <sys:String x:Key="LOCSucessStoryGetDataInstalled">Get missing from installed games</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Refresh from installed games</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryIntegration">Interface integration (experimental)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescription">Integration on game description</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">Integration with toggle button</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowTitle">Show title</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphic">Show graphic</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievements">Show list achievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">Integration above game description</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationToggleDetails">Toggle button with details</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInCustomTheme">Custom theme integration (if integrated)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButton">Add button</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Add button with details</sys:String>
+
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de datos de logros se ha restablecido.</sys:String>
 
     <!-- 

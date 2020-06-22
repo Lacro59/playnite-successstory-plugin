@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
+
 namespace SuccessStory
 {
     public partial class SuccessStorySettingsView : UserControl
@@ -319,6 +320,52 @@ namespace SuccessStory
 
             SuccessStoryLoad.Visibility = Visibility.Hidden;
             SuccessStorySettings.IsEnabled = true;
+        }
+
+
+        private void Checkbox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+
+            if ((cb.Name == "Sc_IntegrationInDescription") && (bool)cb.IsChecked)
+            {
+                Sc_IntegrationInCustomTheme.IsChecked = false;
+                Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
+                Sc_IntegrationInButton.IsChecked = false;
+                Sc_IntegrationInButtonDetails.IsChecked = false;
+            }
+            if ((cb.Name == "Sc_IntegrationInDescriptionWithToggle") && (bool)cb.IsChecked)
+            {
+                Sc_IntegrationInCustomTheme.IsChecked = false;
+                Sc_IntegrationInDescription.IsChecked = false;
+                Sc_IntegrationInButton.IsChecked = false;
+                Sc_IntegrationInButtonDetails.IsChecked = false;
+            }
+
+
+            if ((cb.Name == "Sc_IntegrationInButton") && (bool)cb.IsChecked)
+            {
+                Sc_IntegrationInCustomTheme.IsChecked = false;
+                Sc_IntegrationInDescription.IsChecked = false;
+                Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
+                Sc_IntegrationInButtonDetails.IsChecked = false;
+            }
+
+            if ((cb.Name == "Sc_IntegrationInButtonDetails") && (bool)cb.IsChecked)
+            {
+                Sc_IntegrationInCustomTheme.IsChecked = false;
+                Sc_IntegrationInDescription.IsChecked = false;
+                Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
+                Sc_IntegrationInButton.IsChecked = false;
+            }
+
+            if ((cb.Name == "Sc_IntegrationInCustomTheme") && (bool)cb.IsChecked)
+            {
+                Sc_IntegrationInDescription.IsChecked = false;
+                Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
+                Sc_IntegrationInButton.IsChecked = false;
+                Sc_IntegrationInButtonDetails.IsChecked = false;
+            }
         }
     }
 }

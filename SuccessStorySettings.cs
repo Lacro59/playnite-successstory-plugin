@@ -8,11 +8,25 @@ namespace SuccessStory
     {
         private readonly SuccessStory plugin;
 
-        public bool enableSteam { get; set; } = false;
-        public bool enableGog { get; set; } = false;
-        public bool enableOrigin { get; set; } = false;
+        public bool EnableIntegrationInDescription { get; set; } = false;
+        public bool EnableIntegrationInDescriptionWithToggle { get; set; } = false;
 
-        public bool enableLocal { get; set; } = false;
+        public bool IntegrationShowTitle { get; set; } = true;
+        public bool IntegrationShowGraphic { get; set; } = true;
+        public bool IntegrationShowAchievements { get; set; } = true;
+        public bool IntegrationTopGameDetails { get; set; } = true;
+        public bool IntegrationToggleDetails { get; set; } = true;
+
+        public bool EnableIntegrationInCustomTheme { get; set; } = false;
+
+        public bool EnableIntegrationButton { get; set; } = false;
+        public bool EnableIntegrationButtonDetails { get; set; } = false;
+
+        public bool EnableSteam { get; set; } = false;
+        public bool EnableGog { get; set; } = false;
+        public bool EnableOrigin { get; set; } = false;
+
+        public bool EnableLocal { get; set; } = false;
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonIgnore` ignore attribute.
@@ -35,11 +49,25 @@ namespace SuccessStory
             // LoadPluginSettings returns null if not saved data is available.
             if (savedSettings != null)
             {
-                enableSteam = savedSettings.enableSteam;
-                enableGog = savedSettings.enableGog;
-                enableOrigin = savedSettings.enableOrigin;
+                EnableIntegrationInDescription = savedSettings.EnableIntegrationInDescription;
+                EnableIntegrationInDescriptionWithToggle = savedSettings.EnableIntegrationInDescriptionWithToggle;
 
-                enableLocal = savedSettings.enableLocal;
+                IntegrationShowTitle = savedSettings.IntegrationShowTitle;
+                IntegrationShowGraphic = savedSettings.IntegrationShowGraphic;
+                IntegrationShowAchievements = savedSettings.IntegrationShowAchievements;
+                IntegrationTopGameDetails = savedSettings.IntegrationTopGameDetails;
+                IntegrationToggleDetails = savedSettings.IntegrationToggleDetails;
+
+                EnableIntegrationInCustomTheme = savedSettings.EnableIntegrationInCustomTheme;
+
+                EnableIntegrationButton = savedSettings.EnableIntegrationButton;
+                EnableIntegrationButtonDetails = savedSettings.EnableIntegrationButtonDetails;
+
+                EnableSteam = savedSettings.EnableSteam;
+                EnableGog = savedSettings.EnableGog;
+                EnableOrigin = savedSettings.EnableOrigin;
+
+                EnableLocal = savedSettings.EnableLocal;
             }
         }
 

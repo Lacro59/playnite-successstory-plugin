@@ -6,7 +6,7 @@ namespace SuccessStory.Database
     /// <summary>
     /// Represents GameAchievements file.
     /// </summary>
-    class GameAchievements
+    public class GameAchievements
     {
         /// <summary>
         /// Game Name in the Playnite database.

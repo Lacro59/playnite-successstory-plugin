@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SuccessStory.Models
 {
-    class ProgressionAchievements
+    public class ProgressionAchievements
     {
         public int Total { get; set; }
         public int Locked { get; set; }

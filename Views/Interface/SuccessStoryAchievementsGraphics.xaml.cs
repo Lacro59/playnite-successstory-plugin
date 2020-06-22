@@ -44,7 +44,7 @@ namespace SuccessStory.Views.Interface
                 {
                     if (sp.Name == "PART_Achievements_Graphics")
                     {
-                        StatsGraphicAchievements.Height = sp.MaxHeight + 20;
+                        StatsGraphicAchievements.Height = sp.MaxHeight + 18;
                     }
                 }
             }
