@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using LiveCharts;
 using LiveCharts.Wpf;
+using Newtonsoft.Json;
 using Playnite.Controls;
 using Playnite.SDK;
 using Playnite.SDK.Models;
@@ -14,6 +15,7 @@ using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using SuccessStory.Views.Interface;
+
 
 namespace SuccessStory
 {
@@ -33,6 +35,8 @@ namespace SuccessStory
         SuccessStorySettings settings { get; set; }
 
         AchievementsDatabase AchievementsDatabase;
+        List<ListSource> FilterSourceItems = new List<ListSource>();
+        List<string> SearchSources = new List<string>();
 
 
         public SuccessView(SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string PluginUserDataPath, Game GameSelected = null)
@@ -92,6 +96,31 @@ namespace SuccessStory
                 }
             }
 
+            
+            if (settings.EnableLocal)
+            {
+                //FilterSource.Items.Add(new { SourceName = "Playnite", IsCheck = false });
+                FilterSourceItems.Add(new ListSource { SourceName = "Playnite", IsCheck = false });
+            }
+            if (settings.EnableSteam)
+            {
+                //FilterSource.Items.Add(new { SourceName = "Steam", IsCheck = false });
+                FilterSourceItems.Add(new ListSource { SourceName = "Steam", IsCheck = false });
+            }
+            if (settings.EnableGog)
+            {
+                //FilterSource.Items.Add(new { SourceName = "GOG", IsCheck = false });
+                FilterSourceItems.Add(new ListSource { SourceName = "GOG", IsCheck = false });
+            }
+            if (settings.EnableOrigin)
+            {
+                //FilterSource.Items.Add(new { SourceName = "Origin", IsCheck = false });
+                FilterSourceItems.Add(new ListSource { SourceName = "Origin", IsCheck = false });
+            }
+            //FilterSource.UpdateLayout();
+            FilterSource.ItemsSource = FilterSourceItems;
+
+
             // Set Binding data
             DataContext = this;
         }
@@ -100,23 +129,67 @@ namespace SuccessStory
         /// Show list game with achievement.
         /// </summary>
         /// <param name="SearchGameName"></param>
-        public void GetListGame(string SearchGameName = "")
+        public void GetListGame(string SearchGameName = "", List<string> SearchSourceName = null)
         {
-            List<ListGames> ListGames = new List<ListGames>();
+            logger.Debug("SearchGameName: " + SearchGameName);
+            logger.Debug("SearchSourceName: " + JsonConvert.SerializeObject(SearchSourceName));
+
+            List <ListGames> ListGames = new List<ListGames>();
             foreach (var item in PlayniteApiDatabase.Games)
             {
-                if (item.Name.ToLower().Contains(SearchGameName.ToLower()) && AchievementsDatabase.HaveAchievements(item.Id))
+                string GameSourceName = "";
+                if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
-                    string GameSourceName = "";
-                    if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
-                    {
-                        GameSourceName = item.Source.Name;
-                    }
-                    else
-                    {
-                        GameSourceName = "Playnite";
-                    }
+                    GameSourceName = item.Source.Name;
+                }
+                else
+                {
+                    GameSourceName = "Playnite";
+                }
 
+
+                bool isFind = false;
+
+                if (SearchSourceName != null)
+                {
+                    for (int i = 0; i < SearchSourceName.Count; i++)
+                    {
+                        if (GameSourceName.ToLower().Contains(SearchSourceName[i].ToLower()))
+                        {
+                            isFind = true;
+                        }
+                    }
+                }
+
+                if (SearchGameName != "")
+                {
+                    if (item.Name.ToLower().Contains(SearchGameName.ToLower()))
+                    {
+                        isFind = true;
+                    }
+                }
+
+                if (SearchGameName != "" && SearchSourceName != null)
+                {
+                    isFind = false;
+
+                    for (int i = 0; i < SearchSourceName.Count; i++)
+                    {
+                        if ((GameSourceName.ToLower().Contains(SearchSourceName[i].ToLower())) && (item.Name.ToLower().Contains(SearchGameName.ToLower())))
+                        {
+                            isFind = true;
+                        }
+                    }
+                }
+
+                if (SearchGameName == "" && SearchSourceName == null)
+                {
+                    isFind = true;
+                }
+            
+
+                if (isFind && AchievementsDatabase.HaveAchievements(item.Id))
+                {
                     if (AchievementsDatabase.VerifToAddOrShow(GameSourceName, settings))
                     {
                         string GameId = item.Id.ToString();
@@ -367,16 +440,6 @@ namespace SuccessStory
         }
         #endregion
 
-        /// <summary>
-        /// Function search game by name.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TextboxSearch_KeyUp(object sender, RoutedEventArgs e)
-        {
-            string SearchGameName = ((TextBox)sender).Text;
-            GetListGame(SearchGameName);
-        }
 
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -400,5 +463,127 @@ namespace SuccessStory
         {
             Tools.DesactivePlayniteWindowControl(this);
         }
+
+
+        #region Filter
+        /// <summary>
+        /// Function search game by name.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextboxSearch_KeyUp(object sender, RoutedEventArgs e)
+        {
+            string SearchGameName = ((TextBox)sender).Text;
+            GetListGame(SearchGameName, SearchSources);
+        }
+
+        private void ChkSource_Checked(object sender, RoutedEventArgs e)
+        {
+            FilterSource.Text = "";
+            SearchSources = new List<string>();
+
+            for (int i = 0; i < FilterSourceItems.Count; i++)
+            {
+                if ((string)((CheckBox)sender).Content == FilterSourceItems[i].SourceName)
+                {
+                    FilterSourceItems[i].IsCheck = (bool)((CheckBox)sender).IsChecked;
+
+                    if (FilterSourceItems[i].IsCheck)
+                    {
+                        SearchSources.Add(FilterSourceItems[i].SourceName);
+
+                        if (FilterSource.Text == "")
+                        {
+                            FilterSource.Text = FilterSourceItems[i].SourceName;
+                        }
+                        else
+                        {
+                            FilterSource.Text += "," + FilterSourceItems[i].SourceName;
+                        }
+                    }
+                }
+                else
+                {
+                    if (FilterSourceItems[i].IsCheck)
+                    {
+                        SearchSources.Add(FilterSourceItems[i].SourceName);
+
+                        if (FilterSource.Text == "")
+                        {
+                            FilterSource.Text = FilterSourceItems[i].SourceName;
+                        }
+                        else
+                        {
+                            FilterSource.Text += "," + FilterSourceItems[i].SourceName;
+                        }
+                    }
+                }
+            }
+
+            if (FilterSource.Text == "")
+            {
+                SearchSources = null;
+            }
+
+            GetListGame(TextboxSearch.Text, SearchSources);
+        }
+
+        private void ChkSource_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FilterSource.Text = "";
+            SearchSources = new List<string>();
+
+            for (int i = 0; i < FilterSourceItems.Count; i++)
+            {
+                if ((string)((CheckBox)sender).Content == FilterSourceItems[i].SourceName)
+                {
+                    FilterSourceItems[i].IsCheck = (bool)((CheckBox)sender).IsChecked;
+
+                    if (FilterSourceItems[i].IsCheck)
+                    {
+                        SearchSources.Add(FilterSourceItems[i].SourceName);
+
+                        if (FilterSource.Text == "")
+                        {
+                            FilterSource.Text = FilterSourceItems[i].SourceName;
+                        }
+                        else
+                        {
+                            FilterSource.Text += ", " + FilterSourceItems[i].SourceName;
+                        }
+                    }
+                }
+                else
+                {
+                    if (FilterSourceItems[i].IsCheck)
+                    {
+                        SearchSources.Add(FilterSourceItems[i].SourceName);
+
+                        if (FilterSource.Text == "")
+                        {
+                            FilterSource.Text = FilterSourceItems[i].SourceName;
+                        }
+                        else
+                        {
+                            FilterSource.Text += ", " + FilterSourceItems[i].SourceName;
+                        }
+                    }
+                }
+            }
+
+            if (FilterSource.Text == "")
+            {
+                SearchSources = null;
+            }
+
+            GetListGame(TextboxSearch.Text, SearchSources);
+        }
+        #endregion
+    }
+
+    public class ListSource
+    {
+        public string SourceName { get; set; }
+        public bool IsCheck { get; set; }
     }
 }

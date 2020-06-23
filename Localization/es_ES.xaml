@@ -48,6 +48,7 @@
     -->
 
     <!-- UI -->
+    <sys:String x:Key="LOCSucessStoryFilterSource">Filter by source</sys:String>
     <sys:String x:Key="LOCSucessStorySearch">Buscar</sys:String>
     <sys:String x:Key="LOCSucessStoryGlobalProgression">Progresión global</sys:String>
     <sys:String x:Key="LOCSucessStoryGameInformation">Información</sys:String>

@@ -19,10 +19,30 @@
     <DockPanel>
         <!--List games with achievements-->
         <DockPanel DockPanel.Dock="Left" Width="687">
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10">
-                <Label Content="{DynamicResource LOCSucessStorySearch}" FontSize="16" Width="100" Loaded="Label_Loaded"/>
-                <TextBox x:Name="TextboxSearch" TextWrapping="NoWrap" KeyUp="TextboxSearch_KeyUp" Width="567"/>
-            </StackPanel>
+            <Grid DockPanel.Dock="Top" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="6" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="6" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Column="0" Content="{DynamicResource LOCSucessStorySearch}" FontSize="16" Loaded="Label_Loaded" />
+                <TextBox Grid.Column="2" x:Name="TextboxSearch" TextWrapping="NoWrap" KeyUp="TextboxSearch_KeyUp" />
+
+                <Label Grid.Column="4" Content="{DynamicResource LOCSucessStoryFilterSource}" FontSize="16" Loaded="Label_Loaded" />
+                <ComboBox Grid.Column="6" Name="FilterSource" IsEditable="True" IsReadOnly="True">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Content="{Binding SourceName}" IsChecked="{Binding isCheck}">
+                            </CheckBox>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
 
             <StackPanel DockPanel.Dock="Bottom" Margin="10" Height="30" Orientation="Horizontal">
                 <Label x:Name="lProgressionGlobal" Content="{DynamicResource LOCSucessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" Width="150" />
