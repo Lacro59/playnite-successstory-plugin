@@ -331,8 +331,8 @@ namespace SuccessStory
             {
                 Sc_IntegrationInCustomTheme.IsChecked = false;
                 Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
-                Sc_IntegrationInButton.IsChecked = false;
-                Sc_IntegrationInButtonDetails.IsChecked = false;
+                //Sc_IntegrationInButton.IsChecked = false;
+                //Sc_IntegrationInButtonDetails.IsChecked = false;
             }
             if ((cb.Name == "Sc_IntegrationInDescriptionWithToggle") && (bool)cb.IsChecked)
             {
@@ -346,7 +346,7 @@ namespace SuccessStory
             if ((cb.Name == "Sc_IntegrationInButton") && (bool)cb.IsChecked)
             {
                 Sc_IntegrationInCustomTheme.IsChecked = false;
-                Sc_IntegrationInDescription.IsChecked = false;
+                //Sc_IntegrationInDescription.IsChecked = false;
                 Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
                 Sc_IntegrationInButtonDetails.IsChecked = false;
             }
@@ -354,7 +354,7 @@ namespace SuccessStory
             if ((cb.Name == "Sc_IntegrationInButtonDetails") && (bool)cb.IsChecked)
             {
                 Sc_IntegrationInCustomTheme.IsChecked = false;
-                Sc_IntegrationInDescription.IsChecked = false;
+                //Sc_IntegrationInDescription.IsChecked = false;
                 Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
                 Sc_IntegrationInButton.IsChecked = false;
             }
