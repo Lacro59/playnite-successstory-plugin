@@ -113,7 +113,7 @@
                         <Label Content="{DynamicResource LOCSucessStoryIntegrationButtonDetails}" />
                     </CheckBox>
 
-                    <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding EnableIntegrationInCustomTheme}" Margin="0,0,0,0" Name="Sc_IntegrationInCustomTheme" Click="Checkbox_Click" VerticalAlignment="Center">
+                    <CheckBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" IsChecked="{Binding EnableIntegrationInCustomTheme}" Margin="0,0,0,0" Name="Sc_IntegrationInCustomTheme" Click="Checkbox_Click" VerticalAlignment="Center">
                         <Label Content="{DynamicResource LOCSucessStoryIntegrationInCustomTheme}" />
                     </CheckBox>
                 </Grid>
