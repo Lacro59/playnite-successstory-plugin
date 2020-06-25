@@ -310,7 +310,7 @@ namespace SuccessStory
 
             if (AchievementsDatabase.ListErrors.Get() != "")
             {
-                PlayniteApi.Dialogs.ShowErrorMessage(AchievementsDatabase.ListErrors.Get(), "SuccesStory errors on " + SourceName);
+                PlayniteApi.Dialogs.ShowErrorMessage(AchievementsDatabase.ListErrors.Get(), "SuccesStory errors");
             }
             else
             {

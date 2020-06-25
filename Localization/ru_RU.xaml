@@ -20,22 +20,25 @@
     <sys:String x:Key="LOCSucessStoryEnableGog">Включить достижения GOG.</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin.</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryDatabase">Database manipulation</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetData">Get data</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshData">Refresh data</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshData">Обновить данные</sys:String>
     <sys:String x:Key="LOCSucessStoryGetMissing">Get missing</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataRecent">Get missing recent achievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataRecent">Missing recent achievements</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Обновить все последние достижения</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllData">Обновить все достиженияa</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllData">Get all missing achievements</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Get missing from installed games</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Refresh from installed games</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllData">All missing achievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Missing from installed games</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Achievements from installed games</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIntegration">Interface integration (experimental)</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationInDescription">Integration on game description</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">Integration with toggle button</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescription">On game description</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">With toggle button</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowTitle">Show title</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowGraphic">Show graphic</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievements">Show list achievements</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">Integration above game description</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">Above description</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationToggleDetails">Toggle button with details</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInCustomTheme">Custom theme integration (if integrated)</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButton">Add button</sys:String>

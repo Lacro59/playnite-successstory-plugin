@@ -20,22 +20,25 @@
     <sys:String x:Key="LOCSucessStoryEnableGog">Activier les succès GOG.</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier les succès Origin.</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryDatabase">Manipulation de la base de données</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetData">Récupérer les données</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshData">Rafraichir les données</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshData">Rafraîchir</sys:String>
     <sys:String x:Key="LOCSucessStoryGetMissing">Manquants</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataRecent">Récupérer les récents manquants</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Rafraîchir les récents</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllData">Rafraîchir tous les succès</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllData">Récupérer tous les récents manquants</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Récupérer manquants des jeux installés</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Rafraîchir pour les jeux installés</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataRecent">Les récents manquants</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Tous les récents</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllData">Tous les succès</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllData">Tous les manquants</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Manquants des jeux installés</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Succès pour les jeux installés</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIntegration">Intégration dans l'interface (expérimental)</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationInDescription">Intégration dans la description du jeu</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">Intégration avec un bouton à bascule</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescription">Dans la description du jeu</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">Avec un bouton à bascule</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowTitle">Afficher le titre</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowGraphic">Afficher le graphique</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievements">Afficher la liste des succès</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">Intégrer au dessus de la description</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">Au dessus de la description</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationToggleDetails">Bouton à bascule avec détails</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInCustomTheme">Intgération dans les thèmes personnalisés (si intégré)</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButton">Ajouter un bouton</sys:String>
