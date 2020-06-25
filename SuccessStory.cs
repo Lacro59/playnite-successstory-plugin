@@ -203,6 +203,8 @@ namespace SuccessStory
 
         private void Integration()
         {
+            bool noAchievements = false;
+
             try
             {
                 AchievementsDatabase achievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
@@ -250,7 +252,7 @@ namespace SuccessStory
                         }
                     }
 
-                    return;
+                    noAchievements = true;
                 }
 
                 // Auto integration
@@ -281,7 +283,7 @@ namespace SuccessStory
                             PART_ScToggleButton = null;
                         }
 
-                        if (PART_ScToggleButton == null)
+                        if (PART_ScToggleButton == null && !noAchievements)
                         {
                             ToggleButton tb = new ToggleButton();
                             if (settings.IntegrationToggleDetails)
@@ -331,12 +333,10 @@ namespace SuccessStory
                             if (settings.EnableIntegrationInDescription)
                             {
                                 PART_ElemDescription.Children.Remove(PART_Achievements);
-                                logger.Debug("SuccessStory - PART_Achievements remove");
                             }
                             if (settings.EnableIntegrationInDescriptionWithToggle)
                             {
                                 PART_ElemDescription.Children.Remove(PART_Achievements);
-                                logger.Debug("SuccessStory - PART_Achievements_Toggle remove");
                             }
                         }
                         else
@@ -368,7 +368,6 @@ namespace SuccessStory
                                 ScA.Visibility = Visibility.Collapsed;
                                 PART_ElemDescription.Children.Add(ScA);
                                 PART_ElemDescription.UpdateLayout();
-                                logger.Debug("SuccessStory - PART_Achievements_Toggle add");
                             }
                         }
                     }
@@ -491,8 +490,6 @@ namespace SuccessStory
 
         public StackPanel CreateSc(AchievementsDatabase achievementsDatabase, GameAchievements SelectedGameAchievements, bool ShowTitle, bool ShowGraphic, bool ShowAchievements, bool IsCustom = false)
         {
-            logger.Debug($"SuccessStory - ShowTitle: {ShowTitle} - ShowGraphic: {ShowGraphic} - ShowAchievements: {ShowAchievements} - IsCustom: {IsCustom}");
-
             StackPanel spA = new StackPanel();
             spA.Name = "PART_Achievements";
 
