@@ -63,11 +63,6 @@ namespace SuccessStory
             labelProgressionGlobalCount.Content = AchievementsDatabase.Progession().Progression + "%";
 
 
-            // Sorting default.
-            _lastDirection = ListSortDirection.Descending;
-            _lastHeaderClicked = lvLastActivity;
-            _lastHeaderClicked.Content += " ▼";
-
             GetListGame();
 
 
@@ -267,7 +262,69 @@ namespace SuccessStory
             catch
             {
                 CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
-                view.SortDescriptions.Add(new SortDescription("LastActivity", ListSortDirection.Descending));
+
+                logger.Debug("sort - " + settings.NameSorting + " - " + _lastDirection.ToString());
+
+                switch (settings.NameSorting)
+                {
+                    case ("Name"):
+                        _lastHeaderClicked = lvName;
+                        if (settings.IsAsc)
+                        {
+                            _lastHeaderClicked.Content += " ▲";
+                        }
+                        else
+                        {
+                            _lastHeaderClicked.Content += " ▼";
+                        }
+                        break;
+                    case ("LastActivity"):
+                        _lastHeaderClicked = lvLastActivity;
+                        if (settings.IsAsc)
+                        {
+                            _lastHeaderClicked.Content += " ▲";
+                        }
+                        else
+                        {
+                            _lastHeaderClicked.Content += " ▼";
+                        }
+                        break;
+                    case ("SourceName"):
+                        _lastHeaderClicked = lvSourceIcon;
+                        if (settings.IsAsc)
+                        {
+                            lvSourceIcon.Content += " ▲";
+                        }
+                        else
+                        {
+                            lvSourceIcon.Content += " ▼";
+                        }
+                        break;
+                    case ("ProgressionValue"):
+                        _lastHeaderClicked = lvProgression;
+                        if (settings.IsAsc)
+                        {
+                            lvProgression.Content += " ▲";
+                        }
+                        else
+                        {
+                            lvProgression.Content += " ▼";
+                        }
+                        break;
+                }
+
+                
+                if (settings.IsAsc)
+                {
+                    _lastDirection = ListSortDirection.Ascending;
+                }
+                else
+                {
+                    _lastDirection = ListSortDirection.Descending;
+                }
+
+
+                view.SortDescriptions.Add(new SortDescription(settings.NameSorting, _lastDirection));
             }
         }
 

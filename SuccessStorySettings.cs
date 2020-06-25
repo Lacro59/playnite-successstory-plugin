@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
+using SuccessStory.Models;
 using System.Collections.Generic;
 
 namespace SuccessStory
@@ -27,6 +28,9 @@ namespace SuccessStory
         public bool EnableOrigin { get; set; } = false;
 
         public bool EnableLocal { get; set; } = false;
+
+        public string NameSorting { get; set; } = "LastActivity";
+        public bool IsAsc { get; set; } = false;
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonIgnore` ignore attribute.
@@ -68,6 +72,9 @@ namespace SuccessStory
                 EnableOrigin = savedSettings.EnableOrigin;
 
                 EnableLocal = savedSettings.EnableLocal;
+
+                NameSorting = savedSettings.NameSorting;
+                IsAsc = savedSettings.IsAsc;
             }
         }
 

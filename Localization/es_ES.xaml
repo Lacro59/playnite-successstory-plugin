@@ -20,6 +20,8 @@
     <sys:String x:Key="LOCSucessStoryEnableGog">Habilitar logros de GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Habilitar logros de Origin</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryIsAsc">Ascending</sys:String>
+
     <sys:String x:Key="LOCSucessStoryDatabase">Database manipulation</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Get data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Refresh data</sys:String>

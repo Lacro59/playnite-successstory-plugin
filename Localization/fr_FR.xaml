@@ -16,9 +16,11 @@
     SuccessStorySettingsView
     -->
 
-    <sys:String x:Key="LOCSucessStoryEnableSteam">Activier les succès Steam.</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableGog">Activier les succès GOG.</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier les succès Origin.</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableSteam">Activier les succès Steam</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableGog">Activier les succès GOG</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier les succès Origin</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryIsAsc">Ascendant</sys:String>
 
     <sys:String x:Key="LOCSucessStoryDatabase">Manipulation de la base de données</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Récupérer les données</sys:String>

@@ -13,6 +13,7 @@ namespace SuccessStory
     {
         private static readonly ILogger logger = LogManager.GetLogger();
         IPlayniteAPI PlayniteApi;
+        private static IResourceProvider resources = new ResourceProvider();
         SuccessStorySettings settings;
 
         string PluginUserDataPath;
@@ -42,6 +43,22 @@ namespace SuccessStory
             SetTotal();
 
             SuccessStoryLoad.Visibility = Visibility.Hidden;
+
+            switch (settings.NameSorting)
+            {
+                case "Name":
+                    cbDefaultSorting.Text = resources.GetString("LOCSucessStorylvGamesName");
+                    break;
+                case "LastActivity":
+                    cbDefaultSorting.Text = resources.GetString("LOCSucessStorylvGamesLastActivity");
+                    break;
+                case "SourceName":
+                    cbDefaultSorting.Text = resources.GetString("LOCSucessStorylvGamesSourceName");
+                    break;
+                case "ProgressionValue":
+                    cbDefaultSorting.Text = resources.GetString("LOCSucessStorylvGamesProgression");
+                    break;
+            }
         }
 
         internal void SetTotal()
@@ -366,6 +383,12 @@ namespace SuccessStory
                 Sc_IntegrationInButton.IsChecked = false;
                 Sc_IntegrationInButtonDetails.IsChecked = false;
             }
+        }
+
+        private void cbDefaultSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //cbDefaultSorting.Text = cbDefaultSorting.SelectedItem.;
+            settings.NameSorting = ((ComboBoxItem)cbDefaultSorting.SelectedItem).Tag.ToString();
         }
     }
 }

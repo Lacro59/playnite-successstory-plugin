@@ -74,7 +74,9 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Header="{DynamicResource LOCSucessStorylvGamesName}" Width="266" DisplayMemberBinding="{Binding Name}" />
+                            <GridViewColumn Width="266" DisplayMemberBinding="{Binding Name}">
+                                <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCSucessStorylvGamesName}"></GridViewColumnHeader>
+                            </GridViewColumn>
                             <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}">
                                 <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCSucessStorylvGamesLastActivity}"></GridViewColumnHeader>
                             </GridViewColumn>

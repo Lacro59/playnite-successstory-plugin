@@ -60,6 +60,28 @@
                 <ProgressBar Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="4" Name="SuccessStoryLoad" Height="28" Margin="20,0"></ProgressBar>
             </Grid>
 
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Content="Default sorting"></Label>
+                <ComboBox Name="cbDefaultSorting" Grid.Column="2" Grid.Row="0" Height="30" IsEditable="True" IsReadOnly="True" SelectionChanged="cbDefaultSorting_SelectionChanged">
+                    <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesName}" Tag="Name"></ComboBoxItem>
+                    <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesLastActivity}" Tag="LastActivity"></ComboBoxItem>
+                    <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesSourceName}" Tag="SourceName"></ComboBoxItem>
+                    <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesProgression}" Tag="ProgressionValue"></ComboBoxItem>
+                </ComboBox>
+                <ToggleButton Content="{DynamicResource LOCSucessStoryIsAsc}" IsChecked="{Binding IsAsc}" Grid.Column="4" Grid.Row="0" Height="30"></ToggleButton>
+            </Grid>
+            
             <StackPanel DockPanel.Dock="Bottom" Margin="0,20,0,0">
                 <Label Content="{DynamicResource LOCSucessStoryIntegration}" FontSize="18" />
                 <Separator Margin="0,0,0,10" />
@@ -174,4 +196,3 @@
         </DockPanel>
     </ScrollViewer>
 </UserControl>
-    
