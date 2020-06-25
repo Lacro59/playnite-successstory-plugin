@@ -15,11 +15,21 @@
     <WindowBase.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </WindowBase.Resources>
-    
-    <DockPanel>
-        <!--List games with achievements-->
-        <DockPanel DockPanel.Dock="Left" Width="687">
-            <Grid DockPanel.Dock="Top" Margin="10">
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="687" />
+            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Filter options -->
+        <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" BorderThickness="{DynamicResource PopupBorderThickness}" BorderBrush="{DynamicResource NormalBorderBrush}" Margin="0,0,0,10">
+            <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80" />
                     <ColumnDefinition Width="6" />
@@ -27,9 +37,9 @@
                     <ColumnDefinition Width="20" />
                     <ColumnDefinition Width="140" />
                     <ColumnDefinition Width="6" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="180" />
                 </Grid.ColumnDefinitions>
-                
+
                 <Label Grid.Column="0" Content="{DynamicResource LOCSucessStorySearch}" FontSize="16" Loaded="Label_Loaded" />
                 <TextBox Grid.Column="2" x:Name="TextboxSearch" TextWrapping="NoWrap" KeyUp="TextboxSearch_KeyUp" />
 
@@ -43,17 +53,28 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </Grid>
+        </Border>
 
-            <StackPanel DockPanel.Dock="Bottom" Margin="10" Height="30" Orientation="Horizontal">
-                <Label x:Name="lProgressionGlobal" Content="{DynamicResource LOCSucessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" Width="150" />
-                <Grid HorizontalAlignment="Right" Width="517">
+        <!-- List games with achievements -->
+        <DockPanel Grid.Column="0" Grid.Row="1">
+            <!-- Global progression -->
+            <Grid DockPanel.Dock="Bottom" Height="30" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Column="0" x:Name="lProgressionGlobal" Content="{DynamicResource LOCSucessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" />
+                <Grid Grid.Column="2" HorizontalAlignment="Right" Width="517">
                     <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" />
                     <Label x:Name="labelProgressionGlobalCount" HorizontalAlignment="Center">
                     </Label>
                 </Grid>
-            </StackPanel>
+            </Grid>
 
-            <DockPanel DockPanel.Dock="Bottom" Margin="10,0,10,0">
+            <!-- Graphic all unlocked achievements -->
+            <DockPanel DockPanel.Dock="Bottom">
                 <StackPanel DockPanel.Dock="Top">
                     <Label Content="{DynamicResource LOCSucessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
                 </StackPanel>
@@ -62,8 +83,9 @@
                 </StackPanel>
             </DockPanel>
 
-            <StackPanel Margin="10,0,10,10">
-                <ListView Height="398" x:Name="ListviewGames" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
+            <!-- List games -->
+            <StackPanel Margin="0,0,0,10" Name="lvGamesStackPanel">
+                <ListView x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="50">
@@ -74,7 +96,7 @@
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            <GridViewColumn Width="266" DisplayMemberBinding="{Binding Name}">
+                            <GridViewColumn Width="286" DisplayMemberBinding="{Binding Name}">
                                 <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCSucessStorylvGamesName}"></GridViewColumnHeader>
                             </GridViewColumn>
                             <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}">
@@ -114,8 +136,8 @@
         </DockPanel>
 
         <!--Details achievements-->
-        <DockPanel DockPanel.Dock="Right" Margin="0">
-            <DockPanel  DockPanel.Dock="Top" Margin="10,44.5,10,0">
+        <DockPanel Grid.Column="3" Grid.Row="1">
+            <DockPanel  DockPanel.Dock="Top" Margin="0,0,0,0">
                 <StackPanel DockPanel.Dock="Top">
                     <Label Content="{DynamicResource LOCSucessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
                 </StackPanel>
@@ -124,12 +146,13 @@
                 </StackPanel>
             </DockPanel>
 
-            <Border DockPanel.Dock="Bottom" Margin="10,10,10,0" Height="442" MaxHeight="442" 
+            <Border DockPanel.Dock="Bottom" Margin="0,10,0,0" Name="listAchievementBorder"
                     BorderBrush="{DynamicResource NormalBorderBrush}" BorderThickness="{DynamicResource ControlBorderThickness}">
 
-                <StackPanel x:Name="SuccessStory_Achievements_List" Height="442" MaxHeight="442">
+                <StackPanel x:Name="SuccessStory_Achievements_List" 
+                            Height="{Binding ElementName=listAchievementBorder, Path=ActualHeight}" MaxHeight="{Binding ElementName=listAchievementBorder, Path=ActualHeight}">
                 </StackPanel>
             </Border>
         </DockPanel>
-    </DockPanel>
+    </Grid>
 </controls:WindowBase>

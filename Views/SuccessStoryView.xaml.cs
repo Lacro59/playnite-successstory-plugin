@@ -339,6 +339,9 @@ namespace SuccessStory
 
             if (GameSelected != null)
             {
+                listAchievementBorder.BorderThickness = new Thickness(0);
+
+
                 Guid GameId = Guid.Parse(GameSelected.Id);
 
                 GameAchievements GameAchievements = AchievementsDatabase.Get(GameId);
@@ -555,7 +558,7 @@ namespace SuccessStory
                         }
                         else
                         {
-                            FilterSource.Text += "," + FilterSourceItems[i].SourceName;
+                            FilterSource.Text += ", " + FilterSourceItems[i].SourceName;
                         }
                     }
                 }
@@ -571,7 +574,7 @@ namespace SuccessStory
                         }
                         else
                         {
-                            FilterSource.Text += "," + FilterSourceItems[i].SourceName;
+                            FilterSource.Text += ", " + FilterSourceItems[i].SourceName;
                         }
                     }
                 }
