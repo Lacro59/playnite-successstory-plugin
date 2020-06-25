@@ -86,6 +86,9 @@ namespace SuccessStory
             AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
             AchievementsDatabase.Remove(game);
             AchievementsDatabase.Add(game, settings);
+
+            // REfresh integration interface
+            Integration();
         }
 
         public override void OnGameUninstalled(Game game)
@@ -554,7 +557,6 @@ namespace SuccessStory
 
             return spA;
         }
-
         #endregion
 
         public override ISettings GetSettings(bool firstRunSettings)
