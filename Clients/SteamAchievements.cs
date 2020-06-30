@@ -224,7 +224,7 @@ namespace SuccessStory.Clients
                     }
                 }
 
-                logger.Info($"SuccessStory - No data for {ClientId}. ");
+                //logger.Info($"SuccessStory - No data for {ClientId}. ");
 
                 Result = new GameAchievements
                 {

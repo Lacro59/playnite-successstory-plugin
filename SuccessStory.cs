@@ -90,6 +90,7 @@ namespace SuccessStory
             achievementsDatabase.Add(game, settings);
 
             // Refresh integration interface
+            SuccessStory.isFirstLoad = true;
             Integration();
         }
 
@@ -116,6 +117,10 @@ namespace SuccessStory
                     achievementsDatabase.Add(game, settings);
                 }
             }
+
+            // Refresh integration interface
+            SuccessStory.isFirstLoad = true;
+            Integration();
         }
 
         #region Interface integration
@@ -196,13 +201,6 @@ namespace SuccessStory
         {
             try
             {
-                if (SuccessStory.isFirstLoad)
-                {
-                    achievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, this.GetPluginUserDataPath());
-                    achievementsDatabase.Initialize();
-                    SuccessStory.isFirstLoad = false;
-                }
-
                 if (args.NewValue != null && args.NewValue.Count == 1)
                 {
                     GameSelected = args.NewValue[0];
@@ -232,6 +230,15 @@ namespace SuccessStory
         {
             try
             {
+                // Refresh database
+                if (SuccessStory.isFirstLoad)
+                {
+                    achievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, this.GetPluginUserDataPath());
+                    achievementsDatabase.Initialize();
+                    SuccessStory.isFirstLoad = false;
+                }
+
+
                 // Search game description
                 if (PART_ElemDescription == null)
                 {
