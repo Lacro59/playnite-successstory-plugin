@@ -100,6 +100,7 @@
                         <RowDefinition Height="35" />
                         <RowDefinition Height="35" />
                         <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
                     </Grid.RowDefinitions>
 
                     <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableIntegrationInDescription}" Name="Sc_IntegrationInDescription" Margin="0,5,0,0" Click="Checkbox_Click" VerticalAlignment="Center">
@@ -143,7 +144,11 @@
                         <Label Content="{DynamicResource LOCSucessStoryIntegrationButtonDetails}" />
                     </CheckBox>
 
-                    <CheckBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" IsChecked="{Binding EnableIntegrationInCustomTheme}" Margin="0,0,0,0" Name="Sc_IntegrationInCustomTheme" Click="Checkbox_Click" VerticalAlignment="Center">
+                    <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding EnableIntegrationButtonHeader}" Margin="0,5,0,0" VerticalAlignment="Center">
+                        <Label Content="{DynamicResource LOCSucessStoryIntegrationButtonHeader}" />
+                    </CheckBox>
+
+                    <CheckBox Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="3" IsChecked="{Binding EnableIntegrationInCustomTheme}" Margin="0,0,0,0" Name="Sc_IntegrationInCustomTheme" Click="Checkbox_Click" VerticalAlignment="Center">
                         <Label Content="{DynamicResource LOCSucessStoryIntegrationInCustomTheme}" />
                     </CheckBox>
                 </Grid>

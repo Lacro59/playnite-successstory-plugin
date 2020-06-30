@@ -23,6 +23,8 @@ namespace SuccessStory
         public bool EnableIntegrationButton { get; set; } = false;
         public bool EnableIntegrationButtonDetails { get; set; } = false;
 
+        public bool EnableIntegrationButtonHeader { get; set; } = false;
+
         public bool EnableSteam { get; set; } = false;
         public bool EnableGog { get; set; } = false;
         public bool EnableOrigin { get; set; } = false;
@@ -66,6 +68,8 @@ namespace SuccessStory
 
                 EnableIntegrationButton = savedSettings.EnableIntegrationButton;
                 EnableIntegrationButtonDetails = savedSettings.EnableIntegrationButtonDetails;
+
+                EnableIntegrationButtonHeader = savedSettings.EnableIntegrationButtonHeader;
 
                 EnableSteam = savedSettings.EnableSteam;
                 EnableGog = savedSettings.EnableGog;

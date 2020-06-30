@@ -28,9 +28,11 @@ namespace SuccessStory
         private static IResourceProvider resources = new ResourceProvider();
 
         private SuccessStorySettings settings { get; set; }
-
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
+        private readonly IntegrationUI ui = new IntegrationUI();
+        private AchievementsDatabase achievementsDatabase;
+        
 
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
@@ -43,6 +45,9 @@ namespace SuccessStory
             PluginCommon.Localization.SetPluginLanguage(pluginFolder, api.Paths.ConfigurationPath);
             // Add common in application ressource.
             PluginCommon.Common.Load(pluginFolder);
+
+            achievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
+            achievementsDatabase.Initialize();
         }
 
         public override IEnumerable<ExtensionFunction> GetFunctions()
@@ -83,23 +88,16 @@ namespace SuccessStory
             // Add code to be executed when game is preparing to be started.
 
             // Refresh Achievements database for game played.
-            AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
-            AchievementsDatabase.Remove(game);
-            AchievementsDatabase.Add(game, settings);
+            achievementsDatabase.Remove(game);
+            achievementsDatabase.Add(game, settings);
 
-            // REfresh integration interface
+            // Refresh integration interface
             Integration();
         }
 
         public override void OnGameUninstalled(Game game)
         {
             // Add code to be executed when game is uninstalled.
-        }
-
-        public override void OnApplicationStarted()
-        {
-            // Add code to be executed when Playnite is initialized.
-
         }
 
         public override void OnApplicationStopped()
@@ -111,26 +109,51 @@ namespace SuccessStory
         {
             // Add code to be executed when library is updated.
 
-            // Get achievements for the new game added int he library.
-            AchievementsDatabase AchievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
+            // Get achievements for the new game added in the library.
             foreach (var game in PlayniteApi.Database.Games)
             {
                 if (game.Added == null && ((DateTime)game.Added).ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd"))
                 {
-                    AchievementsDatabase.Remove(game);
-                    AchievementsDatabase.Add(game, settings);
+                    achievementsDatabase.Remove(game);
+                    achievementsDatabase.Add(game, settings);
                 }
             }
         }
 
         #region Interface integration
-        private void ScButton_Click(object sender, RoutedEventArgs e)
+        private Game GameSelected { get; set; }
+        private StackPanel PART_ElemDescription = null;
+
+        /// <summary>
+        /// Event for the header button for show plugin view.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnBtHeaderClick(object sender, RoutedEventArgs e)
+        {
+            new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
+        }
+
+        public override void OnApplicationStarted()
+        {
+            // Add code to be executed when Playnite is initialized.
+
+            if (settings.EnableIntegrationButtonHeader)
+            {
+                logger.Info("SuccesStory - Add Header button");
+                Button btHeader = new SuccessStoryButtonHeader(TransformIcon.Get("SuccessStory"));
+                btHeader.Click += OnBtHeaderClick;
+                ui.AddButtonInWindowsHeader(btHeader);
+            }
+        }
+
+        private void OnBtGameSelectedActionBarClick(object sender, RoutedEventArgs e)
         {
             // Show SuccessView
             new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath(), GameSelected).ShowDialog();
         }
 
-        private void ScToggleButton_Click(object sender, RoutedEventArgs e)
+        private void OnGameSelectedToggleButtonClick(object sender, RoutedEventArgs e)
         {
             if (PART_ElemDescription != null)
             {
@@ -169,10 +192,6 @@ namespace SuccessStory
             }
         }
 
-        private Game GameSelected { get; set; }
-        private StackPanel PART_ActionButtons = null;
-        private StackPanel PART_ElemDescription = null;
-
         public override void OnGameSelected(GameSelectionEventArgs args)
         {
             try
@@ -206,12 +225,21 @@ namespace SuccessStory
 
         private void Integration()
         {
-            bool noAchievements = false;
-
             try
             {
-                AchievementsDatabase achievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
-                achievementsDatabase.Initialize();
+                // Search game description
+                if (PART_ElemDescription == null)
+                {
+                    foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Application.Current.MainWindow))
+                    {
+                        if (sp.Name == "PART_ElemDescription")
+                        {
+                            PART_ElemDescription = sp;
+                            break;
+                        }
+                    }
+                }
+
 
                 GameAchievements SelectedGameAchievements = achievementsDatabase.Get(GameSelected.Id);
                 
@@ -224,273 +252,124 @@ namespace SuccessStory
                     SelectedGameAchievements = achievementsDatabase.Get(GameSelected.Id);
                 }
 
+
+                // Delete
+                logger.Info("SuccessStory - Delete");
+                ui.RemoveButtonInGameSelectedActionBarButtonOrToggleButton("PART_ScButton");
+                ui.RemoveButtonInGameSelectedActionBarButtonOrToggleButton("PART_ScToggleButton");
+                ui.RemoveElementInGameSelectedDescription("PART_Achievements");
+                ui.ClearElementInCustomTheme("PART_Achievements_Graphics");
+                ui.ClearElementInCustomTheme("PART_Achievements_List");
+
+
+                // Reset resources
+                List<ResourcesList> resourcesLists = new List<ResourcesList>();
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = "0" });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = "0" });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = "0" });
+                ui.AddResources(resourcesLists);
+
+
+                // No achievements
                 if (SelectedGameAchievements == null || !SelectedGameAchievements.HaveAchivements)
                 {
                     logger.Info("SuccessStory - No achievement for " + GameSelected.Name);
-
-                    if (settings.EnableIntegrationInDescription || settings.EnableIntegrationInDescriptionWithToggle)
-                    {
-                        Button PART_ScButton = (Button)LogicalTreeHelper.FindLogicalNode(PART_ActionButtons, "PART_ScButton");
-                        // Delete old ButtonDetails
-                        if (settings.EnableIntegrationButtonDetails)
-                        {
-                            PART_ActionButtons.Children.Remove(PART_ScButton);
-                            PART_ScButton = null;
-                        }
-
-                        ToggleButton PART_ScToggleButton = (ToggleButton)LogicalTreeHelper.FindLogicalNode(PART_ActionButtons, "PART_ScToggleButton");
-                        // Delete old ToggleDetails
-                        if (settings.IntegrationToggleDetails)
-                        {
-                            PART_ActionButtons.Children.Remove(PART_ScToggleButton);
-                            PART_ScToggleButton = null;
-                        }
-
-                        // Delete old
-                        string NameControl = "PART_Achievements";
-                        StackPanel PART_Achievements = (StackPanel)LogicalTreeHelper.FindLogicalNode(PART_ElemDescription, NameControl);
-                        if (PART_Achievements != null)
-                        {
-                            PART_ElemDescription.Children.Remove(PART_Achievements);
-                        }
-                    }
-
-                    noAchievements = true;
+                    return;
                 }
+
+
+                // Add resources
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SelectedGameAchievements.Total.ToString() });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SelectedGameAchievements.Unlocked.ToString() });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SelectedGameAchievements.Locked.ToString() });
+                ui.AddResources(resourcesLists);
+
 
                 // Auto integration
                 if (settings.EnableIntegrationInDescription || settings.EnableIntegrationInDescriptionWithToggle)
                 {
-                    // Search parent action buttons
-                    if (PART_ActionButtons == null)
+                    if (settings.EnableIntegrationInDescriptionWithToggle)
                     {
-                        foreach (Button bt in Tools.FindVisualChildren<Button>(Application.Current.MainWindow))
-                        {
-                            if (bt.Name == "PART_ButtonEditGame")
-                            {
-                                PART_ActionButtons = (StackPanel)bt.Parent;
-                                break;
-                            }
-                        }
-                    }
-
-                    //Adding togglebutton
-                    if (settings.EnableIntegrationInDescriptionWithToggle && PART_ActionButtons != null)
-                    {
-                        ToggleButton PART_ScToggleButton = (ToggleButton)LogicalTreeHelper.FindLogicalNode(PART_ActionButtons, "PART_ScToggleButton");
-
-                        // Delete old ToggleDetails
+                        ToggleButton tb = new ToggleButton();
                         if (settings.IntegrationToggleDetails)
                         {
-                            PART_ActionButtons.Children.Remove(PART_ScToggleButton);
-                            PART_ScToggleButton = null;
-                        }
-
-                        if (PART_ScToggleButton == null && !noAchievements)
-                        {
-                            ToggleButton tb = new ToggleButton();
-                            if (settings.IntegrationToggleDetails)
-                            {
-                                tb = new SuccessStoryToggleButtonDetails(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total);
-                            }
-                            else
-                            {
-                                tb.Content = resources.GetString("LOCSucessStoryAchievements");
-                            }
-
-                            tb.IsChecked = false;
-                            tb.Name = "PART_ScToggleButton";                
-                            tb.Width = 150;
-                            tb.Height = 40;
-                            tb.HorizontalAlignment = HorizontalAlignment.Right;
-                            tb.VerticalAlignment = VerticalAlignment.Stretch;
-                            tb.Margin = new Thickness(10, 0, 0, 0);
-                            tb.Click += ScToggleButton_Click;
-
-                            PART_ActionButtons.Children.Add(tb);
-                            PART_ActionButtons.UpdateLayout();
-                        }
-                    }
-
-                    // Search game description
-                    if (PART_ElemDescription == null)
-                    {
-                        foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Application.Current.MainWindow))
-                        {
-                            if (sp.Name == "PART_ElemDescription")
-                            {
-                                PART_ElemDescription = sp;
-                                break;
-                            }
-                        }
-                    }
-
-                    // Adding control
-                    if (PART_ElemDescription != null)
-                    {
-                        // Delete old
-                        string NameControl = "PART_Achievements";
-                        StackPanel PART_Achievements = (StackPanel)LogicalTreeHelper.FindLogicalNode(PART_ElemDescription, NameControl);
-                        if (PART_Achievements != null)
-                        {
-                            if (settings.EnableIntegrationInDescription)
-                            {
-                                PART_ElemDescription.Children.Remove(PART_Achievements);
-                            }
-                            if (settings.EnableIntegrationInDescriptionWithToggle)
-                            {
-                                PART_ElemDescription.Children.Remove(PART_Achievements);
-                            }
+                            tb = new SuccessStoryToggleButtonDetails(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total);
                         }
                         else
                         {
-                            logger.Error($"SuccessStory - {NameControl} not found in Integration()");
+                            tb.Content = resources.GetString("LOCSucessStoryAchievements");
                         }
 
-                        if (SelectedGameAchievements != null && SelectedGameAchievements.HaveAchivements)
-                        {
-                            StackPanel ScA = CreateSc(achievementsDatabase, SelectedGameAchievements, settings.IntegrationShowTitle, settings.IntegrationShowGraphic, settings.IntegrationShowAchievements, false);
+                        tb.IsChecked = false;
+                        tb.Name = "PART_ScToggleButton";
+                        tb.Width = 150;
+                        tb.HorizontalAlignment = HorizontalAlignment.Right;
+                        tb.VerticalAlignment = VerticalAlignment.Stretch;
+                        tb.Margin = new Thickness(10, 0, 0, 0);
+                        tb.Click += OnGameSelectedToggleButtonClick;
 
-                            if (settings.EnableIntegrationInDescription)
-                            {
-                                // Add
-                                if (settings.IntegrationTopGameDetails)
-                                {
-                                    PART_ElemDescription.Children.Insert(0, ScA);
-                                }
-                                else
-                                {
-                                    PART_ElemDescription.Children.Add(ScA);
-                                }
-
-                                PART_ElemDescription.UpdateLayout();
-                            }
-
-                            if (settings.EnableIntegrationInDescriptionWithToggle)
-                            {
-                                ScA.Visibility = Visibility.Collapsed;
-                                PART_ElemDescription.Children.Add(ScA);
-                                PART_ElemDescription.UpdateLayout();
-                            }
-                        }
+                        ui.AddButtonInGameSelectedActionBarButtonOrToggleButton(tb);
                     }
-                    else
+
+
+                    // Add Achievements elements
+                    StackPanel ScA = CreateSc(achievementsDatabase, SelectedGameAchievements, settings.IntegrationShowTitle, settings.IntegrationShowGraphic, settings.IntegrationShowAchievements, false);
+                    
+                    if (settings.EnableIntegrationInDescriptionWithToggle)
                     {
-                        logger.Error($"SuccessStory - PART_ElemDescription not found in Integration()");
+                        ScA.Visibility = Visibility.Collapsed;
                     }
+
+                    ui.AddElementInGameSelectedDescription(ScA, settings.IntegrationTopGameDetails);
                 }
+
 
                 // Auto adding button
                 if (settings.EnableIntegrationButton || settings.EnableIntegrationButtonDetails)
                 {
-                    // Search parent action buttons
-                    if (PART_ActionButtons == null)
+                    Button bt = new Button(); 
+                    if (settings.EnableIntegrationButton)
                     {
-                        foreach (Button bt in Tools.FindVisualChildren<Button>(Application.Current.MainWindow))
-                        {
-                            if (bt.Name == "PART_ButtonEditGame")
-                            {
-                                PART_ActionButtons = (StackPanel)bt.Parent;
-                                break;
-                            }
-                        }
+                        bt.Content = resources.GetString("LOCSucessStoryAchievements");
                     }
-
-                    // Adding button
-                    if (PART_ActionButtons != null)
+                    
+                    if (settings.EnableIntegrationButtonDetails)
                     {
-                        Button PART_ScButton = (Button)LogicalTreeHelper.FindLogicalNode(PART_ActionButtons, "PART_ScButton");
-
-                        // Delete old ButtonDetails
-                        if (settings.EnableIntegrationButtonDetails)
-                        {
-                            PART_ActionButtons.Children.Remove(PART_ScButton);
-                            PART_ScButton = null;
-                        }
-
-                        if (PART_ScButton == null)
-                        {
-                            Button bt = new Button();
-
-                            if (settings.EnableIntegrationButton)
-                            {
-                                bt.Content = resources.GetString("LOCSucessStoryAchievements");
-                            }
-
-                            if (settings.EnableIntegrationButtonDetails)
-                            {
-                                bt = new SuccessStoryButtonDetails(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total);
-                            }
-
-                            bt.Name = "PART_ScButton";
-                            bt.Width = 150;
-                            bt.Height = 40;
-                            bt.HorizontalAlignment = HorizontalAlignment.Right;
-                            bt.VerticalAlignment = VerticalAlignment.Stretch;
-                            bt.Margin = new Thickness(10, 0, 0, 0);
-                            bt.Click += ScButton_Click;
-
-                            PART_ActionButtons.Children.Add(bt);
-                            PART_ActionButtons.UpdateLayout();
-                        }
+                        bt = new SuccessStoryButtonDetails(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total);
                     }
+                    
+                    bt.Name = "PART_ScButton";
+                    bt.Width = 150;
+                    bt.HorizontalAlignment = HorizontalAlignment.Right;
+                    bt.VerticalAlignment = VerticalAlignment.Stretch;
+                    bt.Margin = new Thickness(10, 0, 0, 0);
+                    bt.Click += OnBtGameSelectedActionBarClick;
+
+                    ui.AddButtonInGameSelectedActionBarButtonOrToggleButton(bt);
                 }
 
 
                 // Custom theme
                 if (settings.EnableIntegrationInCustomTheme)
                 {
-                    // Search custom element
-                    foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Application.Current.MainWindow))
+                    if (SelectedGameAchievements != null && SelectedGameAchievements.HaveAchivements)
                     {
-                        if (sp.Name == "PART_Achievements_Graphics")
-                        {
-                            if (SelectedGameAchievements != null && SelectedGameAchievements.HaveAchivements)
-                            {
-                                // Create 
-                                StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, true);
+                        // Create 
+                        StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, true);
+                        StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, true);
 
-                                // Clear & add
-                                sp.Children.Clear();
-                                sp.Children.Add(scAG);
-                                sp.UpdateLayout();
-                            }
-                            else
-                            {
-                                sp.Children.Clear();
-                                sp.UpdateLayout();
-                            }
-                        }
-
-                        if (sp.Name == "PART_Achievements_List")
-                        {
-                            if (SelectedGameAchievements != null && SelectedGameAchievements.HaveAchivements)
-                            {
-                                // Create 
-                                StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, true);
-
-                                // Clear & add
-                                sp.Children.Clear();
-                                sp.Children.Add(scAL);
-                                sp.UpdateLayout();
-                            }
-                            else
-                            {
-                                sp.Children.Clear();
-                                sp.UpdateLayout();
-                            }
-                        }
+                        ui.AddElementInCustomTheme(scAG, "PART_Achievements_Graphics");
+                        ui.AddElementInCustomTheme(scAL, "PART_Achievements_List");
                     }
                 }
             }
             catch (Exception ex)
             {
-                var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Impossible integration ");
+                Common.LogError(ex, "PluginCommon", $"Impossible integration");
             }
         }
 
+        // Create FrameworkElement with achievements datas
         public StackPanel CreateSc(AchievementsDatabase achievementsDatabase, GameAchievements SelectedGameAchievements, bool ShowTitle, bool ShowGraphic, bool ShowAchievements, bool IsCustom = false)
         {
             StackPanel spA = new StackPanel();

@@ -45,6 +45,7 @@
     <sys:String x:Key="LOCSucessStoryIntegrationInCustomTheme">Intgération dans les thèmes personnalisés (si intégré)</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButton">Ajouter un bouton</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Ajouter un bouton avec détails</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Ajouter un bouton dans la fenêtre</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 

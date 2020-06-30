@@ -45,6 +45,7 @@
     <sys:String x:Key="LOCSucessStoryIntegrationInCustomTheme">Custom theme integration (if integrated)</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButton">Add button</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Add button with details</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Add button in window</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">База достижений была сброшена.</sys:String>
 

@@ -130,6 +130,9 @@
     <Compile Include="Views\Interface\SuccessStoryButtonDetails.xaml.cs">
       <DependentUpon>SuccessStoryButtonDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Interface\SuccessStoryButtonHeader.xaml.cs">
+      <DependentUpon>SuccessStoryButtonHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SuccessStorySettingsView.xaml.cs">
       <DependentUpon>SuccessStorySettingsView.xaml</DependentUpon>
     </Compile>
@@ -331,6 +334,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Interface\SuccessStoryButtonDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Interface\SuccessStoryButtonHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
