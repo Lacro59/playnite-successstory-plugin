@@ -197,7 +197,6 @@ namespace SuccessStory
             {
                 if (isFirstLoad)
                 {
-                    logger.Debug("load");
                     achievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, this.GetPluginUserDataPath());
                     achievementsDatabase.Initialize();
                     isFirstLoad = false;

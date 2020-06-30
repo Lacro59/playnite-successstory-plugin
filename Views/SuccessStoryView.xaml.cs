@@ -126,6 +126,11 @@ namespace SuccessStory
         /// <param name="SearchGameName"></param>
         public void GetListGame(string SearchGameName = "", List<string> SearchSourceName = null)
         {
+            if (SearchSourceName != null && SearchSourceName.Count == 0)
+            {
+                SearchSourceName = null;
+            }
+
             List <ListGames> ListGames = new List<ListGames>();
             foreach (var item in PlayniteApiDatabase.Games)
             {
