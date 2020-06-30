@@ -252,6 +252,8 @@ namespace SuccessStory
 
         internal void RefreshData(string SourceName, bool IsGet = false)
         {
+            SuccessStory.isFirstLoad = false;
+
             // ProgressBar
             SuccessStoryLoad.Visibility = Visibility.Visible;
             SuccessStoryLoad.Value = 0;
@@ -327,7 +329,7 @@ namespace SuccessStory
 
             if (AchievementsDatabase.ListErrors.Get() != "")
             {
-                PlayniteApi.Dialogs.ShowErrorMessage(AchievementsDatabase.ListErrors.Get(), "SuccesStory errors");
+                PlayniteApi.Dialogs.ShowErrorMessage(AchievementsDatabase.ListErrors.Get(), "SuccessStory errors");
             }
             else
             {

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -121,7 +122,7 @@ namespace SuccessStory
         private Game GameSelected { get; set; }
         private StackPanel PART_ElemDescription = null;
 
-        private bool isFirstLoad = true;
+        public static bool isFirstLoad = true;
 
         /// <summary>
         /// Event for the header button for show plugin view.
@@ -139,7 +140,7 @@ namespace SuccessStory
 
             if (settings.EnableIntegrationButtonHeader)
             {
-                logger.Info("SuccesStory - Add Header button");
+                logger.Info("SuccessStory - Add Header button");
                 Button btHeader = new SuccessStoryButtonHeader(TransformIcon.Get("SuccessStory"));
                 btHeader.Click += OnBtHeaderClick;
                 ui.AddButtonInWindowsHeader(btHeader);
@@ -195,11 +196,11 @@ namespace SuccessStory
         {
             try
             {
-                if (isFirstLoad)
+                if (SuccessStory.isFirstLoad)
                 {
                     achievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, this.GetPluginUserDataPath());
                     achievementsDatabase.Initialize();
-                    isFirstLoad = false;
+                    SuccessStory.isFirstLoad = false;
                 }
 
                 if (args.NewValue != null && args.NewValue.Count == 1)
@@ -250,7 +251,7 @@ namespace SuccessStory
                 // Download Achievements if not exist in database.
                 if (SelectedGameAchievements == null)
                 {
-                    logger.Info("SuccesStory - Download achievements for " + GameSelected.Name);
+                    logger.Info("SuccessStory - Download achievements for " + GameSelected.Name);
                     achievementsDatabase.Add(GameSelected, settings);
                     achievementsDatabase.Initialize();
                     SelectedGameAchievements = achievementsDatabase.Get(GameSelected.Id);

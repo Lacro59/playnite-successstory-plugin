@@ -102,7 +102,7 @@ namespace SuccessStory.Models
 
             if (ListErrors.Get() != "")
             {
-                PlayniteApi.Dialogs.ShowErrorMessage(ListErrors.Get(), "SuccesStory errors");
+                PlayniteApi.Dialogs.ShowErrorMessage(ListErrors.Get(), "SuccessStory errors");
             }
 
             ListErrors = new CumulErrors();
