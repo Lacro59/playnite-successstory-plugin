@@ -28,12 +28,12 @@
     <sys:String x:Key="LOCSuccessStoryGetData">Get data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Обновить</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshData">Обновить</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetMissing">Get missing</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataRecent">Missing recent achievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetMissing">Загрузить</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataRecent">Загрузить последние достижения</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Обновить все последние достижения</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshAllData">Обновить все достижения</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllData">All missing achievements</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Missing from installed games</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllData">Загрузить все достижения</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Загрузить из установленных игр</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Достижения из установленных игр</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIntegration">Интеграция интерфейса (экспериментальная)</sys:String>
