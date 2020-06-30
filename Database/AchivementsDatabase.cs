@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using SuccessStory.Database;
 using SuccessStory.Clients;
 using PluginCommon;
-using System.Diagnostics;
 using LiveCharts;
 using PluginCommon.LiveChartsCommon;
 
@@ -21,6 +20,8 @@ namespace SuccessStory.Models
         // Variable Playnite
         private static ILogger logger = LogManager.GetLogger();
         private IPlayniteAPI PlayniteApi { get; set; }
+
+        SuccessStorySettings Settings { get; set; }
 
         // Variable AchievementsCollection
         private ConcurrentDictionary<Guid, GameAchievements> PluginDatabase { get; set; }
@@ -38,14 +39,17 @@ namespace SuccessStory.Models
 
 
 
-        public AchievementsDatabase(IPlayniteAPI PlayniteApi, string PluginUserDataPath)
+        public AchievementsDatabase(IPlayniteAPI PlayniteApi, SuccessStorySettings Settings, string PluginUserDataPath)
         {
             this.PlayniteApi = PlayniteApi;
+            this.Settings = Settings;
             this.PluginUserDataPath = PluginUserDataPath;
             PluginDatabasePath = PluginUserDataPath + "\\achievements\\";
 
             if (!Directory.Exists(PluginDatabasePath))
+            {
                 Directory.CreateDirectory(PluginDatabasePath);
+            }
         }
 
         /// <summary>
@@ -56,6 +60,7 @@ namespace SuccessStory.Models
         public void Initialize()
         {
             PluginDatabase = new ConcurrentDictionary<Guid, GameAchievements>();
+            ListErrors = new CumulErrors();
 
             Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
             {
@@ -63,19 +68,44 @@ namespace SuccessStory.Models
                 {
                     // Get game achievements.
                     Guid gameId = Guid.Parse(objectFile.Replace(PluginDatabasePath, "").Replace(".json", ""));
-                    GameAchievements objGameAchievements = JsonConvert.DeserializeObject<GameAchievements>(File.ReadAllText(objectFile));
 
-                    // Set game achievements in database.
-                    PluginDatabase.TryAdd(gameId, objGameAchievements);
+                    bool IncludeGame = true;
+                    if (!Settings.IncludeHiddenGames)
+                    {
+                        Game tempGame = PlayniteApi.Database.Games.Get(gameId);                       
+                        
+                        if (tempGame != null)
+                        {
+                            IncludeGame = !tempGame.Hidden;
+                        }
+                        else
+                        {
+                            IncludeGame = false;
+                            logger.Info($"SuccessStory - {gameId} is null");
+                        }
+                    }
+
+                    if (IncludeGame)
+                    {
+                        GameAchievements objGameAchievements = JsonConvert.DeserializeObject<GameAchievements>(File.ReadAllText(objectFile));
+
+                        // Set game achievements in database.
+                        PluginDatabase.TryAdd(gameId, objGameAchievements);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                    string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                    PlayniteApi.Dialogs.ShowErrorMessage(ex.Message, $"SuccessStory error [{LineNumber}]");
-                    logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to load item from {objectFile}. ");
+                    Common.LogError(ex, "SuccessStory", $"Failed to load item from { objectFile}");
+                    ListErrors.Add($"SuccessStory - Failed to load item from {objectFile}");
                 }
             });
+
+            if (ListErrors.Get() != "")
+            {
+                PlayniteApi.Dialogs.ShowErrorMessage(ListErrors.Get(), "SuccesStory errors");
+            }
+
+            ListErrors = new CumulErrors();
         }
 
         /// <summary>

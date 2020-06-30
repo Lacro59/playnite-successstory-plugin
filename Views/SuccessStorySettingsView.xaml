@@ -70,6 +70,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Default sorting"></Label>
@@ -80,6 +81,10 @@
                     <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesProgression}" Tag="ProgressionValue"></ComboBoxItem>
                 </ComboBox>
                 <ToggleButton Content="{DynamicResource LOCSucessStoryIsAsc}" IsChecked="{Binding IsAsc}" Grid.Column="4" Grid.Row="0" Height="30"></ToggleButton>
+
+                <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" IsChecked="{Binding IncludeHiddenGames}" VerticalAlignment="Center">
+                    <Label Content="{DynamicResource LOCSucessStoryIncludeHiddenGames}"></Label>
+                </CheckBox>
             </Grid>
             
             <StackPanel DockPanel.Dock="Bottom" Margin="0,20,0,0">

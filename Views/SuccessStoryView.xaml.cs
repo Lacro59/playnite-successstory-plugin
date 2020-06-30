@@ -48,7 +48,7 @@ namespace SuccessStory
             this.PluginUserDataPath = PluginUserDataPath;
 
 
-            AchievementsDatabase = new AchievementsDatabase(PlayniteApi, PluginUserDataPath);
+            AchievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, PluginUserDataPath);
             AchievementsDatabase.Initialize();
 
             InitializeComponent();
@@ -126,9 +126,6 @@ namespace SuccessStory
         /// <param name="SearchGameName"></param>
         public void GetListGame(string SearchGameName = "", List<string> SearchSourceName = null)
         {
-            logger.Debug("SearchGameName: " + SearchGameName);
-            logger.Debug("SearchSourceName: " + JsonConvert.SerializeObject(SearchSourceName));
-
             List <ListGames> ListGames = new List<ListGames>();
             foreach (var item in PlayniteApiDatabase.Games)
             {
@@ -262,8 +259,6 @@ namespace SuccessStory
             catch
             {
                 CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
-
-                logger.Debug("sort - " + settings.NameSorting + " - " + _lastDirection.ToString());
 
                 switch (settings.NameSorting)
                 {

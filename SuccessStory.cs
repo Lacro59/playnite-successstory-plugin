@@ -45,9 +45,6 @@ namespace SuccessStory
             PluginCommon.Localization.SetPluginLanguage(pluginFolder, api.Paths.ConfigurationPath);
             // Add common in application ressource.
             PluginCommon.Common.Load(pluginFolder);
-
-            achievementsDatabase = new AchievementsDatabase(PlayniteApi, this.GetPluginUserDataPath());
-            achievementsDatabase.Initialize();
         }
 
         public override IEnumerable<ExtensionFunction> GetFunctions()
@@ -124,6 +121,8 @@ namespace SuccessStory
         private Game GameSelected { get; set; }
         private StackPanel PART_ElemDescription = null;
 
+        private bool isFirstLoad = true;
+
         /// <summary>
         /// Event for the header button for show plugin view.
         /// </summary>
@@ -196,6 +195,14 @@ namespace SuccessStory
         {
             try
             {
+                if (isFirstLoad)
+                {
+                    logger.Debug("load");
+                    achievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, this.GetPluginUserDataPath());
+                    achievementsDatabase.Initialize();
+                    isFirstLoad = false;
+                }
+
                 if (args.NewValue != null && args.NewValue.Count == 1)
                 {
                     GameSelected = args.NewValue[0];
@@ -217,9 +224,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - OnGameSelected() ");
+                Common.LogError(ex, "SuccessStory", $"OnGameSelected() ");
             }
         }
 

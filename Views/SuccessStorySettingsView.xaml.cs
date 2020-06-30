@@ -36,7 +36,7 @@ namespace SuccessStory
             this.PluginUserDataPath = PluginUserDataPath;
             this.settings = settings;
 
-            AchievementsDatabase = new AchievementsDatabase(PlayniteApi, PluginUserDataPath);
+            AchievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, PluginUserDataPath);
 
             InitializeComponent();
 

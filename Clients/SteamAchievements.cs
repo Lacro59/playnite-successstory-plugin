@@ -95,9 +95,7 @@ namespace SuccessStory.Clients
                             case HttpStatusCode.ServiceUnavailable: // HTTP 503
                                 break;
                             default:
-                                var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                                logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to load from {url}. ");
+                                Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
                                 break;
                         }
                         return Result;
@@ -155,9 +153,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                        string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                        logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - [{ClientId}] Failed to parse {ResultWeb}. ");
+                        Common.LogError(ex, "SuccessStory", $"[{ClientId}] Failed to parse {ResultWeb}");
                         return Result;
                     }
 
@@ -184,9 +180,7 @@ namespace SuccessStory.Clients
                                 case HttpStatusCode.ServiceUnavailable: // HTTP 503
                                     break;
                                 default:
-                                    var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                    string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                                    logger.Error(ex, $"SuccessStory  [{FileName} {LineNumber}] - Failed to load from {url}. ");
+                                    Common.LogError(ex, "SuccessStory", $"Failed to load from {url}");
                                     break;
                             }
                             return Result;
@@ -224,9 +218,7 @@ namespace SuccessStory.Clients
                         }
                         catch (Exception ex)
                         {
-                            var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                            string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                            logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to parse. ");
+                            Common.LogError(ex, "SuccessStory", $"Failed to parse");
                             return Result;
                         }
                     }

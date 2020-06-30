@@ -114,9 +114,7 @@ namespace SuccessStory.Clients
                                 case HttpStatusCode.NotFound: // HTTP 404
                                     break;
                                 default:
-                                    var LineNumber = new StackTrace(ex, true).GetFrame(0).GetFileLineNumber();
-                                    string FileName = new StackTrace(ex, true).GetFrame(0).GetFileName();
-                                    logger.Error(ex, $"SuccessStory [{FileName} {LineNumber}] - Failed to load from {url}. ");
+                                    Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
                                     break;
                             }
                             return Result;

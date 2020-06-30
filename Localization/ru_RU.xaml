@@ -20,6 +20,8 @@
     <sys:String x:Key="LOCSucessStoryEnableGog">Включить достижения GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Включая скрытые игры</sys:String>
+
     <sys:String x:Key="LOCSucessStoryIsAsc">По возрастанию</sys:String>
 
     <sys:String x:Key="LOCSucessStoryDatabase">Манипуляция с базой данных</sys:String>

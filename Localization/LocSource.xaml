@@ -20,6 +20,8 @@
     <sys:String x:Key="LOCSucessStoryEnableGog">Enable GOG achievements</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Enable Origin achievements</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Include hidden games</sys:String>
+    
     <sys:String x:Key="LOCSucessStoryIsAsc">Ascending</sys:String>
 
     <sys:String x:Key="LOCSucessStoryDatabase">Database manipulation</sys:String>

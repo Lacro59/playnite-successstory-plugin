@@ -12,6 +12,8 @@ namespace SuccessStory
         public bool EnableIntegrationInDescription { get; set; } = false;
         public bool EnableIntegrationInDescriptionWithToggle { get; set; } = false;
 
+        public bool IncludeHiddenGames { get; set; } = false;
+
         public bool IntegrationShowTitle { get; set; } = true;
         public bool IntegrationShowGraphic { get; set; } = true;
         public bool IntegrationShowAchievements { get; set; } = true;
@@ -57,6 +59,8 @@ namespace SuccessStory
             {
                 EnableIntegrationInDescription = savedSettings.EnableIntegrationInDescription;
                 EnableIntegrationInDescriptionWithToggle = savedSettings.EnableIntegrationInDescriptionWithToggle;
+
+                IncludeHiddenGames = savedSettings.IncludeHiddenGames;
 
                 IntegrationShowTitle = savedSettings.IntegrationShowTitle;
                 IntegrationShowGraphic = savedSettings.IntegrationShowGraphic;
