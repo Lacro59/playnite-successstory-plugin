@@ -41,7 +41,7 @@ namespace SuccessStory.Views.Interface
                 if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
                 {
                     dateUnlock = null;
-                    if (ListAchievements[i].UrlLocked == "")
+                    if (ListAchievements[i].UrlLocked == "" || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
                     {
                         iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
                         isGray = true;
