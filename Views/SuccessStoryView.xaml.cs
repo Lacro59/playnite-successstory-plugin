@@ -25,6 +25,7 @@ namespace SuccessStory
     public partial class SuccessView : WindowBase
     {
         private static readonly ILogger logger = LogManager.GetLogger();
+        private static IResourceProvider resources = new ResourceProvider();
 
         // Variables api.
         public IPlayniteAPI PlayniteApi;
@@ -66,7 +67,17 @@ namespace SuccessStory
             GetListGame();
 
 
-            AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth();
+            AchievementsGraphicsDataCount GraphicsData = null;
+            if (settings.GraphicAllUnlockedByMonth)
+            {
+                GraphicTitleALL.Content = resources.GetString("LOCSucessStoryGraphicTitleALL");
+                GraphicsData = AchievementsDatabase.GetCountByMonth();
+            }
+            else
+            {
+                GraphicTitleALL.Content = resources.GetString("LOCSucessStoryGraphicTitleALLDay");
+                GraphicsData = AchievementsDatabase.GetCountByDay();
+            }
             string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
             SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
             StatsGraphicAchievementsSeries.Add(new LineSeries
@@ -352,7 +363,17 @@ namespace SuccessStory
                 SuccessStory_Achievements_List.UpdateLayout();
 
 
-                AchievementsGraphicsDataCount GraphicsData = AchievementsDatabase.GetCountByMonth(GameId);
+                AchievementsGraphicsDataCount GraphicsData = null;
+                if (settings.GraphicGameUnlockedByMonth)
+                {
+                    GraphicTitle.Content = resources.GetString("LOCSucessStoryGraphicTitle");
+                    GraphicsData = AchievementsDatabase.GetCountByMonth(GameId);
+                }
+                else
+                {
+                    GraphicTitle.Content = resources.GetString("LOCSucessStoryGraphicTitleDay");
+                    GraphicsData = AchievementsDatabase.GetCountByDay(GameId, 7);
+                }
                 string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
                 SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
                 StatsGraphicAchievementsSeries.Add(new LineSeries

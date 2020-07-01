@@ -192,6 +192,90 @@ namespace SuccessStory.Models
         }
 
         /// <summary>
+        /// Get number achievements unlock by month for a game or not.
+        /// </summary>
+        /// <param name="GameID"></param>
+        /// <returns></returns>
+        public AchievementsGraphicsDataCount GetCountByDay(Guid? GameID = null, int limit = 11)
+        {
+            string[] GraphicsAchievementsLabels = new string[12];
+            ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
+
+            // All achievements
+            if (GameID == null)
+            {
+                for (int i = limit; i >= 0; i--)
+                {
+                    GraphicsAchievementsLabels[(limit - i)] = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd");
+                    SourceAchievementsSeries.Add(new CustomerForSingle
+                    {
+                        Name = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd"),
+                    Values = 0
+                    });
+                }
+
+                foreach (var item in PluginDatabase)
+                {
+                    List<Achievements> temp = item.Value.Achievements;
+                    foreach (Achievements itemAchievements in temp)
+                    {
+                        if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
+                        {
+                            string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
+                            int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
+
+                            if (index >= 0 && index < (limit + 1))
+                            {
+                                SourceAchievementsSeries[index].Values += 1;
+                            }
+                        }
+                    }
+                }
+            }
+            // Achievement for a game
+            else
+            {
+                List<Achievements> Achievements = Get((Guid)GameID).Achievements;
+
+                if (Achievements != null && Achievements.Count > 0)
+                {
+                    Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
+                    DateTime TempDateTime = DateTime.Now;
+
+                    // Find last achievement date unlock
+                    if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd") != "0001-01-01" && ((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd") != "1982-12-15")
+                    {
+                        TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
+                    }
+
+                    for (int i = limit; i >= 0; i--)
+                    {
+                        GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd");
+                        SourceAchievementsSeries.Add(new CustomerForSingle
+                        {
+                            Name = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd"),
+                            Values = 0
+                        });
+                    }
+
+                    for (int i = 0; i < Achievements.Count; i++)
+                    {
+                        string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
+                        int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
+
+                        if (index >= 0 && index < (limit + 1))
+                        {
+                            SourceAchievementsSeries[index].Values += 1;
+                        }
+                    }
+                }
+            }
+
+            return new AchievementsGraphicsDataCount { Labels = GraphicsAchievementsLabels, Series = SourceAchievementsSeries };
+        }
+
+
+        /// <summary>
         /// Get Config and Achivements for a game.
         /// </summary>
         /// <param name="id"></param>

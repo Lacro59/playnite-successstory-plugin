@@ -71,6 +71,8 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
                     <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" Content="Default sorting"></Label>
@@ -85,6 +87,14 @@
                 <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" IsChecked="{Binding IncludeHiddenGames}" VerticalAlignment="Center">
                     <Label Content="{DynamicResource LOCSucessStoryIncludeHiddenGames}"></Label>
                 </CheckBox>
+
+                <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" IsChecked="{Binding GraphicAllUnlockedByMonth}" VerticalAlignment="Center">
+                    <Label Content="{DynamicResource LOCSucessStoryAllUnlockedByMonth}"></Label>
+                </CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" IsChecked="{Binding GraphicGameUnlockedByMonth}" VerticalAlignment="Center">
+                    <Label Content="{DynamicResource LOCSucessStoryGameUnlockedByMonth}"></Label>
+                </CheckBox>
+
             </Grid>
             
             <StackPanel DockPanel.Dock="Bottom" Margin="0,20,0,0">

@@ -21,6 +21,8 @@
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier les succès Origin</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Inclure les jeux cachés</sys:String>
+    <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Graphique avec tous les achievements par mois</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Graphique avec les achievements d'un jeu par mois</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIsAsc">Ascendant</sys:String>
 
@@ -69,6 +71,8 @@
     <sys:String x:Key="LOCSucessStorylvGamesProgression">Progression</sys:String>
 
     <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Tous les succès obtenus par mois</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">Tous les succès obtenus par jour</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Succès obtenus par mois</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Succès obtenus par jour</sys:String>
     
 </ResourceDictionary>

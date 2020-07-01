@@ -415,7 +415,15 @@ namespace SuccessStory
                     spAG.Margin = new Thickness(0, 5, 0, 5);
                 }
 
-                AchievementsGraphicsDataCount GraphicsData = achievementsDatabase.GetCountByMonth(GameSelected.Id);
+                AchievementsGraphicsDataCount GraphicsData = null;
+                if (settings.GraphicGameUnlockedByMonth)
+                {
+                    GraphicsData = achievementsDatabase.GetCountByMonth(GameSelected.Id);
+                }
+                else
+                {
+                    GraphicsData = achievementsDatabase.GetCountByDay(GameSelected.Id);
+                }
                 string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
                 SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
                 StatsGraphicAchievementsSeries.Add(new LineSeries

@@ -76,7 +76,7 @@
             <!-- Graphic all unlocked achievements -->
             <DockPanel DockPanel.Dock="Bottom">
                 <StackPanel DockPanel.Dock="Top">
-                    <Label Content="{DynamicResource LOCSucessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                    <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSucessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
                 </StackPanel>
 
                 <StackPanel x:Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
@@ -139,7 +139,7 @@
         <DockPanel Grid.Column="3" Grid.Row="1">
             <DockPanel  DockPanel.Dock="Top" Margin="0,0,0,0">
                 <StackPanel DockPanel.Dock="Top">
-                    <Label Content="{DynamicResource LOCSucessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
+                    <Label Name="GraphicTitle" Content="{DynamicResource LOCSucessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
                 </StackPanel>
 
                 <StackPanel x:Name="SuccessStory_Achievements_Graphics_Game" DockPanel.Dock="Bottom" Height="168">
