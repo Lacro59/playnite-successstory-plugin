@@ -68,6 +68,12 @@ namespace SuccessStory.Views.Interface
 
                 string NameAchievement = ListAchievements[i].Name;
 
+                // Achievement without unlocktime but achieved = 1
+                if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
+                {
+                    dateUnlock = null;
+                }
+
                 ListBoxAchievements.Add(new listAchievements()
                 {
                     Name = NameAchievement,

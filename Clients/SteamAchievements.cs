@@ -130,6 +130,12 @@ namespace SuccessStory.Clients
                                         DateUnlocked = ((int)resultItems[i]["unlocktime"] == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)resultItems[i]["unlocktime"])
                                     };
 
+                                    // Achievement without unlocktime but achieved = 1
+                                    if ((int)resultItems[i]["achieved"] == 1 && temp.DateUnlocked == new DateTime(1970, 1, 1, 0, 0, 0, 0))
+                                    {
+                                        temp.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                    }
+
                                     Total += 1;
                                     if ((int)resultItems[i]["unlocktime"] == 0)
                                         Locked += 1;

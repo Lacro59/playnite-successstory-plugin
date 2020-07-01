@@ -158,7 +158,9 @@ namespace SuccessStory.Models
                 {
                     Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
                     DateTime TempDateTime = DateTime.Now;
-                    if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "0001-01")
+                    
+                    // Find last achievement date unlock
+                    if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "0001-01" && ((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "1982-12")
                     {
                         TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
                     }
