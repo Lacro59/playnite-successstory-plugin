@@ -4,6 +4,7 @@ using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Threading;
 
 
@@ -391,6 +392,25 @@ namespace SuccessStory
         {
             //cbDefaultSorting.Text = cbDefaultSorting.SelectedItem.;
             settings.NameSorting = ((ComboBoxItem)cbDefaultSorting.SelectedItem).Tag.ToString();
+        }
+    }
+
+    public class BooleanAndConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            foreach (object value in values)
+            {
+                if ((value is bool) && (bool)value == false)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
         }
     }
 }

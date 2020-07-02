@@ -30,6 +30,11 @@ namespace SuccessStory
 
         public bool EnableIntegrationButtonHeader { get; set; } = false;
 
+        public bool IntegrationShowProgressBar { get; set; } = false;
+        public bool IntegrationShowProgressBarIndicator { get; set; } = false;
+        public bool IntegrationShowProgressBarPercent { get; set; } = false;
+
+
         public bool EnableSteam { get; set; } = false;
         public bool EnableGog { get; set; } = false;
         public bool EnableOrigin { get; set; } = false;
@@ -80,6 +85,10 @@ namespace SuccessStory
                 EnableIntegrationButtonDetails = savedSettings.EnableIntegrationButtonDetails;
 
                 EnableIntegrationButtonHeader = savedSettings.EnableIntegrationButtonHeader;
+
+                IntegrationShowProgressBar = savedSettings.IntegrationShowProgressBar;
+                IntegrationShowProgressBarIndicator = savedSettings.IntegrationShowProgressBarIndicator;
+                IntegrationShowProgressBarPercent = savedSettings.IntegrationShowProgressBarPercent;
 
                 EnableSteam = savedSettings.EnableSteam;
                 EnableGog = savedSettings.EnableGog;

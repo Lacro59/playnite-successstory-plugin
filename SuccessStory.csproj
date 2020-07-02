@@ -127,6 +127,9 @@
     <Compile Include="Views\Interface\SuccessStoryAchievementsList.xaml.cs">
       <DependentUpon>SuccessStoryAchievementsList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Interface\SuccessStoryAchievementsProgressBar.xaml.cs">
+      <DependentUpon>SuccessStoryAchievementsProgressBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Interface\SuccessStoryButtonDetails.xaml.cs">
       <DependentUpon>SuccessStoryButtonDetails.xaml</DependentUpon>
     </Compile>
@@ -333,6 +336,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Interface\SuccessStoryAchievementsList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Interface\SuccessStoryAchievementsProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

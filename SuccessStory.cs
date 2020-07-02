@@ -286,6 +286,7 @@ namespace SuccessStory
                 ui.RemoveElementInGameSelectedDescription("PART_Achievements");
                 ui.ClearElementInCustomTheme("PART_Achievements_Graphics");
                 ui.ClearElementInCustomTheme("PART_Achievements_List");
+                ui.ClearElementInCustomTheme("PART_Achievements_ProgressBar");
 
 
                 // Reset resources
@@ -340,7 +341,7 @@ namespace SuccessStory
 
 
                     // Add Achievements elements
-                    StackPanel ScA = CreateSc(achievementsDatabase, SelectedGameAchievements, settings.IntegrationShowTitle, settings.IntegrationShowGraphic, settings.IntegrationShowAchievements, false);
+                    StackPanel ScA = CreateSc(achievementsDatabase, SelectedGameAchievements, settings.IntegrationShowTitle, settings.IntegrationShowGraphic, settings.IntegrationShowAchievements, settings.IntegrationShowProgressBar, false);
                     
                     if (settings.EnableIntegrationInDescriptionWithToggle)
                     {
@@ -380,11 +381,13 @@ namespace SuccessStory
                 if (settings.EnableIntegrationInCustomTheme)
                 {
                     // Create 
-                    StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, true);
-                    StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, true);
+                    StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, false, true);
+                    StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, false, true);
+                    StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, true, true);
 
                     ui.AddElementInCustomTheme(scAG, "PART_Achievements_Graphics");
                     ui.AddElementInCustomTheme(scAL, "PART_Achievements_List");
+                    ui.AddElementInCustomTheme(scPB, "PART_Achievements_ProgressBar");
                 }
             }
             catch (Exception ex)
@@ -394,7 +397,7 @@ namespace SuccessStory
         }
 
         // Create FrameworkElement with achievements datas
-        public StackPanel CreateSc(AchievementsDatabase achievementsDatabase, GameAchievements SelectedGameAchievements, bool ShowTitle, bool ShowGraphic, bool ShowAchievements, bool IsCustom = false)
+        public StackPanel CreateSc(AchievementsDatabase achievementsDatabase, GameAchievements SelectedGameAchievements, bool ShowTitle, bool ShowGraphic, bool ShowAchievements, bool ShowProgressBar, bool IsCustom = false)
         {
             StackPanel spA = new StackPanel();
             spA.Name = "PART_Achievements";
@@ -447,6 +450,22 @@ namespace SuccessStory
                 spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
 
                 spA.Children.Add(spAG);
+                spA.UpdateLayout();
+            }
+
+            if (ShowProgressBar)
+            {
+                StackPanel spPB = new StackPanel();
+                if (!IsCustom)
+                {
+                    spPB.Name = "PART_Achievements_ProgressBar";
+                    spPB.Height = 40;
+                    spPB.Margin = new Thickness(0, 5, 0, 5);
+                }
+
+                spPB.Children.Add(new SuccessStoryAchievementsProgressBar(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total, settings.IntegrationShowProgressBarPercent, settings.IntegrationShowProgressBarIndicator));
+
+                spA.Children.Add(spPB);
                 spA.UpdateLayout();
             }
 
