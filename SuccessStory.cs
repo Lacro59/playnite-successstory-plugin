@@ -147,6 +147,7 @@ namespace SuccessStory
             {
                 logger.Info("SuccessStory - Add Header button");
                 Button btHeader = new SuccessStoryButtonHeader(TransformIcon.Get("SuccessStory"));
+                btHeader.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
                 btHeader.Click += OnBtHeaderClick;
                 ui.AddButtonInWindowsHeader(btHeader);
             }
@@ -169,6 +170,16 @@ namespace SuccessStory
                         if (((FrameworkElement)PART_ElemDescription.Children[i]).Name == "PART_Achievements")
                         {
                             ((FrameworkElement)PART_ElemDescription.Children[i]).Visibility = Visibility.Visible;
+
+                            // Uncheck other integratio ToggleButton
+                            foreach (ToggleButton sp in Tools.FindVisualChildren<ToggleButton>(Application.Current.MainWindow))
+                            {
+                                if (sp.Name == "PART_GaToggleButton")
+                                {
+                                    sp.IsChecked = false;
+                                    break;
+                                }
+                            }
                         }
                         else
                         {
@@ -186,14 +197,17 @@ namespace SuccessStory
                         }
                         else
                         {
-                            ((FrameworkElement)PART_ElemDescription.Children[i]).Visibility = Visibility.Visible;
+                            if (((FrameworkElement)PART_ElemDescription.Children[i]).Name != "PART_GameActivity")
+                            {
+                                ((FrameworkElement)PART_ElemDescription.Children[i]).Visibility = Visibility.Visible;
+                            }
                         }
                     }
                 }
             }
             else
             {
-                logger.Error("SuccessStory - PART_ElemDescription not found in ScToggleButton_Click()");
+                logger.Error("SuccessStory - PART_ElemDescription not found in OnGameSelectedToggleButtonClick()");
             }
         }
 
@@ -210,7 +224,7 @@ namespace SuccessStory
                     {
                         for (int i = 0; i < PART_ElemDescription.Children.Count; i++)
                         {
-                            if (((FrameworkElement)PART_ElemDescription.Children[i]).Name != "PART_Achievements")
+                            if ((((FrameworkElement)PART_ElemDescription.Children[i]).Name != "PART_GameActivity") && (((FrameworkElement)PART_ElemDescription.Children[i]).Name != "PART_Achievements"))
                             {
                                 ((FrameworkElement)PART_ElemDescription.Children[i]).Visibility = Visibility.Visible;
                             }
@@ -309,6 +323,7 @@ namespace SuccessStory
                         }
                         else
                         {
+                            tb = new SuccessStoryToggleButton();
                             tb.Content = resources.GetString("LOCSucessStoryAchievements");
                         }
 
@@ -364,20 +379,17 @@ namespace SuccessStory
                 // Custom theme
                 if (settings.EnableIntegrationInCustomTheme)
                 {
-                    if (SelectedGameAchievements != null && SelectedGameAchievements.HaveAchivements)
-                    {
-                        // Create 
-                        StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, true);
-                        StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, true);
+                    // Create 
+                    StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, true);
+                    StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, true);
 
-                        ui.AddElementInCustomTheme(scAG, "PART_Achievements_Graphics");
-                        ui.AddElementInCustomTheme(scAL, "PART_Achievements_List");
-                    }
+                    ui.AddElementInCustomTheme(scAG, "PART_Achievements_Graphics");
+                    ui.AddElementInCustomTheme(scAL, "PART_Achievements_List");
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "PluginCommon", $"Impossible integration");
+                Common.LogError(ex, "SucessStory", $"Impossible integration");
             }
         }
 

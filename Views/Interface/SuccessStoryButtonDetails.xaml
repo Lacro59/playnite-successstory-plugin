@@ -38,9 +38,10 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="50" />
             <ColumnDefinition Width="3" />
-            <ColumnDefinition Width="99" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="18" />
@@ -63,7 +64,7 @@
             </Label.Style>
         </Label>
 
-        <Label Grid.Column="0" Grid.Row="2" Content="XX/XX" FontSize="10" Name="sc_labelButton">
+        <Label Grid.Column="0" Grid.Row="2" Content="XXX/XXX" FontSize="10" Name="sc_labelButton">
             <Label.Style>
                 <Style TargetType="Label">
                     <Setter Property="Padding" Value="5,3,5,5" />
@@ -77,7 +78,82 @@
             </Label.Style>
         </Label>
         <ProgressBar Name="sc_pbButton" Grid.Column="2" Grid.Row="2" FontSize="10" Maximum="100" Value="30" Height="14"
-                     Margin="0,-1,0,0"></ProgressBar>
+                     Margin="0,-1,0,0">
+            <ProgressBar.Style>
+                <Style TargetType="ProgressBar">
+                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                    <Setter Property="Foreground" Value="{DynamicResource HoverBrush}"/>
+                    <Setter Property="Background" Value="{DynamicResource NormalBrushDark}"/>
+                    <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ProgressBar}">
+                                <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{DynamicResource NormalBorderBrush}"
+                            CornerRadius="{DynamicResource ControlCornerRadius}">
+                                    <!--Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ToggleButton}, Path=IsMouseOver}" Value="True">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource TextBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource TextBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style-->
+
+                                    <Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <Rectangle Fill="{TemplateBinding Background}" />
+                                        <Rectangle Name="PART_Track" Margin="0" />
+                                        <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                                            <Grid>
+                                                <Rectangle Fill="{TemplateBinding Foreground}" />
+                                                <Grid x:Name="Animation" Visibility="Hidden">
+                                                    <Rectangle Fill="{TemplateBinding Background}" Margin="0,0,50,0">
+                                                        <Rectangle.RenderTransform>
+                                                            <ScaleTransform x:Name="HiderPreTransform" ScaleX="0"/>
+                                                        </Rectangle.RenderTransform>
+                                                    </Rectangle>
+                                                    <Rectangle Fill="{TemplateBinding Background}" RenderTransformOrigin="1, 0" Margin="50,0,0,0">
+                                                        <Rectangle.RenderTransform>
+                                                            <ScaleTransform x:Name="HiderPostTransform" ScaleX="1" />
+                                                        </Rectangle.RenderTransform>
+                                                    </Rectangle>
+                                                </Grid>
+                                            </Grid>
+                                        </Decorator>
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsIndeterminate" Value="True">
+                                        <Setter TargetName="Animation" Property="Visibility" Value="Visible" />
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard RepeatBehavior="Forever">
+                                                    <DoubleAnimation Storyboard.TargetName="HiderPreTransform" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                         To="1" Duration="0:00:2" AutoReverse="True"/>
+                                                    <DoubleAnimation Storyboard.TargetName="HiderPostTransform" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                         To="0" Duration="0:00:2" AutoReverse="True"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ToggleButton}, Path=IsMouseOver}" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ToggleButton}, Path=IsChecked}" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ProgressBar.Style>
+        </ProgressBar>
 
     </Grid>
 
