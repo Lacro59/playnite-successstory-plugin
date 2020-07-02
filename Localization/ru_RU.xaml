@@ -53,6 +53,17 @@
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">База достижений была обновлена.</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryGetMissingToolTip" xml:space="preserve">Get the game achievements weren't downloaded in this store.&#x0a;(use if the first number count is different to second)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataToolTip" xml:space="preserve">Reset and download achievements for all games in this store.&#x0a;(use if there are some problems with achievements)</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryGetDataRecentToolTip" xml:space="preserve">Get the game achievements weren't downloaded in slippery month.&#x0a;(use if the first number count is different to second)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalledToolTip" xml:space="preserve">Get the game achievements weren't downloaded for installed games.&#x0a;(use if the first number count is different to second)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllDataToolTip" xml:space="preserve">Get the game achievements weren't downloaded.&#x0a;(use if the first number count is different to second)</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Reset and download achievements in slippery month.&#x0a;(use if there are some problems with achievements)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Reset and download achievements for installed games.&#x0a;(use if there are some problems with achievements)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataToolTip" xml:space="preserve">Reset and download achievements for all games.&#x0a;(use if there are some problems with achievements)</sys:String>
+
     <!-- 
     SuccessStoryView 
     -->

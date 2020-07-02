@@ -53,6 +53,17 @@
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryGetMissingToolTip" xml:space="preserve">Récupérer les succès non téléchargés du store.&#x0a;(A utiliser si le premier nombre est différent du deuxième)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataToolTip" xml:space="preserve">Mise à zéro et téléchargement des succès du store.&#x0a;(A utiliser s'il y a des problèmes avec les succès)</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryGetDataRecentToolTip" xml:space="preserve">Récupérer les succès non téléchargés sur un mois glissant.&#x0a;(A utiliser si le premier nombre est différent du deuxième)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalledToolTip" xml:space="preserve">Récupérer les succès non téléchargés pour les jeux installés.&#x0a;(A utiliser si le premier nombre est différent du deuxième)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllDataToolTip" xml:space="preserve">Récupérer les succès non téléchargés.&#x0a;(A utiliser si le premier nombre est différent du deuxième)</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Mise à zéro et téléchargement des succès sur un mois glissant.&#x0a;(A utiliser s'il y a des problèmes avec les succès)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Mise à zéro et téléchargement des succès pour les jeux installés.&#x0a;(A utiliser s'il y a des problèmes avec les succès)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataToolTip" xml:space="preserve">Mise à zéro et téléchargement des succès pour tous les jeux.&#x0a;(A utiliser s'il y a des problèmes avec les succès)</sys:String>
+
     <!-- 
     SuccessStoryView 
     -->
