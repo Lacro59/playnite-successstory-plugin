@@ -380,14 +380,23 @@ namespace SuccessStory
                 // Custom theme
                 if (settings.EnableIntegrationInCustomTheme)
                 {
-                    // Create 
-                    StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, false, true);
-                    StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, false, true);
-                    StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, true, true);
+                    if (settings.IntegrationShowGraphic)
+                    {
+                        StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, false, true);
+                        ui.AddElementInCustomTheme(scAG, "PART_Achievements_Graphics");
+                    }
 
-                    ui.AddElementInCustomTheme(scAG, "PART_Achievements_Graphics");
-                    ui.AddElementInCustomTheme(scAL, "PART_Achievements_List");
-                    ui.AddElementInCustomTheme(scPB, "PART_Achievements_ProgressBar");
+                    if (settings.IntegrationShowAchievements)
+                    {
+                        StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, false, true);
+                        ui.AddElementInCustomTheme(scAL, "PART_Achievements_List");
+                    }
+
+                    if (settings.IntegrationShowProgressBar)
+                    {
+                        StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, true, true);
+                        ui.AddElementInCustomTheme(scPB, "PART_Achievements_ProgressBar");
+                    }
                 }
             }
             catch (Exception ex)
