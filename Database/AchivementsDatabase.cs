@@ -24,7 +24,7 @@ namespace SuccessStory.Models
         SuccessStorySettings Settings { get; set; }
 
         // Variable AchievementsCollection
-        private ConcurrentDictionary<Guid, GameAchievements> PluginDatabase { get; set; }
+        private ConcurrentDictionary<Guid, GameAchievements> PluginDatabase { get; set; } = new ConcurrentDictionary<Guid, GameAchievements>();
         private string PluginUserDataPath { get; set; }
         private string PluginDatabasePath { get; set; }
 
@@ -59,7 +59,6 @@ namespace SuccessStory.Models
         /// <param name="PluginUserDataPath"></param>
         public void Initialize()
         {
-            PluginDatabase = new ConcurrentDictionary<Guid, GameAchievements>();
             ListErrors = new CumulErrors();
 
             Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
@@ -131,14 +130,62 @@ namespace SuccessStory.Models
                     });
                 }
 
-                foreach (var item in PluginDatabase)
+                try
                 {
-                    List<Achievements> temp = item.Value.Achievements;
-                    foreach (Achievements itemAchievements in temp)
+                    foreach (var item in PluginDatabase)
                     {
-                        if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
+                        List<Achievements> temp = item.Value.Achievements;
+                        foreach (Achievements itemAchievements in temp)
                         {
-                            string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                            if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
+                            {
+                                string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                                int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
+
+                                if (index >= 0 && index < 12)
+                                {
+                                    SourceAchievementsSeries[index].Values += 1;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error in load GetCountByMonth()");
+                }
+            }
+            // Achievement for a game
+            else
+            {
+                try
+                {
+                    List<Achievements> Achievements = Get((Guid)GameID).Achievements;
+
+                    if (Achievements != null && Achievements.Count > 0)
+                    {
+                        Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
+                        DateTime TempDateTime = DateTime.Now;
+
+                        // Find last achievement date unlock
+                        if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "0001-01" && ((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "1982-12")
+                        {
+                            TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
+                        }
+
+                        for (int i = 11; i >= 0; i--)
+                        {
+                            GraphicsAchievementsLabels[(11 - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
+                            SourceAchievementsSeries.Add(new CustomerForSingle
+                            {
+                                Name = TempDateTime.AddMonths(-i).ToString("yyyy-MM"),
+                                Values = 0
+                            });
+                        }
+
+                        for (int i = 0; i < Achievements.Count; i++)
+                        {
+                            string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM");
                             int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
                             if (index >= 0 && index < 12)
@@ -148,43 +195,9 @@ namespace SuccessStory.Models
                         }
                     }
                 }
-            }
-            // Achievement for a game
-            else
-            {
-                List<Achievements> Achievements = Get((Guid)GameID).Achievements;
-
-                if (Achievements != null && Achievements.Count > 0)
+                catch (Exception ex)
                 {
-                    Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
-                    DateTime TempDateTime = DateTime.Now;
-                    
-                    // Find last achievement date unlock
-                    if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "0001-01" && ((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "1982-12")
-                    {
-                        TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
-                    }
-
-                    for (int i = 11; i >= 0; i--)
-                    {
-                        GraphicsAchievementsLabels[(11 - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
-                        SourceAchievementsSeries.Add(new CustomerForSingle
-                        {
-                            Name = TempDateTime.AddMonths(-i).ToString("yyyy-MM"),
-                            Values = 0
-                        });
-                    }
-
-                    for (int i = 0; i < Achievements.Count; i++)
-                    {
-                        string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM");
-                        int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
-
-                        if (index >= 0 && index < 12)
-                        {
-                            SourceAchievementsSeries[index].Values += 1;
-                        }
-                    }
+                    Common.LogError(ex, "SuccessStory", $"Error in load GetCountByMonth({GameID.ToString()})");
                 }
             }
 
@@ -214,14 +227,61 @@ namespace SuccessStory.Models
                     });
                 }
 
-                foreach (var item in PluginDatabase)
-                {
-                    List<Achievements> temp = item.Value.Achievements;
-                    foreach (Achievements itemAchievements in temp)
+                try
+                { 
+                    foreach (var item in PluginDatabase)
                     {
-                        if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
+                        List<Achievements> temp = item.Value.Achievements;
+                        foreach (Achievements itemAchievements in temp)
                         {
-                            string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
+                            if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
+                            {
+                                string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
+                                int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
+
+                                if (index >= 0 && index < (limit + 1))
+                                {
+                                    SourceAchievementsSeries[index].Values += 1;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", $"Error in load GetCountByDay()");
+                }
+            }
+            // Achievement for a game
+            else
+            {
+                try { 
+                    List<Achievements> Achievements = Get((Guid)GameID).Achievements;
+
+                    if (Achievements != null && Achievements.Count > 0)
+                    {
+                        Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
+                        DateTime TempDateTime = DateTime.Now;
+
+                        // Find last achievement date unlock
+                        if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd") != "0001-01-01" && ((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd") != "1982-12-15")
+                        {
+                            TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
+                        }
+
+                        for (int i = limit; i >= 0; i--)
+                        {
+                            GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd");
+                            SourceAchievementsSeries.Add(new CustomerForSingle
+                            {
+                                Name = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd"),
+                                Values = 0
+                            });
+                        }
+
+                        for (int i = 0; i < Achievements.Count; i++)
+                        {
+                            string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
                             int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
                             if (index >= 0 && index < (limit + 1))
@@ -231,43 +291,9 @@ namespace SuccessStory.Models
                         }
                     }
                 }
-            }
-            // Achievement for a game
-            else
-            {
-                List<Achievements> Achievements = Get((Guid)GameID).Achievements;
-
-                if (Achievements != null && Achievements.Count > 0)
+                catch (Exception ex)
                 {
-                    Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
-                    DateTime TempDateTime = DateTime.Now;
-
-                    // Find last achievement date unlock
-                    if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd") != "0001-01-01" && ((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd") != "1982-12-15")
-                    {
-                        TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
-                    }
-
-                    for (int i = limit; i >= 0; i--)
-                    {
-                        GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd");
-                        SourceAchievementsSeries.Add(new CustomerForSingle
-                        {
-                            Name = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd"),
-                            Values = 0
-                        });
-                    }
-
-                    for (int i = 0; i < Achievements.Count; i++)
-                    {
-                        string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
-                        int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
-
-                        if (index >= 0 && index < (limit + 1))
-                        {
-                            SourceAchievementsSeries[index].Values += 1;
-                        }
-                    }
+                    Common.LogError(ex, "SuccessStory", $"Error in load GetCountByDay({GameID.ToString()})");
                 }
             }
 
