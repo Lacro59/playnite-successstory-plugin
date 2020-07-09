@@ -167,6 +167,8 @@ namespace SuccessStory
                 {
                     for (int i = 0; i < PART_ElemDescription.Children.Count; i++)
                     {
+                        logger.Debug(((FrameworkElement)PART_ElemDescription.Children[i]).Name);
+
                         if (((FrameworkElement)PART_ElemDescription.Children[i]).Name == "PART_Achievements")
                         {
                             ((FrameworkElement)PART_ElemDescription.Children[i]).Visibility = Visibility.Visible;
