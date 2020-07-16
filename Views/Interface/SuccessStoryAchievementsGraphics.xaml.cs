@@ -36,28 +36,10 @@ namespace SuccessStory.Views.Interface
             StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
         }
 
-        private void StatsGraphicAchievements_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void StatsGraphicAchievements_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Win == null)
-            {
-                foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Application.Current.MainWindow))
-                {
-                    if (sp.Name == "PART_Achievements_Graphics")
-                    {
-                        StatsGraphicAchievements.Height = sp.MaxHeight + 18;
-                    }
-                }
-            }
-            else
-            {
-                foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Win))
-                {
-                    if (sp.Name == "SuccessStory_Achievements_Graphics")
-                    {
-                        StatsGraphicAchievements.Height = sp.MaxHeight + 18;
-                    }
-                }
-            }
+            var parent = ((FrameworkElement)((FrameworkElement)StatsGraphicAchievements.Parent).Parent);
+            StatsGraphicAchievements.Height = parent.ActualHeight +18;
         }
     }
 }

@@ -135,26 +135,8 @@ namespace SuccessStory.Views.Interface
         /// <param name="e"></param>
         private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Win == null)
-            {
-                foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Application.Current.MainWindow))
-                {
-                    if (sp.Name == "PART_Achievements_List")
-                    {
-                        lbAchievements.MaxHeight = sp.MaxHeight;
-                    }
-                }
-            }
-            else 
-            {
-                foreach (StackPanel sp in Tools.FindVisualChildren<StackPanel>(Win))
-                {
-                    if (sp.Name == "SuccessStory_Achievements_List")
-                    {
-                        lbAchievements.Height = sp.MaxHeight;
-                    }
-                }
-            }
+            var parent = ((FrameworkElement)((FrameworkElement)lbAchievements.Parent).Parent);
+            lbAchievements.Height = parent.MaxHeight;
         }
     }
 }
