@@ -2,14 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- LibraryLocalization -->
-    <sys:String x:Key="LOCLanguageNameEnglish">french</sys:String>
-    <sys:String x:Key="LOCLanguageCode">fr_FR</sys:String>
-    <sys:String x:Key="LOCLanguageCountry">FR</sys:String>
-
     <!--  
     MainView
     -->
+    <sys:String x:Key="LOCSucessStory">Success Story</sys:String>
     <sys:String x:Key="LOCSucessStoryAchievements">Succès</sys:String>
 
     <!--  
@@ -24,6 +20,7 @@
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Graphique avec tous les achievements par mois</sys:String>
     <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Graphique avec les achievements d'un jeu par mois</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryDefaultSorting">Trie par défaut</sys:String>
     <sys:String x:Key="LOCSucessStoryIsAsc">Ascendant</sys:String>
 
     <sys:String x:Key="LOCSucessStoryDatabase">Manipulation de la base de données</sys:String>

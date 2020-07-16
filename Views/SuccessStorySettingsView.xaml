@@ -77,7 +77,7 @@
                     <RowDefinition Height="40" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" Content="Default sorting"></Label>
+                <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCSucessStoryDefaultSorting}"></Label>
                 <ComboBox Name="cbDefaultSorting" Grid.Column="2" Grid.Row="0" Height="30" IsEditable="True" IsReadOnly="True" SelectionChanged="cbDefaultSorting_SelectionChanged">
                     <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesName}" Tag="Name"></ComboBoxItem>
                     <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesLastActivity}" Tag="LastActivity"></ComboBoxItem>

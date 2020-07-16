@@ -53,7 +53,7 @@ namespace SuccessStory
             return new List<ExtensionFunction>
             {
                 new ExtensionFunction(
-                    "Success Story",
+                    resources.GetString("LOCSucessStory"),
                     () =>
                     {
                         // Add code to be execute when user invokes this menu entry.
