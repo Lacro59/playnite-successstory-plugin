@@ -101,8 +101,9 @@ namespace SuccessStory
                     }
                 }
             }
+            ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
 
-            
+
             if (settings.EnableLocal)
             {
                 //FilterSource.Items.Add(new { SourceName = "Playnite", IsCheck = false });
