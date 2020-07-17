@@ -19,13 +19,9 @@ namespace SuccessStory.Views.Interface
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        private dynamic Win;
-
-        public SuccessStoryAchievementsList(List<Achievements> ListAchievements, dynamic Win = null)
+        public SuccessStoryAchievementsList(List<Achievements> ListAchievements)
         {
             InitializeComponent();
-
-            this.Win = Win;
 
             List<listAchievements> ListBoxAchievements = new List<listAchievements>();
 

@@ -4,10 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
+             xmlns:localPlugin="clr-namespace:PluginCommon;assembly=PluginCommon"
              mc:Ignorable="d">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <localPlugin:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
     </UserControl.Resources>
 
 
@@ -101,7 +103,7 @@
                                         <ToolTip Content="{Binding Name}"></ToolTip>
                                     </TextBlock.ToolTip>
                                 </TextBlock>
-                                <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding DateUnlock, StringFormat='dd/MM/yyyy HH:mm'}"  Foreground="{DynamicResource TextBrush}" />
+                            <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding DateUnlock, Converter={StaticResource LocalDateTimeConverter}}"  Foreground="{DynamicResource TextBrush}" />
                             </Grid>
 
                             <TextBlock Grid.Row="1" Text="{Binding Description}" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}"/>

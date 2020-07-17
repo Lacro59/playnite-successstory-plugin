@@ -87,7 +87,7 @@ namespace SuccessStory
             });
 
             SuccessStory_Achievements_Graphics.Children.Clear();
-            SuccessStory_Achievements_Graphics.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, this));
+            SuccessStory_Achievements_Graphics.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
             SuccessStory_Achievements_Graphics.UpdateLayout();
 
             // Set game selected
@@ -360,7 +360,7 @@ namespace SuccessStory
                 List<Achievements> ListAchievements = GameAchievements.Achievements;
 
                 SuccessStory_Achievements_List.Children.Clear();
-                SuccessStory_Achievements_List.Children.Add(new SuccessStoryAchievementsList(ListAchievements, this));
+                SuccessStory_Achievements_List.Children.Add(new SuccessStoryAchievementsList(ListAchievements));
                 SuccessStory_Achievements_List.UpdateLayout();
 
 
@@ -384,7 +384,7 @@ namespace SuccessStory
                 });
 
                 SuccessStory_Achievements_Graphics_Game.Children.Clear();
-                SuccessStory_Achievements_Graphics_Game.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, this));
+                SuccessStory_Achievements_Graphics_Game.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
                 SuccessStory_Achievements_Graphics_Game.UpdateLayout();
 
                 GC.Collect();

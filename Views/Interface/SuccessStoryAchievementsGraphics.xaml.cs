@@ -16,13 +16,9 @@ namespace SuccessStory.Views.Interface
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        private dynamic Win;
-
-        public SuccessStoryAchievementsGraphics(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels, dynamic Win = null)
+        public SuccessStoryAchievementsGraphics(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels)
         {
             InitializeComponent();
-
-            this.Win = Win;
 
             //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
             var customerVmMapper = Mappers.Xy<CustomerForSingle>()

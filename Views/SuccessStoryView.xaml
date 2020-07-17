@@ -6,7 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             mc:Ignorable="d" Height="740" Width="1260" Background="{DynamicResource WindowBackgourndBrush}"
+    xmlns:localPlugin="clr-namespace:PluginCommon;assembly=PluginCommon"
+    mc:Ignorable="d" Height="740" Width="1260" Background="{DynamicResource WindowBackgourndBrush}"
              Title="Success Story"              
              d:DesignStyle="{StaticResource WindowDesignStyle}"
              Style="{DynamicResource StandardWindowStyle}"
@@ -14,6 +15,7 @@
 
     <WindowBase.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <localPlugin:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
     </WindowBase.Resources>
 
     <Grid Margin="10">
@@ -99,7 +101,7 @@
                             <GridViewColumn Width="286" DisplayMemberBinding="{Binding Name}">
                                 <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCSucessStorylvGamesName}"></GridViewColumnHeader>
                             </GridViewColumn>
-                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, StringFormat='dd/MM/yyyy HH:mm:ss'}">
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}">
                                 <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCSucessStorylvGamesLastActivity}"></GridViewColumnHeader>
                             </GridViewColumn>
 
