@@ -365,7 +365,7 @@ namespace SuccessStory
 
 
                 AchievementsGraphicsDataCount GraphicsData = null;
-                if (settings.GraphicGameUnlockedByMonth)
+                if (settings.GraphicAllUnlockedByDay)
                 {
                     GraphicTitle.Content = resources.GetString("LOCSucessStoryGraphicTitle");
                     GraphicsData = AchievementsDatabase.GetCountByMonth(GameId);

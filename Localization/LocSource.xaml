@@ -18,7 +18,7 @@
 
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Include hidden games</sys:String>
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Graphic with all unlocked achievements by month</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Graphic with game unlocked achievements by month</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Graphic with all unlocked achievements by Day</sys:String>
 
     <sys:String x:Key="LOCSucessStoryDefaultSorting">Default sorting</sys:String>
     <sys:String x:Key="LOCSucessStoryIsAsc">Ascending</sys:String>

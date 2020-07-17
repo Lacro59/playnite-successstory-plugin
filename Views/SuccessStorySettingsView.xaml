@@ -91,10 +91,10 @@
                         <Label Content="{DynamicResource LOCSucessStoryIncludeHiddenGames}"></Label>
                     </CheckBox>
 
-                    <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" IsChecked="{Binding GraphicAllUnlockedByMonth}" VerticalAlignment="Center">
+                    <CheckBox Name="Sc_AllMonth" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Click="CheckboxGraphicType_Click" IsChecked="{Binding GraphicAllUnlockedByMonth}" VerticalAlignment="Center">
                         <Label Content="{DynamicResource LOCSucessStoryAllUnlockedByMonth}"></Label>
                     </CheckBox>
-                    <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" IsChecked="{Binding GraphicGameUnlockedByMonth}" VerticalAlignment="Center">
+                    <CheckBox Name="Sc_AllDay" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Click="CheckboxGraphicType_Click" IsChecked="{Binding GraphicAllUnlockedByDay}" VerticalAlignment="Center">
                         <Label Content="{DynamicResource LOCSucessStoryGameUnlockedByMonth}"></Label>
                     </CheckBox>
 
@@ -386,7 +386,7 @@
                 <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" IsChecked="{Binding GraphicAllUnlockedByMonth}" VerticalAlignment="Center">
                     <Label Content="{DynamicResource LOCSucessStoryAllUnlockedByMonth}"></Label>
                 </CheckBox>
-                <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" IsChecked="{Binding GraphicGameUnlockedByMonth}" VerticalAlignment="Center">
+                <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" IsChecked="{Binding GraphicAllUnlockedByDay}" VerticalAlignment="Center">
                     <Label Content="{DynamicResource LOCSucessStoryGameUnlockedByMonth}"></Label>
                 </CheckBox>
 

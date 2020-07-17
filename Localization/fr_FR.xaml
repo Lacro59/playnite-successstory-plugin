@@ -18,7 +18,7 @@
 
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Inclure les jeux cachés</sys:String>
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Graphique avec tous les achievements par mois</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Graphique avec les achievements d'un jeu par mois</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Graphique avec tous les achievements par jour</sys:String>
 
     <sys:String x:Key="LOCSucessStoryDefaultSorting">Trie par défaut</sys:String>
     <sys:String x:Key="LOCSucessStoryIsAsc">Ascendant</sys:String>

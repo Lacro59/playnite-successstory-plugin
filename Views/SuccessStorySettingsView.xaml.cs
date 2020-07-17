@@ -388,6 +388,29 @@ namespace SuccessStory
             }
         }
 
+        private void CheckboxGraphicType_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox)sender;
+
+            if ((cb.Name == "Sc_AllMonth") && (bool)cb.IsChecked)
+            {
+                Sc_AllDay.IsChecked = false;
+            }
+            else if ((cb.Name == "Sc_AllMonth") && !(bool)cb.IsChecked)
+            {
+                Sc_AllDay.IsChecked = true;
+            }
+
+            if ((cb.Name == "Sc_AllDay") && (bool)cb.IsChecked)
+            {
+                Sc_AllMonth.IsChecked = false;
+            }
+            else if ((cb.Name == "Sc_AllDay") && !(bool)cb.IsChecked)
+            {
+                Sc_AllMonth.IsChecked = true;
+            }
+        }
+
         private void cbDefaultSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //cbDefaultSorting.Text = cbDefaultSorting.SelectedItem.;

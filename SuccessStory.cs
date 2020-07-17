@@ -442,7 +442,7 @@ namespace SuccessStory
                 }
 
                 AchievementsGraphicsDataCount GraphicsData = null;
-                if (settings.GraphicGameUnlockedByMonth)
+                if (settings.GraphicAllUnlockedByDay)
                 {
                     GraphicsData = achievementsDatabase.GetCountByMonth(GameSelected.Id);
                 }
