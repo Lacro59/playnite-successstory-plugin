@@ -12,9 +12,9 @@
     SuccessStorySettingsView
     -->
 
-    <sys:String x:Key="LOCSucessStoryEnableSteam">Activier les succès Steam</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableGog">Activier les succès GOG</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier les succès Origin</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableSteam">Activier Steam</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableGog">Activier GOG</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier Origin</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Inclure les jeux cachés</sys:String>
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Graphique avec tous les achievements par mois</sys:String>
