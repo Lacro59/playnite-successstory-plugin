@@ -38,6 +38,10 @@ namespace SuccessStory
         public bool EnableSteam { get; set; } = false;
         public bool EnableGog { get; set; } = false;
         public bool EnableOrigin { get; set; } = false;
+        public bool EnableRetroAchievements { get; set; } = false;
+
+        public string RetroAchievementsUser { get; set; } = "";
+        public string RetroAchievementsKey { get; set; } = "";
 
         public bool EnableLocal { get; set; } = false;
 
@@ -93,6 +97,10 @@ namespace SuccessStory
                 EnableSteam = savedSettings.EnableSteam;
                 EnableGog = savedSettings.EnableGog;
                 EnableOrigin = savedSettings.EnableOrigin;
+                EnableRetroAchievements = savedSettings.EnableRetroAchievements;
+
+                RetroAchievementsUser = savedSettings.RetroAchievementsUser;
+                RetroAchievementsKey = savedSettings.RetroAchievementsKey;
 
                 EnableLocal = savedSettings.EnableLocal;
 

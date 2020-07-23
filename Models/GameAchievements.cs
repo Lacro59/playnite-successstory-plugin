@@ -17,6 +17,10 @@ namespace SuccessStory.Database
         /// </summary>
         public bool HaveAchivements { get; set; }
         /// <summary>
+        /// 
+        /// </summary>
+        public bool IsEmulators { get; set; } = false;
+        /// <summary>
         /// Total achievements for the game.
         /// </summary>
         public int Total { get; set; }

@@ -15,6 +15,7 @@
     <sys:String x:Key="LOCSucessStoryEnableSteam">Включить достижения Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">Включить достижения GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Включить достижения RetroAchievements</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Включая скрытые игры</sys:String>
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">График со всеми достижениями по месяцам</sys:String>

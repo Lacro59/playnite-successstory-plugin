@@ -1,6 +1,8 @@
-﻿using Playnite.SDK;
+﻿using Newtonsoft.Json;
+using Playnite.SDK;
 using SuccessStory.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +28,8 @@ namespace SuccessStory
         int GogTotalAchievements;
         int OriginTotal;
         int OriginTotalAchievements;
+        int RetroAchievementsTotal;
+        int RetroAchievementsTotalAchievements;
 
         int LocalTotal;
         int LocalTotalAchievements;
@@ -70,9 +74,17 @@ namespace SuccessStory
             GogTotalAchievements = 0;
             OriginTotal = 0;
             OriginTotalAchievements = 0;
+            RetroAchievementsTotal = 0;
+            RetroAchievementsTotalAchievements = 0;
 
             LocalTotal = 0;
             LocalTotalAchievements = 0;
+
+            List<Guid> ListEmulators = new List<Guid>();
+            foreach (var item in PlayniteApi.Database.Emulators)
+            {
+                ListEmulators.Add(item.Id);
+            }
 
             foreach (var game in PlayniteApi.Database.Games)
             {
@@ -80,12 +92,24 @@ namespace SuccessStory
                 if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
                     GameSourceName = game.Source.Name;
+
+                    if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                    {
+                        GameSourceName = "RetroAchievements";
+                    }
                 }
                 else
                 {
-                    GameSourceName = "Playnite";
+                    if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                    {
+                        GameSourceName = "RetroAchievements";
+                    }
+                    else
+                    {
+                        GameSourceName = "Playnite";
+                    }
                 }
-
+                
                 switch (GameSourceName.ToLower())
                 {
                     case "steam":
@@ -109,6 +133,13 @@ namespace SuccessStory
                             OriginTotalAchievements += 1;
                         }
                         break;
+                    case "retroachievements":
+                        RetroAchievementsTotal += 1;
+                        if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
+                        {
+                            RetroAchievementsTotalAchievements += 1;
+                        }
+                        break;
                     case "playnite":
                         LocalTotal += 1;
                         if (AchievementsDatabase.VerifAchievementsLoad(game.Id))
@@ -121,6 +152,7 @@ namespace SuccessStory
             SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
             GogLoad.Content = GogTotalAchievements + "/" + GogTotal;
             OriginLoad.Content = OriginTotalAchievements + "/" + OriginTotal;
+            RetroAchievementsLoad.Content = RetroAchievementsTotalAchievements + "/" + RetroAchievementsTotal;
             LocalLoad.Content = LocalTotalAchievements + "/" + LocalTotal;
         }
 
@@ -217,6 +249,23 @@ namespace SuccessStory
             SetTotal();
         }
 
+        private void Button_Click_Get_RetroAchievements(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "RetroAchievements");
+
+            RetroAchievementsLoad.Content = 0 + "/" + RetroAchievementsTotal;
+            RefreshData("RetroAchievements", true);
+            SetTotal();
+        }
+        private void Button_Click_RetroAchievements(object sender, RoutedEventArgs e)
+        {
+            AchievementsDatabase.InitializeMultipleAdd(settings, "RetroAchievements");
+
+            RetroAchievementsLoad.Content = 0 + "/" + RetroAchievementsTotal;
+            RefreshData("RetroAchievements");
+            SetTotal();
+        }
+
         private void Button_Click_Get_Origin(object sender, RoutedEventArgs e)
         {
             AchievementsDatabase.InitializeMultipleAdd(settings, "Origin");
@@ -262,6 +311,11 @@ namespace SuccessStory
 
             SuccessStorySettings.IsEnabled = false;
 
+            List<Guid> ListEmulators = new List<Guid>();
+            foreach (var item in PlayniteApi.Database.Emulators)
+            {
+                ListEmulators.Add(item.Id);
+            }
 
             foreach (var game in PlayniteApi.Database.Games)
             {
@@ -269,10 +323,22 @@ namespace SuccessStory
                 if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
                     GameSourceName = game.Source.Name;
+
+                    if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                    {
+                        GameSourceName = "RetroAchievements";
+                    }
                 }
                 else
                 {
-                    GameSourceName = "Playnite";
+                    if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                    {
+                        GameSourceName = "RetroAchievements";
+                    }
+                    else
+                    {
+                        GameSourceName = "Playnite";
+                    }
                 }
 
                 if (GameSourceName.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all" || SourceName.ToLower() == "allrecent" || SourceName.ToLower() == "allinstalled")
@@ -413,7 +479,6 @@ namespace SuccessStory
 
         private void cbDefaultSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //cbDefaultSorting.Text = cbDefaultSorting.SelectedItem.;
             settings.NameSorting = ((ComboBoxItem)cbDefaultSorting.SelectedItem).Tag.ToString();
         }
     }

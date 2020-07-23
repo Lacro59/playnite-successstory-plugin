@@ -124,6 +124,11 @@ namespace SuccessStory
                 //FilterSource.Items.Add(new { SourceName = "Origin", IsCheck = false });
                 FilterSourceItems.Add(new ListSource { SourceName = "Origin", IsCheck = false });
             }
+            if (settings.EnableOrigin)
+            {
+                //FilterSource.Items.Add(new { SourceName = "Origin", IsCheck = false });
+                FilterSourceItems.Add(new ListSource { SourceName = "RetroAchievement", IsCheck = false });
+            }
             //FilterSource.UpdateLayout();
             FilterSource.ItemsSource = FilterSourceItems;
 
@@ -143,6 +148,12 @@ namespace SuccessStory
                 SearchSourceName = null;
             }
 
+            List<Guid> ListEmulators = new List<Guid>();
+            foreach (var item in PlayniteApi.Database.Emulators)
+            {
+                ListEmulators.Add(item.Id);
+            }
+
             List <ListGames> ListGames = new List<ListGames>();
             foreach (var item in PlayniteApiDatabase.Games)
             {
@@ -150,10 +161,22 @@ namespace SuccessStory
                 if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
                     GameSourceName = item.Source.Name;
+
+                    if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                    {
+                        GameSourceName = "RetroAchievements";
+                    }
                 }
                 else
                 {
-                    GameSourceName = "Playnite";
+                    if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                    {
+                        GameSourceName = "RetroAchievements";
+                    }
+                    else
+                    {
+                        GameSourceName = "Playnite";
+                    }
                 }
 
 
@@ -210,10 +233,22 @@ namespace SuccessStory
                         if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                         {
                             SourceName = item.Source.Name;
+
+                            if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                            {
+                                SourceName = "RetroAchievements";
+                            }
                         }
                         else
                         {
-                            SourceName = "Playnite";
+                            if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                            {
+                                SourceName = "RetroAchievements";
+                            }
+                            else
+                            {
+                                SourceName = "Playnite";
+                            }
                         }
 
                         GameAchievements GameAchievements = AchievementsDatabase.Get(item.Id);

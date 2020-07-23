@@ -15,6 +15,7 @@
     <sys:String x:Key="LOCSucessStoryEnableSteam">Enable Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">Enable GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Enable Origin</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Enable RetroAchievements</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Include hidden games</sys:String>
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Graphic with all unlocked achievements by month</sys:String>

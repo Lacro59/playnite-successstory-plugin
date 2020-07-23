@@ -344,6 +344,10 @@ namespace SuccessStory.Models
             {
                 return true;
             }
+            if (settings.EnableRetroAchievements && GameSourceName.ToLower() == "retroachievements")
+            {
+                return true;
+            }
 
             return Result;
         }
@@ -399,14 +403,33 @@ namespace SuccessStory.Models
             Guid GameSourceId = GameAdded.SourceId;
             string GameSourceName = "";
 
+            List<Guid> ListEmulators = new List<Guid>();
+            foreach (var item in PlayniteApi.Database.Emulators)
+            {
+                ListEmulators.Add(item.Id);
+            }
+
             if (GameSourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
             {
                 GameSourceName = GameAdded.Source.Name;
+
+                if (GameAdded.PlayAction != null && GameAdded.PlayAction.EmulatorId != null && ListEmulators.Contains(GameAdded.PlayAction.EmulatorId))
+                {
+                    GameSourceName = "RetroAchievements";
+                }
             }
             else
             {
-                GameSourceName = "Playnite";
+                if (GameAdded.PlayAction != null && GameAdded.PlayAction.EmulatorId != null && ListEmulators.Contains(GameAdded.PlayAction.EmulatorId))
+                {
+                    GameSourceName = "RetroAchievements";
+                }
+                else
+                {
+                    GameSourceName = "Playnite";
+                }
             }
+
 
             string PluginDatabaseGamePath = PluginDatabasePath + GameId.ToString() + ".json";
       
@@ -447,6 +470,12 @@ namespace SuccessStory.Models
                     {
                         SteamAchievements steamAPI = new SteamAchievements();
                         GameAchievements = steamAPI.GetAchievements(PlayniteApi, GameId, PluginUserDataPath, settings.EnableLocal);
+                    }
+
+                    if (GameSourceName.ToLower() == "retroachievements")
+                    {
+                        RetroAchievements retroAchievementsAPI = new RetroAchievements(settings);
+                        GameAchievements = retroAchievementsAPI.GetAchievements(PlayniteApi, GameId, PluginUserDataPath);
                     }
 
                     if (GameAchievements != null)

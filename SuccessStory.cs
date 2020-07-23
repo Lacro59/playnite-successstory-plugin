@@ -1,10 +1,12 @@
 ﻿using LiveCharts;
 using LiveCharts.Wpf;
+using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 using PluginCommon;
+using SuccessStory.Clients;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using SuccessStory.Views.Interface;
@@ -167,7 +169,7 @@ namespace SuccessStory
                 {
                     for (int i = 0; i < PART_ElemDescription.Children.Count; i++)
                     {
-                        logger.Debug(((FrameworkElement)PART_ElemDescription.Children[i]).Name);
+                        //logger.Debug(((FrameworkElement)PART_ElemDescription.Children[i]).Name);
 
                         if (((FrameworkElement)PART_ElemDescription.Children[i]).Name == "PART_Achievements")
                         {
@@ -302,6 +304,7 @@ namespace SuccessStory
                 // No achievements
                 if (SelectedGameAchievements == null || !SelectedGameAchievements.HaveAchivements)
                 {
+                    //logger.Debug(JsonConvert.SerializeObject(SelectedGameAchievements));
                     logger.Info("SuccessStory - No achievement for " + GameSelected.Name);
                     return;
                 }
