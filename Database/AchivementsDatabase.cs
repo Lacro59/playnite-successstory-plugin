@@ -449,7 +449,10 @@ namespace SuccessStory.Models
                         GameAchievements = steamAPI.GetAchievements(PlayniteApi, GameId, PluginUserDataPath, settings.EnableLocal);
                     }
 
-                    File.WriteAllText(PluginDatabaseGamePath, JsonConvert.SerializeObject(GameAchievements));
+                    if (GameAchievements != null)
+                    {
+                        File.WriteAllText(PluginDatabaseGamePath, JsonConvert.SerializeObject(GameAchievements));
+                    }
                 }
             }
         }

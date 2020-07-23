@@ -68,8 +68,8 @@ namespace SuccessStory.Clients
             if (userId == "" || apiKey == "")
             {
                 logger.Error($"SuccessStory - No Steam configuration.");
-                AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration.");
-                return Result;
+                AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
+                return null;
             }
 
             if (!isLocal)
