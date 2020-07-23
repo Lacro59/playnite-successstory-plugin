@@ -17,8 +17,8 @@
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Включая скрытые игры</sys:String>
-    <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Graphic with all unlocked achievements by month</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Graphic with all unlocked achievements by Day</sys:String>
+    <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">График со всеми достижениями по месяцам</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Графика с достижениями игровы по месяцам</sys:String>
 
     <sys:String x:Key="LOCSucessStoryDefaultSorting">Default sorting</sys:String>
     <sys:String x:Key="LOCSucessStoryIsAsc">По возрастанию</sys:String>
@@ -46,23 +46,23 @@
     <sys:String x:Key="LOCSucessStoryIntegrationInCustomTheme">Пользовательская интеграция темы (если интегрирована)</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButton">Добавить кнопку</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Добавить кнопку с деталями</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Add button in window</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Show progress bar</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarIndicator">With indicator</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarPercent">With percent</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Добавить значек в окне</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Отображать прогрес:</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarIndicator">Индикатором</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarPercent">В процентах</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">База достижений была обновлена.</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGetMissingToolTip" xml:space="preserve">Get the game achievements weren't downloaded in this store.&#x0a;(use if the first number count is different to second)</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshDataToolTip" xml:space="preserve">Reset and download achievements for all games in this store.&#x0a;(use if there are some problems with achievements)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetMissingToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены в магазине.&#x0a;(следует использовать, если первое число отличается от второго)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataToolTip" xml:space="preserve">Сбрасывает и загружает все достижения для всех игр в этом магазине.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGetDataRecentToolTip" xml:space="preserve">Get the game achievements weren't downloaded in slippery month.&#x0a;(use if the first number count is different to second)</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalledToolTip" xml:space="preserve">Get the game achievements weren't downloaded for installed games.&#x0a;(use if the first number count is different to second)</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllDataToolTip" xml:space="preserve">Get the game achievements weren't downloaded.&#x0a;(use if the first number count is different to second)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataRecentToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены за прошедший месяц.&#x0a;следует использовать, если первое число отличается от второго)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalledToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены для установленных игр.&#x0a;(следует использовать, если первое число отличается от второго)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllDataToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены.&#x0a;(следует использовать, если первое число отличается от второго)</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Reset and download achievements in slippery month.&#x0a;(use if there are some problems with achievements)</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Reset and download achievements for installed games.&#x0a;(use if there are some problems with achievements)</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataToolTip" xml:space="preserve">Reset and download achievements for all games.&#x0a;(use if there are some problems with achievements)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Сбросить и загрузить достижения за прошедший месяц.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Сбросить и загрузить достижения для установленных игр.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataToolTip" xml:space="preserve">Сбросить и загрузить достижения для всех игр.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
 
     <!-- 
     SuccessStoryView 
@@ -82,8 +82,8 @@
     <sys:String x:Key="LOCSucessStorylvGamesProgression">Прогрес</sys:String>
 
     <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Все достижения разблокированые по месяцам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">All achievements unlocked by day</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">Все достижения разблокированые по дням</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Достижения разблокированые по месяцам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Achievements unlocked by day</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Достижения разблокированые по дням</sys:String>
     
 </ResourceDictionary>
