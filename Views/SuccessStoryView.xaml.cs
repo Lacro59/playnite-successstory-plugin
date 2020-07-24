@@ -37,6 +37,7 @@ namespace SuccessStory
 
         AchievementsDatabase AchievementsDatabase;
         List<ListSource> FilterSourceItems = new List<ListSource>();
+        List<ListGames> ListGames = new List<ListGames>();
         List<string> SearchSources = new List<string>();
 
 
@@ -127,7 +128,7 @@ namespace SuccessStory
             if (settings.EnableOrigin)
             {
                 //FilterSource.Items.Add(new { SourceName = "Origin", IsCheck = false });
-                FilterSourceItems.Add(new ListSource { SourceName = "RetroAchievement", IsCheck = false });
+                FilterSourceItems.Add(new ListSource { SourceName = "RetroAchievements", IsCheck = false });
             }
             //FilterSource.UpdateLayout();
             FilterSource.ItemsSource = FilterSourceItems;
@@ -140,153 +141,134 @@ namespace SuccessStory
         /// <summary>
         /// Show list game with achievement.
         /// </summary>
-        /// <param name="SearchGameName"></param>
-        public void GetListGame(string SearchGameName = "", List<string> SearchSourceName = null)
+        public void GetListGame()
         {
-            if (SearchSourceName != null && SearchSourceName.Count == 0)
-            {
-                SearchSourceName = null;
-            }
-
             List<Guid> ListEmulators = new List<Guid>();
             foreach (var item in PlayniteApi.Database.Emulators)
             {
                 ListEmulators.Add(item.Id);
             }
 
-            List <ListGames> ListGames = new List<ListGames>();
-            foreach (var item in PlayniteApiDatabase.Games)
+            if (ListGames.Count == 0)
             {
-                string GameSourceName = "";
-                if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                foreach (var item in PlayniteApiDatabase.Games)
                 {
-                    GameSourceName = item.Source.Name;
+                    string GameSourceName = "";
+                    if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                    {
+                        GameSourceName = item.Source.Name;
 
-                    if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
-                    {
-                        GameSourceName = "RetroAchievements";
-                    }
-                }
-                else
-                {
-                    if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
-                    {
-                        GameSourceName = "RetroAchievements";
+                        if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                        {
+                            GameSourceName = "RetroAchievements";
+                        }
                     }
                     else
                     {
-                        GameSourceName = "Playnite";
-                    }
-                }
-
-
-                bool isFind = false;
-
-                if (SearchSourceName != null)
-                {
-                    for (int i = 0; i < SearchSourceName.Count; i++)
-                    {
-                        if (GameSourceName.ToLower().Contains(SearchSourceName[i].ToLower()))
+                        if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
                         {
-                            isFind = true;
-                        }
-                    }
-                }
-
-                if (SearchGameName != "")
-                {
-                    if (item.Name.ToLower().Contains(SearchGameName.ToLower()))
-                    {
-                        isFind = true;
-                    }
-                }
-
-                if (SearchGameName != "" && SearchSourceName != null)
-                {
-                    isFind = false;
-
-                    for (int i = 0; i < SearchSourceName.Count; i++)
-                    {
-                        if ((GameSourceName.ToLower().Contains(SearchSourceName[i].ToLower())) && (item.Name.ToLower().Contains(SearchGameName.ToLower())))
-                        {
-                            isFind = true;
-                        }
-                    }
-                }
-
-                if (SearchGameName == "" && SearchSourceName == null)
-                {
-                    isFind = true;
-                }
-            
-
-                if (isFind && AchievementsDatabase.HaveAchievements(item.Id))
-                {
-                    if (AchievementsDatabase.VerifToAddOrShow(GameSourceName, settings))
-                    {
-                        string GameId = item.Id.ToString();
-                        string GameName = item.Name;
-                        string GameIcon;
-                        DateTime? GameLastActivity = null;
-
-                        string SourceName = "";
-                        if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
-                        {
-                            SourceName = item.Source.Name;
-
-                            if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
-                            {
-                                SourceName = "RetroAchievements";
-                            }
+                            GameSourceName = "RetroAchievements";
                         }
                         else
                         {
-                            if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                            GameSourceName = "Playnite";
+                        }
+                    }
+
+                    if (AchievementsDatabase.HaveAchievements(item.Id))
+                    {
+                        if (AchievementsDatabase.VerifToAddOrShow(GameSourceName, settings))
+                        {
+                            string GameId = item.Id.ToString();
+                            string GameName = item.Name;
+                            string GameIcon;
+                            DateTime? GameLastActivity = null;
+
+                            string SourceName = "";
+                            if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                             {
-                                SourceName = "RetroAchievements";
+                                SourceName = item.Source.Name;
+
+                                if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                                {
+                                    SourceName = "RetroAchievements";
+                                }
                             }
                             else
                             {
-                                SourceName = "Playnite";
+                                if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                                {
+                                    SourceName = "RetroAchievements";
+                                }
+                                else
+                                {
+                                    SourceName = "Playnite";
+                                }
                             }
+
+                            GameAchievements GameAchievements = AchievementsDatabase.Get(item.Id);
+
+                            if (item.LastActivity != null)
+                            {
+                                GameLastActivity = ((DateTime)item.LastActivity).ToLocalTime();
+                            }
+
+                            BitmapImage iconImage = new BitmapImage();
+                            if (String.IsNullOrEmpty(item.Icon) == false)
+                            {
+                                iconImage.BeginInit();
+                                GameIcon = PlayniteApiDatabase.GetFullFilePath(item.Icon);
+                                iconImage.UriSource = new Uri(GameIcon, UriKind.RelativeOrAbsolute);
+                                iconImage.EndInit();
+                            }
+
+                            ListGames.Add(new ListGames()
+                            {
+                                Id = GameId,
+                                Name = GameName,
+                                Icon = iconImage,
+                                LastActivity = GameLastActivity,
+                                SourceName = SourceName,
+                                SourceIcon = TransformIcon.Get(SourceName),
+                                ProgressionValue = GameAchievements.Progression,
+                                Total = GameAchievements.Total,
+                                TotalPercent = GameAchievements.Progression + "%",
+                                Unlocked = GameAchievements.Unlocked
+                            });
+
+                            iconImage = null;
                         }
-
-                        GameAchievements GameAchievements = AchievementsDatabase.Get(item.Id);
-
-                        if (item.LastActivity != null)
-                        {
-                            GameLastActivity = ((DateTime)item.LastActivity).ToLocalTime();
-                        }
-
-                        BitmapImage iconImage = new BitmapImage();
-                        if (String.IsNullOrEmpty(item.Icon) == false)
-                        {
-                            iconImage.BeginInit();
-                            GameIcon = PlayniteApiDatabase.GetFullFilePath(item.Icon);
-                            iconImage.UriSource = new Uri(GameIcon, UriKind.RelativeOrAbsolute);
-                            iconImage.EndInit();
-                        }
-
-                        ListGames.Add(new ListGames()
-                        {
-                            Id = GameId,
-                            Name = GameName,
-                            Icon = iconImage,
-                            LastActivity = GameLastActivity,
-                            SourceName = SourceName,
-                            SourceIcon = TransformIcon.Get(SourceName),
-                            ProgressionValue = GameAchievements.Progression,
-                            Total = GameAchievements.Total,
-                            TotalPercent = GameAchievements.Progression + "%",
-                            Unlocked = GameAchievements.Unlocked
-                        });
-
-                        iconImage = null;
                     }
                 }
             }
 
+
             ListviewGames.ItemsSource = ListGames;
+            // Filter
+            if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
+            {
+                ListviewGames.ItemsSource = ListGames.FindAll(
+                    x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1 && SearchSources.Contains(x.SourceName)
+                );
+                return;
+            }
+
+            if (!TextboxSearch.Text.IsNullOrEmpty())
+            {
+                ListviewGames.ItemsSource = ListGames.FindAll(
+                    x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1
+                );
+                return;
+            }
+
+            if (SearchSources.Count != 0)
+            {
+                ListviewGames.ItemsSource = ListGames.FindAll(
+                    x => SearchSources.Contains(x.SourceName)
+                );
+                return;
+            }
+
 
             // Sorting
             try
@@ -590,110 +572,36 @@ namespace SuccessStory
         /// <param name="e"></param>
         private void TextboxSearch_KeyUp(object sender, RoutedEventArgs e)
         {
-            string SearchGameName = ((TextBox)sender).Text;
-            GetListGame(SearchGameName, SearchSources);
+            GetListGame();
         }
 
         private void ChkSource_Checked(object sender, RoutedEventArgs e)
         {
-            FilterSource.Text = "";
-            SearchSources = new List<string>();
-
-            for (int i = 0; i < FilterSourceItems.Count; i++)
-            {
-                if ((string)((CheckBox)sender).Content == FilterSourceItems[i].SourceName)
-                {
-                    FilterSourceItems[i].IsCheck = (bool)((CheckBox)sender).IsChecked;
-
-                    if (FilterSourceItems[i].IsCheck)
-                    {
-                        SearchSources.Add(FilterSourceItems[i].SourceName);
-
-                        if (FilterSource.Text == "")
-                        {
-                            FilterSource.Text = FilterSourceItems[i].SourceName;
-                        }
-                        else
-                        {
-                            FilterSource.Text += ", " + FilterSourceItems[i].SourceName;
-                        }
-                    }
-                }
-                else
-                {
-                    if (FilterSourceItems[i].IsCheck)
-                    {
-                        SearchSources.Add(FilterSourceItems[i].SourceName);
-
-                        if (FilterSource.Text == "")
-                        {
-                            FilterSource.Text = FilterSourceItems[i].SourceName;
-                        }
-                        else
-                        {
-                            FilterSource.Text += ", " + FilterSourceItems[i].SourceName;
-                        }
-                    }
-                }
-            }
-
-            if (FilterSource.Text == "")
-            {
-                SearchSources = null;
-            }
-
-            GetListGame(TextboxSearch.Text, SearchSources);
+            FilterCbSource((CheckBox)sender);
         }
-
         private void ChkSource_Unchecked(object sender, RoutedEventArgs e)
         {
+            FilterCbSource((CheckBox)sender);
+        }
+        private void FilterCbSource(CheckBox sender)
+        {
             FilterSource.Text = "";
-            SearchSources = new List<string>();
 
-            for (int i = 0; i < FilterSourceItems.Count; i++)
+            if ((bool)sender.IsChecked)
             {
-                if ((string)((CheckBox)sender).Content == FilterSourceItems[i].SourceName)
-                {
-                    FilterSourceItems[i].IsCheck = (bool)((CheckBox)sender).IsChecked;
-
-                    if (FilterSourceItems[i].IsCheck)
-                    {
-                        SearchSources.Add(FilterSourceItems[i].SourceName);
-
-                        if (FilterSource.Text == "")
-                        {
-                            FilterSource.Text = FilterSourceItems[i].SourceName;
-                        }
-                        else
-                        {
-                            FilterSource.Text += ", " + FilterSourceItems[i].SourceName;
-                        }
-                    }
-                }
-                else
-                {
-                    if (FilterSourceItems[i].IsCheck)
-                    {
-                        SearchSources.Add(FilterSourceItems[i].SourceName);
-
-                        if (FilterSource.Text == "")
-                        {
-                            FilterSource.Text = FilterSourceItems[i].SourceName;
-                        }
-                        else
-                        {
-                            FilterSource.Text += ", " + FilterSourceItems[i].SourceName;
-                        }
-                    }
-                }
+                SearchSources.Add((string)sender.Content);
+            }
+            else
+            {
+                SearchSources.Remove((string)sender.Content);
             }
 
-            if (FilterSource.Text == "")
+            if (SearchSources.Count != 0)
             {
-                SearchSources = null;
+                FilterSource.Text = String.Join(", ", SearchSources);
             }
 
-            GetListGame(TextboxSearch.Text, SearchSources);
+            GetListGame();
         }
         #endregion
     }
