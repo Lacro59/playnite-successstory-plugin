@@ -21,11 +21,11 @@
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">График со всеми достижениями по месяцам</sys:String>
     <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Графика с достижениями игровы по месяцам</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryDefaultSorting">Default sorting</sys:String>
+    <sys:String x:Key="LOCSucessStoryDefaultSorting">Сортировка</sys:String>
     <sys:String x:Key="LOCSucessStoryIsAsc">По возрастанию</sys:String>
 
     <sys:String x:Key="LOCSucessStoryDatabase">Манипуляция с базой данных</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetData">Get data</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetData">Загрузить</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Обновить</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshData">Обновить</sys:String>
     <sys:String x:Key="LOCSucessStoryGetMissing">Загрузить</sys:String>
