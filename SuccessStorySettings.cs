@@ -9,6 +9,8 @@ namespace SuccessStory
     {
         private readonly SuccessStory plugin;
 
+        public bool EnableCheckVersion { get; set; } = true;
+
         public bool EnableIntegrationInDescription { get; set; } = false;
         public bool EnableIntegrationInDescriptionWithToggle { get; set; } = false;
 
@@ -69,6 +71,8 @@ namespace SuccessStory
             // LoadPluginSettings returns null if not saved data is available.
             if (savedSettings != null)
             {
+                EnableCheckVersion = savedSettings.EnableCheckVersion;
+
                 EnableIntegrationInDescription = savedSettings.EnableIntegrationInDescription;
                 EnableIntegrationInDescriptionWithToggle = savedSettings.EnableIntegrationInDescriptionWithToggle;
 

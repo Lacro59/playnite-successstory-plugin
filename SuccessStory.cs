@@ -48,6 +48,17 @@ namespace SuccessStory
             PluginCommon.Localization.SetPluginLanguage(pluginFolder, api.Paths.ConfigurationPath);
             // Add common in application ressource.
             PluginCommon.Common.Load(pluginFolder);
+
+            // Check version
+            if (settings.EnableCheckVersion)
+            {
+                CheckVersion cv = new CheckVersion();
+
+                if (cv.Check("SuccessStory", pluginFolder))
+                {
+                    cv.ShowNotification(api, "SuccessStory - " + resources.GetString("LOCUpdaterWindowTitle"));
+                }
+            }
         }
 
         public override IEnumerable<ExtensionFunction> GetFunctions()
