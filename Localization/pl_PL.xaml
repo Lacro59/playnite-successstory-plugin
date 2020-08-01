@@ -1,0 +1,90 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!--  
+    MainView
+    -->
+    <sys:String x:Key="LOCSucessStory">Historia sukcesu</sys:String>
+    <sys:String x:Key="LOCSucessStoryAchievements">Osiągnięcia</sys:String>
+
+    <!--  
+    SuccessStorySettingsView
+    -->
+
+    <sys:String x:Key="LOCSucessStoryEnableSteam">Uaktywnij Steam</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableGog">Uaktywnij GOG</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableOrigin">Uaktywnij Origin</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Uaktywnij RetroAchievements</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Uwzględniaj ukryte gry</sys:String>
+    <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Grafika ze wszystkimi odblokowanymi osiągnięciami według miesiąca</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Grafika ze wszystkimi odblokowanymi osiągnięciami według dnia</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryDefaultSorting">Sortowanie domyślne</sys:String>
+    <sys:String x:Key="LOCSucessStoryIsAsc">Rosnąco</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryDatabase">Manipulacja bazą danych</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetData">Wczytaj dane</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshData">Odśwież dane</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshData">Odśwież dane</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetMissing">Wczytaj brakujące</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataRecent">Brakujące najnowsze osiągnięcia</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Wszystkie najnowsze osiągnięcia</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllData">Wszystkie osiągnięcia</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllData">Wszystkie brakujące osiągnięcia</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Brakujące spośród zainstalowanych gier</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Osiągnięcia z zainstalowanych gier</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryIntegration">Integracja interfejsu (eksperymentalna)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescription">W opisie gry</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">Z przyciskiem przełączającym</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowTitle">Wyświetlaj tytuł</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphic">Wyświetlaj grafikę</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievements">Wyświetlaj listę osiągnięć</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">Nad opisem</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationToggleDetails">Przełącznik ze szczegółami</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationInCustomTheme">Integracja z niestandardowym motywem (jeśli jest zintegrowany)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButton">Dodaj przycisk</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Dodaj przycisk ze szczegółami</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Dodaj przycisk w oknie</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Wyświetlaj pasek postępu</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarIndicator">Ze wskaźnikiem</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarPercent">Z procentem</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshDataMessage">Baza danych osiągnieć została zresetowana.</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryGetMissingToolTip" xml:space="preserve">Wczytuje osiągniecia, które nie zostały pobrane z tego sklepu.&#x0a;(skorzystaj z tego, jeśli pierwsza liczba jest inna niż druga)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataToolTip" xml:space="preserve">Resetuje i pobiera osiągnięcia dla wszystkich gier z tego sklepu.&#x0a;(skorzystaj z tego, jeżeli są problemy z osiągnięciami)</sys:String>
+    
+    <sys:String x:Key="LOCSucessStoryGetDataRecentToolTip" xml:space="preserve">Wczytuje osiągnięcia, które nie zostały pobrane w śliskim miesiącu.&#x0a;(skorzystaj z tego, jeśli pierwsza liczba jest inna niż druga)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetDataInstalledToolTip" xml:space="preserve">Wczytuje osiągnięcia, które nie zostały pobrane dla zainstalowanych gier.&#x0a;(skorzystaj z tego, jeśli pierwsza liczba jest inna niż druga)</sys:String>
+    <sys:String x:Key="LOCSucessStoryGetAllDataToolTip" xml:space="preserve">Wczytuje osiągnięcia, które nie zostały pobrane.&#x0a;(skorzystaj z tego, jeśli pierwsza liczba jest inna niż druga)</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Resetuje i pobiera osiągnięcia w śliskim miesiącu.&#x0a;(skorzystaj z tego, jeżeli są problemy z osiągnięciami)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Resetuje i pobiera osiągnięcia dla wszystkich zainstalowanych gier.&#x0a;(skorzystaj z tego, jeżeli są problemy z osiągnięciami)</sys:String>
+    <sys:String x:Key="LOCSucessStoryRefreshAllDataToolTip" xml:space="preserve">Resetuje i pobiera osiągnięcia dla wszystkich gier.&#x0a;(skorzystaj z tego, jeżeli są problemy z osiągnięciami)</sys:String>
+
+    <!-- 
+    SuccessStoryView 
+    -->
+
+    <!-- UI -->
+    <sys:String x:Key="LOCSucessStoryFilterSource">Filtruj wg źródła</sys:String>
+    <sys:String x:Key="LOCSucessStorySearch">Szukaj</sys:String>
+    <sys:String x:Key="LOCSucessStoryGlobalProgression">Ogólny postęp</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameInformation">Informacja</sys:String>
+
+    <!-- ListViewGames -->
+    <sys:String x:Key="LOCSucessStorylvGamesIcon">Ikona</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesName">Nazwa</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesLastActivity">Ostatnia sesja</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesSourceName">Źródło</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesProgression">Postęp</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Wszystkie odblokowane osiągnięcia według miesiąca</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">Wszystkie odblokowane osiągnięcia według dnia</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitle">Odblokowane osiągnięcia według miesiąca</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Odblokowane osiągnięcia według dnia</sys:String>
+    
+</ResourceDictionary>
