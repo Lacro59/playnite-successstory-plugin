@@ -247,7 +247,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                SteamEmulators se = new SteamEmulators(PlayniteApi);
+                SteamEmulators se = new SteamEmulators(PlayniteApi, PluginUserDataPath);
 
                 var temp = se.GetAchievementsLocal(GameName, apiKey);
                
