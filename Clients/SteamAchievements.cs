@@ -49,7 +49,7 @@ namespace SuccessStory.Clients
                 Achievements = Achievements
             };
 
-
+            var url = "";
             string ResultWeb = "";
 
             // Get Steam configuration if exist.
@@ -75,7 +75,7 @@ namespace SuccessStory.Clients
             if (!isLocal)
             {
                 // List acheviements (default return in english)
-                var url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}",
+                url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}",
                     ClientId, apiKey, userId);
 
                 ResultWeb = "";
@@ -110,7 +110,6 @@ namespace SuccessStory.Clients
                     try
                     {
                         resultObj = JObject.Parse(ResultWeb);
-                        
 
                         if ((bool)resultObj["playerstats"]["success"])
                         {
@@ -123,7 +122,8 @@ namespace SuccessStory.Clients
                                 {
                                     Achievements temp = new Achievements
                                     {
-                                        Name = (string)resultItems[i]["apiname"],
+                                        Name = "",
+                                        ApiName = (string)resultItems[i]["apiname"],
                                         Description = "",
                                         UrlUnlocked = "",
                                         UrlLocked = "",
@@ -205,11 +205,12 @@ namespace SuccessStory.Clients
                             {
                                 for (int j = 0; j < Achievements.Count; j++)
                                 {
-                                    if (Achievements[j].Name.ToLower() == ((string)resultItems[i]["name"]).ToLower())
+                                    if (Achievements[j].ApiName.ToLower() == ((string)resultItems[i]["name"]).ToLower())
                                     {
                                         Achievements temp = new Achievements
                                         {
                                             Name = (string)resultItems[i]["displayName"],
+                                            ApiName = Achievements[j].ApiName,
                                             Description = (string)resultItems[i]["description"],
                                             UrlUnlocked = (string)resultItems[i]["icon"],
                                             UrlLocked = (string)resultItems[i]["icongray"],
@@ -242,15 +243,14 @@ namespace SuccessStory.Clients
                     Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
                     Achievements = Achievements
                 };
-
-                return Result;
             }
             else
             {
                 SteamEmulators se = new SteamEmulators(PlayniteApi, PluginUserDataPath);
+                ClientId = se.GetSteamId().ToString();
 
                 var temp = se.GetAchievementsLocal(GameName, apiKey);
-               
+
                 if (temp.Achievements.Count > 0)
                 {
                     Result.HaveAchivements = true;
@@ -270,14 +270,74 @@ namespace SuccessStory.Clients
                             DateUnlocked = temp.Achievements[i].DateUnlocked
                         });
                     }
-
-                    return Result;
                 }
-                else
+            }
+
+            // Percentages
+            url = string.Format(@"http://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid={0}&format=json",
+                ClientId);
+            ResultWeb = "";
+            try
+            {
+                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+            }
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
                 {
+                    var resp = (HttpWebResponse)ex.Response;
+                    switch (resp.StatusCode)
+                    {
+                        case HttpStatusCode.BadRequest: // HTTP 400
+                            break;
+                        case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                            break;
+                        default:
+                            Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
+                            break;
+                    }
                     return Result;
                 }
             }
+
+            if (ResultWeb != "")
+            {
+                JObject resultObj = new JObject();
+                JArray resultItems = new JArray();
+
+                try
+                {
+                    resultObj = JObject.Parse(ResultWeb);
+
+                    if (resultObj["achievementpercentages"]["achievements"] != null)
+                    {
+                        foreach(JObject data in resultObj["achievementpercentages"]["achievements"])
+                        {
+                            for(int i = 0; i < Result.Achievements.Count; i++)
+                            {
+                                if (Result.Achievements[i].ApiName == (string)data["name"])
+                                {
+                                    Result.Achievements[i].Percent = (float)data["percent"];
+                                    i = Result.Achievements.Count;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        logger.Info($"SuccessStory - No percentages for {ClientId}. ");
+                        return Result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", $"[{ClientId}] Failed to parse {ResultWeb}");
+                    return Result;
+                }
+            }
+
+
+            return Result;
         }
     }
 }

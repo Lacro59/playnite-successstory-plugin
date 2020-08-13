@@ -135,11 +135,13 @@ namespace SuccessStory.Clients
                             {
                                 Achievements temp = new Achievements
                                 {
+                                    ApiName = (string)resultItems[i]["achievement_key"],
                                     Name = (string)resultItems[i]["name"],
                                     Description = (string)resultItems[i]["description"],
                                     UrlUnlocked = (string)resultItems[i]["image_url_unlocked"],
                                     UrlLocked = (string)resultItems[i]["image_url_locked"],
-                                    DateUnlocked = ((string)resultItems[i]["date_unlocked"] == null) ? default(DateTime) : (DateTime)resultItems[i]["date_unlocked"]
+                                    DateUnlocked = ((string)resultItems[i]["date_unlocked"] == null) ? default(DateTime) : (DateTime)resultItems[i]["date_unlocked"],
+                                    Percent = (float)resultItems[i]["rarity"]
                                 };
 
                                 Total += 1;

@@ -101,16 +101,42 @@ namespace SuccessStory.Clients
                 ra_Games.ListGames.Sort((x, y) => (y.Title).CompareTo(x.Title));
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
                 {
-                    //if (GameName.ToLower().IndexOf(ra_Game.Title.ToLower()) > -1 || ra_Game.Title.ToLower().IndexOf(GameName.ToLower()) > -1)
-                    var temp = ra_Game.Title.Split('|');
-
-                    foreach (string Title in temp)
+                    string Title = ra_Game.Title.Trim().ToLower();
+                    //logger.Debug($"SuccessStory - {GameName.Trim().ToLower()} / {Title} / {gameID}");
+                    if (GameName.Trim().ToLower() == Title && gameID == 0)
                     {
-                        if (GameName.ToLower().IndexOf(Title.Trim().ToLower()) > -1)
+                        logger.Info($"SuccessStory - Find for {GameName.Trim().ToLower()} / {Title} with {PlatformName} in {consoleID}");
+                        gameID = ra_Game.ID;
+                        break;
+                    }
+
+                    string[] TitleSplits = Title.Split('|');
+                    if (TitleSplits.Length > 1)
+                    {
+                        foreach (string TitleSplit in TitleSplits)
                         {
-                            logger.Debug($"SuccessStory - Find for {GameName} / {Title.Trim()} with {PlatformName} in {consoleID}");
-                            gameID = ra_Game.ID;
-                            break;
+                            //logger.Debug($"SuccessStory - {GameName.Trim().ToLower()} / {TitleSplit.Trim()} / {gameID}");
+                            if (GameName.Trim().ToLower() == TitleSplit.Trim() && gameID == 0)
+                            {
+                                logger.Info($"SuccessStory - Find for {GameName.Trim().ToLower()} / {TitleSplit.Trim()} with {PlatformName} in {consoleID}");
+                                gameID = ra_Game.ID;
+                                break;
+                            }
+                        }
+                    }
+
+                    TitleSplits = Title.Split('-');
+                    if (TitleSplits.Length > 1)
+                    {
+                        foreach (string TitleSplit in TitleSplits)
+                        {
+                            //logger.Debug($"SuccessStory - {GameName.Trim().ToLower()} / {TitleSplit.Trim()} / {gameID}");
+                            if (GameName.Trim().ToLower() == TitleSplit.Trim() && gameID == 0)
+                            {
+                                logger.Info($"SuccessStory - Find for {GameName.Trim().ToLower()} / {TitleSplit.Trim()} with {PlatformName} in {consoleID}");
+                                gameID = ra_Game.ID;
+                                break;
+                            }
                         }
                     }
                 }
@@ -241,6 +267,8 @@ namespace SuccessStory.Clients
                 JObject resultObj = new JObject();
                 resultObj = JObject.Parse(ResultWeb);
 
+                int NumDistinctPlayersCasual = (int)resultObj["NumDistinctPlayersCasual"];
+
                 if (resultObj["Achievements"] != null)
                 {
                     foreach (var item in resultObj["Achievements"])
@@ -253,7 +281,8 @@ namespace SuccessStory.Clients
                                 Description = (string)it["Description"],
                                 UrlLocked = string.Format(BaseUrlLocked, (string)it["BadgeName"]),
                                 UrlUnlocked = string.Format(BaseUrlUnlocked, (string)it["BadgeName"]),
-                                DateUnlocked = (it["DateEarned"] == null) ? default(DateTime) : Convert.ToDateTime((string)it["DateEarned"])
+                                DateUnlocked = (it["DateEarned"] == null) ? default(DateTime) : Convert.ToDateTime((string)it["DateEarned"]),
+                                Percent = (int)it["NumAwarded"] * 100 / NumDistinctPlayersCasual
                             });
                         }
                     }

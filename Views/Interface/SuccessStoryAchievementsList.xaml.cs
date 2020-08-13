@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using PluginCommon;
+using System.Globalization;
 
 namespace SuccessStory.Views.Interface
 {
@@ -75,7 +75,8 @@ namespace SuccessStory.Views.Interface
                     Name = NameAchievement,
                     DateUnlock = dateUnlock,
                     Icon = ConvertBitmapSource,
-                    Description = ListAchievements[i].Description
+                    Description = ListAchievements[i].Description,
+                    Percent = ListAchievements[i].Percent
                 });
 
                 iconImage = null;
@@ -133,6 +134,41 @@ namespace SuccessStory.Views.Interface
         {
             var parent = ((FrameworkElement)((FrameworkElement)lbAchievements.Parent).Parent);
             lbAchievements.Height = parent.MaxHeight;
+        }
+    }
+
+    public class SetColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Color color = Brushes.Transparent.Color;
+
+            if ((float)value > 30)
+            {
+                return null;
+            }
+
+            if ((float)value <= 30)
+            {
+                color = Brushes.DarkGray.Color;
+            }
+            if ((float)value <= 10)
+            {
+                color = Brushes.Gold.Color;
+            }
+
+            Color newColor = new Color();
+            newColor.ScR = (float)color.R / 255;
+            newColor.ScG = (float)color.G / 255;
+            newColor.ScB = (float)color.B / 255;
+
+            return newColor;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
         }
     }
 }

@@ -13,5 +13,6 @@ namespace SuccessStory.Models
         public string Name { get; set; }
         public DateTime? DateUnlock { get; set; }
         public string Description { get; set; }
+        public float Percent { get; set; }
     }
 }

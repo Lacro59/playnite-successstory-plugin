@@ -10,6 +10,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <localPlugin:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <local:SetColorConverter x:Key="SetColorConverter" />
     </UserControl.Resources>
 
 
@@ -69,7 +70,7 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="58" />
                             <ColumnDefinition Width="*"/>
@@ -79,6 +80,9 @@
                             <Image.Source>
                                 <FormatConvertedBitmap Source="{Binding Icon}"/>
                             </Image.Source>
+                            <Image.Effect>
+                                <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}"/>
+                            </Image.Effect>
                         </Image>
 
                         <Grid Grid.Column="1">
@@ -99,10 +103,10 @@
 
                                 <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"
                                            MouseEnter="TextBlock_MouseEnter">
-                                    <TextBlock.ToolTip>
-                                        <ToolTip Content="{Binding Name}"></ToolTip>
-                                    </TextBlock.ToolTip>
-                                </TextBlock>
+                                <TextBlock.ToolTip>
+                                    <ToolTip Content="{Binding Name}"></ToolTip>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
                             <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding DateUnlock, Converter={StaticResource LocalDateTimeConverter}}"  Foreground="{DynamicResource TextBrush}" />
                             </Grid>
 
