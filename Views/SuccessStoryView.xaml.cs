@@ -7,7 +7,6 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using LiveCharts;
 using LiveCharts.Wpf;
-using Newtonsoft.Json;
 using Playnite.Controls;
 using Playnite.SDK;
 using Playnite.SDK.Models;
