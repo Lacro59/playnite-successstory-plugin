@@ -11,7 +11,7 @@ using SuccessStory.Clients;
 using PluginCommon;
 using LiveCharts;
 using PluginCommon.LiveChartsCommon;
-
+using Newtonsoft.Json.Linq;
 
 namespace SuccessStory.Models
 {
@@ -324,20 +324,55 @@ namespace SuccessStory.Models
         /// <param name="GameSourceName"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static bool VerifToAddOrShow(string GameSourceName, SuccessStorySettings settings)
+        public static bool VerifToAddOrShow(string GameSourceName, SuccessStorySettings settings, string PluginUserDataPath)
         {
             bool Result = false;
 
+            JArray DisabledPlugins = new JArray();
+            JObject PlayniteConfig = new JObject();
+            try
+            {
+                PlayniteConfig = JObject.Parse(File.ReadAllText(PluginUserDataPath + "\\..\\..\\config.json"));
+                DisabledPlugins = (JArray)PlayniteConfig["DisabledPlugins"];
+            }
+            catch
+            {
+            }
+
             if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
+                foreach (string name in DisabledPlugins)
+                {
+                    if (name == "SteamLibrary")
+                    {
+                        logger.Warn("SuccessStory - Steam is enable then disabled");
+                        return false;
+                    }
+                }
                 return true;
             }
             if (settings.EnableGog && GameSourceName.ToLower() == "gog")
             {
+                foreach (string name in DisabledPlugins)
+                {
+                    if (name == "GogLibrary")
+                    {
+                        logger.Warn("SuccessStory - GOG is enable then disabled");
+                        return false;
+                    }
+                }
                 return true;
             }
             if (settings.EnableOrigin && GameSourceName.ToLower() == "origin")
             {
+                foreach (string name in DisabledPlugins)
+                {
+                    if (name == "OriginLibrary")
+                    {
+                        logger.Warn("SuccessStory - Origin is enable then disabled");
+                        return false;
+                    }
+                }
                 return true;
             }
             if (settings.EnableLocal && GameSourceName.ToLower() == "playnite")
@@ -436,7 +471,7 @@ namespace SuccessStory.Models
             List<Achievements> Achievements = new List<Achievements>();
 
             // Generate database only this source
-            if (VerifToAddOrShow(GameSourceName, settings))
+            if (VerifToAddOrShow(GameSourceName, settings, PluginUserDataPath))
             {
                 // Generate only not exist
                 if (!File.Exists(PluginDatabaseGamePath))

@@ -176,7 +176,7 @@ namespace SuccessStory
 
                     if (AchievementsDatabase.HaveAchievements(item.Id))
                     {
-                        if (AchievementsDatabase.VerifToAddOrShow(GameSourceName, settings))
+                        if (AchievementsDatabase.VerifToAddOrShow(GameSourceName, settings, PluginUserDataPath))
                         {
                             string GameId = item.Id.ToString();
                             string GameName = item.Name;
