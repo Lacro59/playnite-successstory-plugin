@@ -31,13 +31,10 @@ namespace SuccessStory.Models
         public static CumulErrors ListErrors = new CumulErrors();
 
 
-
         public bool VerifAchievementsLoad(Guid gameID)
         {
             return File.Exists(PluginDatabasePath + gameID.ToString() + ".json");
         }
-
-
 
         public AchievementsDatabase(IPlayniteAPI PlayniteApi, SuccessStorySettings Settings, string PluginUserDataPath)
         {
@@ -112,7 +109,7 @@ namespace SuccessStory.Models
         /// </summary>
         /// <param name="GameID"></param>
         /// <returns></returns>
-        public AchievementsGraphicsDataCount GetCountByMonth(Guid? GameID = null)
+        public AchievementsGraphicsDataCount GetCountByMonth(Guid? GameID = null, int limit = 11)
         {
             string[] GraphicsAchievementsLabels = new string[12];
             ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
@@ -120,9 +117,9 @@ namespace SuccessStory.Models
             // All achievements
             if (GameID == null)
             {
-                for (int i = 11; i >= 0; i--)
+                for (int i = limit; i >= 0; i--)
                 {
-                    GraphicsAchievementsLabels[(11 - i)] = DateTime.Now.AddMonths(-i).ToString("yyyy-MM");
+                    GraphicsAchievementsLabels[(limit - i)] = DateTime.Now.AddMonths(-i).ToString("yyyy-MM");
                     SourceAchievementsSeries.Add(new CustomerForSingle
                     {
                         Name = DateTime.Now.AddMonths(-i).ToString("yyyy-MM"),
@@ -142,7 +139,7 @@ namespace SuccessStory.Models
                                 string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM");
                                 int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
-                                if (index >= 0 && index < 12)
+                                if (index >= 0 && index < (limit + 1))
                                 {
                                     SourceAchievementsSeries[index].Values += 1;
                                 }
@@ -173,9 +170,9 @@ namespace SuccessStory.Models
                             TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
                         }
 
-                        for (int i = 11; i >= 0; i--)
+                        for (int i = limit; i >= 0; i--)
                         {
-                            GraphicsAchievementsLabels[(11 - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
+                            GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
                             SourceAchievementsSeries.Add(new CustomerForSingle
                             {
                                 Name = TempDateTime.AddMonths(-i).ToString("yyyy-MM"),
@@ -188,7 +185,7 @@ namespace SuccessStory.Models
                             string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM");
                             int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
-                            if (index >= 0 && index < 12)
+                            if (index >= 0 && index < (limit + 1))
                             {
                                 SourceAchievementsSeries[index].Values += 1;
                             }
@@ -204,6 +201,129 @@ namespace SuccessStory.Models
             return new AchievementsGraphicsDataCount { Labels = GraphicsAchievementsLabels, Series = SourceAchievementsSeries };
         }
 
+        public AchievementsGraphicsDataCountSources GetCountBySources()
+        {
+
+            List<string> tempSourcesLabels = new List<string>();
+            if (Settings.EnableGog)
+            {
+                tempSourcesLabels.Add("GOG");
+            }
+            if (Settings.EnableSteam)
+            {
+                tempSourcesLabels.Add("Steam");
+            }
+            if (Settings.EnableOrigin)
+            {
+                tempSourcesLabels.Add("Origin");
+            }
+            if (Settings.EnableRetroAchievements)
+            {
+                tempSourcesLabels.Add("RetroAchievements");
+            }
+            if (Settings.EnableLocal)
+            {
+                tempSourcesLabels.Add("Playnite");
+            }
+            tempSourcesLabels.Sort((x, y) => x.CompareTo(y));
+
+            string[] GraphicsAchievementsLabels = new string[tempSourcesLabels.Count];
+            List<AchievementsGraphicsDataSources> tempDataUnlocked = new List<AchievementsGraphicsDataSources>();
+            List<AchievementsGraphicsDataSources> tempDataLocked = new List<AchievementsGraphicsDataSources>();
+            List<AchievementsGraphicsDataSources> tempDataTotal = new List<AchievementsGraphicsDataSources>();
+            for (int i = 0; i < tempSourcesLabels.Count; i++)
+            {
+                GraphicsAchievementsLabels[i] = TransformIcon.Get(tempSourcesLabels[i]);
+                tempDataLocked.Add(new AchievementsGraphicsDataSources { source = tempSourcesLabels[i], value = 0 });
+                tempDataUnlocked.Add(new AchievementsGraphicsDataSources { source = tempSourcesLabels[i], value = 0 });
+                tempDataTotal.Add(new AchievementsGraphicsDataSources { source = tempSourcesLabels[i], value = 0 });
+            }
+
+
+            List<Guid> ListEmulators = new List<Guid>();
+            foreach (var item in PlayniteApi.Database.Emulators)
+            {
+                ListEmulators.Add(item.Id);
+            }
+
+            
+            foreach (var item in PluginDatabase)
+            {
+                Game game = PlayniteApi.Database.Games.Get(item.Key);
+                string SourceName = "";
+                if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                {
+                    SourceName = game.Source.Name;
+
+                    if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                    {
+                        SourceName = "RetroAchievements";
+                    }
+                }
+                else
+                {
+                    if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                    {
+                        SourceName = "RetroAchievements";
+                    }
+                    else
+                    {
+                        SourceName = "Playnite";
+                    }
+                }
+
+                foreach (Achievements achievements in item.Value.Achievements)
+                {
+                    for (int i = 0; i < tempDataUnlocked.Count; i++)
+                    {
+                        if (tempDataUnlocked[i].source == SourceName)
+                        {
+                            tempDataTotal[i].value += 1;
+                            if (achievements.DateUnlocked != default(DateTime))
+                            {
+                                tempDataUnlocked[i].value += 1;
+                            }
+                            if (achievements.DateUnlocked == default(DateTime))
+                            {
+                                tempDataLocked[i].value += 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            ChartValues<CustomerForSingle> SourceAchievementsSeriesUnlocked = new ChartValues<CustomerForSingle>();
+            ChartValues<CustomerForSingle> SourceAchievementsSeriesLocked = new ChartValues<CustomerForSingle>();
+            ChartValues<CustomerForSingle> SourceAchievementsSeriesTotal = new ChartValues<CustomerForSingle>();
+            for (int i = 0; i < tempDataUnlocked.Count; i++)
+            {
+                SourceAchievementsSeriesUnlocked.Add(new CustomerForSingle
+                {
+                    Name = TransformIcon.Get(tempDataUnlocked[i].source),
+                    Values = tempDataUnlocked[i].value
+                });
+                SourceAchievementsSeriesLocked.Add(new CustomerForSingle
+                {
+                    Name = TransformIcon.Get(tempDataLocked[i].source),
+                    Values = tempDataLocked[i].value
+                });
+                SourceAchievementsSeriesTotal.Add(new CustomerForSingle
+                {
+                    Name = TransformIcon.Get(tempDataTotal[i].source),
+                    Values = tempDataTotal[i].value
+                });
+            }
+
+
+            return new AchievementsGraphicsDataCountSources
+            {
+                Labels = GraphicsAchievementsLabels,
+                SeriesLocked = SourceAchievementsSeriesLocked,
+                SeriesUnlocked = SourceAchievementsSeriesUnlocked,
+                SeriesTotal = SourceAchievementsSeriesTotal
+            };
+        }
+
         /// <summary>
         /// Get number achievements unlock by month for a game or not.
         /// </summary>
@@ -211,7 +331,7 @@ namespace SuccessStory.Models
         /// <returns></returns>
         public AchievementsGraphicsDataCount GetCountByDay(Guid? GameID = null, int limit = 11)
         {
-            string[] GraphicsAchievementsLabels = new string[12];
+            string[] GraphicsAchievementsLabels = new string[limit + 1];
             ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
 
             // All achievements
@@ -223,7 +343,7 @@ namespace SuccessStory.Models
                     SourceAchievementsSeries.Add(new CustomerForSingle
                     {
                         Name = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd"),
-                    Values = 0
+                        Values = 0
                     });
                 }
 
@@ -588,6 +708,33 @@ namespace SuccessStory.Models
             return Result;
         }
 
+        public ProgressionAchievements ProgessionLaunched()
+        {
+            ProgressionAchievements Result = new ProgressionAchievements();
+            int Total = 0;
+            int Locked = 0;
+            int Unlocked = 0;
+
+            foreach (var item in PluginDatabase)
+            {
+                GameAchievements GameAchievements = item.Value;
+
+                if (GameAchievements.HaveAchivements && PlayniteApi.Database.Games.Get(item.Key).Playtime > 0)
+                {
+                    Total += GameAchievements.Total;
+                    Locked += GameAchievements.Locked;
+                    Unlocked += GameAchievements.Unlocked;
+                }
+            }
+
+            Result.Total = Total;
+            Result.Locked = Locked;
+            Result.Unlocked = Unlocked;
+            Result.Progression = (Total != 0) ? (int)Math.Round((double)(Unlocked * 100 / Total)) : 0;
+
+            return Result;
+        }
+
         public ProgressionAchievements ProgessionGame(Guid GameId)
         {
             ProgressionAchievements Result = new ProgressionAchievements();
@@ -650,5 +797,19 @@ namespace SuccessStory.Models
     {
         public string[] Labels { get; set; }
         public ChartValues<CustomerForSingle> Series { get; set; }
+    }
+
+    public class AchievementsGraphicsDataCountSources
+    {
+        public string[] Labels { get; set; }
+        public ChartValues<CustomerForSingle> SeriesUnlocked { get; set; }
+        public ChartValues<CustomerForSingle> SeriesLocked { get; set; }
+        public ChartValues<CustomerForSingle> SeriesTotal { get; set; }
+    }
+
+    public class AchievementsGraphicsDataSources
+    {
+        public string source { get; set; }
+        public int value { get; set; }
     }
 }

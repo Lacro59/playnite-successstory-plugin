@@ -73,6 +73,7 @@
     <sys:String x:Key="LOCSucessStoryFilterSource">Источники</sys:String>
     <sys:String x:Key="LOCSucessStorySearch">Поиск</sys:String>
     <sys:String x:Key="LOCSucessStoryGlobalProgression">Глобал. прогрес</sys:String>
+    <sys:String x:Key="LOCSucessStoryProgressionLaunched">Progression [games launched]</sys:String>
     <sys:String x:Key="LOCSucessStoryGameInformation">Информация</sys:String>
 
     <!-- ListViewGames -->
@@ -85,6 +86,7 @@
     <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Все достижения разблокированые по месяцам</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">Все достижения разблокированые по дням</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Достижения разблокированые по месяцам</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleSources">Achievements unlocked by sources</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Достижения разблокированые по дням</sys:String>
     
 </ResourceDictionary>

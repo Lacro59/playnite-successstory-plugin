@@ -6,11 +6,13 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using LiveCharts;
+using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Playnite.Controls;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
+using PluginCommon.LiveChartsCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using SuccessStory.Views.Interface;
@@ -63,6 +65,10 @@ namespace SuccessStory
             pbProgressionGlobalCount.Maximum = AchievementsDatabase.Progession().Total;
             labelProgressionGlobalCount.Content = AchievementsDatabase.Progession().Progression + "%";
 
+            pbProgressionLaunchedCount.Value = AchievementsDatabase.ProgessionLaunched().Unlocked;
+            pbProgressionLaunchedCount.Maximum = AchievementsDatabase.ProgessionLaunched().Total;
+            labelProgressionLaunchedCount.Content = AchievementsDatabase.ProgessionLaunched().Progression + "%";
+
 
             GetListGame();
 
@@ -71,7 +77,7 @@ namespace SuccessStory
             if (settings.GraphicAllUnlockedByMonth)
             {
                 GraphicTitleALL.Content = resources.GetString("LOCSucessStoryGraphicTitleALL");
-                GraphicsData = AchievementsDatabase.GetCountByMonth();
+                GraphicsData = AchievementsDatabase.GetCountByMonth(null, 7);
             }
             else
             {
@@ -132,9 +138,38 @@ namespace SuccessStory
             //FilterSource.UpdateLayout();
             FilterSource.ItemsSource = FilterSourceItems;
 
+            SetGraphicsAchievementsSources();
 
             // Set Binding data
             DataContext = this;
+        }
+
+        private void SetGraphicsAchievementsSources()
+        {
+            var data = AchievementsDatabase.GetCountBySources();
+            
+            //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
+            var customerVmMapper = Mappers.Xy<CustomerForSingle>()
+                .X((value, index) => index)
+                .Y(value => value.Values);
+
+            //lets save the mapper globally
+            Charting.For<CustomerForSingle>(customerVmMapper);
+
+            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+            StatsGraphicAchievementsSeries.Add(new ColumnSeries
+            {
+                Title = "",
+                Values = data.SeriesUnlocked
+            });
+            //StatsGraphicAchievementsSeries.Add(new LineSeries
+            //{
+            //    Title = "",
+            //    Values = data.SeriesTotal
+            //});
+
+            StatsGraphicAchievementsSources.Series = StatsGraphicAchievementsSeries;
+            StatsGraphicAchievementsSourcesX.Labels = data.Labels;
         }
 
         /// <summary>

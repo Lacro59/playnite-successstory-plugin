@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory"
+             xmlns:localLVC="clr-namespace:PluginCommon.LiveChartsCommon;assembly=PluginCommon"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
     xmlns:localPlugin="clr-namespace:PluginCommon;assembly=PluginCommon"
     mc:Ignorable="d" Height="740" Width="1260" Background="{DynamicResource WindowBackgourndBrush}"
@@ -60,30 +61,77 @@
         <!-- List games with achievements -->
         <DockPanel Grid.Column="0" Grid.Row="1">
             <!-- Global progression -->
-            <Grid DockPanel.Dock="Bottom" Height="30" Margin="0,10,0,0">
+            <Grid DockPanel.Dock="Bottom" Height="70" Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="465" />
                 </Grid.ColumnDefinitions>
-                
-                <Label Grid.Column="0" x:Name="lProgressionGlobal" Content="{DynamicResource LOCSucessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" />
-                <Grid Grid.Column="2" HorizontalAlignment="Right" Width="517">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" x:Name="lProgressionGlobal" Content="{DynamicResource LOCSucessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" />
+                <Grid Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="465">
                     <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" />
                     <Label x:Name="labelProgressionGlobalCount" HorizontalAlignment="Center">
                     </Label>
                 </Grid>
+
+                <Label Grid.Column="0" Grid.Row="2" x:Name="lProgressionLaunched" Content="{DynamicResource LOCSucessStoryProgressionLaunched}" HorizontalAlignment="Left" FontSize="16" />
+                <Grid Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" Width="465">
+                    <ProgressBar x:Name="pbProgressionLaunchedCount" Minimum="0" Maximum="100" />
+                    <Label x:Name="labelProgressionLaunchedCount" HorizontalAlignment="Center">
+                    </Label>
+                </Grid>
             </Grid>
 
-            <!-- Graphic all unlocked achievements -->
-            <DockPanel DockPanel.Dock="Bottom">
-                <StackPanel DockPanel.Dock="Top">
-                    <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSucessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
-                </StackPanel>
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <!-- Graphic all achievements by sources -->
+                <DockPanel Grid.Column="0">
+                    <StackPanel DockPanel.Dock="Top">
+                        <Label Content="{DynamicResource LOCSucessStoryGraphicTitleSources}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                    </StackPanel>
 
-                <StackPanel x:Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
-                </StackPanel>
-            </DockPanel>
+                    <StackPanel Name="SuccessStory_Achievements_Graphics_Sources" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
+                        <lvc:CartesianChart Name="StatsGraphicAchievementsSources" Height="185" LegendLocation="Bottom" FontFamily="/SuccessStory;component/Resources/#font">
+                            <lvc:CartesianChart.DataTooltip>
+                                <localLVC:CustomerToolTipForSingle />
+                            </lvc:CartesianChart.DataTooltip>
+                            
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Name="StatsGraphicAchievementsSourcesX" MinValue="0" ShowLabels="True" FontFamily="/SuccessStory;component/Resources/#font">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator Step="1" />
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Name="StatsGraphicAchievementsSourcesY" MinValue="0"  ShowLabels="False">
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </StackPanel>
+                </DockPanel>
+                
+                <!-- Graphic all unlocked achievements -->
+                <DockPanel Grid.Column="2">
+                    <StackPanel DockPanel.Dock="Top">
+                        <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSucessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                    </StackPanel>
+
+                    <StackPanel x:Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
 
             <!-- List games -->
             <StackPanel Margin="0,0,0,10" Name="lvGamesStackPanel">

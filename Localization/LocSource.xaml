@@ -73,6 +73,7 @@
     <sys:String x:Key="LOCSucessStoryFilterSource">Filter by source</sys:String>
     <sys:String x:Key="LOCSucessStorySearch">Search</sys:String>
     <sys:String x:Key="LOCSucessStoryGlobalProgression">Global progression</sys:String>
+    <sys:String x:Key="LOCSucessStoryProgressionLaunched">Progression [games launched]</sys:String>
     <sys:String x:Key="LOCSucessStoryGameInformation">Information</sys:String>
 
     <!-- ListViewGames -->
@@ -85,6 +86,7 @@
     <sys:String x:Key="LOCSucessStoryGraphicTitleALL">All achievements unlocked by month</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">All achievements unlocked by day</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Achievements unlocked by month</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleSources">Achievements unlocked by sources</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Achievements unlocked by day</sys:String>
     
 </ResourceDictionary>

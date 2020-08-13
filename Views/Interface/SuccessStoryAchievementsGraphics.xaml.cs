@@ -30,6 +30,7 @@ namespace SuccessStory.Views.Interface
 
             StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
             StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
+            StatsGraphicAchievementsY.MinValue = 0;
         }
 
         private void StatsGraphicAchievements_Loaded(object sender, RoutedEventArgs e)
