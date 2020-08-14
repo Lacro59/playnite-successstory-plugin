@@ -115,7 +115,7 @@
                                 </lvc:Axis>
                             </lvc:CartesianChart.AxisX>
                             <lvc:CartesianChart.AxisY>
-                                <lvc:Axis Name="StatsGraphicAchievementsSourcesY" MinValue="0"  ShowLabels="False">
+                                <lvc:Axis Name="StatsGraphicAchievementsSourcesY" ShowLabels="False">
                                 </lvc:Axis>
                             </lvc:CartesianChart.AxisY>
                         </lvc:CartesianChart>
