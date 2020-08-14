@@ -36,7 +36,7 @@
     <sys:String x:Key="LOCSucessStoryGetDataInstalled">Загрузить из установленных игр</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Достижения из установленных игр</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIntegration">Интеграция интерфейса (экспериментальная)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegration">Интеграция интерфейса</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInDescription">Отображать в описании игры</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">С кнопкой переключения</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowTitle">Названия</sys:String>

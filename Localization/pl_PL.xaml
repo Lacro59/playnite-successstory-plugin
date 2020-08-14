@@ -36,7 +36,7 @@
     <sys:String x:Key="LOCSucessStoryGetDataInstalled">Brakujące spośród zainstalowanych gier</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Osiągnięcia z zainstalowanych gier</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIntegration">Integracja interfejsu (eksperymentalna)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegration">Integracja interfejsu</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInDescription">W opisie gry</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">Z przyciskiem przełączającym</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowTitle">Wyświetlaj tytuł</sys:String>

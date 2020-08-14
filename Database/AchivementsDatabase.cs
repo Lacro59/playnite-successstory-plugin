@@ -461,36 +461,45 @@ namespace SuccessStory.Models
 
             if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
-                foreach (string name in DisabledPlugins)
+                if (DisabledPlugins != null)
                 {
-                    if (name == "SteamLibrary")
+                    foreach (string name in DisabledPlugins)
                     {
-                        logger.Warn("SuccessStory - Steam is enable then disabled");
-                        return false;
+                        if (name == "SteamLibrary")
+                        {
+                            logger.Warn("SuccessStory - Steam is enable then disabled");
+                            return false;
+                        }
                     }
                 }
                 return true;
             }
             if (settings.EnableGog && GameSourceName.ToLower() == "gog")
             {
-                foreach (string name in DisabledPlugins)
+                if (DisabledPlugins != null)
                 {
-                    if (name == "GogLibrary")
+                    foreach (string name in DisabledPlugins)
                     {
-                        logger.Warn("SuccessStory - GOG is enable then disabled");
-                        return false;
+                        if (name == "GogLibrary")
+                        {
+                            logger.Warn("SuccessStory - GOG is enable then disabled");
+                            return false;
+                        }
                     }
                 }
                 return true;
             }
             if (settings.EnableOrigin && GameSourceName.ToLower() == "origin")
             {
-                foreach (string name in DisabledPlugins)
+                if (DisabledPlugins != null)
                 {
-                    if (name == "OriginLibrary")
+                    foreach (string name in DisabledPlugins)
                     {
-                        logger.Warn("SuccessStory - Origin is enable then disabled");
-                        return false;
+                        if (name == "OriginLibrary")
+                        {
+                            logger.Warn("SuccessStory - Origin is enable then disabled");
+                            return false;
+                        }
                     }
                 }
                 return true;

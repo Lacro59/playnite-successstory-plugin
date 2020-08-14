@@ -36,7 +36,7 @@
     <sys:String x:Key="LOCSucessStoryGetDataInstalled">Missing from installed games</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Achievements from installed games</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIntegration">Interface integration (experimental)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegration">Interface integration</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInDescription">On game description</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">With toggle button</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowTitle">Show title</sys:String>

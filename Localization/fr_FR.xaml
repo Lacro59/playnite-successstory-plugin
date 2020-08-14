@@ -24,7 +24,7 @@
     <sys:String x:Key="LOCSucessStoryDefaultSorting">Trie par défaut</sys:String>
     <sys:String x:Key="LOCSucessStoryIsAsc">Ascendant</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryDatabase">Manipulation de la base de données</sys:String>
+    <sys:String x:Key="LOCSucessStoryDatabase">Manipulation base de données</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Récupérer les données</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Rafraichir les données</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshData">Rafraîchir</sys:String>
@@ -36,7 +36,7 @@
     <sys:String x:Key="LOCSucessStoryGetDataInstalled">Manquants des jeux installés</sys:String>
     <sys:String x:Key="LOCSucessStoryRefreshDataInstalledRecent">Succès pour les jeux installés</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIntegration">Intégration dans l'interface (expérimental)</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegration">Intégration dans l'interface</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInDescription">Dans la description du jeu</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInDescriptionWithToggle">Avec un bouton à bascule</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowTitle">Afficher le titre</sys:String>
