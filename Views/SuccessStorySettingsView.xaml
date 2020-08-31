@@ -11,7 +11,7 @@
         <successstory:BooleanAndConverter x:Key="booleanAndConverter" />
     </UserControl.Resources>
 
-    <TabControl Margin="20">
+    <TabControl Margin="20" Name="tcSettings">
         <TabItem Header="{DynamicResource LOCSucessStory}">
             <DockPanel Name="SuccessStorySettings" Margin="0,10,0,0">
                 <Grid DockPanel.Dock="Top">

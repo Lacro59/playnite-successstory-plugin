@@ -302,6 +302,8 @@ namespace SuccessStory
 
         internal void RefreshData(string SourceName, bool IsGet = false)
         {
+            tcSettings.SelectedIndex = 0;
+
             SuccessStory.isFirstLoad = false;
 
             // ProgressBar
@@ -346,7 +348,7 @@ namespace SuccessStory
                     bool isOK = true;
                     if (SourceName.ToLower() == "allrecent")
                     {
-                        if ((game.LastActivity != null && game.LastActivity > DateTime.Now.AddMonths(-1)) || (game.Added != null && game.Added > DateTime.Now.AddMonths(-1)))
+                        if ((game.LastActivity != null && game.LastActivity > DateTime.Now.AddMonths(-2)) || (game.Added != null && game.Added > DateTime.Now.AddMonths(-2)))
                         {
                             isOK = true;
                         }
