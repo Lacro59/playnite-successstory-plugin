@@ -2,6 +2,7 @@
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using System;
+using System.Linq;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +28,9 @@ namespace SuccessStory.Models
         private ConcurrentDictionary<Guid, GameAchievements> PluginDatabase { get; set; } = new ConcurrentDictionary<Guid, GameAchievements>();
         private string PluginUserDataPath { get; set; }
         private string PluginDatabasePath { get; set; }
+        private bool isRetroachievements { get; set; }
+
+        private List<Guid> ListEmulators = new List<Guid>();
 
         public static CumulErrors ListErrors = new CumulErrors();
 
@@ -36,12 +40,21 @@ namespace SuccessStory.Models
             return File.Exists(PluginDatabasePath + gameID.ToString() + ".json");
         }
 
-        public AchievementsDatabase(IPlayniteAPI PlayniteApi, SuccessStorySettings Settings, string PluginUserDataPath)
+        public AchievementsDatabase(IPlayniteAPI PlayniteApi, SuccessStorySettings Settings, string PluginUserDataPath, bool isRetroachievements = false)
         {
             this.PlayniteApi = PlayniteApi;
             this.Settings = Settings;
             this.PluginUserDataPath = PluginUserDataPath;
+            this.isRetroachievements = isRetroachievements;
             PluginDatabasePath = PluginUserDataPath + "\\achievements\\";
+
+
+            // List Emulators
+            foreach (var item in PlayniteApi.Database.Emulators)
+            {
+                ListEmulators.Add(item.Id);
+            }
+
 
             if (!Directory.Exists(PluginDatabasePath))
             {
@@ -54,7 +67,7 @@ namespace SuccessStory.Models
         /// </summary>
         /// <param name="PlayniteApi"></param>
         /// <param name="PluginUserDataPath"></param>
-        public void Initialize()
+        public void Initialize(bool ignore = true)
         {
             ListErrors = new CumulErrors();
 
@@ -96,6 +109,23 @@ namespace SuccessStory.Models
                 }
             });
 
+            // Filters
+            if (Settings.EnableRetroAchievementsView && !ignore)
+            {
+                if (isRetroachievements)
+                {
+                    var a = PluginDatabase.Where(x => IsEmulatedGame(x));
+                    var b = a.ToDictionary(x => x.Key, x => x.Value);
+                    PluginDatabase = ToConcurrent(b);
+                }
+                else
+                {
+                    var a = PluginDatabase.Where(x => !IsEmulatedGame(x));
+                    var b = a.ToDictionary(x => x.Key, x => x.Value);
+                    PluginDatabase = ToConcurrent(b);
+                }
+            }
+
             if (ListErrors.Get() != "")
             {
                 PlayniteApi.Dialogs.ShowErrorMessage(ListErrors.Get(), "SuccessStory errors");
@@ -103,6 +133,27 @@ namespace SuccessStory.Models
 
             ListErrors = new CumulErrors();
         }
+
+        private ConcurrentDictionary<TKey, TValue> ToConcurrent<TKey, TValue>(Dictionary<TKey, TValue> dic)
+        {
+            return new ConcurrentDictionary<TKey, TValue>(dic);
+        }
+
+        private bool IsEmulatedGame(KeyValuePair<Guid, GameAchievements> x)
+        {
+            Game game = PlayniteApi.Database.Games.Get(x.Key);
+
+            if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
 
         /// <summary>
         /// Get number achievements unlock by month for a game or not.
@@ -203,28 +254,62 @@ namespace SuccessStory.Models
 
         public AchievementsGraphicsDataCountSources GetCountBySources()
         {
-
             List<string> tempSourcesLabels = new List<string>();
-            if (Settings.EnableGog)
+
+            if (Settings.EnableRetroAchievementsView && Settings.EnableRetroAchievements)
             {
-                tempSourcesLabels.Add("GOG");
+                if (isRetroachievements)
+                {
+
+                    if (Settings.EnableRetroAchievements)
+                    {
+                        tempSourcesLabels.Add("RetroAchievements");
+                    }
+                }
+                else
+                {
+                    if (Settings.EnableGog)
+                    {
+                        tempSourcesLabels.Add("GOG");
+                    }
+                    if (Settings.EnableSteam)
+                    {
+                        tempSourcesLabels.Add("Steam");
+                    }
+                    if (Settings.EnableOrigin)
+                    {
+                        tempSourcesLabels.Add("Origin");
+                    }
+                    if (Settings.EnableLocal)
+                    {
+                        tempSourcesLabels.Add("Playnite");
+                    }
+                }
             }
-            if (Settings.EnableSteam)
+            else
             {
-                tempSourcesLabels.Add("Steam");
+                if (Settings.EnableGog)
+                {
+                    tempSourcesLabels.Add("GOG");
+                }
+                if (Settings.EnableSteam)
+                {
+                    tempSourcesLabels.Add("Steam");
+                }
+                if (Settings.EnableOrigin)
+                {
+                    tempSourcesLabels.Add("Origin");
+                }
+                if (Settings.EnableRetroAchievements)
+                {
+                    tempSourcesLabels.Add("RetroAchievements");
+                }
+                if (Settings.EnableLocal)
+                {
+                    tempSourcesLabels.Add("Playnite");
+                }
             }
-            if (Settings.EnableOrigin)
-            {
-                tempSourcesLabels.Add("Origin");
-            }
-            if (Settings.EnableRetroAchievements)
-            {
-                tempSourcesLabels.Add("RetroAchievements");
-            }
-            if (Settings.EnableLocal)
-            {
-                tempSourcesLabels.Add("Playnite");
-            }
+
             tempSourcesLabels.Sort((x, y) => x.CompareTo(y));
 
             string[] GraphicsAchievementsLabels = new string[tempSourcesLabels.Count];

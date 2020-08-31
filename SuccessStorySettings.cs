@@ -42,6 +42,8 @@ namespace SuccessStory
         public bool EnableOrigin { get; set; } = false;
         public bool EnableRetroAchievements { get; set; } = false;
 
+        public bool EnableRetroAchievementsView { get; set; } = false;
+
         public string RetroAchievementsUser { get; set; } = "";
         public string RetroAchievementsKey { get; set; } = "";
 
@@ -102,6 +104,8 @@ namespace SuccessStory
                 EnableGog = savedSettings.EnableGog;
                 EnableOrigin = savedSettings.EnableOrigin;
                 EnableRetroAchievements = savedSettings.EnableRetroAchievements;
+
+                EnableRetroAchievementsView = savedSettings.EnableRetroAchievementsView;
 
                 RetroAchievementsUser = savedSettings.RetroAchievementsUser;
                 RetroAchievementsKey = savedSettings.RetroAchievementsKey;

@@ -61,8 +61,8 @@ namespace SuccessStory
 
         public override IEnumerable<ExtensionFunction> GetFunctions()
         {
-            return new List<ExtensionFunction>
-            {
+            List<ExtensionFunction> listFunctions = new List<ExtensionFunction>();
+            listFunctions.Add(
                 new ExtensionFunction(
                     resources.GetString("LOCSucessStory"),
                     () =>
@@ -74,7 +74,26 @@ namespace SuccessStory
                         // Show SuccessView
                         new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
                     })
-            };
+                );
+
+            if (settings.EnableRetroAchievementsView && settings.EnableRetroAchievements)
+            {
+                listFunctions.Add(
+                    new ExtensionFunction(
+                        resources.GetString("LOCSucessStory") + " - RetroAchievements",
+                        () =>
+                        {
+                            // Add code to be execute when user invokes this menu entry.
+
+                            logger.Info("SuccessStory - SuccessStoryView RetroAchievements");
+
+                            // Show SuccessView
+                            new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath(), true).ShowDialog();
+                        })
+                    );
+            }
+
+            return listFunctions;
         }
 
         public override void OnGameInstalled(Game game)
@@ -166,8 +185,21 @@ namespace SuccessStory
 
         private void OnBtGameSelectedActionBarClick(object sender, RoutedEventArgs e)
         {
+            List<Guid> ListEmulators = new List<Guid>();
+            foreach (var item in PlayniteApi.Database.Emulators)
+            {
+                ListEmulators.Add(item.Id);
+            }
+
             // Show SuccessView
-            new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath(), GameSelected).ShowDialog();
+            if (settings.EnableRetroAchievementsView && GameSelected.PlayAction != null && GameSelected.PlayAction.EmulatorId != null && ListEmulators.Contains(GameSelected.PlayAction.EmulatorId))
+            {
+                new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected).ShowDialog();
+            }
+            else
+            {
+                new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath(), false, GameSelected).ShowDialog();
+            }
         }
 
         private void OnGameSelectedToggleButtonClick(object sender, RoutedEventArgs e)

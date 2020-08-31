@@ -29,7 +29,7 @@
                         <RowDefinition Height="35" />
                         <RowDefinition Height="35" />
                         <RowDefinition Height="35" />
-                        <RowDefinition Height="35" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="35" />
                         <RowDefinition Height="35" />
                     </Grid.RowDefinitions>
@@ -73,11 +73,19 @@
                             <ColumnDefinition Width="5" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                            <RowDefinition Height="35" />
+                        </Grid.RowDefinitions>
 
-                        <Label Grid.Column="1" Content="User" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="3" Text="{Binding RetroAchievementsUser}" VerticalAlignment="Center" />
-                        <Label Grid.Column="5" Content="Key" VerticalAlignment="Center" />
-                        <TextBox Grid.Column="7" Text="{Binding RetroAchievementsKey}" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="7" IsChecked="{Binding EnableRetroAchievementsView}" VerticalAlignment="Center">
+                            <Label Content="{DynamicResource LOCSucessStoryEnableRetroAchievementsView}"></Label>
+                        </CheckBox>
+
+                        <Label Grid.Column="1" Grid.Row="1" Content="User" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="3" Grid.Row="1"  Text="{Binding RetroAchievementsUser}" VerticalAlignment="Center" />
+                        <Label Grid.Column="5" Grid.Row="1"  Content="Key" VerticalAlignment="Center" />
+                        <TextBox Grid.Column="7" Grid.Row="1"  Text="{Binding RetroAchievementsKey}" VerticalAlignment="Center" />
                     </Grid>
                     
                     <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding EnableOrigin}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center">

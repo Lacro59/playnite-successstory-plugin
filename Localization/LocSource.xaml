@@ -17,6 +17,8 @@
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Enable Origin</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Enable RetroAchievements</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Enable seprate view for RetroAchievements</sys:String>
+
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Include hidden games</sys:String>
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Graphic with all unlocked achievements by month</sys:String>
     <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Graphic with all unlocked achievements by Day</sys:String>

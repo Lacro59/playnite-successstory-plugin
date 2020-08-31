@@ -42,7 +42,7 @@ namespace SuccessStory
         List<string> SearchSources = new List<string>();
 
 
-        public SuccessView(SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string PluginUserDataPath, Game GameSelected = null)
+        public SuccessView(SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string PluginUserDataPath, bool isRetroAchievements = false, Game GameSelected = null)
         {
             this.PlayniteApi = PlayniteApi;
             PlayniteApiDatabase = PlayniteApi.Database;
@@ -51,8 +51,8 @@ namespace SuccessStory
             this.PluginUserDataPath = PluginUserDataPath;
 
 
-            AchievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, PluginUserDataPath);
-            AchievementsDatabase.Initialize();
+            AchievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, PluginUserDataPath, isRetroAchievements);
+            AchievementsDatabase.Initialize(false);
 
             InitializeComponent();
 
@@ -110,35 +110,68 @@ namespace SuccessStory
             ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
 
 
-            if (settings.EnableLocal)
+            if (settings.EnableRetroAchievementsView && settings.EnableRetroAchievements)
             {
-                //FilterSource.Items.Add(new { SourceName = "Playnite", IsCheck = false });
-                FilterSourceItems.Add(new ListSource { SourceName = "Playnite", IsCheck = false });
+                if (isRetroAchievements)
+                {
+                    PART_GraphicBySource.Visibility = Visibility.Collapsed;
+                    Grid.SetColumn(PART_GraphicAllUnlocked, 0);
+                    Grid.SetColumnSpan(PART_GraphicAllUnlocked, 3);
+
+                    if (settings.EnableRetroAchievements)
+                    {
+                        FilterSourceItems.Add(new ListSource { SourceName = "RetroAchievements", IsCheck = false });
+                    }
+                }
+                else
+                {
+                    if (settings.EnableLocal)
+                    {
+                        FilterSourceItems.Add(new ListSource { SourceName = "Playnite", IsCheck = false });
+                    }
+                    if (settings.EnableSteam)
+                    {
+                        FilterSourceItems.Add(new ListSource { SourceName = "Steam", IsCheck = false });
+                    }
+                    if (settings.EnableGog)
+                    {
+                        FilterSourceItems.Add(new ListSource { SourceName = "GOG", IsCheck = false });
+                    }
+                    if (settings.EnableOrigin)
+                    {
+                        FilterSourceItems.Add(new ListSource { SourceName = "Origin", IsCheck = false });
+                    }
+                }
             }
-            if (settings.EnableSteam)
+            else
             {
-                //FilterSource.Items.Add(new { SourceName = "Steam", IsCheck = false });
-                FilterSourceItems.Add(new ListSource { SourceName = "Steam", IsCheck = false });
+                if (settings.EnableLocal)
+                {
+                    FilterSourceItems.Add(new ListSource { SourceName = "Playnite", IsCheck = false });
+                }
+                if (settings.EnableSteam)
+                {
+                    FilterSourceItems.Add(new ListSource { SourceName = "Steam", IsCheck = false });
+                }
+                if (settings.EnableGog)
+                {
+                    FilterSourceItems.Add(new ListSource { SourceName = "GOG", IsCheck = false });
+                }
+                if (settings.EnableOrigin)
+                {
+                    FilterSourceItems.Add(new ListSource { SourceName = "Origin", IsCheck = false });
+                }
+                if (settings.EnableRetroAchievements)
+                {
+                    FilterSourceItems.Add(new ListSource { SourceName = "RetroAchievements", IsCheck = false });
+                }
             }
-            if (settings.EnableGog)
-            {
-                //FilterSource.Items.Add(new { SourceName = "GOG", IsCheck = false });
-                FilterSourceItems.Add(new ListSource { SourceName = "GOG", IsCheck = false });
-            }
-            if (settings.EnableOrigin)
-            {
-                //FilterSource.Items.Add(new { SourceName = "Origin", IsCheck = false });
-                FilterSourceItems.Add(new ListSource { SourceName = "Origin", IsCheck = false });
-            }
-            if (settings.EnableOrigin)
-            {
-                //FilterSource.Items.Add(new { SourceName = "Origin", IsCheck = false });
-                FilterSourceItems.Add(new ListSource { SourceName = "RetroAchievements", IsCheck = false });
-            }
-            //FilterSource.UpdateLayout();
+
             FilterSource.ItemsSource = FilterSourceItems;
 
+
             SetGraphicsAchievementsSources();
+
 
             // Set Binding data
             DataContext = this;
@@ -162,11 +195,6 @@ namespace SuccessStory
                 Title = "",
                 Values = data.SeriesUnlocked
             });
-            //StatsGraphicAchievementsSeries.Add(new LineSeries
-            //{
-            //    Title = "",
-            //    Values = data.SeriesTotal
-            //});
 
             StatsGraphicAchievementsSources.Series = StatsGraphicAchievementsSeries;
             StatsGraphicAchievementsSourcesX.Labels = data.Labels;

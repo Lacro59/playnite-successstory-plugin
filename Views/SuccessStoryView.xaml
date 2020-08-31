@@ -96,7 +96,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <!-- Graphic all achievements by sources -->
-                <DockPanel Grid.Column="0">
+                <DockPanel Grid.Column="0" Name="PART_GraphicBySource">
                     <StackPanel DockPanel.Dock="Top">
                         <Label Content="{DynamicResource LOCSucessStoryGraphicTitleSources}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
                     </StackPanel>
@@ -123,7 +123,7 @@
                 </DockPanel>
                 
                 <!-- Graphic all unlocked achievements -->
-                <DockPanel Grid.Column="2">
+                <DockPanel Grid.Column="2" Name="PART_GraphicAllUnlocked">
                     <StackPanel DockPanel.Dock="Top">
                         <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSucessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
                     </StackPanel>
