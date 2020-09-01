@@ -35,8 +35,20 @@ namespace SuccessStory.Views.Interface
 
         private void StatsGraphicAchievements_Loaded(object sender, RoutedEventArgs e)
         {
+            // Define height & width
             var parent = ((FrameworkElement)((FrameworkElement)StatsGraphicAchievements.Parent).Parent);
-            StatsGraphicAchievements.Height = parent.ActualHeight +18;
+            
+            if (!double.IsNaN(parent.Height))
+            {
+                StatsGraphicAchievements.Height = parent.Height;
+            }
+            ((FrameworkElement)StatsGraphicAchievements.Parent).Height = StatsGraphicAchievements.Height;
+            StatsGraphicAchievements.Height = StatsGraphicAchievements.Height + 18;
+            
+            if (!double.IsNaN(parent.Width))
+            {
+                StatsGraphicAchievements.Width = parent.Width;
+            }
         }
     }
 }

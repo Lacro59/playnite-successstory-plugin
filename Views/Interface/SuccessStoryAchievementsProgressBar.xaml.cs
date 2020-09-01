@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 
@@ -34,6 +35,22 @@ namespace SuccessStory.Views.Interface
             else
             {
                 AchievementsPercent.Content = "";
+            }
+        }
+
+        private void Grid_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            // Define height & width
+            var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
+
+            if (!double.IsNaN(parent.Height))
+            {
+                ((FrameworkElement)sender).Height = parent.Height;
+            }
+
+            if (!double.IsNaN(parent.Width))
+            {
+                ((FrameworkElement)sender).Width = parent.Width;
             }
         }
     }

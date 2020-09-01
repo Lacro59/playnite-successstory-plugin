@@ -35,13 +35,13 @@ namespace SuccessStory
         int LocalTotalAchievements;
 
 
-        public SuccessStorySettingsView(IPlayniteAPI PlayniteApi, string PluginUserDataPath, SuccessStorySettings settings)
+        public SuccessStorySettingsView(SuccessStory plugin, IPlayniteAPI PlayniteApi, string PluginUserDataPath, SuccessStorySettings settings)
         {
             this.PlayniteApi = PlayniteApi;
             this.PluginUserDataPath = PluginUserDataPath;
             this.settings = settings;
 
-            AchievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, PluginUserDataPath);
+            AchievementsDatabase = new AchievementsDatabase(plugin, PlayniteApi, settings, PluginUserDataPath);
 
             InitializeComponent();
 

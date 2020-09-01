@@ -7,7 +7,7 @@
              mc:Ignorable="d" MinWidth="150" MinHeight="20" 
              Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StackPanel}},Path=ActualHeight}">
 
-    <Grid>
+    <Grid Loaded="Grid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="6" />

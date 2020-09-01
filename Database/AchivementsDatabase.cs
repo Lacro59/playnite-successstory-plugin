@@ -22,6 +22,7 @@ namespace SuccessStory.Models
         private static ILogger logger = LogManager.GetLogger();
         private IPlayniteAPI PlayniteApi { get; set; }
 
+        SuccessStory plugin { get; set; }
         SuccessStorySettings Settings { get; set; }
 
         // Variable AchievementsCollection
@@ -40,8 +41,9 @@ namespace SuccessStory.Models
             return File.Exists(PluginDatabasePath + gameID.ToString() + ".json");
         }
 
-        public AchievementsDatabase(IPlayniteAPI PlayniteApi, SuccessStorySettings Settings, string PluginUserDataPath, bool isRetroachievements = false)
+        public AchievementsDatabase(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings Settings, string PluginUserDataPath, bool isRetroachievements = false)
         {
+            this.plugin = plugin;
             this.PlayniteApi = PlayniteApi;
             this.Settings = Settings;
             this.PluginUserDataPath = PluginUserDataPath;
@@ -529,7 +531,7 @@ namespace SuccessStory.Models
         /// <param name="GameSourceName"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static bool VerifToAddOrShow(string GameSourceName, SuccessStorySettings settings, string PluginUserDataPath)
+        public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI PlayniteApi, string GameSourceName, SuccessStorySettings settings, string PluginUserDataPath)
         {
             bool Result = false;
 
@@ -553,6 +555,12 @@ namespace SuccessStory.Models
                         if (name == "SteamLibrary")
                         {
                             logger.Warn("SuccessStory - Steam is enable then disabled");
+                            PlayniteApi.Notifications.Add(new NotificationMessage(
+                                $"SuccessStory-Steam-disabled",
+                                "Steam is enable then disabled",
+                                NotificationType.Error,
+                                () => plugin.OpenSettingsView()
+                            ));
                             return false;
                         }
                     }
@@ -568,6 +576,12 @@ namespace SuccessStory.Models
                         if (name == "GogLibrary")
                         {
                             logger.Warn("SuccessStory - GOG is enable then disabled");
+                            PlayniteApi.Notifications.Add(new NotificationMessage(
+                                $"SuccessStory-GOG-disabled",
+                                "GOG is enable then disabled",
+                                NotificationType.Error,
+                                () => plugin.OpenSettingsView()
+                            ));
                             return false;
                         }
                     }
@@ -583,6 +597,12 @@ namespace SuccessStory.Models
                         if (name == "OriginLibrary")
                         {
                             logger.Warn("SuccessStory - Origin is enable then disabled");
+                            PlayniteApi.Notifications.Add(new NotificationMessage(
+                                $"SuccessStory-Origin-disabled",
+                                "Origin is enable then disabled",
+                                NotificationType.Error,
+                                () => plugin.OpenSettingsView()
+                            ));
                             return false;
                         }
                     }
@@ -685,7 +705,7 @@ namespace SuccessStory.Models
             List<Achievements> Achievements = new List<Achievements>();
 
             // Generate database only this source
-            if (VerifToAddOrShow(GameSourceName, settings, PluginUserDataPath))
+            if (VerifToAddOrShow(plugin, PlayniteApi, GameSourceName, settings, PluginUserDataPath))
             {
                 // Generate only not exist
                 if (!File.Exists(PluginDatabaseGamePath))

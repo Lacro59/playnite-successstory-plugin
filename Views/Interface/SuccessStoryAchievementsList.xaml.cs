@@ -132,8 +132,18 @@ namespace SuccessStory.Views.Interface
         /// <param name="e"></param>
         private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
         {
+            // Define height & width
             var parent = ((FrameworkElement)((FrameworkElement)lbAchievements.Parent).Parent);
-            lbAchievements.Height = parent.MaxHeight;
+
+            if (!double.IsNaN(parent.Height))
+            {
+                lbAchievements.Height = parent.Height;
+            }
+
+            if (!double.IsNaN(parent.Width))
+            {
+                lbAchievements.Width = parent.Width;
+            }
         }
     }
 

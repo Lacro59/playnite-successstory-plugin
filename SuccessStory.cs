@@ -57,6 +57,12 @@ namespace SuccessStory
                     cv.ShowNotification(api, "SuccessStory - " + resources.GetString("LOCUpdaterWindowTitle"));
                 }
             }
+
+            // Custom theme button
+            if (settings.EnableIntegrationInCustomTheme)
+            {
+                EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(OnCustomThemeButtonClick));
+            }
         }
 
         public override IEnumerable<ExtensionFunction> GetFunctions()
@@ -72,7 +78,7 @@ namespace SuccessStory
                         logger.Info("SuccessStory - SuccessStoryView");
 
                         // Show SuccessView
-                        new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
+                        new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
                     })
                 );
 
@@ -88,7 +94,7 @@ namespace SuccessStory
                             logger.Info("SuccessStory - SuccessStoryView RetroAchievements");
 
                             // Show SuccessView
-                            new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath(), true).ShowDialog();
+                            new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true).ShowDialog();
                         })
                     );
             }
@@ -166,7 +172,7 @@ namespace SuccessStory
         /// <param name="e"></param>
         private void OnBtHeaderClick(object sender, RoutedEventArgs e)
         {
-            new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
+            new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
         }
 
         public override void OnApplicationStarted()
@@ -183,6 +189,23 @@ namespace SuccessStory
             }
         }
 
+        private void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)
+        {
+            string ButtonName = "";
+            try
+            {
+                ButtonName = ((Button)sender).Name;
+                if (ButtonName == "PART_ScCustomButton")
+                {
+                    OnBtGameSelectedActionBarClick(sender, e);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory", "OnCustomThemeButtonClick() error");
+            }
+        }
+
         private void OnBtGameSelectedActionBarClick(object sender, RoutedEventArgs e)
         {
             List<Guid> ListEmulators = new List<Guid>();
@@ -194,11 +217,11 @@ namespace SuccessStory
             // Show SuccessView
             if (settings.EnableRetroAchievementsView && GameSelected.PlayAction != null && GameSelected.PlayAction.EmulatorId != null && ListEmulators.Contains(GameSelected.PlayAction.EmulatorId))
             {
-                new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected).ShowDialog();
+                new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected).ShowDialog();
             }
             else
             {
-                new SuccessView(settings, PlayniteApi, this.GetPluginUserDataPath(), false, GameSelected).ShowDialog();
+                new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), false, GameSelected).ShowDialog();
             }
         }
 
@@ -290,7 +313,7 @@ namespace SuccessStory
             // Refresh database
             if (SuccessStory.isFirstLoad)
             {
-                achievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, this.GetPluginUserDataPath());
+                achievementsDatabase = new AchievementsDatabase(this, PlayniteApi, settings, this.GetPluginUserDataPath());
                 achievementsDatabase.Initialize();
                 SuccessStory.isFirstLoad = false;
             }
@@ -338,9 +361,10 @@ namespace SuccessStory
 
                 // Reset resources
                 List<ResourcesList> resourcesLists = new List<ResourcesList>();
-                resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = "0" });
-                resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = "0" });
-                resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = "0" });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = false });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = 0 });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = 0 });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = 0 });
                 ui.AddResources(resourcesLists);
 
                 var taskIntegration = Task.Run(() => LoadData(PlayniteApi, this.GetPluginUserDataPath(), settings))
@@ -359,9 +383,10 @@ namespace SuccessStory
 
 
                         // Add resources
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SelectedGameAchievements.Total.ToString() });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SelectedGameAchievements.Unlocked.ToString() });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SelectedGameAchievements.Locked.ToString() });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SelectedGameAchievements.Total });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SelectedGameAchievements.Unlocked });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SelectedGameAchievements.Locked });
                         ui.AddResources(resourcesLists);
 
 
@@ -560,7 +585,7 @@ namespace SuccessStory
 
         public override UserControl GetSettingsView(bool firstRunSettings)
         {
-            return new SuccessStorySettingsView(PlayniteApi, this.GetPluginUserDataPath(), settings);
+            return new SuccessStorySettingsView(this, PlayniteApi, this.GetPluginUserDataPath(), settings);
         }
     }
 }

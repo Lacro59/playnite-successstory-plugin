@@ -34,6 +34,7 @@ namespace SuccessStory
         public IPlaynitePathsAPI PlayniteApiPaths;
 
         public readonly string PluginUserDataPath;
+        SuccessStory plugin { get; set; }
         SuccessStorySettings settings { get; set; }
 
         AchievementsDatabase AchievementsDatabase;
@@ -42,8 +43,9 @@ namespace SuccessStory
         List<string> SearchSources = new List<string>();
 
 
-        public SuccessView(SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string PluginUserDataPath, bool isRetroAchievements = false, Game GameSelected = null)
+        public SuccessView(SuccessStory plugin, SuccessStorySettings settings, IPlayniteAPI PlayniteApi, string PluginUserDataPath, bool isRetroAchievements = false, Game GameSelected = null)
         {
+            this.plugin = plugin;
             this.PlayniteApi = PlayniteApi;
             PlayniteApiDatabase = PlayniteApi.Database;
             PlayniteApiPaths = PlayniteApi.Paths;
@@ -51,7 +53,7 @@ namespace SuccessStory
             this.PluginUserDataPath = PluginUserDataPath;
 
 
-            AchievementsDatabase = new AchievementsDatabase(PlayniteApi, settings, PluginUserDataPath, isRetroAchievements);
+            AchievementsDatabase = new AchievementsDatabase(plugin, PlayniteApi, settings, PluginUserDataPath, isRetroAchievements);
             AchievementsDatabase.Initialize(false);
 
             InitializeComponent();
@@ -239,7 +241,7 @@ namespace SuccessStory
 
                     if (AchievementsDatabase.HaveAchievements(item.Id))
                     {
-                        if (AchievementsDatabase.VerifToAddOrShow(GameSourceName, settings, PluginUserDataPath))
+                        if (AchievementsDatabase.VerifToAddOrShow(plugin, PlayniteApi, GameSourceName, settings, PluginUserDataPath))
                         {
                             string GameId = item.Id.ToString();
                             string GameName = item.Name;
