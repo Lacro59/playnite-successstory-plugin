@@ -363,8 +363,11 @@ namespace SuccessStory
                 List<ResourcesList> resourcesLists = new List<ResourcesList>();
                 resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = false });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = 0 });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = "0" });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = 0 });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = "0" });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = 0 });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = "0" });
                 ui.AddResources(resourcesLists);
 
                 var taskIntegration = Task.Run(() => LoadData(PlayniteApi, this.GetPluginUserDataPath(), settings))
@@ -385,8 +388,11 @@ namespace SuccessStory
                         // Add resources
                         resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SelectedGameAchievements.Total });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = SelectedGameAchievements.Total.ToString() });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SelectedGameAchievements.Unlocked });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = SelectedGameAchievements.Unlocked.ToString() });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SelectedGameAchievements.Locked });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = SelectedGameAchievements.Locked.ToString() });
                         ui.AddResources(resourcesLists);
 
 
