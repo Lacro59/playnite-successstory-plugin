@@ -15,9 +15,9 @@
     <sys:String x:Key="LOCSucessStoryEnableSteam">Включить достижения Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">Включить достижения GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Включить достижения RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Включить Ретро достижения</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Enable seprate view for RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Включить отдпльное отображение для Ретро достижений (RetroAchievements)</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Включая скрытые игры</sys:String>
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">График со всеми достижениями по месяцам</sys:String>
@@ -75,7 +75,7 @@
     <sys:String x:Key="LOCSucessStoryFilterSource">Источники</sys:String>
     <sys:String x:Key="LOCSucessStorySearch">Поиск</sys:String>
     <sys:String x:Key="LOCSucessStoryGlobalProgression">Глобал. прогрес</sys:String>
-    <sys:String x:Key="LOCSucessStoryProgressionLaunched">Progression [games launched]</sys:String>
+    <sys:String x:Key="LOCSucessStoryProgressionLaunched">Прогрессия [запущенные игры]</sys:String>
     <sys:String x:Key="LOCSucessStoryGameInformation">Информация</sys:String>
 
     <!-- ListViewGames -->
@@ -88,7 +88,7 @@
     <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Все достижения разблокированые по месяцам</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">Все достижения разблокированые по дням</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitle">Достижения разблокированые по месяцам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleSources">Achievements unlocked by sources</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleSources">Достижения разблокированые по источникам</sys:String>
     <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Достижения разблокированые по дням</sys:String>
     
 </ResourceDictionary>
