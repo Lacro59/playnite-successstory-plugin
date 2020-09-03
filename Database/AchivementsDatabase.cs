@@ -627,6 +627,18 @@ namespace SuccessStory.Models
 
         public void InitializeMultipleAdd(SuccessStorySettings settings, string GameSourceName = "all")
         {
+            JArray DisabledPlugins = new JArray();
+            JObject PlayniteConfig = new JObject();
+            try
+            {
+                PlayniteConfig = JObject.Parse(File.ReadAllText(PluginUserDataPath + "\\..\\..\\config.json"));
+                DisabledPlugins = (JArray)PlayniteConfig["DisabledPlugins"];
+            }
+            catch
+            {
+            }
+
+            bool isFind = false;
             switch (GameSourceName.ToLower())
             {
                 case "all":
@@ -639,14 +651,34 @@ namespace SuccessStory.Models
                     break;
 
                 case "gog":
-                    if (settings.EnableGog && gogAPI == null)
+                    if (DisabledPlugins != null)
+                    {
+                        foreach (string name in DisabledPlugins)
+                        {
+                            if (name == "GogLibrary")
+                            {
+                                isFind = true;
+                            }
+                        }
+                    }
+                    if (!isFind && settings.EnableGog && gogAPI == null)
                     {
                         gogAPI = new GogAchievements(PlayniteApi);
                     }
                     break;
 
                 case "origin":
-                    if (settings.EnableOrigin && originAPI == null)
+                    if (DisabledPlugins != null)
+                    {
+                        foreach (string name in DisabledPlugins)
+                        {
+                            if (name != "OriginLibrary")
+                            {
+                                isFind = true;
+                            }
+                        }
+                    }
+                    if (!isFind && settings.EnableOrigin && originAPI == null)
                     {
                         originAPI = new OriginAchievements(PlayniteApi);
                     }

@@ -12,6 +12,8 @@
     SuccessStorySettingsView
     -->
 
+    <sys:String x:Key="LOCSucessStoryProgressBar">Treatment in progress...</sys:String>
+
     <sys:String x:Key="LOCSucessStoryEnableSteam">启用Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">启用GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">启用Origin</sys:String>

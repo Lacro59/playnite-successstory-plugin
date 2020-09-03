@@ -9,6 +9,7 @@ using PluginCommon;
 using SuccessStory.Clients;
 using SuccessStory.Database;
 using SuccessStory.Models;
+using SuccessStory.Views;
 using SuccessStory.Views.Interface;
 using System;
 using System.Collections.Generic;
