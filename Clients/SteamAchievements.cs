@@ -56,6 +56,9 @@ namespace SuccessStory.Clients
             var url = "";
             string ResultWeb = "";
 
+            JObject resultObj = new JObject();
+            JArray resultItems = new JArray();
+
             // Get Steam configuration if exist.
             string userId = "";
             string apiKey = "";
@@ -71,7 +74,7 @@ namespace SuccessStory.Clients
             {
             }
 
-            if (userId == "" || apiKey == "" || SteamUser == "")
+            if (userId == "" || apiKey == "")
             {
                 logger.Error($"SuccessStory - No Steam configuration.");
                 AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
@@ -80,6 +83,53 @@ namespace SuccessStory.Clients
 
             if (!isLocal)
             {
+                // Get player info
+                url = string.Format(@"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={0}&steamid={1}",
+                    apiKey, userId);
+                ResultWeb = "";
+                try
+                {
+                    ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+
+                    if (ResultWeb != "")
+                    {
+                        try
+                        {
+                            resultObj = JObject.Parse(ResultWeb);
+
+                            if (!((string)resultObj["response"]["players"]["personaname"]).IsNullOrEmpty())
+                            {
+                                SteamUser = (string)resultObj["response"]["players"]["personaname"];
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, "SuccessStory", $"[{ClientId}] Failed to parse {ResultWeb}");
+                        }
+                    }
+                }
+                catch (WebException ex)
+                {
+                    if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
+                    {
+                        var resp = (HttpWebResponse)ex.Response;
+                        switch (resp.StatusCode)
+                        {
+                            case HttpStatusCode.BadRequest: // HTTP 400
+                                break;
+                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                                break;
+                            default:
+                                Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
+                                break;
+                        }
+                        return Result;
+                    }
+                }
+
+
+
+
                 string lang = CodeLang.GetSteamLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
 
                 // List acheviements (default return in english)
@@ -112,9 +162,6 @@ namespace SuccessStory.Clients
 
                 if (ResultWeb != "")
                 {
-                    JObject resultObj = new JObject();
-                    JArray resultItems = new JArray();
-
                     try
                     {
                         resultObj = JObject.Parse(ResultWeb);
