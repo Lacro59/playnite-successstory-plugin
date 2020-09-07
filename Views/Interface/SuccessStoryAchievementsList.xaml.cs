@@ -23,7 +23,7 @@ namespace SuccessStory.Views.Interface
         {
             InitializeComponent();
 
-            List<listAchievements> ListBoxAchievements = new List<listAchievements>();
+            List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
 
             for (int i = 0; i < ListAchievements.Count; i++)
             {
@@ -70,7 +70,7 @@ namespace SuccessStory.Views.Interface
                     dateUnlock = null;
                 }
 
-                ListBoxAchievements.Add(new listAchievements()
+                ListBoxAchievements.Add(new ListBoxAchievements()
                 {
                     Name = NameAchievement,
                     DateUnlock = dateUnlock,

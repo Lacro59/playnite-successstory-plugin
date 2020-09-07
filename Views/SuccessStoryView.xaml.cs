@@ -39,7 +39,7 @@ namespace SuccessStory
 
         AchievementsDatabase AchievementsDatabase;
         List<ListSource> FilterSourceItems = new List<ListSource>();
-        List<ListGames> ListGames = new List<ListGames>();
+        List<ListViewGames> ListGames = new List<ListViewGames>();
         List<string> SearchSources = new List<string>();
 
 
@@ -103,7 +103,7 @@ namespace SuccessStory
             {
                 for (int i = 0; i < ListviewGames.Items.Count; i++)
                 {
-                    if (((ListGames)ListviewGames.Items[i]).Name == GameSelected.Name)
+                    if (((ListViewGames)ListviewGames.Items[i]).Name == GameSelected.Name)
                     {
                         ListviewGames.SelectedIndex = i;
                     }
@@ -286,7 +286,7 @@ namespace SuccessStory
                                 iconImage.EndInit();
                             }
 
-                            ListGames.Add(new ListGames()
+                            ListGames.Add(new ListViewGames()
                             {
                                 Id = GameId,
                                 Name = GameName,
@@ -428,7 +428,7 @@ namespace SuccessStory
         /// <param name="e"></param>
         private void ListviewGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ListGames GameSelected = (ListGames)((ListBox)sender).SelectedItem;
+            ListViewGames GameSelected = (ListViewGames)((ListBox)sender).SelectedItem;
 
             if (GameSelected != null)
             {

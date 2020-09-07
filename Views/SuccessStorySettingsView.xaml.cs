@@ -314,14 +314,7 @@ namespace SuccessStory.Views
 
         internal void RefreshData(string SourceName, bool IsGet = false)
         {
-            //tcSettings.SelectedIndex = 0;
-
             SuccessStory.isFirstLoad = false;
-
-            // ProgressBar
-            //SuccessStoryLoad.Visibility = Visibility.Visible;
-            //SuccessStoryLoad.Value = 0;
-            //SuccessStoryLoad.Maximum = PlayniteApi.Database.Games.Count;
 
             SuccessStorySettings.IsEnabled = false;
 
@@ -403,9 +396,6 @@ namespace SuccessStory.Views
 
                             if (isOK)
                             {
-                                //Dispatcher.Invoke(new Action(() =>
-                                //{
-                                // Prevent HTTP 429 with limit request per minutes.
                                 Thread.Sleep(1000);
 
                                 if (IsGet)
@@ -421,7 +411,6 @@ namespace SuccessStory.Views
                                     achievementsDatabase.Remove(game);
                                     achievementsDatabase.Add(game, settings);
                                 }
-                                //}), DispatcherPriority.ContextIdle, null);
                             }
                         }
                         Application.Current.Dispatcher.Invoke(new Action(() =>
@@ -455,8 +444,7 @@ namespace SuccessStory.Views
                     }
 
                     SetTotal();
-
-                    //SuccessStoryLoad.Visibility = Visibility.Hidden;
+                    
                     SuccessStorySettings.IsEnabled = true;
                 }));
             });

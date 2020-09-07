@@ -754,8 +754,8 @@ namespace SuccessStory.Models
 
                     if (GameSourceName.ToLower() == "steam")
                     {
-                        SteamAchievements steamAPI = new SteamAchievements();
-                        GameAchievements = steamAPI.GetAchievements(PlayniteApi, GameId, PluginUserDataPath);
+                        SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
+                        GameAchievements = steamAPI.GetAchievements(GameAdded);
                     }
 
                     if (GameSourceName.ToLower() == "origin")
@@ -769,8 +769,9 @@ namespace SuccessStory.Models
 
                     if (GameSourceName.ToLower() == "playnite")
                     {
-                        SteamAchievements steamAPI = new SteamAchievements();
-                        GameAchievements = steamAPI.GetAchievements(PlayniteApi, GameId, PluginUserDataPath, settings.EnableLocal);
+                        SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
+                        steamAPI.SetLocal();
+                        GameAchievements = steamAPI.GetAchievements(GameAdded);
                     }
 
                     if (GameSourceName.ToLower() == "retroachievements")

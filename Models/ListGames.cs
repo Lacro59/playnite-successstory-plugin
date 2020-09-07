@@ -4,9 +4,9 @@ using System.Windows.Media.Imaging;
 namespace SuccessStory.Models
 {
     /// <summary>
-    /// Class for the listview games
+    /// Class for the ListView games
     /// </summary>
-    public class ListGames
+    public class ListViewGames
     {
         public string Id { get; set; }
         public BitmapImage Icon { get; set; }

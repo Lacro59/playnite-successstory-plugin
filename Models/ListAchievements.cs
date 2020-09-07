@@ -4,9 +4,9 @@ using System.Windows.Media.Imaging;
 namespace SuccessStory.Models
 {
     /// <summary>
-    /// Class for the listbox achievements
+    /// Class for the ListBox achievements
     /// </summary>
-    public class listAchievements
+    public class ListBoxAchievements
     {
         //public BitmapImage Icon { get; set; }
         public FormatConvertedBitmap Icon { get; set; }

@@ -13,302 +13,84 @@ using System.Text;
 using AchievementsLocal;
 using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
+using Playnite.SDK.Models;
+using Newtonsoft.Json;
+using SteamKit2;
+using System.Globalization;
 
 namespace SuccessStory.Clients
 {
     // https://partner.steamgames.com/doc/home
-    class SteamAchievements
+    class SteamAchievements : GenericAchievements
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
+        private IHtmlDocument HtmlDocument { get; set; } = null;
+        private bool IsLocal { get; set; } = false;
 
-        private IHtmlDocument htmlDocument { get; set; } = null; 
+        private string SteamId { get; set; } = string.Empty;
+        private string SteamApiKey { get; set; } = string.Empty;
+        private string SteamUser { get; set; } = string.Empty;
+
+        private string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}/?tab=achievements";
+        private string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}/?tab=achievements";
 
 
-        /// <summary>
-        /// Get all achievements for a Steam game.
-        /// </summary>
-        /// <param name="PlayniteApi"></param>
-        /// <param name="Id"></param>
-        /// <param name="PluginUserDataPath"></param>
-        /// <returns></returns>
-        public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id, string PluginUserDataPath, bool isLocal = false)
+        public SteamAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
-            List<Achievements> Achievements = new List<Achievements>();
-            string GameName = PlayniteApi.Database.Games.Get(Id).Name;
-            string ClientId = PlayniteApi.Database.Games.Get(Id).GameId;
-            bool HaveAchivements = false;
-            int Total = 0;
-            int Unlocked = 0;
-            int Locked = 0;
+            LocalLang = CodeLang.GetSteamLang(Localization.GetPlayniteLanguageConfiguration(_PlayniteApi.Paths.ConfigurationPath));
+        }
 
+        public override GameAchievements GetAchievements(Game game)
+        {
+            int AppId = int.Parse(game.GameId);
+            List<Achievements> AllAchievements = new List<Achievements>();
             GameAchievements Result = new GameAchievements
             {
-                Name = GameName,
-                HaveAchivements = HaveAchivements,
-                Total = Total,
-                Unlocked = Unlocked,
-                Locked = Locked,
+                Name = game.Name,
+                HaveAchivements = false,
+                Total = 0,
+                Unlocked = 0,
+                Locked = 0,
                 Progression = 0,
-                Achievements = Achievements
+                Achievements = AllAchievements
             };
 
-            var url = "";
-            string ResultWeb = "";
-
-            JObject resultObj = new JObject();
-            JArray resultItems = new JArray();
 
             // Get Steam configuration if exist.
-            string userId = "";
-            string apiKey = "";
-            string SteamUser = "";
-            try
+            if (!GetSteamConfig())
             {
-                JObject SteamConfig = JObject.Parse(File.ReadAllText(PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"));
-                userId = (string)SteamConfig["UserId"];
-                apiKey = (string)SteamConfig["ApiKey"];
-                SteamUser = (string)SteamConfig["UserName"];
-            }
-            catch
-            {
+                return Result;
             }
 
-            if (userId == "" || apiKey == "")
+
+            if (!IsLocal)
             {
-                logger.Error($"SuccessStory - No Steam configuration.");
-                AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
-                return null;
-            }
-
-            if (!isLocal)
-            {
-                // Get player info
-                url = string.Format(@"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={0}&steamid={1}",
-                    apiKey, userId);
-                ResultWeb = "";
-                try
+                VerifSteamUser();
+                if (SteamUser.IsNullOrEmpty())
                 {
-                    ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
-
-                    if (ResultWeb != "")
-                    {
-                        try
-                        {
-                            resultObj = JObject.Parse(ResultWeb);
-
-                            if (!((string)resultObj["response"]["players"]["personaname"]).IsNullOrEmpty())
-                            {
-                                SteamUser = (string)resultObj["response"]["players"]["personaname"];
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, "SuccessStory", $"[{ClientId}] Failed to parse {ResultWeb}");
-                        }
-                    }
-                }
-                catch (WebException ex)
-                {
-                    if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                    {
-                        var resp = (HttpWebResponse)ex.Response;
-                        switch (resp.StatusCode)
-                        {
-                            case HttpStatusCode.BadRequest: // HTTP 400
-                                break;
-                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                break;
-                            default:
-                                Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
-                                break;
-                        }
-                        return Result;
-                    }
+                    logger.Warn("SuccessStory - No Steam user");
                 }
 
+                AllAchievements = GetPlayerAchievements(AppId);
 
-
-
-                string lang = CodeLang.GetSteamLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
-
-                // List acheviements (default return in english)
-                url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid={0}&key={1}&steamid={2}&l={3}",
-                    ClientId, apiKey, userId, lang);
-
-                ResultWeb = "";
-                try
+                if (AllAchievements.Count > 0)
                 {
-                    ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                    AllAchievements = GetSchemaForGame(AppId, AllAchievements);
+
+
+                    Result.HaveAchivements = true;
+                    Result.Total = AllAchievements.Count;
+                    Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
+                    Result.Locked = Result.Total - Result.Locked;
+                    Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
+                    Result.Achievements = AllAchievements;
                 }
-                catch (WebException ex)
-                {
-                    if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                    {
-                        var resp = (HttpWebResponse)ex.Response;
-                        switch (resp.StatusCode)
-                        {
-                            case HttpStatusCode.BadRequest: // HTTP 400
-                                break;
-                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                break;
-                            default:
-                                Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
-                                break;
-                        }
-                        return Result;
-                    }
-                }
-
-                if (ResultWeb != "")
-                {
-                    try
-                    {
-                        resultObj = JObject.Parse(ResultWeb);
-
-                        if ((bool)resultObj["playerstats"]["success"])
-                        {
-                            resultItems = (JArray)resultObj["playerstats"]["achievements"];
-                            if (resultItems.Count > 0)
-                            {
-                                HaveAchivements = true;
-
-                                for (int i = 0; i < resultItems.Count; i++)
-                                {
-                                    Achievements temp = new Achievements
-                                    {
-                                        Name = (string)resultItems[i]["name"],
-                                        ApiName = (string)resultItems[i]["apiname"],
-                                        Description = (string)resultItems[i]["description"],
-                                        UrlUnlocked = "",
-                                        UrlLocked = "",
-                                        DateUnlocked = ((int)resultItems[i]["unlocktime"] == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)resultItems[i]["unlocktime"])
-                                    };
-
-                                    // Achievement without unlocktime but achieved = 1
-                                    if ((int)resultItems[i]["achieved"] == 1 && temp.DateUnlocked == new DateTime(1970, 1, 1, 0, 0, 0, 0))
-                                    {
-                                        temp.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
-                                    }
-
-                                    Total += 1;
-                                    if ((int)resultItems[i]["unlocktime"] == 0)
-                                        Locked += 1;
-                                    else
-                                        Unlocked += 1;
-
-                                    Achievements.Add(temp);
-                                }
-                            }
-                            else
-                            {
-                                logger.Info($"SuccessStory - No list achievement for {ClientId}. ");
-                                return Result;
-                            }
-                        }
-                        else
-                        {
-                            logger.Info($"SuccessStory - No Succes for {ClientId}. ");
-                            return Result;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, "SuccessStory", $"[{ClientId}] Failed to parse {ResultWeb}");
-                        return Result;
-                    }
-
-
-                    // List details acheviements
-                    url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}",
-                        apiKey, ClientId, lang);
-
-                    ResultWeb = "";
-                    try
-                    {
-                        ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
-                    }
-                    catch (WebException ex)
-                    {
-                        if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                        {
-                            var resp = (HttpWebResponse)ex.Response;
-                            switch (resp.StatusCode)
-                            {
-                                case HttpStatusCode.BadRequest: // HTTP 400
-                                    break;
-                                case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                    break;
-                                default:
-                                    Common.LogError(ex, "SuccessStory", $"Failed to load from {url}");
-                                    break;
-                            }
-                            return Result;
-                        }
-                    }
-
-                    if (ResultWeb != "")
-                    {
-                        resultObj = JObject.Parse(ResultWeb);
-
-                        try
-                        {
-                            resultItems = (JArray)resultObj["game"]["availableGameStats"]["achievements"];
-
-                            for (int i = 0; i < resultItems.Count; i++)
-                            {
-                                for (int j = 0; j < Achievements.Count; j++)
-                                {
-                                    if (Achievements[j].ApiName.ToLower() == ((string)resultItems[i]["name"]).ToLower())
-                                    {
-                                        Achievements temp = new Achievements
-                                        {
-                                            Name = (string)resultItems[i]["displayName"],
-                                            ApiName = Achievements[j].ApiName,
-                                            Description = Achievements[j].Description,
-                                            UrlUnlocked = (string)resultItems[i]["icon"],
-                                            UrlLocked = (string)resultItems[i]["icongray"],
-                                            DateUnlocked = Achievements[j].DateUnlocked
-                                        };
-
-                                        if ((int)resultItems[i]["hidden"] == 1)
-                                        {
-                                            temp.Description = FindHiddenDescription(SteamUser, userId, ClientId, temp.Name, lang);
-                                        }
-
-                                        Achievements[j] = temp;
-                                        j = Achievements.Count;
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, "SuccessStory", $"Failed to parse");
-                            return Result;
-                        }
-                    }
-                }
-
-                //logger.Info($"SuccessStory - No data for {ClientId}. ");
-
-                Result = new GameAchievements
-                {
-                    Name = GameName,
-                    HaveAchivements = HaveAchivements,
-                    Total = Total,
-                    Unlocked = Unlocked,
-                    Locked = Locked,
-                    Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
-                    Achievements = Achievements
-                };
             }
             else
             {
-                SteamEmulators se = new SteamEmulators(PlayniteApi, PluginUserDataPath);
-                ClientId = se.GetSteamId().ToString();
+                SteamEmulators se = new SteamEmulators(_PlayniteApi, _PluginUserDataPath);
+                AppId = se.GetSteamId();
 
-                var temp = se.GetAchievementsLocal(GameName, apiKey);
+                var temp = se.GetAchievementsLocal(game.Name, SteamApiKey);
 
                 if (temp.Achievements.Count > 0)
                 {
@@ -332,156 +114,201 @@ namespace SuccessStory.Clients
                 }
             }
 
-            // Percentages
-            url = string.Format(@"http://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid={0}&format=json",
-                ClientId);
-            ResultWeb = "";
-            try
+
+            if (Result.Achievements.Count > 0)
             {
-                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                Result.Achievements = GetGlobalAchievementPercentagesForApp(AppId, Result.Achievements);
             }
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                {
-                    var resp = (HttpWebResponse)ex.Response;
-                    switch (resp.StatusCode)
-                    {
-                        case HttpStatusCode.BadRequest: // HTTP 400
-                            break;
-                        case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                            break;
-                        default:
-                            Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
-                            break;
-                    }
-                    return Result;
-                }
-            }
-
-            if (ResultWeb != "")
-            {
-                JObject resultObj = new JObject();
-                JArray resultItems = new JArray();
-
-                try
-                {
-                    resultObj = JObject.Parse(ResultWeb);
-
-                    if (resultObj["achievementpercentages"]["achievements"] != null)
-                    {
-                        foreach(JObject data in resultObj["achievementpercentages"]["achievements"])
-                        {
-                            for(int i = 0; i < Result.Achievements.Count; i++)
-                            {
-                                if (Result.Achievements[i].ApiName == (string)data["name"])
-                                {
-                                    Result.Achievements[i].Percent = (float)data["percent"];
-                                    i = Result.Achievements.Count;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        logger.Info($"SuccessStory - No percentages for {ClientId}. ");
-                        return Result;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, "SuccessStory", $"[{ClientId}] Failed to parse {ResultWeb}");
-                    return Result;
-                }
-            }
-
 
             return Result;
         }
 
-        private string FindHiddenDescription(string SteamUser, string userId, string AppId, string DisplayName, string Lang)
+        public void SetLocal()
         {
-            if (htmlDocument == null)
+            IsLocal = true;
+        }
+
+        private bool GetSteamConfig()
+        {
+            try
             {
-                logger.Debug($"SuccessStory - Load profil data for {SteamUser} - {AppId}");
-                string url = string.Format(@"https://steamcommunity.com/id/{0}/stats/{1}/?tab=achievements",
-                SteamUser, AppId);
-                string ResultWeb = "";
-                try
+                if (File.Exists(_PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"))
                 {
-                    var cookieLang = new Cookie("Steam_Language", Lang);
-                    var cookies = new List<Cookie>();
-                    cookies.Add(cookieLang);
-                    ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                    JObject SteamConfig = JObject.Parse(File.ReadAllText(_PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"));
+                    SteamId = (string)SteamConfig["UserId"];
+                    SteamApiKey = (string)SteamConfig["ApiKey"];
+                    SteamUser = (string)SteamConfig["UserName"];
                 }
-                catch (WebException ex)
+                else
                 {
-                    if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
+                    logger.Error($"SuccessStory - No Steam configuration find");
+                    AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory", "Error on GetSteamConfig");
+            }
+
+            if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty())
+            {
+                logger.Error($"SuccessStory - No Steam configuration");
+                AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
+                return false;
+            }
+
+            return true;
+        }
+
+        private void VerifSteamUser()
+        {
+            try
+            {
+                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUser", SteamApiKey))
+                {
+                    KeyValue PlayerSummaries = steamWebAPI.GetPlayerSummaries(steamids: SteamId);
+                    string personaname = (string)PlayerSummaries["players"]["player"].Children[0].Children.Find(x => x.Name == "personaname").Value;
+
+                    if (personaname != SteamUser)
                     {
-                        var resp = (HttpWebResponse)ex.Response;
-                        switch (resp.StatusCode)
+                        logger.Warn($"SuccessStory - SteamUser is different {SteamUser} != {personaname}");
+                        SteamUser = personaname;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory", "Error on VerifSteamUser()");
+            }
+        }
+
+        private List<Achievements> GetPlayerAchievements(int AppId)
+        {
+            List<Achievements> AllAchievements = new List<Achievements>();
+
+            try
+            {
+                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
+                {
+                    KeyValue PlayerAchievements = steamWebAPI.GetPlayerAchievements(steamid: SteamId, appid: AppId, l: LocalLang);
+                    foreach(KeyValue AchievementsData in PlayerAchievements.Children.Find(x => x.Name == "achievements").Children)
+                    {
+                        int.TryParse(AchievementsData.Children.Find(x => x.Name == "unlocktime").Value, out int unlocktime);
+
+                        AllAchievements.Add(new Achievements
                         {
-                            case HttpStatusCode.BadRequest: // HTTP 400
-                                break;
-                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                break;
-                            default:
-                                Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
-                                break;
+                            ApiName = AchievementsData.Children.Find(x => x.Name == "apiname").Value,
+                            Name = AchievementsData.Children.Find(x => x.Name == "name").Value,
+                            Description = AchievementsData.Children.Find(x => x.Name == "description").Value,
+                            DateUnlocked = (unlocktime == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unlocktime)
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+            }
+
+            return AllAchievements;
+        }
+
+        private List<Achievements> GetSchemaForGame(int AppId, List<Achievements> AllAchievements)
+        {
+            try
+            {
+                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
+                {
+                    KeyValue SchemaForGame = steamWebAPI.GetSchemaForGame(appid: AppId, l: LocalLang);
+                    foreach (KeyValue AchievementsData in SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "achievements").Children)
+                    {
+                        AllAchievements.Find(x => x.ApiName == AchievementsData.Name).IsHidden = AchievementsData.Children.Find(x => x.Name == "hidden").Value == "1";
+                        AllAchievements.Find(x => x.ApiName == AchievementsData.Name).UrlUnlocked = AchievementsData.Children.Find(x => x.Name == "icon").Value;
+                        AllAchievements.Find(x => x.ApiName == AchievementsData.Name).UrlLocked = AchievementsData.Children.Find(x => x.Name == "icongray").Value;
+
+                        if (AllAchievements.Find(x => x.ApiName == AchievementsData.Name).IsHidden)
+                        {
+                            AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Description = FindHiddenDescription(AppId, AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Name);
                         }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+            }
+
+            return AllAchievements;
+        }
+
+        private string FindHiddenDescription(int AppId, string DisplayName, bool TryByName = false)
+        {
+            string url = string.Empty;
+            string ResultWeb = string.Empty;
+            bool noData = true;
+
+            // Get data
+            if (HtmlDocument == null)
+            {
+                var cookieLang = new Cookie("Steam_Language", LocalLang);
+                var cookies = new List<Cookie>();
+                cookies.Add(cookieLang);
+
+                if (!TryByName)
+                {
+                    logger.Debug($"SuccessStory - FindHiddenDescription() for {SteamId} - {AppId}");
+                    url = string.Format(UrlProfilById, SteamId, AppId);
+                    try
+                    {
+                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                    }
+                    catch (WebException ex)
+                    {
+                        Common.LogError(ex, "SuccessStory", $"Error on FindHiddenDescription()");
+                    }
+                }
+                else
+                {
+                    logger.Debug($"SuccessStory - FindHiddenDescription() for {SteamUser} - {AppId}");
+                    url = string.Format(UrlProfilByName, SteamUser, AppId);
+                    try
+                    {
+                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                    }
+                    catch (WebException ex)
+                    {
+                        Common.LogError(ex, "SuccessStory", $"Error on FindHiddenDescription()");
                     }
                 }
 
                 if (!ResultWeb.IsNullOrEmpty())
                 {
                     HtmlParser parser = new HtmlParser();
-                    htmlDocument = parser.Parse(ResultWeb);
+                    HtmlDocument = parser.Parse(ResultWeb);
 
-                    if (htmlDocument.QuerySelectorAll("div.achieveRow").Length == 0)
+                    if (HtmlDocument.QuerySelectorAll("div.achieveRow").Length != 0)
                     {
-                        logger.Debug($"SuccessStory - Load profil data for {userId} - {AppId}");
-                        url = string.Format(@"https://steamcommunity.com/profiles/{0}/stats/{1}/?tab=achievements",
-                        userId, AppId);
-                        ResultWeb = "";
-                        try
-                        {
-                            var cookieLang = new Cookie("Steam_Language", Lang);
-                            var cookies = new List<Cookie>();
-                            cookies.Add(cookieLang);
-                            ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
-                        }
-                        catch (WebException ex)
-                        {
-                            if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                            {
-                                var resp = (HttpWebResponse)ex.Response;
-                                switch (resp.StatusCode)
-                                {
-                                    case HttpStatusCode.BadRequest: // HTTP 400
-                                        break;
-                                    case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                        break;
-                                    default:
-                                        Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
-                                        break;
-                                }
-                            }
-                        }
+                        noData = false;
                     }
-
-                    if (!ResultWeb.IsNullOrEmpty())
-                    {
-                        parser = new HtmlParser();
-                        htmlDocument = parser.Parse(ResultWeb);
-                    }
+                }
+                
+                if (!TryByName && noData)
+                {
+                    HtmlDocument = null;
+                    return FindHiddenDescription(AppId, DisplayName, TryByName = true);
+                }
+                else if (noData)
+                {
+                    return string.Empty;
                 }
             }
 
-            if (htmlDocument != null)
+            // Find the achievement description
+            if (HtmlDocument != null)
             {
-                foreach (var achieveRow in htmlDocument.QuerySelectorAll("div.achieveRow"))
+                foreach (var achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
                 {
-                    //logger.Debug($"SuccessStory - {DisplayName.Trim().ToLower()} - {achieveRow.QuerySelector("h3").InnerHtml.Trim().ToLower()}");
                     if (achieveRow.QuerySelector("h3").InnerHtml.Trim().ToLower() == DisplayName.Trim().ToLower())
                     {
                         return achieveRow.QuerySelector("h5").InnerHtml;
@@ -489,7 +316,31 @@ namespace SuccessStory.Clients
                 }
             }
 
-            return "";
+            return string.Empty;
+        }
+
+        private List<Achievements> GetGlobalAchievementPercentagesForApp(int AppId, List<Achievements> AllAchievements)
+        {
+            try
+            {
+                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
+                {
+                    KeyValue GlobalAchievementPercentagesForApp = steamWebAPI.GetGlobalAchievementPercentagesForApp(gameid: AppId);
+                    foreach (KeyValue AchievementPercentagesData in GlobalAchievementPercentagesForApp["achievements"]["achievement"].Children)
+                    {
+                        string ApiName = AchievementPercentagesData.Children.Find(x => x.Name == "name").Value;
+                        float Percent = float.Parse(AchievementPercentagesData.Children.Find(x => x.Name == "percent").Value.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+
+                        AllAchievements.Find(x => x.ApiName == ApiName).Percent = Percent;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+            }
+
+            return AllAchievements;
         }
     }
 }
