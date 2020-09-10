@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Globalization;
+using PluginCommon;
 
 namespace SuccessStory.Views.Interface
 {
@@ -19,48 +20,59 @@ namespace SuccessStory.Views.Interface
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        public SuccessStoryAchievementsList(List<Achievements> ListAchievements)
+        private bool _withContener;
+
+
+        public SuccessStoryAchievementsList(List<Achievements> ListAchievements, bool withContener = false)
         {
+            _withContener = withContener;
+
             InitializeComponent();
 
             List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
 
             for (int i = 0; i < ListAchievements.Count; i++)
             {
-                DateTime? dateUnlock;
+                DateTime? dateUnlock = null;
                 BitmapImage iconImage = new BitmapImage();
                 FormatConvertedBitmap ConvertBitmapSource = new FormatConvertedBitmap();
 
                 bool isGray = false;
 
-                iconImage.BeginInit();
-                if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
+                try
                 {
-                    dateUnlock = null;
-                    if (ListAchievements[i].UrlLocked == "" || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
+                    iconImage.BeginInit();
+                    if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
                     {
-                        iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
-                        isGray = true;
+                        if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
+                        {
+                            iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
+                            isGray = true;
+                        }
+                        else
+                        {
+                            iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
+                        }
                     }
                     else
                     {
-                        iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
+                        iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
+                        dateUnlock = ListAchievements[i].DateUnlocked;
                     }
-                }
-                else
-                {
-                    iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
-                    dateUnlock = ListAchievements[i].DateUnlocked;
-                }
-                iconImage.EndInit();
+                    iconImage.EndInit();
 
-                ConvertBitmapSource.BeginInit();
-                ConvertBitmapSource.Source = iconImage;
-                if (isGray)
-                {
-                    ConvertBitmapSource.DestinationFormat = PixelFormats.Gray32Float;
+                    ConvertBitmapSource.BeginInit();
+                    ConvertBitmapSource.Source = iconImage;
+                    if (isGray)
+                    {
+                        ConvertBitmapSource.DestinationFormat = PixelFormats.Gray32Float;
+                    }
+                    ConvertBitmapSource.EndInit();
                 }
-                ConvertBitmapSource.EndInit();
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
+                }
 
                 string NameAchievement = ListAchievements[i].Name;
 
@@ -133,16 +145,24 @@ namespace SuccessStory.Views.Interface
         private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
         {
             // Define height & width
-            var parent = ((FrameworkElement)((FrameworkElement)lbAchievements.Parent).Parent);
+            var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
+            if (_withContener)
+            {
+                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent);
+            }
+
+#if DEBUG
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsList - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
+#endif
 
             if (!double.IsNaN(parent.Height))
             {
-                lbAchievements.Height = parent.Height;
+                ((FrameworkElement)sender).Height = parent.Height;
             }
 
             if (!double.IsNaN(parent.Width))
             {
-                lbAchievements.Width = parent.Width;
+                ((FrameworkElement)sender).Width = parent.Width;
             }
         }
     }

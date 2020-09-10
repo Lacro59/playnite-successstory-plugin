@@ -16,8 +16,13 @@ namespace SuccessStory.Views.Interface
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        public SuccessStoryAchievementsGraphics(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels)
+        private bool _withContener;
+
+
+        public SuccessStoryAchievementsGraphics(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels, bool withContener = false)
         {
+            _withContener = withContener;
+
             InitializeComponent();
 
             //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
@@ -36,18 +41,26 @@ namespace SuccessStory.Views.Interface
         private void StatsGraphicAchievements_Loaded(object sender, RoutedEventArgs e)
         {
             // Define height & width
-            var parent = ((FrameworkElement)((FrameworkElement)StatsGraphicAchievements.Parent).Parent);
-            
+            var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
+            if (_withContener)
+            {
+                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent);
+            }
+
+#if DEBUG
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsGraphics - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
+#endif
+
             if (!double.IsNaN(parent.Height))
             {
-                StatsGraphicAchievements.Height = parent.Height;
+                ((FrameworkElement)sender).Height = parent.Height;
             }
-            ((FrameworkElement)StatsGraphicAchievements.Parent).Height = StatsGraphicAchievements.Height;
-            StatsGraphicAchievements.Height = StatsGraphicAchievements.Height + 18;
+            ((FrameworkElement)((FrameworkElement)sender).Parent).Height = ((FrameworkElement)sender).Height;
+            ((FrameworkElement)sender).Height = ((FrameworkElement)sender).Height + 18;
             
             if (!double.IsNaN(parent.Width))
             {
-                StatsGraphicAchievements.Width = parent.Width;
+                ((FrameworkElement)sender).Width = parent.Width;
             }
         }
     }

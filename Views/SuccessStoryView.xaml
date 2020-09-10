@@ -128,7 +128,7 @@
                         <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSucessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
                     </StackPanel>
 
-                    <StackPanel x:Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
+                    <StackPanel Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168">
                     </StackPanel>
                 </DockPanel>
             </Grid>
@@ -199,8 +199,7 @@
             <Border DockPanel.Dock="Bottom" Margin="0,10,0,0" Name="listAchievementBorder"
                     BorderBrush="{DynamicResource NormalBorderBrush}" BorderThickness="{DynamicResource ControlBorderThickness}">
 
-                <StackPanel x:Name="SuccessStory_Achievements_List" 
-                            Height="{Binding ElementName=listAchievementBorder, Path=ActualHeight}" MaxHeight="{Binding ElementName=listAchievementBorder, Path=ActualHeight}">
+                <StackPanel Name="SuccessStory_Achievements_List" Height="{Binding ElementName=listAchievementBorder, Path=ActualHeight}">
                 </StackPanel>
             </Border>
         </DockPanel>

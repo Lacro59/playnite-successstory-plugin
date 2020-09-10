@@ -75,7 +75,7 @@ namespace SuccessStory.Clients
                 Achievements = Achievements
             };
 
-            string ResultWeb = "";
+            string ResultWeb = string.Empty;
 
             // Only if user is logged. 
             if (gogAPI.GetIsUserLoggedIn())
@@ -121,7 +121,7 @@ namespace SuccessStory.Clients
                     return Result;
                 }
 
-                if (ResultWeb != "")
+                if (ResultWeb != string.Empty)
                 {
                     JObject resultObj = JObject.Parse(ResultWeb);
                     try

@@ -78,7 +78,7 @@ namespace SuccessStory.Models
                 try
                 {
                     // Get game achievements.
-                    Guid gameId = Guid.Parse(objectFile.Replace(PluginDatabasePath, "").Replace(".json", ""));
+                    Guid gameId = Guid.Parse(objectFile.Replace(PluginDatabasePath, string.Empty).Replace(".json", string.Empty));
 
                     bool IncludeGame = true;
                     if (!Settings.IncludeHiddenGames)
@@ -128,7 +128,7 @@ namespace SuccessStory.Models
                 }
             }
 
-            if (ListErrors.Get() != "")
+            if (ListErrors.Get() != string.Empty)
             {
                 PlayniteApi.Dialogs.ShowErrorMessage(ListErrors.Get(), "SuccessStory errors");
             }
@@ -262,7 +262,6 @@ namespace SuccessStory.Models
             {
                 if (isRetroachievements)
                 {
-
                     if (Settings.EnableRetroAchievements)
                     {
                         tempSourcesLabels.Add("RetroAchievements");
@@ -332,50 +331,59 @@ namespace SuccessStory.Models
             {
                 ListEmulators.Add(item.Id);
             }
-
             
+
             foreach (var item in PluginDatabase)
             {
-                Game game = PlayniteApi.Database.Games.Get(item.Key);
-                string SourceName = "";
-                if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
-                {
-                    SourceName = game.Source.Name;
+                string SourceName = string.Empty;
 
-                    if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
-                    {
-                        SourceName = "RetroAchievements";
-                    }
-                }
-                else
+                try
                 {
-                    if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                    Game game = PlayniteApi.Database.Games.Get(item.Key);
+
+                    if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                     {
-                        SourceName = "RetroAchievements";
+                        SourceName = game.Source.Name;
+
+                        if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                        {
+                            SourceName = "RetroAchievements";
+                        }
                     }
                     else
                     {
-                        SourceName = "Playnite";
-                    }
-                }
-
-                foreach (Achievements achievements in item.Value.Achievements)
-                {
-                    for (int i = 0; i < tempDataUnlocked.Count; i++)
-                    {
-                        if (tempDataUnlocked[i].source == SourceName)
+                        if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
                         {
-                            tempDataTotal[i].value += 1;
-                            if (achievements.DateUnlocked != default(DateTime))
+                            SourceName = "RetroAchievements";
+                        }
+                        else
+                        {
+                            SourceName = "Playnite";
+                        }
+                    }
+
+                    foreach (Achievements achievements in item.Value.Achievements)
+                    {
+                        for (int i = 0; i < tempDataUnlocked.Count; i++)
+                        {
+                            if (tempDataUnlocked[i].source == SourceName)
                             {
-                                tempDataUnlocked[i].value += 1;
-                            }
-                            if (achievements.DateUnlocked == default(DateTime))
-                            {
-                                tempDataLocked[i].value += 1;
+                                tempDataTotal[i].value += 1;
+                                if (achievements.DateUnlocked != default(DateTime))
+                                {
+                                    tempDataUnlocked[i].value += 1;
+                                }
+                                if (achievements.DateUnlocked == default(DateTime))
+                                {
+                                    tempDataLocked[i].value += 1;
+                                }
                             }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", $"Error on GetCountBySources() for {item.Key}");
                 }
             }
 
@@ -702,7 +710,7 @@ namespace SuccessStory.Models
 
             Guid GameId = GameAdded.Id;
             Guid GameSourceId = GameAdded.SourceId;
-            string GameSourceName = "";
+            string GameSourceName = string.Empty;
 
             List<Guid> ListEmulators = new List<Guid>();
             foreach (var item in PlayniteApi.Database.Emulators)
@@ -835,22 +843,28 @@ namespace SuccessStory.Models
             int Locked = 0;
             int Unlocked = 0;
 
-            foreach(var item in PluginDatabase)
-            {
-                GameAchievements GameAchievements = item.Value;
-
-                if (GameAchievements.HaveAchivements)
+            try { 
+                foreach(var item in PluginDatabase)
                 {
-                    Total += GameAchievements.Total;
-                    Locked += GameAchievements.Locked;
-                    Unlocked += GameAchievements.Unlocked;
-                }
-            }
+                    GameAchievements GameAchievements = item.Value;
 
-            Result.Total = Total;
-            Result.Locked = Locked;
-            Result.Unlocked = Unlocked;
-            Result.Progression = (Total != 0) ? (int)Math.Round((double)(Unlocked * 100 / Total)) : 0;
+                    if (GameAchievements.HaveAchivements)
+                    {
+                        Total += GameAchievements.Total;
+                        Locked += GameAchievements.Locked;
+                        Unlocked += GameAchievements.Unlocked;
+                    }
+                }
+
+                Result.Total = Total;
+                Result.Locked = Locked;
+                Result.Unlocked = Unlocked;
+                Result.Progression = (Total != 0) ? (int)Math.Round((double)(Unlocked * 100 / Total)) : 0;
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStroy", $"Error on Progession()");
+            }
 
             return Result;
         }
@@ -862,16 +876,23 @@ namespace SuccessStory.Models
             int Locked = 0;
             int Unlocked = 0;
 
-            foreach (var item in PluginDatabase)
+            try
             {
-                GameAchievements GameAchievements = item.Value;
-
-                if (GameAchievements.HaveAchivements && PlayniteApi.Database.Games.Get(item.Key).Playtime > 0)
+                foreach (var item in PluginDatabase)
                 {
-                    Total += GameAchievements.Total;
-                    Locked += GameAchievements.Locked;
-                    Unlocked += GameAchievements.Unlocked;
+                    GameAchievements GameAchievements = item.Value;
+
+                    if (GameAchievements.HaveAchivements && PlayniteApi.Database.Games.Get(item.Key).Playtime > 0)
+                    {
+                        Total += GameAchievements.Total;
+                        Locked += GameAchievements.Locked;
+                        Unlocked += GameAchievements.Unlocked;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStroy",  $"Error on ProgessionLaunched()");
             }
 
             Result.Total = Total;
@@ -889,17 +910,23 @@ namespace SuccessStory.Models
             int Locked = 0;
             int Unlocked = 0;
 
-            foreach (var item in PluginDatabase)
-            {
-                Guid Id = item.Key;
-                GameAchievements GameAchievements = item.Value;
-
-                if (GameAchievements.HaveAchivements && Id == GameId)
+            try { 
+                foreach (var item in PluginDatabase)
                 {
-                    Total += GameAchievements.Total;
-                    Locked += GameAchievements.Locked;
-                    Unlocked += GameAchievements.Unlocked;
+                    Guid Id = item.Key;
+                    GameAchievements GameAchievements = item.Value;
+
+                    if (GameAchievements.HaveAchivements && Id == GameId)
+                    {
+                        Total += GameAchievements.Total;
+                        Locked += GameAchievements.Locked;
+                        Unlocked += GameAchievements.Unlocked;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStroy", $"Error on ProgessionGame()");
             }
 
             Result.Total = Total;
@@ -917,18 +944,24 @@ namespace SuccessStory.Models
             int Locked = 0;
             int Unlocked = 0;
 
-            foreach (var item in PluginDatabase)
-            {
-                Guid Id = item.Key;
-                Game Game = PlayniteApi.Database.Games.Get(Id);
-                GameAchievements GameAchievements = item.Value;
-
-                if (GameAchievements.HaveAchivements && Game.SourceId == GameSourceId)
+            try { 
+                foreach (var item in PluginDatabase)
                 {
-                    Total += GameAchievements.Total;
-                    Locked += GameAchievements.Locked;
-                    Unlocked += GameAchievements.Unlocked;
+                    Guid Id = item.Key;
+                    Game Game = PlayniteApi.Database.Games.Get(Id);
+                    GameAchievements GameAchievements = item.Value;
+
+                    if (GameAchievements.HaveAchivements && Game.SourceId == GameSourceId)
+                    {
+                        Total += GameAchievements.Total;
+                        Locked += GameAchievements.Locked;
+                        Unlocked += GameAchievements.Unlocked;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStroy", $"Error on ProgessionSource()");
             }
 
             Result.Total = Total;

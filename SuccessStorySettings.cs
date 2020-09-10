@@ -44,8 +44,8 @@ namespace SuccessStory
 
         public bool EnableRetroAchievementsView { get; set; } = false;
 
-        public string RetroAchievementsUser { get; set; } = "";
-        public string RetroAchievementsKey { get; set; } = "";
+        public string RetroAchievementsUser { get; set; } = string.Empty;
+        public string RetroAchievementsKey { get; set; } = string.Empty;
 
         public bool EnableLocal { get; set; } = false;
 

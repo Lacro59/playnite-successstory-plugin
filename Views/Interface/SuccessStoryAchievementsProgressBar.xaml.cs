@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Playnite.SDK;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-
 
 namespace SuccessStory.Views.Interface
 {
@@ -10,8 +10,15 @@ namespace SuccessStory.Views.Interface
     /// </summary>
     public partial class SuccessStoryAchievementsProgressBar : UserControl
     {
-        public SuccessStoryAchievementsProgressBar(long value, long maxValue, bool showPercent, bool showIndicator)
+        private static readonly ILogger logger = LogManager.GetLogger();
+
+        private bool _withContener;
+
+
+        public SuccessStoryAchievementsProgressBar(long value, long maxValue, bool showPercent, bool showIndicator, bool withContener = false)
         {
+            _withContener = withContener;
+
             InitializeComponent();
 
             if (showIndicator)
@@ -20,7 +27,7 @@ namespace SuccessStory.Views.Interface
             }
             else
             {
-                AchievementsIndicator.Content = "";
+                AchievementsIndicator.Content = string.Empty;
                 AchievementsProgressBar.SetValue(Grid.ColumnProperty, 0);
                 AchievementsProgressBar.SetValue(Grid.ColumnSpanProperty, 3);
             }
@@ -34,14 +41,21 @@ namespace SuccessStory.Views.Interface
             }
             else
             {
-                AchievementsPercent.Content = "";
+                AchievementsPercent.Content = string.Empty;
             }
         }
 
-        private void Grid_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             // Define height & width
             var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
+            if (_withContener)
+            {
+                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent);
+            }
+#if DEBUG
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsProgressBar - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
+#endif
 
             if (!double.IsNaN(parent.Height))
             {

@@ -20,7 +20,6 @@ using System.Globalization;
 
 namespace SuccessStory.Clients
 {
-    // https://partner.steamgames.com/doc/home
     class SteamAchievements : GenericAchievements
     {
         private IHtmlDocument HtmlDocument { get; set; } = null;

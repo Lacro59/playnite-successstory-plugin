@@ -95,7 +95,7 @@ namespace SuccessStory.Views
 
             foreach (var game in PlayniteApi.Database.Games)
             {
-                string GameSourceName = "";
+                string GameSourceName = string.Empty;
                 if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                 {
                     GameSourceName = game.Source.Name;
@@ -346,7 +346,7 @@ namespace SuccessStory.Views
 
                     try
                     {
-                        string GameSourceName = "";
+                        string GameSourceName = string.Empty;
                         if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                         {
                             GameSourceName = game.Source.Name;
@@ -434,7 +434,7 @@ namespace SuccessStory.Views
                     DataLoad.Visibility = Visibility.Collapsed;
                     tcSettings.Visibility = Visibility.Visible;
 
-                    if (AchievementsDatabase.ListErrors.Get() != "")
+                    if (AchievementsDatabase.ListErrors.Get() != string.Empty)
                     {
                         PlayniteApi.Dialogs.ShowErrorMessage(AchievementsDatabase.ListErrors.Get(), "SuccessStory errors");
                     }

@@ -192,7 +192,7 @@ namespace SuccessStory
 
         private void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)
         {
-            string ButtonName = "";
+            string ButtonName = string.Empty;
             try
             {
                 ButtonName = ((Button)sender).Name;
@@ -364,10 +364,13 @@ namespace SuccessStory
                 List<ResourcesList> resourcesLists = new List<ResourcesList>();
                 resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = false });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = 0 });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = (double)0 });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = "0" });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = 0 });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = (double)0 });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = "0" });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = 0 });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = (double)0 });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = "0" });
                 ui.AddResources(resourcesLists);
 
@@ -385,14 +388,16 @@ namespace SuccessStory
                             return;
                         }
 
-
                         // Add resources
                         resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SelectedGameAchievements.Total });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = double.Parse(SelectedGameAchievements.Total.ToString()) });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = SelectedGameAchievements.Total.ToString() });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SelectedGameAchievements.Unlocked });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = double.Parse(SelectedGameAchievements.Unlocked.ToString()) });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = SelectedGameAchievements.Unlocked.ToString() });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SelectedGameAchievements.Locked });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = double.Parse(SelectedGameAchievements.Locked.ToString()) });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = SelectedGameAchievements.Locked.ToString() });
                         ui.AddResources(resourcesLists);
 
@@ -539,11 +544,11 @@ namespace SuccessStory
                 SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
                 StatsGraphicAchievementsSeries.Add(new LineSeries
                 {
-                    Title = "",
+                    Title = string.Empty,
                     Values = GraphicsData.Series
                 });
 
-                spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
+                spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, true));
 
                 spA.Children.Add(spAG);
                 spA.UpdateLayout();
@@ -559,7 +564,7 @@ namespace SuccessStory
                     spPB.Margin = new Thickness(0, 5, 0, 5);
                 }
 
-                spPB.Children.Add(new SuccessStoryAchievementsProgressBar(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total, settings.IntegrationShowProgressBarPercent, settings.IntegrationShowProgressBarIndicator));
+                spPB.Children.Add(new SuccessStoryAchievementsProgressBar(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total, settings.IntegrationShowProgressBarPercent, settings.IntegrationShowProgressBarIndicator, true));
 
                 spA.Children.Add(spPB);
                 spA.UpdateLayout();
@@ -575,7 +580,7 @@ namespace SuccessStory
                     spAL.Margin = new Thickness(0, 5, 0, 5);
                 }
 
-                spAL.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements));
+                spAL.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements, true));
 
                 spA.Children.Add(spAL);
                 spA.UpdateLayout();

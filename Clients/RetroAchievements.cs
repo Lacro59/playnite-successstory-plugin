@@ -56,7 +56,7 @@ namespace SuccessStory.Clients
             };
 
 
-            if (User == "" || Key == "")
+            if (User == string.Empty || Key == string.Empty)
             {
                 logger.Error($"SuccessStory - No RetroAchievement configuration.");
                 AchievementsDatabase.ListErrors.Add($"Error on RetroAchievement: no RetroAchievement configuration in settings menu of plugin.");
@@ -65,7 +65,14 @@ namespace SuccessStory.Clients
 
             // Load list console
             RA_Consoles ra_Consoles = GetConsoleIDs(PluginUserDataPath);
-            ra_Consoles.ListConsoles.Sort((x, y) => (y.Name).CompareTo(x.Name));
+            if (ra_Consoles != null && ra_Consoles != new RA_Consoles())
+            {
+                ra_Consoles.ListConsoles.Sort((x, y) => (y.Name).CompareTo(x.Name));
+            }
+            else
+            {
+                logger.Warn($"SuccessStory - No ra_Consoles find");
+            }
 
             // Search id console for the game
             string PlatformName = game.Platform.Name;
@@ -143,7 +150,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                logger.Info($"SuccessStory - No console find for {GameName} with {PlatformName}");
+                logger.Warn($"SuccessStory - No console find for {GameName} with {PlatformName}");
                 return Result;
             }
 
@@ -154,7 +161,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                logger.Info($"SuccessStory - No game find for {GameName} with {PlatformName} in {consoleID}");
+                logger.Warn($"SuccessStory - No game find for {GameName} with {PlatformName} in {consoleID}");
                 return Result;
             }
 
@@ -183,7 +190,8 @@ namespace SuccessStory.Clients
                 return resultObj;
             }
 
-            string ResultWeb = "";
+            string ResultWeb = string.Empty;
+
             try
             {
                 ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
@@ -194,14 +202,17 @@ namespace SuccessStory.Clients
             }
 
 
-            try
+            if (!ResultWeb.IsNullOrEmpty())
             {
-                resultObj.ListConsoles = JsonConvert.DeserializeObject<List<RA_Console>>(ResultWeb);
-                File.WriteAllText(fileConsoles, JsonConvert.SerializeObject(resultObj));
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, "SuccessStory", $"Failed to parse {ResultWeb}");
+                try
+                {
+                    resultObj.ListConsoles = JsonConvert.DeserializeObject<List<RA_Console>>(ResultWeb);
+                    File.WriteAllText(fileConsoles, JsonConvert.SerializeObject(resultObj));
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", $"Failed to parse {ResultWeb}");
+                }
             }
 
             return resultObj;
@@ -221,7 +232,7 @@ namespace SuccessStory.Clients
                 return resultObj;
             }
 
-            string ResultWeb = "";
+            string ResultWeb = string.Empty;
             try
             {
                 ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
@@ -251,7 +262,7 @@ namespace SuccessStory.Clients
             string Target = "API_GetGameInfoAndUserProgress.php";
             string url = string.Format(BaseUrl + Target + @"?z={0}&y={1}&u={0}&g={2}", User, Key, gameID);
 
-            string ResultWeb = "";
+            string ResultWeb = string.Empty;
             try
             {
                 ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);

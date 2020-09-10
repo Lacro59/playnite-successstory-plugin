@@ -5,7 +5,7 @@ namespace SuccessStory.Models
     public class Achievements
     {
         public string Name { get; set; }
-        public string ApiName { get; set; } = "";
+        public string ApiName { get; set; } = string.Empty;
         public string Description { get; set; }
         public string UrlUnlocked { get; set; }
         public string UrlLocked { get; set; }

@@ -90,7 +90,7 @@ namespace SuccessStory
             SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
             StatsGraphicAchievementsSeries.Add(new LineSeries
             {
-                Title = "",
+                Title = string.Empty,
                 Values = GraphicsData.Series
             });
 
@@ -194,7 +194,7 @@ namespace SuccessStory
             SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
             StatsGraphicAchievementsSeries.Add(new ColumnSeries
             {
-                Title = "",
+                Title = string.Empty,
                 Values = data.SeriesUnlocked
             });
 
@@ -217,7 +217,7 @@ namespace SuccessStory
             {
                 foreach (var item in PlayniteApiDatabase.Games)
                 {
-                    string GameSourceName = "";
+                    string GameSourceName = string.Empty;
                     if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                     {
                         GameSourceName = item.Source.Name;
@@ -248,7 +248,7 @@ namespace SuccessStory
                             string GameIcon;
                             DateTime? GameLastActivity = null;
 
-                            string SourceName = "";
+                            string SourceName = string.Empty;
                             if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                             {
                                 SourceName = item.Source.Name;
@@ -460,7 +460,7 @@ namespace SuccessStory
                 SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
                 StatsGraphicAchievementsSeries.Add(new LineSeries
                 {
-                    Title = "",
+                    Title = string.Empty,
                     Values = GraphicsData.Series
                 });
 
@@ -564,8 +564,8 @@ namespace SuccessStory
 
                     if (_lastHeaderClicked != null)
                     {
-                        _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▲", "");
-                        _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▼", "");
+                        _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▲", string.Empty);
+                        _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▼", string.Empty);
                     }
 
                     if (direction == ListSortDirection.Ascending)
@@ -649,7 +649,7 @@ namespace SuccessStory
         }
         private void FilterCbSource(CheckBox sender)
         {
-            FilterSource.Text = "";
+            FilterSource.Text = string.Empty;
 
             if ((bool)sender.IsChecked)
             {

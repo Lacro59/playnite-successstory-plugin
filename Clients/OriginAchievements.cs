@@ -89,7 +89,7 @@ namespace SuccessStory.Clients
                                 Name = (string)item.Value["name"],
                                 Description = (string)item.Value["desc"],
                                 UrlUnlocked = (string)item.Value["icons"]["208"],
-                                UrlLocked = "",
+                                UrlLocked = string.Empty,
                                 DateUnlocked = ((string)item.Value["state"]["a_st"] == "ACTIVE") ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)item.Value["u"]),
                                 Percent = (float)item.Value["achievedPercentage"]
                             });
@@ -154,7 +154,7 @@ namespace SuccessStory.Clients
 
             JObject objectData = JObject.Parse(stringData);
 
-            return ((string)objectData["personas"]["personaUri"][0]).Replace("/pids/" + userId + "/personas/", "");
+            return ((string)objectData["personas"]["personaUri"][0]).Replace("/pids/" + userId + "/personas/", string.Empty);
         }
 
         /// <summary>

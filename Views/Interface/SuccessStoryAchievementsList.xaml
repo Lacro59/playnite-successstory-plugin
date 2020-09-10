@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
              xmlns:localPlugin="clr-namespace:PluginCommon;assembly=PluginCommon"
-             mc:Ignorable="d" Height="{Binding ElementName=lbAchievements, Path=ActualHeight}">
+             mc:Ignorable="d">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -13,7 +13,7 @@
         <local:SetColorConverter x:Key="SetColorConverter" />
     </UserControl.Resources>
 
-    <ListBox x:Name="lbAchievements" Loaded="LbAchievements_Loaded" Height="300"
+    <ListBox x:Name="lbAchievements" Loaded="LbAchievements_Loaded" Height="100"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
 
         <!-- Force the style because HorizontalContentAlignment not work. -->
