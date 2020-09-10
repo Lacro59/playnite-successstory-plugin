@@ -525,7 +525,6 @@ namespace SuccessStory
                 {
                     spAG.Name = "PART_Achievements_Graphics";
                     spAG.Height = 120;
-                    spAG.MaxHeight = 120;
                     spAG.Margin = new Thickness(0, 5, 0, 5);
                 }
 
@@ -546,7 +545,7 @@ namespace SuccessStory
                     Values = GraphicsData.Series
                 });
 
-                spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, true));
+                spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, IsCustom));
 
                 spA.Children.Add(spAG);
                 spA.UpdateLayout();
@@ -562,7 +561,7 @@ namespace SuccessStory
                     spPB.Margin = new Thickness(0, 5, 0, 5);
                 }
 
-                spPB.Children.Add(new SuccessStoryAchievementsProgressBar(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total, settings.IntegrationShowProgressBarPercent, settings.IntegrationShowProgressBarIndicator, true));
+                spPB.Children.Add(new SuccessStoryAchievementsProgressBar(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total, settings.IntegrationShowProgressBarPercent, settings.IntegrationShowProgressBarIndicator, IsCustom));
 
                 spA.Children.Add(spPB);
                 spA.UpdateLayout();
@@ -574,11 +573,11 @@ namespace SuccessStory
                 if (!IsCustom)
                 {
                     spAL.Name = "PART_Achievements_List";
-                    spAL.MaxHeight = 300;
+                    spAL.Height = 300;
                     spAL.Margin = new Thickness(0, 5, 0, 5);
                 }
 
-                spAL.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements, true));
+                spAL.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements, IsCustom));
 
                 spA.Children.Add(spAL);
                 spA.UpdateLayout();
