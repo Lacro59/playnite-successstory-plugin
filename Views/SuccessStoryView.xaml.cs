@@ -512,84 +512,91 @@ namespace SuccessStory
 
         private void ListviewGames_onHeaderClick(object sender, RoutedEventArgs e)
         {
-            lvProgressionValue.IsEnabled = true;
-            lvSourceName.IsEnabled = true;
-
-            var headerClicked = e.OriginalSource as GridViewColumnHeader;
-            ListSortDirection direction;
-
-            // No sort
-            if (headerClicked.Name == "lvGameIcon")
+            try
             {
-                headerClicked = null;
-            }
+                lvProgressionValue.IsEnabled = true;
+                lvSourceName.IsEnabled = true;
 
-            if (headerClicked != null)
-            {
-                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                var headerClicked = e.OriginalSource as GridViewColumnHeader;
+                ListSortDirection direction;
+
+                // No sort
+                if (headerClicked.Name == "lvGameIcon")
                 {
-                    if (headerClicked != _lastHeaderClicked)
+                    headerClicked = null;
+                }
+
+                if (headerClicked != null)
+                {
+                    if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
                     {
-                        direction = ListSortDirection.Ascending;
-                    }
-                    else
-                    {
-                        if (_lastDirection == ListSortDirection.Ascending)
-                        {
-                            direction = ListSortDirection.Descending;
-                        }
-                        else
+                        if (headerClicked != _lastHeaderClicked)
                         {
                             direction = ListSortDirection.Ascending;
                         }
+                        else
+                        {
+                            if (_lastDirection == ListSortDirection.Ascending)
+                            {
+                                direction = ListSortDirection.Descending;
+                            }
+                            else
+                            {
+                                direction = ListSortDirection.Ascending;
+                            }
+                        }
+
+                        var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
+                        var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+
+                        // Specific sort with another column
+                        if (headerClicked.Name == "lvSourceIcon")
+                        {
+                            columnBinding = lvSourceName.Column.DisplayMemberBinding as Binding;
+                            sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+                        }
+                        if (headerClicked.Name == "lvProgression")
+                        {
+                            columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
+                            sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
+                        }
+
+
+                        Sort(sortBy, direction);
+
+                        if (_lastHeaderClicked != null)
+                        {
+                            _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▲", string.Empty);
+                            _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▼", string.Empty);
+                        }
+
+                        if (direction == ListSortDirection.Ascending)
+                        {
+                            headerClicked.Content += " ▲";
+                        }
+                        else
+                        {
+                            headerClicked.Content += " ▼";
+                        }
+
+                        // Remove arrow from previously sorted header
+                        if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
+                        {
+                            _lastHeaderClicked.Column.HeaderTemplate = null;
+                        }
+
+                        _lastHeaderClicked = headerClicked;
+                        _lastDirection = direction;
                     }
-
-                    var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
-                    var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
-
-                    // Specific sort with another column
-                    if (headerClicked.Name == "lvSourceIcon")
-                    {
-                        columnBinding = lvSourceName.Column.DisplayMemberBinding as Binding;
-                        sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
-                    }
-                    if (headerClicked.Name == "lvProgression")
-                    {
-                        columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
-                        sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
-                    }
-
-
-                    Sort(sortBy, direction);
-
-                    if (_lastHeaderClicked != null)
-                    {
-                        _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▲", string.Empty);
-                        _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▼", string.Empty);
-                    }
-
-                    if (direction == ListSortDirection.Ascending)
-                    {
-                        headerClicked.Content += " ▲";
-                    }
-                    else
-                    {
-                        headerClicked.Content += " ▼";
-                    }
-
-                    // Remove arrow from previously sorted header
-                    if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
-                    {
-                        _lastHeaderClicked.Column.HeaderTemplate = null;
-                    }
-
-                    _lastHeaderClicked = headerClicked;
-                    _lastDirection = direction;
                 }
-            }
 
-            lvProgressionValue.IsEnabled = false;
-            lvSourceName.IsEnabled = false;
+                lvProgressionValue.IsEnabled = false;
+                lvSourceName.IsEnabled = false;
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         private void Sort(string sortBy, ListSortDirection direction)
