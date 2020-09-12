@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using LiveCharts;
 using LiveCharts.Configurations;
@@ -52,6 +53,7 @@ namespace SuccessStory
             this.settings = settings;
             this.PluginUserDataPath = PluginUserDataPath;
 
+            this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
 
             AchievementsDatabase = new AchievementsDatabase(plugin, PlayniteApi, settings, PluginUserDataPath, isRetroAchievements);
             AchievementsDatabase.Initialize(false);
@@ -177,6 +179,14 @@ namespace SuccessStory
 
             // Set Binding data
             DataContext = this;
+        }
+
+        private void HandleEsc(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
 
         private void SetGraphicsAchievementsSources()
