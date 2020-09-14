@@ -135,6 +135,9 @@
     <Compile Include="Models\ProgressionAchievements.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
+    <Compile Include="Views\Interface\SuccessStoryAchievementsCompact.xaml.cs">
+      <DependentUpon>SuccessStoryAchievementsCompact.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Interface\SuccessStoryAchievementsGraphics.xaml.cs">
       <DependentUpon>SuccessStoryAchievementsGraphics.xaml</DependentUpon>
     </Compile>
@@ -355,6 +358,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Include="Views\Interface\SuccessStoryAchievementsCompact.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Interface\SuccessStoryAchievementsGraphics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

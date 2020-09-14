@@ -56,6 +56,8 @@
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarIndicator">Avec indicateur</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarPercent">Avec pourcentage</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowGraphicTitle">Avec titre</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Afficher list compact déverrouillé</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Afficher list compact verrouillé</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 

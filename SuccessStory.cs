@@ -355,6 +355,8 @@ namespace SuccessStory
                 ui.RemoveElementInGameSelectedDescription("PART_Achievements");
                 ui.ClearElementInCustomTheme("PART_Achievements_Graphics");
                 ui.ClearElementInCustomTheme("PART_Achievements_List");
+                ui.ClearElementInCustomTheme("PART_Achievements_ListCompactLocked");
+                ui.ClearElementInCustomTheme("PART_Achievements_ListCompactUnlocked");
                 ui.ClearElementInCustomTheme("PART_Achievements_ProgressBar");
 
 
@@ -433,7 +435,7 @@ namespace SuccessStory
 
 
                             // Add Achievements elements
-                            StackPanel ScA = CreateSc(achievementsDatabase, SelectedGameAchievements, settings.IntegrationShowTitle, settings.IntegrationShowGraphic, settings.IntegrationShowAchievements, settings.IntegrationShowProgressBar, false);
+                            StackPanel ScA = CreateSc(achievementsDatabase, SelectedGameAchievements, settings.IntegrationShowTitle, settings.IntegrationShowGraphic, settings.IntegrationShowAchievements, settings.IntegrationShowAchievementsCompactLocked, settings.IntegrationShowAchievementsCompactUnlocked, settings.IntegrationShowProgressBar, false);
 
                             if (settings.EnableIntegrationInDescriptionWithToggle)
                             {
@@ -474,20 +476,32 @@ namespace SuccessStory
                         {
                             if (settings.IntegrationShowGraphic)
                             {
-                                StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, false, true);
+                                StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, false, false, false, true);
                                 ui.AddElementInCustomTheme(scAG, "PART_Achievements_Graphics");
                             }
 
                             if (settings.IntegrationShowAchievements)
                             {
-                                StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, false, true);
+                                StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, false, false, false, true);
                                 ui.AddElementInCustomTheme(scAL, "PART_Achievements_List");
                             }
 
                             if (settings.IntegrationShowProgressBar)
                             {
-                                StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, true, true);
+                                StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, false, false, true, true);
                                 ui.AddElementInCustomTheme(scPB, "PART_Achievements_ProgressBar");
+                            }
+
+                            if (settings.IntegrationShowAchievementsCompactLocked)
+                            {
+                                StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, true, false, false, true);
+                                ui.AddElementInCustomTheme(scPB, "PART_Achievements_ListCompactLocked");
+                            }
+
+                            if (settings.IntegrationShowAchievementsCompactUnlocked)
+                            {
+                                StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, false, true, false, true);
+                                ui.AddElementInCustomTheme(scPB, "PART_Achievements_ListCompactUnlocked");
                             }
                         }
                     }));
@@ -500,7 +514,7 @@ namespace SuccessStory
         }
 
         // Create FrameworkElement with achievements datas
-        public StackPanel CreateSc(AchievementsDatabase achievementsDatabase, GameAchievements SelectedGameAchievements, bool ShowTitle, bool ShowGraphic, bool ShowAchievements, bool ShowProgressBar, bool IsCustom = false)
+        public StackPanel CreateSc(AchievementsDatabase achievementsDatabase, GameAchievements SelectedGameAchievements, bool ShowTitle, bool ShowGraphic, bool ShowAchievements, bool ShowAchievementsCompactLocked, bool ShowAchievementsCompactUnlocked, bool ShowProgressBar, bool IsCustom = false)
         {
             StackPanel spA = new StackPanel();
             spA.Name = "PART_Achievements";
@@ -584,6 +598,38 @@ namespace SuccessStory
                 spAL.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements, IsCustom));
 
                 spA.Children.Add(spAL);
+                spA.UpdateLayout();
+            }
+
+            if (ShowAchievementsCompactLocked)
+            {
+                StackPanel spALCL = new StackPanel();
+                if (!IsCustom)
+                {
+                    spALCL.Name = "PART_Achievements_ListCompactLocked";
+                    //spALC.Height = settings.IntegrationShowAchievementsHeight;
+                    spALCL.Margin = new Thickness(0, 5, 0, 5);
+                }
+
+                spALCL.Children.Add(new SuccessStoryAchievementsCompact(SelectedGameAchievements.Achievements));
+
+                spA.Children.Add(spALCL);
+                spA.UpdateLayout();
+            }
+
+            if (ShowAchievementsCompactUnlocked)
+            {
+                StackPanel spALCUL = new StackPanel();
+                if (!IsCustom)
+                {
+                    spALCUL.Name = "PART_Achievements_ListCompactUnlocked";
+                    //spALC.Height = settings.IntegrationShowAchievementsHeight;
+                    spALCUL.Margin = new Thickness(0, 5, 0, 5);
+                }
+
+                spALCUL.Children.Add(new SuccessStoryAchievementsCompact(SelectedGameAchievements.Achievements, true));
+
+                spA.Children.Add(spALCUL);
                 spA.UpdateLayout();
             }
 
