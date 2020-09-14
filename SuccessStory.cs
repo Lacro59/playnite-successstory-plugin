@@ -370,6 +370,10 @@ namespace SuccessStory
                 resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = 0 });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = (double)0 });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = "0" });
+
+                resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowGraphic", Value = settings.IntegrationShowGraphic });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievements", Value = settings.IntegrationShowAchievements });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowProgressBar", Value = settings.IntegrationShowProgressBar });
                 ui.AddResources(resourcesLists);
 
                 var taskIntegration = Task.Run(() => LoadData(PlayniteApi, this.GetPluginUserDataPath(), settings))
@@ -524,7 +528,7 @@ namespace SuccessStory
                 if (!IsCustom)
                 {
                     spAG.Name = "PART_Achievements_Graphics";
-                    spAG.Height = 120;
+                    spAG.Height = settings.IntegrationShowGraphicHeight;
                     spAG.Margin = new Thickness(0, 5, 0, 5);
                 }
 
@@ -545,7 +549,7 @@ namespace SuccessStory
                     Values = GraphicsData.Series
                 });
 
-                spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, IsCustom));
+                spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings.EnableIntegrationAxisGraphic, IsCustom));
 
                 spA.Children.Add(spAG);
                 spA.UpdateLayout();
@@ -573,7 +577,7 @@ namespace SuccessStory
                 if (!IsCustom)
                 {
                     spAL.Name = "PART_Achievements_List";
-                    spAL.Height = 300;
+                    spAL.Height = settings.IntegrationShowAchievementsHeight;
                     spAL.Margin = new Thickness(0, 5, 0, 5);
                 }
 

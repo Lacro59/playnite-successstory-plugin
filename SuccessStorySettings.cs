@@ -25,6 +25,10 @@ namespace SuccessStory
         public bool IntegrationTopGameDetails { get; set; } = true;
         public bool IntegrationToggleDetails { get; set; } = true;
 
+        public bool EnableIntegrationAxisGraphic { get; set; } = true;
+        public double IntegrationShowAchievementsHeight { get; set; } = 200;
+        public double IntegrationShowGraphicHeight { get; set; } = 120;
+
         public bool EnableIntegrationInCustomTheme { get; set; } = false;
 
         public bool EnableIntegrationButton { get; set; } = false;
@@ -88,6 +92,10 @@ namespace SuccessStory
                 IntegrationShowAchievements = savedSettings.IntegrationShowAchievements;
                 IntegrationTopGameDetails = savedSettings.IntegrationTopGameDetails;
                 IntegrationToggleDetails = savedSettings.IntegrationToggleDetails;
+
+                EnableIntegrationAxisGraphic = savedSettings.EnableIntegrationAxisGraphic;
+                IntegrationShowAchievementsHeight = savedSettings.IntegrationShowAchievementsHeight;
+                IntegrationShowGraphicHeight = savedSettings.IntegrationShowGraphicHeight;
 
                 EnableIntegrationInCustomTheme = savedSettings.EnableIntegrationInCustomTheme;
 

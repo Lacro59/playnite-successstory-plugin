@@ -55,6 +55,7 @@
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">显示进度栏</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarIndicator">附加数量</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarPercent">附加百分比</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphicTitle">With title</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">成就数据库已重置。</sys:String>
 

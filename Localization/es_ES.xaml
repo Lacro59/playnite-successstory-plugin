@@ -55,6 +55,7 @@
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Show progress bar</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarIndicator">With indicator</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarPercent">With percent</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphicTitle">With title</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de datos de logros se ha restablecido.</sys:String>
 
