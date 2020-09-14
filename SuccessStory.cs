@@ -376,6 +376,8 @@ namespace SuccessStory
                 resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowGraphic", Value = settings.IntegrationShowGraphic });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievements", Value = settings.IntegrationShowAchievements });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowProgressBar", Value = settings.IntegrationShowProgressBar });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactLocked", Value = settings.IntegrationShowAchievementsCompactLocked });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactUnlocked", Value = settings.IntegrationShowAchievementsCompactUnlocked });
                 ui.AddResources(resourcesLists);
 
                 var taskIntegration = Task.Run(() => LoadData(PlayniteApi, this.GetPluginUserDataPath(), settings))
