@@ -205,9 +205,30 @@ namespace SuccessStory.Clients
                     }
                 }
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                if (ex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    HttpWebResponse response = ex.Response as HttpWebResponse;
+                    if (response != null)
+                    {
+                        // No Achievement !?
+                        if(response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        // no http status code available
+                        Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                    }
+                }
+                else
+                {
+                    // no http status code available
+                    Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                }
             }
 
             return AllAchievements;
