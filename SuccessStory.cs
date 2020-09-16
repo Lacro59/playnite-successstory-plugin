@@ -232,7 +232,7 @@ namespace SuccessStory
                         {
                             ((FrameworkElement)PART_ElemDescription.Children[i]).Visibility = Visibility.Visible;
 
-                            // Uncheck other integratio ToggleButton
+                            // Uncheck other integration ToggleButton
                             foreach (ToggleButton sp in Tools.FindVisualChildren<ToggleButton>(Application.Current.MainWindow))
                             {
                                 if (sp.Name == "PART_GaToggleButton")
@@ -268,7 +268,7 @@ namespace SuccessStory
             }
             else
             {
-                logger.Error("SuccessStory - PART_ElemDescription not found in OnGameSelectedToggleButtonClick()");
+                logger.Warn("SuccessStory - PART_ElemDescription not found in OnGameSelectedToggleButtonClick()");
             }
         }
 

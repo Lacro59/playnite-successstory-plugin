@@ -70,10 +70,6 @@
       <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="OriginLibrary">
-      <HintPath>Ressources\OriginLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Playnite, Version=7.7.0.26797, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Resources\PlayniteResources\Playnite.dll</HintPath>
@@ -134,6 +130,15 @@
     <Compile Include="PlayniteResources\GogLibrary\Models\LibraryGameResponse.cs" />
     <Compile Include="PlayniteResources\GogLibrary\Models\PagedResponse.cs" />
     <Compile Include="PlayniteResources\GogLibrary\Services\GogAccountClient.cs" />
+    <Compile Include="PlayniteResources\OriginLibrary\Models\AccountEntitlementsResponse.cs" />
+    <Compile Include="PlayniteResources\OriginLibrary\Models\AccountInfoResponse.cs" />
+    <Compile Include="PlayniteResources\OriginLibrary\Models\AuthTokenResponse.cs" />
+    <Compile Include="PlayniteResources\OriginLibrary\Models\GameLocalDataResponse.cs" />
+    <Compile Include="PlayniteResources\OriginLibrary\Models\GameStoreDataResponse.cs" />
+    <Compile Include="PlayniteResources\OriginLibrary\Models\StorePageMetadata.cs" />
+    <Compile Include="PlayniteResources\OriginLibrary\Models\UsageReponse.cs" />
+    <Compile Include="PlayniteResources\OriginLibrary\Services\OriginAccountClient.cs" />
+    <Compile Include="PlayniteResources\OriginLibrary\Services\OriginApiClient.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
     <Compile Include="Views\Interface\SuccessStoryAchievementsCompact.xaml.cs">
@@ -410,9 +415,6 @@
     <None Include="Resources\PlayniteResources\Playnite.Common.dll" />
     <None Include="Resources\PlayniteResources\Playnite.dll" />
     <Content Include="Resources\PluginCommon.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\OriginLibrary.dll" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

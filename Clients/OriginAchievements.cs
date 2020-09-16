@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using OriginLibrary.Models;
-using OriginLibrary.Services;
 using Playnite.Common.Web;
 using Playnite.SDK;
 using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
+using SuccessStory.PlayniteResources.OriginLibrary.Models;
+using SuccessStory.PlayniteResources.OriginLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
