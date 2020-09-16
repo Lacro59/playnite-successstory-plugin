@@ -1,12 +1,11 @@
-﻿using GogLibrary.Services;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
+using SuccessStory.PlayniteResources.GogLibrary.Services;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,16 +16,16 @@ namespace SuccessStory.Clients
     class GogAchievements
     {
         private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
+        private static readonly IResourceProvider resources = new ResourceProvider();
 
         private GogAccountClient gogAPI;
+
 
         public GogAchievements(IPlayniteAPI PlayniteApi)
         {
             var view = PlayniteApi.WebViews.CreateOffscreenView();
             gogAPI = new GogAccountClient(view);
         }
-
 
         /// <summary>
         /// Get achievements after change language.
@@ -85,24 +84,14 @@ namespace SuccessStory.Clients
                 string userId = gogAPI.GetAccountInfo().userId;
                 string lang = CodeLang.GetGogLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
 
-                // Only languages available
-                string[] arrayLang = { "de", "en", "fr", "ru", "zh", "zh-Hans" };
-                if (!arrayLang.ContainsString(lang))
-                {
-                    lang = "en";
-                }
-
                 // Achievements
-                string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements",
-                    ClientId, userId);
+                string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements", ClientId, userId);
 
                 try
                 {
                     string urlLang = string.Format(@"https://www.gog.com/user/changeLanguage/{0}", lang.ToLower());
                     ResultWeb = DonwloadStringData(urlLang, url, accessToken).GetAwaiter().GetResult();
                 }
-                // TODO Environnement
-                //catch (Exception e) when (!Environment.IsDebugBuild)
                 catch (WebException ex)
                 {
                     if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
@@ -121,6 +110,7 @@ namespace SuccessStory.Clients
                     return Result;
                 }
 
+                // Parse data
                 if (ResultWeb != string.Empty)
                 {
                     JObject resultObj = JObject.Parse(ResultWeb);
@@ -156,10 +146,19 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, "SuccessStory", $"Failed to parse. ");
+                        Common.LogError(ex, "SuccessStory", $"Failed to parse");
                         return Result;
                     }
                 }
+            }
+            else
+            {
+                PlayniteApi.Notifications.Add(new NotificationMessage(
+                    $"SuccessStory-Gog-notConnected",
+                    "GOG user is not connected",
+                    NotificationType.Error
+                ));
+                logger.Warn("SuccessStory - GOG user is not connected");
             }
 
             Result = new GameAchievements

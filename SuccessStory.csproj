@@ -60,11 +60,6 @@
       <HintPath>packages\AngleSharp.0.9.9\lib\net45\AngleSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="GogLibrary, Version=1.0.0.26791, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\GogLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
@@ -133,6 +128,12 @@
     <Compile Include="Models\ListAchievements.cs" />
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
+    <Compile Include="PlayniteResources\GogLibrary\Gog.cs" />
+    <Compile Include="PlayniteResources\GogLibrary\Models\AccountBasicRespose.cs" />
+    <Compile Include="PlayniteResources\GogLibrary\Models\GetOwnedGamesResult.cs" />
+    <Compile Include="PlayniteResources\GogLibrary\Models\LibraryGameResponse.cs" />
+    <Compile Include="PlayniteResources\GogLibrary\Models\PagedResponse.cs" />
+    <Compile Include="PlayniteResources\GogLibrary\Services\GogAccountClient.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
     <Compile Include="Views\Interface\SuccessStoryAchievementsCompact.xaml.cs">
@@ -406,7 +407,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Achievements.dll" />
-    <Content Include="Resources\GogLibrary.dll" />
     <None Include="Resources\PlayniteResources\Playnite.Common.dll" />
     <None Include="Resources\PlayniteResources\Playnite.dll" />
     <Content Include="Resources\PluginCommon.dll" />
