@@ -50,7 +50,8 @@
                 <ComboBox Grid.Column="6" Name="FilterSource" IsEditable="True" IsReadOnly="True">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Content="{Binding SourceName}" IsChecked="{Binding isCheck}">
+                            <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Tag="{Binding SourceNameShort}"
+                                      Content="{Binding SourceName}" IsChecked="{Binding isCheck}" FontFamily="/SuccessStory;component/Resources/#font">
                             </CheckBox>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>

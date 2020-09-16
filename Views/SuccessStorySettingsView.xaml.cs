@@ -71,7 +71,7 @@ namespace SuccessStory.Views
             }
         }
 
-        internal void SetTotal()
+        private void SetTotal()
         {
             SteamTotal = 0;
             SteamTotalAchievements = 0;

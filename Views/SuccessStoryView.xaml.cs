@@ -113,6 +113,7 @@ namespace SuccessStory
             }
             ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
 
+            string icon = string.Empty;
 
             if (settings.EnableRetroAchievementsView && settings.EnableRetroAchievements)
             {
@@ -124,26 +125,31 @@ namespace SuccessStory
 
                     if (settings.EnableRetroAchievements)
                     {
-                        FilterSourceItems.Add(new ListSource { SourceName = "RetroAchievements", IsCheck = false });
+                        icon = TransformIcon.Get("RetroAchievements") + " "; 
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
                     }
                 }
                 else
                 {
                     if (settings.EnableLocal)
                     {
-                        FilterSourceItems.Add(new ListSource { SourceName = "Playnite", IsCheck = false });
+                        icon = TransformIcon.Get("Playnite") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playnite", SourceNameShort = "Playnite", IsCheck = false });
                     }
                     if (settings.EnableSteam)
                     {
-                        FilterSourceItems.Add(new ListSource { SourceName = "Steam", IsCheck = false });
+                        icon = TransformIcon.Get("Steam") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Steam", SourceNameShort = "Steam", IsCheck = false });
                     }
                     if (settings.EnableGog)
                     {
-                        FilterSourceItems.Add(new ListSource { SourceName = "GOG", IsCheck = false });
+                        icon = TransformIcon.Get("GOG") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "GOG", SourceNameShort = "GOG", IsCheck = false });
                     }
                     if (settings.EnableOrigin)
                     {
-                        FilterSourceItems.Add(new ListSource { SourceName = "Origin", IsCheck = false });
+                        icon = TransformIcon.Get("Origin") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Origin", SourceNameShort = "Origin", IsCheck = false });
                     }
                 }
             }
@@ -151,23 +157,28 @@ namespace SuccessStory
             {
                 if (settings.EnableLocal)
                 {
-                    FilterSourceItems.Add(new ListSource { SourceName = "Playnite", IsCheck = false });
+                    icon = TransformIcon.Get("Playnite") + " ";
+                    FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playnite", SourceNameShort = "Playnite", IsCheck = false });
                 }
                 if (settings.EnableSteam)
                 {
-                    FilterSourceItems.Add(new ListSource { SourceName = "Steam", IsCheck = false });
+                    icon = TransformIcon.Get("Steam") + " ";
+                    FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Steam", SourceNameShort = "Steam", IsCheck = false });
                 }
                 if (settings.EnableGog)
                 {
-                    FilterSourceItems.Add(new ListSource { SourceName = "GOG", IsCheck = false });
+                    icon = TransformIcon.Get("GOG") + " ";
+                    FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "GOG", SourceNameShort = "GOG", IsCheck = false });
                 }
                 if (settings.EnableOrigin)
                 {
-                    FilterSourceItems.Add(new ListSource { SourceName = "Origin", IsCheck = false });
+                    icon = TransformIcon.Get("Origin") + " ";
+                    FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Origin", SourceNameShort = "Origin", IsCheck = false });
                 }
                 if (settings.EnableRetroAchievements)
                 {
-                    FilterSourceItems.Add(new ListSource { SourceName = "RetroAchievements", IsCheck = false });
+                    icon = TransformIcon.Get("RetroAchievements") + " ";
+                    FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
                 }
             }
 
@@ -670,11 +681,11 @@ namespace SuccessStory
 
             if ((bool)sender.IsChecked)
             {
-                SearchSources.Add((string)sender.Content);
+                SearchSources.Add((string)sender.Tag);
             }
             else
             {
-                SearchSources.Remove((string)sender.Content);
+                SearchSources.Remove((string)sender.Tag);
             }
 
             if (SearchSources.Count != 0)
@@ -690,6 +701,7 @@ namespace SuccessStory
     public class ListSource
     {
         public string SourceName { get; set; }
+        public string SourceNameShort { get; set; }
         public bool IsCheck { get; set; }
     }
 }
