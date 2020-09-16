@@ -1,6 +1,11 @@
-﻿Name: Success Story
+﻿Name: SuccessStory
 Author: Lacro59
 Version: 0.11
 Module: SuccessStory.dll
 Type: GenericPlugin
 Icon: icon.png
+Links:
+  - Name: Plugin forum
+    Url: https://playnite.link/forum/thread-275.html
+  - Name: Plugin Github
+    Url: https://github.com/Lacro59/playnite-successstory-plugin
