@@ -367,6 +367,7 @@ namespace SuccessStory
                 resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = (double)0 });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = "0" });
 
+                resourcesLists.Add(new ResourcesList { Key = "Sc_EnableIntegrationInCustomTheme", Value = settings.EnableIntegrationInCustomTheme });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowGraphic", Value = settings.IntegrationShowGraphic });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievements", Value = settings.IntegrationShowAchievements });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowProgressBar", Value = settings.IntegrationShowProgressBar });
