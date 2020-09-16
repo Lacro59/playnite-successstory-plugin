@@ -53,11 +53,16 @@
     <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">添加带详情的按钮</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">在窗口添加按钮</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">显示进度栏</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarIndicator">附加数量</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarPercent">附加百分比</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphicTitle">With title</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Show compact unlocked list</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Show compact locked list</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryIntegrationOptions">Selection elements</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Graphic options</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Show absciss label</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">附加数量r</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">附加百分比</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationListOptions">List achievements options</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">成就数据库已重置。</sys:String>
 

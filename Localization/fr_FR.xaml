@@ -53,11 +53,16 @@
     <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Ajouter un bouton avec détails</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Ajouter un bouton dans la fenêtre</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Afficher une barre de progression</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarIndicator">Avec indicateur</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarPercent">Avec pourcentage</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphicTitle">Avec titre</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Afficher list compact déverrouillé</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Afficher list compact verrouillé</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryIntegrationOptions">Sélection des élements</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Options du graphique</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Afficher les noms sur l'abscisse</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Options de la barre de progression</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">Afficher l'indicateur</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">Afficher les pourcentage</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationListOptions">Options de la liste des succès</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 

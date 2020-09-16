@@ -76,9 +76,6 @@ namespace SuccessStory
                     {
                         // Add code to be execute when user invokes this menu entry.
 
-                        logger.Info("SuccessStory - SuccessStoryView");
-
-                        // Show SuccessView
                         new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
                     })
                 );
@@ -92,9 +89,6 @@ namespace SuccessStory
                         {
                             // Add code to be execute when user invokes this menu entry.
 
-                            logger.Info("SuccessStory - SuccessStoryView RetroAchievements");
-
-                            // Show SuccessView
                             new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true).ShowDialog();
                         })
                     );
@@ -511,7 +505,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SucessStory", $"Impossible integration");
+                Common.LogError(ex, "SuccessStory", $"Impossible integration");
             }
         }
 

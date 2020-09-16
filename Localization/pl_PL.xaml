@@ -53,11 +53,16 @@
     <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Dodaj przycisk ze szczegółami</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Dodaj przycisk w oknie</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Wyświetlaj pasek postępu</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarIndicator">Ze wskaźnikiem</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBarPercent">Z procentem</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphicTitle">With title</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Show compact unlocked list</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Show compact locked list</sys:String>
+
+    <sys:String x:Key="LOCSucessStoryIntegrationOptions">Selection elements</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Graphic options</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Show absciss label</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">Ze wskaźnikiem</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">Z procentem</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationListOptions">List achievements options</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">Baza danych osiągnieć została zresetowana.</sys:String>
 

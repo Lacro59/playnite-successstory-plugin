@@ -54,8 +54,6 @@ namespace SuccessStory.Views
 
             SetTotal();
 
-            //SuccessStoryLoad.Visibility = Visibility.Hidden;
-
             switch (settings.NameSorting)
             {
                 case "Name":
@@ -156,6 +154,7 @@ namespace SuccessStory.Views
                         break;
                 }
             }
+
             SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
             GogLoad.Content = GogTotalAchievements + "/" + GogTotal;
             OriginLoad.Content = OriginTotalAchievements + "/" + OriginTotal;
