@@ -19,7 +19,7 @@ namespace SuccessStory.Views.Interface
         private bool _withContener;
 
 
-        public SuccessStoryAchievementsGraphics(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels, bool withTitle = true, bool withContener = false)
+        public SuccessStoryAchievementsGraphics(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels, SuccessStorySettings settings, bool withContener = false)
         {
             _withContener = withContener;
 
@@ -37,7 +37,8 @@ namespace SuccessStory.Views.Interface
             StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
             //StatsGraphicAchievementsY.MinValue = -1;
 
-            StatsGraphicAchievementsX.ShowLabels = withTitle;
+            StatsGraphicAchievementsX.ShowLabels = settings.EnableIntegrationAxisGraphic;
+            StatsGraphicAchievementsY.ShowLabels = settings.EnableIntegrationOrdinatesGraphic;
         }
 
         private void StatsGraphicAchievements_Loaded(object sender, RoutedEventArgs e)

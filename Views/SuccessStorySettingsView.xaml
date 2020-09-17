@@ -403,8 +403,12 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
 
-                                <Grid Grid.Column="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
@@ -413,8 +417,11 @@
                                     <TextBox Text="{Binding IntegrationShowGraphicHeight, FallbackValue=200}" Width="40" Grid.Column="1" />
                                 </Grid>
 
-                                <CheckBox Grid.Column="1" VerticalAlignment="Center">
+                                <CheckBox Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding EnableIntegrationAxisGraphic}">
                                     <Label Content="{DynamicResource LOCSucessStoryIntegrationGraphicShowLabels}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding EnableIntegrationOrdinatesGraphic}">
+                                    <Label Content="{DynamicResource LOCSucessStoryIntegrationGraphicShowLabelsOrdinates}" />
                                 </CheckBox>
                             </Grid>
                         </GroupBox>

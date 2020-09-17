@@ -28,6 +28,7 @@ namespace SuccessStory
         public bool IntegrationToggleDetails { get; set; } = true;
 
         public bool EnableIntegrationAxisGraphic { get; set; } = true;
+        public bool EnableIntegrationOrdinatesGraphic { get; set; } = false;
         public double IntegrationShowAchievementsHeight { get; set; } = 200;
         public double IntegrationShowGraphicHeight { get; set; } = 120;
 
@@ -98,6 +99,7 @@ namespace SuccessStory
                 IntegrationToggleDetails = savedSettings.IntegrationToggleDetails;
 
                 EnableIntegrationAxisGraphic = savedSettings.EnableIntegrationAxisGraphic;
+                EnableIntegrationOrdinatesGraphic = savedSettings.EnableIntegrationOrdinatesGraphic;
                 IntegrationShowAchievementsHeight = savedSettings.IntegrationShowAchievementsHeight;
                 IntegrationShowGraphicHeight = savedSettings.IntegrationShowGraphicHeight;
 

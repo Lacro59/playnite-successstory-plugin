@@ -59,6 +59,7 @@
     <sys:String x:Key="LOCSucessStoryIntegrationOptions">Selection elements</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Graphic options</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Show absciss label</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabelsOrdinates">Show ordinates label</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">附加数量r</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">附加百分比</sys:String>
