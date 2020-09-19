@@ -12,18 +12,18 @@
     SuccessStorySettingsView
     -->
 
-    <sys:String x:Key="LOCSucessStoryProgressBar">Treatment in progress...</sys:String>
+    <sys:String x:Key="LOCSucessStoryProgressBar">Исправление в процессе...</sys:String>
 
     <sys:String x:Key="LOCSucessStoryEnableSteam">Включить достижения Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">Включить достижения GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Включить Ретро достижения</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Включить отдпльное отображение для Ретро достижений (RetroAchievements)</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Включить отдельное отображение для Ретро достижений (RetroAchievements)</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Включая скрытые игры</sys:String>
     <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">График со всеми достижениями по месяцам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Графика с достижениями игровы по месяцам</sys:String>
+    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">График с достижениями игр по месяцам</sys:String>
 
     <sys:String x:Key="LOCSucessStoryDefaultSorting">Сортировка</sys:String>
     <sys:String x:Key="LOCSucessStoryIsAsc">По возрастанию</sys:String>
@@ -47,25 +47,25 @@
     <sys:String x:Key="LOCSucessStoryIntegrationShowGraphic">Показать график</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievements">Список достижений</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">Выше описания</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationToggleDetails">Прогрес на кнопке</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationToggleDetails">Прогресс на кнопке</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationInCustomTheme">Пользовательская интеграция темы (если интегрирована)</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButton">Добавить кнопку</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Добавить кнопку с деталями</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Добавить значек в окне</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Отображать прогрес:</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Добавить значок в окне</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Отображать прогресс:</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">Индикатором</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">В процентах</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Show compact unlocked list</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Show compact locked list</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Показывать компактный разблокированный список</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Показывать компактный заблокированный список</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIntegrationOptions">Selection elements</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Graphic options</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Show absciss label</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabelsOrdinates">Show ordinates label</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationOptions">Выбранные элементы</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Графические опции</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Показать метки абциссов</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabelsOrdinates">Показать метки координат</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Индикатор прогресса</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">Индикатором</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">В процентах</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationListOptions">List achievements options</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationListOptions">Список настроек достижений</sys:String>
 
     <sys:String x:Key="LOCSucessStoryRefreshDataMessage">База достижений была обновлена.</sys:String>
 
@@ -87,7 +87,7 @@
     <!-- UI -->
     <sys:String x:Key="LOCSucessStoryFilterSource">Источники</sys:String>
     <sys:String x:Key="LOCSucessStorySearch">Поиск</sys:String>
-    <sys:String x:Key="LOCSucessStoryGlobalProgression">Глобал. прогрес</sys:String>
+    <sys:String x:Key="LOCSucessStoryGlobalProgression">Глобал. прогресс</sys:String>
     <sys:String x:Key="LOCSucessStoryProgressionLaunched">Прогрессия [запущенные игры]</sys:String>
     <sys:String x:Key="LOCSucessStoryGameInformation">Информация</sys:String>
 
@@ -96,12 +96,12 @@
     <sys:String x:Key="LOCSucessStorylvGamesName">Название</sys:String>
     <sys:String x:Key="LOCSucessStorylvGamesLastActivity">Последняя сессия</sys:String>
     <sys:String x:Key="LOCSucessStorylvGamesSourceName">Источник</sys:String>
-    <sys:String x:Key="LOCSucessStorylvGamesProgression">Прогрес</sys:String>
+    <sys:String x:Key="LOCSucessStorylvGamesProgression">Прогресс</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Все достижения разблокированые по месяцам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">Все достижения разблокированые по дням</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitle">Достижения разблокированые по месяцам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleSources">Достижения разблокированые по источникам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Достижения разблокированые по дням</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Все достижения разблокированные по месяцам</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">Все достижения разблокированные по дням</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitle">Достижения разблокированные по месяцам</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleSources">Достижения разблокированные по источникам</sys:String>
+    <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Достижения разблокированные по дням</sys:String>
     
 </ResourceDictionary>
