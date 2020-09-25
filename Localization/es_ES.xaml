@@ -17,6 +17,7 @@
     <sys:String x:Key="LOCSucessStoryEnableSteam">Habilitar logros de Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">Habilitar logros de GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Habilitar logros de Origin</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableXbox">Habilitar logros de Xbox</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Habilitar logros de RetroAchievements</sys:String>
 
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Enable seprate view for RetroAchievements</sys:String>

@@ -588,6 +588,21 @@ namespace SuccessStory.Models
                 }
                 return true;
             }
+            if (settings.EnableXbox && GameSourceName.ToLower() == "xbox")
+            {
+                if (Tools.IsDisabledPlaynitePlugins("XboxLibrary", PluginUserDataPath))
+                {
+                    logger.Warn("SuccessStory - Xbox is enable then disabled");
+                    PlayniteApi.Notifications.Add(new NotificationMessage(
+                        $"SuccessStory-Xbox-disabled",
+                        "Xbox is enable then disabled",
+                        NotificationType.Error,
+                        () => plugin.OpenSettingsView()
+                    ));
+                    return false;
+                }
+                return true;
+            }
             if (settings.EnableLocal && GameSourceName.ToLower() == "playnite")
             {
                 return true;
@@ -631,8 +646,10 @@ namespace SuccessStory.Models
                     }
                     break;
 
-                case "playnite":
+                case "Xbox":
+                    break;
 
+                case "playnite":
                     break;
             }
         }
@@ -714,6 +731,12 @@ namespace SuccessStory.Models
                         GameAchievements = originAPI.GetAchievements(_PlayniteApi, GameId);
                     }
 
+                    if (GameSourceName.ToLower() == "xbox")
+                    {
+                        XboxAchievements xboxAchievements = new XboxAchievements(_PlayniteApi, settings, _PluginUserDataPath);
+                        GameAchievements = xboxAchievements.GetAchievements(GameAdded);
+                    }
+
                     if (GameSourceName.ToLower() == "playnite")
                     {
                         SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, settings, _PluginUserDataPath);
@@ -726,6 +749,10 @@ namespace SuccessStory.Models
                         RetroAchievements retroAchievementsAPI = new RetroAchievements(settings);
                         GameAchievements = retroAchievementsAPI.GetAchievements(_PlayniteApi, GameId, _PluginUserDataPath);
                     }
+
+#if DEBUG
+                    logger.Debug($"SuccessStory - Achievements for {GameAdded.Name} - {GameSourceName} - {JsonConvert.SerializeObject(GameAchievements)}");
+#endif
 
                     if (GameAchievements != null)
                     {

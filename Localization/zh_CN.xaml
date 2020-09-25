@@ -17,6 +17,7 @@
     <sys:String x:Key="LOCSucessStoryEnableSteam">启用Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">启用GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">启用Origin</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableXbox">启用Xbox</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">启用RetroAchievements</sys:String>
 
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Enable seprate view for RetroAchievements</sys:String>

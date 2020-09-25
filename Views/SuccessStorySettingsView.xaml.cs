@@ -33,6 +33,8 @@ namespace SuccessStory.Views
         int GogTotalAchievements;
         int OriginTotal;
         int OriginTotalAchievements;
+        int XboxTotal;
+        int XboxTotalAchievements;
         int RetroAchievementsTotal;
         int RetroAchievementsTotalAchievements;
 
@@ -79,6 +81,8 @@ namespace SuccessStory.Views
             GogTotalAchievements = 0;
             OriginTotal = 0;
             OriginTotalAchievements = 0;
+            XboxTotal = 0;
+            XboxTotalAchievements = 0;
             RetroAchievementsTotal = 0;
             RetroAchievementsTotalAchievements = 0;
 
@@ -138,6 +142,13 @@ namespace SuccessStory.Views
                             OriginTotalAchievements += 1;
                         }
                         break;
+                    case "xbox":
+                        XboxTotal += 1;
+                        if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                        {
+                            XboxTotalAchievements += 1;
+                        }
+                        break;
                     case "retroachievements":
                         RetroAchievementsTotal += 1;
                         if (achievementsDatabase.VerifAchievementsLoad(game.Id))
@@ -158,6 +169,7 @@ namespace SuccessStory.Views
             SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
             GogLoad.Content = GogTotalAchievements + "/" + GogTotal;
             OriginLoad.Content = OriginTotalAchievements + "/" + OriginTotal;
+            XboxLoad.Content = XboxTotalAchievements + "/" + XboxTotal;
             RetroAchievementsLoad.Content = RetroAchievementsTotalAchievements + "/" + RetroAchievementsTotal;
             LocalLoad.Content = LocalTotalAchievements + "/" + LocalTotal;
         }
@@ -289,6 +301,23 @@ namespace SuccessStory.Views
             SetTotal();
         }
 
+        private void Button_Click_Get_Xbox(object sender, RoutedEventArgs e)
+        {
+            achievementsDatabase.InitializeMultipleAdd(settings, "Xbox");
+
+            XboxLoad.Content = 0 + "/" + OriginTotal;
+            RefreshData("Xbox", true);
+            SetTotal();
+        }
+        private void Button_Click_Xbox(object sender, RoutedEventArgs e)
+        {
+            achievementsDatabase.InitializeMultipleAdd(settings, "Xbox");
+
+            XboxLoad.Content = 0 + "/" + XboxTotal;
+            RefreshData("Xbox");
+            SetTotal();
+        }
+
         private void Button_Click_Get_Local(object sender, RoutedEventArgs e)
         {
             achievementsDatabase.InitializeMultipleAdd(settings, "Playnite");
@@ -341,8 +370,6 @@ namespace SuccessStory.Views
 
                 foreach (var game in PlayniteApi.Database.Games)
                 {
-                    logger.Debug($"{game.Name}");
-
                     try
                     {
                         string GameSourceName = string.Empty;

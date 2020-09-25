@@ -136,6 +136,7 @@ namespace SuccessStory.Views.Interface
                         if (i < nbGrid - 1)
                         {
                             Image gridImage = new Image();
+                            gridImage.Stretch = Stretch.UniformToFill;
                             gridImage.Width = 48;
                             gridImage.Height = 48;
                             gridImage.Source = AchievementsList[i].Icon;

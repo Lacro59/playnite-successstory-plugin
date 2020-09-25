@@ -17,6 +17,7 @@
     <sys:String x:Key="LOCSucessStoryEnableSteam">Activier Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">Activier GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Activier Origin</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableXbox">Activier Xbox</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Activier RetroAchievements</sys:String>
 
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Activier la vue séparée pour RetroAchievements</sys:String>

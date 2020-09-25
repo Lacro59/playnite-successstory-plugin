@@ -48,6 +48,7 @@ namespace SuccessStory
         public bool EnableSteam { get; set; } = false;
         public bool EnableGog { get; set; } = false;
         public bool EnableOrigin { get; set; } = false;
+        public bool EnableXbox { get; set; } = false;
         public bool EnableRetroAchievements { get; set; } = false;
 
         public bool EnableRetroAchievementsView { get; set; } = false;
@@ -119,6 +120,7 @@ namespace SuccessStory
                 EnableSteam = savedSettings.EnableSteam;
                 EnableGog = savedSettings.EnableGog;
                 EnableOrigin = savedSettings.EnableOrigin;
+                EnableXbox = savedSettings.EnableXbox;
                 EnableRetroAchievements = savedSettings.EnableRetroAchievements;
 
                 EnableRetroAchievementsView = savedSettings.EnableRetroAchievementsView;

@@ -75,7 +75,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Image Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left">
+                    <Image Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left" Stretch="UniformToFill">
                         <Image.Source>
                             <FormatConvertedBitmap Source="{Binding Icon}"/>
                         </Image.Source>

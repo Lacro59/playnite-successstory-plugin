@@ -1,13 +1,6 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Models;
-using PluginCommon;
 using SuccessStory.Database;
-using SuccessStory.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {

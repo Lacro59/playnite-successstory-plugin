@@ -17,6 +17,7 @@
     <sys:String x:Key="LOCSucessStoryEnableSteam">Включить достижения Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">Включить достижения GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableXbox">Включить достижения Xbox</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Включить Ретро достижения</sys:String>
 
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Включить отдпльное отображение для Ретро достижений (RetroAchievements)</sys:String>
