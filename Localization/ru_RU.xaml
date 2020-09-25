@@ -17,6 +17,7 @@
     <sys:String x:Key="LOCSucessStoryEnableSteam">Включить достижения Steam</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableGog">Включить достижения GOG</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin</sys:String>
+    <sys:String x:Key="LOCSucessStoryEnableXbox">Включить достижения Xbox</sys:String>
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Включить Ретро достижения</sys:String>
 
     <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Включить отдельное отображение для Ретро достижений (RetroAchievements)</sys:String>
@@ -53,13 +54,12 @@
     <sys:String x:Key="LOCSucessStoryIntegrationButtonDetails">Добавить кнопку с деталями</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationButtonHeader">Добавить значок в окне</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Отображать прогресс:</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">Индикатором</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">В процентах</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Показывать компактный разблокированный список</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Показывать компактный заблокированный список</sys:String>
 
     <sys:String x:Key="LOCSucessStoryIntegrationOptions">Выбранные элементы</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Графические опции</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptionsCountAbscissa">Number of data in abscissa</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Показать метки абциссов</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabelsOrdinates">Показать метки координат</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Индикатор прогресса</sys:String>
