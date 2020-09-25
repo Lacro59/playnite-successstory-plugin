@@ -546,11 +546,11 @@ namespace SuccessStory
                 AchievementsGraphicsDataCount GraphicsData = null;
                 if (settings.GraphicAllUnlockedByDay)
                 {
-                    GraphicsData = achievementsDatabase.GetCountByMonth(GameSelected.Id);
+                    GraphicsData = achievementsDatabase.GetCountByMonth(GameSelected.Id, settings.IntegrationGraphicOptionsCountAbscissa);
                 }
                 else
                 {
-                    GraphicsData = achievementsDatabase.GetCountByDay(GameSelected.Id);
+                    GraphicsData = achievementsDatabase.GetCountByDay(GameSelected.Id, settings.IntegrationGraphicOptionsCountAbscissa);
                 }
                 string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
                 SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
@@ -560,7 +560,7 @@ namespace SuccessStory
                     Values = GraphicsData.Series
                 });
 
-                spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings.EnableIntegrationAxisGraphic, IsCustom));
+                spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings, IsCustom));
 
                 spA.Children.Add(spAG);
                 spA.UpdateLayout();

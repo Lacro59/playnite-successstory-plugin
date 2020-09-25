@@ -97,7 +97,7 @@ namespace SuccessStory
             });
 
             SuccessStory_Achievements_Graphics.Children.Clear();
-            SuccessStory_Achievements_Graphics.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
+            SuccessStory_Achievements_Graphics.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings));
             SuccessStory_Achievements_Graphics.UpdateLayout();
 
             // Set game selected
@@ -486,7 +486,7 @@ namespace SuccessStory
                 });
 
                 SuccessStory_Achievements_Graphics_Game.Children.Clear();
-                SuccessStory_Achievements_Graphics_Game.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels));
+                SuccessStory_Achievements_Graphics_Game.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings));
                 SuccessStory_Achievements_Graphics_Game.UpdateLayout();
 
                 GC.Collect();

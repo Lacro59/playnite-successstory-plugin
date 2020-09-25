@@ -58,7 +58,9 @@
 
     <sys:String x:Key="LOCSucessStoryIntegrationOptions">Sélection des élements</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Options du graphique</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptionsCountAbscissa">Nombre de données en abscisse</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Afficher les noms sur l'abscisse</sys:String>
+    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabelsOrdinates">Afficher les noms sur l'ordonnée</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Options de la barre de progression</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">Afficher l'indicateur</sys:String>
     <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">Afficher les pourcentage</sys:String>

@@ -31,6 +31,7 @@ namespace SuccessStory
         public bool EnableIntegrationOrdinatesGraphic { get; set; } = false;
         public double IntegrationShowAchievementsHeight { get; set; } = 200;
         public double IntegrationShowGraphicHeight { get; set; } = 120;
+        public int IntegrationGraphicOptionsCountAbscissa { get; set; } = 11;
 
         public bool EnableIntegrationInCustomTheme { get; set; } = false;
 
@@ -102,6 +103,7 @@ namespace SuccessStory
                 EnableIntegrationOrdinatesGraphic = savedSettings.EnableIntegrationOrdinatesGraphic;
                 IntegrationShowAchievementsHeight = savedSettings.IntegrationShowAchievementsHeight;
                 IntegrationShowGraphicHeight = savedSettings.IntegrationShowGraphicHeight;
+                IntegrationGraphicOptionsCountAbscissa = savedSettings.IntegrationGraphicOptionsCountAbscissa;
 
                 EnableIntegrationInCustomTheme = savedSettings.EnableIntegrationInCustomTheme;
 

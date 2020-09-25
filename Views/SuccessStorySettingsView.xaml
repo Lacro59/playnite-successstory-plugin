@@ -406,6 +406,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
                                     <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
                                 </Grid.RowDefinitions>
 
                                 <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
@@ -414,7 +415,8 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                    <TextBox Text="{Binding IntegrationShowGraphicHeight, FallbackValue=200}" Width="40" Grid.Column="1" />
+                                    <TextBox Text="{Binding IntegrationShowGraphicHeight, FallbackValue=200}" Width="40" Grid.Column="1"
+                                             VerticalAlignment="Center" TextAlignment="Center"/>
                                 </Grid>
 
                                 <CheckBox Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding EnableIntegrationAxisGraphic}">
@@ -423,6 +425,21 @@
                                 <CheckBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding EnableIntegrationOrdinatesGraphic}">
                                     <Label Content="{DynamicResource LOCSucessStoryIntegrationGraphicShowLabelsOrdinates}" />
                                 </CheckBox>
+
+
+                                <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="15" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="{DynamicResource LOCSucessStoryIntegrationGraphicOptionsCountAbscissa}" Grid.Column="0" />
+                                    <Slider Minimum="3" Maximum="30" Value="{Binding IntegrationGraphicOptionsCountAbscissa}" 
+                                            IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
+                                            ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
+                                            Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sCountAbscissa" />
+                                    <Label Grid.Column="2" Content="{Binding ElementName=sCountAbscissa, Path=Value}" HorizontalAlignment="Center"/>
+                                </Grid>
                             </Grid>
                         </GroupBox>
 
@@ -542,13 +559,6 @@
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="IsEnabled" Value="True" />
                                         </MultiDataTrigger>
-                                        <!--MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
-                                                <Condition Binding="{Binding IntegrationShowAchievements}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger-->
                                     </Style.Triggers>
                                 </Style>
                             </GroupBox.Style>
@@ -565,7 +575,8 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                    <TextBox Text="{Binding IntegrationShowAchievementsHeight, FallbackValue=200}" Width="40" VerticalAlignment="Center" Grid.Column="1" />
+                                    <TextBox Text="{Binding IntegrationShowAchievementsHeight, FallbackValue=200}" Width="40" Grid.Column="1"
+                                             VerticalAlignment="Center" TextAlignment="Center"/>
                                 </Grid>
                             </Grid>
                         </GroupBox>
