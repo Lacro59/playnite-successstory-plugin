@@ -277,7 +277,9 @@ namespace SuccessStory.Clients
 
                 if (!TryByName)
                 {
+#if DEBUG
                     logger.Debug($"SuccessStory - FindHiddenDescription() for {SteamId} - {AppId}");
+#endif
                     url = string.Format(UrlProfilById, SteamId, AppId);
                     try
                     {
@@ -290,7 +292,9 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
+#if DEBUG
                     logger.Debug($"SuccessStory - FindHiddenDescription() for {SteamUser} - {AppId}");
+#endif
                     url = string.Format(UrlProfilByName, SteamUser, AppId);
                     try
                     {

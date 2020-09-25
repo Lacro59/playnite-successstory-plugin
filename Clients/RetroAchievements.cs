@@ -109,7 +109,6 @@ namespace SuccessStory.Clients
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
                 {
                     string Title = ra_Game.Title.Trim().ToLower();
-                    //logger.Debug($"SuccessStory - {GameName.Trim().ToLower()} / {Title} / {gameID}");
                     if (GameName.Trim().ToLower() == Title && gameID == 0)
                     {
                         logger.Info($"SuccessStory - Find for {GameName.Trim().ToLower()} / {Title} with {PlatformName} in {consoleID}");
@@ -122,7 +121,6 @@ namespace SuccessStory.Clients
                     {
                         foreach (string TitleSplit in TitleSplits)
                         {
-                            //logger.Debug($"SuccessStory - {GameName.Trim().ToLower()} / {TitleSplit.Trim()} / {gameID}");
                             if (GameName.Trim().ToLower() == TitleSplit.Trim() && gameID == 0)
                             {
                                 logger.Info($"SuccessStory - Find for {GameName.Trim().ToLower()} / {TitleSplit.Trim()} with {PlatformName} in {consoleID}");
@@ -137,7 +135,6 @@ namespace SuccessStory.Clients
                     {
                         foreach (string TitleSplit in TitleSplits)
                         {
-                            //logger.Debug($"SuccessStory - {GameName.Trim().ToLower()} / {TitleSplit.Trim()} / {gameID}");
                             if (GameName.Trim().ToLower() == TitleSplit.Trim() && gameID == 0)
                             {
                                 logger.Info($"SuccessStory - Find for {GameName.Trim().ToLower()} / {TitleSplit.Trim()} with {PlatformName} in {consoleID}");

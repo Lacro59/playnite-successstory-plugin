@@ -313,10 +313,40 @@ namespace SuccessStory
 
             GameAchievements SelectedGameAchievements = achievementsDatabase.Get(GameSelected.Id);
 
+            // TODO Add in PluginCommon
+            string GameSourceName = string.Empty;
+
+            List<Guid> ListEmulators = new List<Guid>();
+            foreach (var item in PlayniteApi.Database.Emulators)
+            {
+                ListEmulators.Add(item.Id);
+            }
+
+            if (GameSelected.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+            {
+                GameSourceName = GameSelected.Source.Name;
+
+                if (GameSelected.PlayAction != null && GameSelected.PlayAction.EmulatorId != null && ListEmulators.Contains(GameSelected.PlayAction.EmulatorId))
+                {
+                    GameSourceName = "RetroAchievements";
+                }
+            }
+            else
+            {
+                if (GameSelected.PlayAction != null && GameSelected.PlayAction.EmulatorId != null && ListEmulators.Contains(GameSelected.PlayAction.EmulatorId))
+                {
+                    GameSourceName = "RetroAchievements";
+                }
+                else
+                {
+                    GameSourceName = "Playnite";
+                }
+            }
+
             // Download Achievements if not exist in database.
             if (SelectedGameAchievements == null)
             {
-                logger.Info("SuccessStory - Download achievements for " + GameSelected.Name);
+                logger.Info($"SuccessStory - Download achievements for {GameSelected.Name} - {GameSourceName}");
                 achievementsDatabase.Add(GameSelected, settings);
                 achievementsDatabase.Initialize();
                 SelectedGameAchievements = achievementsDatabase.Get(GameSelected.Id);
@@ -384,7 +414,6 @@ namespace SuccessStory
                         // No achievements
                         if (SelectedGameAchievements == null || !SelectedGameAchievements.HaveAchivements)
                         {
-                            //logger.Debug(JsonConvert.SerializeObject(SelectedGameAchievements));
                             logger.Warn("SuccessStory - No achievement for " + GameSelected.Name);
                             return;
                         }
@@ -560,6 +589,7 @@ namespace SuccessStory
                     Values = GraphicsData.Series
                 });
 
+                settings.IgnoreSettings = false;
                 spAG.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings, IsCustom));
 
                 spA.Children.Add(spAG);

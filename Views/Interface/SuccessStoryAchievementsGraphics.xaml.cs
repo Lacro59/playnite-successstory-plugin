@@ -35,10 +35,12 @@ namespace SuccessStory.Views.Interface
 
             StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
             StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
-            //StatsGraphicAchievementsY.MinValue = -1;
 
-            StatsGraphicAchievementsX.ShowLabels = settings.EnableIntegrationAxisGraphic;
-            StatsGraphicAchievementsY.ShowLabels = settings.EnableIntegrationOrdinatesGraphic;
+            if (!settings.IgnoreSettings)
+            {
+                StatsGraphicAchievementsX.ShowLabels = settings.EnableIntegrationAxisGraphic;
+                StatsGraphicAchievementsY.ShowLabels = settings.EnableIntegrationOrdinatesGraphic;
+            }
         }
 
         private void StatsGraphicAchievements_Loaded(object sender, RoutedEventArgs e)

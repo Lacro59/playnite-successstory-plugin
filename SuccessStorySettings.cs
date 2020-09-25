@@ -10,6 +10,7 @@ namespace SuccessStory
         private readonly SuccessStory plugin;
 
         public bool EnableCheckVersion { get; set; } = true;
+        public bool IgnoreSettings { get; set; } = false;
 
         public bool EnableIntegrationInDescription { get; set; } = false;
         public bool EnableIntegrationInDescriptionWithToggle { get; set; } = false;

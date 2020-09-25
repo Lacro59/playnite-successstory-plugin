@@ -175,7 +175,6 @@ namespace SuccessStory.Clients
 
         private async Task RefreshTokens()
         {
-            logger.Debug("Refreshing xbox tokens.");
             var tokens = Serialization.FromJsonFile<AuthenticationData>(liveTokensPath);
 
             var query = HttpUtility.ParseQueryString(string.Empty);

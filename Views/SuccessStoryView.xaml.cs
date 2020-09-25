@@ -97,6 +97,7 @@ namespace SuccessStory
             });
 
             SuccessStory_Achievements_Graphics.Children.Clear();
+            settings.IgnoreSettings = true;
             SuccessStory_Achievements_Graphics.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings));
             SuccessStory_Achievements_Graphics.UpdateLayout();
 
@@ -151,6 +152,11 @@ namespace SuccessStory
                         icon = TransformIcon.Get("Origin") + " ";
                         FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Origin", SourceNameShort = "Origin", IsCheck = false });
                     }
+                    if (settings.EnableXbox)
+                    {
+                        icon = TransformIcon.Get("Xbox") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Xbox", SourceNameShort = "Xbox", IsCheck = false });
+                    }
                 }
             }
             else
@@ -174,6 +180,11 @@ namespace SuccessStory
                 {
                     icon = TransformIcon.Get("Origin") + " ";
                     FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Origin", SourceNameShort = "Origin", IsCheck = false });
+                }
+                if (settings.EnableXbox)
+                {
+                    icon = TransformIcon.Get("Xbox") + " ";
+                    FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Xbox", SourceNameShort = "Xbox", IsCheck = false });
                 }
                 if (settings.EnableRetroAchievements)
                 {
@@ -486,6 +497,7 @@ namespace SuccessStory
                 });
 
                 SuccessStory_Achievements_Graphics_Game.Children.Clear();
+                settings.IgnoreSettings = true;
                 SuccessStory_Achievements_Graphics_Game.Children.Add(new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings));
                 SuccessStory_Achievements_Graphics_Game.UpdateLayout();
 
