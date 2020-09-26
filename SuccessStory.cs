@@ -385,6 +385,9 @@ namespace SuccessStory
 
 
                 // Reset resources
+#if DEBUG
+                logger.Debug($"SuccessStory - Reset ressource for {GameSelected.Name}");
+#endif
                 List<ResourcesList> resourcesLists = new List<ResourcesList>();
                 resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = false });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = 0 });
@@ -419,6 +422,9 @@ namespace SuccessStory
                         }
 
                         // Add resources
+#if DEBUG
+                        logger.Debug($"SuccessStory - Add ressource for {GameSelected.Name}");
+#endif
                         resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SelectedGameAchievements.Total });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = double.Parse(SelectedGameAchievements.Total.ToString()) });
@@ -437,6 +443,9 @@ namespace SuccessStory
                         {
                             if (settings.EnableIntegrationInDescriptionWithToggle)
                             {
+#if DEBUG
+                                logger.Debug($"SuccessStory - Add IntegrationInDescriptionWithToggle for {GameSelected.Name}");
+#endif
                                 ToggleButton tb = new ToggleButton();
                                 if (settings.IntegrationToggleDetails)
                                 {
@@ -475,6 +484,9 @@ namespace SuccessStory
                         // Auto adding button
                         if (settings.EnableIntegrationButton || settings.EnableIntegrationButtonDetails)
                         {
+#if DEBUG
+                            logger.Debug($"SuccessStory - Add IntegrationButtonDetails for {GameSelected.Name}");
+#endif
                             Button bt = new Button();
                             if (settings.EnableIntegrationButton)
                             {
@@ -500,6 +512,10 @@ namespace SuccessStory
                         // Custom theme
                         if (settings.EnableIntegrationInCustomTheme)
                         {
+#if DEBUG
+                            logger.Debug($"SuccessStory - Add IntegrationInCustomTheme for {GameSelected.Name}");
+#endif
+
                             if (settings.IntegrationShowGraphic)
                             {
                                 StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, false, false, false, true);

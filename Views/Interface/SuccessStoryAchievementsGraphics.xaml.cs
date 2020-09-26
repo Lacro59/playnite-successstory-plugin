@@ -49,11 +49,11 @@ namespace SuccessStory.Views.Interface
             var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
             if (_withContener)
             {
-                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent);
+                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent).Parent);
             }
 
 #if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsGraphics - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsGraphics({_withContener}) - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
 #endif
 
             if (!double.IsNaN(parent.Height))
