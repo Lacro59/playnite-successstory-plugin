@@ -50,17 +50,10 @@ namespace SuccessStory.Clients
             };
 
 
-            List<XboxAchievement> ListAchievementsAll = new List<XboxAchievement>();
             List<XboxAchievement> ListAchievements = new List<XboxAchievement>();
             try
             {
-                ListAchievementsAll = GetXboxAchievements().GetAwaiter().GetResult();
-
-#if DEBUG
-                logger.Debug("SuccessStory - Xbox achievementsAll - " + JsonConvert.SerializeObject(ListAchievementsAll));
-#endif
-
-                ListAchievements = ListAchievementsAll.FindAll(x => x.titleAssociations[0].name.ToLower() == game.Name.ToLower());
+                ListAchievements = GetXboxAchievements(game.GameId).GetAwaiter().GetResult();
 
 #if DEBUG
                 logger.Debug("SuccessStory - Xbox achievements - " + JsonConvert.SerializeObject(ListAchievements));
@@ -200,7 +193,38 @@ namespace SuccessStory.Clients
         }
 
 
-        private async Task<List<XboxAchievement>> GetXboxAchievements()
+        private async Task<TitleHistoryResponse.Title> GetTitleInfo(string pfn)
+        {
+            var tokens = Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
+            using (var client = new HttpClient())
+            {
+                SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
+                var requestData = new Dictionary<string, List<string>>
+                {
+                    { "pfns", new List<string> { pfn } },
+                    { "windowsPhoneProductIds", new List<string>() },
+                };
+
+                var response = await client.PostAsync(
+                           @"https://titlehub.xboxlive.com/titles/batch/decoration/detail",
+                           new StringContent(Serialization.ToJson(requestData), Encoding.UTF8, "application/json"));
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    throw new Exception("Title info not available.");
+                }
+                else if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    throw new Exception("User is not authenticated.");
+                }
+
+                var cont = await response.Content.ReadAsStringAsync();
+                var titleHistory = Serialization.FromJson<TitleHistoryResponse>(cont);
+                return titleHistory.titles.First();
+            }
+        }
+
+        private async Task<List<XboxAchievement>> GetXboxAchievements(string pfn = "")
         {
             if (!File.Exists(xstsLoginTokesPath))
             {
@@ -220,11 +244,25 @@ namespace SuccessStory.Clients
                 }
             }
 
+
+            string titleId = string.Empty;
+            if (!pfn.IsNullOrEmpty())
+            {
+                var libTitle = GetTitleInfo(pfn).Result;
+                titleId = libTitle.titleId;
+            }
+
             var tokens = Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
+            string url = string.Format(urlAchievements + $"?titleId={titleId}", tokens.DisplayClaims.xui[0].xid);
+            if (!titleId.IsNullOrEmpty())
+            {
+                url = string.Format(urlAchievements, tokens.DisplayClaims.xui[0].xid);
+            }
+
             using (var client = new HttpClient())
             {
                 SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
-                var response = client.GetAsync(string.Format(urlAchievements, tokens.DisplayClaims.xui[0].xid)).Result;
+                var response = client.GetAsync(url).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     throw new Exception("User is not authenticated");
