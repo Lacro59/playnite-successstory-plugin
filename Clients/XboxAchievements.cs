@@ -108,6 +108,7 @@ namespace SuccessStory.Clients
             {
                 if (!File.Exists(xstsLoginTokesPath))
                 {
+                    logger.Debug("SuccessStory - Xbox GetIsUserLoggedIn() - User is not authenticated - File not exist");
                     return false;
                 }
 
@@ -124,6 +125,9 @@ namespace SuccessStory.Clients
                     var response = client.PostAsync(
                         @"https://profile.xboxlive.com/users/batch/profile/settings",
                         new StringContent(Serialization.ToJson(requestData), Encoding.UTF8, "application/json")).Result;
+
+                    logger.Debug($"SuccessStory - Xbox GetIsUserLoggedIn() - {response.StatusCode}");
+
                     return response.StatusCode == System.Net.HttpStatusCode.OK;
                 }
             }
@@ -228,7 +232,13 @@ namespace SuccessStory.Clients
         {
             if (!File.Exists(xstsLoginTokesPath))
             {
-                throw new Exception("User is not authenticated");
+                logger.Warn("SuccessStory - Xbox - User is not authenticated - File not exist");
+                _PlayniteApi.Notifications.Add(new NotificationMessage(
+                    $"SuccessStory - SuccessStory-Xbox-notAuthenticated",
+                    "Xbox user is not authenticated",
+                    NotificationType.Error
+                ));
+                return new List<XboxAchievement>();
             }
             else
             {
@@ -240,7 +250,13 @@ namespace SuccessStory.Clients
 
                 if (!await GetIsUserLoggedIn())
                 {
-                    throw new Exception("User is not authenticated");
+                    logger.Warn("SuccessStory - Xbox - User is not authenticated");
+                    _PlayniteApi.Notifications.Add(new NotificationMessage(
+                        $"SuccessStory-Xbox-notAuthenticated",
+                        "SuccessStory - Xbox user is not authenticated",
+                        NotificationType.Error
+                    ));
+                    return new List<XboxAchievement>();
                 }
             }
 
@@ -321,6 +337,4 @@ namespace SuccessStory.Clients
         public string type { get; set; }
         public string url { get; set; }
     }
-
-
 }

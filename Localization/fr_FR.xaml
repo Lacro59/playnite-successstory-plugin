@@ -5,7 +5,7 @@
     <!--  
     MainView
     -->
-    <sys:String x:Key="LOCSucessStory">Success Story</sys:String>
+    <sys:String x:Key="LOCSucessStory">SuccessStory</sys:String>
     <sys:String x:Key="LOCSucessStoryAchievements">Succès</sys:String>
 
     <!--  

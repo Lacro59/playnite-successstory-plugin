@@ -550,7 +550,7 @@ namespace SuccessStory.Models
                     logger.Warn("SuccessStory - Steam is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         $"SuccessStory-Steam-disabled",
-                        "Steam is enable then disabled",
+                        "SuccessStory - Steam is enable then disabled",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
@@ -580,7 +580,7 @@ namespace SuccessStory.Models
                     logger.Warn("SuccessStory - Origin is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         $"SuccessStory-Origin-disabled",
-                        "Origin is enable then disabled",
+                        "SuccessStory - Origin is enable then disabled",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
@@ -595,7 +595,7 @@ namespace SuccessStory.Models
                     logger.Warn("SuccessStory - Xbox is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         $"SuccessStory-Xbox-disabled",
-                        "Xbox is enable then disabled",
+                        "SuccessStory - Xbox is enable then disabled",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));

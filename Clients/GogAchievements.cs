@@ -155,7 +155,7 @@ namespace SuccessStory.Clients
             {
                 PlayniteApi.Notifications.Add(new NotificationMessage(
                     $"SuccessStory-Gog-notConnected",
-                    "GOG user is not connected",
+                    "SuccessStory - GOG user is not connected",
                     NotificationType.Error
                 ));
                 logger.Warn("SuccessStory - GOG user is not connected");

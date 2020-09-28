@@ -239,217 +239,232 @@ namespace SuccessStory
         /// </summary>
         public void GetListGame()
         {
-            List<Guid> ListEmulators = new List<Guid>();
-            foreach (var item in PlayniteApi.Database.Emulators)
+            try
             {
-                ListEmulators.Add(item.Id);
-            }
-
-            if (ListGames.Count == 0)
-            {
-                foreach (var item in PlayniteApiDatabase.Games)
+                List<Guid> ListEmulators = new List<Guid>();
+                foreach (var item in PlayniteApi.Database.Emulators)
                 {
-                    string GameSourceName = string.Empty;
-                    if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
-                    {
-                        GameSourceName = item.Source.Name;
+                    ListEmulators.Add(item.Id);
+                }
 
-                        if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
-                        {
-                            GameSourceName = "RetroAchievements";
-                        }
-                    }
-                    else
+                if (ListGames.Count == 0)
+                {
+                    foreach (var item in PlayniteApiDatabase.Games)
                     {
-                        if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                        string GameSourceName = string.Empty;
+                        if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                         {
-                            GameSourceName = "RetroAchievements";
+                            try
+                            {
+                                GameSourceName = item.Source.Name;
+                            }
+                            catch
+                            {
+                                GameSourceName = "Undefined";
+                                logger.Warn($"SuccessStory - No source name for {item.Name}");
+                            }
+
+                            if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                            {
+                                GameSourceName = "RetroAchievements";
+                            }
                         }
                         else
                         {
-                            GameSourceName = "Playnite";
-                        }
-                    }
-
-                    if (AchievementsDatabase.HaveAchievements(item.Id))
-                    {
-                        if (AchievementsDatabase.VerifToAddOrShow(plugin, PlayniteApi, GameSourceName, settings, PluginUserDataPath))
-                        {
-                            string GameId = item.Id.ToString();
-                            string GameName = item.Name;
-                            string GameIcon;
-                            DateTime? GameLastActivity = null;
-
-                            string SourceName = string.Empty;
-                            if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+                            if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
                             {
-                                SourceName = item.Source.Name;
-
-                                if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
-                                {
-                                    SourceName = "RetroAchievements";
-                                }
+                                GameSourceName = "RetroAchievements";
                             }
                             else
                             {
-                                if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                                GameSourceName = "Playnite";
+                            }
+                        }
+
+                        if (AchievementsDatabase.HaveAchievements(item.Id))
+                        {
+                            if (AchievementsDatabase.VerifToAddOrShow(plugin, PlayniteApi, GameSourceName, settings, PluginUserDataPath))
+                            {
+                                string GameId = item.Id.ToString();
+                                string GameName = item.Name;
+                                string GameIcon;
+                                DateTime? GameLastActivity = null;
+
+                                string SourceName = string.Empty;
+                                if (item.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
                                 {
-                                    SourceName = "RetroAchievements";
+                                    SourceName = item.Source.Name;
+
+                                    if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                                    {
+                                        SourceName = "RetroAchievements";
+                                    }
                                 }
                                 else
                                 {
-                                    SourceName = "Playnite";
+                                    if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                                    {
+                                        SourceName = "RetroAchievements";
+                                    }
+                                    else
+                                    {
+                                        SourceName = "Playnite";
+                                    }
                                 }
+
+                                GameAchievements GameAchievements = AchievementsDatabase.Get(item.Id);
+
+                                if (item.LastActivity != null)
+                                {
+                                    GameLastActivity = ((DateTime)item.LastActivity).ToLocalTime();
+                                }
+
+                                BitmapImage iconImage = new BitmapImage();
+                                if (String.IsNullOrEmpty(item.Icon) == false)
+                                {
+                                    iconImage.BeginInit();
+                                    GameIcon = PlayniteApiDatabase.GetFullFilePath(item.Icon);
+                                    iconImage.UriSource = new Uri(GameIcon, UriKind.RelativeOrAbsolute);
+                                    iconImage.EndInit();
+                                }
+
+                                ListGames.Add(new ListViewGames()
+                                {
+                                    Id = GameId,
+                                    Name = GameName,
+                                    Icon = iconImage,
+                                    LastActivity = GameLastActivity,
+                                    SourceName = SourceName,
+                                    SourceIcon = TransformIcon.Get(SourceName),
+                                    ProgressionValue = GameAchievements.Progression,
+                                    Total = GameAchievements.Total,
+                                    TotalPercent = GameAchievements.Progression + "%",
+                                    Unlocked = GameAchievements.Unlocked
+                                });
+
+                                iconImage = null;
                             }
-
-                            GameAchievements GameAchievements = AchievementsDatabase.Get(item.Id);
-
-                            if (item.LastActivity != null)
-                            {
-                                GameLastActivity = ((DateTime)item.LastActivity).ToLocalTime();
-                            }
-
-                            BitmapImage iconImage = new BitmapImage();
-                            if (String.IsNullOrEmpty(item.Icon) == false)
-                            {
-                                iconImage.BeginInit();
-                                GameIcon = PlayniteApiDatabase.GetFullFilePath(item.Icon);
-                                iconImage.UriSource = new Uri(GameIcon, UriKind.RelativeOrAbsolute);
-                                iconImage.EndInit();
-                            }
-
-                            ListGames.Add(new ListViewGames()
-                            {
-                                Id = GameId,
-                                Name = GameName,
-                                Icon = iconImage,
-                                LastActivity = GameLastActivity,
-                                SourceName = SourceName,
-                                SourceIcon = TransformIcon.Get(SourceName),
-                                ProgressionValue = GameAchievements.Progression,
-                                Total = GameAchievements.Total,
-                                TotalPercent = GameAchievements.Progression + "%",
-                                Unlocked = GameAchievements.Unlocked
-                            });
-
-                            iconImage = null;
                         }
                     }
                 }
-            }
 
 
-            ListviewGames.ItemsSource = ListGames;
-            // Filter
-            if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
-            {
-                ListviewGames.ItemsSource = ListGames.FindAll(
-                    x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1 && SearchSources.Contains(x.SourceName)
-                );
-                return;
-            }
-
-            if (!TextboxSearch.Text.IsNullOrEmpty())
-            {
-                ListviewGames.ItemsSource = ListGames.FindAll(
-                    x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1
-                );
-                return;
-            }
-
-            if (SearchSources.Count != 0)
-            {
-                ListviewGames.ItemsSource = ListGames.FindAll(
-                    x => SearchSources.Contains(x.SourceName)
-                );
-                return;
-            }
-
-
-            // Sorting
-            try
-            {
-                var columnBinding = _lastHeaderClicked.Column.DisplayMemberBinding as Binding;
-                var sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
-
-                // Specific sort with another column
-                if (_lastHeaderClicked.Name == "lvSourceIcon")
+                ListviewGames.ItemsSource = ListGames;
+                // Filter
+                if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
                 {
-                    columnBinding = lvSourceName.Column.DisplayMemberBinding as Binding;
-                    sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
-                }
-                if (_lastHeaderClicked.Name == "lvProgression")
-                {
-                    columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
-                    sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
-                }
-                Sort(sortBy, _lastDirection);
-            }
-            // If first view
-            catch
-            {
-                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
-
-                switch (settings.NameSorting)
-                {
-                    case ("Name"):
-                        _lastHeaderClicked = lvName;
-                        if (settings.IsAsc)
-                        {
-                            _lastHeaderClicked.Content += " ▲";
-                        }
-                        else
-                        {
-                            _lastHeaderClicked.Content += " ▼";
-                        }
-                        break;
-                    case ("LastActivity"):
-                        _lastHeaderClicked = lvLastActivity;
-                        if (settings.IsAsc)
-                        {
-                            _lastHeaderClicked.Content += " ▲";
-                        }
-                        else
-                        {
-                            _lastHeaderClicked.Content += " ▼";
-                        }
-                        break;
-                    case ("SourceName"):
-                        _lastHeaderClicked = lvSourceIcon;
-                        if (settings.IsAsc)
-                        {
-                            lvSourceIcon.Content += " ▲";
-                        }
-                        else
-                        {
-                            lvSourceIcon.Content += " ▼";
-                        }
-                        break;
-                    case ("ProgressionValue"):
-                        _lastHeaderClicked = lvProgression;
-                        if (settings.IsAsc)
-                        {
-                            lvProgression.Content += " ▲";
-                        }
-                        else
-                        {
-                            lvProgression.Content += " ▼";
-                        }
-                        break;
+                    ListviewGames.ItemsSource = ListGames.FindAll(
+                        x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1 && SearchSources.Contains(x.SourceName)
+                    );
+                    return;
                 }
 
-                
-                if (settings.IsAsc)
+                if (!TextboxSearch.Text.IsNullOrEmpty())
                 {
-                    _lastDirection = ListSortDirection.Ascending;
+                    ListviewGames.ItemsSource = ListGames.FindAll(
+                        x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1
+                    );
+                    return;
                 }
-                else
+
+                if (SearchSources.Count != 0)
                 {
-                    _lastDirection = ListSortDirection.Descending;
+                    ListviewGames.ItemsSource = ListGames.FindAll(
+                        x => SearchSources.Contains(x.SourceName)
+                    );
+                    return;
                 }
 
 
-                view.SortDescriptions.Add(new SortDescription(settings.NameSorting, _lastDirection));
+                // Sorting
+                try
+                {
+                    var columnBinding = _lastHeaderClicked.Column.DisplayMemberBinding as Binding;
+                    var sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
+
+                    // Specific sort with another column
+                    if (_lastHeaderClicked.Name == "lvSourceIcon")
+                    {
+                        columnBinding = lvSourceName.Column.DisplayMemberBinding as Binding;
+                        sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
+                    }
+                    if (_lastHeaderClicked.Name == "lvProgression")
+                    {
+                        columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
+                        sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
+                    }
+                    Sort(sortBy, _lastDirection);
+                }
+                // If first view
+                catch
+                {
+                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
+
+                    switch (settings.NameSorting)
+                    {
+                        case ("Name"):
+                            _lastHeaderClicked = lvName;
+                            if (settings.IsAsc)
+                            {
+                                _lastHeaderClicked.Content += " ▲";
+                            }
+                            else
+                            {
+                                _lastHeaderClicked.Content += " ▼";
+                            }
+                            break;
+                        case ("LastActivity"):
+                            _lastHeaderClicked = lvLastActivity;
+                            if (settings.IsAsc)
+                            {
+                                _lastHeaderClicked.Content += " ▲";
+                            }
+                            else
+                            {
+                                _lastHeaderClicked.Content += " ▼";
+                            }
+                            break;
+                        case ("SourceName"):
+                            _lastHeaderClicked = lvSourceIcon;
+                            if (settings.IsAsc)
+                            {
+                                lvSourceIcon.Content += " ▲";
+                            }
+                            else
+                            {
+                                lvSourceIcon.Content += " ▼";
+                            }
+                            break;
+                        case ("ProgressionValue"):
+                            _lastHeaderClicked = lvProgression;
+                            if (settings.IsAsc)
+                            {
+                                lvProgression.Content += " ▲";
+                            }
+                            else
+                            {
+                                lvProgression.Content += " ▼";
+                            }
+                            break;
+                    }
+
+
+                    if (settings.IsAsc)
+                    {
+                        _lastDirection = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        _lastDirection = ListSortDirection.Descending;
+                    }
+
+
+                    view.SortDescriptions.Add(new SortDescription(settings.NameSorting, _lastDirection));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory", "Errorn on GetListGames()");
             }
         }
 
