@@ -9,6 +9,7 @@
     <sys:String x:Key="LOCSucessStoryAchievements">Succès</sys:String>
 
     <sys:String x:Key="LOCSucessStoryNotificationsSteamPrivate">Profil Steam n'est pas public</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox n'est pas connecté</sys:String>
 
     <!--  
     SuccessStorySettingsView

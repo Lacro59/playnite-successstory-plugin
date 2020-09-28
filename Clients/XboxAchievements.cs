@@ -234,10 +234,11 @@ namespace SuccessStory.Clients
             {
                 logger.Warn("SuccessStory - Xbox - User is not authenticated - File not exist");
                 _PlayniteApi.Notifications.Add(new NotificationMessage(
-                    $"SuccessStory - SuccessStory-Xbox-notAuthenticated",
-                    "Xbox user is not authenticated",
+                    "SuccessStory - SuccessStory-Xbox-notAuthenticated",
+                    $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
                     NotificationType.Error
                 ));
+
                 return new List<XboxAchievement>();
             }
             else
@@ -252,10 +253,11 @@ namespace SuccessStory.Clients
                 {
                     logger.Warn("SuccessStory - Xbox - User is not authenticated");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(
-                        $"SuccessStory-Xbox-notAuthenticated",
-                        "SuccessStory - Xbox user is not authenticated",
+                        "SuccessStory-Xbox-notAuthenticated",
+                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
                         NotificationType.Error
                     ));
+
                     return new List<XboxAchievement>();
                 }
             }
@@ -281,7 +283,14 @@ namespace SuccessStory.Clients
                 var response = client.GetAsync(url).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    throw new Exception("User is not authenticated");
+                    logger.Warn($"SuccessStory - Xbox - User is not authenticated - {response.StatusCode}");
+                    _PlayniteApi.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-Xbox-notAuthenticated",
+                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
+                        NotificationType.Error
+                    ));
+
+                    return new List<XboxAchievement>();
                 }
 
                 string cont = await response.Content.ReadAsStringAsync();
