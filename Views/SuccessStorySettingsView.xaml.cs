@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
 using PluginCommon;
+using SuccessStory.Clients;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,8 @@ namespace SuccessStory.Views
         string PluginUserDataPath;
         AchievementsDatabase achievementsDatabase;
 
-        private CancellationTokenSource tokenSource;
+        public static bool WithoutMessage = false;
+        public static CancellationTokenSource tokenSource;
         private CancellationToken ct;
 
         int SteamTotal;
@@ -364,6 +366,8 @@ namespace SuccessStory.Views
             tokenSource = new CancellationTokenSource();
             ct = tokenSource.Token;
 
+            bool IsFirstLoop = true;
+
             var taskSystem = Task.Run(() =>
             {
                 ct.ThrowIfCancellationRequested();
@@ -422,6 +426,22 @@ namespace SuccessStory.Views
 
                             if (isOK)
                             {
+                                if (SourceName.ToLower() == "steam" && IsFirstLoop)
+                                {
+#if DEBUG
+                                    logger.Debug($"SuccessStory - Check Steam profil with {game.GameId}");
+#endif
+
+                                    SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
+                                    if (!steamAPI.CheckIsPublic(int.Parse(game.GameId)))
+                                    {
+                                        AchievementsDatabase.ListErrors.Add(resources.GetString("LOCSucessStoryNotificationsSteamPrivate"));
+                                        break;
+                                    }
+                                    IsFirstLoop = false;
+                                }
+
+                                // Respect API limitation
                                 Thread.Sleep(1000);
 
                                 if (IsGet)
@@ -451,6 +471,7 @@ namespace SuccessStory.Views
                     if (ct.IsCancellationRequested)
                     {
                         ct.ThrowIfCancellationRequested();
+                        break;
                     }
                 }
             }, tokenSource.Token)
@@ -460,13 +481,16 @@ namespace SuccessStory.Views
                     DataLoad.Visibility = Visibility.Collapsed;
                     tcSettings.Visibility = Visibility.Visible;
 
-                    if (AchievementsDatabase.ListErrors.Get() != string.Empty)
+                    if (!WithoutMessage)
                     {
-                        PlayniteApi.Dialogs.ShowErrorMessage(AchievementsDatabase.ListErrors.Get(), "SuccessStory errors");
-                    }
-                    else
-                    {
-                        PlayniteApi.Dialogs.ShowMessage((string)ResourceProvider.GetResource("LOCSucessStoryRefreshDataMessage"), "Success Story");
+                        if (AchievementsDatabase.ListErrors.Get() != string.Empty)
+                        {
+                            PlayniteApi.Dialogs.ShowErrorMessage(AchievementsDatabase.ListErrors.Get(), "SuccessStory errors");
+                        }
+                        else
+                        {
+                            PlayniteApi.Dialogs.ShowMessage((string)ResourceProvider.GetResource("LOCSucessStoryRefreshDataMessage"), "Success Story");
+                        }
                     }
 
                     SetTotal();

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
 using SuccessStory.Models;
+using SuccessStory.Views;
 using System.Collections.Generic;
 
 namespace SuccessStory
@@ -145,6 +146,12 @@ namespace SuccessStory
         {
             // Code executed when user decides to cancel any changes made since BeginEdit was called.
             // This method should revert any changes made to Option1 and Option2.
+
+            if (SuccessStorySettingsView.tokenSource != null)
+            {
+                SuccessStorySettingsView.WithoutMessage = true;
+                SuccessStorySettingsView.tokenSource.Cancel();
+            }
         }
 
         public void EndEdit()

@@ -17,6 +17,7 @@ using Playnite.SDK.Models;
 using Newtonsoft.Json;
 using SteamKit2;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
@@ -29,8 +30,8 @@ namespace SuccessStory.Clients
         private string SteamApiKey { get; set; } = string.Empty;
         private string SteamUser { get; set; } = string.Empty;
 
-        private string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}/?tab=achievements";
-        private string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}/?tab=achievements";
+        private readonly string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}/?tab=achievements";
+        private readonly string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}/?tab=achievements";
 
 
         public SteamAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
@@ -74,7 +75,6 @@ namespace SuccessStory.Clients
                 if (AllAchievements.Count > 0)
                 {
                     AllAchievements = GetSchemaForGame(AppId, AllAchievements);
-
 
                     Result.HaveAchivements = true;
                     Result.Total = AllAchievements.Count;
@@ -182,6 +182,61 @@ namespace SuccessStory.Clients
             }
         }
 
+        public bool CheckIsPublic(int AppId)
+        {
+            GetSteamConfig();
+
+            try
+            {
+                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
+                {
+                    KeyValue PlayerAchievements = steamWebAPI.GetPlayerAchievements(steamid: SteamId, appid: AppId, l: LocalLang);
+                    logger.Warn("0");
+                    return true;
+                }
+            }
+            // TODO With recent SteamKit
+            //catch (WebAPIRequestException wex)
+            //{
+            //    if (wex.StatusCode == HttpStatusCode.Forbidden)
+            //    {
+            //        _PlayniteApi.Notifications.Add(new NotificationMessage(
+            //            $"SuccessStory-Steam-PrivateProfil",
+            //            "SuccessStory - Steam profil is private",
+            //            NotificationType.Error
+            //        ));
+            //        logger.Warn("SuccessStory - Steam profil is private");
+            //    }
+            //    else
+            //    {
+            //        Common.LogError(wex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+            //    }
+            //}
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    if (ex.Response is HttpWebResponse response)
+                    {
+                        if (response.StatusCode == HttpStatusCode.Forbidden)
+                        {
+                            _PlayniteApi.Notifications.Add(new NotificationMessage(
+                                "SuccessStory-Steam-PrivateProfil",
+                                $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsSteamPrivate")}",
+                                NotificationType.Error,
+                                () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
+                            ));
+                            logger.Warn("SuccessStory - Steam profil is private");
+
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        }
+
         private List<Achievements> GetPlayerAchievements(int AppId)
         {
             List<Achievements> AllAchievements = new List<Achievements>();
@@ -205,17 +260,38 @@ namespace SuccessStory.Clients
                     }
                 }
             }
+            // TODO With recent SteamKit
+            //catch (WebAPIRequestException wex)
+            //{
+            //    if (wex.StatusCode == HttpStatusCode.Forbidden)
+            //    {
+            //        _PlayniteApi.Notifications.Add(new NotificationMessage(
+            //            $"SuccessStory-Steam-PrivateProfil",
+            //            "SuccessStory - Steam profil is private",
+            //            NotificationType.Error
+            //        ));
+            //        logger.Warn("SuccessStory - Steam profil is private");
+            //    }
+            //    else
+            //    {
+            //        Common.LogError(wex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+            //    }
+            //}
             catch (WebException ex)
             {
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
-                    HttpWebResponse response = ex.Response as HttpWebResponse;
-                    if (response != null)
+                    if (ex.Response is HttpWebResponse response)
                     {
-                        // No Achievement !?
-                        if(response.StatusCode == HttpStatusCode.BadRequest)
+                        if (response.StatusCode == HttpStatusCode.Forbidden)
                         {
-
+                            _PlayniteApi.Notifications.Add(new NotificationMessage(
+                                "SuccessStory-Steam-PrivateProfil",
+                                $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsSteamPrivate")}",
+                                NotificationType.Error,
+                                () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
+                            ));
+                            logger.Warn("SuccessStory - Steam profil is private");
                         }
                     }
                     else
@@ -262,6 +338,7 @@ namespace SuccessStory.Clients
             return AllAchievements;
         }
 
+        // TODO Use "profileurl" in "ISteamUser"
         private string FindHiddenDescription(int AppId, string DisplayName, bool TryByName = false)
         {
             string url = string.Empty;

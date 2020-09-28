@@ -8,6 +8,8 @@
     <sys:String x:Key="LOCSucessStory">Historia sukcesu</sys:String>
     <sys:String x:Key="LOCSucessStoryAchievements">Osiągnięcia</sys:String>
 
+    <sys:String x:Key="LOCSucessStoryNotificationsSteamPrivate">Steam profil is not public</sys:String>
+
     <!--  
     SuccessStorySettingsView
     -->
