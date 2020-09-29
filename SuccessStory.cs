@@ -567,7 +567,7 @@ namespace SuccessStory
                 tbA.Name = "PART_Achievements_TextBlock";
                 tbA.Text = resources.GetString("LOCSucessStoryAchievements");
                 tbA.Style = (Style)resources.GetResource("BaseTextBlockStyle");
-                tbA.Margin = new Thickness(0, 15, 0, 10);
+                tbA.Margin = new Thickness(0, 15, 0, 5);
 
                 Separator sep = new Separator();
                 sep.Name = "PART_Achievements_Separator";
