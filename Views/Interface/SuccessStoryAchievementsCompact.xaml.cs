@@ -4,6 +4,7 @@ using PluginCommon;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -154,29 +155,13 @@ namespace SuccessStory.Views.Interface
                             myDropShadowEffect.ShadowDepth = 0;
                             myDropShadowEffect.BlurRadius = 30;
 
-                            Color color = Brushes.Transparent.Color;
+                            SetColorConverter setColorConverter = new SetColorConverter();
+                            var color = setColorConverter.Convert(AchievementsList[i].Percent, null, null, CultureInfo.CurrentCulture);
 
-                            if (AchievementsList[i].Percent > 30)
+                            if (color != null)
                             {
+                                myDropShadowEffect.Color = (Color)color;
                             }
-
-                            if ((AchievementsList[i].Percent <= 30))
-                            {
-                                color = Brushes.DarkGray.Color;
-                            }
-                            if (AchievementsList[i].Percent <= 10)
-                            {
-                                color = Brushes.Gold.Color;
-                            }
-
-                            Color newColor = new Color
-                            {
-                                ScR = (float)color.R / 255,
-                                ScG = (float)color.G / 255,
-                                ScB = (float)color.B / 255
-                            };
-
-                            myDropShadowEffect.Color = color;
 
                             gridImage.Effect = myDropShadowEffect;
 
