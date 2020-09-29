@@ -27,6 +27,11 @@ namespace SuccessStory.Clients
             gogAPI = new GogAccountClient(view);
         }
 
+        public bool IsConnected()
+        {
+            return gogAPI.GetIsUserLoggedIn();
+        }
+
         /// <summary>
         /// Get achievements after change language.
         /// </summary>
@@ -154,11 +159,11 @@ namespace SuccessStory.Clients
             else
             {
                 PlayniteApi.Notifications.Add(new NotificationMessage(
-                    $"SuccessStory-Gog-notConnected",
-                    "SuccessStory - GOG user is not connected",
+                    "SuccessStory-Gog-NoAuthenticate",
+                    $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsGogNoAuthenticate")}",
                     NotificationType.Error
                 ));
-                logger.Warn("SuccessStory - GOG user is not connected");
+                logger.Warn("SuccessStory - GOG user is not Authenticate");
             }
 
             Result = new GameAchievements

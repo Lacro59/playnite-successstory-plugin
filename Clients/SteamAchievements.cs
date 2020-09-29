@@ -131,7 +131,7 @@ namespace SuccessStory.Clients
             IsLocal = true;
         }
 
-        private bool GetSteamConfig()
+        public bool GetSteamConfig()
         {
             try
             {

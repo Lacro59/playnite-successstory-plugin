@@ -113,7 +113,7 @@
     <Compile Include="Clients\XboxAchievements.cs" />
     <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\Achievements.cs" />
-    <Compile Include="Database\AchivementsDatabase.cs" />
+    <Compile Include="Database\AchievementsDatabase.cs" />
     <Compile Include="Models\ListAchievements.cs" />
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />

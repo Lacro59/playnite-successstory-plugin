@@ -105,7 +105,7 @@ namespace SuccessStory.Clients
             headers.Add("Accept-Language", LocalLang);
         }
 
-        private async Task<bool> GetIsUserLoggedIn()
+        public async Task<bool> GetIsUserLoggedIn()
         {
             try
             {
@@ -237,7 +237,7 @@ namespace SuccessStory.Clients
             {
                 logger.Warn("SuccessStory - Xbox - User is not authenticated - File not exist");
                 _PlayniteApi.Notifications.Add(new NotificationMessage(
-                    "SuccessStory - SuccessStory-Xbox-notAuthenticated",
+                    "SuccessStory-Xbox-notAuthenticate",
                     $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
                     NotificationType.Error
                 ));
@@ -256,7 +256,7 @@ namespace SuccessStory.Clients
                 {
                     logger.Warn("SuccessStory - Xbox - User is not authenticated");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-Xbox-notAuthenticated",
+                        "SuccessStory-Xbox-notAuthenticate",
                         $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
                         NotificationType.Error
                     ));
@@ -288,7 +288,7 @@ namespace SuccessStory.Clients
                 {
                     logger.Warn($"SuccessStory - Xbox - User is not authenticated - {response.StatusCode}");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-Xbox-notAuthenticated",
+                        "SuccessStory-Xbox-notAuthenticate",
                         $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
                         NotificationType.Error
                     ));

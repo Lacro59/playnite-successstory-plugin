@@ -187,7 +187,6 @@ namespace SuccessStory.Views.Interface
             }
             else
             {
-                //logger.Warn("SuccessStory - SuccessStoryAchievementsCompact - actualWidth: {actualWidth} - nbGrid: {nbGrid}");
             }
         }
     }

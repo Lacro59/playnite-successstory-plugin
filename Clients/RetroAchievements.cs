@@ -35,6 +35,11 @@ namespace SuccessStory.Clients
             Key = settings.RetroAchievementsKey;
         }
 
+        public bool ISConfigurated()
+        {
+            return (User != string.Empty && Key != string.Empty);
+        }
+
         public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id, string PluginUserDataPath)
         {
             List<Achievements> Achievements = new List<Achievements>();

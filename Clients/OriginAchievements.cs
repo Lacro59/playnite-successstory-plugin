@@ -32,6 +32,11 @@ namespace SuccessStory.Clients
         }
 
 
+        public bool IsConnected()
+        {
+            return originAPI.GetIsUserLoggedIn();
+        }
+
         /// <summary>
         /// Get all achievements for a Origin game.
         /// </summary>
