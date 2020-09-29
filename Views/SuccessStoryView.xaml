@@ -17,6 +17,7 @@
     <WindowBase.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <localPlugin:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <FontFamily x:Key="font">pack://application:,,,/PluginCommon;component/Resources/font.ttf#font</FontFamily>
     </WindowBase.Resources>
 
     <Grid Margin="10">
@@ -51,7 +52,7 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Tag="{Binding SourceNameShort}"
-                                      Content="{Binding SourceName}" IsChecked="{Binding isCheck}" FontFamily="/SuccessStory;component/Resources/#font">
+                                      Content="{Binding SourceName}" IsChecked="{Binding isCheck}" FontFamily="{StaticResource font}">
                             </CheckBox>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
@@ -103,13 +104,13 @@
                     </StackPanel>
 
                     <StackPanel Name="SuccessStory_Achievements_Graphics_Sources" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
-                        <lvc:CartesianChart Name="StatsGraphicAchievementsSources" Height="185" LegendLocation="Bottom" FontFamily="/SuccessStory;component/Resources/#font">
+                        <lvc:CartesianChart Name="StatsGraphicAchievementsSources" Height="185" LegendLocation="Bottom" FontFamily="{StaticResource font}">
                             <lvc:CartesianChart.DataTooltip>
                                 <localLVC:CustomerToolTipForSingle />
                             </lvc:CartesianChart.DataTooltip>
                             
                             <lvc:CartesianChart.AxisX>
-                                <lvc:Axis Name="StatsGraphicAchievementsSourcesX" MinValue="0" ShowLabels="True" FontFamily="/SuccessStory;component/Resources/#font">
+                                <lvc:Axis Name="StatsGraphicAchievementsSourcesX" MinValue="0" ShowLabels="True" FontFamily="{StaticResource font}">
                                     <lvc:Axis.Separator>
                                         <lvc:Separator Step="1" />
                                     </lvc:Axis.Separator>
@@ -161,7 +162,7 @@
                                 <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSucessStorylvGamesSourceName}"></GridViewColumnHeader>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Label Content="{Binding SourceIcon}" FontFamily="/SuccessStory;component/Resources/#font" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+                                        <Label Content="{Binding SourceIcon}" FontFamily="{StaticResource font}" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Playnite.Common.Web;
 using Playnite.SDK;
+using PluginCommon.PlayniteResources.Common.Web;
 using SuccessStory.PlayniteResources.GogLibrary.Models;
 using System;
 using System.Collections.Generic;

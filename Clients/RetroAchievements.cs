@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
-using Playnite.Common.Web;
 using Playnite.SDK;
 using PluginCommon;
+using PluginCommon.PlayniteResources;
+using PluginCommon.PlayniteResources.API;
+using PluginCommon.PlayniteResources.Common;
+using PluginCommon.PlayniteResources.Converters;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -191,7 +194,7 @@ namespace SuccessStory.Clients
 
             try
             {
-                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {
@@ -232,7 +235,7 @@ namespace SuccessStory.Clients
             string ResultWeb = string.Empty;
             try
             {
-                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {
@@ -262,7 +265,7 @@ namespace SuccessStory.Clients
             string ResultWeb = string.Empty;
             try
             {
-                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {

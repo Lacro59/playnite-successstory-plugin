@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
-using Playnite.Common.Web;
 using Playnite.SDK;
 using PluginCommon;
+using PluginCommon.PlayniteResources;
+using PluginCommon.PlayniteResources.API;
+using PluginCommon.PlayniteResources.Common;
+using PluginCommon.PlayniteResources.Converters;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
@@ -18,6 +21,7 @@ using Newtonsoft.Json;
 using SteamKit2;
 using System.Globalization;
 using System.Threading.Tasks;
+using PluginCommon.PlayniteResources.Common.Web;
 
 namespace SuccessStory.Clients
 {

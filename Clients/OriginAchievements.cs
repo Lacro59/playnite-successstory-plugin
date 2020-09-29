@@ -1,8 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Playnite.Common.Web;
 using Playnite.SDK;
 using PluginCommon;
+using PluginCommon.PlayniteResources;
+using PluginCommon.PlayniteResources.API;
+using PluginCommon.PlayniteResources.Common;
+using PluginCommon.PlayniteResources.Converters;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using SuccessStory.PlayniteResources.OriginLibrary.Models;
@@ -178,7 +181,7 @@ namespace SuccessStory.Clients
 
             var url = string.Format(@"https://api2.origin.com/ecommerce2/public/supercat/{0}/{1}?country={2}", gameId, lang, langShort);
 
-            var stringData = Encoding.UTF8.GetString(HttpDownloader.DownloadData(url));
+            string stringData = Web.DownloadStringData(url).GetAwaiter().GetResult();
             return JsonConvert.DeserializeObject<GameStoreDataResponse>(stringData);
         }
     }
