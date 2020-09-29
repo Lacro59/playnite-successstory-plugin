@@ -126,12 +126,23 @@ namespace SuccessStory.Clients
             return Result;
         }
 
+        public override bool IsConfigured()
+        {
+            return GetSteamConfig();
+        }
+
+        public override bool IsConnected()
+        {
+            throw new NotImplementedException();
+        }
+
+
         public void SetLocal()
         {
             IsLocal = true;
         }
 
-        public bool GetSteamConfig()
+        private bool GetSteamConfig()
         {
             try
             {

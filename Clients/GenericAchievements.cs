@@ -24,5 +24,9 @@ namespace SuccessStory.Clients
         }
 
         public abstract GameAchievements GetAchievements(Game game);
+
+        public abstract bool IsConnected();
+
+        public abstract bool IsConfigured();
     }
 }

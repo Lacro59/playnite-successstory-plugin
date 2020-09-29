@@ -17,7 +17,7 @@ using System.IO;
 
 namespace SuccessStory.Clients
 {
-    class RetroAchievements
+    class RetroAchievements : GenericAchievements
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
@@ -29,21 +29,15 @@ namespace SuccessStory.Clients
         private string Key { get; set; }
 
 
-        public RetroAchievements(SuccessStorySettings settings)
+        public RetroAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
             User = settings.RetroAchievementsUser;
             Key = settings.RetroAchievementsKey;
         }
 
-        public bool ISConfigurated()
-        {
-            return (User != string.Empty && Key != string.Empty);
-        }
-
-        public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id, string PluginUserDataPath)
+        public override GameAchievements GetAchievements(Game game)
         {
             List<Achievements> Achievements = new List<Achievements>();
-            Game game = PlayniteApi.Database.Games.Get(Id);
             string GameName = game.Name;
             string ClientId = game.PlayAction.EmulatorId.ToString();
             bool HaveAchivements = false;
@@ -72,7 +66,7 @@ namespace SuccessStory.Clients
             }
 
             // Load list console
-            RA_Consoles ra_Consoles = GetConsoleIDs(PluginUserDataPath);
+            RA_Consoles ra_Consoles = GetConsoleIDs(_PluginUserDataPath);
             if (ra_Consoles != null && ra_Consoles != new RA_Consoles())
             {
                 ra_Consoles.ListConsoles.Sort((x, y) => (y.Name).CompareTo(x.Name));
@@ -101,7 +95,7 @@ namespace SuccessStory.Clients
                     NameConsole = "sega genesis";
                 }
 
-                if (PlatformName.ToLower().IndexOf(NameConsole) > - 1)
+                if (PlatformName.ToLower().IndexOf(NameConsole) > -1)
                 {
                     consoleID = ra_Console.ID;
                     break;
@@ -112,7 +106,7 @@ namespace SuccessStory.Clients
             int gameID = 0;
             if (consoleID != 0)
             {
-                RA_Games ra_Games = GetGameList(consoleID, PluginUserDataPath);
+                RA_Games ra_Games = GetGameList(consoleID, _PluginUserDataPath);
                 ra_Games.ListGames.Sort((x, y) => (y.Title).CompareTo(x.Title));
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
                 {
@@ -180,6 +174,17 @@ namespace SuccessStory.Clients
 
             return Result;
         }
+
+        public override bool IsConfigured()
+        {
+            return (User != string.Empty && Key != string.Empty);
+        }
+
+        public override bool IsConnected()
+        {
+            throw new NotImplementedException();
+        }
+
 
         private RA_Consoles GetConsoleIDs(string PluginUserDataPath)
         {

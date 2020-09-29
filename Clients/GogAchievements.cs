@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Playnite.SDK;
+using Playnite.SDK.Models;
 using PluginCommon;
 using SuccessStory.Database;
 using SuccessStory.Models;
@@ -13,43 +14,15 @@ using System.Threading.Tasks;
 namespace SuccessStory.Clients
 {
     //https://gogapidocs.readthedocs.io/en/latest/
-    class GogAchievements
+    class GogAchievements : GenericAchievements
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static readonly IResourceProvider resources = new ResourceProvider();
-
         private GogAccountClient gogAPI;
 
 
-        public GogAchievements(IPlayniteAPI PlayniteApi)
+        public GogAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
             var view = PlayniteApi.WebViews.CreateOffscreenView();
             gogAPI = new GogAccountClient(view);
-        }
-
-        public bool IsConnected()
-        {
-            return gogAPI.GetIsUserLoggedIn();
-        }
-
-        /// <summary>
-        /// Get achievements after change language.
-        /// </summary>
-        /// <param name="UrlChangeLang"></param>
-        /// <param name="UrlAchievements"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        internal async Task<string> DonwloadStringData(string UrlChangeLang, string UrlAchievements, string token)
-        {
-            using (var client = new HttpClient())
-            {
-                string resultLang = await client.GetStringAsync(UrlChangeLang).ConfigureAwait(false);
-
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                string result = await client.GetStringAsync(UrlAchievements).ConfigureAwait(false);
-
-                return result;
-            }
         }
 
         /// <summary>
@@ -58,11 +31,11 @@ namespace SuccessStory.Clients
         /// <param name="PlayniteApi"></param>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id)
+        public override GameAchievements GetAchievements(Game game)
         {
             List<Achievements> Achievements = new List<Achievements>();
-            string GameName = PlayniteApi.Database.Games.Get(Id).Name;
-            string ClientId = PlayniteApi.Database.Games.Get(Id).GameId;
+            string GameName = game.Name;
+            string ClientId = game.GameId;
             bool HaveAchivements = false;
             int Total = 0;
             int Unlocked = 0;
@@ -87,7 +60,7 @@ namespace SuccessStory.Clients
                 string accessToken = gogAPI.GetAccountInfo().accessToken;
 
                 string userId = gogAPI.GetAccountInfo().userId;
-                string lang = CodeLang.GetGogLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
+                string lang = CodeLang.GetGogLang(Localization.GetPlayniteLanguageConfiguration(_PlayniteApi.Paths.ConfigurationPath));
 
                 // Achievements
                 string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements", ClientId, userId);
@@ -158,7 +131,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                PlayniteApi.Notifications.Add(new NotificationMessage(
+                _PlayniteApi.Notifications.Add(new NotificationMessage(
                     "SuccessStory-Gog-NoAuthenticate",
                     $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsGogNoAuthenticate")}",
                     NotificationType.Error
@@ -178,6 +151,37 @@ namespace SuccessStory.Clients
             };
 
             return Result;
+        }
+
+        public override bool IsConfigured()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsConnected()
+        {
+            return gogAPI.GetIsUserLoggedIn();
+        }
+
+
+        /// <summary>
+        /// Get achievements after change language.
+        /// </summary>
+        /// <param name="UrlChangeLang"></param>
+        /// <param name="UrlAchievements"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        internal async Task<string> DonwloadStringData(string UrlChangeLang, string UrlAchievements, string token)
+        {
+            using (var client = new HttpClient())
+            {
+                string resultLang = await client.GetStringAsync(UrlChangeLang).ConfigureAwait(false);
+
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                string result = await client.GetStringAsync(UrlAchievements).ConfigureAwait(false);
+
+                return result;
+            }
         }
     }
 }

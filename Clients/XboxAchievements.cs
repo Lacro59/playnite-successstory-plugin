@@ -97,6 +97,16 @@ namespace SuccessStory.Clients
             return Result;
         }
 
+        public override bool IsConfigured()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsConnected()
+        {
+            return GetIsUserLoggedIn().GetAwaiter().GetResult();
+        }
+
 
         private void SetAuthenticationHeaders(System.Net.Http.Headers.HttpRequestHeaders headers, AuthorizationData auth)
         {
@@ -105,7 +115,7 @@ namespace SuccessStory.Clients
             headers.Add("Accept-Language", LocalLang);
         }
 
-        public async Task<bool> GetIsUserLoggedIn()
+        private async Task<bool> GetIsUserLoggedIn()
         {
             try
             {

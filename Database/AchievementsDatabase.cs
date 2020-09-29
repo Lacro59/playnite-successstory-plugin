@@ -562,7 +562,7 @@ namespace SuccessStory.Models
                 else
                 {
                     SteamAchievements steamAchievements = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
-                    if (!steamAchievements.GetSteamConfig())
+                    if (!steamAchievements.IsConfigured())
                     {
                         logger.Warn("SuccessStory - Bad Steam configuration");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -592,7 +592,7 @@ namespace SuccessStory.Models
                 }
                 else
                 {
-                    GogAchievements gogAchievements = new GogAchievements(PlayniteApi);
+                    GogAchievements gogAchievements = new GogAchievements(PlayniteApi, settings, PluginUserDataPath);
                     if (!gogAchievements.IsConnected())
                     {
                         logger.Warn("SuccessStory - Gog user is not authenticate");
@@ -623,7 +623,7 @@ namespace SuccessStory.Models
                 }
                 else
                 {
-                    OriginAchievements originAchievements = new OriginAchievements(PlayniteApi);
+                    OriginAchievements originAchievements = new OriginAchievements(PlayniteApi, settings, PluginUserDataPath);
                     if (!originAchievements.IsConnected())
                     {
                         logger.Warn("SuccessStory - Origin user is not authenticated");
@@ -655,7 +655,7 @@ namespace SuccessStory.Models
                 else
                 {
                     XboxAchievements xboxAchievements = new XboxAchievements(PlayniteApi, settings, PluginUserDataPath);
-                    if (!xboxAchievements.GetIsUserLoggedIn().GetAwaiter().GetResult())
+                    if (!xboxAchievements.IsConnected())
                     {
                         logger.Warn("SuccessStory - Xbox user is not authenticated");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -677,8 +677,8 @@ namespace SuccessStory.Models
 
             if (settings.EnableRetroAchievements && GameSourceName.ToLower() == "retroachievements")
             {
-                RetroAchievements retroAchievements = new RetroAchievements(settings);
-                if (!retroAchievements.ISConfigurated())
+                RetroAchievements retroAchievements = new RetroAchievements(PlayniteApi, settings, PluginUserDataPath);
+                if (!retroAchievements.IsConfigured())
                 {
                     logger.Warn("SuccessStory - Bad RetroAchievements configuration");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -715,14 +715,14 @@ namespace SuccessStory.Models
                 case "gog":
                     if (!Tools.IsDisabledPlaynitePlugins("GogLibrary", _PlayniteApi.Paths.ConfigurationPath) && settings.EnableGog && gogAPI == null)
                     {
-                        gogAPI = new GogAchievements(_PlayniteApi);
+                        gogAPI = new GogAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                     }
                     break;
 
                 case "origin":
                     if (!Tools.IsDisabledPlaynitePlugins("OriginLibrary", _PlayniteApi.Paths.ConfigurationPath) && originAPI == null)
                     {
-                        originAPI = new OriginAchievements(_PlayniteApi);
+                        originAPI = new OriginAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                     }
                     break;
 
@@ -791,9 +791,9 @@ namespace SuccessStory.Models
                     {
                         if (gogAPI == null)
                         {
-                            gogAPI = new GogAchievements(_PlayniteApi);
+                            gogAPI = new GogAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                         }
-                        GameAchievements = gogAPI.GetAchievements(_PlayniteApi, GameId);
+                        GameAchievements = gogAPI.GetAchievements(GameAdded);
                     }
 
                     if (GameSourceName.ToLower() == "steam")
@@ -806,9 +806,9 @@ namespace SuccessStory.Models
                     {
                         if (originAPI == null)
                         {
-                            originAPI = new OriginAchievements(_PlayniteApi);
+                            originAPI = new OriginAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                         }
-                        GameAchievements = originAPI.GetAchievements(_PlayniteApi, GameId);
+                        GameAchievements = originAPI.GetAchievements(GameAdded);
                     }
 
                     if (GameSourceName.ToLower() == "xbox")
@@ -826,8 +826,8 @@ namespace SuccessStory.Models
 
                     if (GameSourceName.ToLower() == "retroachievements")
                     {
-                        RetroAchievements retroAchievementsAPI = new RetroAchievements(settings);
-                        GameAchievements = retroAchievementsAPI.GetAchievements(_PlayniteApi, GameId, _PluginUserDataPath);
+                        RetroAchievements retroAchievementsAPI = new RetroAchievements(_PlayniteApi, settings, _PluginUserDataPath);
+                        GameAchievements = retroAchievementsAPI.GetAchievements(GameAdded);
                     }
 
 #if DEBUG
