@@ -284,6 +284,10 @@ namespace SuccessStory.Models
                     {
                         tempSourcesLabels.Add("Origin");
                     }
+                    if (_settings.EnableXbox)
+                    {
+                        tempSourcesLabels.Add("Xbox");
+                    }
                     if (_settings.EnableLocal)
                     {
                         tempSourcesLabels.Add("Playnite");
@@ -303,6 +307,10 @@ namespace SuccessStory.Models
                 if (_settings.EnableOrigin)
                 {
                     tempSourcesLabels.Add("Origin");
+                }
+                if (_settings.EnableXbox)
+                {
+                    tempSourcesLabels.Add("Xbox");
                 }
                 if (_settings.EnableRetroAchievements)
                 {
