@@ -70,8 +70,7 @@ namespace SuccessStory.PlayniteResources.OriginLibrary.Services
 
         public void Login()
         {
-            //webView.LoadingChanged += (s, e) =>
-            webView.NavigationChanged += (s, e) =>
+            webView.LoadingChanged += (s, e) =>
             {
                 if (webView.GetCurrentAddress().StartsWith(@"https://www.origin.com/views/login"))
                 {

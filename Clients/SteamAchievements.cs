@@ -40,7 +40,7 @@ namespace SuccessStory.Clients
 
         public SteamAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
-            LocalLang = CodeLang.GetSteamLang(Localization.GetPlayniteLanguageConfiguration(_PlayniteApi.Paths.ConfigurationPath));
+            LocalLang = CodeLang.GetSteamLang(_PlayniteApi.ApplicationSettings.Language);
         }
 
         public override GameAchievements GetAchievements(Game game)

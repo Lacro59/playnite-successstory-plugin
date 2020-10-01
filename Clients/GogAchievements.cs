@@ -60,7 +60,7 @@ namespace SuccessStory.Clients
                 string accessToken = gogAPI.GetAccountInfo().accessToken;
 
                 string userId = gogAPI.GetAccountInfo().userId;
-                string lang = CodeLang.GetGogLang(Localization.GetPlayniteLanguageConfiguration(_PlayniteApi.Paths.ConfigurationPath));
+                string lang = CodeLang.GetGogLang(_PlayniteApi.ApplicationSettings.Language);
 
                 // Achievements
                 string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements", ClientId, userId);

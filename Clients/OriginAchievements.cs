@@ -63,7 +63,7 @@ namespace SuccessStory.Clients
                 string personasId = GetPersonas(originAPI.GetAccessToken());
                 string origineGameId = GetOrigineGameAchievementId(_PlayniteApi, game.Id);
 
-                string lang = CodeLang.GetOriginLang(Localization.GetPlayniteLanguageConfiguration(_PlayniteApi.Paths.ConfigurationPath));
+                string lang = CodeLang.GetOriginLang(_PlayniteApi.ApplicationSettings.Language);
                 // Achievements (default return in english)
                 var url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",
                     personasId, origineGameId, lang);
@@ -184,8 +184,8 @@ namespace SuccessStory.Clients
 
         internal static GameStoreDataResponse GetGameStoreData(string gameId, IPlayniteAPI PlayniteApi)
         {
-            string lang = CodeLang.GetOriginLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
-            string langShort = CodeLang.GetOriginLangCountry(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
+            string lang = CodeLang.GetOriginLang(PlayniteApi.ApplicationSettings.Language);
+            string langShort = CodeLang.GetOriginLangCountry(PlayniteApi.ApplicationSettings.Language);
 
             var url = string.Format(@"https://api2.origin.com/ecommerce2/public/supercat/{0}/{1}?country={2}", gameId, lang, langShort);
 

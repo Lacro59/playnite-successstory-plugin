@@ -31,8 +31,8 @@ namespace SuccessStory.PlayniteResources.GogLibrary.Services
         {
             var loginUrl = Gog.GetLoginUrl();
             loginUrl = Regex.Replace(loginUrl, $"&gog_lc=.+$", "&gog_lc=" + Gog.EnStoreLocaleString);
-            //webView.LoadingChanged += (s, e) =>
-            webView.NavigationChanged += (s, e) =>
+
+            webView.LoadingChanged += (s, e) =>
             {
                 if (webView.GetCurrentAddress().Contains("/on_login_success"))
                 {

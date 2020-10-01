@@ -641,7 +641,7 @@ namespace SuccessStory
                 lvProgressionValue.IsEnabled = false;
                 lvSourceName.IsEnabled = false;
             }
-            catch(Exception ex)
+            catch
             {
 
             }

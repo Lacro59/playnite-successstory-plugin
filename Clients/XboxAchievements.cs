@@ -31,8 +31,7 @@ namespace SuccessStory.Clients
 
         public XboxAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
-            // TODO Use GetXboxLang with new PluginCommon
-            LocalLang = CodeLang.GetEpicLang(Localization.GetPlayniteLanguageConfiguration(_PlayniteApi.Paths.ConfigurationPath));
+            LocalLang = CodeLang.GetXboxLang(_PlayniteApi.ApplicationSettings.Language);
 
             liveTokensPath = Path.Combine(_PluginUserDataPath + "\\..\\7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287", "login.json");
             xstsLoginTokesPath = Path.Combine(_PluginUserDataPath + "\\..\\7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287", "xsts.json");

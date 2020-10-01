@@ -19,11 +19,9 @@ namespace SuccessStory.Clients
 {
     class RetroAchievements : GenericAchievements
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-
-        private string BaseUrl = "https://retroachievements.org/API/";
-        private string BaseUrlUnlocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
-        private string BaseUrlLocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
+        private readonly string BaseUrl = "https://retroachievements.org/API/";
+        private readonly string BaseUrlUnlocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
+        private readonly string BaseUrlLocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
 
         private string User { get; set; }
         private string Key { get; set; }
