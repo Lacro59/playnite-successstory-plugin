@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
-using Playnite.Common.Web;
 using Playnite.SDK;
 using PluginCommon;
+using PluginCommon.PlayniteResources;
+using PluginCommon.PlayniteResources.API;
+using PluginCommon.PlayniteResources.Common;
+using PluginCommon.PlayniteResources.Converters;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
@@ -18,6 +21,7 @@ using Newtonsoft.Json;
 using SteamKit2;
 using System.Globalization;
 using System.Threading.Tasks;
+using PluginCommon.PlayniteResources.Common.Web;
 
 namespace SuccessStory.Clients
 {
@@ -36,7 +40,7 @@ namespace SuccessStory.Clients
 
         public SteamAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
-            LocalLang = CodeLang.GetSteamLang(Localization.GetPlayniteLanguageConfiguration(_PlayniteApi.Paths.ConfigurationPath));
+            LocalLang = CodeLang.GetSteamLang(_PlayniteApi.ApplicationSettings.Language);
         }
 
         public override GameAchievements GetAchievements(Game game)
@@ -121,6 +125,17 @@ namespace SuccessStory.Clients
 
             return Result;
         }
+
+        public override bool IsConfigured()
+        {
+            return GetSteamConfig();
+        }
+
+        public override bool IsConnected()
+        {
+            throw new NotImplementedException();
+        }
+
 
         public void SetLocal()
         {

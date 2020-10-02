@@ -9,7 +9,6 @@ using System.Windows.Media.Imaging;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
-using Playnite.Controls;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
@@ -24,7 +23,7 @@ namespace SuccessStory
     /// <summary>
     /// Logique d'interaction pour SuccessView.xaml
     /// </summary>
-    public partial class SuccessView : WindowBase
+    public partial class SuccessView : Window
     {
         private static readonly ILogger logger = LogManager.GetLogger();
         private static IResourceProvider resources = new ResourceProvider();
@@ -641,7 +640,7 @@ namespace SuccessStory
                 lvProgressionValue.IsEnabled = false;
                 lvSourceName.IsEnabled = false;
             }
-            catch(Exception ex)
+            catch
             {
 
             }

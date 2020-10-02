@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Playnite.Common;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
+using PluginCommon.PlayniteResources;
+using PluginCommon.PlayniteResources.API;
+using PluginCommon.PlayniteResources.Common;
+using PluginCommon.PlayniteResources.Converters;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using SuccessStory.PlayniteResources.XboxLibrary.Models;
@@ -28,8 +31,7 @@ namespace SuccessStory.Clients
 
         public XboxAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
-            // TODO Use GetXboxLang with new PluginCommon
-            LocalLang = CodeLang.GetEpicLang(Localization.GetPlayniteLanguageConfiguration(_PlayniteApi.Paths.ConfigurationPath));
+            LocalLang = CodeLang.GetXboxLang(_PlayniteApi.ApplicationSettings.Language);
 
             liveTokensPath = Path.Combine(_PluginUserDataPath + "\\..\\7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287", "login.json");
             xstsLoginTokesPath = Path.Combine(_PluginUserDataPath + "\\..\\7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287", "xsts.json");
@@ -92,6 +94,16 @@ namespace SuccessStory.Clients
             }
 
             return Result;
+        }
+
+        public override bool IsConfigured()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsConnected()
+        {
+            return GetIsUserLoggedIn().GetAwaiter().GetResult();
         }
 
 
@@ -234,7 +246,7 @@ namespace SuccessStory.Clients
             {
                 logger.Warn("SuccessStory - Xbox - User is not authenticated - File not exist");
                 _PlayniteApi.Notifications.Add(new NotificationMessage(
-                    "SuccessStory - SuccessStory-Xbox-notAuthenticated",
+                    "SuccessStory-Xbox-notAuthenticate",
                     $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
                     NotificationType.Error
                 ));
@@ -253,7 +265,7 @@ namespace SuccessStory.Clients
                 {
                     logger.Warn("SuccessStory - Xbox - User is not authenticated");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-Xbox-notAuthenticated",
+                        "SuccessStory-Xbox-notAuthenticate",
                         $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
                         NotificationType.Error
                     ));
@@ -285,7 +297,7 @@ namespace SuccessStory.Clients
                 {
                     logger.Warn($"SuccessStory - Xbox - User is not authenticated - {response.StatusCode}");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-Xbox-notAuthenticated",
+                        "SuccessStory-Xbox-notAuthenticate",
                         $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
                         NotificationType.Error
                     ));

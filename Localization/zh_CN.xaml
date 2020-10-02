@@ -9,7 +9,15 @@
     <sys:String x:Key="LOCSucessStoryAchievements">成就</sys:String>
 
     <sys:String x:Key="LOCSucessStoryNotificationsSteamPrivate">Steam profil is not public</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsXboxNotAuthenticate">Xbox user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsSteamDisabled">Steam is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsSteamBadConfig">Bad Steam configuration in SteamLibrary settings</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsGogDisabled">GOG is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsOriginDisabled">Origin is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsXboxDisabled">Xbox is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsXboxNoAuthenticate">Xbox user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsRetroAchievementsBadConfig">Bad RetroAchievements configuration in settings</sys:String>
 
     <!--  
     SuccessStorySettingsView

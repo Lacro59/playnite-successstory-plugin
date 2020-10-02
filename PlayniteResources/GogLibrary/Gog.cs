@@ -1,5 +1,5 @@
 ﻿using Microsoft.Win32;
-using Playnite.Common.Web;
+using PluginCommon.PlayniteResources.Common.Web;
 using System;
 using System.IO;
 using System.Linq;

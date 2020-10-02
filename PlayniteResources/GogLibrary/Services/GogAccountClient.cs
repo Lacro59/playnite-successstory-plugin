@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Playnite.Common.Web;
 using Playnite.SDK;
+using PluginCommon.PlayniteResources.Common.Web;
 using SuccessStory.PlayniteResources.GogLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -31,8 +31,8 @@ namespace SuccessStory.PlayniteResources.GogLibrary.Services
         {
             var loginUrl = Gog.GetLoginUrl();
             loginUrl = Regex.Replace(loginUrl, $"&gog_lc=.+$", "&gog_lc=" + Gog.EnStoreLocaleString);
-            //webView.LoadingChanged += (s, e) =>
-            webView.NavigationChanged += (s, e) =>
+
+            webView.LoadingChanged += (s, e) =>
             {
                 if (webView.GetCurrentAddress().Contains("/on_login_success"))
                 {
@@ -121,7 +121,7 @@ namespace SuccessStory.PlayniteResources.GogLibrary.Services
             catch (Exception e)
             {
                 logger.Error(e, $"Failed to library from new API for account {account.username}, falling back to legacy.");
-                logger.Debug(stringLibContent);
+                //logger.Debug(stringLibContent);
                 return GetOwnedGames();
             }
         }

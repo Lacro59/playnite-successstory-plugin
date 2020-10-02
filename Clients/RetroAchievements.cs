@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json.Linq;
-using Playnite.Common.Web;
 using Playnite.SDK;
 using PluginCommon;
+using PluginCommon.PlayniteResources;
+using PluginCommon.PlayniteResources.API;
+using PluginCommon.PlayniteResources.Common;
+using PluginCommon.PlayniteResources.Converters;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -14,28 +17,25 @@ using System.IO;
 
 namespace SuccessStory.Clients
 {
-    class RetroAchievements
+    class RetroAchievements : GenericAchievements
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-
-        private string BaseUrl = "https://retroachievements.org/API/";
-        private string BaseUrlUnlocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
-        private string BaseUrlLocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
+        private readonly string BaseUrl = "https://retroachievements.org/API/";
+        private readonly string BaseUrlUnlocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
+        private readonly string BaseUrlLocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
 
         private string User { get; set; }
         private string Key { get; set; }
 
 
-        public RetroAchievements(SuccessStorySettings settings)
+        public RetroAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
             User = settings.RetroAchievementsUser;
             Key = settings.RetroAchievementsKey;
         }
 
-        public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id, string PluginUserDataPath)
+        public override GameAchievements GetAchievements(Game game)
         {
             List<Achievements> Achievements = new List<Achievements>();
-            Game game = PlayniteApi.Database.Games.Get(Id);
             string GameName = game.Name;
             string ClientId = game.PlayAction.EmulatorId.ToString();
             bool HaveAchivements = false;
@@ -64,7 +64,7 @@ namespace SuccessStory.Clients
             }
 
             // Load list console
-            RA_Consoles ra_Consoles = GetConsoleIDs(PluginUserDataPath);
+            RA_Consoles ra_Consoles = GetConsoleIDs(_PluginUserDataPath);
             if (ra_Consoles != null && ra_Consoles != new RA_Consoles())
             {
                 ra_Consoles.ListConsoles.Sort((x, y) => (y.Name).CompareTo(x.Name));
@@ -93,7 +93,7 @@ namespace SuccessStory.Clients
                     NameConsole = "sega genesis";
                 }
 
-                if (PlatformName.ToLower().IndexOf(NameConsole) > - 1)
+                if (PlatformName.ToLower().IndexOf(NameConsole) > -1)
                 {
                     consoleID = ra_Console.ID;
                     break;
@@ -104,7 +104,7 @@ namespace SuccessStory.Clients
             int gameID = 0;
             if (consoleID != 0)
             {
-                RA_Games ra_Games = GetGameList(consoleID, PluginUserDataPath);
+                RA_Games ra_Games = GetGameList(consoleID, _PluginUserDataPath);
                 ra_Games.ListGames.Sort((x, y) => (y.Title).CompareTo(x.Title));
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
                 {
@@ -173,6 +173,17 @@ namespace SuccessStory.Clients
             return Result;
         }
 
+        public override bool IsConfigured()
+        {
+            return (User != string.Empty && Key != string.Empty);
+        }
+
+        public override bool IsConnected()
+        {
+            throw new NotImplementedException();
+        }
+
+
         private RA_Consoles GetConsoleIDs(string PluginUserDataPath)
         {
             string Target = "API_GetConsoleIDs.php";
@@ -191,7 +202,7 @@ namespace SuccessStory.Clients
 
             try
             {
-                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {
@@ -232,7 +243,7 @@ namespace SuccessStory.Clients
             string ResultWeb = string.Empty;
             try
             {
-                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {
@@ -262,7 +273,7 @@ namespace SuccessStory.Clients
             string ResultWeb = string.Empty;
             try
             {
-                ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {

@@ -13,13 +13,16 @@ using PluginCommon;
 using LiveCharts;
 using PluginCommon.LiveChartsCommon;
 using Newtonsoft.Json.Linq;
+using SuccessStory.PlayniteResources.GogLibrary.Services;
 
 namespace SuccessStory.Models
 {
     public class AchievementsDatabase
     {
         // Variable Playnite
-        private static ILogger logger = LogManager.GetLogger();
+        private static readonly ILogger logger = LogManager.GetLogger();
+        private static IResourceProvider resources = new ResourceProvider();
+
         private IPlayniteAPI _PlayniteApi { get; set; }
 
         SuccessStory _plugin { get; set; }
@@ -164,7 +167,7 @@ namespace SuccessStory.Models
         /// <returns></returns>
         public AchievementsGraphicsDataCount GetCountByMonth(Guid? GameID = null, int limit = 11)
         {
-            string[] GraphicsAchievementsLabels = new string[12];
+            string[] GraphicsAchievementsLabels = new string[limit + 1];
             ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
 
             // All achievements
@@ -281,6 +284,10 @@ namespace SuccessStory.Models
                     {
                         tempSourcesLabels.Add("Origin");
                     }
+                    if (_settings.EnableXbox)
+                    {
+                        tempSourcesLabels.Add("Xbox");
+                    }
                     if (_settings.EnableLocal)
                     {
                         tempSourcesLabels.Add("Playnite");
@@ -300,6 +307,10 @@ namespace SuccessStory.Models
                 if (_settings.EnableOrigin)
                 {
                     tempSourcesLabels.Add("Origin");
+                }
+                if (_settings.EnableXbox)
+                {
+                    tempSourcesLabels.Add("Xbox");
                 }
                 if (_settings.EnableRetroAchievements)
                 {
@@ -545,70 +556,147 @@ namespace SuccessStory.Models
 
             if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
-                if (Tools.IsDisabledPlaynitePlugins("SteamLibrary", PluginUserDataPath))
+                if (Tools.IsDisabledPlaynitePlugins("SteamLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
                     logger.Warn("SuccessStory - Steam is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
-                        $"SuccessStory-Steam-disabled",
-                        "SuccessStory - Steam is enable then disabled",
+                        "SuccessStory-Steam-disabled",
+                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsSteamDisabled")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
                     return false;
                 }
+                else
+                {
+                    SteamAchievements steamAchievements = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
+                    if (!steamAchievements.IsConfigured())
+                    {
+                        logger.Warn("SuccessStory - Bad Steam configuration");
+                        PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-Steam-NoConfig",
+                            $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsSteamBadConfig")}",
+                            NotificationType.Error,
+                            () => plugin.OpenSettingsView()
+                        ));
+                        return false;
+                    }
+                }
                 return true;
             }
+
             if (settings.EnableGog && GameSourceName.ToLower() == "gog")
             {
-                if (Tools.IsDisabledPlaynitePlugins("GogLibrary", PluginUserDataPath))
+                if (Tools.IsDisabledPlaynitePlugins("GogLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
                     logger.Warn("SuccessStory - GOG is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
-                        $"SuccessStory-GOG-disabled",
-                        "GOG is enable then disabled",
+                        "SuccessStory-GOG-disabled",
+                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsGogDisabled")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
                     return false;
                 }
+                else
+                {
+                    GogAchievements gogAchievements = new GogAchievements(PlayniteApi, settings, PluginUserDataPath);
+                    if (!gogAchievements.IsConnected())
+                    {
+                        logger.Warn("SuccessStory - Gog user is not authenticate");
+                        PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-Gog-NoAuthenticated",
+                            $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsGogNoAuthenticate")}",
+                            NotificationType.Error,
+                            () => plugin.OpenSettingsView()
+                        ));
+                        return false;
+                    }
+                }
                 return true;
             }
+
             if (settings.EnableOrigin && GameSourceName.ToLower() == "origin")
             {
-                if (Tools.IsDisabledPlaynitePlugins("OriginLibrary", PluginUserDataPath))
+                if (Tools.IsDisabledPlaynitePlugins("OriginLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
                     logger.Warn("SuccessStory - Origin is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
-                        $"SuccessStory-Origin-disabled",
-                        "SuccessStory - Origin is enable then disabled",
+                        "SuccessStory-Origin-disabled",
+                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsOriginDisabled")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
                     return false;
                 }
+                else
+                {
+                    OriginAchievements originAchievements = new OriginAchievements(PlayniteApi, settings, PluginUserDataPath);
+                    if (!originAchievements.IsConnected())
+                    {
+                        logger.Warn("SuccessStory - Origin user is not authenticated");
+                        PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-Origin-NoAuthenticate",
+                            $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsOriginNoAuthenticate")}",
+                            NotificationType.Error,
+                            () => plugin.OpenSettingsView()
+                        ));
+                        return false;
+                    }
+                }
                 return true;
             }
+
             if (settings.EnableXbox && GameSourceName.ToLower() == "xbox")
             {
-                if (Tools.IsDisabledPlaynitePlugins("XboxLibrary", PluginUserDataPath))
+                if (Tools.IsDisabledPlaynitePlugins("XboxLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
                     logger.Warn("SuccessStory - Xbox is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
-                        $"SuccessStory-Xbox-disabled",
-                        "SuccessStory - Xbox is enable then disabled",
+                        "SuccessStory-Xbox-disabled",
+                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxDisabled")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
                     return false;
                 }
+                else
+                {
+                    XboxAchievements xboxAchievements = new XboxAchievements(PlayniteApi, settings, PluginUserDataPath);
+                    if (!xboxAchievements.IsConnected())
+                    {
+                        logger.Warn("SuccessStory - Xbox user is not authenticated");
+                        PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-Xbox-NoAuthenticate",
+                            $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNoAuthenticate")}",
+                            NotificationType.Error,
+                            () => plugin.OpenSettingsView()
+                        ));
+                        return false;
+                    }
+                }
                 return true;
             }
+
             if (settings.EnableLocal && GameSourceName.ToLower() == "playnite")
             {
                 return true;
             }
+
             if (settings.EnableRetroAchievements && GameSourceName.ToLower() == "retroachievements")
             {
+                RetroAchievements retroAchievements = new RetroAchievements(PlayniteApi, settings, PluginUserDataPath);
+                if (!retroAchievements.IsConfigured())
+                {
+                    logger.Warn("SuccessStory - Bad RetroAchievements configuration");
+                    PlayniteApi.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-RetroAchievements-NoConfig",
+                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsRetroAchievementsBadConfig")}",
+                        NotificationType.Error,
+                        () => plugin.OpenSettingsView()
+                    ));
+                    return false;
+                }
                 return true;
             }
 
@@ -633,16 +721,16 @@ namespace SuccessStory.Models
                     break;
 
                 case "gog":
-                    if (!Tools.IsDisabledPlaynitePlugins("GogLibrary", PluginDatabasePath) && settings.EnableGog && gogAPI == null)
+                    if (!Tools.IsDisabledPlaynitePlugins("GogLibrary", _PlayniteApi.Paths.ConfigurationPath) && settings.EnableGog && gogAPI == null)
                     {
-                        gogAPI = new GogAchievements(_PlayniteApi);
+                        gogAPI = new GogAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                     }
                     break;
 
                 case "origin":
-                    if (!Tools.IsDisabledPlaynitePlugins("OriginLibrary", PluginDatabasePath) && originAPI == null)
+                    if (!Tools.IsDisabledPlaynitePlugins("OriginLibrary", _PlayniteApi.Paths.ConfigurationPath) && originAPI == null)
                     {
-                        originAPI = new OriginAchievements(_PlayniteApi);
+                        originAPI = new OriginAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                     }
                     break;
 
@@ -711,9 +799,9 @@ namespace SuccessStory.Models
                     {
                         if (gogAPI == null)
                         {
-                            gogAPI = new GogAchievements(_PlayniteApi);
+                            gogAPI = new GogAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                         }
-                        GameAchievements = gogAPI.GetAchievements(_PlayniteApi, GameId);
+                        GameAchievements = gogAPI.GetAchievements(GameAdded);
                     }
 
                     if (GameSourceName.ToLower() == "steam")
@@ -726,9 +814,9 @@ namespace SuccessStory.Models
                     {
                         if (originAPI == null)
                         {
-                            originAPI = new OriginAchievements(_PlayniteApi);
+                            originAPI = new OriginAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                         }
-                        GameAchievements = originAPI.GetAchievements(_PlayniteApi, GameId);
+                        GameAchievements = originAPI.GetAchievements(GameAdded);
                     }
 
                     if (GameSourceName.ToLower() == "xbox")
@@ -746,8 +834,8 @@ namespace SuccessStory.Models
 
                     if (GameSourceName.ToLower() == "retroachievements")
                     {
-                        RetroAchievements retroAchievementsAPI = new RetroAchievements(settings);
-                        GameAchievements = retroAchievementsAPI.GetAchievements(_PlayniteApi, GameId, _PluginUserDataPath);
+                        RetroAchievements retroAchievementsAPI = new RetroAchievements(_PlayniteApi, settings, _PluginUserDataPath);
+                        GameAchievements = retroAchievementsAPI.GetAchievements(GameAdded);
                     }
 
 #if DEBUG

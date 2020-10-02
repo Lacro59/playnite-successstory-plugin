@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Playnite.Common.Web;
+using PluginCommon.PlayniteResources.Common.Web;
 using Playnite.SDK;
 using SuccessStory.PlayniteResources.OriginLibrary.Models;
 using System;

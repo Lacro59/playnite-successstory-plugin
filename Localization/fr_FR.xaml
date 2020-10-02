@@ -9,7 +9,15 @@
     <sys:String x:Key="LOCSucessStoryAchievements">Succès</sys:String>
 
     <sys:String x:Key="LOCSucessStoryNotificationsSteamPrivate">Profil Steam n'est pas public</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsSteamDisabled">Steam est activé alors qu'il n'est pas disponible</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsSteamBadConfig">Mauvaise configuration Steam dans les paramètres de SteamLibrary</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsGogDisabled">GOG est activé alors qu'il n'est pas disponible</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsGogNoAuthenticate">Utilisateur GOG n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsOriginDisabled">Origin est activé alors qu'il n'est pas disponible</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsOriginNoAuthenticate">Utilisateur Origin n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsXboxDisabled">Xbox est activé alors qu'il n'est pas disponible</sys:String>
     <sys:String x:Key="LOCSucessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSucessStoryNotificationsRetroAchievementsBadConfig">Mauvaise configuration RetroAchievements dans les paramètres</sys:String>
 
     <!--  
     SuccessStorySettingsView

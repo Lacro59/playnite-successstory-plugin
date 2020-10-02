@@ -1,8 +1,12 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Playnite.Common.Web;
 using Playnite.SDK;
+using Playnite.SDK.Models;
 using PluginCommon;
+using PluginCommon.PlayniteResources;
+using PluginCommon.PlayniteResources.API;
+using PluginCommon.PlayniteResources.Common;
+using PluginCommon.PlayniteResources.Converters;
 using SuccessStory.Database;
 using SuccessStory.Models;
 using SuccessStory.PlayniteResources.OriginLibrary.Models;
@@ -15,19 +19,15 @@ using System.Text;
 
 namespace SuccessStory.Clients
 {
-    class OriginAchievements
+    class OriginAchievements : GenericAchievements
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
-
         OriginAccountClient originAPI;
 
-        public OriginAchievements(IPlayniteAPI PlayniteApi)
+        public OriginAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
             var view = PlayniteApi.WebViews.CreateOffscreenView();
             originAPI = new OriginAccountClient(view);
         }
-
 
         /// <summary>
         /// Get all achievements for a Origin game.
@@ -35,10 +35,10 @@ namespace SuccessStory.Clients
         /// <param name="PlayniteApi"></param>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public GameAchievements GetAchievements(IPlayniteAPI PlayniteApi, Guid Id)
+        public override GameAchievements GetAchievements(Game game)
         {
             List<Achievements> Achievements = new List<Achievements>();
-            string GameName = PlayniteApi.Database.Games.Get(Id).Name;
+            string GameName = game.Name;
             bool HaveAchivements = false;
             int Total = 0;
             int Unlocked = 0;
@@ -61,9 +61,9 @@ namespace SuccessStory.Clients
                 // Get informations from Origin plugin.
                 string accessToken = originAPI.GetAccessToken().access_token;
                 string personasId = GetPersonas(originAPI.GetAccessToken());
-                string origineGameId = GetOrigineGameAchievementId(PlayniteApi, Id);
+                string origineGameId = GetOrigineGameAchievementId(_PlayniteApi, game.Id);
 
-                string lang = CodeLang.GetOriginLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
+                string lang = CodeLang.GetOriginLang(_PlayniteApi.ApplicationSettings.Language);
                 // Achievements (default return in english)
                 var url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",
                     personasId, origineGameId, lang);
@@ -138,6 +138,17 @@ namespace SuccessStory.Clients
             return Result;
         }
 
+        public override bool IsConfigured()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsConnected()
+        {
+            return originAPI.GetIsUserLoggedIn();
+        }
+
+
         /// <summary>
         /// Get usersId for achievement database.
         /// </summary>
@@ -173,12 +184,12 @@ namespace SuccessStory.Clients
 
         internal static GameStoreDataResponse GetGameStoreData(string gameId, IPlayniteAPI PlayniteApi)
         {
-            string lang = CodeLang.GetOriginLang(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
-            string langShort = CodeLang.GetOriginLangCountry(Localization.GetPlayniteLanguageConfiguration(PlayniteApi.Paths.ConfigurationPath));
+            string lang = CodeLang.GetOriginLang(PlayniteApi.ApplicationSettings.Language);
+            string langShort = CodeLang.GetOriginLangCountry(PlayniteApi.ApplicationSettings.Language);
 
             var url = string.Format(@"https://api2.origin.com/ecommerce2/public/supercat/{0}/{1}?country={2}", gameId, lang, langShort);
 
-            var stringData = Encoding.UTF8.GetString(HttpDownloader.DownloadData(url));
+            string stringData = Web.DownloadStringData(url).GetAwaiter().GetResult();
             return JsonConvert.DeserializeObject<GameStoreDataResponse>(stringData);
         }
     }

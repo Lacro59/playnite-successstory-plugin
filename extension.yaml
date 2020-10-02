@@ -1,6 +1,7 @@
-﻿Name: SuccessStory
+﻿Id: playnite-successstory-plugin
+Name: SuccessStory
 Author: Lacro59
-Version: 0.12.1
+Version: 1.0
 Module: SuccessStory.dll
 Type: GenericPlugin
 Icon: icon.png

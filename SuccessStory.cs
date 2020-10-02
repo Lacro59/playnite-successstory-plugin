@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +34,8 @@ namespace SuccessStory
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
         private readonly IntegrationUI ui = new IntegrationUI();
+        private readonly TaskHelper taskHelper = new TaskHelper();
+
         private AchievementsDatabase achievementsDatabase;
         
 
@@ -44,7 +47,7 @@ namespace SuccessStory
             string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Add plugin localization in application ressource.
-            PluginCommon.Localization.SetPluginLanguage(pluginFolder, api.Paths.ConfigurationPath);
+            PluginCommon.Localization.SetPluginLanguage(pluginFolder, api.ApplicationSettings.Language);
             // Add common in application ressource.
             PluginCommon.Common.Load(pluginFolder);
 
@@ -408,7 +411,13 @@ namespace SuccessStory
                 resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactUnlocked", Value = settings.IntegrationShowAchievementsCompactUnlocked });
                 ui.AddResources(resourcesLists);
 
-                var taskIntegration = Task.Run(() => LoadData(PlayniteApi, this.GetPluginUserDataPath(), settings))
+
+                taskHelper.Check();
+
+                CancellationTokenSource tokenSource = new CancellationTokenSource();
+                CancellationToken ct = tokenSource.Token;
+
+                var taskIntegration = Task.Run(() => LoadData(PlayniteApi, this.GetPluginUserDataPath(), settings), tokenSource.Token)
                 .ContinueWith(antecedent =>
                 {
                     GameAchievements SelectedGameAchievements = antecedent.Result;
@@ -477,7 +486,10 @@ namespace SuccessStory
                                 ScA.Visibility = Visibility.Collapsed;
                             }
 
-                            ui.AddElementInGameSelectedDescription(ScA, settings.IntegrationTopGameDetails);
+                            if (!ct.IsCancellationRequested)
+                            {
+                                ui.AddElementInGameSelectedDescription(ScA, settings.IntegrationTopGameDetails);
+                            }
                         }
 
 
@@ -505,7 +517,10 @@ namespace SuccessStory
                             bt.Margin = new Thickness(10, 0, 0, 0);
                             bt.Click += OnBtGameSelectedActionBarClick;
 
-                            ui.AddButtonInGameSelectedActionBarButtonOrToggleButton(bt);
+                            if (!ct.IsCancellationRequested)
+                            {
+                                ui.AddButtonInGameSelectedActionBarButtonOrToggleButton(bt);
+                            }
                         }
 
 
@@ -519,35 +534,52 @@ namespace SuccessStory
                             if (settings.IntegrationShowGraphic)
                             {
                                 StackPanel scAG = CreateSc(achievementsDatabase, SelectedGameAchievements, false, true, false, false, false, false, true);
-                                ui.AddElementInCustomTheme(scAG, "PART_Achievements_Graphics");
+                                if (!ct.IsCancellationRequested)
+                                {
+                                    ui.AddElementInCustomTheme(scAG, "PART_Achievements_Graphics");
+                                }
                             }
 
                             if (settings.IntegrationShowAchievements)
                             {
                                 StackPanel scAL = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, true, false, false, false, true);
-                                ui.AddElementInCustomTheme(scAL, "PART_Achievements_List");
+                                if (!ct.IsCancellationRequested)
+                                {
+                                    ui.AddElementInCustomTheme(scAL, "PART_Achievements_List");
+                                }
                             }
 
                             if (settings.IntegrationShowProgressBar)
                             {
                                 StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, false, false, true, true);
-                                ui.AddElementInCustomTheme(scPB, "PART_Achievements_ProgressBar");
+                                if (!ct.IsCancellationRequested)
+                                {
+                                    ui.AddElementInCustomTheme(scPB, "PART_Achievements_ProgressBar");
+                                }
                             }
 
                             if (settings.IntegrationShowAchievementsCompactLocked)
                             {
                                 StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, true, false, false, true);
-                                ui.AddElementInCustomTheme(scPB, "PART_Achievements_ListCompactLocked");
+                                if (!ct.IsCancellationRequested)
+                                {
+                                    ui.AddElementInCustomTheme(scPB, "PART_Achievements_ListCompactLocked");
+                                }
                             }
 
                             if (settings.IntegrationShowAchievementsCompactUnlocked)
                             {
                                 StackPanel scPB = CreateSc(achievementsDatabase, SelectedGameAchievements, false, false, false, false, true, false, true);
-                                ui.AddElementInCustomTheme(scPB, "PART_Achievements_ListCompactUnlocked");
+                                if (!ct.IsCancellationRequested)
+                                {
+                                    ui.AddElementInCustomTheme(scPB, "PART_Achievements_ListCompactUnlocked");
+                                }
                             }
                         }
                     }));
                 });
+
+                taskHelper.Add(taskIntegration, tokenSource);
             }
             catch (Exception ex)
             {

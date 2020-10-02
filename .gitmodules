@@ -1,0 +1,3 @@
+[submodule "playnite-plugincommon"]
+	path = playnite-plugincommon
+	url = https://github.com/Lacro59/playnite-plugincommon.git
