@@ -8,10 +8,6 @@
                 <ResourceDictionary Source="playnite-plugincommon/Resources/PlayniteResources/Common.xaml" />
                 <!--Playnite Default localization-->
                 <ResourceDictionary Source="playnite-plugincommon/Resources/PlayniteResources/LocSource.xaml" />
-                <!--DerivedStyles-->
-                <ResourceDictionary Source="Resources/PlayniteResources/DerivedStyles/MainWindowStyle.xaml" />
-                <ResourceDictionary Source="Resources/PlayniteResources/DerivedStyles/StandardWindowStyle.xaml" />
-                <ResourceDictionary Source="Resources/PlayniteResources/DerivedStyles/WindowBarButton.xaml" />
                 <!--Default Controls-->
                 <ResourceDictionary Source="playnite-plugincommon/Resources/PlayniteResources/DefaultControls/Border.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/Resources/PlayniteResources/DefaultControls/TextBlock.xaml" />
