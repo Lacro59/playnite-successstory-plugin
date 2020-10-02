@@ -167,7 +167,7 @@ namespace SuccessStory.Models
         /// <returns></returns>
         public AchievementsGraphicsDataCount GetCountByMonth(Guid? GameID = null, int limit = 11)
         {
-            string[] GraphicsAchievementsLabels = new string[12];
+            string[] GraphicsAchievementsLabels = new string[limit + 1];
             ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
 
             // All achievements
