@@ -623,11 +623,11 @@ namespace SuccessStory
                 AchievementsGraphicsDataCount GraphicsData = null;
                 if (settings.GraphicAllUnlockedByDay)
                 {
-                    GraphicsData = achievementsDatabase.GetCountByMonth(GameSelected.Id, settings.IntegrationGraphicOptionsCountAbscissa);
+                    GraphicsData = achievementsDatabase.GetCountByMonth(GameSelected.Id, (settings.IntegrationGraphicOptionsCountAbscissa - 1));
                 }
                 else
                 {
-                    GraphicsData = achievementsDatabase.GetCountByDay(GameSelected.Id, settings.IntegrationGraphicOptionsCountAbscissa);
+                    GraphicsData = achievementsDatabase.GetCountByDay(GameSelected.Id, (settings.IntegrationGraphicOptionsCountAbscissa - 1));
                 }
                 string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
                 SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();

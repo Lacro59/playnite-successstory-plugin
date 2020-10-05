@@ -80,7 +80,7 @@ namespace SuccessStory
             if (settings.GraphicAllUnlockedByMonth)
             {
                 GraphicTitleALL.Content = resources.GetString("LOCSucessStoryGraphicTitleALL");
-                GraphicsData = AchievementsDatabase.GetCountByMonth(null, 7);
+                GraphicsData = AchievementsDatabase.GetCountByMonth(null, 8);
             }
             else
             {
@@ -500,7 +500,7 @@ namespace SuccessStory
                 else
                 {
                     GraphicTitle.Content = resources.GetString("LOCSucessStoryGraphicTitleDay");
-                    GraphicsData = AchievementsDatabase.GetCountByDay(GameId, 7);
+                    GraphicsData = AchievementsDatabase.GetCountByDay(GameId, 8);
                 }
                 string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
                 SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
