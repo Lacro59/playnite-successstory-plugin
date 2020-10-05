@@ -45,7 +45,7 @@ namespace SuccessStory.Clients
 
         public override GameAchievements GetAchievements(Game game)
         {
-            int AppId = int.Parse(game.GameId);
+            int AppId = 0;
             List<Achievements> AllAchievements = new List<Achievements>();
             GameAchievements Result = new GameAchievements
             {
@@ -68,6 +68,11 @@ namespace SuccessStory.Clients
 
             if (!IsLocal)
             {
+#if DEBUG
+                logger.Debug($"SuccessStory - Steam - GetAchievements()");
+#endif
+                AppId = int.Parse(game.GameId);
+
                 VerifSteamUser();
                 if (SteamUser.IsNullOrEmpty())
                 {
@@ -90,10 +95,13 @@ namespace SuccessStory.Clients
             }
             else
             {
-                SteamEmulators se = new SteamEmulators(_PlayniteApi, _PluginUserDataPath);
-                AppId = se.GetSteamId();
+#if DEBUG
+                logger.Debug($"SuccessStory - Steam - GetAchievementsLocal()");
+#endif
 
+                SteamEmulators se = new SteamEmulators(_PlayniteApi, _PluginUserDataPath);
                 var temp = se.GetAchievementsLocal(game.Name, SteamApiKey);
+                AppId = se.GetSteamId();
 
                 if (temp.Achievements.Count > 0)
                 {
@@ -108,6 +116,7 @@ namespace SuccessStory.Clients
                         Result.Achievements.Add(new Achievements
                         {
                             Name = temp.Achievements[i].Name,
+                            ApiName = temp.Achievements[i].ApiName,
                             Description = temp.Achievements[i].Description,
                             UrlUnlocked = temp.Achievements[i].UrlUnlocked,
                             UrlLocked = temp.Achievements[i].UrlLocked,

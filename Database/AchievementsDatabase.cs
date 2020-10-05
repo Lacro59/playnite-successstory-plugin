@@ -794,6 +794,10 @@ namespace SuccessStory.Models
                 // Generate only not exist
                 if (!File.Exists(PluginDatabaseGamePath))
                 {
+#if DEBUG
+                    logger.Debug($"SuccessStory - VerifToAddOrShow({GameAdded.Name}, {GameSourceName}) - OK");
+#endif
+
                     // TODO one func
                     if (GameSourceName.ToLower() == "gog")
                     {
@@ -847,6 +851,12 @@ namespace SuccessStory.Models
                         File.WriteAllText(PluginDatabaseGamePath, JsonConvert.SerializeObject(GameAchievements));
                     }
                 }
+            }
+            else
+            {
+#if DEBUG
+                logger.Debug($"SuccessStory - VerifToAddOrShow({GameAdded.Name}, {GameSourceName}) - KO");
+#endif
             }
         }
 

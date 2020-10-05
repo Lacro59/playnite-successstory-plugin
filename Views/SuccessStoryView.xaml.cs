@@ -17,7 +17,6 @@ using SuccessStory.Database;
 using SuccessStory.Models;
 using SuccessStory.Views.Interface;
 
-
 namespace SuccessStory
 {
     /// <summary>
