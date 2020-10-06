@@ -206,14 +206,8 @@ namespace SuccessStory
 
         private void OnBtGameSelectedActionBarClick(object sender, RoutedEventArgs e)
         {
-            List<Guid> ListEmulators = new List<Guid>();
-            foreach (var item in PlayniteApi.Database.Emulators)
-            {
-                ListEmulators.Add(item.Id);
-            }
-
             // Show SuccessView
-            if (settings.EnableRetroAchievementsView && GameSelected.PlayAction != null && GameSelected.PlayAction.EmulatorId != null && ListEmulators.Contains(GameSelected.PlayAction.EmulatorId))
+            if (settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, GameSelected))
             {
                 new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected).ShowDialog();
             }
@@ -319,24 +313,18 @@ namespace SuccessStory
             // TODO Add in PluginCommon
             string GameSourceName = string.Empty;
 
-            List<Guid> ListEmulators = new List<Guid>();
-            foreach (var item in PlayniteApi.Database.Emulators)
-            {
-                ListEmulators.Add(item.Id);
-            }
-
             if (GameSelected.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
             {
                 GameSourceName = GameSelected.Source.Name;
 
-                if (GameSelected.PlayAction != null && GameSelected.PlayAction.EmulatorId != null && ListEmulators.Contains(GameSelected.PlayAction.EmulatorId))
+                if (PlayniteTools.IsGameEmulated(PlayniteApi, GameSelected))
                 {
                     GameSourceName = "RetroAchievements";
                 }
             }
             else
             {
-                if (GameSelected.PlayAction != null && GameSelected.PlayAction.EmulatorId != null && ListEmulators.Contains(GameSelected.PlayAction.EmulatorId))
+                if (PlayniteTools.IsGameEmulated(PlayniteApi, GameSelected))
                 {
                     GameSourceName = "RetroAchievements";
                 }

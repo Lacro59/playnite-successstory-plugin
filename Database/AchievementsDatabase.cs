@@ -34,8 +34,6 @@ namespace SuccessStory.Models
         private string PluginDatabasePath { get; set; }
         private bool _isRetroachievements { get; set; }
 
-        private List<Guid> ListEmulators = new List<Guid>();
-
         public static CumulErrors ListErrors = new CumulErrors();
 
 
@@ -52,14 +50,6 @@ namespace SuccessStory.Models
             _PluginUserDataPath = PluginUserDataPath;
             _isRetroachievements = isRetroachievements;
             PluginDatabasePath = PluginUserDataPath + "\\achievements\\";
-
-
-            // List Emulators
-            foreach (var item in PlayniteApi.Database.Emulators)
-            {
-                ListEmulators.Add(item.Id);
-            }
-
 
             if (!Directory.Exists(PluginDatabasePath))
             {
@@ -147,15 +137,7 @@ namespace SuccessStory.Models
         private bool IsEmulatedGame(KeyValuePair<Guid, GameAchievements> x)
         {
             Game game = _PlayniteApi.Database.Games.Get(x.Key);
-
-            if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return PlayniteTools.IsGameEmulated(_PlayniteApi, game);
         }
 
 
@@ -337,13 +319,6 @@ namespace SuccessStory.Models
             }
 
 
-            List<Guid> ListEmulators = new List<Guid>();
-            foreach (var item in _PlayniteApi.Database.Emulators)
-            {
-                ListEmulators.Add(item.Id);
-            }
-            
-
             foreach (var item in PluginDatabase)
             {
                 string SourceName = string.Empty;
@@ -356,14 +331,14 @@ namespace SuccessStory.Models
                     {
                         SourceName = game.Source.Name;
 
-                        if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                        if (PlayniteTools.IsGameEmulated(_PlayniteApi, game))
                         {
                             SourceName = "RetroAchievements";
                         }
                     }
                     else
                     {
-                        if (game.PlayAction != null && game.PlayAction.EmulatorId != null && ListEmulators.Contains(game.PlayAction.EmulatorId))
+                        if (PlayniteTools.IsGameEmulated(_PlayniteApi, game))
                         {
                             SourceName = "RetroAchievements";
                         }
@@ -556,7 +531,7 @@ namespace SuccessStory.Models
 
             if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
-                if (Tools.IsDisabledPlaynitePlugins("SteamLibrary", PlayniteApi.Paths.ConfigurationPath))
+                if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
                     logger.Warn("SuccessStory - Steam is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -587,7 +562,7 @@ namespace SuccessStory.Models
 
             if (settings.EnableGog && GameSourceName.ToLower() == "gog")
             {
-                if (Tools.IsDisabledPlaynitePlugins("GogLibrary", PlayniteApi.Paths.ConfigurationPath))
+                if (PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
                     logger.Warn("SuccessStory - GOG is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -618,7 +593,7 @@ namespace SuccessStory.Models
 
             if (settings.EnableOrigin && GameSourceName.ToLower() == "origin")
             {
-                if (Tools.IsDisabledPlaynitePlugins("OriginLibrary", PlayniteApi.Paths.ConfigurationPath))
+                if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
                     logger.Warn("SuccessStory - Origin is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -649,7 +624,7 @@ namespace SuccessStory.Models
 
             if (settings.EnableXbox && GameSourceName.ToLower() == "xbox")
             {
-                if (Tools.IsDisabledPlaynitePlugins("XboxLibrary", PlayniteApi.Paths.ConfigurationPath))
+                if (PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
                     logger.Warn("SuccessStory - Xbox is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -721,14 +696,14 @@ namespace SuccessStory.Models
                     break;
 
                 case "gog":
-                    if (!Tools.IsDisabledPlaynitePlugins("GogLibrary", _PlayniteApi.Paths.ConfigurationPath) && settings.EnableGog && gogAPI == null)
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", _PlayniteApi.Paths.ConfigurationPath) && settings.EnableGog && gogAPI == null)
                     {
                         gogAPI = new GogAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                     }
                     break;
 
                 case "origin":
-                    if (!Tools.IsDisabledPlaynitePlugins("OriginLibrary", _PlayniteApi.Paths.ConfigurationPath) && originAPI == null)
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary", _PlayniteApi.Paths.ConfigurationPath) && originAPI == null)
                     {
                         originAPI = new OriginAchievements(_PlayniteApi, settings, _PluginUserDataPath);
                     }
@@ -756,24 +731,18 @@ namespace SuccessStory.Models
             Guid GameSourceId = GameAdded.SourceId;
             string GameSourceName = string.Empty;
 
-            List<Guid> ListEmulators = new List<Guid>();
-            foreach (var item in _PlayniteApi.Database.Emulators)
-            {
-                ListEmulators.Add(item.Id);
-            }
-
             if (GameSourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
             {
                 GameSourceName = GameAdded.Source.Name;
 
-                if (GameAdded.PlayAction != null && GameAdded.PlayAction.EmulatorId != null && ListEmulators.Contains(GameAdded.PlayAction.EmulatorId))
+                if (PlayniteTools.IsGameEmulated(_PlayniteApi, GameAdded))
                 {
                     GameSourceName = "RetroAchievements";
                 }
             }
             else
             {
-                if (GameAdded.PlayAction != null && GameAdded.PlayAction.EmulatorId != null && ListEmulators.Contains(GameAdded.PlayAction.EmulatorId))
+                if (PlayniteTools.IsGameEmulated(_PlayniteApi, GameAdded))
                 {
                     GameSourceName = "RetroAchievements";
                 }

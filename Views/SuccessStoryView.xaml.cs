@@ -239,12 +239,6 @@ namespace SuccessStory
         {
             try
             {
-                List<Guid> ListEmulators = new List<Guid>();
-                foreach (var item in PlayniteApi.Database.Emulators)
-                {
-                    ListEmulators.Add(item.Id);
-                }
-
                 if (ListGames.Count == 0)
                 {
                     foreach (var item in PlayniteApiDatabase.Games)
@@ -262,14 +256,14 @@ namespace SuccessStory
                                 logger.Warn($"SuccessStory - No source name for {item.Name}");
                             }
 
-                            if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                            if (PlayniteTools.IsGameEmulated(PlayniteApi, item))
                             {
                                 GameSourceName = "RetroAchievements";
                             }
                         }
                         else
                         {
-                            if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                            if (PlayniteTools.IsGameEmulated(PlayniteApi, item))
                             {
                                 GameSourceName = "RetroAchievements";
                             }
@@ -293,14 +287,14 @@ namespace SuccessStory
                                 {
                                     SourceName = item.Source.Name;
 
-                                    if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                                    if (PlayniteTools.IsGameEmulated(PlayniteApi, item))
                                     {
                                         SourceName = "RetroAchievements";
                                     }
                                 }
                                 else
                                 {
-                                    if (item.PlayAction != null && item.PlayAction.EmulatorId != null && ListEmulators.Contains(item.PlayAction.EmulatorId))
+                                    if (PlayniteTools.IsGameEmulated(PlayniteApi, item))
                                     {
                                         SourceName = "RetroAchievements";
                                     }
@@ -673,11 +667,6 @@ namespace SuccessStory
             SuccessStory_Achievements_Graphics_Game.UpdateLayout();
 
             GC.Collect();
-        }
-
-        private void Label_Loaded(object sender, RoutedEventArgs e)
-        {
-            Tools.DesactivePlayniteWindowControl(this);
         }
 
 
