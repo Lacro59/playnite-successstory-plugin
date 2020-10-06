@@ -1,4 +1,5 @@
-﻿using SuccessStory.Models;
+﻿using Newtonsoft.Json;
+using SuccessStory.Models;
 using System.Collections.Generic;
 
 namespace SuccessStory.Database
@@ -20,6 +21,17 @@ namespace SuccessStory.Database
         /// 
         /// </summary>
         public bool IsEmulators { get; set; } = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        [JsonIgnore]
+        public bool Is100Percent
+        {
+            get
+            {
+                return Total == Unlocked;
+            }
+        }
         /// <summary>
         /// Total achievements for the game.
         /// </summary>

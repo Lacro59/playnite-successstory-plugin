@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -237,6 +239,8 @@ namespace SuccessStory
         /// </summary>
         public void GetListGame()
         {
+            string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
             try
             {
                 if (ListGames.Count == 0)
@@ -312,7 +316,7 @@ namespace SuccessStory
                                 }
 
                                 BitmapImage iconImage = new BitmapImage();
-                                if (String.IsNullOrEmpty(item.Icon) == false)
+                                if (!item.Icon.IsNullOrEmpty())
                                 {
                                     iconImage.BeginInit();
                                     GameIcon = PlayniteApiDatabase.GetFullFilePath(item.Icon);
@@ -320,8 +324,18 @@ namespace SuccessStory
                                     iconImage.EndInit();
                                 }
 
+                                BitmapImage Icon100Percent = new BitmapImage();
+                                if (GameAchievements.Is100Percent)
+                                {
+                                    Icon100Percent.BeginInit();
+                                    string Icon100 = Path.Combine(pluginFolder, "Resources\\badge.png");
+                                    Icon100Percent.UriSource = new Uri(Icon100, UriKind.RelativeOrAbsolute);
+                                    Icon100Percent.EndInit();
+                                }
+
                                 ListGames.Add(new ListViewGames()
                                 {
+                                    Icon100Percent = Icon100Percent,
                                     Id = GameId,
                                     Name = GameName,
                                     Icon = iconImage,
@@ -561,6 +575,10 @@ namespace SuccessStory
                 ListSortDirection direction;
 
                 // No sort
+                if (headerClicked.Name == "lvGameIcon100Percent")
+                {
+                    headerClicked = null;
+                }
                 if (headerClicked.Name == "lvGameIcon")
                 {
                     headerClicked = null;

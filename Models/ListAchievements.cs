@@ -8,7 +8,6 @@ namespace SuccessStory.Models
     /// </summary>
     public class ListBoxAchievements
     {
-        //public BitmapImage Icon { get; set; }
         public FormatConvertedBitmap Icon { get; set; }
         public string Name { get; set; }
         public DateTime? DateUnlock { get; set; }

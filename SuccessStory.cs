@@ -381,6 +381,7 @@ namespace SuccessStory
 #endif
                 List<ResourcesList> resourcesLists = new List<ResourcesList>();
                 resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = false });
+                resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = false });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = 0 });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = (double)0 });
                 resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = "0" });
@@ -423,6 +424,7 @@ namespace SuccessStory
                         logger.Debug($"SuccessStory - Add ressource for {GameSelected.Name}");
 #endif
                         resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = SelectedGameAchievements.Is100Percent });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SelectedGameAchievements.Total });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = double.Parse(SelectedGameAchievements.Total.ToString()) });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = SelectedGameAchievements.Total.ToString() });

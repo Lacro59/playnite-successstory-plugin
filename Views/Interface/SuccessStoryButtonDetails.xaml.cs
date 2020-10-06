@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace SuccessStory.Views.Interface
 {
@@ -11,6 +11,11 @@ namespace SuccessStory.Views.Interface
         public SuccessStoryButtonDetails(int Unlocked, int Total)
         {
             InitializeComponent();
+
+            if (Total != Unlocked)
+            {
+                Sc_Icon100Percent.Visibility = Visibility.Collapsed;
+            }
 
             sc_labelButton.Content = Unlocked + "/" + Total;
 
