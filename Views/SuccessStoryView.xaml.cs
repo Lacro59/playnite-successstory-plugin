@@ -77,6 +77,33 @@ namespace SuccessStory
             GetListGame();
 
 
+            // lvGames options
+            if (!settings.lvGamesIcon100Percent)
+            {
+                lvGameIcon100Percent.Width = 0;
+            }
+            if (!settings.lvGamesIcon)
+            {
+                lvGameIcon.Width = 0;
+            }
+            if (!settings.lvGamesName)
+            {
+                lvGameName.Width = 0;
+            }
+            if (!settings.lvGamesLastSession)
+            {
+                lvGameLastActivity.Width = 0;
+            }
+            if (!settings.lvGamesSource)
+            {
+                lvGamesSource.Width = 0;
+            }
+            if (!settings.lvGamesProgression)
+            {
+                lvGameProgression.Width = 0;
+            }
+
+
             AchievementsGraphicsDataCount GraphicsData = null;
             if (settings.GraphicAllUnlockedByMonth)
             {
@@ -494,7 +521,7 @@ namespace SuccessStory
                 List<Achievements> ListAchievements = GameAchievements.Achievements;
 
                 SuccessStory_Achievements_List.Children.Clear();
-                SuccessStory_Achievements_List.Children.Add(new SuccessStoryAchievementsList(ListAchievements));
+                SuccessStory_Achievements_List.Children.Add(new SuccessStoryAchievementsList(ListAchievements, false, settings.EnableRaretyIndicator));
                 SuccessStory_Achievements_List.UpdateLayout();
 
 

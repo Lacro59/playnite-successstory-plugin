@@ -137,35 +137,35 @@
                 <ListView x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Width="46">
-                                <GridViewColumnHeader Name="lvGameIcon100Percent" Content="100%"></GridViewColumnHeader>
+                            <GridViewColumn Width="46" x:Name="lvGameIcon100Percent">
+                                <GridViewColumnHeader Content="100%"></GridViewColumnHeader>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent}"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            
-                            <GridViewColumn Width="50">
-                                <GridViewColumnHeader Name="lvGameIcon" Content="{DynamicResource LOCSucessStorylvGamesIcon}"></GridViewColumnHeader>
+
+                            <GridViewColumn Width="50" x:Name="lvGameIcon">
+                                <GridViewColumnHeader Content="{DynamicResource LOCSucessStorylvGamesIcon}"></GridViewColumnHeader>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}"/>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
-                            
-                            <GridViewColumn Width="240" DisplayMemberBinding="{Binding Name}">
+
+                            <GridViewColumn Width="240" DisplayMemberBinding="{Binding Name}" x:Name="lvGameName">
                                 <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCSucessStorylvGamesName}"></GridViewColumnHeader>
                             </GridViewColumn>
-                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}">
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
                                 <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCSucessStorylvGamesLastActivity}"></GridViewColumnHeader>
                             </GridViewColumn>
 
                             <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
                                 <GridViewColumnHeader Name="lvSourceName">SourceName</GridViewColumnHeader>
                             </GridViewColumn>
-                            <GridViewColumn Width="75">
+                            <GridViewColumn Width="75" x:Name="lvGamesSource">
                                 <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSucessStorylvGamesSourceName}"></GridViewColumnHeader>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -177,7 +177,7 @@
                             <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProgressionValue}">
                                 <GridViewColumnHeader Name="lvProgressionValue">Progression value</GridViewColumnHeader>
                             </GridViewColumn>
-                            <GridViewColumn Width="105" >
+                            <GridViewColumn Width="105" x:Name="lvGameProgression">
                                 <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSucessStorylvGamesProgression}"></GridViewColumnHeader>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>

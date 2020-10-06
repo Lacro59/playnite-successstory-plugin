@@ -23,7 +23,7 @@ namespace SuccessStory.Views.Interface
         private bool _withContener;
 
 
-        public SuccessStoryAchievementsList(List<Achievements> ListAchievements, bool withContener = false)
+        public SuccessStoryAchievementsList(List<Achievements> ListAchievements, bool withContener = false, bool EnableRaretyIndicator = true)
         {
             _withContener = withContener;
 
@@ -86,6 +86,7 @@ namespace SuccessStory.Views.Interface
                 {
                     Name = NameAchievement,
                     DateUnlock = dateUnlock,
+                    EnableRaretyIndicator = EnableRaretyIndicator,
                     Icon = ConvertBitmapSource,
                     Description = ListAchievements[i].Description,
                     Percent = ListAchievements[i].Percent

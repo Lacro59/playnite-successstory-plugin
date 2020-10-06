@@ -660,7 +660,7 @@ namespace SuccessStory
                     spAL.Margin = new Thickness(0, 5, 0, 5);
                 }
 
-                spAL.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements, IsCustom));
+                spAL.Children.Add(new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements, IsCustom, settings.EnableRaretyIndicator));
 
                 spA.Children.Add(spAL);
                 spA.UpdateLayout();
@@ -676,7 +676,7 @@ namespace SuccessStory
                     spALCL.Margin = new Thickness(0, 5, 0, 5);
                 }
 
-                spALCL.Children.Add(new SuccessStoryAchievementsCompact(SelectedGameAchievements.Achievements));
+                spALCL.Children.Add(new SuccessStoryAchievementsCompact(SelectedGameAchievements.Achievements, false, settings.EnableRaretyIndicator));
 
                 spA.Children.Add(spALCL);
                 spA.UpdateLayout();
@@ -692,7 +692,7 @@ namespace SuccessStory
                     spALCUL.Margin = new Thickness(0, 5, 0, 5);
                 }
 
-                spALCUL.Children.Add(new SuccessStoryAchievementsCompact(SelectedGameAchievements.Achievements, true));
+                spALCUL.Children.Add(new SuccessStoryAchievementsCompact(SelectedGameAchievements.Achievements, true, settings.EnableRaretyIndicator));
 
                 spA.Children.Add(spALCUL);
                 spA.UpdateLayout();

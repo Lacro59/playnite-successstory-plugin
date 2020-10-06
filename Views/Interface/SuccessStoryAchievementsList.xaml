@@ -79,6 +79,12 @@
                         <Image.Source>
                             <FormatConvertedBitmap Source="{Binding Icon}"/>
                         </Image.Source>
+                    </Image>
+                    <Image Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left" Stretch="UniformToFill" 
+                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image.Source>
+                            <FormatConvertedBitmap Source="{Binding Icon}"/>
+                        </Image.Source>
                         <Image.Effect>
                             <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}"/>
                         </Image.Effect>

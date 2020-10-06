@@ -120,6 +120,32 @@
                             <Button Grid.Column="4" Grid.Row="6" Height="30" Content="{DynamicResource LOCSucessStoryGetMissing}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSucessStoryGetMissingToolTip}"></Button>
                             <Button Grid.Column="6" Grid.Row="6" Height="30" Content="{DynamicResource LOCSucessStoryRefreshData}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSucessStoryRefreshDataToolTip}"></Button>
                         </Grid>
+                    </DockPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource LOCSucessStoryViewsSettings}">
+                <ScrollViewer  Margin="0,10,0,0">
+                    <StackPanel>
+                        <Label Content="{DynamicResource LOCGeneralLabel}" FontSize="18" />
+                        <Separator Margin="0,0,0,10" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                            </Grid.RowDefinitions>
+
+                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableRaretyIndicator}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableRaretyIndicator}" />
+                            </CheckBox>
+                        </Grid>
+
+                        
+                        <Label Content="{DynamicResource LOCSucessStoryListGames}" FontSize="18" Margin="0,20,0,0" />
+                        <Separator Margin="0,0,0,10" />
 
                         <Grid DockPanel.Dock="Top">
                             <Grid.ColumnDefinitions>
@@ -130,13 +156,13 @@
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="35" />
-                                <RowDefinition Height="35" />
-                                <RowDefinition Height="35" />
-                                <RowDefinition Height="35" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCSucessStoryDefaultSorting}"></Label>
+                            <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCSucessStoryDefaultSorting}" />
                             <ComboBox Name="cbDefaultSorting" Grid.Column="2" Grid.Row="0" Height="30" IsEditable="True" IsReadOnly="True" SelectionChanged="cbDefaultSorting_SelectionChanged">
                                 <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesName}" Tag="Name"></ComboBoxItem>
                                 <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesLastActivity}" Tag="LastActivity"></ComboBoxItem>
@@ -149,17 +175,64 @@
                                 <Label Content="{DynamicResource LOCSucessStoryIncludeHiddenGames}"></Label>
                             </CheckBox>
 
-                            <CheckBox Name="Sc_AllMonth" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Click="CheckboxGraphicType_Click" IsChecked="{Binding GraphicAllUnlockedByMonth}" VerticalAlignment="Center">
+                            <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Content="{DynamicResource LOCSucessStoryListGamesFields}" />
+                            <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="5" Margin="30,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+
+                                <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding lvGamesIcon100Percent}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCSuccessStoryGamesIcon100Percent}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="0" IsChecked="{Binding lvGamesIcon}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCGameIconTitle}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding lvGamesName}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCGameNameTitle}" />
+                                </CheckBox>
+
+                                <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding lvGamesLastSession}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCGameLastActivityTitle}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding lvGamesSource}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCSourceLabel}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding lvGamesProgression}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCSucessStorylvGamesProgression}" />
+                                </CheckBox>
+                            </Grid>
+                        </Grid>
+
+                        
+                        <Label Content="{DynamicResource LOCSucessStoryChartWithAllAchievements}" FontSize="18" Margin="0,20,0,0" />
+                        <Separator Margin="0,0,0,10" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                            </Grid.RowDefinitions>
+                            
+                            <CheckBox Name="Sc_AllMonth" Grid.Column="0" Grid.Row="0" Click="CheckboxGraphicType_Click" IsChecked="{Binding GraphicAllUnlockedByMonth}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSucessStoryAllUnlockedByMonth}"></Label>
                             </CheckBox>
-                            <CheckBox Name="Sc_AllDay" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Click="CheckboxGraphicType_Click" IsChecked="{Binding GraphicAllUnlockedByDay}" VerticalAlignment="Center">
+                            <CheckBox Name="Sc_AllDay" Grid.Column="0" Grid.Row="1" Click="CheckboxGraphicType_Click" IsChecked="{Binding GraphicAllUnlockedByDay}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSucessStoryGameUnlockedByMonth}"></Label>
                             </CheckBox>
                         </Grid>
-                    </DockPanel>
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
-
+            
             <TabItem Header="{DynamicResource LOCSucessStoryDatabase}">
                 <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>

@@ -63,6 +63,15 @@ namespace SuccessStory
         public string NameSorting { get; set; } = "LastActivity";
         public bool IsAsc { get; set; } = false;
 
+        public bool EnableRaretyIndicator { get; set; } = true;
+
+        public bool lvGamesIcon100Percent { get; set; } = true;
+        public bool lvGamesIcon { get; set; } = true;
+        public bool lvGamesName { get; set; } = true;
+        public bool lvGamesLastSession { get; set; } = true;
+        public bool lvGamesSource { get; set; } = true;
+        public bool lvGamesProgression { get; set; } = true;
+
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonIgnore` ignore attribute.
         [JsonIgnore]
@@ -134,6 +143,15 @@ namespace SuccessStory
 
                 NameSorting = savedSettings.NameSorting;
                 IsAsc = savedSettings.IsAsc;
+
+                EnableRaretyIndicator = savedSettings.EnableRaretyIndicator;
+
+                lvGamesIcon100Percent = savedSettings.lvGamesIcon100Percent;
+                lvGamesIcon = savedSettings.lvGamesIcon;
+                lvGamesName = savedSettings.lvGamesName;
+                lvGamesLastSession = savedSettings.lvGamesLastSession;
+                lvGamesSource = savedSettings.lvGamesSource;
+                lvGamesProgression = savedSettings.lvGamesProgression;
             }
         }
 

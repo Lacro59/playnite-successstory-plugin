@@ -23,11 +23,13 @@ namespace SuccessStory.Views.Interface
 
         List<ListBoxAchievements> AchievementsList = new List<ListBoxAchievements>();
         private bool _withUnlocked;
+        private bool _EnableRaretyIndicator;
 
 
-        public SuccessStoryAchievementsCompact(List<Achievements> ListAchievements, bool withUnlocked = false)
+        public SuccessStoryAchievementsCompact(List<Achievements> ListAchievements, bool withUnlocked = false, bool EnableRaretyIndicator = true)
         {
             _withUnlocked = withUnlocked;
+            _EnableRaretyIndicator = EnableRaretyIndicator;
 
             InitializeComponent();
 
@@ -163,7 +165,10 @@ namespace SuccessStory.Views.Interface
                                 myDropShadowEffect.Color = (Color)color;
                             }
 
-                            gridImage.Effect = myDropShadowEffect;
+                            if (_EnableRaretyIndicator)
+                            {
+                                gridImage.Effect = myDropShadowEffect;
+                            }
 
                             PART_ScCompactView.Children.Add(gridImage);
                         }
