@@ -12,6 +12,8 @@ using SuccessStory.Models;
 using SuccessStory.Views;
 using SuccessStory.Views.Interface;
 using System;
+using System.Linq;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -22,6 +24,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Separator = System.Windows.Controls.Separator;
+using PluginCommon.PlayniteResources;
 
 namespace SuccessStory
 {
@@ -37,7 +40,11 @@ namespace SuccessStory
         private readonly TaskHelper taskHelper = new TaskHelper();
 
         private AchievementsDatabase achievementsDatabase;
+
+
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
         
+
 
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
@@ -67,6 +74,17 @@ namespace SuccessStory
             {
                 EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(OnCustomThemeButtonClick));
             }
+
+
+            Application.Current.Exit += Playnite_Exit;
+        }
+
+        private void Playnite_Exit(object sender, ExitEventArgs e)
+        {
+#if DEBUG
+            logger.Debug($"SuccessStory - Cancel TaskCacheImage");
+#endif
+            tokenSource.Cancel();
         }
 
         public override IEnumerable<ExtensionFunction> GetFunctions()
@@ -157,7 +175,7 @@ namespace SuccessStory
             Integration();
         }
 
-        #region Interface integration
+#region Interface integration
         private Game GameSelected { get; set; }
         private StackPanel PART_ElemDescription = null;
 
@@ -306,6 +324,70 @@ namespace SuccessStory
                 achievementsDatabase = new AchievementsDatabase(this, PlayniteApi, settings, this.GetPluginUserDataPath());
                 achievementsDatabase.Initialize();
                 SuccessStory.isFirstLoad = false;
+
+
+                if (settings.EnableImageCache)
+                {
+                    CancellationToken ct = tokenSource.Token;
+                    var TaskCacheImage = Task.Run(() =>
+                    {
+#if DEBUG
+                    logger.Debug($"SuccessStory - TaskCacheImage - {PlayniteApi.Database.Games.Count}");
+#endif
+                    //var dbGames = PlayniteApi.Database.Games.Where(x => x.sou)
+                    foreach (Game game in PlayniteApi.Database.Games)
+                        {
+                        //GC.Collect();
+                        //GC.WaitForPendingFinalizers();
+
+                        try
+                            {
+                                GameAchievements gameAchievements = achievementsDatabase.Get(game.Id);
+                                if (gameAchievements != null && gameAchievements.HaveAchivements)
+                                {
+                                    foreach (var achievement in gameAchievements.Achievements)
+                                    {
+                                        if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked).IsNullOrEmpty())
+                                        {
+#if DEBUG
+                                        logger.Debug($"SuccessStory - TaskCacheImage - {game.Name} - GetCacheFile({achievement.Name + "_Locked"})");
+#endif
+                                        Web.DownloadFileImage(achievement.Name + "_Locked", achievement.UrlLocked, PlaynitePaths.ImagesCachePath).GetAwaiter().GetResult();
+                                        }
+
+                                        if (ct.IsCancellationRequested)
+                                        {
+                                            ct.ThrowIfCancellationRequested();
+                                        }
+
+                                        if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked).IsNullOrEmpty())
+                                        {
+#if DEBUG
+                                        logger.Debug($"SuccessStory - TaskCacheImage - {game.Name} - GetCacheFile({achievement.Name + "_Unlocked"})");
+#endif
+                                        Web.DownloadFileImage(achievement.Name + "_Unlocked", achievement.UrlUnlocked, PlaynitePaths.ImagesCachePath).GetAwaiter().GetResult();
+                                        }
+
+                                        if (ct.IsCancellationRequested)
+                                        {
+                                            ct.ThrowIfCancellationRequested();
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+#if DEBUG
+                            Common.LogError(ex, "SuccessStory", $"Error on TaskCacheImage");
+#endif
+                        }
+                        }
+
+#if DEBUG
+                    logger.Debug($"SuccessStory - TaskCacheImage - End");
+#endif
+                }, tokenSource.Token);
+                }
             }
 
             GameAchievements SelectedGameAchievements = achievementsDatabase.Get(GameSelected.Id);
@@ -700,7 +782,7 @@ namespace SuccessStory
 
             return spA;
         }
-        #endregion
+#endregion
 
         public override ISettings GetSettings(bool firstRunSettings)
         {

@@ -242,6 +242,8 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
                     <GroupBox Grid.Column="0" Header="{DynamicResource LOCSuccessStoryGetData}">
@@ -275,6 +277,10 @@
                             <Button Grid.Row="4" Content="{DynamicResource LOCSucessStoryRefreshAllData}" FontSize="14" Click="Button_Click_All" ToolTip="{DynamicResource LOCSucessStoryRefreshAllDataToolTip}"></Button>
                         </Grid>
                     </GroupBox>
+
+                    <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" IsChecked="{Binding EnableImageCache}" ToolTip="{DynamicResource LOCSucessStoryEnableImageCacheToolTip}">
+                        <Label Content="{DynamicResource LOCSucessStoryEnableImageCache}" />
+                    </CheckBox>
                 </Grid>
             </TabItem>
 

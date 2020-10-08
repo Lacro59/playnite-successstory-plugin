@@ -75,16 +75,16 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Image Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left" Stretch="UniformToFill">
-                        <Image.Source>
-                            <FormatConvertedBitmap Source="{Binding Icon}"/>
-                        </Image.Source>
+                    <Image Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left" Stretch="UniformToFill" Source="{Binding Icon}">
+                        <Image.OpacityMask>
+                            <ImageBrush ImageSource="{Binding IconImage}" />
+                        </Image.OpacityMask>
                     </Image>
-                    <Image Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left" Stretch="UniformToFill" 
+                    <Image Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left" Stretch="UniformToFill" Source="{Binding Icon}"
                            Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Image.Source>
-                            <FormatConvertedBitmap Source="{Binding Icon}"/>
-                        </Image.Source>
+                        <Image.OpacityMask>
+                            <ImageBrush ImageSource="{Binding IconImage}" />
+                        </Image.OpacityMask>
                         <Image.Effect>
                             <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}"/>
                         </Image.Effect>

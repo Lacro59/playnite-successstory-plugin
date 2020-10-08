@@ -52,9 +52,8 @@ namespace SuccessStory.Views.Interface
             {
                 DateTime? dateUnlock = null;
                 BitmapImage iconImage = new BitmapImage();
-                FormatConvertedBitmap ConvertBitmapSource = new FormatConvertedBitmap();
 
-                bool isGray = false;
+                bool IsGray = false;
 
                 try
                 {
@@ -63,28 +62,20 @@ namespace SuccessStory.Views.Interface
                     {
                         if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
                         {
-                            iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
-                            isGray = true;
+                            iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
+                            IsGray = true;
                         }
                         else
                         {
-                            iconImage.UriSource = new Uri(ListAchievements[i].UrlLocked, UriKind.RelativeOrAbsolute);
+                            iconImage.UriSource = new Uri(ListAchievements[i].ImageLocked, UriKind.RelativeOrAbsolute);
                         }
                     }
                     else
                     {
-                        iconImage.UriSource = new Uri(ListAchievements[i].UrlUnlocked, UriKind.RelativeOrAbsolute);
+                        iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
                         dateUnlock = ListAchievements[i].DateUnlocked;
                     }
                     iconImage.EndInit();
-
-                    ConvertBitmapSource.BeginInit();
-                    ConvertBitmapSource.Source = iconImage;
-                    if (isGray)
-                    {
-                        ConvertBitmapSource.DestinationFormat = PixelFormats.Gray32Float;
-                    }
-                    ConvertBitmapSource.EndInit();
                 }
                 catch (Exception ex)
                 {
@@ -102,7 +93,8 @@ namespace SuccessStory.Views.Interface
                 {
                     Name = NameAchievement,
                     DateUnlock = dateUnlock,
-                    Icon = ConvertBitmapSource,
+                    Icon = ImageTools.ConvertBitmapImage(iconImage, (IsGray) ? ImageColor.Gray : ImageColor.None),
+                    IconImage = ImageTools.ConvertBitmapImage(iconImage, ImageColor.Black),
                     Description = ListAchievements[i].Description,
                     Percent = ListAchievements[i].Percent
                 });
@@ -152,6 +144,12 @@ namespace SuccessStory.Views.Interface
                                 converter.Convert(AchievementsList[i].DateUnlock, null, null, null);
                                 gridImage.ToolTip += " (" + converter.Convert(AchievementsList[i].DateUnlock, null, null, null) +")";
                             }
+
+                            ImageBrush imgB = new ImageBrush
+                            {
+                                ImageSource = AchievementsList[i].IconImage
+                            };
+                            gridImage.OpacityMask = imgB;
 
                             DropShadowEffect myDropShadowEffect = new DropShadowEffect();
                             myDropShadowEffect.ShadowDepth = 0;
