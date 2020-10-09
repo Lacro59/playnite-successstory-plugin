@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
+using Playnite.SDK.Models;
 using PluginCommon;
 using SuccessStory.Clients;
 using SuccessStory.Models;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-
+using System.Diagnostics;
 
 namespace SuccessStory.Views
 {
@@ -93,28 +95,8 @@ namespace SuccessStory.Views
 
             foreach (var game in PlayniteApi.Database.Games)
             {
-                string GameSourceName = string.Empty;
-                if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
-                {
-                    GameSourceName = game.Source.Name;
+                string GameSourceName = PlayniteTools.GetSourceName(game, PlayniteApi);
 
-                    if (PlayniteTools.IsGameEmulated(PlayniteApi, game))
-                    {
-                        GameSourceName = "RetroAchievements";
-                    }
-                }
-                else
-                {
-                    if (PlayniteTools.IsGameEmulated(PlayniteApi, game))
-                    {
-                        GameSourceName = "RetroAchievements";
-                    }
-                    else
-                    {
-                        GameSourceName = "Playnite";
-                    }
-                }
-                
                 switch (GameSourceName.ToLower())
                 {
                     case "steam":
@@ -338,6 +320,11 @@ namespace SuccessStory.Views
 
         internal void RefreshData(string SourceName, bool IsGet = false)
         {
+#if DEBUG
+            logger.Info($"SuccessStory - RefreshData() - Start");
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+#endif
             SuccessStory.isFirstLoad = false;
 
             SuccessStorySettings.IsEnabled = false;
@@ -345,7 +332,6 @@ namespace SuccessStory.Views
             pbDataLoad.IsIndeterminate = false;
             pbDataLoad.Minimum = 0;
             pbDataLoad.Value = 0;
-            pbDataLoad.Maximum = PlayniteApi.Database.Games.Count;
 
             DataLoad.Visibility = Visibility.Visible;
             tcSettings.Visibility = Visibility.Hidden;
@@ -357,109 +343,90 @@ namespace SuccessStory.Views
 
             var taskSystem = Task.Run(() =>
             {
-                ct.ThrowIfCancellationRequested();
-
-                foreach (var game in PlayniteApi.Database.Games)
+                try
                 {
-                    try
+                    // filter games
+                    IEnumerable<Game> FilterDatabaseGame = null;
+                    switch (SourceName.ToLower())
                     {
-                        string GameSourceName = string.Empty;
-                        if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
-                        {
-                            GameSourceName = game.Source.Name;
+                        case "all":
+                            FilterDatabaseGame = PlayniteApi.Database.Games;
+                            break;
 
-                            if (PlayniteTools.IsGameEmulated(PlayniteApi, game))
-                            {
-                                GameSourceName = "RetroAchievements";
-                            }
-                        }
-                        else
-                        {
-                            if (PlayniteTools.IsGameEmulated(PlayniteApi, game))
-                            {
-                                GameSourceName = "RetroAchievements";
-                            }
-                            else
-                            {
-                                GameSourceName = "Playnite";
-                            }
-                        }
+                        case "allrecent":
+                            FilterDatabaseGame = PlayniteApi.Database.Games.Where(
+                                x => x.LastActivity > DateTime.Now.AddMonths(-2) || (x.Added != null && x.Added > DateTime.Now.AddMonths(-2))
+                            );
+                            break;
 
-                        if (GameSourceName.ToLower() == SourceName.ToLower() || SourceName.ToLower() == "all" || SourceName.ToLower() == "allrecent" || SourceName.ToLower() == "allinstalled")
-                        {
-                            bool isOK = true;
-                            if (SourceName.ToLower() == "allrecent")
-                            {
-                                if ((game.LastActivity != null && game.LastActivity > DateTime.Now.AddMonths(-2)) || (game.Added != null && game.Added > DateTime.Now.AddMonths(-2)))
-                                {
-                                    isOK = true;
-                                }
-                                else
-                                {
-                                    isOK = false;
-                                }
-                            }
-                            if (SourceName.ToLower() == "allinstalled")
-                            {
-                                if (game.IsInstalled)
-                                {
-                                    isOK = true;
-                                }
-                                else
-                                {
-                                    isOK = false;
-                                }
-                            }
+                        case "allinstalled":
+                            FilterDatabaseGame = PlayniteApi.Database.Games.Where(x => x.IsInstalled);
+                            break;
 
-                            if (isOK)
-                            {
-                                if (SourceName.ToLower() == "steam" && IsFirstLoop)
-                                {
+                        default:
+                            FilterDatabaseGame = PlayniteApi.Database.Games.Where(
+                                x => PlayniteTools.GetSourceName(x, PlayniteApi).ToLower() == SourceName.ToLower()
+                            );
+                            break;
+                    }
+
+                    Application.Current.Dispatcher.Invoke(() => { pbDataLoad.Maximum = FilterDatabaseGame.Count(); });
 #if DEBUG
-                                    logger.Debug($"SuccessStory - Check Steam profil with {game.GameId}");
+                    logger.Debug($"SuccessStory - FilterDatabaseGame: {FilterDatabaseGame.Count()}");
+#endif
+                    foreach (var game in FilterDatabaseGame)
+                    {
+                        try
+                        {
+                            if (SourceName.ToLower() == "steam" && IsFirstLoop)
+                            {
+#if DEBUG
+                                logger.Debug($"SuccessStory - Check Steam profil with {game.GameId}");
 #endif
 
-                                    SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
-                                    if (!steamAPI.CheckIsPublic(int.Parse(game.GameId)))
-                                    {
-                                        AchievementsDatabase.ListErrors.Add(resources.GetString("LOCSucessStoryNotificationsSteamPrivate"));
-                                        break;
-                                    }
-                                    IsFirstLoop = false;
-                                }
-
-                                // Respect API limitation
-                                Thread.Sleep(1000);
-
-                                if (IsGet)
+                                SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
+                                if (!steamAPI.CheckIsPublic(int.Parse(game.GameId)))
                                 {
-                                    // Add only it's not loaded
-                                    if (!achievementsDatabase.VerifAchievementsLoad(game.Id))
-                                    {
-                                        achievementsDatabase.Add(game, settings);
-                                    }
+                                    AchievementsDatabase.ListErrors.Add(resources.GetString("LOCSucessStoryNotificationsSteamPrivate"));
+                                    break;
                                 }
-                                else
+                                IsFirstLoop = false;
+                            }
+
+                            // Respect API limitation
+                            Thread.Sleep(1000);
+
+                            if (IsGet)
+                            {
+                                // Add only it's not loaded
+                                if (!achievementsDatabase.VerifAchievementsLoad(game.Id))
                                 {
-                                    achievementsDatabase.Remove(game);
                                     achievementsDatabase.Add(game, settings);
                                 }
                             }
+                            else
+                            {
+                                achievementsDatabase.Remove(game);
+                                achievementsDatabase.Add(game, settings);
+                            }
+
+                            Application.Current.Dispatcher.Invoke(new Action(() => { pbDataLoad.Value += 1; }));
                         }
-                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        catch (Exception ex)
                         {
-                            pbDataLoad.Value += 1;
-                        }));
+                            Common.LogError(ex, "SuccessStory", $"Error on RefreshData({SourceName}, {IsGet}) for {game.Name}");
+                        }
+
+                        if (ct.IsCancellationRequested)
+                        {
+                            logger.Info($"IsCancellationRequested for RefreshData({ SourceName}, { IsGet})");
+                            break;
+                        }
                     }
-                    catch(Exception ex)
-                    {
-                        Common.LogError(ex, "SuccessStory", $"Error on RefreshData({SourceName}, {IsGet}) for {game.Name}");
-                    }
-                    if (ct.IsCancellationRequested)
-                    {
-                        ct.ThrowIfCancellationRequested();
-                        break;
-                    }
+                }
+                catch(Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", $"Error on RefreshData({SourceName}, {IsGet})");
                 }
             }, tokenSource.Token)
             .ContinueWith(antecedent =>
@@ -483,6 +450,10 @@ namespace SuccessStory.Views
                     SetTotal();
                     
                     SuccessStorySettings.IsEnabled = true;
+#if DEBUG
+                    stopwatch.Stop();
+                    logger.Debug($"SuccessStory - RefreshData() - End - {stopwatch.Elapsed}");
+#endif
                 }));
             });
         }

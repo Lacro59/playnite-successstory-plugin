@@ -95,6 +95,7 @@ namespace SuccessStory.Views.Interface
                     DateUnlock = dateUnlock,
                     Icon = ImageTools.ConvertBitmapImage(iconImage, (IsGray) ? ImageColor.Gray : ImageColor.None),
                     IconImage = ImageTools.ConvertBitmapImage(iconImage, ImageColor.Black),
+                    IsGray = IsGray,
                     Description = ListAchievements[i].Description,
                     Percent = ListAchievements[i].Percent
                 });
@@ -145,11 +146,14 @@ namespace SuccessStory.Views.Interface
                                 gridImage.ToolTip += " (" + converter.Convert(AchievementsList[i].DateUnlock, null, null, null) +")";
                             }
 
-                            ImageBrush imgB = new ImageBrush
+                            if (AchievementsList[i].IsGray)
                             {
-                                ImageSource = AchievementsList[i].IconImage
-                            };
-                            gridImage.OpacityMask = imgB;
+                                ImageBrush imgB = new ImageBrush
+                                {
+                                    ImageSource = AchievementsList[i].IconImage
+                                };
+                                gridImage.OpacityMask = imgB;
+                            }
 
                             DropShadowEffect myDropShadowEffect = new DropShadowEffect();
                             myDropShadowEffect.ShadowDepth = 0;

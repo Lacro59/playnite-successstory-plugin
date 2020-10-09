@@ -25,8 +25,7 @@ namespace SuccessStory.Models
                 string ImageFileName = string.Empty;
 
                 if (!UrlUnlocked.IsNullOrEmpty()) {
-                    List<string> urlSplited = UrlUnlocked.Split('/').ToList();
-                    ImageFileName = urlSplited[2] + "_" + Name.Replace(" ", "");
+                    ImageFileName = GetNameFromUrl(UrlUnlocked);
                     ImageFileName = string.Concat(ImageFileName.Split(Path.GetInvalidFileNameChars()));
                     ImageFileName += "_Unlocked";
                 }
@@ -39,7 +38,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked);
+                string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
                 if (pathImageUnlocked.IsNullOrEmpty())
                 {
                     pathImageUnlocked = UrlUnlocked;
@@ -57,8 +56,7 @@ namespace SuccessStory.Models
 
                 if (!UrlLocked.IsNullOrEmpty())
                 {
-                    List<string> urlSplited = UrlLocked.Split('/').ToList();
-                    ImageFileName = urlSplited[2] + "_" + Name.Replace(" ", "");
+                    ImageFileName = GetNameFromUrl(UrlLocked);
                     ImageFileName = string.Concat(ImageFileName.Split(Path.GetInvalidFileNameChars()));
                     ImageFileName += "_Locked";
                 }
@@ -73,7 +71,7 @@ namespace SuccessStory.Models
             {
                 if (!UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked)
                 {
-                    string pathImageLocked = PlayniteTools.GetCacheFile(CacheLocked);
+                    string pathImageLocked = PlayniteTools.GetCacheFile(CacheLocked, "SuccessStory");
                     if (pathImageLocked.IsNullOrEmpty())
                     {
                         pathImageLocked = UrlUnlocked;
@@ -85,6 +83,39 @@ namespace SuccessStory.Models
                     return ImageUnlocked;
                 }
             }
+        }
+
+
+        private string GetNameFromUrl(string url)
+        {
+            string NameFromUrl = string.Empty;
+            List<string> urlSplited = url.Split('/').ToList();
+
+            if (url.IndexOf(".xboxlive.com") > -1)
+            {
+                NameFromUrl = "xbox_" + Name.Replace(" ", "");
+            }
+
+            if (url.IndexOf("steamcommunity") > -1)
+            {                
+                NameFromUrl = "steam_" + ApiName;
+                if (urlSplited.Count >= 8)
+                {
+                    NameFromUrl += "_" + urlSplited[7];
+                }
+            }
+
+            if (url.IndexOf(".gog.com") > -1)
+            {
+                NameFromUrl = "gog_" + ApiName;
+            }
+
+            if (url.IndexOf(".ea.com") > -1)
+            {
+                NameFromUrl = "ea_" + Name.Replace(" ", "");
+            }
+
+            return NameFromUrl;
         }
     }
 }

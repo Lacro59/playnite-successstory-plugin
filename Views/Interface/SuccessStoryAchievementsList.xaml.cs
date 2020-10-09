@@ -80,6 +80,7 @@ namespace SuccessStory.Views.Interface
                     EnableRaretyIndicator = EnableRaretyIndicator,
                     Icon = ImageTools.ConvertBitmapImage(iconImage, (IsGray) ? ImageColor.Gray : ImageColor.None),
                     IconImage = ImageTools.ConvertBitmapImage(iconImage, ImageColor.Black),
+                    IsGray = IsGray,
                     Description = ListAchievements[i].Description,
                     Percent = ListAchievements[i].Percent
                 });

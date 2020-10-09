@@ -17,7 +17,7 @@ using SuccessStory.PlayniteResources.GogLibrary.Services;
 
 namespace SuccessStory.Models
 {
-    public class AchievementsDatabase
+    public class AchievementsDatabase : ICloneable
     {
         // Variable Playnite
         private static readonly ILogger logger = LogManager.GetLogger();
@@ -36,6 +36,13 @@ namespace SuccessStory.Models
 
         public static CumulErrors ListErrors = new CumulErrors();
 
+        public ConcurrentDictionary<Guid, GameAchievements> gameAchievements
+        {
+            get
+            {
+                return PluginDatabase;
+            }
+        }
 
         public bool VerifAchievementsLoad(Guid gameID)
         {
@@ -127,6 +134,25 @@ namespace SuccessStory.Models
             }
 
             ListErrors = new CumulErrors();
+        }
+
+        public void Filter(bool ignore = true)
+        {
+            if (_settings.EnableRetroAchievementsView && !ignore)
+            {
+                if (_isRetroachievements)
+                {
+                    var a = PluginDatabase.Where(x => IsEmulatedGame(x));
+                    var b = a.ToDictionary(x => x.Key, x => x.Value);
+                    PluginDatabase = ToConcurrent(b);
+                }
+                else
+                {
+                    var a = PluginDatabase.Where(x => !IsEmulatedGame(x));
+                    var b = a.ToDictionary(x => x.Key, x => x.Value);
+                    PluginDatabase = ToConcurrent(b);
+                }
+            }
         }
 
         private ConcurrentDictionary<TKey, TValue> ToConcurrent<TKey, TValue>(Dictionary<TKey, TValue> dic)
@@ -321,32 +347,11 @@ namespace SuccessStory.Models
 
             foreach (var item in PluginDatabase)
             {
-                string SourceName = string.Empty;
-
                 try
                 {
                     Game game = _PlayniteApi.Database.Games.Get(item.Key);
 
-                    if (game.SourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
-                    {
-                        SourceName = game.Source.Name;
-
-                        if (PlayniteTools.IsGameEmulated(_PlayniteApi, game))
-                        {
-                            SourceName = "RetroAchievements";
-                        }
-                    }
-                    else
-                    {
-                        if (PlayniteTools.IsGameEmulated(_PlayniteApi, game))
-                        {
-                            SourceName = "RetroAchievements";
-                        }
-                        else
-                        {
-                            SourceName = "Playnite";
-                        }
-                    }
+                    string SourceName = PlayniteTools.GetSourceName(game, _PlayniteApi);
 
                     foreach (Achievements achievements in item.Value.Achievements)
                     {
@@ -729,30 +734,7 @@ namespace SuccessStory.Models
 
             Guid GameId = GameAdded.Id;
             Guid GameSourceId = GameAdded.SourceId;
-            string GameSourceName = string.Empty;
-
-            if (GameSourceId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
-            {
-                GameSourceName = GameAdded.Source.Name;
-
-                if (PlayniteTools.IsGameEmulated(_PlayniteApi, GameAdded))
-                {
-                    GameSourceName = "RetroAchievements";
-                }
-            }
-            else
-            {
-                if (PlayniteTools.IsGameEmulated(_PlayniteApi, GameAdded))
-                {
-                    GameSourceName = "RetroAchievements";
-                }
-                else
-                {
-                    GameSourceName = "Playnite";
-                }
-            }
-
-
+            string GameSourceName = PlayniteTools.GetSourceName(GameAdded, _PlayniteApi);
             string PluginDatabaseGamePath = PluginDatabasePath + GameId.ToString() + ".json";
       
             List<Achievements> Achievements = new List<Achievements>();
@@ -1003,6 +985,11 @@ namespace SuccessStory.Models
             Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
 
             return Result;
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 
