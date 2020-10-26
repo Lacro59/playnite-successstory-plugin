@@ -56,12 +56,12 @@ namespace SuccessStory.Clients
             List<XboxAchievement> ListAchievements = new List<XboxAchievement>();
             try
             {
-                ListAchievements = GetXboxAchievements(game.GameId).GetAwaiter().GetResult();
+                ListAchievements = GetXboxAchievements(game.GameId, game.Name).GetAwaiter().GetResult();
 
 #if DEBUG
                 logger.Debug("SuccessStory - XboxAchievements - " + JsonConvert.SerializeObject(ListAchievements));
 #endif
-
+                
                 foreach (XboxAchievement xboxAchievement in ListAchievements)
                 {
                     AllAchievements.Add(new Achievements
@@ -121,7 +121,7 @@ namespace SuccessStory.Clients
             {
                 if (!File.Exists(xstsLoginTokesPath))
                 {
-                    logger.Debug("SuccessStory - Xbox GetIsUserLoggedIn() - User is not authenticated - File not exist");
+                    logger.Warn("SuccessStory - Xbox GetIsUserLoggedIn() - User is not authenticated - File not exist");
                     return false;
                 }
 
@@ -139,7 +139,7 @@ namespace SuccessStory.Clients
                         @"https://profile.xboxlive.com/users/batch/profile/settings",
                         new StringContent(Serialization.ToJson(requestData), Encoding.UTF8, "application/json")).Result;
 
-                    logger.Debug($"SuccessStory - Xbox GetIsUserLoggedIn() - {response.StatusCode}");
+                    logger.Warn($"SuccessStory - Xbox GetIsUserLoggedIn() - {response.StatusCode}");
 
                     return response.StatusCode == System.Net.HttpStatusCode.OK;
                 }
@@ -241,7 +241,7 @@ namespace SuccessStory.Clients
             }
         }
 
-        private async Task<List<XboxAchievement>> GetXboxAchievements(string pfn = "")
+        private async Task<List<XboxAchievement>> GetXboxAchievements(string pfn, string name)
         {
             if (!File.Exists(xstsLoginTokesPath))
             {
@@ -293,11 +293,9 @@ namespace SuccessStory.Clients
                 url = string.Format(urlAchievements + $"?maxItems=10000", tokens.DisplayClaims.xui[0].xid);
                 logger.Warn($"SuccessStory - XboxAchievements - Bad request");
             }
-
 #if DEBUG
             logger.Debug($"SuccessStory - XboxAchievements - url: {url}");
 #endif
-
             using (var client = new HttpClient())
             {
                 SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
@@ -316,7 +314,19 @@ namespace SuccessStory.Clients
 
                 string cont = await response.Content.ReadAsStringAsync();
                 string contConvert = JsonConvert.SerializeObject(JObject.Parse(cont)["achievements"]);
-                return JsonConvert.DeserializeObject<List<XboxAchievement>>(contConvert); ;
+
+                var ListAchievements = JsonConvert.DeserializeObject<List<XboxAchievement>>(contConvert);
+                if (titleId.IsNullOrEmpty())
+                {
+                    ListAchievements = ListAchievements.Where(x => x.titleAssociations.First().name.ToLower() == name.ToLower()).ToList();
+                    logger.Debug($"SuccessStory - XboxAchievements - Not find with {pfn} for {name} - {ListAchievements.Count}");
+                }                
+                else
+                {
+                    logger.Debug($"SuccessStory - XboxAchievements - Find with {titleId} & {pfn} for {name} - {ListAchievements.Count}");
+                }
+
+                return ListAchievements;
             }
         }
     }
