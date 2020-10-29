@@ -11,6 +11,7 @@ namespace SuccessStory
         private readonly SuccessStory plugin;
 
         public bool EnableCheckVersion { get; set; } = true;
+        public bool MenuInExtensions { get; set; } = true;
         public bool EnableImageCache { get; set; } = false;
         public bool IgnoreSettings { get; set; } = false;
 
@@ -97,6 +98,7 @@ namespace SuccessStory
             if (savedSettings != null)
             {
                 EnableCheckVersion = savedSettings.EnableCheckVersion;
+                MenuInExtensions = savedSettings.MenuInExtensions;
                 EnableImageCache = savedSettings.EnableImageCache;
 
                 EnableIntegrationInDescription = savedSettings.EnableIntegrationInDescription;

@@ -5,114 +5,114 @@
     <!--  
     MainView
     -->
-    <sys:String x:Key="LOCSucessStory">功成名就Success Story</sys:String>
-    <sys:String x:Key="LOCSucessStoryAchievements">成就</sys:String>
+    <sys:String x:Key="LOCSuccessStory">功成名就Success Story</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievements">成就</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryNotificationsSteamPrivate">Steam profil is not public</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsSteamDisabled">Steam is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsSteamBadConfig">Bad Steam configuration in SteamLibrary settings</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsGogDisabled">GOG is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsOriginDisabled">Origin is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsXboxDisabled">Xbox is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsXboxNoAuthenticate">Xbox user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsRetroAchievementsBadConfig">Bad RetroAchievements configuration in settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profil is not public</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Bad Steam configuration in SteamLibrary settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNoAuthenticate">Xbox user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">Bad RetroAchievements configuration in settings</sys:String>
 
     <!--  
     SuccessStorySettingsView
     -->
 
-    <sys:String x:Key="LOCSucessStoryProgressBar">Treatment in progress...</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressBar">Treatment in progress...</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryEnableSteam">启用Steam</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableGog">启用GOG</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableOrigin">启用Origin</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableXbox">启用Xbox</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">启用RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSteam">启用Steam</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGog">启用GOG</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">启用Origin</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableXbox">启用Xbox</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">启用RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Enable seprate view for RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Enable seprate view for RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">包含隐藏游戏</sys:String>
-    <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">按月绘制解锁成就图表</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">按天绘制解锁成就图表</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">包含隐藏游戏</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">按月绘制解锁成就图表</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">按天绘制解锁成就图表</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryDefaultSorting">默认排序</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDefaultSorting">默认排序</sys:String>
     <sys:String x:Key="LOCMenuSortAscending">升序</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryDatabase">管理数据库</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDatabase">管理数据库</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">获取数据</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">更新数据</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">更新数据</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetMissing">获取缺失的</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataRecent">缺失的近期成就</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">所有近期成就</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllData">所有成就</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllData">所有缺失成就</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalled">已安装游戏的缺失成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissing">获取缺失的</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecent">缺失的近期成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">所有近期成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllData">所有成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllData">所有缺失成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">已安装游戏的缺失成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">已安装游戏的成就</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIntegration">界面集成</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegration">界面集成</sys:String>
     <sys:String x:Key="LOCCommonIntegrationInDescription">游戏描述中显示</sys:String>
     <sys:String x:Key="LOCCommonIntegrationButtonIsToggle">用切换按钮显示</sys:String>
     <sys:String x:Key="LOCCommonIntegrationShowTitle">显示标题</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphic">显示图表</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievements">显示成就列表</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">在其他描述之上</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationToggleDetails">在切换按钮中显示详情</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">显示图表</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">显示成就列表</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationTopGameDetails">在其他描述之上</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationToggleDetails">在切换按钮中显示详情</sys:String>
     <sys:String x:Key="LOCCommonIntegrationInCustomTheme">自定义主题集成（如被集成）</sys:String>
     <sys:String x:Key="LOCCommonIntegrationButton">添加按钮</sys:String>
     <sys:String x:Key="LOCCommonIntegrationButtonDetails">添加带详情的按钮</sys:String>
     <sys:String x:Key="LOCCommonIntegrationButtonHeader">在窗口添加按钮</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">显示进度栏</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Show compact unlocked list</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Show compact locked list</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">显示进度栏</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Show compact unlocked list</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">Show compact locked list</sys:String>
 
     <sys:String x:Key="LOCCommonIntegrationSelectElements">Selection elements</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Graphic options</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptionsCountAbscissa">Number of data in abscissa</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Show abscissa label</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabelsOrdinates">Show ordinates label</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">附加数量r</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">附加百分比</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationListOptions">List achievements options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Graphic options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Number of data in abscissa</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">Show abscissa label</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">Show ordinates label</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">附加数量r</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">附加百分比</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">List achievements options</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">成就数据库已重置。</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGetMissingToolTip" xml:space="preserve">获取还没有从该商店获取到的游戏成就&#x0a;（如果分子分母不相等）</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">获取还没有从该商店获取到的游戏成就&#x0a;（如果分子分母不相等）</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">重置并从该商店获取所有游戏成就&#x0a;（如果出现问题时使用）</sys:String>
     
-    <sys:String x:Key="LOCSucessStoryGetDataRecentToolTip" xml:space="preserve">获取还没有获取到的最近一个月内的游戏成就&#x0a;（如果分子分母不相等）</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalledToolTip" xml:space="preserve">获取还没有获取到的已安装游戏的成就&#x0a;（如果分子分母不相等）</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllDataToolTip" xml:space="preserve">获取还没有获取到的所有游戏成就&#x0a;（如果分子分母不相等）</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">获取还没有获取到的最近一个月内的游戏成就&#x0a;（如果分子分母不相等）</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">获取还没有获取到的已安装游戏的成就&#x0a;（如果分子分母不相等）</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">获取还没有获取到的所有游戏成就&#x0a;（如果分子分母不相等）</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecentToolTip" xml:space="preserve">重置并获取最近一个月内的游戏成就&#x0a;（如果出现问题时使用）</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecentToolTip" xml:space="preserve">重置并获取最近一个月内的游戏成就&#x0a;（如果出现问题时使用）</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">重置并获取已安装游戏的成就&#x0a;（如果出现问题时使用）</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataToolTip" xml:space="preserve">重置并获取所有游戏的成就&#x0a;（如果出现问题时使用）</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">重置并获取所有游戏的成就&#x0a;（如果出现问题时使用）</sys:String>
 
     <!-- 
     SuccessStoryView 
     -->
 
     <!-- UI -->
-    <sys:String x:Key="LOCSucessStoryFilterSource">根据来源过滤</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterSource">根据来源过滤</sys:String>
     <sys:String x:Key="LOCSearchLabel">搜索</sys:String>
-    <sys:String x:Key="LOCSucessStoryGlobalProgression">全局进度</sys:String>
-    <sys:String x:Key="LOCSucessStoryProgressionLaunched">进度 [games launched]</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameInformation">信息</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGlobalProgression">全局进度</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">进度 [games launched]</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameInformation">信息</sys:String>
 
     <!-- ListViewGames -->
     <sys:String x:Key="LOCGameIconTitle">图标</sys:String>
     <sys:String x:Key="LOCGameNameTitle">名字</sys:String>
     <sys:String x:Key="LOCLastPlayed">最近活动</sys:String>
     <sys:String x:Key="LOCSourceLabel">来源</sys:String>
-    <sys:String x:Key="LOCSucessStorylvGamesProgression">进度</sys:String>
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">进度</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">每月解锁的全部成就</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">每日解锁的全部成就</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitle">每月解锁成就</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleSources">各来源解锁成就</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleDay">每日解锁成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">每月解锁的全部成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">每日解锁的全部成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitle">每月解锁成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">各来源解锁成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">每日解锁成就</sys:String>
     
 </ResourceDictionary>

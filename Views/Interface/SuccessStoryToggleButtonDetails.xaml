@@ -69,7 +69,7 @@
             </Label.Style>
         </Label>
 
-        <Label Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Content="{DynamicResource LOCSucessStoryAchievements}" FontSize="10">
+        <Label Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Content="{DynamicResource LOCSuccessStoryAchievements}" FontSize="10">
             <Label.Style>
                 <Style TargetType="Label">
                     <Setter Property="Padding" Value="5,3,5,5" />

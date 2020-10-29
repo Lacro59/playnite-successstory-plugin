@@ -5,114 +5,114 @@
     <!--  
     MainView
     -->
-    <sys:String x:Key="LOCSucessStory">Достижения</sys:String>
-    <sys:String x:Key="LOCSucessStoryAchievements">Достижения</sys:String>
+    <sys:String x:Key="LOCSuccessStory">Достижения</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievements">Достижения</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryNotificationsSteamPrivate">Steam profil is not public</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsSteamDisabled">Steam is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsSteamBadConfig">Bad Steam configuration in SteamLibrary settings</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsGogDisabled">GOG is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsOriginDisabled">Origin is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsXboxDisabled">Xbox is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsXboxNoAuthenticate">Xbox user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsRetroAchievementsBadConfig">Bad RetroAchievements configuration in settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profil is not public</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Bad Steam configuration in SteamLibrary settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNoAuthenticate">Xbox user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">Bad RetroAchievements configuration in settings</sys:String>
 
     <!--  
     SuccessStorySettingsView
     -->
 
-    <sys:String x:Key="LOCSucessStoryProgressBar">Исправление в процессе...</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressBar">Исправление в процессе...</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryEnableSteam">Включить достижения Steam</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableGog">Включить достижения GOG</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableOrigin">Включить достижения Origin</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableXbox">Включить достижения Xbox</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Включить Ретро достижения</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSteam">Включить достижения Steam</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGog">Включить достижения GOG</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Включить достижения Origin</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableXbox">Включить достижения Xbox</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Включить Ретро достижения</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Включить отдельное отображение для Ретро достижений (RetroAchievements)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Включить отдельное отображение для Ретро достижений (RetroAchievements)</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Включая скрытые игры</sys:String>
-    <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">График со всеми достижениями по месяцам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">График с достижениями игр по месяцам</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Включая скрытые игры</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">График со всеми достижениями по месяцам</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">График с достижениями игр по месяцам</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryDefaultSorting">Сортировка</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Сортировка</sys:String>
     <sys:String x:Key="LOCMenuSortAscending">По возрастанию</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryDatabase">Манипуляция с базой данных</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDatabase">Манипуляция с базой данных</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Загрузить</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Обновить</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Обновить</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetMissing">Загрузить</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataRecent">Загрузить последние достижения</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">Обновить все последние достижения</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllData">Обновить все достижения</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllData">Загрузить все достижения</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Загрузить из установленных игр</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissing">Загрузить</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecent">Загрузить последние достижения</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Обновить все последние достижения</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllData">Обновить все достижения</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllData">Загрузить все достижения</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Загрузить из установленных игр</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Достижения из установленных игр</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIntegration">Интеграция интерфейса</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegration">Интеграция интерфейса</sys:String>
     <sys:String x:Key="LOCCommonIntegrationInDescription">Отображать в описании игры</sys:String>
     <sys:String x:Key="LOCCommonIntegrationButtonIsToggle">С кнопкой переключения</sys:String>
     <sys:String x:Key="LOCCommonIntegrationShowTitle">Названия</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphic">Показать график</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievements">Список достижений</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationTopGameDetails">Выше описания</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationToggleDetails">Прогресс на кнопке</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Показать график</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Список достижений</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationTopGameDetails">Выше описания</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationToggleDetails">Прогресс на кнопке</sys:String>
     <sys:String x:Key="LOCCommonIntegrationInCustomTheme">Пользовательская интеграция темы (если интегрирована)</sys:String>
     <sys:String x:Key="LOCCommonIntegrationButton">Добавить кнопку</sys:String>
     <sys:String x:Key="LOCCommonIntegrationButtonDetails">Добавить кнопку с деталями</sys:String>
     <sys:String x:Key="LOCCommonIntegrationButtonHeader">Добавить значок в окне</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Отображать прогресс:</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Показывать компактный разблокированный список</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Показывать компактный заблокированный список</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Отображать прогресс:</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Показывать компактный разблокированный список</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">Показывать компактный заблокированный список</sys:String>
 
     <sys:String x:Key="LOCCommonIntegrationSelectElements">Выбранные элементы</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Графические опции</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptionsCountAbscissa">Number of data in abscissa</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Показать метки абциссов</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabelsOrdinates">Показать метки координат</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Индикатор прогресса</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">Индикатором</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">В процентах</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationListOptions">Список настроек достижений</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Графические опции</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Number of data in abscissa</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">Показать метки абциссов</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">Показать метки координат</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Индикатор прогресса</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Индикатором</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">В процентах</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">Список настроек достижений</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">База достижений была обновлена.</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGetMissingToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены в магазине.&#x0a;(следует использовать, если первое число отличается от второго)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены в магазине.&#x0a;(следует использовать, если первое число отличается от второго)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Сбрасывает и загружает все достижения для всех игр в этом магазине.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGetDataRecentToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены за прошедший месяц.&#x0a;следует использовать, если первое число отличается от второго)</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalledToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены для установленных игр.&#x0a;(следует использовать, если первое число отличается от второго)</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllDataToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены.&#x0a;(следует использовать, если первое число отличается от второго)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены за прошедший месяц.&#x0a;следует использовать, если первое число отличается от второго)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены для установленных игр.&#x0a;(следует использовать, если первое число отличается от второго)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Получить игровые достижения, которые не были загружены.&#x0a;(следует использовать, если первое число отличается от второго)</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Сбросить и загрузить достижения за прошедший месяц.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Сбросить и загрузить достижения за прошедший месяц.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Сбросить и загрузить достижения для установленных игр.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataToolTip" xml:space="preserve">Сбросить и загрузить достижения для всех игр.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Сбросить и загрузить достижения для всех игр.&#x0a;(используйте, если есть какие-то проблемы с достижениями)</sys:String>
 
     <!-- 
     SuccessStoryView 
     -->
 
     <!-- UI -->
-    <sys:String x:Key="LOCSucessStoryFilterSource">Источники</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterSource">Источники</sys:String>
     <sys:String x:Key="LOCSearchLabel">Поиск</sys:String>
-    <sys:String x:Key="LOCSucessStoryGlobalProgression">Глобал. прогресс</sys:String>
-    <sys:String x:Key="LOCSucessStoryProgressionLaunched">Прогрессия [запущенные игры]</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameInformation">Информация</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Глобал. прогресс</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Прогрессия [запущенные игры]</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameInformation">Информация</sys:String>
 
     <!-- ListViewGames -->
     <sys:String x:Key="LOCGameIconTitle">Иконка</sys:String>
     <sys:String x:Key="LOCGameNameTitle">Название</sys:String>
     <sys:String x:Key="LOCLastPlayed">Последняя сессия</sys:String>
     <sys:String x:Key="LOCSourceLabel">Источник</sys:String>
-    <sys:String x:Key="LOCSucessStorylvGamesProgression">Прогресс</sys:String>
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Прогресс</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">Все достижения разблокированные по месяцам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">Все достижения разблокированные по дням</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitle">Достижения разблокированные по месяцам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleSources">Достижения разблокированные по источникам</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Достижения разблокированные по дням</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">Все достижения разблокированные по месяцам</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">Все достижения разблокированные по дням</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Достижения разблокированные по месяцам</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Достижения разблокированные по источникам</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Достижения разблокированные по дням</sys:String>
     
 </ResourceDictionary>

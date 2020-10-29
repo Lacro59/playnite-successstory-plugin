@@ -541,7 +541,7 @@ namespace SuccessStory.Models
                     logger.Warn("SuccessStory - Steam is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Steam-disabled",
-                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsSteamDisabled")}",
+                        $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsSteamDisabled")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
@@ -555,7 +555,7 @@ namespace SuccessStory.Models
                         logger.Warn("SuccessStory - Bad Steam configuration");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Steam-NoConfig",
-                            $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsSteamBadConfig")}",
+                            $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig")}",
                             NotificationType.Error,
                             () => plugin.OpenSettingsView()
                         ));
@@ -572,7 +572,7 @@ namespace SuccessStory.Models
                     logger.Warn("SuccessStory - GOG is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-GOG-disabled",
-                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsGogDisabled")}",
+                        $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsGogDisabled")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
@@ -586,7 +586,7 @@ namespace SuccessStory.Models
                         logger.Warn("SuccessStory - Gog user is not authenticate");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Gog-NoAuthenticated",
-                            $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsGogNoAuthenticate")}",
+                            $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate")}",
                             NotificationType.Error,
                             () => plugin.OpenSettingsView()
                         ));
@@ -603,7 +603,7 @@ namespace SuccessStory.Models
                     logger.Warn("SuccessStory - Origin is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Origin-disabled",
-                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsOriginDisabled")}",
+                        $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsOriginDisabled")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
@@ -617,7 +617,7 @@ namespace SuccessStory.Models
                         logger.Warn("SuccessStory - Origin user is not authenticated");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Origin-NoAuthenticate",
-                            $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsOriginNoAuthenticate")}",
+                            $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate")}",
                             NotificationType.Error,
                             () => plugin.OpenSettingsView()
                         ));
@@ -634,7 +634,7 @@ namespace SuccessStory.Models
                     logger.Warn("SuccessStory - Xbox is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Xbox-disabled",
-                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxDisabled")}",
+                        $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxDisabled")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));
@@ -648,7 +648,7 @@ namespace SuccessStory.Models
                         logger.Warn("SuccessStory - Xbox user is not authenticated");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Xbox-NoAuthenticate",
-                            $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNoAuthenticate")}",
+                            $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNoAuthenticate")}",
                             NotificationType.Error,
                             () => plugin.OpenSettingsView()
                         ));
@@ -671,7 +671,7 @@ namespace SuccessStory.Models
                     logger.Warn("SuccessStory - Bad RetroAchievements configuration");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-RetroAchievements-NoConfig",
-                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsRetroAchievementsBadConfig")}",
+                        $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));

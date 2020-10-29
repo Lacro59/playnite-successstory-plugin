@@ -4,105 +4,108 @@
 
     <!-- MainView -->
     
-    <sys:String x:Key="LOCSucessStory">SuccessStory</sys:String>
-    <sys:String x:Key="LOCSucessStoryAchievements">Achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStory">SuccessStory</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievements">Achievements</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryNotificationsSteamPrivate">Steam profil is not public</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsSteamDisabled">Steam is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsSteamBadConfig">Bad Steam configuration in SteamLibrary settings</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsGogDisabled">GOG is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsOriginDisabled">Origin is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsXboxDisabled">Xbox is enable then disabled</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsXboxNoAuthenticate">Xbox user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSucessStoryNotificationsRetroAchievementsBadConfig">Bad RetroAchievements configuration in settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGames">View the games achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGame">View the game achievements</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profil is not public</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Bad Steam configuration in SteamLibrary settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox is enable then disabled</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNoAuthenticate">Xbox user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">Bad RetroAchievements configuration in settings</sys:String>
 
     <!-- SuccessStorySettingsView -->
 
-    <sys:String x:Key="LOCSucessStoryProgressBar">Treatment in progress...</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressBar">Treatment in progress...</sys:String>
     
-    <sys:String x:Key="LOCSucessStoryEnableSteam">Enable Steam</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableGog">Enable GOG</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableOrigin">Enable Origin</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableXbox">Enable Xbox</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableRetroAchievements">Enable RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSteam">Enable Steam</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGog">Enable GOG</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable Origin</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableXbox">Enable Xbox</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Enable RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryEnableRetroAchievementsView">Enable separate view for RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Enable separate view for RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryDatabase">Database manipulation</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDatabase">Database manipulation</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Get data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Refresh data</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetMissing">Get missing</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataRecent">Missing recent achievements</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecent">All recent achievements</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllData">All achievements</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllData">All missing achievements</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalled">Missing from installed games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissing">Get missing</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecent">Missing recent achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">All recent achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllData">All achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllData">All missing achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Missing from installed games</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Achievements from installed games</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIntegrationShowGraphic">Show graphic</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievements">Show list achievements</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowProgressBar">Show progress bar</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactUnlocked">Show compact unlocked list</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationShowAchievementsCompactLocked">Show compact locked list</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Show graphic</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Show list achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Show progress bar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Show compact unlocked list</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">Show compact locked list</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptions">Graphic options</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicOptionsCountAbscissa">Number of data in abscissa</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabels">Show abscissa label</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationGraphicShowLabelsOrdinates">Show ordinates label</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowIndicator">Show indicator</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationProgressBarShowPercent">Show percent</sys:String>
-    <sys:String x:Key="LOCSucessStoryIntegrationListOptions">List achievements options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Graphic options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Number of data in abscissa</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">Show abscissa label</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">Show ordinates label</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Show indicator</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">Show percent</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">List achievements options</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryViewsSettings">Extension view</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewsSettings">Extension view</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarety indicator on achievement</sys:String>
-    <sys:String x:Key="LOCSucessStoryListGames">List games</sys:String>
-    <sys:String x:Key="LOCSucessStoryDefaultSorting">Default sorting</sys:String>
-    <sys:String x:Key="LOCSucessStoryChartWithAllAchievements">Chart with all achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGames">List games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Default sorting</sys:String>
+    <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Chart with all achievements</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryListGamesFields">Game fields to be displayed:</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGamesFields">Game fields to be displayed:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Icon 100% achievements</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryIncludeHiddenGames">Include hidden games</sys:String>
-    <sys:String x:Key="LOCSucessStoryAllUnlockedByMonth">Graphic with all unlocked achievements by month</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameUnlockedByMonth">Graphic with all unlocked achievements by Day</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Include hidden games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Graphic with all unlocked achievements by month</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Graphic with all unlocked achievements by Day</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">Achievements database has been reset.</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGetMissingToolTip" xml:space="preserve">Get the game achievements weren't downloaded in this store.&#x0a;(use if the first number count is different to second)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">Get the game achievements weren't downloaded in this store.&#x0a;(use if the first number count is different to second)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Reset and download achievements for all games in this store.&#x0a;(use if there are some problems with achievements)</sys:String>
     
-    <sys:String x:Key="LOCSucessStoryGetDataRecentToolTip" xml:space="preserve">Get the game achievements weren't downloaded in slippery month.&#x0a;(use if the first number count is different to second)</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetDataInstalledToolTip" xml:space="preserve">Get the game achievements weren't downloaded for installed games.&#x0a;(use if the first number count is different to second)</sys:String>
-    <sys:String x:Key="LOCSucessStoryGetAllDataToolTip" xml:space="preserve">Get the game achievements weren't downloaded.&#x0a;(use if the first number count is different to second)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Get the game achievements weren't downloaded in slippery month.&#x0a;(use if the first number count is different to second)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Get the game achievements weren't downloaded for installed games.&#x0a;(use if the first number count is different to second)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Get the game achievements weren't downloaded.&#x0a;(use if the first number count is different to second)</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Reset and download achievements in slippery month.&#x0a;(use if there are some problems with achievements)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Reset and download achievements in slippery month.&#x0a;(use if there are some problems with achievements)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Reset and download achievements for installed games.&#x0a;(use if there are some problems with achievements)</sys:String>
-    <sys:String x:Key="LOCSucessStoryRefreshAllDataToolTip" xml:space="preserve">Reset and download achievements for all games.&#x0a;(use if there are some problems with achievements)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Reset and download achievements for all games.&#x0a;(use if there are some problems with achievements)</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryEnableImageCache">Enable caching achievements images (experimental)</sys:String>
-    <sys:String x:Key="LOCSucessStoryEnableImageCacheToolTip" xml:space="preserve">Experimental non-blocking process which can increase memory usage a bit when caching only.
+    <sys:String x:Key="LOCSuccessStoryEnableImageCache">Enable caching achievements images (experimental)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Experimental non-blocking process which can increase memory usage a bit when caching only.
 Especially useful for Xbox achievements  with their larges images which are reduced when caching.</sys:String>
 
     <!-- SuccessStoryView -->
 
     <!-- UI -->
     
-    <sys:String x:Key="LOCSucessStoryFilterSource">Filter by source</sys:String>
-    <sys:String x:Key="LOCSucessStoryGlobalProgression">Global progression</sys:String>
-    <sys:String x:Key="LOCSucessStoryProgressionLaunched">Progression [games launched]</sys:String>
-    <sys:String x:Key="LOCSucessStoryGameInformation">Information</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterSource">Filter by source</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Global progression</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Progression [games launched]</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameInformation">Information</sys:String>
 
     <!-- ListViewGames -->
     
-    <sys:String x:Key="LOCSucessStorylvGamesProgression">Progression</sys:String>
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Progression</sys:String>
 
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALL">All achievements unlocked by month</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleALLDay">All achievements unlocked by day</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitle">Achievements unlocked by month</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleSources">Achievements unlocked by sources</sys:String>
-    <sys:String x:Key="LOCSucessStoryGraphicTitleDay">Achievements unlocked by day</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">All achievements unlocked by month</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">All achievements unlocked by day</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Achievements unlocked by month</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Achievements unlocked by sources</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Achievements unlocked by day</sys:String>
     
 </ResourceDictionary>

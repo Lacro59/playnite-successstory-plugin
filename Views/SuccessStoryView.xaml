@@ -50,7 +50,7 @@
                     <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
                     <TextBox Grid.Column="2" x:Name="TextboxSearch" TextWrapping="NoWrap" KeyUp="TextboxSearch_KeyUp" />
 
-                    <Label Grid.Column="4" Content="{DynamicResource LOCSucessStoryFilterSource}" FontSize="16" />
+                    <Label Grid.Column="4" Content="{DynamicResource LOCSuccessStoryFilterSource}" FontSize="16" />
                     <ComboBox Grid.Column="6" Name="FilterSource" IsEditable="True" IsReadOnly="True">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -78,14 +78,14 @@
                         <RowDefinition Height="30" />
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Column="0" Grid.Row="0" x:Name="lProgressionGlobal" Content="{DynamicResource LOCSucessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" />
+                    <Label Grid.Column="0" Grid.Row="0" x:Name="lProgressionGlobal" Content="{DynamicResource LOCSuccessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" />
                     <Grid Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="465">
                         <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" />
                         <Label x:Name="labelProgressionGlobalCount" HorizontalAlignment="Center">
                         </Label>
                     </Grid>
 
-                    <Label Grid.Column="0" Grid.Row="2" x:Name="lProgressionLaunched" Content="{DynamicResource LOCSucessStoryProgressionLaunched}" HorizontalAlignment="Left" FontSize="16" />
+                    <Label Grid.Column="0" Grid.Row="2" x:Name="lProgressionLaunched" Content="{DynamicResource LOCSuccessStoryProgressionLaunched}" HorizontalAlignment="Left" FontSize="16" />
                     <Grid Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" Width="465">
                         <ProgressBar x:Name="pbProgressionLaunchedCount" Minimum="0" Maximum="100" />
                         <Label x:Name="labelProgressionLaunchedCount" HorizontalAlignment="Center">
@@ -103,7 +103,7 @@
                     <!-- Graphic all achievements by sources -->
                     <DockPanel Grid.Column="0" Name="PART_GraphicBySource">
                         <StackPanel DockPanel.Dock="Top">
-                            <Label Content="{DynamicResource LOCSucessStoryGraphicTitleSources}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                            <Label Content="{DynamicResource LOCSuccessStoryGraphicTitleSources}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
                         </StackPanel>
 
                         <StackPanel Name="SuccessStory_Achievements_Graphics_Sources" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
@@ -130,7 +130,7 @@
                     <!-- Graphic all unlocked achievements -->
                     <DockPanel Grid.Column="2" Name="PART_GraphicAllUnlocked">
                         <StackPanel DockPanel.Dock="Top">
-                            <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSucessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                            <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSuccessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
                         </StackPanel>
 
                         <StackPanel Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168">
@@ -140,7 +140,8 @@
 
                 <!-- List games -->
                 <StackPanel Margin="0,0,0,10" Name="lvGamesStackPanel">
-                    <ListView x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}" SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
+                    <ListView Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}" 
+                              SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="46" x:Name="lvGameIcon100Percent">
@@ -184,7 +185,7 @@
                                     <GridViewColumnHeader Name="lvProgressionValue">Progression value</GridViewColumnHeader>
                                 </GridViewColumn>
                                 <GridViewColumn Width="105" x:Name="lvGameProgression">
-                                    <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSucessStorylvGamesProgression}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSuccessStorylvGamesProgression}"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Grid>
@@ -204,7 +205,7 @@
             <DockPanel Grid.Column="3" Grid.Row="1">
                 <DockPanel  DockPanel.Dock="Top" Margin="0,0,0,0">
                     <StackPanel DockPanel.Dock="Top">
-                        <Label Name="GraphicTitle" Content="{DynamicResource LOCSucessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
+                        <Label Name="GraphicTitle" Content="{DynamicResource LOCSuccessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
                     </StackPanel>
 
                     <StackPanel x:Name="SuccessStory_Achievements_Graphics_Game" DockPanel.Dock="Bottom" Height="168">

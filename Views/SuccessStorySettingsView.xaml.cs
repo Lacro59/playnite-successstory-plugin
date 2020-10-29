@@ -72,7 +72,7 @@ namespace SuccessStory.Views
                     cbDefaultSorting.Text = resources.GetString("LOCSourceLabel");
                     break;
                 case "ProgressionValue":
-                    cbDefaultSorting.Text = resources.GetString("LOCSucessStorylvGamesProgression");
+                    cbDefaultSorting.Text = resources.GetString("LOCSuccessStorylvGamesProgression");
                     break;
             }
         }
@@ -387,7 +387,7 @@ namespace SuccessStory.Views
                                 SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
                                 if (!steamAPI.CheckIsPublic(int.Parse(game.GameId)))
                                 {
-                                    AchievementsDatabase.ListErrors.Add(resources.GetString("LOCSucessStoryNotificationsSteamPrivate"));
+                                    AchievementsDatabase.ListErrors.Add(resources.GetString("LOCSuccessStoryNotificationsSteamPrivate"));
                                     break;
                                 }
                                 IsFirstLoop = false;

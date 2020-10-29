@@ -8,9 +8,9 @@ namespace SuccessStory.Models
     /// </summary>
     public class ListViewGames
     {
-        public BitmapImage Icon100Percent { get; set; }
+        public string Icon100Percent { get; set; }
         public string Id { get; set; }
-        public BitmapImage Icon { get; set; }
+        public string Icon { get; set; }
         public string Name { get; set; }
         public DateTime? LastActivity { get; set; }
         public string SourceName { get; set; }

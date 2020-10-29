@@ -88,40 +88,108 @@ namespace SuccessStory
             tokenSource.Cancel();
         }
 
-        public override IEnumerable<ExtensionFunction> GetFunctions()
+
+        // To add new game menu items override GetGameMenuItems
+        public override List<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
-            List<ExtensionFunction> listFunctions = new List<ExtensionFunction>();
-            listFunctions.Add(
-                new ExtensionFunction(
-                    resources.GetString("LOCSucessStory"),
-                    () =>
+            var GameMenu = args.Games.First();
+
+            List<GameMenuItem> gameMenuItems = new List<GameMenuItem>
+            {
+                new GameMenuItem {
+                    MenuSection = resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCSuccessStoryViewGame"),
+                    Action = (gameMenuItem) =>
                     {
-                        // Add code to be execute when user invokes this menu entry.
-                        
-                        var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath());
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
+                        var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                         windowExtension.ShowDialog();
-                    })
-                );
+                    }
+                },
+                new GameMenuItem {
+                    MenuSection = resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCSuccessStoryRefreshData"),
+                    Action = (gameMenuItem) =>
+                    {
+                        achievementsDatabase.Remove(GameMenu);
+                        Integration();
+                    }
+                }
+            };
+
+#if DEBUG
+            gameMenuItems.Add(new GameMenuItem
+            {
+                MenuSection = resources.GetString("LOCSuccessStory"),
+                Description = "Test",
+                Action = (mainMenuItem) => { }
+            });
+#endif
+
+            return gameMenuItems;
+        }
+
+        // To add new main menu items override GetMainMenuItems
+        public override List<MainMenuItem> GetMainMenuItems(GetMainMenuItemsArgs args)
+        {
+            string MenuInExtensions = string.Empty;
+            if (settings.MenuInExtensions)
+            {
+                MenuInExtensions = "@";
+            }
+
+            List<MainMenuItem> mainMenuItems = new List<MainMenuItem>
+            {
+                new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCSuccessStoryViewGames"),
+                    Action = (mainMenuItem) =>
+                    {
+                        var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath());
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                        windowExtension.ShowDialog();
+                    }
+                }
+            };
 
             if (settings.EnableRetroAchievementsView && settings.EnableRetroAchievements)
             {
-                listFunctions.Add(
-                    new ExtensionFunction(
-                        resources.GetString("LOCSucessStory") + " - RetroAchievements",
-                        () =>
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCSuccessStoryViewGames") + " - RetroAchievements",
+                    Action = (mainMenuItem) =>
+                    {
+                        SuccessView ViewExtension = null;
+                        if (settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, GameSelected))
                         {
-                            // Add code to be execute when user invokes this menu entry.
-                            
-                            var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true);
-                            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
-                            windowExtension.ShowDialog();
-                        })
-                    );
+                            ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected);
+                        }
+                        else
+                        {
+                            ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), false, GameSelected);
+                        }
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                        windowExtension.ShowDialog();
+                    }
+                });
             }
 
-            return listFunctions;
+#if DEBUG
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                Description = "Test",
+                Action = (mainMenuItem) => { }
+            });
+#endif
+
+            return mainMenuItems;
         }
+
+
+
 
         public override void OnGameInstalled(Game game)
         {
@@ -193,8 +261,16 @@ namespace SuccessStory
         /// <param name="e"></param>
         private void OnBtHeaderClick(object sender, RoutedEventArgs e)
         {
-            var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath());
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
+            SuccessView ViewExtension = null;
+            if (settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, GameSelected))
+            {
+                ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true);
+            }
+            else
+            {
+                ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), false);
+            }
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
             windowExtension.ShowDialog();
         }
 
@@ -232,19 +308,17 @@ namespace SuccessStory
 
         private void OnBtGameSelectedActionBarClick(object sender, RoutedEventArgs e)
         {
-            // Show SuccessView
+            SuccessView ViewExtension = null;
             if (settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, GameSelected))
             {
-                var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
-                windowExtension.ShowDialog();
+                ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected);
             }
             else
             {
-                var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), false, GameSelected);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
-                windowExtension.ShowDialog();
+                ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), false, GameSelected);
             }
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+            windowExtension.ShowDialog();
         }
 
         private void OnGameSelectedToggleButtonClick(object sender, RoutedEventArgs e)
@@ -552,7 +626,7 @@ namespace SuccessStory
                                             else
                                             {
                                                 tb = new SuccessStoryToggleButton();
-                                                tb.Content = resources.GetString("LOCSucessStoryAchievements");
+                                                tb.Content = resources.GetString("LOCSuccessStoryAchievements");
                                             }
 
                                             tb.IsChecked = false;
@@ -591,7 +665,7 @@ namespace SuccessStory
                                         Button bt = new Button();
                                         if (settings.EnableIntegrationButton)
                                         {
-                                            bt.Content = resources.GetString("LOCSucessStoryAchievements");
+                                            bt.Content = resources.GetString("LOCSuccessStoryAchievements");
                                         }
 
                                         if (settings.EnableIntegrationButtonDetails)
@@ -699,7 +773,7 @@ namespace SuccessStory
             {
                 TextBlock tbA = new TextBlock();
                 tbA.Name = "PART_Achievements_TextBlock";
-                tbA.Text = resources.GetString("LOCSucessStoryAchievements");
+                tbA.Text = resources.GetString("LOCSuccessStoryAchievements");
                 tbA.Style = (Style)resources.GetResource("BaseTextBlockStyle");
                 tbA.Margin = new Thickness(0, 15, 0, 5);
 

@@ -248,7 +248,7 @@ namespace SuccessStory.Clients
                 logger.Warn("SuccessStory - XboxAchievements - User is not authenticated - File not exist");
                 _PlayniteApi.Notifications.Add(new NotificationMessage(
                     "SuccessStory-Xbox-notAuthenticate",
-                    $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
+                    $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
                     NotificationType.Error
                 ));
 
@@ -267,7 +267,7 @@ namespace SuccessStory.Clients
                     logger.Warn("SuccessStory - XboxAchievements - User is not authenticated");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Xbox-notAuthenticate",
-                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
+                        $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
                         NotificationType.Error
                     ));
 
@@ -305,7 +305,7 @@ namespace SuccessStory.Clients
                     logger.Warn($"SuccessStory - XboxAchievements - User is not authenticated - {response.StatusCode}");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Xbox-notAuthenticate",
-                        $"SuccessStory - {resources.GetString("LOCSucessStoryNotificationsXboxNotAuthenticate")}",
+                        $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
                         NotificationType.Error
                     ));
 

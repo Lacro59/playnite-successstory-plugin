@@ -67,8 +67,8 @@ namespace SuccessStory
                 AchievementsDb = new AchievementsDatabase(plugin, PlayniteApi, settings, PluginUserDataPath, isRetroAchievements);
                 AchievementsDb.Initialize(false);
 
-                SetGraphicsAchievementsSources();
                 GetListGame();
+                SetGraphicsAchievementsSources();
 
                 AchievementsGraphicsDataCount GraphicsData = null;
                 if (settings.GraphicAllUnlockedByMonth)
@@ -80,7 +80,7 @@ namespace SuccessStory
                     GraphicsData = AchievementsDb.GetCountByDay();
                 }
 
-                Application.Current.Dispatcher.Invoke(() =>
+                Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
                     // Block hidden column.
                     lvProgressionValue.IsEnabled = false;
@@ -128,11 +128,11 @@ namespace SuccessStory
 
                     if (settings.GraphicAllUnlockedByMonth)
                     {
-                        GraphicTitleALL.Content = resources.GetString("LOCSucessStoryGraphicTitleALL");
+                        GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
                     }
                     else
                     {
-                        GraphicTitleALL.Content = resources.GetString("LOCSucessStoryGraphicTitleALLDay");
+                        GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALLDay");
                     }
                     string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
                     SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
@@ -248,7 +248,7 @@ namespace SuccessStory
 
                     PART_DataLoad.Visibility = Visibility.Hidden;
                     PART_Data.Visibility = Visibility.Visible;
-                });
+                }));
             });
         }
 
@@ -256,7 +256,7 @@ namespace SuccessStory
         {
             var data = AchievementsDb.GetCountBySources();
 
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.Invoke(new Action(() =>
             {
                 //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
                 var customerVmMapper = Mappers.Xy<CustomerForSingle>()
@@ -275,7 +275,7 @@ namespace SuccessStory
 
                 StatsGraphicAchievementsSources.Series = StatsGraphicAchievementsSeries;
                 StatsGraphicAchievementsSourcesX.Labels = data.Labels;
-            });
+            }));
         }
 
         /// <summary>
@@ -299,7 +299,8 @@ namespace SuccessStory
                         {
                             string GameId = game.Id.ToString();
                             string GameName = game.Name;
-                            string GameIcon;
+                            string GameIcon = string.Empty;
+                            string Icon100 = string.Empty;
                             DateTime? GameLastActivity = null;
 
                             GameAchievements GameAchievements = AchievementsDb.Get(game.Id);
@@ -309,30 +310,22 @@ namespace SuccessStory
                                 GameLastActivity = ((DateTime)game.LastActivity).ToLocalTime();
                             }
 
-                            BitmapImage iconImage = new BitmapImage();
                             if (!game.Icon.IsNullOrEmpty())
                             {
-                                iconImage.BeginInit();
                                 GameIcon = _PlayniteApiDatabase.GetFullFilePath(game.Icon);
-                                iconImage.UriSource = new Uri(GameIcon, UriKind.RelativeOrAbsolute);
-                                iconImage.EndInit();
                             }
-
-                            BitmapImage Icon100Percent = new BitmapImage();
+                            
                             if (GameAchievements.Is100Percent)
                             {
-                                Icon100Percent.BeginInit();
-                                string Icon100 = Path.Combine(pluginFolder, "Resources\\badge.png");
-                                Icon100Percent.UriSource = new Uri(Icon100, UriKind.RelativeOrAbsolute);
-                                Icon100Percent.EndInit();
+                                Icon100 = Path.Combine(pluginFolder, "Resources\\badge.png");
                             }
 
                             ListGames.Add(new ListViewGames()
                             {
-                                Icon100Percent = Icon100Percent,
+                                Icon100Percent = Icon100,
                                 Id = GameId,
                                 Name = GameName,
-                                Icon = iconImage,
+                                Icon = GameIcon,
                                 LastActivity = GameLastActivity,
                                 SourceName = SourceName,
                                 SourceIcon = TransformIcon.Get(SourceName),
@@ -341,18 +334,15 @@ namespace SuccessStory
                                 TotalPercent = GameAchievements.Progression + "%",
                                 Unlocked = GameAchievements.Unlocked
                             });
-
-                            iconImage = null;
                         }
                     }
                 }
 
-                Application.Current.Dispatcher.Invoke(() =>
+                Application.Current.Dispatcher.Invoke(new Action(() => 
                 {
                     ListviewGames.ItemsSource = ListGames;
-
                     Sorting();
-                });
+                }));
             }
             catch (Exception ex)
             {
@@ -387,12 +377,12 @@ namespace SuccessStory
                 AchievementsGraphicsDataCount GraphicsData = null;
                 if (settings.GraphicAllUnlockedByDay)
                 {
-                    GraphicTitle.Content = resources.GetString("LOCSucessStoryGraphicTitle");
+                    GraphicTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitle");
                     GraphicsData = AchievementsDb.GetCountByMonth(GameId);
                 }
                 else
                 {
-                    GraphicTitle.Content = resources.GetString("LOCSucessStoryGraphicTitleDay");
+                    GraphicTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitleDay");
                     GraphicsData = AchievementsDb.GetCountByDay(GameId, 8);
                 }
                 string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
