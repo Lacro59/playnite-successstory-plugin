@@ -178,15 +178,19 @@ namespace SuccessStory.Models
             string[] GraphicsAchievementsLabels = new string[limit + 1];
             ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
 
+            LocalDateYMConverter localDateYMConverter = new LocalDateYMConverter();
+
             // All achievements
             if (GameID == null)
             {
                 for (int i = limit; i >= 0; i--)
                 {
-                    GraphicsAchievementsLabels[(limit - i)] = DateTime.Now.AddMonths(-i).ToString("yyyy-MM");
+                    //GraphicsAchievementsLabels[(limit - i)] = DateTime.Now.AddMonths(-i).ToString("yyyy-MM");
+                    GraphicsAchievementsLabels[(limit - i)] = (string)localDateYMConverter.Convert(DateTime.Now.AddMonths(-i), null, null, null);
                     SourceAchievementsSeries.Add(new CustomerForSingle
                     {
-                        Name = DateTime.Now.AddMonths(-i).ToString("yyyy-MM"),
+                        //Name = DateTime.Now.AddMonths(-i).ToString("yyyy-MM"),
+                        Name = (string)localDateYMConverter.Convert(DateTime.Now.AddMonths(-i), null, null, null),
                         Values = 0
                     });
                 }
@@ -200,7 +204,8 @@ namespace SuccessStory.Models
                         {
                             if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
                             {
-                                string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                                //string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                                string tempDate = (string)localDateYMConverter.Convert(((DateTime)itemAchievements.DateUnlocked).ToLocalTime(), null, null, null);
                                 int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
                                 if (index >= 0 && index < (limit + 1))
@@ -236,7 +241,8 @@ namespace SuccessStory.Models
 
                         for (int i = limit; i >= 0; i--)
                         {
-                            GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
+                            //GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
+                            GraphicsAchievementsLabels[(limit - i)] = (string)localDateYMConverter.Convert(TempDateTime.AddMonths(-i), null, null, null);
                             SourceAchievementsSeries.Add(new CustomerForSingle
                             {
                                 Name = TempDateTime.AddMonths(-i).ToString("yyyy-MM"),
@@ -246,7 +252,8 @@ namespace SuccessStory.Models
 
                         for (int i = 0; i < Achievements.Count; i++)
                         {
-                            string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                            //string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM");
+                            string tempDate = (string)localDateYMConverter.Convert(((DateTime)Achievements[i].DateUnlocked).ToLocalTime(), null, null, null);
                             int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
                             if (index >= 0 && index < (limit + 1))
@@ -420,15 +427,19 @@ namespace SuccessStory.Models
             string[] GraphicsAchievementsLabels = new string[limit + 1];
             ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
 
+            LocalDateConverter localDateConverter = new LocalDateConverter();
+
             // All achievements
             if (GameID == null)
             {
                 for (int i = limit; i >= 0; i--)
                 {
-                    GraphicsAchievementsLabels[(limit - i)] = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd");
+                    //GraphicsAchievementsLabels[(limit - i)] = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd");
+                    GraphicsAchievementsLabels[(limit - i)] = (string)localDateConverter.Convert(DateTime.Now.AddDays(-i), null, null, null);
                     SourceAchievementsSeries.Add(new CustomerForSingle
                     {
-                        Name = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd"),
+                        //Name = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd"),
+                        Name = (string)localDateConverter.Convert(DateTime.Now.AddDays(-i), null, null, null),
                         Values = 0
                     });
                 }
@@ -442,7 +453,8 @@ namespace SuccessStory.Models
                         {
                             if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
                             {
-                                string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
+                                //string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
+                                string tempDate = (string)localDateConverter.Convert(((DateTime)itemAchievements.DateUnlocked).ToLocalTime(), null, null, null);
                                 int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
                                 if (index >= 0 && index < (limit + 1))
@@ -477,17 +489,20 @@ namespace SuccessStory.Models
 
                         for (int i = limit; i >= 0; i--)
                         {
-                            GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd");
+                            //GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd");
+                            GraphicsAchievementsLabels[(limit - i)] = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null);
                             SourceAchievementsSeries.Add(new CustomerForSingle
                             {
-                                Name = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd"),
+                                //Name = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd"),
+                                Name = (string)localDateConverter.Convert((TempDateTime.AddDays(-i)), null, null, null),
                                 Values = 0
                             });
                         }
 
                         for (int i = 0; i < Achievements.Count; i++)
                         {
-                            string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
+                            //string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
+                            string tempDate = (string)localDateConverter.Convert(((DateTime)Achievements[i].DateUnlocked).ToLocalTime(), null, null, null);
                             int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
                             if (index >= 0 && index < (limit + 1))

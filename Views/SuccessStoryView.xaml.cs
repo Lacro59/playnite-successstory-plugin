@@ -73,11 +73,11 @@ namespace SuccessStory
                 AchievementsGraphicsDataCount GraphicsData = null;
                 if (settings.GraphicAllUnlockedByMonth)
                 {
-                    GraphicsData = AchievementsDb.GetCountByMonth(null, 8);
+                    GraphicsData = AchievementsDb.GetCountByMonth(null, 6);
                 }
                 else
                 {
-                    GraphicsData = AchievementsDb.GetCountByDay();
+                    GraphicsData = AchievementsDb.GetCountByDay(null, 5);
                 }
 
                 Application.Current.Dispatcher.Invoke(new Action(() =>
@@ -244,7 +244,6 @@ namespace SuccessStory
 
                     // Set Binding data
                     DataContext = this;
-
 
                     PART_DataLoad.Visibility = Visibility.Hidden;
                     PART_Data.Visibility = Visibility.Visible;

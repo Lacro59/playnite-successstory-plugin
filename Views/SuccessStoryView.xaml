@@ -107,7 +107,11 @@
                         </StackPanel>
 
                         <StackPanel Name="SuccessStory_Achievements_Graphics_Sources" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
-                            <lvc:CartesianChart Name="StatsGraphicAchievementsSources" Height="185" LegendLocation="Bottom" FontFamily="{StaticResource font}">
+                            <lvc:CartesianChart Name="StatsGraphicAchievementsSources" Height="168" LegendLocation="Bottom" FontFamily="{StaticResource font}">
+                                <lvc:CartesianChart.ChartLegend>
+                                    <lvc:DefaultLegend Height="5" Width="0" />
+                                </lvc:CartesianChart.ChartLegend>
+                                
                                 <lvc:CartesianChart.DataTooltip>
                                     <localLVC:CustomerToolTipForSingle />
                                 </lvc:CartesianChart.DataTooltip>
