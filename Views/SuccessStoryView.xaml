@@ -49,7 +49,7 @@
                         <ColumnDefinition Width="180" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Content="{DynamicResource LOCSucessStorySearch}" FontSize="16" />
+                    <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
                     <TextBox Grid.Column="2" x:Name="TextboxSearch" TextWrapping="NoWrap" KeyUp="TextboxSearch_KeyUp" />
 
                     <Label Grid.Column="4" Content="{DynamicResource LOCSucessStoryFilterSource}" FontSize="16" />
@@ -155,7 +155,7 @@
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="50" x:Name="lvGameIcon">
-                                    <GridViewColumnHeader Content="{DynamicResource LOCSucessStorylvGamesIcon}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}"/>
@@ -164,17 +164,17 @@
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="240" DisplayMemberBinding="{Binding Name}" x:Name="lvGameName">
-                                    <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCSucessStorylvGamesName}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}"></GridViewColumnHeader>
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
-                                    <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCSucessStorylvGamesLastActivity}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}"></GridViewColumnHeader>
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
                                     <GridViewColumnHeader Name="lvSourceName">SourceName</GridViewColumnHeader>
                                 </GridViewColumn>
                                 <GridViewColumn Width="75" x:Name="lvGamesSource">
-                                    <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSucessStorylvGamesSourceName}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Label Content="{Binding SourceIcon}" FontFamily="{StaticResource font}" HorizontalAlignment="Center" VerticalAlignment="Stretch" />

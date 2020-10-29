@@ -63,13 +63,13 @@ namespace SuccessStory.Views
             switch (settings.NameSorting)
             {
                 case "Name":
-                    cbDefaultSorting.Text = resources.GetString("LOCSucessStorylvGamesName");
+                    cbDefaultSorting.Text = resources.GetString("LOCGameNameTitle");
                     break;
                 case "LastActivity":
-                    cbDefaultSorting.Text = resources.GetString("LOCSucessStorylvGamesLastActivity");
+                    cbDefaultSorting.Text = resources.GetString("LOCLastPlayed");
                     break;
                 case "SourceName":
-                    cbDefaultSorting.Text = resources.GetString("LOCSucessStorylvGamesSourceName");
+                    cbDefaultSorting.Text = resources.GetString("LOCSourceLabel");
                     break;
                 case "ProgressionValue":
                     cbDefaultSorting.Text = resources.GetString("LOCSucessStorylvGamesProgression");
@@ -443,7 +443,7 @@ namespace SuccessStory.Views
                         }
                         else
                         {
-                            PlayniteApi.Dialogs.ShowMessage((string)ResourceProvider.GetResource("LOCSucessStoryRefreshDataMessage"), "Success Story");
+                            PlayniteApi.Dialogs.ShowMessage((string)ResourceProvider.GetResource("LOCSuccessStoryRefreshDataMessage"), "Success Story");
                         }
                     }
 
@@ -463,44 +463,27 @@ namespace SuccessStory.Views
         {
             CheckBox cb = (CheckBox)sender;
 
-            if ((cb.Name == "Sc_IntegrationInDescription") && (bool)cb.IsChecked)
+            if ((cb.Name == "Sc_IntegrationInButtonDetails") && (bool)cb.IsChecked)
             {
-                Sc_IntegrationInCustomTheme.IsChecked = false;
-                Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
-                //Sc_IntegrationInButton.IsChecked = false;
-                //Sc_IntegrationInButtonDetails.IsChecked = false;
+                Sc_IntegrationInDescriptionOnlyIcon.IsChecked = false;
+            }
+            if ((cb.Name == "Sc_IntegrationInDescriptionOnlyIcon") && (bool)cb.IsChecked)
+            {
+                Sc_IntegrationInButtonDetails.IsChecked = false;
             }
             if ((cb.Name == "Sc_IntegrationInDescriptionWithToggle") && (bool)cb.IsChecked)
             {
-                Sc_IntegrationInCustomTheme.IsChecked = false;
-                Sc_IntegrationInDescription.IsChecked = false;
-                Sc_IntegrationInButton.IsChecked = false;
-                Sc_IntegrationInButtonDetails.IsChecked = false;
+
             }
 
-
-            if ((cb.Name == "Sc_IntegrationInButton") && (bool)cb.IsChecked)
+            if ((cb.Name == "Sc_IntegrationInDescription") && (bool)cb.IsChecked)
             {
                 Sc_IntegrationInCustomTheme.IsChecked = false;
-                //Sc_IntegrationInDescription.IsChecked = false;
-                Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
-                Sc_IntegrationInButtonDetails.IsChecked = false;
-            }
-
-            if ((cb.Name == "Sc_IntegrationInButtonDetails") && (bool)cb.IsChecked)
-            {
-                Sc_IntegrationInCustomTheme.IsChecked = false;
-                //Sc_IntegrationInDescription.IsChecked = false;
-                Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
-                Sc_IntegrationInButton.IsChecked = false;
             }
 
             if ((cb.Name == "Sc_IntegrationInCustomTheme") && (bool)cb.IsChecked)
             {
                 Sc_IntegrationInDescription.IsChecked = false;
-                Sc_IntegrationInDescriptionWithToggle.IsChecked = false;
-                Sc_IntegrationInButton.IsChecked = false;
-                Sc_IntegrationInButtonDetails.IsChecked = false;
             }
         }
 

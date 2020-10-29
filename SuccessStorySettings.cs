@@ -17,6 +17,8 @@ namespace SuccessStory
         public bool EnableIntegrationInDescription { get; set; } = false;
         public bool EnableIntegrationInDescriptionWithToggle { get; set; } = false;
 
+        public bool EnableIntegrationInDescriptionOnlyIcon { get; set; } = false;
+
         public bool GraphicAllUnlockedByMonth { get; set; } = true;
         public bool GraphicAllUnlockedByDay { get; set; } = false;
 
@@ -99,6 +101,8 @@ namespace SuccessStory
 
                 EnableIntegrationInDescription = savedSettings.EnableIntegrationInDescription;
                 EnableIntegrationInDescriptionWithToggle = savedSettings.EnableIntegrationInDescriptionWithToggle;
+
+                EnableIntegrationInDescriptionOnlyIcon = savedSettings.EnableIntegrationInDescriptionOnlyIcon;
 
                 GraphicAllUnlockedByMonth = savedSettings.GraphicAllUnlockedByMonth;
                 GraphicAllUnlockedByDay = savedSettings.GraphicAllUnlockedByDay;

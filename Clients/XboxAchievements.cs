@@ -125,7 +125,7 @@ namespace SuccessStory.Clients
                     return false;
                 }
 
-                var tokens = Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
+                var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
                 using (var client = new HttpClient())
                 {
                     SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
@@ -137,7 +137,7 @@ namespace SuccessStory.Clients
                     
                     var response = client.PostAsync(
                         @"https://profile.xboxlive.com/users/batch/profile/settings",
-                        new StringContent(Serialization.ToJson(requestData), Encoding.UTF8, "application/json")).Result;
+                        new StringContent(Playnite.SDK.Data.Serialization.ToJson(requestData), Encoding.UTF8, "application/json")).Result;
 
                     logger.Warn($"SuccessStory - Xbox GetIsUserLoggedIn() - {response.StatusCode}");
 
@@ -160,24 +160,24 @@ namespace SuccessStory.Clients
                 //  Authenticate
                 var authRequestData = new AthenticationRequest();
                 authRequestData.Properties.RpsTicket = accessToken;
-                var authPostContent = Serialization.ToJson(authRequestData, true);
+                var authPostContent = Playnite.SDK.Data.Serialization.ToJson(authRequestData, true);
 
                 var authResponse = await client.PostAsync(
                     @"https://user.auth.xboxlive.com/user/authenticate",
                     new StringContent(authPostContent, Encoding.UTF8, "application/json"));
                 var authResponseContent = await authResponse.Content.ReadAsStringAsync();
-                var authTokens = Serialization.FromJson<AuthorizationData>(authResponseContent);
+                var authTokens = Playnite.SDK.Data.Serialization.FromJson<AuthorizationData>(authResponseContent);
 
                 // Authorize
                 var atrzRequrestData = new AuhtorizationRequest();
                 atrzRequrestData.Properties.UserTokens = new List<string> { authTokens.Token };
-                var atrzPostContent = Serialization.ToJson(atrzRequrestData, true);
+                var atrzPostContent = Playnite.SDK.Data.Serialization.ToJson(atrzRequrestData, true);
 
                 var atrzResponse = await client.PostAsync(
                     @"https://xsts.auth.xboxlive.com/xsts/authorize",
                     new StringContent(atrzPostContent, Encoding.UTF8, "application/json"));
                 var atrzResponseContent = await atrzResponse.Content.ReadAsStringAsync();
-                var atrzTokens = Serialization.FromJson<AuthorizationData>(atrzResponseContent);
+                var atrzTokens = Playnite.SDK.Data.Serialization.FromJson<AuthorizationData>(atrzResponseContent);
 
                 FileSystem.WriteStringToFile(xstsLoginTokesPath, atrzResponseContent);
             }
@@ -185,7 +185,7 @@ namespace SuccessStory.Clients
 
         private async Task RefreshTokens()
         {
-            var tokens = Serialization.FromJsonFile<AuthenticationData>(liveTokensPath);
+            var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthenticationData>(liveTokensPath);
 
             var query = HttpUtility.ParseQueryString(string.Empty);
             query.Add("grant_type", "refresh_token");
@@ -200,10 +200,10 @@ namespace SuccessStory.Clients
                 if (refreshResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var responseContent = await refreshResponse.Content.ReadAsStringAsync();
-                    var response = Serialization.FromJson<RefreshTokenResponse>(responseContent);
+                    var response = Playnite.SDK.Data.Serialization.FromJson<RefreshTokenResponse>(responseContent);
                     tokens.AccessToken = response.access_token;
                     tokens.RefreshToken = response.refresh_token;
-                    FileSystem.WriteStringToFile(liveTokensPath, Serialization.ToJson(tokens));
+                    FileSystem.WriteStringToFile(liveTokensPath, Playnite.SDK.Data.Serialization.ToJson(tokens));
                     await Authenticate(tokens.AccessToken);
                 }
             }
@@ -212,7 +212,7 @@ namespace SuccessStory.Clients
 
         private async Task<TitleHistoryResponse.Title> GetTitleInfo(string pfn)
         {
-            var tokens = Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
+            var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
             using (var client = new HttpClient())
             {
                 SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
@@ -224,7 +224,7 @@ namespace SuccessStory.Clients
 
                 var response = await client.PostAsync(
                            @"https://titlehub.xboxlive.com/titles/batch/decoration/detail",
-                           new StringContent(Serialization.ToJson(requestData), Encoding.UTF8, "application/json"));
+                           new StringContent(Playnite.SDK.Data.Serialization.ToJson(requestData), Encoding.UTF8, "application/json"));
 
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
@@ -236,7 +236,7 @@ namespace SuccessStory.Clients
                 }
 
                 var cont = await response.Content.ReadAsStringAsync();
-                var titleHistory = Serialization.FromJson<TitleHistoryResponse>(cont);
+                var titleHistory = Playnite.SDK.Data.Serialization.FromJson<TitleHistoryResponse>(cont);
                 return titleHistory.titles.First();
             }
         }
@@ -286,7 +286,7 @@ namespace SuccessStory.Clients
                 titleId = libTitle.titleId;
             }
 
-            var tokens = Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
+            var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
             string url = string.Format(urlAchievements + $"?titleId={titleId}&maxItems=1000", tokens.DisplayClaims.xui[0].xid);
             if (titleId.IsNullOrEmpty())
             {

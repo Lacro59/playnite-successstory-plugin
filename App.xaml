@@ -43,6 +43,7 @@
                 <ResourceDictionary Source="playnite-plugincommon/Resources/Common.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/Resources/LiveChartsCommon/Common.xaml" />
                 <!--Plugin default localization-->
+                <ResourceDictionary Source="playnite-plugincommon/Localization/Common/LocSource.xaml" />
                 <ResourceDictionary Source="Localization/LocSource.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

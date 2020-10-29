@@ -56,28 +56,28 @@
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="0" x:Name="SteamLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                             <Button Grid.Column="4" Grid.Row="0" Height="30" Content="{DynamicResource LOCSucessStoryGetMissing}" Click="Button_Click_Get_Steam" ToolTip="{DynamicResource LOCSucessStoryGetMissingToolTip}"></Button>
-                            <Button Grid.Column="6" Grid.Row="0" Height="30" Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Steam" ToolTip="{DynamicResource LOCSucessStoryRefreshDataToolTip}"></Button>
+                            <Button Grid.Column="6" Grid.Row="0" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Steam" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
                             <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding EnableGog}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSucessStoryEnableGog}"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="1" x:Name="GogLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                             <Button Grid.Column="4" Grid.Row="1" Height="30" Content="{DynamicResource LOCSucessStoryGetMissing}" Click="Button_Click_Get_Gog" ToolTip="{DynamicResource LOCSucessStoryGetMissingToolTip}"></Button>
-                            <Button Grid.Column="6" Grid.Row="1" Height="30" Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Gog" ToolTip="{DynamicResource LOCSucessStoryRefreshDataToolTip}"></Button>
+                            <Button Grid.Column="6" Grid.Row="1" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Gog" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
                             <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding EnableOrigin}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSucessStoryEnableOrigin}"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="2" x:Name="OriginLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                             <Button Grid.Column="4" Grid.Row="2" Height="30" Content="{DynamicResource LOCSucessStoryGetMissing}" Click="Button_Click_Get_Origin" ToolTip="{DynamicResource LOCSucessStoryGetMissingToolTip}"></Button>
-                            <Button Grid.Column="6" Grid.Row="2" Height="30" Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Origin" ToolTip="{DynamicResource LOCSucessStoryRefreshDataToolTip}"></Button>
+                            <Button Grid.Column="6" Grid.Row="2" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Origin" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
                             <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding EnableXbox}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSucessStoryEnableXbox}"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="3" x:Name="XboxLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                             <Button Grid.Column="4" Grid.Row="3" Height="30" Content="{DynamicResource LOCSucessStoryGetMissing}" Click="Button_Click_Get_Xbox" ToolTip="{DynamicResource LOCSucessStoryGetMissingToolTip}"></Button>
-                            <Button Grid.Column="6" Grid.Row="3" Height="30" Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_Xbox" ToolTip="{DynamicResource LOCSucessStoryRefreshDataToolTip}"></Button>
+                            <Button Grid.Column="6" Grid.Row="3" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Xbox" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
 
                             <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableRetroAchievements}" VerticalAlignment="Center">
@@ -85,7 +85,7 @@
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="4" x:Name="RetroAchievementsLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                             <Button Grid.Column="4" Grid.Row="4" Height="30" Content="{DynamicResource LOCSucessStoryGetMissing}" Click="Button_Click_Get_RetroAchievements" ToolTip="{DynamicResource LOCSucessStoryGetMissingToolTip}"></Button>
-                            <Button Grid.Column="6" Grid.Row="4" Height="30" Content="{DynamicResource LOCSucessStoryRefreshData}" Click="Button_Click_RetroAchievements" ToolTip="{DynamicResource LOCSucessStoryRefreshDataToolTip}"></Button>
+                            <Button Grid.Column="6" Grid.Row="4" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_RetroAchievements" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
                             <Grid Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="5" IsEnabled="{Binding EnableRetroAchievements}">
                                 <Grid.ColumnDefinitions>
@@ -118,7 +118,7 @@
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="6" x:Name="LocalLoad" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">xxx / xxx</Label>
                             <Button Grid.Column="4" Grid.Row="6" Height="30" Content="{DynamicResource LOCSucessStoryGetMissing}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSucessStoryGetMissingToolTip}"></Button>
-                            <Button Grid.Column="6" Grid.Row="6" Height="30" Content="{DynamicResource LOCSucessStoryRefreshData}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSucessStoryRefreshDataToolTip}"></Button>
+                            <Button Grid.Column="6" Grid.Row="6" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
                         </Grid>
                     </DockPanel>
                 </ScrollViewer>
@@ -164,12 +164,12 @@
 
                             <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCSucessStoryDefaultSorting}" />
                             <ComboBox Name="cbDefaultSorting" Grid.Column="2" Grid.Row="0" Height="30" IsEditable="True" IsReadOnly="True" SelectionChanged="cbDefaultSorting_SelectionChanged">
-                                <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesName}" Tag="Name"></ComboBoxItem>
-                                <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesLastActivity}" Tag="LastActivity"></ComboBoxItem>
-                                <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesSourceName}" Tag="SourceName"></ComboBoxItem>
+                                <ComboBoxItem Content="{DynamicResource LOCGameNameTitle}" Tag="Name"></ComboBoxItem>
+                                <ComboBoxItem Content="{DynamicResource LOCLastPlayed}" Tag="LastActivity"></ComboBoxItem>
+                                <ComboBoxItem Content="{DynamicResource LOCSourceLabel}" Tag="SourceName"></ComboBoxItem>
                                 <ComboBoxItem Content="{DynamicResource LOCSucessStorylvGamesProgression}" Tag="ProgressionValue"></ComboBoxItem>
                             </ComboBox>
-                            <ToggleButton Content="{DynamicResource LOCSucessStoryIsAsc}" IsChecked="{Binding IsAsc}" Grid.Column="4" Grid.Row="0" Height="30"></ToggleButton>
+                            <ToggleButton Content="{DynamicResource LOCMenuSortAscending}" IsChecked="{Binding IsAsc}" Grid.Column="4" Grid.Row="0" Height="30"></ToggleButton>
 
                             <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" IsChecked="{Binding IncludeHiddenGames}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSucessStoryIncludeHiddenGames}"></Label>
@@ -273,7 +273,7 @@
                             </Grid.RowDefinitions>
 
                             <Button Grid.Row="0" Content="{DynamicResource LOCSucessStoryRefreshAllDataRecent}" FontSize="14" Click="Button_Click_All_Recent" ToolTip="{DynamicResource LOCSucessStoryRefreshAllDataRecentToolTip}"></Button>
-                            <Button Grid.Row="2" Content="{DynamicResource LOCSucessStoryRefreshDataInstalledRecent}" FontSize="14" Click="Button_Click_All_Installed" ToolTip="{DynamicResource LOCSucessStoryRefreshDataInstalledRecentToolTip}"></Button>
+                            <Button Grid.Row="2" Content="{DynamicResource LOCSuccessStoryRefreshDataInstalledRecent}" FontSize="14" Click="Button_Click_All_Installed" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataInstalledRecentToolTip}"></Button>
                             <Button Grid.Row="4" Content="{DynamicResource LOCSucessStoryRefreshAllData}" FontSize="14" Click="Button_Click_All" ToolTip="{DynamicResource LOCSucessStoryRefreshAllDataToolTip}"></Button>
                         </Grid>
                     </GroupBox>
@@ -284,7 +284,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="{DynamicResource LOCSucessStoryIntegration}">
+            <TabItem Header="{DynamicResource LOCCommonIntegration}">
                 <ScrollViewer>
                     <StackPanel Margin="0,10,0,0">
                         <Grid>
@@ -295,56 +295,167 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
+                                <RowDefinition Height="10" />
                                 <RowDefinition Height="30" />
+                                <RowDefinition Height="10" />
                                 <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
+                                <RowDefinition Height="10" />
                                 <RowDefinition Height="30" />
                             </Grid.RowDefinitions>
 
-                            <!--Button-->
-                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableIntegrationButton}" Name="Sc_IntegrationInButton" Click="Checkbox_Click" VerticalAlignment="Center" Grid.ColumnSpan="2">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationButton}" />
+                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableIntegrationButtonHeader}" VerticalAlignment="Center" Grid.ColumnSpan="2">
+                                <Label Content="{DynamicResource LOCCommonIntegrationButtonHeader}" />
                             </CheckBox>
-                            <CheckBox Grid.Column="3" Grid.Row="0" IsChecked="{Binding EnableIntegrationButtonDetails}" Name="Sc_IntegrationInButtonDetails" Click="Checkbox_Click" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationButtonDetails}" />
+
+                            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" IsChecked="{Binding EnableIntegrationInCustomTheme}" Name="Sc_IntegrationInCustomTheme" Click="Checkbox_Click" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCCommonIntegrationInCustomTheme}" />
                             </CheckBox>
                             
-                            <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding EnableIntegrationButtonHeader}" VerticalAlignment="Center" Grid.ColumnSpan="2">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationButtonHeader}" />
+                            <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableIntegrationButton}" Name="Sc_IntegrationInButton" Click="Checkbox_Click" VerticalAlignment="Center" Grid.ColumnSpan="2">
+                                <Label Content="{DynamicResource LOCCommonIntegrationButton}" />
                             </CheckBox>
 
-
-                            <!--Type integration-->
-                            <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding EnableIntegrationInDescription}" Name="Sc_IntegrationInDescription" Click="Checkbox_Click" VerticalAlignment="Center" Grid.ColumnSpan="2">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationInDescription}" />
-                            </CheckBox>
-                            <CheckBox Grid.Column="3" Grid.Row="3" IsChecked="{Binding EnableIntegrationInDescriptionWithToggle}" Name="Sc_IntegrationInDescriptionWithToggle" Click="Checkbox_Click" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationInDescriptionWithToggle}" />
-                            </CheckBox>
-
-                            <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding IntegrationShowTitle}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationShowTitle}" />
-                            </CheckBox>
-                            <CheckBox Grid.Column="2" Grid.Row="4" IsChecked="{Binding IntegrationShowTitle}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationShowTitle}" />
-                            </CheckBox>
-
-                            <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding IntegrationTopGameDetails}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationTopGameDetails}" />
-                            </CheckBox>
-                            <CheckBox Grid.Column="3" Grid.Row="5" IsChecked="{Binding IntegrationToggleDetails}" Margin="30,0,0,0" IsEnabled="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationToggleDetails}" />
-                            </CheckBox>
-
-                            <CheckBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="3" IsChecked="{Binding EnableIntegrationInCustomTheme}" Name="Sc_IntegrationInCustomTheme" Click="Checkbox_Click" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSucessStoryIntegrationInCustomTheme}" />
+                            <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding EnableIntegrationInDescription}" Name="Sc_IntegrationInDescription" Click="Checkbox_Click" VerticalAlignment="Center" Grid.ColumnSpan="2">
+                                <Label Content="{DynamicResource LOCCommonIntegrationInDescription}" />
                             </CheckBox>
                         </Grid>
+                        
+                        <GroupBox Header="{DynamicResource LOCCommonIntegrationButtonOptions}" Margin="0,10,0,0">
+                            <GroupBox.Style>
+                                <Style TargetType="GroupBox">
+                                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                                    <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+                                    <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+                                    <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
+                                    <Setter Property="Padding" Value="5" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GroupBox}">
+                                                <Border DockPanel.Dock="Top"
+                                                        BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                                                    <DockPanel>
+                                                        <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
+                                                            <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
+                                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
+                                                                                      RecognizesAccessKey="True" />
+                                                            </TextBlock>
+                                                        </Border>
+                                                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
+                                                                 Margin="{TemplateBinding Padding}"/>
+                                                    </DockPanel>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+
+                                    <Setter Property="IsEnabled" Value="False" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInButton, Path=IsChecked}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled" Value="True" />
+                                        </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled" Value="True" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </GroupBox.Style>
+
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+
+                                <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableIntegrationInDescriptionOnlyIcon}" Name="Sc_IntegrationInDescriptionOnlyIcon" 
+                                          Click="Checkbox_Click" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCCommonIntegrationButtonOnlyIcon}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding EnableIntegrationButtonDetails}" Name="Sc_IntegrationInButtonDetails" 
+                                          Click="Checkbox_Click" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCCommonIntegrationButtonDetails}" />
+                                </CheckBox>
+
+                                <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding EnableIntegrationInDescriptionWithToggle}" Name="Sc_IntegrationInDescriptionWithToggle" 
+                                          Click="Checkbox_Click" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCCommonIntegrationButtonIsToggle}" />
+                                </CheckBox>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="{DynamicResource LOCGameActivityIntegrationDescriptionOptions}" Margin="0,10,0,0">
+                            <GroupBox.Style>
+                                <Style TargetType="GroupBox">
+                                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                                    <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+                                    <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+                                    <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
+                                    <Setter Property="Padding" Value="5" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GroupBox}">
+                                                <Border DockPanel.Dock="Top"
+                                                        BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                                                    <DockPanel>
+                                                        <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
+                                                            <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
+                                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
+                                                                                      RecognizesAccessKey="True" />
+                                                            </TextBlock>
+                                                        </Border>
+                                                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
+                                                                 Margin="{TemplateBinding Padding}"/>
+                                                    </DockPanel>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+
+                                    <Setter Property="IsEnabled" Value="False" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled" Value="True" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </GroupBox.Style>
+
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+
+                                <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IntegrationShowTitle}" IsEnabled="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCCommonIntegrationShowTitle}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding IntegrationTopGameDetails}" IsEnabled="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCCommonIntegrationTopGameDetails}" />
+                                </CheckBox>
+                            </Grid>
+                        </GroupBox>
 
 
-                        <GroupBox Header="{DynamicResource LOCSucessStoryIntegrationOptions}" Margin="0,10,0,0">
+                        <GroupBox Header="{DynamicResource LOCCommonIntegrationSelectElements}" Margin="0,10,0,0">
                             <GroupBox.Style>
                                 <Style TargetType="GroupBox">
                                     <Setter Property="SnapsToDevicePixels" Value="True" />
