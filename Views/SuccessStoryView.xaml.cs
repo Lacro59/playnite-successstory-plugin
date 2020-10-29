@@ -64,14 +64,24 @@ namespace SuccessStory
 
             var TaskView = Task.Run(() =>
             {
+                AchievementsDb = new AchievementsDatabase(plugin, PlayniteApi, settings, PluginUserDataPath, isRetroAchievements);
+                AchievementsDb.Initialize(false);
+
+                SetGraphicsAchievementsSources();
+                GetListGame();
+
+                AchievementsGraphicsDataCount GraphicsData = null;
+                if (settings.GraphicAllUnlockedByMonth)
+                {
+                    GraphicsData = AchievementsDb.GetCountByMonth(null, 8);
+                }
+                else
+                {
+                    GraphicsData = AchievementsDb.GetCountByDay();
+                }
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    //AchievementsDb = (AchievementsDatabase)SuccessStory.achievementsDatabase.Clone();
-                    //AchievementsDb.Filter(false);
-
-                    AchievementsDb = new AchievementsDatabase(plugin, PlayniteApi, settings, PluginUserDataPath, isRetroAchievements);
-                    AchievementsDb.Initialize(false);
-
                     // Block hidden column.
                     lvProgressionValue.IsEnabled = false;
                     lvSourceName.IsEnabled = false;
@@ -87,9 +97,6 @@ namespace SuccessStory
 
 
                     GraphicTitle.Content = string.Empty;
-
-
-                    GetListGame();
 
 
                     // lvGames options
@@ -119,16 +126,13 @@ namespace SuccessStory
                     }
 
 
-                    AchievementsGraphicsDataCount GraphicsData = null;
                     if (settings.GraphicAllUnlockedByMonth)
                     {
                         GraphicTitleALL.Content = resources.GetString("LOCSucessStoryGraphicTitleALL");
-                        GraphicsData = AchievementsDb.GetCountByMonth(null, 8);
                     }
                     else
                     {
                         GraphicTitleALL.Content = resources.GetString("LOCSucessStoryGraphicTitleALLDay");
-                        GraphicsData = AchievementsDb.GetCountByDay();
                     }
                     string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
                     SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
@@ -238,8 +242,6 @@ namespace SuccessStory
                     FilterSource.ItemsSource = FilterSourceItems;
 
 
-                    SetGraphicsAchievementsSources();
-
                     // Set Binding data
                     DataContext = this;
 
@@ -253,24 +255,27 @@ namespace SuccessStory
         private void SetGraphicsAchievementsSources()
         {
             var data = AchievementsDb.GetCountBySources();
-            
-            //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
-            var customerVmMapper = Mappers.Xy<CustomerForSingle>()
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
+                var customerVmMapper = Mappers.Xy<CustomerForSingle>()
                 .X((value, index) => index)
                 .Y(value => value.Values);
 
-            //lets save the mapper globally
-            Charting.For<CustomerForSingle>(customerVmMapper);
+                //lets save the mapper globally
+                Charting.For<CustomerForSingle>(customerVmMapper);
 
-            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-            StatsGraphicAchievementsSeries.Add(new ColumnSeries
-            {
-                Title = string.Empty,
-                Values = data.SeriesUnlocked
+                SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+                StatsGraphicAchievementsSeries.Add(new ColumnSeries
+                {
+                    Title = string.Empty,
+                    Values = data.SeriesUnlocked
+                });
+
+                StatsGraphicAchievementsSources.Series = StatsGraphicAchievementsSeries;
+                StatsGraphicAchievementsSourcesX.Labels = data.Labels;
             });
-
-            StatsGraphicAchievementsSources.Series = StatsGraphicAchievementsSeries;
-            StatsGraphicAchievementsSourcesX.Labels = data.Labels;
         }
 
         /// <summary>
@@ -342,9 +347,12 @@ namespace SuccessStory
                     }
                 }
 
-                ListviewGames.ItemsSource = ListGames;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    ListviewGames.ItemsSource = ListGames;
 
-                Sorting();
+                    Sorting();
+                });
             }
             catch (Exception ex)
             {
