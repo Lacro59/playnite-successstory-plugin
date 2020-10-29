@@ -26,7 +26,7 @@ namespace SuccessStory
     /// <summary>
     /// Logique d'interaction pour SuccessView.xaml
     /// </summary>
-    public partial class SuccessView : Window
+    public partial class SuccessView : UserControl
     {
         private static readonly ILogger logger = LogManager.GetLogger();
         private static IResourceProvider resources = new ResourceProvider();
@@ -54,8 +54,6 @@ namespace SuccessStory
             _PlayniteApiPaths = PlayniteApi.Paths;
             this.settings = settings;
             this.PluginUserDataPath = PluginUserDataPath;
-
-            this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
 
 
             InitializeComponent();
@@ -250,14 +248,6 @@ namespace SuccessStory
                     PART_Data.Visibility = Visibility.Visible;
                 });
             });
-        }
-
-        private void HandleEsc(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                Close();
-            }
         }
 
         private void SetGraphicsAchievementsSources()
@@ -615,23 +605,23 @@ namespace SuccessStory
         #endregion
 
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            AchievementsDb = null;
-            _PlayniteApi = null;
-            _PlayniteApiDatabase = null;
-            _PlayniteApiPaths = null;
-
-            ListviewGames.ItemsSource = null;
-            ListviewGames.UpdateLayout();
-
-            SuccessStory_Achievements_List.Children.Clear();
-            SuccessStory_Achievements_List.UpdateLayout();
-            SuccessStory_Achievements_Graphics_Game.Children.Clear();
-            SuccessStory_Achievements_Graphics_Game.UpdateLayout();
-
-            GC.Collect();
-        }
+        //protected override void OnClosing(CancelEventArgs e)
+        //{
+        //    AchievementsDb = null;
+        //    _PlayniteApi = null;
+        //    _PlayniteApiDatabase = null;
+        //    _PlayniteApiPaths = null;
+        //
+        //    ListviewGames.ItemsSource = null;
+        //    ListviewGames.UpdateLayout();
+        //
+        //    SuccessStory_Achievements_List.Children.Clear();
+        //    SuccessStory_Achievements_List.UpdateLayout();
+        //    SuccessStory_Achievements_Graphics_Game.Children.Clear();
+        //    SuccessStory_Achievements_Graphics_Game.UpdateLayout();
+        //
+        //    GC.Collect();
+        //}
 
 
         #region Filter

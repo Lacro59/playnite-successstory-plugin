@@ -97,8 +97,10 @@ namespace SuccessStory
                     () =>
                     {
                         // Add code to be execute when user invokes this menu entry.
-
-                        new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
+                        
+                        var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath());
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
+                        windowExtension.ShowDialog();
                     })
                 );
 
@@ -110,8 +112,10 @@ namespace SuccessStory
                         () =>
                         {
                             // Add code to be execute when user invokes this menu entry.
-
-                            new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true).ShowDialog();
+                            
+                            var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true);
+                            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
+                            windowExtension.ShowDialog();
                         })
                     );
             }
@@ -189,7 +193,9 @@ namespace SuccessStory
         /// <param name="e"></param>
         private void OnBtHeaderClick(object sender, RoutedEventArgs e)
         {
-            new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath()).ShowDialog();
+            var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath());
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
+            windowExtension.ShowDialog();
         }
 
         public override void OnApplicationStarted()
@@ -229,11 +235,15 @@ namespace SuccessStory
             // Show SuccessView
             if (settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, GameSelected))
             {
-                new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected).ShowDialog();
+                var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected);
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
+                windowExtension.ShowDialog();
             }
             else
             {
-                new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), false, GameSelected).ShowDialog();
+                var ViewExtension = new SuccessView(this, settings, PlayniteApi, this.GetPluginUserDataPath(), false, GameSelected);
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSucessStory"), ViewExtension);
+                windowExtension.ShowDialog();
             }
         }
 
