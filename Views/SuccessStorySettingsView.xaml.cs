@@ -369,7 +369,7 @@ namespace SuccessStory.Views
                             break;
                     }
 
-                    Application.Current.Dispatcher.Invoke(() => { pbDataLoad.Maximum = FilterDatabaseGame.Count(); });
+                    Application.Current.Dispatcher.BeginInvoke((Action)delegate { pbDataLoad.Maximum = FilterDatabaseGame.Count(); });
 #if DEBUG
                     logger.Debug($"SuccessStory - FilterDatabaseGame: {FilterDatabaseGame.Count()}");
 #endif
@@ -409,7 +409,7 @@ namespace SuccessStory.Views
                                 achievementsDatabase.Add(game, settings);
                             }
 
-                            Application.Current.Dispatcher.Invoke(new Action(() => { pbDataLoad.Value += 1; }));
+                            Application.Current.Dispatcher.BeginInvoke((Action)delegate { pbDataLoad.Value += 1; });
                         }
                         catch (Exception ex)
                         {
@@ -430,7 +430,8 @@ namespace SuccessStory.Views
             }, tokenSource.Token)
             .ContinueWith(antecedent =>
             {
-                Application.Current.Dispatcher.Invoke(new Action(() => {
+                Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                { 
                     DataLoad.Visibility = Visibility.Collapsed;
                     tcSettings.Visibility = Visibility.Visible;
 
@@ -453,7 +454,7 @@ namespace SuccessStory.Views
                     stopwatch.Stop();
                     logger.Debug($"SuccessStory - RefreshData() - End - {stopwatch.Elapsed}");
 #endif
-                }));
+                });
             });
         }
 

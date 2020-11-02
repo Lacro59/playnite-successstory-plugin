@@ -5,6 +5,7 @@ using PluginCommon;
 using SuccessStory.Views.Interface;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -107,7 +108,7 @@ namespace SuccessStory.Services
                 IsFirstLoad = false;
             }
 
-            Application.Current.Dispatcher.Invoke(new Action(() =>
+            Application.Current.Dispatcher.BeginInvoke((Action)delegate
             {
                 CheckTypeView();
 
@@ -134,7 +135,7 @@ namespace SuccessStory.Services
 #endif
                     AddCustomElements();
                 }
-            }));
+            });
         }
 
         public override void RefreshElements(Game GameSelected, bool force = false)
@@ -142,11 +143,19 @@ namespace SuccessStory.Services
 #if DEBUG
             logger.Debug($"SuccessStory - RefreshElements({GameSelected.Name})");
 #endif
-            taskHelper.Check();
+            
             CancellationTokenSource tokenSource = new CancellationTokenSource();
             CancellationToken ct = tokenSource.Token;
 
             Task TaskRefresh = Task.Run(() => {
+#if DEBUG
+                string IsCanceld = string.Empty;
+
+                logger.Debug($"SuccessStory - TaskRefresh() - Start");
+                Stopwatch stopwatch = new Stopwatch();
+                TimeSpan ts;
+                stopwatch.Start();
+#endif
                 try
                 {
                     Initial();
@@ -177,13 +186,11 @@ namespace SuccessStory.Services
                     // Load data
                     SuccessStory.SelectedGameAchievements = null;
                     string GameSourceName = string.Empty;
+
                     try
                     {
                         SuccessStory.SelectedGameAchievements = SuccessStory.achievementsDatabase.Get(GameSelected.Id);
                         GameSourceName = PlayniteTools.GetSourceName(GameSelected, _PlayniteApi);
-#if DEBUG
-                        logger.Debug($"SuccessStory - SuccessStory.SelectedGameAchievements: ({JsonConvert.SerializeObject(SuccessStory.SelectedGameAchievements)})");
-#endif
                     }
                     catch (Exception ex)
                     {
@@ -200,32 +207,50 @@ namespace SuccessStory.Services
                         SuccessStory.SelectedGameAchievements = SuccessStory.achievementsDatabase.Get(GameSelected.Id);
                     }
 
-                    if (SuccessStory.SelectedGameAchievements != null)
-                    {
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = SuccessStory.SelectedGameAchievements.Is100Percent });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SuccessStory.SelectedGameAchievements.Total });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Total.ToString()) });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = SuccessStory.SelectedGameAchievements.Total.ToString() });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SuccessStory.SelectedGameAchievements.Unlocked });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Unlocked.ToString()) });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = SuccessStory.SelectedGameAchievements.Unlocked.ToString() });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SuccessStory.SelectedGameAchievements.Locked });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Locked.ToString()) });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = SuccessStory.SelectedGameAchievements.Locked.ToString() });
-                        ui.AddResources(resourcesLists);
-                    }
-                    else
+                    if (SuccessStory.SelectedGameAchievements == null)
                     {
                         logger.Warn("SuccessStory - No data for " + GameSelected.Name);
+#if DEBUG
+                        stopwatch.Stop();
+                        ts = stopwatch.Elapsed;
+                        logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+#endif
+                        return;
                     }
+
+                    if (!SuccessStory.SelectedGameAchievements.HaveAchivements)
+                    {
+                        logger.Warn("SuccessStory - No achievements for " + GameSelected.Name);
+#if DEBUG
+                        stopwatch.Stop();
+                        ts = stopwatch.Elapsed;
+                        logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+#endif
+                        return;
+                    }
+
+#if DEBUG
+                    logger.Debug($"SuccessStory - SuccessStory.SelectedGameAchievements: ({JsonConvert.SerializeObject(SuccessStory.SelectedGameAchievements)})");
+#endif
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = SuccessStory.SelectedGameAchievements.Is100Percent });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SuccessStory.SelectedGameAchievements.Total });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Total.ToString()) });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = SuccessStory.SelectedGameAchievements.Total.ToString() });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SuccessStory.SelectedGameAchievements.Unlocked });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Unlocked.ToString()) });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = SuccessStory.SelectedGameAchievements.Unlocked.ToString() });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SuccessStory.SelectedGameAchievements.Locked });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Locked.ToString()) });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = SuccessStory.SelectedGameAchievements.Locked.ToString() });
+
 
                     // If not cancel, show
                     if (!ct.IsCancellationRequested)
                     {
                         ui.AddResources(resourcesLists);
 
-                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        Application.Current.Dispatcher.BeginInvoke((Action)delegate
                         {
                             if (_Settings.EnableIntegrationButton)
                             {
@@ -250,14 +275,25 @@ namespace SuccessStory.Services
 #endif
                                 RefreshCustomElements();
                             }
-                        }));
+                        });
+                    }
+                    else
+                    {
+#if DEBUG
+                        IsCanceld = " canceled";
+#endif
                     }
                 }
                 catch (Exception ex)
                 {
                     Common.LogError(ex, "SuccessStory", $"Error on TaskRefreshBtActionBar()");
                 }
-            });
+#if DEBUG
+                stopwatch.Stop();
+                ts = stopwatch.Elapsed;
+                logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+#endif
+            }, ct);
 
             taskHelper.Add(TaskRefresh, tokenSource);
         }
@@ -266,13 +302,13 @@ namespace SuccessStory.Services
         #region BtActionBar
         public override void InitialBtActionBar()
         {
-            Application.Current.Dispatcher.Invoke(new Action(() =>
+            Application.Current.Dispatcher.BeginInvoke((Action)delegate
             {
                 if (PART_BtActionBar != null)
                 {
                     PART_BtActionBar.Visibility = Visibility.Collapsed;
                 }
-            }));
+            });
         }
 
         public override void AddBtActionBar()
@@ -401,13 +437,13 @@ namespace SuccessStory.Services
         #region SpDescription
         public override void InitialSpDescription()
         {
-            Application.Current.Dispatcher.Invoke(new Action(() =>
+            Application.Current.Dispatcher.BeginInvoke((Action)delegate
             {
                 if (PART_SpDescription != null)
                 {
                     PART_SpDescription.Visibility = Visibility.Collapsed;
                 }
-            }));
+            });
         }
 
         public override void AddSpDescription()
@@ -477,13 +513,13 @@ namespace SuccessStory.Services
         #region CustomElements
         public override void InitialCustomElements()
         {
-            Application.Current.Dispatcher.Invoke(new Action(() =>
+            Application.Current.Dispatcher.BeginInvoke((Action)delegate
             {
                 foreach (CustomElement customElement in ListCustomElements)
                 {
                     customElement.Element.Visibility = Visibility.Collapsed;
                 }
-            }));
+            });
         }
 
         public override void AddCustomElements()

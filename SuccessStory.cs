@@ -266,8 +266,12 @@ namespace SuccessStory
                 CancellationToken ct = tokenSource.Token;
                 var TaskCacheImage = Task.Run(() =>
                 {
+                    // Wait Playnite & extension database are loaded
+                    Thread.Sleep(60000);
 #if DEBUG
-                    logger.Debug($"SuccessStory - TaskCacheImage - {PlayniteApi.Database.Games.Count}");
+                    logger.Debug($"SuccessStory - TaskCacheImage - {PlayniteApi.Database.Games.Count} - Start");
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
 #endif
                     foreach (Game game in PlayniteApi.Database.Games)
                     {
@@ -276,12 +280,15 @@ namespace SuccessStory
                             GameAchievements gameAchievements = achievementsDatabase.Get(game.Id);
                             if (gameAchievements != null && gameAchievements.HaveAchivements)
                             {
+#if DEBUG
+                                logger.Debug($"SuccessStory - TaskCacheImage - {game.Name} - {gameAchievements.Achievements.Count}");
+#endif
                                 foreach (var achievement in gameAchievements.Achievements)
                                 {
                                     if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
                                     {
 #if DEBUG
-                                        logger.Debug($"SuccessStory - TaskCacheImage - {game.Name} - GetCacheFile({achievement.Name + "_Locked"})");
+                                        logger.Debug($"SuccessStory - TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name + "_Locked"})");
 #endif
                                         Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.ImagesCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
@@ -295,7 +302,7 @@ namespace SuccessStory
                                     if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, "SuccessStory").IsNullOrEmpty())
                                     {
 #if DEBUG
-                                        logger.Debug($"SuccessStory - TaskCacheImage - {game.Name} - GetCacheFile({achievement.Name + "_Unlocked"})");
+                                        logger.Debug($"SuccessStory - TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name + "_Unlocked"})");
 #endif
                                         Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.ImagesCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
@@ -317,7 +324,9 @@ namespace SuccessStory
                     }
 
 #if DEBUG
-                    logger.Debug($"SuccessStory - TaskCacheImage - End");
+                    stopwatch.Stop();
+                    TimeSpan ts = stopwatch.Elapsed;
+                    logger.Debug($"SuccessStory - TaskCacheImage() - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
                 }, tokenSource.Token);
             }
@@ -335,6 +344,7 @@ namespace SuccessStory
 #endif
                     var TaskIntegrationUI = Task.Run(() =>
                     {
+                        successStoryUI.taskHelper.Check();
                         successStoryUI.AddElements();
                         successStoryUI.RefreshElements(GameSelected);
                     });

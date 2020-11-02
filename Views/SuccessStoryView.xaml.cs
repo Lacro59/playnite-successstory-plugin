@@ -80,7 +80,7 @@ namespace SuccessStory
                     GraphicsData = AchievementsDb.GetCountByDay(null, 5);
                 }
 
-                Application.Current.Dispatcher.Invoke(new Action(() =>
+                Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     // Block hidden column.
                     lvProgressionValue.IsEnabled = false;
@@ -247,7 +247,7 @@ namespace SuccessStory
 
                     PART_DataLoad.Visibility = Visibility.Hidden;
                     PART_Data.Visibility = Visibility.Visible;
-                }));
+                });
             });
         }
 
@@ -255,7 +255,7 @@ namespace SuccessStory
         {
             var data = AchievementsDb.GetCountBySources();
 
-            Application.Current.Dispatcher.Invoke(new Action(() =>
+            Application.Current.Dispatcher.BeginInvoke((Action)delegate
             {
                 //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
                 var customerVmMapper = Mappers.Xy<CustomerForSingle>()
@@ -274,7 +274,7 @@ namespace SuccessStory
 
                 StatsGraphicAchievementsSources.Series = StatsGraphicAchievementsSeries;
                 StatsGraphicAchievementsSourcesX.Labels = data.Labels;
-            }));
+            });
         }
 
         /// <summary>
@@ -337,11 +337,11 @@ namespace SuccessStory
                     }
                 }
 
-                Application.Current.Dispatcher.Invoke(new Action(() => 
+                Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     ListviewGames.ItemsSource = ListGames;
                     Sorting();
-                }));
+                });
             }
             catch (Exception ex)
             {

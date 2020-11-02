@@ -270,17 +270,25 @@ namespace SuccessStory.Clients
                 using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
                 {
                     KeyValue PlayerAchievements = steamWebAPI.GetPlayerAchievements(steamid: SteamId, appid: AppId, l: LocalLang);
-                    foreach(KeyValue AchievementsData in PlayerAchievements.Children.Find(x => x.Name == "achievements").Children)
-                    {
-                        int.TryParse(AchievementsData.Children.Find(x => x.Name == "unlocktime").Value, out int unlocktime);
 
-                        AllAchievements.Add(new Achievements
+                    if (PlayerAchievements != null && PlayerAchievements.Children != null)
+                    {
+                        var PlayerAchievementsData = PlayerAchievements.Children.Find(x => x.Name == "achievements");
+                        if (PlayerAchievementsData != null)
                         {
-                            ApiName = AchievementsData.Children.Find(x => x.Name == "apiname").Value,
-                            Name = AchievementsData.Children.Find(x => x.Name == "name").Value,
-                            Description = AchievementsData.Children.Find(x => x.Name == "description").Value,
-                            DateUnlocked = (unlocktime == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unlocktime)
-                        });
+                            foreach (KeyValue AchievementsData in PlayerAchievementsData.Children)
+                            {
+                                int.TryParse(AchievementsData.Children.Find(x => x.Name == "unlocktime").Value, out int unlocktime);
+
+                                AllAchievements.Add(new Achievements
+                                {
+                                    ApiName = AchievementsData.Children.Find(x => x.Name == "apiname").Value,
+                                    Name = AchievementsData.Children.Find(x => x.Name == "name").Value,
+                                    Description = AchievementsData.Children.Find(x => x.Name == "description").Value,
+                                    DateUnlocked = (unlocktime == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unlocktime)
+                                });
+                            }
+                        }
                     }
                 }
             }
