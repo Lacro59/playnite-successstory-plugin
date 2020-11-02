@@ -1,0 +1,17 @@
+﻿<StackPanel x:Class="SuccessStory.Views.Interface.ScDescriptionIntegration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuccessStory.Views.Interface"
+             mc:Ignorable="d">
+
+    <TextBlock Name="PART_Title" Text="{DynamicResource  LOCSuccessStory}" Margin="0,15,0,5" Style="{DynamicResource BaseTextBlockStyle}"  />
+    <Separator Name="PART_Separator" Background="{DynamicResource PanelSeparatorBrush}" />
+
+    <StackPanel Name="PART_SuccessStory_ProgressBar" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
+    <StackPanel Name="PART_SuccessStory_Graphic" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
+    <StackPanel Name="PART_SuccessStory_List" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
+    <StackPanel Name="PART_SuccessStory_Compact_Unlocked" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
+    <StackPanel Name="PART_SuccessStory_Compact_Locked" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
+</StackPanel>

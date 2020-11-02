@@ -21,8 +21,6 @@ namespace SuccessStory.Views.Interface
 
         public SuccessStoryAchievementsGraphics(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels, SuccessStorySettings settings, bool withContener = false)
         {
-            _withContener = withContener;
-
             InitializeComponent();
 
             //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
@@ -33,14 +31,7 @@ namespace SuccessStory.Views.Interface
             //lets save the mapper globally
             Charting.For<CustomerForSingle>(customerVmMapper);
 
-            StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
-            StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
-
-            if (!settings.IgnoreSettings)
-            {
-                StatsGraphicAchievementsX.ShowLabels = settings.EnableIntegrationAxisGraphic;
-                StatsGraphicAchievementsY.ShowLabels = settings.EnableIntegrationOrdinatesGraphic;
-            }
+            SetScData(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings, withContener);
         }
 
         private void StatsGraphicAchievements_Loaded(object sender, RoutedEventArgs e)
@@ -49,7 +40,8 @@ namespace SuccessStory.Views.Interface
             var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
             if (_withContener)
             {
-                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent).Parent);
+                //parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent).Parent);
+                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent);
             }
 
 #if DEBUG
@@ -66,6 +58,20 @@ namespace SuccessStory.Views.Interface
             if (!double.IsNaN(parent.Width))
             {
                 ((FrameworkElement)sender).Width = parent.Width;
+            }
+        }
+
+        public void SetScData(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels, SuccessStorySettings settings, bool withContener = false)
+        {
+            _withContener = withContener;
+
+            StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
+            StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
+
+            if (!settings.IgnoreSettings)
+            {
+                StatsGraphicAchievementsX.ShowLabels = settings.EnableIntegrationAxisGraphic;
+                StatsGraphicAchievementsY.ShowLabels = settings.EnableIntegrationOrdinatesGraphic;
             }
         }
     }

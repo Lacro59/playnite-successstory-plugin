@@ -16,33 +16,10 @@ namespace SuccessStory.Views.Interface
 
 
         public SuccessStoryAchievementsProgressBar(long value, long maxValue, bool showPercent, bool showIndicator, bool withContener = false)
-        {
-            _withContener = withContener;
-
+        {            
             InitializeComponent();
 
-            if (showIndicator)
-            {
-                AchievementsIndicator.Content = value + "/" + maxValue;
-            }
-            else
-            {
-                AchievementsIndicator.Content = string.Empty;
-                AchievementsProgressBar.SetValue(Grid.ColumnProperty, 0);
-                AchievementsProgressBar.SetValue(Grid.ColumnSpanProperty, 3);
-            }
-
-            AchievementsProgressBar.Value = value;
-            AchievementsProgressBar.Maximum = maxValue;
-
-            if (showPercent)
-            {
-                AchievementsPercent.Content = (maxValue != 0) ? (int)Math.Round((double)(value * 100 / maxValue)) + "%" : 0 + "%";
-            }
-            else
-            {
-                AchievementsPercent.Content = string.Empty;
-            }
+            SetScData(value, maxValue, showPercent, showIndicator, withContener);
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
@@ -66,6 +43,34 @@ namespace SuccessStory.Views.Interface
             if (!double.IsNaN(parent.Width))
             {
                 ((FrameworkElement)sender).Width = parent.Width;
+            }
+        }
+
+        public void SetScData(long value, long maxValue, bool showPercent, bool showIndicator, bool withContener = false)
+        {
+            _withContener = withContener;
+
+            if (showIndicator)
+            {
+                AchievementsIndicator.Content = value + "/" + maxValue;
+            }
+            else
+            {
+                AchievementsIndicator.Content = string.Empty;
+                AchievementsProgressBar.SetValue(Grid.ColumnProperty, 0);
+                AchievementsProgressBar.SetValue(Grid.ColumnSpanProperty, 3);
+            }
+
+            AchievementsProgressBar.Value = value;
+            AchievementsProgressBar.Maximum = maxValue;
+
+            if (showPercent)
+            {
+                AchievementsPercent.Content = (maxValue != 0) ? (int)Math.Round((double)(value * 100 / maxValue)) + "%" : 0 + "%";
+            }
+            else
+            {
+                AchievementsPercent.Content = string.Empty;
             }
         }
     }

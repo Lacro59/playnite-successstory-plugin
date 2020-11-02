@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
 
-
 namespace SuccessStory.Views.Interface
 {
     /// <summary>

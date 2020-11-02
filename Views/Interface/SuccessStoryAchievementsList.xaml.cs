@@ -25,9 +25,79 @@ namespace SuccessStory.Views.Interface
 
         public SuccessStoryAchievementsList(List<Achievements> ListAchievements, bool withContener = false, bool EnableRaretyIndicator = true)
         {
-            _withContener = withContener;
-
             InitializeComponent();
+
+            SetScData(ListAchievements, withContener, EnableRaretyIndicator);
+        }
+
+        /// <summary>
+        /// Show or not the ToolTip.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            string Text = ((TextBlock)sender).Text;
+            TextBlock textBlock = (TextBlock)sender;
+
+            Typeface typeface = new Typeface(
+                textBlock.FontFamily,
+                textBlock.FontStyle,
+                textBlock.FontWeight,
+                textBlock.FontStretch);
+
+            FormattedText formattedText = new FormattedText(
+                textBlock.Text,
+                System.Threading.Thread.CurrentThread.CurrentCulture,
+                textBlock.FlowDirection,
+                typeface,
+                textBlock.FontSize,
+                textBlock.Foreground,
+                VisualTreeHelper.GetDpi(this).PixelsPerDip);
+
+            if (formattedText.Width > textBlock.DesiredSize.Width)
+            {
+                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
+            }
+        }
+
+        /// <summary>
+        /// Resize ListBox on parent.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Define height & width
+            var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
+            if (_withContener)
+            {
+                //parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent).Parent);
+                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent);
+            }
+
+#if DEBUG
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsList({_withContener}) - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
+#endif
+
+            if (!double.IsNaN(parent.Height))
+            {
+                ((FrameworkElement)sender).Height = parent.Height;
+            }
+
+            if (!double.IsNaN(parent.Width))
+            {
+                ((FrameworkElement)sender).Width = parent.Width;
+            }
+        }
+
+        public void SetScData(List<Achievements> ListAchievements, bool withContener = false, bool EnableRaretyIndicator = true)
+        {
+            _withContener = withContener;
 
             List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
 
@@ -93,70 +163,6 @@ namespace SuccessStory.Views.Interface
             lbAchievements.ItemsSource = ListBoxAchievements;
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
             view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
-        }
-
-        /// <summary>
-        /// Show or not the ToolTip.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            string Text = ((TextBlock)sender).Text;
-            TextBlock textBlock = (TextBlock)sender;
-
-            Typeface typeface = new Typeface(
-                textBlock.FontFamily,
-                textBlock.FontStyle,
-                textBlock.FontWeight,
-                textBlock.FontStretch);
-
-            FormattedText formattedText = new FormattedText(
-                textBlock.Text,
-                System.Threading.Thread.CurrentThread.CurrentCulture,
-                textBlock.FlowDirection,
-                typeface,
-                textBlock.FontSize,
-                textBlock.Foreground,
-                VisualTreeHelper.GetDpi(this).PixelsPerDip);
-
-            if (formattedText.Width > textBlock.DesiredSize.Width)
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
-            }
-        }
-
-        /// <summary>
-        /// Resize ListBox on parent.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Define height & width
-            var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
-            if (_withContener)
-            {
-                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent).Parent);
-            }
-
-#if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsList({_withContener}) - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
-#endif
-
-            if (!double.IsNaN(parent.Height))
-            {
-                ((FrameworkElement)sender).Height = parent.Height;
-            }
-
-            if (!double.IsNaN(parent.Width))
-            {
-                ((FrameworkElement)sender).Width = parent.Width;
-            }
         }
     }
 

@@ -3,6 +3,7 @@ using Playnite.SDK;
 using SuccessStory.Models;
 using SuccessStory.Views;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SuccessStory
 {
@@ -185,6 +186,13 @@ namespace SuccessStory
             // Code executed when user decides to confirm changes made since BeginEdit was called.
             // This method should save settings made to Option1 and Option2.
             plugin.SavePluginSettings(this);
+
+            SuccessStory.successStoryUI.RemoveElements();
+            var TaskIntegrationUI = Task.Run(() =>
+            {
+                SuccessStory.successStoryUI.AddElements();
+                SuccessStory.successStoryUI.RefreshElements(SuccessStory.GameSelected);
+            });
         }
 
         public bool VerifySettings(out List<string> errors)

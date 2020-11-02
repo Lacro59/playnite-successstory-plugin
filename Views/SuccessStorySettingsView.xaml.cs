@@ -325,7 +325,6 @@ namespace SuccessStory.Views
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 #endif
-            SuccessStory.isFirstLoad = false;
 
             SuccessStorySettings.IsEnabled = false;
 

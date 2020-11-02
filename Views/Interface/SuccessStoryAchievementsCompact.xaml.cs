@@ -28,95 +28,22 @@ namespace SuccessStory.Views.Interface
 
         public SuccessStoryAchievementsCompact(List<Achievements> ListAchievements, bool withUnlocked = false, bool EnableRaretyIndicator = true)
         {
-            _withUnlocked = withUnlocked;
-            _EnableRaretyIndicator = EnableRaretyIndicator;
-
             InitializeComponent();
 
-
-            // Select data
-            if (withUnlocked)
-            {
-                ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked != default(DateTime));
-                ListAchievements.Sort((x, y) => DateTime.Compare((DateTime)x.DateUnlocked, (DateTime)y.DateUnlocked));
-                ListAchievements.Reverse();
-            }
-            else
-            {
-                ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked == default(DateTime));
-                ListAchievements.Sort((x, y) => string.Compare(x.Name, y.Name));
-            }
-
-            // Prepare data
-            for (int i = 0; i < ListAchievements.Count; i++)
-            {
-                DateTime? dateUnlock = null;
-                BitmapImage iconImage = new BitmapImage();
-
-                bool IsGray = false;
-
-                try
-                {
-                    iconImage.BeginInit();
-                    if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
-                    {
-                        if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
-                        {
-                            iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
-                            IsGray = true;
-                        }
-                        else
-                        {
-                            iconImage.UriSource = new Uri(ListAchievements[i].ImageLocked, UriKind.RelativeOrAbsolute);
-                        }
-                    }
-                    else
-                    {
-                        iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
-                        dateUnlock = ListAchievements[i].DateUnlocked;
-                    }
-                    iconImage.EndInit();
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
-                }
-
-                string NameAchievement = ListAchievements[i].Name;
-
-                if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
-                {
-                    dateUnlock = null;
-                }
-
-                AchievementsList.Add(new ListBoxAchievements()
-                {
-                    Name = NameAchievement,
-                    DateUnlock = dateUnlock,
-                    Icon = ImageTools.ConvertBitmapImage(iconImage, (IsGray) ? ImageColor.Gray : ImageColor.None),
-                    IconImage = ImageTools.ConvertBitmapImage(iconImage, ImageColor.Black),
-                    IsGray = IsGray,
-                    Description = ListAchievements[i].Description,
-                    Percent = ListAchievements[i].Percent
-                });
-
-                iconImage = null;
-            }
-
-
-#if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - ListAchievements({withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
-#endif
+            SetScData(ListAchievements, withUnlocked, EnableRaretyIndicator);
         }
 
         private void PART_ScCompactView_IsLoaded(object sender, RoutedEventArgs e)
         {
+            PART_ScCompactView.Children.Clear();
+            PART_ScCompactView.ColumnDefinitions.Clear();
+
             // Prepare Grid 40x40 & add data
             double actualWidth = PART_ScCompactView.ActualWidth;
             int nbGrid = (int)actualWidth / 52;
 
 #if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - actualWidth: {actualWidth} - nbGrid: {nbGrid}");
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - actualWidth: {actualWidth} - nbGrid: {nbGrid} - AchievementsList: {AchievementsList.Count}");
 #endif
 
             if (nbGrid > 0)
@@ -195,6 +122,88 @@ namespace SuccessStory.Views.Interface
             else
             {
             }
+        }
+
+        public void SetScData(List<Achievements> ListAchievements, bool withUnlocked = false, bool EnableRaretyIndicator = true)
+        {
+            AchievementsList = new List<ListBoxAchievements>();
+
+            _withUnlocked = withUnlocked;
+            _EnableRaretyIndicator = EnableRaretyIndicator;
+
+            // Select data
+            if (withUnlocked)
+            {
+                ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked != default(DateTime));
+                ListAchievements.Sort((x, y) => DateTime.Compare((DateTime)x.DateUnlocked, (DateTime)y.DateUnlocked));
+                ListAchievements.Reverse();
+            }
+            else
+            {
+                ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked == default(DateTime));
+                ListAchievements.Sort((x, y) => string.Compare(x.Name, y.Name));
+            }
+
+            // Prepare data
+            for (int i = 0; i < ListAchievements.Count; i++)
+            {
+                DateTime? dateUnlock = null;
+                BitmapImage iconImage = new BitmapImage();
+
+                bool IsGray = false;
+
+                try
+                {
+                    iconImage.BeginInit();
+                    if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
+                    {
+                        if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
+                        {
+                            iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
+                            IsGray = true;
+                        }
+                        else
+                        {
+                            iconImage.UriSource = new Uri(ListAchievements[i].ImageLocked, UriKind.RelativeOrAbsolute);
+                        }
+                    }
+                    else
+                    {
+                        iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
+                        dateUnlock = ListAchievements[i].DateUnlocked;
+                    }
+                    iconImage.EndInit();
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
+                }
+
+                string NameAchievement = ListAchievements[i].Name;
+
+                if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
+                {
+                    dateUnlock = null;
+                }
+
+                AchievementsList.Add(new ListBoxAchievements()
+                {
+                    Name = NameAchievement,
+                    DateUnlock = dateUnlock,
+                    Icon = ImageTools.ConvertBitmapImage(iconImage, (IsGray) ? ImageColor.Gray : ImageColor.None),
+                    IconImage = ImageTools.ConvertBitmapImage(iconImage, ImageColor.Black),
+                    IsGray = IsGray,
+                    Description = ListAchievements[i].Description,
+                    Percent = ListAchievements[i].Percent
+                });
+
+                iconImage = null;
+            }
+#if DEBUG
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - ListAchievements({withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
+#endif
+
+            PART_ScCompactView_IsLoaded(null, null);
         }
     }
 }

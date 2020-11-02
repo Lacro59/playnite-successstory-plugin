@@ -12,6 +12,11 @@ namespace SuccessStory.Views.Interface
         {
             InitializeComponent();
 
+            SetScData(Unlocked, Total);
+        }
+
+        public void SetScData(int Unlocked, int Total)
+        {
             if (Total != Unlocked)
             {
                 Sc_Icon100Percent.Visibility = Visibility.Collapsed;

@@ -129,8 +129,12 @@
     <Compile Include="PlayniteResources\OriginLibrary\Services\OriginAccountClient.cs" />
     <Compile Include="PlayniteResources\OriginLibrary\Services\OriginApiClient.cs" />
     <Compile Include="PlayniteResources\XboxLibrary\Models\AuthenticationData.cs" />
+    <Compile Include="Services\SuccessStoryUI.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
+    <Compile Include="Views\Interface\ScDescriptionIntegration.xaml.cs">
+      <DependentUpon>ScDescriptionIntegration.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Interface\SuccessStoryAchievementsCompact.xaml.cs">
       <DependentUpon>SuccessStoryAchievementsCompact.xaml</DependentUpon>
     </Compile>
@@ -148,6 +152,9 @@
     </Compile>
     <Compile Include="Views\Interface\SuccessStoryButtonHeader.xaml.cs">
       <DependentUpon>SuccessStoryButtonHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Interface\SuccessStoryButton.xaml.cs">
+      <DependentUpon>SuccessStoryButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Interface\SuccessStoryToggleButton.xaml.cs">
       <DependentUpon>SuccessStoryToggleButton.xaml</DependentUpon>
@@ -207,6 +214,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Include="Views\Interface\ScDescriptionIntegration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Interface\SuccessStoryAchievementsCompact.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -230,6 +241,10 @@
     <Page Include="Views\Interface\SuccessStoryButtonHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Interface\SuccessStoryButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Interface\SuccessStoryToggleButton.xaml">
       <SubType>Designer</SubType>
