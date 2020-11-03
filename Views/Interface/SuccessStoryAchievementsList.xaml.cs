@@ -23,11 +23,9 @@ namespace SuccessStory.Views.Interface
         private bool _withContener;
 
 
-        public SuccessStoryAchievementsList(List<Achievements> ListAchievements, bool withContener = false, bool EnableRaretyIndicator = true)
+        public SuccessStoryAchievementsList()
         {
             InitializeComponent();
-
-            SetScData(ListAchievements, withContener, EnableRaretyIndicator);
         }
 
         /// <summary>

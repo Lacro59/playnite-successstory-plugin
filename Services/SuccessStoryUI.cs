@@ -21,11 +21,25 @@ namespace SuccessStory.Services
         private readonly SuccessStorySettings _Settings;
         private readonly SuccessStory _Plugin;
 
+        public override string _PluginUserDataPath { get; set; } = string.Empty;
+
+        public override bool IsFirstLoad { get; set; } = true;
+
+        public override string BtActionBarName { get; set; } = string.Empty;
+        public override FrameworkElement PART_BtActionBar { get; set; }
+
+        public override string SpDescriptionName { get; set; } = string.Empty;
+        public override FrameworkElement PART_SpDescription { get; set; }
+
+        public override List<CustomElement> ListCustomElements { get; set; } = new List<CustomElement>();
+
 
         public SuccessStoryUI(IPlayniteAPI PlayniteApi, SuccessStorySettings Settings, string PluginUserDataPath, SuccessStory Plugin) : base(PlayniteApi, PluginUserDataPath)
         {
             _Settings = Settings;
             _Plugin = Plugin;
+            _PluginUserDataPath = PluginUserDataPath;
+
             BtActionBarName = "PART_ScButton";
             SpDescriptionName = "PART_ScDescriptionIntegration";
         }
@@ -306,6 +320,9 @@ namespace SuccessStory.Services
             {
                 if (PART_BtActionBar != null)
                 {
+#if DEBUG
+                    logger.Debug($"SuccessStory - PART_BtActionBar {PART_BtActionBar.Name}");
+#endif
                     PART_BtActionBar.Visibility = Visibility.Collapsed;
                 }
             });
@@ -327,7 +344,7 @@ namespace SuccessStory.Services
             {
                 if (_Settings.EnableIntegrationButtonDetails)
                 {
-                    BtActionBar = new SuccessStoryToggleButtonDetails(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
+                    BtActionBar = new SuccessStoryToggleButtonDetails();
                 }
                 else
                 {
@@ -340,7 +357,7 @@ namespace SuccessStory.Services
             {
                 if (_Settings.EnableIntegrationButtonDetails)
                 {
-                    BtActionBar = new SuccessStoryButtonDetails(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
+                    BtActionBar = new SuccessStoryButtonDetails();
                 }
                 else
                 {
@@ -464,7 +481,7 @@ namespace SuccessStory.Services
                 ui.AddElementInGameSelectedDescription(SpDescription, _Settings.IntegrationTopGameDetails);
                 PART_SpDescription = IntegrationUI.SearchElementByName(SpDescriptionName);
 
-                if (_Settings.EnableIntegrationInDescriptionWithToggle)
+                if (_Settings.EnableIntegrationInDescriptionWithToggle && PART_SpDescription != null)
                 {
                     ((ToggleButton)PART_BtActionBar).IsChecked = false;
                     PART_SpDescription.Visibility = Visibility.Collapsed;

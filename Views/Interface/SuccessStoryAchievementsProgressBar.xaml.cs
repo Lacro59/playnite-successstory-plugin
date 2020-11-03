@@ -15,11 +15,9 @@ namespace SuccessStory.Views.Interface
         private bool _withContener;
 
 
-        public SuccessStoryAchievementsProgressBar(long value, long maxValue, bool showPercent, bool showIndicator, bool withContener = false)
+        public SuccessStoryAchievementsProgressBar()
         {            
             InitializeComponent();
-
-            SetScData(value, maxValue, showPercent, showIndicator, withContener);
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)

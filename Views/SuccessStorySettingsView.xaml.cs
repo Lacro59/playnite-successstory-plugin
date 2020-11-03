@@ -318,7 +318,7 @@ namespace SuccessStory.Views
             tokenSource.Cancel();
         }
 
-        internal void RefreshData(string SourceName, bool IsGet = false)
+        private void RefreshData(string SourceName, bool IsGet = false)
         {
 #if DEBUG
             logger.Info($"SuccessStory - RefreshData() - Start");
@@ -471,11 +471,12 @@ namespace SuccessStory.Views
             {
                 Sc_IntegrationInButtonDetails.IsChecked = false;
             }
-            if ((cb.Name == "Sc_IntegrationInDescriptionWithToggle") && (bool)cb.IsChecked)
+
+
+            if ((cb.Name == "Sc_IntegrationInButton") && (bool)cb.IsChecked)
             {
-
+                Sc_IntegrationInCustomTheme.IsChecked = false;
             }
-
             if ((cb.Name == "Sc_IntegrationInDescription") && (bool)cb.IsChecked)
             {
                 Sc_IntegrationInCustomTheme.IsChecked = false;
@@ -483,6 +484,7 @@ namespace SuccessStory.Views
 
             if ((cb.Name == "Sc_IntegrationInCustomTheme") && (bool)cb.IsChecked)
             {
+                Sc_IntegrationInButton.IsChecked = false;
                 Sc_IntegrationInDescription.IsChecked = false;
             }
         }

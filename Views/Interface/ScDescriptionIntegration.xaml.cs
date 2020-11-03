@@ -86,7 +86,7 @@ namespace SuccessStory.Views.Interface
 
                     if (successStoryAchievementsProgressBar == null)
                     {
-                        successStoryAchievementsProgressBar = new SuccessStoryAchievementsProgressBar(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total, settings.IntegrationShowProgressBarPercent, settings.IntegrationShowProgressBarIndicator, _IsCustom);
+                        successStoryAchievementsProgressBar = new SuccessStoryAchievementsProgressBar();
 
                         if (!_IsCustom)
                         {
@@ -169,7 +169,7 @@ namespace SuccessStory.Views.Interface
 
                     if (successStoryAchievementsList == null)
                     {
-                        successStoryAchievementsList = new SuccessStoryAchievementsList(SelectedGameAchievements.Achievements, _IsCustom, settings.EnableRaretyIndicator);
+                        successStoryAchievementsList = new SuccessStoryAchievementsList();
 
                         if (!_IsCustom)
                         {

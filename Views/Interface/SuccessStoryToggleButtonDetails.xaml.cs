@@ -8,11 +8,9 @@ namespace SuccessStory.Views.Interface
     /// </summary>
     public partial class SuccessStoryToggleButtonDetails : ToggleButton
     {
-        public SuccessStoryToggleButtonDetails(int Unlocked, int Total)
+        public SuccessStoryToggleButtonDetails()
         {
             InitializeComponent();
-
-            SetScData(Unlocked, Total);
         }
 
         public void SetScData(int Unlocked, int Total)

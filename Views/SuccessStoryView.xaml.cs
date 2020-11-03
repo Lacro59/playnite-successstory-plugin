@@ -369,7 +369,9 @@ namespace SuccessStory
                 List<Achievements> ListAchievements = GameAchievements.Achievements;
 
                 SuccessStory_Achievements_List.Children.Clear();
-                SuccessStory_Achievements_List.Children.Add(new SuccessStoryAchievementsList(ListAchievements, false, settings.EnableRaretyIndicator));
+                SuccessStoryAchievementsList successStoryAchievementsList = new SuccessStoryAchievementsList();
+                successStoryAchievementsList.SetScData(ListAchievements, false, settings.EnableRaretyIndicator);
+                SuccessStory_Achievements_List.Children.Add(successStoryAchievementsList);
                 SuccessStory_Achievements_List.UpdateLayout();
 
 

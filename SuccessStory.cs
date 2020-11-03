@@ -342,12 +342,16 @@ namespace SuccessStory
 #if DEBUG
                     logger.Debug($"SuccessStory - Game selected: {GameSelected.Name}");
 #endif
-                    var TaskIntegrationUI = Task.Run(() =>
+                    if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
                     {
-                        successStoryUI.taskHelper.Check();
-                        successStoryUI.AddElements();
-                        successStoryUI.RefreshElements(GameSelected);
-                    });
+                        PlayniteUiHelper.ResetToggle();
+                        var TaskIntegrationUI = Task.Run(() =>
+                        {
+                            successStoryUI.taskHelper.Check();
+                            successStoryUI.AddElements();
+                            successStoryUI.RefreshElements(GameSelected);
+                        });
+                    }
                 }
             }
             catch (Exception ex)

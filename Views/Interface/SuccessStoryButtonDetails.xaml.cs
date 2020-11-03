@@ -8,11 +8,9 @@ namespace SuccessStory.Views.Interface
     /// </summary>
     public partial class SuccessStoryButtonDetails : Button
     {
-        public SuccessStoryButtonDetails(int Unlocked, int Total)
+        public SuccessStoryButtonDetails()
         {
             InitializeComponent();
-
-            SetScData(Unlocked, Total);
         }
 
         public void SetScData(int Unlocked, int Total)

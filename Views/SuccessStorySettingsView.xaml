@@ -454,47 +454,14 @@
                             </Grid>
                         </GroupBox>
 
-
-                        <GroupBox Header="{DynamicResource LOCCommonIntegrationSelectElements}" Margin="0,10,0,0">
-                            <GroupBox.Style>
-                                <Style TargetType="GroupBox">
-                                    <Setter Property="SnapsToDevicePixels" Value="True" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-                                    <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-                                    <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type GroupBox}">
-                                                <Border DockPanel.Dock="Top"
-                                                    BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                                    CornerRadius="{DynamicResource ControlCornerRadius}">
-                                                    <DockPanel>
-                                                        <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
-                                                            <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
-                                                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
-                                                                                  RecognizesAccessKey="True" />
-                                                            </TextBlock>
-                                                        </Border>
-                                                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                             Margin="{TemplateBinding Padding}"/>
-                                                    </DockPanel>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-
+                        <StackPanel Name="PART_ThemeIntegrationOptions">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
                                     <Setter Property="IsEnabled" Value="False" />
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Binding="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="IsEnabled" Value="True" />
                                         </MultiDataTrigger>
@@ -506,279 +473,332 @@
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </GroupBox.Style>
+                            </StackPanel.Style>
 
-                            <Grid Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30" />
-                                    <RowDefinition Height="30" />
-                                    <RowDefinition Height="30" />
-                                </Grid.RowDefinitions>
-
-                                <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IntegrationShowGraphic}" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowGraphic}" />
-                                </CheckBox>
-                                <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding IntegrationShowProgressBar}" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowProgressBar}" />
-                                </CheckBox>
-
-                                <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding IntegrationShowAchievements}" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievements}" />
-                                </CheckBox>
-
-                                <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding IntegrationShowAchievementsCompactUnlocked}" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked}" />
-                                </CheckBox>
-                                <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding IntegrationShowAchievementsCompactLocked}" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactLocked}" />
-                                </CheckBox>
-                            </Grid>
-                        </GroupBox>
-
-                        
-                        <GroupBox Header="{DynamicResource LOCSuccessStoryIntegrationGraphicOptions}" Margin="0,10,0,0">
-                            <GroupBox.Style>
-                                <Style TargetType="GroupBox">
-                                    <Setter Property="SnapsToDevicePixels" Value="True" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-                                    <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-                                    <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type GroupBox}">
-                                                <Border DockPanel.Dock="Top"
+                            <GroupBox Header="{DynamicResource LOCCommonIntegrationSelectElements}" Margin="0,10,0,0">
+                                <GroupBox.Style>
+                                    <Style TargetType="GroupBox">
+                                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+                                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+                                        <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
+                                        <Setter Property="Padding" Value="5" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupBox}">
+                                                    <Border DockPanel.Dock="Top"
                                                     BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
                                                     CornerRadius="{DynamicResource ControlCornerRadius}">
-                                                    <DockPanel>
-                                                        <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
-                                                            <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
+                                                        <DockPanel>
+                                                            <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
+                                                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
                                                                 <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
                                                                                   RecognizesAccessKey="True" />
-                                                            </TextBlock>
-                                                        </Border>
-                                                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
+                                                                </TextBlock>
+                                                            </Border>
+                                                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
                                                              Margin="{TemplateBinding Padding}"/>
-                                                    </DockPanel>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
+                                                        </DockPanel>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
 
-                                    <Setter Property="IsEnabled" Value="False" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" Value="True" />
-                                                <Condition Binding="{Binding IntegrationShowGraphic}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
-                                                <Condition Binding="{Binding IntegrationShowGraphic}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
-                                                <Condition Binding="{Binding IntegrationShowGraphic}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </GroupBox.Style>
+                                        <Setter Property="IsEnabled" Value="False" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </GroupBox.Style>
+
+                                <Grid Margin="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="30" />
+                                    </Grid.RowDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IntegrationShowGraphic}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowGraphic}" />
+                                    </CheckBox>
+                                    <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding IntegrationShowProgressBar}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowProgressBar}" />
+                                    </CheckBox>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding IntegrationShowAchievements}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievements}" />
+                                    </CheckBox>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding IntegrationShowAchievementsCompactUnlocked}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked}" />
+                                    </CheckBox>
+                                    <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding IntegrationShowAchievementsCompactLocked}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactLocked}" />
+                                    </CheckBox>
+                                </Grid>
+                            </GroupBox>
+
+                            <GroupBox Header="{DynamicResource LOCSuccessStoryIntegrationGraphicOptions}" Margin="0,10,0,0">
+                                <GroupBox.Style>
+                                    <Style TargetType="GroupBox">
+                                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+                                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+                                        <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
+                                        <Setter Property="Padding" Value="5" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupBox}">
+                                                    <Border DockPanel.Dock="Top"
+                                                        BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                                                        <DockPanel>
+                                                            <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
+                                                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
+                                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
+                                                                                      RecognizesAccessKey="True" />
+                                                                </TextBlock>
+                                                            </Border>
+                                                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
+                                                                 Margin="{TemplateBinding Padding}"/>
+                                                        </DockPanel>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+
+                                        <Setter Property="IsEnabled" Value="False" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" Value="True" />
+                                                    <Condition Binding="{Binding IntegrationShowGraphic}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
+                                                    <Condition Binding="{Binding IntegrationShowGraphic}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
+                                                    <Condition Binding="{Binding IntegrationShowGraphic}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </GroupBox.Style>
                             
-                            <Grid Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30" />
-                                    <RowDefinition Height="30" />
-                                    <RowDefinition Height="30" />
-                                </Grid.RowDefinitions>
-
-                                <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                <Grid Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                    <TextBox Text="{Binding IntegrationShowGraphicHeight, FallbackValue=200}" Width="40" Grid.Column="1"
-                                             VerticalAlignment="Center" TextAlignment="Center"/>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="30" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid Grid.Column="0" Grid.Row="0" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                        <TextBox Text="{Binding IntegrationShowGraphicHeight, FallbackValue=200}" Width="40" Grid.Column="1"
+                                                 VerticalAlignment="Center" TextAlignment="Center"/>
+                                    </Grid>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding EnableIntegrationAxisGraphic}">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicShowLabels}" />
+                                    </CheckBox>
+                                    <CheckBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding EnableIntegrationOrdinatesGraphic}">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates}" />
+                                    </CheckBox>
+
+
+                                    <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="15" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa}" Grid.Column="0" />
+                                        <Slider Minimum="3" Maximum="30" Value="{Binding IntegrationGraphicOptionsCountAbscissa}" 
+                                                IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
+                                                ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
+                                                Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sCountAbscissa" />
+                                        <Label Grid.Column="2" Content="{Binding ElementName=sCountAbscissa, Path=Value}" HorizontalAlignment="Center"/>
+                                    </Grid>
                                 </Grid>
+                            </GroupBox>
 
-                                <CheckBox Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding EnableIntegrationAxisGraphic}">
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicShowLabels}" />
-                                </CheckBox>
-                                <CheckBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding EnableIntegrationOrdinatesGraphic}">
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates}" />
-                                </CheckBox>
+                            <GroupBox Header="{DynamicResource LOCSuccessStoryIntegrationProgressBarOptions}" Margin="0,10,0,0">
+                                <GroupBox.Style>
+                                    <Style TargetType="GroupBox">
+                                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+                                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+                                        <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
+                                        <Setter Property="Padding" Value="5" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupBox}">
+                                                    <Border DockPanel.Dock="Top"
+                                                        BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                                                        <DockPanel>
+                                                            <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
+                                                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
+                                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
+                                                                                      RecognizesAccessKey="True" />
+                                                                </TextBlock>
+                                                            </Border>
+                                                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
+                                                                 Margin="{TemplateBinding Padding}"/>
+                                                        </DockPanel>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
 
+                                        <Setter Property="IsEnabled" Value="False" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" Value="True" />
+                                                    <Condition Binding="{Binding IntegrationShowProgressBar}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
+                                                    <Condition Binding="{Binding IntegrationShowProgressBar}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
+                                                    <Condition Binding="{Binding IntegrationShowProgressBar}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </GroupBox.Style>
 
-                                <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" IsEnabled="{Binding EnableIntegrationInCustomTheme, Converter={StaticResource NegateConverter}}">
+                                <Grid Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="15" />
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa}" Grid.Column="0" />
-                                    <Slider Minimum="3" Maximum="30" Value="{Binding IntegrationGraphicOptionsCountAbscissa}" 
-                                            IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
-                                            ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
-                                            Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sCountAbscissa" />
-                                    <Label Grid.Column="2" Content="{Binding ElementName=sCountAbscissa, Path=Value}" HorizontalAlignment="Center"/>
+
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IntegrationShowProgressBarIndicator}">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationProgressBarShowIndicator}" />
+                                    </CheckBox>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding IntegrationShowProgressBarPercent}">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationProgressBarShowPercent}" />
+                                    </CheckBox>
                                 </Grid>
-                            </Grid>
-                        </GroupBox>
+                            </GroupBox>
 
-                        <GroupBox Header="{DynamicResource LOCSuccessStoryIntegrationProgressBarOptions}" Margin="0,10,0,0">
-                            <GroupBox.Style>
-                                <Style TargetType="GroupBox">
-                                    <Setter Property="SnapsToDevicePixels" Value="True" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-                                    <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-                                    <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type GroupBox}">
-                                                <Border DockPanel.Dock="Top"
-                                                    BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                                    CornerRadius="{DynamicResource ControlCornerRadius}">
-                                                    <DockPanel>
-                                                        <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
-                                                            <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
-                                                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
-                                                                                  RecognizesAccessKey="True" />
-                                                            </TextBlock>
-                                                        </Border>
-                                                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                             Margin="{TemplateBinding Padding}"/>
-                                                    </DockPanel>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
+                            <GroupBox Header="{DynamicResource LOCSuccessStoryIntegrationListOptions}" Margin="0,10,0,0">
+                                <GroupBox.Style>
+                                    <Style TargetType="GroupBox">
+                                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                                        <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+                                        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+                                        <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
+                                        <Setter Property="Padding" Value="5" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupBox}">
+                                                    <Border DockPanel.Dock="Top"
+                                                        BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                        CornerRadius="{DynamicResource ControlCornerRadius}">
+                                                        <DockPanel>
+                                                            <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
+                                                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
+                                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
+                                                                                      RecognizesAccessKey="True" />
+                                                                </TextBlock>
+                                                            </Border>
+                                                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
+                                                                 Margin="{TemplateBinding Padding}"/>
+                                                        </DockPanel>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
 
-                                    <Setter Property="IsEnabled" Value="False" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" Value="True" />
-                                                <Condition Binding="{Binding IntegrationShowProgressBar}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
-                                                <Condition Binding="{Binding IntegrationShowProgressBar}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInCustomTheme, Path=IsChecked}" Value="True" />
-                                                <Condition Binding="{Binding IntegrationShowProgressBar}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </GroupBox.Style>
+                                        <Setter Property="IsEnabled" Value="False" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" Value="True" />
+                                                    <Condition Binding="{Binding IntegrationShowAchievements}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
+                                                    <Condition Binding="{Binding IntegrationShowAchievements}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </GroupBox.Style>
 
-                            <Grid Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <CheckBox Grid.Column="0" IsChecked="{Binding IntegrationShowProgressBarIndicator}">
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationProgressBarShowIndicator}" />
-                                </CheckBox>
-                                <CheckBox Grid.Column="1" IsChecked="{Binding IntegrationShowProgressBarPercent}">
-                                    <Label Content="{DynamicResource LOCSuccessStoryIntegrationProgressBarShowPercent}" />
-                                </CheckBox>
-                            </Grid>
-                        </GroupBox>
-
-                        <GroupBox Header="{DynamicResource LOCSuccessStoryIntegrationListOptions}" Margin="0,10,0,0">
-                            <GroupBox.Style>
-                                <Style TargetType="GroupBox">
-                                    <Setter Property="SnapsToDevicePixels" Value="True" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
-                                    <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
-                                    <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
-                                    <Setter Property="Padding" Value="5" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type GroupBox}">
-                                                <Border DockPanel.Dock="Top"
-                                                    BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}"
-                                                    CornerRadius="{DynamicResource ControlCornerRadius}">
-                                                    <DockPanel>
-                                                        <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource NormalBrush}" >
-                                                            <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Margin="{TemplateBinding Padding}">
-                                                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" ContentSource="Header"
-                                                                                  RecognizesAccessKey="True" />
-                                                            </TextBlock>
-                                                        </Border>
-                                                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                             Margin="{TemplateBinding Padding}"/>
-                                                    </DockPanel>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-
-                                    <Setter Property="IsEnabled" Value="False" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInDescription, Path=IsChecked}" Value="True" />
-                                                <Condition Binding="{Binding IntegrationShowAchievements}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=Sc_IntegrationInDescriptionWithToggle, Path=IsChecked}" Value="True" />
-                                                <Condition Binding="{Binding IntegrationShowAchievements}" Value="True" />
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True" />
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </GroupBox.Style>
-
-                            <Grid Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Grid Grid.Column="0">
+                                <Grid Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                    <TextBox Text="{Binding IntegrationShowAchievementsHeight, FallbackValue=200}" Width="40" Grid.Column="1"
-                                             VerticalAlignment="Center" TextAlignment="Center"/>
+
+                                    <Grid Grid.Column="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                        <TextBox Text="{Binding IntegrationShowAchievementsHeight, FallbackValue=200}" Width="40" Grid.Column="1"
+                                                 VerticalAlignment="Center" TextAlignment="Center"/>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </GroupBox>
+                            </GroupBox>
+                        </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
