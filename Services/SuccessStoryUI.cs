@@ -161,7 +161,8 @@ namespace SuccessStory.Services
             CancellationTokenSource tokenSource = new CancellationTokenSource();
             CancellationToken ct = tokenSource.Token;
 
-            Task TaskRefresh = Task.Run(() => {
+            Task TaskRefresh = Task.Run(() => 
+            {
 #if DEBUG
                 string IsCanceld = string.Empty;
 
@@ -392,11 +393,11 @@ namespace SuccessStory.Services
             {
                 PART_BtActionBar.Visibility = Visibility.Visible;
 
-                if (PART_BtActionBar is SuccessStoryButtonDetails)
+                if (PART_BtActionBar != null && PART_BtActionBar is SuccessStoryButtonDetails)
                 {
                     ((SuccessStoryButtonDetails)PART_BtActionBar).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
                 }
-                if (PART_BtActionBar is SuccessStoryToggleButtonDetails)
+                if (PART_BtActionBar != null && PART_BtActionBar is SuccessStoryToggleButtonDetails)
                 {
                     ((SuccessStoryToggleButtonDetails)PART_BtActionBar).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
                 }

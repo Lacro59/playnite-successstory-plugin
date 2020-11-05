@@ -62,7 +62,6 @@ namespace SuccessStory.Views.Interface
                             gridImage.Stretch = Stretch.UniformToFill;
                             gridImage.Width = 48;
                             gridImage.Height = 48;
-                            gridImage.Source = AchievementsList[i].Icon;
                             gridImage.ToolTip = AchievementsList[i].Name;
                             gridImage.SetValue(Grid.ColumnProperty, i);
 
@@ -75,11 +74,18 @@ namespace SuccessStory.Views.Interface
 
                             if (AchievementsList[i].IsGray)
                             {
+                                var tmpImg = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
+                                gridImage.Source = ImageTools.ConvertBitmapImage(tmpImg, ImageColor.Gray);
+
                                 ImageBrush imgB = new ImageBrush
                                 {
-                                    ImageSource = AchievementsList[i].IconImage
+                                    ImageSource = new BitmapImage(new Uri(AchievementsList[i].IconImage, UriKind.Absolute))
                                 };
                                 gridImage.OpacityMask = imgB;
+                            }
+                            else
+                            {
+                                gridImage.Source = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
                             }
 
                             DropShadowEffect myDropShadowEffect = new DropShadowEffect();
@@ -152,27 +158,26 @@ namespace SuccessStory.Views.Interface
 
                 bool IsGray = false;
 
+                string urlImg = string.Empty;
                 try
                 {
-                    iconImage.BeginInit();
                     if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
                     {
                         if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
                         {
-                            iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
+                            urlImg = ListAchievements[i].ImageUnlocked;
                             IsGray = true;
                         }
                         else
                         {
-                            iconImage.UriSource = new Uri(ListAchievements[i].ImageLocked, UriKind.RelativeOrAbsolute);
+                            urlImg = ListAchievements[i].ImageLocked;
                         }
                     }
                     else
                     {
-                        iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
+                        urlImg = ListAchievements[i].ImageUnlocked;
                         dateUnlock = ListAchievements[i].DateUnlocked;
                     }
-                    iconImage.EndInit();
                 }
                 catch (Exception ex)
                 {
@@ -190,8 +195,8 @@ namespace SuccessStory.Views.Interface
                 {
                     Name = NameAchievement,
                     DateUnlock = dateUnlock,
-                    Icon = ImageTools.ConvertBitmapImage(iconImage, (IsGray) ? ImageColor.Gray : ImageColor.None),
-                    IconImage = ImageTools.ConvertBitmapImage(iconImage, ImageColor.Black),
+                    Icon = urlImg,
+                    IconImage = urlImg,
                     IsGray = IsGray,
                     Description = ListAchievements[i].Description,
                     Percent = ListAchievements[i].Percent

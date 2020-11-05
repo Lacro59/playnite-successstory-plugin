@@ -74,13 +74,18 @@ namespace SuccessStory.Models
                     string pathImageLocked = PlayniteTools.GetCacheFile(CacheLocked, "SuccessStory");
                     if (pathImageLocked.IsNullOrEmpty())
                     {
-                        pathImageLocked = UrlUnlocked;
+                        pathImageLocked = UrlLocked;
                     }
                     return pathImageLocked;
                 }
                 else
                 {
-                    return ImageUnlocked;
+                    string pathImageLocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
+                    if (pathImageLocked.IsNullOrEmpty())
+                    {
+                        pathImageLocked = UrlUnlocked;
+                    }
+                    return pathImageLocked;
                 }
             }
         }

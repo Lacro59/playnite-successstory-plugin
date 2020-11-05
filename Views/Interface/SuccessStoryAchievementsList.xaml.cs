@@ -106,27 +106,26 @@ namespace SuccessStory.Views.Interface
 
                 bool IsGray = false;
 
+                string urlImg = string.Empty;
                 try
                 {
-                    iconImage.BeginInit();
                     if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
                     {
                         if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
                         {
-                            iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
+                            urlImg = ListAchievements[i].ImageUnlocked;
                             IsGray = true;
                         }
                         else
                         {
-                            iconImage.UriSource = new Uri(ListAchievements[i].ImageLocked, UriKind.RelativeOrAbsolute);
+                            urlImg = ListAchievements[i].ImageLocked;
                         }
                     }
                     else
                     {
-                        iconImage.UriSource = new Uri(ListAchievements[i].ImageUnlocked, UriKind.RelativeOrAbsolute);
+                        urlImg = ListAchievements[i].ImageUnlocked;
                         dateUnlock = ListAchievements[i].DateUnlocked;
                     }
-                    iconImage.EndInit();
                 }
                 catch (Exception ex)
                 {
@@ -146,8 +145,8 @@ namespace SuccessStory.Views.Interface
                     Name = NameAchievement,
                     DateUnlock = dateUnlock,
                     EnableRaretyIndicator = EnableRaretyIndicator,
-                    Icon = ImageTools.ConvertBitmapImage(iconImage, (IsGray) ? ImageColor.Gray : ImageColor.None),
-                    IconImage = ImageTools.ConvertBitmapImage(iconImage, ImageColor.Black),
+                    Icon = urlImg,
+                    IconImage = urlImg,
                     IsGray = IsGray,
                     Description = ListAchievements[i].Description,
                     Percent = ListAchievements[i].Percent

@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
              xmlns:localPlugin="clr-namespace:PluginCommon;assembly=PluginCommon"
+             xmlns:converters="clr-namespace:PluginCommon.PlayniteResources.Converters;assembly=PluginCommon"
              mc:Ignorable="d">
 
     <UserControl.Resources>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <localPlugin:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:SetColorConverter x:Key="SetColorConverter" />
@@ -75,20 +77,39 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Image Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left" Stretch="UniformToFill" Source="{Binding Icon}">
-                        <Image.OpacityMask>
-                            <ImageBrush ImageSource="{Binding IconImage}" />
-                        </Image.OpacityMask>
-                    </Image>
-                    <Image Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left" Stretch="UniformToFill" Source="{Binding Icon}"
-                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Image.OpacityMask>
-                            <ImageBrush ImageSource="{Binding IconImage}" />
-                        </Image.OpacityMask>
-                        <Image.Effect>
-                            <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}"/>
-                        </Image.Effect>
-                    </Image>
+                    <StackPanel Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left"
+                                Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Stretch="UniformToFill"
+                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                            <Image.Source>
+                                <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float"/>
+                            </Image.Source>
+                            <Image.OpacityMask>
+                                <ImageBrush ImageSource="{Binding IconImage}" />
+                            </Image.OpacityMask>
+                        </Image>
+                        <Image Stretch="UniformToFill" 
+                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Image.Source>
+                                <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float"/>
+                            </Image.Source>
+                            <Image.OpacityMask>
+                                <ImageBrush ImageSource="{Binding IconImage}" />
+                            </Image.OpacityMask>
+                        </Image>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left"
+                                Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                        <Image Stretch="UniformToFill" Source="{Binding Icon}"
+                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+                        <Image Stretch="UniformToFill" Source="{Binding Icon}" 
+                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Image.Effect>
+                                <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}"/>
+                            </Image.Effect>
+                        </Image>
+                    </StackPanel>
 
                     <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
@@ -115,7 +136,8 @@
                             <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding DateUnlock, Converter={StaticResource LocalDateTimeConverter}}"  Foreground="{DynamicResource TextBrush}" />
                         </Grid>
 
-                        <TextBlock Grid.Row="1" Text="{Binding Description}" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}"/>
+                        <TextBlock Grid.Row="1" Text="{Binding Icon}" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}"/>
+                        <!--TextBlock Grid.Row="1" Text="{Binding Description}" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}"/-->
                     </Grid>
                 </Grid>
             </DataTemplate>

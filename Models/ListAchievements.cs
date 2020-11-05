@@ -8,8 +8,10 @@ namespace SuccessStory.Models
     /// </summary>
     public class ListBoxAchievements
     {
-        public FormatConvertedBitmap Icon { get; set; }
-        public FormatConvertedBitmap IconImage { get; set; }
+        //public FormatConvertedBitmap Icon { get; set; }
+        public string Icon { get; set; }
+        //public FormatConvertedBitmap IconImage { get; set; }
+        public string IconImage { get; set; }
         public bool IsGray { get; set; }
         public bool EnableRaretyIndicator { get; set; }
         public string Name { get; set; }
