@@ -8,11 +8,11 @@ namespace SuccessStory.Views.Interface
     /// </summary>
     public partial class SuccessStoryButton : Button
     {
-        public SuccessStoryButton(SuccessStorySettings settings)
+        public SuccessStoryButton(bool EnableIntegrationInDescriptionOnlyIcon)
         {
             InitializeComponent();
 
-            if (settings.EnableIntegrationInDescriptionOnlyIcon)
+            if (EnableIntegrationInDescriptionOnlyIcon)
             {
                 PART_ButtonIcon.Visibility = Visibility.Visible;
                 PART_ButtonText.Visibility = Visibility.Collapsed;

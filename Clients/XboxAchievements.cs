@@ -16,9 +16,9 @@ using PluginCommon.PlayniteResources;
 using PluginCommon.PlayniteResources.API;
 using PluginCommon.PlayniteResources.Common;
 using PluginCommon.PlayniteResources.Converters;
+using PluginCommon.PlayniteResources.PluginLibrary.XboxLibrary.Models;
 using SuccessStory.Database;
 using SuccessStory.Models;
-using SuccessStory.PlayniteResources.XboxLibrary.Models;
 
 namespace SuccessStory.Clients
 {

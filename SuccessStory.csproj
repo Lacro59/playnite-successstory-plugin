@@ -113,22 +113,6 @@
     <Compile Include="Models\ListAchievements.cs" />
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
-    <Compile Include="PlayniteResources\GogLibrary\Gog.cs" />
-    <Compile Include="PlayniteResources\GogLibrary\Models\AccountBasicRespose.cs" />
-    <Compile Include="PlayniteResources\GogLibrary\Models\GetOwnedGamesResult.cs" />
-    <Compile Include="PlayniteResources\GogLibrary\Models\LibraryGameResponse.cs" />
-    <Compile Include="PlayniteResources\GogLibrary\Models\PagedResponse.cs" />
-    <Compile Include="PlayniteResources\GogLibrary\Services\GogAccountClient.cs" />
-    <Compile Include="PlayniteResources\OriginLibrary\Models\AccountEntitlementsResponse.cs" />
-    <Compile Include="PlayniteResources\OriginLibrary\Models\AccountInfoResponse.cs" />
-    <Compile Include="PlayniteResources\OriginLibrary\Models\AuthTokenResponse.cs" />
-    <Compile Include="PlayniteResources\OriginLibrary\Models\GameLocalDataResponse.cs" />
-    <Compile Include="PlayniteResources\OriginLibrary\Models\GameStoreDataResponse.cs" />
-    <Compile Include="PlayniteResources\OriginLibrary\Models\StorePageMetadata.cs" />
-    <Compile Include="PlayniteResources\OriginLibrary\Models\UsageReponse.cs" />
-    <Compile Include="PlayniteResources\OriginLibrary\Services\OriginAccountClient.cs" />
-    <Compile Include="PlayniteResources\OriginLibrary\Services\OriginApiClient.cs" />
-    <Compile Include="PlayniteResources\XboxLibrary\Models\AuthenticationData.cs" />
     <Compile Include="Services\SuccessStoryUI.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
@@ -289,6 +273,9 @@
     <None Include="Resources\badge_flat.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PlayniteResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

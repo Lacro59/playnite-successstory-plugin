@@ -13,7 +13,6 @@ using PluginCommon;
 using LiveCharts;
 using PluginCommon.LiveChartsCommon;
 using Newtonsoft.Json.Linq;
-using SuccessStory.PlayniteResources.GogLibrary.Services;
 
 namespace SuccessStory.Models
 {
@@ -72,6 +71,8 @@ namespace SuccessStory.Models
         public void Initialize(bool ignore = true)
         {
             ListErrors = new CumulErrors();
+
+            PluginDatabase = new ConcurrentDictionary<Guid, GameAchievements>();
 
             Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
             {
@@ -835,9 +836,16 @@ namespace SuccessStory.Models
             Guid GameId = GameRemoved.Id;
             string PluginDatabaseGamePath = PluginDatabasePath + GameId.ToString() + ".json";
 
-            if (File.Exists(PluginDatabaseGamePath))
+            try
             {
-                File.Delete(PluginDatabaseGamePath);
+                if (File.Exists(PluginDatabaseGamePath))
+                {
+                    File.Delete(PluginDatabaseGamePath);
+                    PluginDatabase.TryRemove(GameRemoved.Id, out var value);
+                }
+            }
+            catch
+            {
             }
         }
 

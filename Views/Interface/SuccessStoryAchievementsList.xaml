@@ -136,8 +136,7 @@
                             <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding DateUnlock, Converter={StaticResource LocalDateTimeConverter}}"  Foreground="{DynamicResource TextBrush}" />
                         </Grid>
 
-                        <TextBlock Grid.Row="1" Text="{Binding Icon}" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}"/>
-                        <!--TextBlock Grid.Row="1" Text="{Binding Description}" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}"/-->
+                        <TextBlock Grid.Row="1" Text="{Binding Description}" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}"/>
                     </Grid>
                 </Grid>
             </DataTemplate>

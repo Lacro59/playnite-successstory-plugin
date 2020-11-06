@@ -422,6 +422,8 @@ namespace SuccessStory.Views
                             break;
                         }
                     }
+
+                    achievementsDatabase.Initialize();
                 }
                 catch(Exception ex)
                 {

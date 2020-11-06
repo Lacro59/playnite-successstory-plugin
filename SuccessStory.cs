@@ -112,6 +112,11 @@ namespace SuccessStory
                     Description = resources.GetString("LOCSuccessStoryRefreshData"),
                     Action = (gameMenuItem) =>
                     {
+                        if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
+                        {
+                            PlayniteUiHelper.ResetToggle();
+                        }
+
                         var TaskIntegrationUI = Task.Run(() =>
                         {
                             achievementsDatabase.Remove(GameMenu);
@@ -216,8 +221,8 @@ namespace SuccessStory
             {
                 // Refresh Achievements database for game played.
                 achievementsDatabase.Remove(game);
-                achievementsDatabase.Add(game, settings);
-                achievementsDatabase.Initialize();
+                successStoryUI.AddElements();
+                successStoryUI.RefreshElements(GameSelected);
             });
         }
 
@@ -248,7 +253,8 @@ namespace SuccessStory
                     if (game.Added == null && ((DateTime)game.Added).ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd"))
                     {
                         achievementsDatabase.Remove(game);
-                        achievementsDatabase.Add(game, settings);
+                        successStoryUI.AddElements();
+                        successStoryUI.RefreshElements(GameSelected);
                     }
                 }
             });

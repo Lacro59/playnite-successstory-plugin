@@ -2,9 +2,9 @@
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
+using PluginCommon.PlayniteResources.PluginLibrary.Services.GogLibrary;
 using SuccessStory.Database;
 using SuccessStory.Models;
-using SuccessStory.PlayniteResources.GogLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.Net;

@@ -362,7 +362,7 @@ namespace SuccessStory.Services
                 }
                 else
                 {
-                    BtActionBar = new SuccessStoryButton(_Settings);
+                    BtActionBar = new SuccessStoryButton(_Settings.EnableIntegrationInDescriptionOnlyIcon);
                 }
 
                 ((Button)BtActionBar).Click += OnBtActionBarClick;
@@ -550,7 +550,10 @@ namespace SuccessStory.Services
                 return;
             }
 
-            //FrameworkElement PART_ScCustomButton = null;
+            FrameworkElement PART_ScButtonWithJustIcon = null;
+            FrameworkElement PART_ScButtonWithTitle = null;
+            FrameworkElement PART_ScButtonWithTitleAndDetails = null;
+
             FrameworkElement PART_Achievements_ProgressBar = null;
             FrameworkElement PART_Achievements_Graphics = null;
             FrameworkElement PART_Achievements_List = null;
@@ -558,7 +561,10 @@ namespace SuccessStory.Services
             FrameworkElement PART_Achievements_ListCompactLocked = null;
             try
             {
-                //PART_ScCustomButton = IntegrationUI.SearchElementByName("PART_ScCustomButton", false, true);
+                PART_ScButtonWithJustIcon = IntegrationUI.SearchElementByName("PART_ScButtonWithJustIcon", false, true);
+                PART_ScButtonWithTitle = IntegrationUI.SearchElementByName("PART_ScButtonWithTitle", false, true);
+                PART_ScButtonWithTitleAndDetails = IntegrationUI.SearchElementByName("PART_ScButtonWithTitleAndDetails", false, true);
+
                 PART_Achievements_ProgressBar = IntegrationUI.SearchElementByName("PART_Achievements_ProgressBar", false, true);
                 PART_Achievements_Graphics = IntegrationUI.SearchElementByName("PART_Achievements_Graphics", false, true);
                 PART_Achievements_List = IntegrationUI.SearchElementByName("PART_Achievements_List", false, true);
@@ -570,16 +576,14 @@ namespace SuccessStory.Services
                 Common.LogError(ex, "SuccessStory", $"Error on find custom element");
             }
 
-            /*
-            if (PART_ScCustomButton != null)
+            if (PART_ScButtonWithJustIcon != null)
             {
-                PART_ScCustomButton = new SuccessStoryButton(_Settings);
-                PART_ScCustomButton.Name = "ScCustomButton";
-                ((Button)PART_ScCustomButton).Click += OnBtActionBarClick;
+                PART_ScButtonWithJustIcon = new SuccessStoryButton(true);
+                ((Button)PART_ScButtonWithJustIcon).Click += OnBtActionBarClick;
                 try
                 {
-                    ui.AddElementInCustomTheme(PART_ScCustomButton, "PART_ScCustomButton");
-                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_ScCustomButton", Element = PART_ScCustomButton });
+                    ui.AddElementInCustomTheme(PART_ScButtonWithJustIcon, "PART_ScButtonWithJustIcon");
+                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_ScButtonWithJustIcon", Element = PART_ScButtonWithJustIcon });
                 }
                 catch (Exception ex)
                 {
@@ -589,10 +593,52 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_GaCustomButton not find");
+                logger.Debug($"SuccessStory - PART_ScButtonWithJustIcon not find");
 #endif
             }
-            */
+
+            if (PART_ScButtonWithTitle != null)
+            {
+                PART_ScButtonWithTitle = new SuccessStoryButton(false);
+                ((Button)PART_ScButtonWithTitle).Click += OnBtActionBarClick;
+                try
+                {
+                    ui.AddElementInCustomTheme(PART_ScButtonWithTitle, "PART_ScButtonWithTitle");
+                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_ScButtonWithTitle", Element = PART_ScButtonWithTitle });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error on AddCustomElements()");
+                }
+            }
+            else
+            {
+#if DEBUG
+                logger.Debug($"SuccessStory - PART_ScButtonWithTitle not find");
+#endif
+            }
+
+            if (PART_ScButtonWithTitleAndDetails != null)
+            {
+                PART_ScButtonWithTitleAndDetails = new SuccessStoryButtonDetails();
+                ((Button)PART_ScButtonWithTitleAndDetails).Click += OnBtActionBarClick;
+                try
+                {
+                    ui.AddElementInCustomTheme(PART_ScButtonWithTitleAndDetails, "PART_ScButtonWithTitleAndDetails");
+                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_ScButtonWithTitleAndDetails", Element = PART_ScButtonWithTitleAndDetails });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error on AddCustomElements()");
+                }
+            }
+            else
+            {
+#if DEBUG
+                logger.Debug($"SuccessStory - PART_ScButtonWithTitleAndDetails not find");
+#endif
+            }
+
 
             if (PART_Achievements_ProgressBar != null && _Settings.IntegrationShowProgressBar)
             {
@@ -711,26 +757,42 @@ namespace SuccessStory.Services
                 {
                     bool isFind = false;
 
-                    /*
-                    if (customElement.Element is GameActivityButton)
+                    if (customElement.Element is SuccessStoryButton)
                     {
 #if DEBUG
-                        logger.Debug($"SuccessStory - customElement.Element is GameActivityButton");
+                        logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButton");
 #endif
-                        customElement.Element.Visibility = Visibility.Visible;
                         isFind = true;
+                        if (SuccessStory.SelectedGameAchievements != null)
+                        {
+                            customElement.Element.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+#if DEBUG
+                            logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButton with no data");
+#endif
+                        }
                     }
 
-                    if (customElement.Element is GameActivityButtonDetails)
+                    if (customElement.Element is SuccessStoryButtonDetails)
                     {
 #if DEBUG
-                        logger.Debug($"SuccessStory - customElement.Element is GameActivityButtonDetails");
+                        logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButtonDetails");
 #endif
-                        customElement.Element.Visibility = Visibility.Visible;
-                        ((GameActivityButtonDetails)customElement.Element).SetGaData(GameActivity.GameSelected.Playtime);
                         isFind = true;
+                        if (SuccessStory.SelectedGameAchievements != null)
+                        {
+                            customElement.Element.Visibility = Visibility.Visible;
+                            ((SuccessStoryButtonDetails)customElement.Element).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
+                        }
+                        else
+                        {
+#if DEBUG
+                            logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButton with no data");
+#endif
+                        }                        
                     }
-                    */
 
                     if (customElement.Element is ScDescriptionIntegration)
                     {
