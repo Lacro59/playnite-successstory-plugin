@@ -384,7 +384,9 @@ namespace SuccessStory.Views
 #endif
 
                                 SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
-                                if (!steamAPI.CheckIsPublic(int.Parse(game.GameId)))
+                                int AppId = 0;
+                                int.TryParse(game.GameId, out AppId);
+                                if (!steamAPI.CheckIsPublic(AppId))
                                 {
                                     AchievementsDatabase.ListErrors.Add(resources.GetString("LOCSuccessStoryNotificationsSteamPrivate"));
                                     break;

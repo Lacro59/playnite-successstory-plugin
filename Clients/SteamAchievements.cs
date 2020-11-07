@@ -71,7 +71,7 @@ namespace SuccessStory.Clients
 #if DEBUG
                 logger.Debug($"SuccessStory - Steam - GetAchievements()");
 #endif
-                AppId = int.Parse(game.GameId);
+                int.TryParse(game.GameId, out AppId);
 
                 VerifSteamUser();
                 if (SteamUser.IsNullOrEmpty())
@@ -215,7 +215,6 @@ namespace SuccessStory.Clients
                 using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
                 {
                     KeyValue PlayerAchievements = steamWebAPI.GetPlayerAchievements(steamid: SteamId, appid: AppId, l: LocalLang);
-                    logger.Warn("0");
                     return true;
                 }
             }

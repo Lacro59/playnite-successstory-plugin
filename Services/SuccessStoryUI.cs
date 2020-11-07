@@ -393,13 +393,19 @@ namespace SuccessStory.Services
             {
                 PART_BtActionBar.Visibility = Visibility.Visible;
 
-                if (PART_BtActionBar != null && PART_BtActionBar is SuccessStoryButtonDetails)
+                try
                 {
-                    ((SuccessStoryButtonDetails)PART_BtActionBar).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
+                    if (PART_BtActionBar != null && PART_BtActionBar is SuccessStoryButtonDetails)
+                    {
+                        ((SuccessStoryButtonDetails)PART_BtActionBar).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
+                    }
+                    if (PART_BtActionBar != null && PART_BtActionBar is SuccessStoryToggleButtonDetails)
+                    {
+                        ((SuccessStoryToggleButtonDetails)PART_BtActionBar).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
+                    }
                 }
-                if (PART_BtActionBar != null && PART_BtActionBar is SuccessStoryToggleButtonDetails)
+                catch
                 {
-                    ((SuccessStoryToggleButtonDetails)PART_BtActionBar).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
                 }
             }
             else
