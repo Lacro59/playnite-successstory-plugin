@@ -664,7 +664,7 @@ namespace SuccessStory.Models
                         logger.Warn("SuccessStory - Xbox user is not authenticated");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Xbox-NoAuthenticate",
-                            $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNoAuthenticate")}",
+                            $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
                             NotificationType.Error,
                             () => plugin.OpenSettingsView()
                         ));
