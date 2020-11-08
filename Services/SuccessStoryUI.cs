@@ -265,32 +265,41 @@ namespace SuccessStory.Services
                     {
                         ui.AddResources(resourcesLists);
 
-                        Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                        if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
                         {
-                            if (_Settings.EnableIntegrationButton)
+                            Application.Current.Dispatcher.BeginInvoke((Action)delegate
                             {
+                                if (_Settings.EnableIntegrationButton)
+                                {
 #if DEBUG
-                                logger.Debug($"SuccessStory - RefreshBtActionBar()");
+                                    logger.Debug($"SuccessStory - RefreshBtActionBar()");
 #endif
-                                RefreshBtActionBar();
-                            }
+                                    RefreshBtActionBar();
+                                }
 
-                            if (_Settings.EnableIntegrationInDescription)
-                            {
+                                if (_Settings.EnableIntegrationInDescription)
+                                {
 #if DEBUG
-                                logger.Debug($"SuccessStory - RefreshSpDescription()");
+                                    logger.Debug($"SuccessStory - RefreshSpDescription()");
 #endif
-                                RefreshSpDescription();
-                            }
+                                    RefreshSpDescription();
+                                }
 
-                            if (_Settings.EnableIntegrationInCustomTheme)
-                            {
+                                if (_Settings.EnableIntegrationInCustomTheme)
+                                {
 #if DEBUG
-                                logger.Debug($"SuccessStory - RefreshCustomElements()");
+                                    logger.Debug($"SuccessStory - RefreshCustomElements()");
 #endif
-                                RefreshCustomElements();
-                            }
-                        });
+                                    RefreshCustomElements();
+                                }
+                            });
+                        }
+                        else
+                        {
+#if DEBUG
+                            logger.Debug($"SuccessStory - No data for {SuccessStory.GameSelected.Name}");
+#endif
+                        }
                     }
                     else
                     {
@@ -504,26 +513,19 @@ namespace SuccessStory.Services
         {
             if (PART_SpDescription != null)
             {
-                if (SuccessStory.SelectedGameAchievements != null)
+                if (PART_SpDescription is ScDescriptionIntegration)
                 {
-                    PART_SpDescription.Visibility = Visibility.Visible;
+                    ((ScDescriptionIntegration)PART_SpDescription).SetScData(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements);
 
-                    if (PART_SpDescription is ScDescriptionIntegration)
+                    if (_Settings.EnableIntegrationInDescriptionWithToggle)
                     {
-                        ((ScDescriptionIntegration)PART_SpDescription).SetScData(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements);
-
-                        if (_Settings.EnableIntegrationInDescriptionWithToggle)
-                        {
-                            ((ToggleButton)PART_BtActionBar).IsChecked = false;
-                            PART_SpDescription.Visibility = Visibility.Collapsed;
-                        }
+                        ((ToggleButton)PART_BtActionBar).IsChecked = false;
+                        PART_SpDescription.Visibility = Visibility.Collapsed;
                     }
-                }
-                else
-                {
-#if DEBUG
-                    logger.Debug($"SuccessStory - No data for {SuccessStory.GameSelected.Name}");
-#endif
+                    else
+                    {
+                        PART_SpDescription.Visibility = Visibility.Visible;
+                    }
                 }
             }
             else
@@ -711,7 +713,7 @@ namespace SuccessStory.Services
 
             if (PART_Achievements_ListCompactUnlocked != null && _Settings.IntegrationShowAchievements)
             {
-                PART_Achievements_ListCompactUnlocked = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements, true, false, false, true, false, false);
+                PART_Achievements_ListCompactUnlocked = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements, true, false, false, false, true, false);
                 PART_Achievements_ListCompactUnlocked.Name = "Achievements_ListCompactUnlocked";
                 try
                 {
@@ -732,7 +734,7 @@ namespace SuccessStory.Services
 
             if (PART_Achievements_ListCompactLocked != null && _Settings.IntegrationShowAchievements)
             {
-                PART_Achievements_ListCompactLocked = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements, true, false, false, false, true, false);
+                PART_Achievements_ListCompactLocked = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements, true, false, false, true, false, false);
                 PART_Achievements_ListCompactLocked.Name = "Achievements_ListCompactLocked";
                 try
                 {
@@ -769,7 +771,7 @@ namespace SuccessStory.Services
                         logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButton");
 #endif
                         isFind = true;
-                        if (SuccessStory.SelectedGameAchievements != null)
+                        if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
                         {
                             customElement.Element.Visibility = Visibility.Visible;
                         }
@@ -787,7 +789,7 @@ namespace SuccessStory.Services
                         logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButtonDetails");
 #endif
                         isFind = true;
-                        if (SuccessStory.SelectedGameAchievements != null)
+                        if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
                         {
                             customElement.Element.Visibility = Visibility.Visible;
                             ((SuccessStoryButtonDetails)customElement.Element).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
@@ -806,7 +808,7 @@ namespace SuccessStory.Services
                         logger.Debug($"SuccessStory - customElement.Element is ScDescriptionIntegration");
 #endif
                         isFind = true;
-                        if (SuccessStory.SelectedGameAchievements != null)
+                        if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
                         {
                             customElement.Element.Visibility = Visibility.Visible;
                             ((ScDescriptionIntegration)customElement.Element).SetScData(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements);
