@@ -251,9 +251,22 @@ namespace SuccessStory.Clients
                             ));
                             logger.Warn("SuccessStory - Steam profil is private");
 
+                            // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
+                            Common.LogError(ex, "SuccessStory", "Error on CheckIsPublic()");
+
                             return false;
                         }
                     }
+                    else
+                    {
+                        // no http status code available
+                        Common.LogError(ex, "SuccessStory", $"Error on CheckIsPublic({AppId})");
+                    }
+                }
+                else
+                {
+                    // no http status code available
+                    Common.LogError(ex, "SuccessStory", $"Error on CheckIsPublic({AppId})");
                 }
 
                 return true;
@@ -323,6 +336,9 @@ namespace SuccessStory.Clients
                                 () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                             ));
                             logger.Warn("SuccessStory - Steam profil is private");
+
+                            // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
+                            Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
                         }
                     }
                     else
