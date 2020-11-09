@@ -93,55 +93,62 @@ namespace SuccessStory.Views
             LocalTotal = 0;
             LocalTotalAchievements = 0;
 
-            foreach (var game in PlayniteApi.Database.Games)
+            try
             {
-                string GameSourceName = PlayniteTools.GetSourceName(game, PlayniteApi);
-
-                switch (GameSourceName.ToLower())
+                foreach (var game in PlayniteApi.Database.Games)
                 {
-                    case "steam":
-                        SteamTotal += 1;
-                        if (achievementsDatabase.VerifAchievementsLoad(game.Id))
-                        {
-                            SteamTotalAchievements += 1;
-                        }
-                        break;
-                    case "gog":
-                        GogTotal += 1;
-                        if (achievementsDatabase.VerifAchievementsLoad(game.Id))
-                        {
-                            GogTotalAchievements += 1;
-                        }
-                        break;
-                    case "origin":
-                        OriginTotal += 1;
-                        if (achievementsDatabase.VerifAchievementsLoad(game.Id))
-                        {
-                            OriginTotalAchievements += 1;
-                        }
-                        break;
-                    case "xbox":
-                        XboxTotal += 1;
-                        if (achievementsDatabase.VerifAchievementsLoad(game.Id))
-                        {
-                            XboxTotalAchievements += 1;
-                        }
-                        break;
-                    case "retroachievements":
-                        RetroAchievementsTotal += 1;
-                        if (achievementsDatabase.VerifAchievementsLoad(game.Id))
-                        {
-                            RetroAchievementsTotalAchievements += 1;
-                        }
-                        break;
-                    case "playnite":
-                        LocalTotal += 1;
-                        if (achievementsDatabase.VerifAchievementsLoad(game.Id))
-                        {
-                            LocalTotalAchievements += 1;
-                        }
-                        break;
+                    string GameSourceName = PlayniteTools.GetSourceName(game, PlayniteApi);
+
+                    switch (GameSourceName.ToLower())
+                    {
+                        case "steam":
+                            SteamTotal += 1;
+                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                SteamTotalAchievements += 1;
+                            }
+                            break;
+                        case "gog":
+                            GogTotal += 1;
+                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                GogTotalAchievements += 1;
+                            }
+                            break;
+                        case "origin":
+                            OriginTotal += 1;
+                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                OriginTotalAchievements += 1;
+                            }
+                            break;
+                        case "xbox":
+                            XboxTotal += 1;
+                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                XboxTotalAchievements += 1;
+                            }
+                            break;
+                        case "retroachievements":
+                            RetroAchievementsTotal += 1;
+                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                RetroAchievementsTotalAchievements += 1;
+                            }
+                            break;
+                        case "playnite":
+                            LocalTotal += 1;
+                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                LocalTotalAchievements += 1;
+                            }
+                            break;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory", $"Error on SetTotal()");
             }
 
             SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
