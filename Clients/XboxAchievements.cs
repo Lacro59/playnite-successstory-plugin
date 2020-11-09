@@ -29,6 +29,9 @@ namespace SuccessStory.Clients
         private readonly string liveTokensPath;
         private readonly string xstsLoginTokesPath;
 
+        private bool HasTestLogged = false;
+        private bool loggedIn = false;
+
 
         public XboxAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
         {
@@ -138,9 +141,9 @@ namespace SuccessStory.Clients
                     var response = client.PostAsync(
                         @"https://profile.xboxlive.com/users/batch/profile/settings",
                         new StringContent(Playnite.SDK.Data.Serialization.ToJson(requestData), Encoding.UTF8, "application/json")).Result;
-
-                    logger.Warn($"SuccessStory - Xbox GetIsUserLoggedIn() - {response.StatusCode}");
-
+#if DEBUG
+                    logger.Debug($"SuccessStory - Xbox GetIsUserLoggedIn() - {response.StatusCode}");
+#endif
                     return response.StatusCode == System.Net.HttpStatusCode.OK;
                 }
             }
@@ -256,13 +259,19 @@ namespace SuccessStory.Clients
             }
             else
             {
-                var loggedIn = await GetIsUserLoggedIn();
-                if (!loggedIn && File.Exists(liveTokensPath))
+                if (!HasTestLogged)
                 {
-                    await RefreshTokens();
+                    loggedIn = await GetIsUserLoggedIn();
+
+                    if (!(bool)loggedIn && File.Exists(liveTokensPath))
+                    {
+                        await RefreshTokens();
+                        loggedIn = await GetIsUserLoggedIn();
+                    }
+                    HasTestLogged = true;
                 }
 
-                if (!await GetIsUserLoggedIn())
+                if (!loggedIn)
                 {
                     logger.Warn("SuccessStory - XboxAchievements - User is not authenticated");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(

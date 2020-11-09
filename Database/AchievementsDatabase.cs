@@ -33,6 +33,13 @@ namespace SuccessStory.Models
         private string PluginDatabasePath { get; set; }
         private bool _isRetroachievements { get; set; }
 
+        private static bool? VerifToAddOrShowGog = null;
+        private static bool? VerifToAddOrShowOrigin = null;
+        private static bool? VerifToAddOrShowRetroAchievements = null;
+        private static bool? VerifToAddOrShowSteam = null;
+        private static bool? VerifToAddOrShowXbox = null;
+
+
         public static CumulErrors ListErrors = new CumulErrors();
 
         public ConcurrentDictionary<Guid, GameAchievements> gameAchievements
@@ -597,7 +604,13 @@ namespace SuccessStory.Models
                 else
                 {
                     GogAchievements gogAchievements = new GogAchievements(PlayniteApi, settings, PluginUserDataPath);
-                    if (!gogAchievements.IsConnected())
+
+                    if (VerifToAddOrShowGog == null)
+                    {
+                        VerifToAddOrShowGog = gogAchievements.IsConnected();
+                    }
+
+                    if (!(bool)VerifToAddOrShowGog)
                     {
                         logger.Warn("SuccessStory - Gog user is not authenticate");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -628,7 +641,13 @@ namespace SuccessStory.Models
                 else
                 {
                     OriginAchievements originAchievements = new OriginAchievements(PlayniteApi, settings, PluginUserDataPath);
-                    if (!originAchievements.IsConnected())
+
+                    if (VerifToAddOrShowOrigin == null)
+                    {
+                        VerifToAddOrShowOrigin = originAchievements.IsConnected();
+                    }
+
+                    if (!(bool)VerifToAddOrShowOrigin)
                     {
                         logger.Warn("SuccessStory - Origin user is not authenticated");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -659,7 +678,13 @@ namespace SuccessStory.Models
                 else
                 {
                     XboxAchievements xboxAchievements = new XboxAchievements(PlayniteApi, settings, PluginUserDataPath);
-                    if (!xboxAchievements.IsConnected())
+
+                    if (VerifToAddOrShowXbox == null)
+                    {
+                        VerifToAddOrShowXbox = xboxAchievements.IsConnected();
+                    }
+
+                    if (!(bool)VerifToAddOrShowXbox)
                     {
                         logger.Warn("SuccessStory - Xbox user is not authenticated");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -702,6 +727,7 @@ namespace SuccessStory.Models
 
         private GogAchievements gogAPI { get; set; }
         private OriginAchievements originAPI { get; set; }
+        private XboxAchievements xboxAPI { get; set; }
 
         public void InitializeMultipleAdd(SuccessStorySettings settings, string GameSourceName = "all")
         {
@@ -731,6 +757,10 @@ namespace SuccessStory.Models
                     break;
 
                 case "Xbox":
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary", _PlayniteApi.Paths.ConfigurationPath) && xboxAPI == null)
+                    {
+                        xboxAPI = new XboxAchievements(_PlayniteApi, settings, _PluginUserDataPath);
+                    }
                     break;
 
                 case "playnite":
@@ -792,8 +822,11 @@ namespace SuccessStory.Models
 
                     if (GameSourceName.ToLower() == "xbox")
                     {
-                        XboxAchievements xboxAchievements = new XboxAchievements(_PlayniteApi, settings, _PluginUserDataPath);
-                        GameAchievements = xboxAchievements.GetAchievements(GameAdded);
+                        if (xboxAPI == null)
+                        {
+                            xboxAPI = new XboxAchievements(_PlayniteApi, settings, _PluginUserDataPath);
+                        }
+                        GameAchievements = xboxAPI.GetAchievements(GameAdded);
                     }
 
                     if (GameSourceName.ToLower() == "playnite")
