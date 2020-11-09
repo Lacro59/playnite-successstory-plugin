@@ -245,7 +245,7 @@ namespace SuccessStory.Clients
                         {
                             _PlayniteApi.Notifications.Add(new NotificationMessage(
                                 "SuccessStory-Steam-PrivateProfil",
-                                $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
+                                $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                                 NotificationType.Error,
                                 () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                             ));
@@ -331,7 +331,7 @@ namespace SuccessStory.Clients
                         {
                             _PlayniteApi.Notifications.Add(new NotificationMessage(
                                 "SuccessStory-Steam-PrivateProfil",
-                                $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
+                                $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                                 NotificationType.Error,
                                 () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                             ));

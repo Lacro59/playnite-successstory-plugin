@@ -133,7 +133,7 @@ namespace SuccessStory.Clients
             {
                 _PlayniteApi.Notifications.Add(new NotificationMessage(
                     "SuccessStory-Gog-NoAuthenticate",
-                    $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate")}",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate")}",
                     NotificationType.Error
                 ));
                 logger.Warn("SuccessStory - GOG user is not Authenticate");

@@ -255,7 +255,7 @@ namespace SuccessStory.Clients
                 logger.Warn("SuccessStory - XboxAchievements - User is not authenticated - File not exist");
                 _PlayniteApi.Notifications.Add(new NotificationMessage(
                     "SuccessStory-Xbox-notAuthenticate",
-                    $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
                     NotificationType.Error
                 ));
 
@@ -280,7 +280,7 @@ namespace SuccessStory.Clients
                     logger.Warn("SuccessStory - XboxAchievements - User is not authenticated");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Xbox-notAuthenticate",
-                        $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
+                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
                         NotificationType.Error
                     ));
 
@@ -319,7 +319,7 @@ namespace SuccessStory.Clients
                         logger.Warn($"SuccessStory - XboxAchievements - User is not authenticated - {response.StatusCode}");
                         _PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Xbox-notAuthenticate",
-                            $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
+                            $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
                             NotificationType.Error
                         ));
                     }
@@ -328,7 +328,7 @@ namespace SuccessStory.Clients
                         logger.Warn($"SuccessStory - XboxAchievements - Error on GetXboxAchievements() - {response.StatusCode}");
                         _PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Xbox-webError",
-                            $"SuccessStory - Xbox achievements: {resources.GetString("LOCImportError")}",
+                            $"SuccessStory\r\nXbox achievements: {resources.GetString("LOCImportError")}",
                             NotificationType.Error
                         ));
                     }
