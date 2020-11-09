@@ -407,6 +407,9 @@ namespace SuccessStory
         #region Functions sorting ListviewGames.
         private void Sorting()
         {
+
+            PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+
             // Sorting
             try
             {

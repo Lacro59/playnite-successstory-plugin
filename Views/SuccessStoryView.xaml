@@ -45,6 +45,7 @@
                         <ColumnDefinition Width="140" />
                         <ColumnDefinition Width="6" />
                         <ColumnDefinition Width="180" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
@@ -60,6 +61,12 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+
+                    <StackPanel HorizontalAlignment="Right" Grid.Column="7" Orientation="Horizontal">
+                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{DynamicResource LOCCommonTotalFound}" VerticalAlignment="Center" />
+                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TotalFoundCount" VerticalAlignment="Center"
+                                   Text="1000" Width="40" TextAlignment="Right" /> 
+                    </StackPanel>
                 </Grid>
             </Border>
 
