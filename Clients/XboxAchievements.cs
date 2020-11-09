@@ -246,6 +246,10 @@ namespace SuccessStory.Clients
 
         private async Task<List<XboxAchievement>> GetXboxAchievements(string pfn, string name)
         {
+//#if DEBUG
+            logger.Debug($"SuccessStory - GetXboxAchievements() - name: {name} - pfn: {pfn}");
+//#endif
+
             if (!File.Exists(xstsLoginTokesPath))
             {
                 logger.Warn("SuccessStory - XboxAchievements - User is not authenticated - File not exist");
@@ -284,14 +288,13 @@ namespace SuccessStory.Clients
                 }
             }
 
-
             string titleId = string.Empty;
             if (!pfn.IsNullOrEmpty())
             {
                 var libTitle = GetTitleInfo(pfn).Result;
-#if DEBUG
-                logger.Debug($"SuccessStory - XboxAchievements - libTitle: {libTitle}");
-#endif
+//#if DEBUG
+                logger.Debug($"SuccessStory - XboxAchievements - name: {name} - pfn: {pfn} - titleId: {titleId}");
+//#endif
                 titleId = libTitle.titleId;
             }
 
@@ -311,12 +314,24 @@ namespace SuccessStory.Clients
                 var response = client.GetAsync(url).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    logger.Warn($"SuccessStory - XboxAchievements - User is not authenticated - {response.StatusCode}");
-                    _PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-Xbox-notAuthenticate",
-                        $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
-                        NotificationType.Error
-                    ));
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                    {
+                        logger.Warn($"SuccessStory - XboxAchievements - User is not authenticated - {response.StatusCode}");
+                        _PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-Xbox-notAuthenticate",
+                            $"SuccessStory - {resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
+                            NotificationType.Error
+                        ));
+                    }
+                    else
+                    {
+                        logger.Warn($"SuccessStory - XboxAchievements - Error on GetXboxAchievements() - {response.StatusCode}");
+                        _PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-Xbox-webError",
+                            $"SuccessStory - Xbox achievements: {resources.GetString("LOCImportError")}",
+                            NotificationType.Error
+                        ));
+                    }
 
                     return new List<XboxAchievement>();
                 }

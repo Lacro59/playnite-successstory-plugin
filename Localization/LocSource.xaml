@@ -34,7 +34,7 @@
 
     <sys:String x:Key="LOCSuccessStoryDatabase">Achievements database</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Download achievements data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshData">Reset achievements data</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshData">ReRefresh achievements data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Download missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Recent games with missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Recent games</sys:String>
