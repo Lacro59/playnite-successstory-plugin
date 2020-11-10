@@ -283,7 +283,14 @@ namespace SuccessStory.Services
 #if DEBUG
                                     logger.Debug($"SuccessStory - RefreshBtActionBar()");
 #endif
-                                    RefreshBtActionBar();
+                                    try
+                                    {
+                                        RefreshBtActionBar();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Common.LogError(ex, "SuccessStory", $"Error on RefreshBtActionBar()");
+                                    }
                                 }
 
                                 if (_Settings.EnableIntegrationInDescription)
@@ -291,7 +298,14 @@ namespace SuccessStory.Services
 #if DEBUG
                                     logger.Debug($"SuccessStory - RefreshSpDescription()");
 #endif
-                                    RefreshSpDescription();
+                                    try
+                                    {
+                                        RefreshSpDescription();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Common.LogError(ex, "SuccessStory", $"Error on RefreshSpDescription()");
+                                    }
                                 }
 
                                 if (_Settings.EnableIntegrationInCustomTheme)
@@ -299,7 +313,14 @@ namespace SuccessStory.Services
 #if DEBUG
                                     logger.Debug($"SuccessStory - RefreshCustomElements()");
 #endif
-                                    RefreshCustomElements();
+                                    try
+                                    {
+                                        RefreshCustomElements();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Common.LogError(ex, "SuccessStory", $"Error on RefreshCustomElements()");
+                                    }
                                 }
                             });
                         }
@@ -508,7 +529,15 @@ namespace SuccessStory.Services
 
                 if (_Settings.EnableIntegrationInDescriptionWithToggle && PART_SpDescription != null)
                 {
-                    ((ToggleButton)PART_BtActionBar).IsChecked = false;
+                    if (PART_BtActionBar != null && PART_BtActionBar is ToggleButton)
+                    {
+                        ((ToggleButton)PART_BtActionBar).IsChecked = false;
+                    }
+                    else
+                    {
+                        logger.Warn($"SuccessStory - PART_BtActionBar is null or not ToggleButton");
+                    }
+                    
                     PART_SpDescription.Visibility = Visibility.Collapsed;
                 }
             }
@@ -526,9 +555,17 @@ namespace SuccessStory.Services
                 {
                     ((ScDescriptionIntegration)PART_SpDescription).SetScData(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements);
 
-                    if (_Settings.EnableIntegrationInDescriptionWithToggle)
+                    if (_Settings.EnableIntegrationInDescriptionWithToggle && PART_SpDescription != null)
                     {
-                        ((ToggleButton)PART_BtActionBar).IsChecked = false;
+                        if (PART_BtActionBar != null && PART_BtActionBar is ToggleButton)
+                        {
+                            ((ToggleButton)PART_BtActionBar).IsChecked = false;
+                        }
+                        else
+                        {
+                            logger.Warn($"SuccessStory - PART_BtActionBar is null or not ToggleButton");
+                        }
+
                         PART_SpDescription.Visibility = Visibility.Collapsed;
                     }
                     else
