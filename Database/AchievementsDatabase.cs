@@ -100,7 +100,9 @@ namespace SuccessStory.Models
                         else
                         {
                             IncludeGame = false;
-                            logger.Info($"SuccessStory - {gameId} is null");
+#if DEBUG
+                            logger.Debug($"SuccessStory - {gameId} is null");
+#endif
                         }
                     }
 
