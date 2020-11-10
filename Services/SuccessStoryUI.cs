@@ -48,13 +48,16 @@ namespace SuccessStory.Services
         #region BtHeader
         public void AddBtHeader()
         {
-            if (_Settings.EnableIntegrationButtonHeader)
+            if (_PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {
-                logger.Info("SuccessStory - Add Header button");
-                Button btHeader = new SuccessStoryButtonHeader(TransformIcon.Get("SuccessStory"));
-                btHeader.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
-                btHeader.Click += OnBtHeaderClick;
-                ui.AddButtonInWindowsHeader(btHeader);
+                if (_Settings.EnableIntegrationButtonHeader)
+                {
+                    logger.Info("SuccessStory - Add Header button");
+                    Button btHeader = new SuccessStoryButtonHeader(TransformIcon.Get("SuccessStory"));
+                    btHeader.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
+                    btHeader.Click += OnBtHeaderClick;
+                    ui.AddButtonInWindowsHeader(btHeader);
+                }
             }
         }
 
@@ -160,175 +163,172 @@ namespace SuccessStory.Services
 
         public override void RefreshElements(Game GameSelected, bool force = false)
         {
-            if (_PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
-            {
 #if DEBUG
-                logger.Debug($"SuccessStory - RefreshElements({GameSelected.Name})");
+            logger.Debug($"SuccessStory - RefreshElements({GameSelected.Name})");
 #endif
 
-                CancellationTokenSource tokenSource = new CancellationTokenSource();
-                CancellationToken ct = tokenSource.Token;
+            CancellationTokenSource tokenSource = new CancellationTokenSource();
+            CancellationToken ct = tokenSource.Token;
 
-                Task TaskRefresh = Task.Run(() =>
-                {
+            Task TaskRefresh = Task.Run(() =>
+            {
 #if DEBUG
                 string IsCanceld = string.Empty;
 
-                    logger.Debug($"SuccessStory - TaskRefresh() - Start");
-                    Stopwatch stopwatch = new Stopwatch();
-                    TimeSpan ts;
-                    stopwatch.Start();
+                logger.Debug($"SuccessStory - TaskRefresh() - Start");
+                Stopwatch stopwatch = new Stopwatch();
+                TimeSpan ts;
+                stopwatch.Start();
 #endif
                 try
-                    {
-                        Initial();
+                {
+                    Initial();
 
                     // Reset resources
                     List<ResourcesList> resourcesLists = new List<ResourcesList>();
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = false });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = false });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = 0 });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = (double)0 });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = "0" });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = 0 });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = (double)0 });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = "0" });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = 0 });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = (double)0 });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = "0" });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = false });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = false });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = 0 });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = (double)0 });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = "0" });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = 0 });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = (double)0 });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = "0" });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = 0 });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = (double)0 });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = "0" });
 
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_EnableIntegrationInCustomTheme", Value = _Settings.EnableIntegrationInCustomTheme });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowGraphic", Value = _Settings.IntegrationShowGraphic });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievements", Value = _Settings.IntegrationShowAchievements });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowProgressBar", Value = _Settings.IntegrationShowProgressBar });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactLocked", Value = _Settings.IntegrationShowAchievementsCompactLocked });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactUnlocked", Value = _Settings.IntegrationShowAchievementsCompactUnlocked });
-                        ui.AddResources(resourcesLists);
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_EnableIntegrationInCustomTheme", Value = _Settings.EnableIntegrationInCustomTheme });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowGraphic", Value = _Settings.IntegrationShowGraphic });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievements", Value = _Settings.IntegrationShowAchievements });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowProgressBar", Value = _Settings.IntegrationShowProgressBar });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactLocked", Value = _Settings.IntegrationShowAchievementsCompactLocked });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactUnlocked", Value = _Settings.IntegrationShowAchievementsCompactUnlocked });
+                    ui.AddResources(resourcesLists);
 
 
                     // Load data
                     SuccessStory.SelectedGameAchievements = null;
-                        string GameSourceName = string.Empty;
+                    string GameSourceName = string.Empty;
 
-                        try
-                        {
-                            SuccessStory.SelectedGameAchievements = SuccessStory.achievementsDatabase.Get(GameSelected.Id);
-                            GameSourceName = PlayniteTools.GetSourceName(GameSelected, _PlayniteApi);
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, "SuccessStory", "Error to load data");
-                            _PlayniteApi.Dialogs.ShowErrorMessage(resources.GetString("LOCDatabaseErroTitle"), "SuccessStory");
-                        }
+                    try
+                    {
+                        SuccessStory.SelectedGameAchievements = SuccessStory.achievementsDatabase.Get(GameSelected.Id);
+                        GameSourceName = PlayniteTools.GetSourceName(GameSelected, _PlayniteApi);
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, "SuccessStory", "Error to load data");
+                        _PlayniteApi.Dialogs.ShowErrorMessage(resources.GetString("LOCDatabaseErroTitle"), "SuccessStory");
+                    }
 
                     // Download Achievements if not exist in database.
                     if (SuccessStory.SelectedGameAchievements == null)
-                        {
-                            logger.Info($"SuccessStory - Download achievements for {GameSelected.Name} - {GameSourceName}");
-                            SuccessStory.achievementsDatabase.Add(GameSelected, _Settings);
-                            SuccessStory.achievementsDatabase.Initialize();
-                            SuccessStory.SelectedGameAchievements = SuccessStory.achievementsDatabase.Get(GameSelected.Id);
-                        }
+                    {
+                        logger.Info($"SuccessStory - Download achievements for {GameSelected.Name} - {GameSourceName}");
+                        SuccessStory.achievementsDatabase.Add(GameSelected, _Settings);
+                        SuccessStory.achievementsDatabase.Initialize();
+                        SuccessStory.SelectedGameAchievements = SuccessStory.achievementsDatabase.Get(GameSelected.Id);
+                    }
 
-                        if (SuccessStory.SelectedGameAchievements == null)
-                        {
-                            logger.Warn("SuccessStory - No data for " + GameSelected.Name);
+                    if (SuccessStory.SelectedGameAchievements == null)
+                    {
+                        logger.Warn("SuccessStory - No data for " + GameSelected.Name);
 #if DEBUG
                         stopwatch.Stop();
-                            ts = stopwatch.Elapsed;
-                            logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                        ts = stopwatch.Elapsed;
+                        logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
                         return;
-                        }
+                    }
 
-                        if (!SuccessStory.SelectedGameAchievements.HaveAchivements)
-                        {
-                            logger.Warn("SuccessStory - No achievements for " + GameSelected.Name);
+                    if (!SuccessStory.SelectedGameAchievements.HaveAchivements)
+                    {
+                        logger.Warn("SuccessStory - No achievements for " + GameSelected.Name);
 #if DEBUG
                         stopwatch.Stop();
-                            ts = stopwatch.Elapsed;
-                            logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                        ts = stopwatch.Elapsed;
+                        logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
                         return;
-                        }
+                    }
 
 #if DEBUG
                     logger.Debug($"SuccessStory - SuccessStory.SelectedGameAchievements: ({JsonConvert.SerializeObject(SuccessStory.SelectedGameAchievements)})");
 #endif
                     resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = SuccessStory.SelectedGameAchievements.Is100Percent });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SuccessStory.SelectedGameAchievements.Total });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Total.ToString()) });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = SuccessStory.SelectedGameAchievements.Total.ToString() });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SuccessStory.SelectedGameAchievements.Unlocked });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Unlocked.ToString()) });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = SuccessStory.SelectedGameAchievements.Unlocked.ToString() });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SuccessStory.SelectedGameAchievements.Locked });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Locked.ToString()) });
-                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = SuccessStory.SelectedGameAchievements.Locked.ToString() });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = SuccessStory.SelectedGameAchievements.Is100Percent });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SuccessStory.SelectedGameAchievements.Total });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Total.ToString()) });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = SuccessStory.SelectedGameAchievements.Total.ToString() });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SuccessStory.SelectedGameAchievements.Unlocked });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Unlocked.ToString()) });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = SuccessStory.SelectedGameAchievements.Unlocked.ToString() });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SuccessStory.SelectedGameAchievements.Locked });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Locked.ToString()) });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = SuccessStory.SelectedGameAchievements.Locked.ToString() });
 
 
                     // If not cancel, show
-                    if (!ct.IsCancellationRequested)
-                        {
-                            ui.AddResources(resourcesLists);
+                    if (!ct.IsCancellationRequested && _PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
+                    {
+                        ui.AddResources(resourcesLists);
 
-                            if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
+                        if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
+                        {
+                            Application.Current.Dispatcher.BeginInvoke((Action)delegate
                             {
-                                Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                                if (_Settings.EnableIntegrationButton)
                                 {
-                                    if (_Settings.EnableIntegrationButton)
-                                    {
 #if DEBUG
                                     logger.Debug($"SuccessStory - RefreshBtActionBar()");
 #endif
                                     RefreshBtActionBar();
-                                    }
+                                }
 
-                                    if (_Settings.EnableIntegrationInDescription)
-                                    {
+                                if (_Settings.EnableIntegrationInDescription)
+                                {
 #if DEBUG
                                     logger.Debug($"SuccessStory - RefreshSpDescription()");
 #endif
                                     RefreshSpDescription();
-                                    }
+                                }
 
-                                    if (_Settings.EnableIntegrationInCustomTheme)
-                                    {
+                                if (_Settings.EnableIntegrationInCustomTheme)
+                                {
 #if DEBUG
                                     logger.Debug($"SuccessStory - RefreshCustomElements()");
 #endif
                                     RefreshCustomElements();
-                                    }
-                                });
-                            }
-                            else
-                            {
-#if DEBUG
-                            logger.Debug($"SuccessStory - No data for {SuccessStory.GameSelected.Name}");
-#endif
-                        }
+                                }
+                            });
                         }
                         else
                         {
 #if DEBUG
+                            logger.Debug($"SuccessStory - No data for {SuccessStory.GameSelected.Name}");
+#endif
+                        }
+                    }
+                    else
+                    {
+#if DEBUG
                         IsCanceld = " canceled";
 #endif
                     }
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, "SuccessStory", $"Error on TaskRefreshBtActionBar()");
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", $"Error on TaskRefreshBtActionBar()");
+                }
 #if DEBUG
                 stopwatch.Stop();
-                    ts = stopwatch.Elapsed;
-                    logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                ts = stopwatch.Elapsed;
+                logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
             }, ct);
 
-                taskHelper.Add(TaskRefresh, tokenSource);
-            }
+            taskHelper.Add(TaskRefresh, tokenSource);
         }
 
 
