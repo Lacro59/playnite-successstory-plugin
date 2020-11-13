@@ -2,7 +2,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!-- MainView -->
-    
+
     <sys:String x:Key="LOCSuccessStory">SuccessStory</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievements">Achievements</sys:String>
 
@@ -23,7 +23,7 @@
     <!-- SuccessStorySettingsView -->
 
     <sys:String x:Key="LOCSuccessStoryProgressBar">Processing, please wait...</sys:String>
-    
+
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Enable Steam achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Enable GOG achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable Origin achievements</sys:String>
@@ -34,7 +34,7 @@
 
     <sys:String x:Key="LOCSuccessStoryDatabase">Achievements database</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Download achievements data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshData">ReRefresh achievements data</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshData">Reset achievements data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Download missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Recent games with missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Recent games</sys:String>
@@ -75,7 +75,7 @@
 
     <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">Resets and downloads achievements of all games from this source. (Use if there is any problem with achievements)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Resets and downloads achievements for all games from this source. (Use if there is any problem with achievements)</sys:String>
-    
+
     <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Downloads achievements for games that were imported in the last month with missing achievements data. (Use if the first number count is different to the total count)</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Downloads achievements for installed games with missing achievements data. (Use if the first number count is different to the total count)</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Downloads achievements for installed games with missing achievements data. (Use if the first number count is different to the total count)</sys:String>
@@ -91,14 +91,14 @@ Especially useful for Xbox achievements  with their larges images which are redu
     <!-- SuccessStoryView -->
 
     <!-- UI -->
-    
+
     <sys:String x:Key="LOCSuccessStoryFilterSource">Filter by source</sys:String>
     <sys:String x:Key="LOCSuccessStoryGlobalProgression">Global achievements progression</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Achievements Progression of launched games</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Information</sys:String>
 
     <!-- ListViewGames -->
-    
+
     <sys:String x:Key="LOCSuccessStorylvGamesProgression">Progression</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">All achievements unlocked by month</sys:String>
@@ -106,5 +106,5 @@ Especially useful for Xbox achievements  with their larges images which are redu
     <sys:String x:Key="LOCSuccessStoryGraphicTitle">Achievements unlocked by month</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Achievements unlocked by source</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Achievements unlocked by day</sys:String>
-    
+
 </ResourceDictionary>
