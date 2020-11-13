@@ -138,9 +138,9 @@ namespace SuccessStory.Clients
                         userIds = new List<ulong> { ulong.Parse(tokens.DisplayClaims.xui[0].xid) }
                     };
                     
-                    var response = client.PostAsync(
+                    var response = await client.PostAsync(
                         @"https://profile.xboxlive.com/users/batch/profile/settings",
-                        new StringContent(Playnite.SDK.Data.Serialization.ToJson(requestData), Encoding.UTF8, "application/json")).Result;
+                        new StringContent(Playnite.SDK.Data.Serialization.ToJson(requestData), Encoding.UTF8, "application/json"));
 #if DEBUG
                     logger.Debug($"SuccessStory - Xbox GetIsUserLoggedIn() - {response.StatusCode}");
 #endif
@@ -343,11 +343,15 @@ namespace SuccessStory.Clients
                 if (titleId.IsNullOrEmpty())
                 {
                     ListAchievements = ListAchievements.Where(x => x.titleAssociations.First().name.ToLower() == name.ToLower()).ToList();
+//#if DEBUG
                     logger.Debug($"SuccessStory - XboxAchievements - Not find with {pfn} for {name} - {ListAchievements.Count}");
+//#endif
                 }                
                 else
                 {
+//#if DEBUG
                     logger.Debug($"SuccessStory - XboxAchievements - Find with {titleId} & {pfn} for {name} - {ListAchievements.Count}");
+//#endif
                 }
 
                 return ListAchievements;

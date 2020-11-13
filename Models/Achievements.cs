@@ -38,7 +38,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                string pathImageUnlocked = string.Empty;// PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
+                string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
                 if (pathImageUnlocked.IsNullOrEmpty())
                 {
                     pathImageUnlocked = UrlUnlocked;

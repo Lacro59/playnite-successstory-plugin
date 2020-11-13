@@ -33,11 +33,11 @@ namespace SuccessStory.Models
         private string PluginDatabasePath { get; set; }
         private bool _isRetroachievements { get; set; }
 
-        private static bool? VerifToAddOrShowGog = null;
-        private static bool? VerifToAddOrShowOrigin = null;
-        private static bool? VerifToAddOrShowRetroAchievements = null;
-        private static bool? VerifToAddOrShowSteam = null;
-        private static bool? VerifToAddOrShowXbox = null;
+        public static bool? VerifToAddOrShowGog = null;
+        public static bool? VerifToAddOrShowOrigin = null;
+        public static bool? VerifToAddOrShowRetroAchievements = null;
+        public static bool? VerifToAddOrShowSteam = null;
+        public static bool? VerifToAddOrShowXbox = null;
 
 
         public static CumulErrors ListErrors = new CumulErrors();
@@ -557,8 +557,6 @@ namespace SuccessStory.Models
         /// <returns></returns>
         public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI PlayniteApi, string GameSourceName, SuccessStorySettings settings, string PluginUserDataPath)
         {
-            bool Result = false;
-
             if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
                 if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary", PlayniteApi.Paths.ConfigurationPath))
@@ -681,10 +679,16 @@ namespace SuccessStory.Models
                 {
                     XboxAchievements xboxAchievements = new XboxAchievements(PlayniteApi, settings, PluginUserDataPath);
 
+//#if DEBUG
+                    logger.Debug($"SuccessStory - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
+//#endif
                     if (VerifToAddOrShowXbox == null)
                     {
                         VerifToAddOrShowXbox = xboxAchievements.IsConnected();
                     }
+//#if DEBUG
+                    logger.Debug($"SuccessStory - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
+//#endif
 
                     if (!(bool)VerifToAddOrShowXbox)
                     {
@@ -723,7 +727,8 @@ namespace SuccessStory.Models
                 return true;
             }
 
-            return Result;
+            logger.Warn($"SuccessStory - VerifToAddOrShow() find no action");
+            return false;
         }
 
 

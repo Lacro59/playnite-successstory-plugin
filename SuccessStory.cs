@@ -27,6 +27,7 @@ using Separator = System.Windows.Controls.Separator;
 using PluginCommon.PlayniteResources;
 using System.Diagnostics;
 using SuccessStory.Services;
+using System.Windows.Automation;
 
 namespace SuccessStory
 {
@@ -88,6 +89,34 @@ namespace SuccessStory
                 achievementsDatabase = new AchievementsDatabase(this, PlayniteApi, settings, this.GetPluginUserDataPath());
                 achievementsDatabase.Initialize();
             });
+
+            // Add Event for WindowBase for get the "WindowSettings".
+            EventManager.RegisterClassHandler(typeof(Window), Window.LoadedEvent, new RoutedEventHandler(WindowBase_LoadedEvent));
+        }
+
+        private void WindowBase_LoadedEvent(object sender, System.EventArgs e)
+        {
+            string WinIdProperty = String.Empty;
+            try
+            {
+                WinIdProperty = ((Window)sender).GetValue(AutomationProperties.AutomationIdProperty).ToString();
+
+                if (WinIdProperty == "WindowSettings")
+                {
+#if DEBUG
+                    logger.Debug($"SuccessStory - Reset VerifToAdd");
+#endif
+                    AchievementsDatabase.VerifToAddOrShowGog = null;
+                    AchievementsDatabase.VerifToAddOrShowOrigin = null;
+                    AchievementsDatabase.VerifToAddOrShowRetroAchievements = null;
+                    AchievementsDatabase.VerifToAddOrShowSteam = null;
+                    AchievementsDatabase.VerifToAddOrShowXbox = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory", $"Error on WindowBase_LoadedEvent for {WinIdProperty}");
+            }
         }
 
         // To add new game menu items override GetGameMenuItems

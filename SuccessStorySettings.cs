@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
+using PluginCommon;
 using SuccessStory.Models;
 using SuccessStory.Views;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace SuccessStory
 {
     public class SuccessStorySettings : ISettings
     {
+        private static readonly ILogger logger = LogManager.GetLogger();
+
         private readonly SuccessStory plugin;
 
         public bool EnableCheckVersion { get; set; } = true;
@@ -167,6 +170,7 @@ namespace SuccessStory
         public void BeginEdit()
         {
             // Code executed when settings view is opened and user starts editing values.
+
         }
 
         public void CancelEdit()
@@ -187,6 +191,7 @@ namespace SuccessStory
             // This method should save settings made to Option1 and Option2.
             plugin.SavePluginSettings(this);
 
+            PlayniteUiHelper.ResetToggle();
             SuccessStory.successStoryUI.RemoveElements();
             var TaskIntegrationUI = Task.Run(() =>
             {
