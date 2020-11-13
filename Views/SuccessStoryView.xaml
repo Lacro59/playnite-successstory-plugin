@@ -18,7 +18,7 @@
     <Grid Margin="10">
         <Grid Name="PART_DataLoad">
             <ProgressBar IsIndeterminate="True" Width="350" Height="40" />
-            <TextBlock Text="{DynamicResource LOCDownloadingLabel}"
+            <TextBlock Text="{DynamicResource LOCLoadingLabel}"
                        Style="{DynamicResource BaseTextBlockStyle}"
                        HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
