@@ -56,11 +56,10 @@ namespace SuccessStory.Services
                 try
                 {
                     var JsonStringData = File.ReadAllText(objectFile);
-                    GameAchievements objGameAchievements = JsonConvert.DeserializeObject<GameAchievements>(File.ReadAllText(objectFile));
-                    IsOld = true;
+                    IsOld = !JsonStringData.Contains("\"Items\"");
                     return;
                 }
-                catch (Exception ex)
+                catch
                 {
                     IsOld = false;
                     return;
