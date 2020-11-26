@@ -2,6 +2,7 @@
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
+using SuccessStory.Models;
 using SuccessStory.Views.Interface;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 
 namespace SuccessStory.Services
 {
     public class SuccessStoryUI : PlayniteUiHelper
     {
-        private readonly SuccessStorySettings _Settings;
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         private readonly SuccessStory _Plugin;
 
         public override string _PluginUserDataPath { get; set; } = string.Empty;
@@ -34,9 +36,8 @@ namespace SuccessStory.Services
         public override List<CustomElement> ListCustomElements { get; set; } = new List<CustomElement>();
 
 
-        public SuccessStoryUI(IPlayniteAPI PlayniteApi, SuccessStorySettings Settings, string PluginUserDataPath, SuccessStory Plugin) : base(PlayniteApi, PluginUserDataPath)
+        public SuccessStoryUI(SuccessStory Plugin, IPlayniteAPI PlayniteApi, string PluginUserDataPath) : base(PlayniteApi, PluginUserDataPath)
         {
-            _Settings = Settings;
             _Plugin = Plugin;
             _PluginUserDataPath = PluginUserDataPath;
 
@@ -50,7 +51,7 @@ namespace SuccessStory.Services
         {
             if (_PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {
-                if (_Settings.EnableIntegrationButtonHeader)
+                if (PluginDatabase.PluginSettings.EnableIntegrationButtonHeader)
                 {
                     logger.Info("SuccessStory - Add Header button");
                     Button btHeader = new SuccessStoryButtonHeader(TransformIcon.Get("SuccessStory"));
@@ -66,7 +67,7 @@ namespace SuccessStory.Services
 #if DEBUG
             logger.Debug($"SuccessStory - OnBtHeaderClick()");
 #endif
-            var ViewExtension = new SuccessView(_Plugin, _Settings, _PlayniteApi, _Plugin.GetPluginUserDataPath());
+            var ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath());
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
             windowExtension.ShowDialog();
 
@@ -89,35 +90,10 @@ namespace SuccessStory.Services
 
         public override void Initial()
         {
-            if (_PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
-            {
-                if (_Settings.EnableIntegrationButton)
-                {
-#if DEBUG
-                    logger.Debug($"SuccessStory - InitialBtActionBar()");
-#endif
-                    InitialBtActionBar();
-                }
-
-                if (_Settings.EnableIntegrationInDescription)
-                {
-#if DEBUG
-                    logger.Debug($"SuccessStory - InitialSpDescription()");
-#endif
-                    InitialSpDescription();
-                }
-
-                if (_Settings.EnableIntegrationInCustomTheme)
-                {
-#if DEBUG
-                    logger.Debug($"SuccessStory - InitialCustomElements()");
-#endif
-                    InitialCustomElements();
-                }
-            }
+           
         }
 
-        public override void AddElements()
+        public override DispatcherOperation AddElements()
         {
             if (_PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {
@@ -126,39 +102,45 @@ namespace SuccessStory.Services
 #if DEBUG
                     logger.Debug($"SuccessStory - IsFirstLoad");
 #endif
-                    Thread.Sleep(1000);
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        System.Threading.SpinWait.SpinUntil(() => IntegrationUI.SearchElementByName("PART_HtmlDescription") != null, 5000);
+                    })).Wait();
                     IsFirstLoad = false;
                 }
 
-                Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                return Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
                 {
                     CheckTypeView();
 
-                    if (_Settings.EnableIntegrationButton)
+                    if (PluginDatabase.PluginSettings.EnableIntegrationButton)
                     {
 #if DEBUG
-                    logger.Debug($"SuccessStory - AddBtActionBar()");
+                        logger.Debug($"SuccessStory - AddBtActionBar()");
 #endif
-                    AddBtActionBar();
+
+                        AddBtActionBar();
                     }
 
-                    if (_Settings.EnableIntegrationInDescription)
+                    if (PluginDatabase.PluginSettings.EnableIntegrationInDescription)
                     {
 #if DEBUG
-                    logger.Debug($"SuccessStory - AddSpDescription()");
+                        logger.Debug($"SuccessStory - AddSpDescription()");
 #endif
-                    AddSpDescription();
+                        AddSpDescription();
                     }
 
-                    if (_Settings.EnableIntegrationInCustomTheme)
+                    if (PluginDatabase.PluginSettings.EnableIntegrationInCustomTheme)
                     {
 #if DEBUG
-                    logger.Debug($"SuccessStory - AddCustomElements()");
+                        logger.Debug($"SuccessStory - AddCustomElements()");
 #endif
-                    AddCustomElements();
+                        AddCustomElements();
                     }
-                });
+                }));
             }
+
+            return null;
         }
 
         public override void RefreshElements(Game GameSelected, bool force = false)
@@ -198,144 +180,47 @@ namespace SuccessStory.Services
                     resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = (double)0 });
                     resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = "0" });
 
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_EnableIntegrationInCustomTheme", Value = _Settings.EnableIntegrationInCustomTheme });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowGraphic", Value = _Settings.IntegrationShowGraphic });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievements", Value = _Settings.IntegrationShowAchievements });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowProgressBar", Value = _Settings.IntegrationShowProgressBar });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactLocked", Value = _Settings.IntegrationShowAchievementsCompactLocked });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactUnlocked", Value = _Settings.IntegrationShowAchievementsCompactUnlocked });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_EnableIntegrationInCustomTheme", Value = PluginDatabase.PluginSettings.EnableIntegrationInCustomTheme });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowGraphic", Value = PluginDatabase.PluginSettings.IntegrationShowGraphic });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievements", Value = PluginDatabase.PluginSettings.IntegrationShowAchievements });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowProgressBar", Value = PluginDatabase.PluginSettings.IntegrationShowProgressBar });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactLocked", Value = PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactLocked });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowAchievementsCompactUnlocked", Value = PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactUnlocked });
                     ui.AddResources(resourcesLists);
 
 
                     // Load data
-                    SuccessStory.SelectedGameAchievements = null;
-                    string GameSourceName = string.Empty;
-
-                    try
+                    if (!SuccessStory.PluginDatabase.IsLoaded)
                     {
-                        SuccessStory.SelectedGameAchievements = SuccessStory.achievementsDatabase.Get(GameSelected.Id);
-                        GameSourceName = PlayniteTools.GetSourceName(GameSelected, _PlayniteApi);
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, "SuccessStory", "Error to load data");
-                        _PlayniteApi.Dialogs.ShowErrorMessage(resources.GetString("LOCDatabaseErroTitle"), "SuccessStory");
-                    }
-
-                    // Download Achievements if not exist in database.
-                    if (SuccessStory.SelectedGameAchievements == null)
-                    {
-                        logger.Info($"SuccessStory - Download achievements for {GameSelected.Name} - {GameSourceName}");
-                        SuccessStory.achievementsDatabase.Add(GameSelected, _Settings);
-                        SuccessStory.achievementsDatabase.Initialize();
-                        SuccessStory.SelectedGameAchievements = SuccessStory.achievementsDatabase.Get(GameSelected.Id);
-                    }
-
-                    if (SuccessStory.SelectedGameAchievements == null)
-                    {
-                        logger.Warn("SuccessStory - No data for " + GameSelected.Name);
-#if DEBUG
-                        stopwatch.Stop();
-                        ts = stopwatch.Elapsed;
-                        logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
-#endif
                         return;
                     }
+                    SuccessStories successStories = SuccessStory.PluginDatabase.Get(GameSelected);
 
-                    if (!SuccessStory.SelectedGameAchievements.HaveAchivements)
+                    if (successStories.HasData)
                     {
-                        logger.Warn("SuccessStory - No achievements for " + GameSelected.Name);
-#if DEBUG
-                        stopwatch.Stop();
-                        ts = stopwatch.Elapsed;
-                        logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
-#endif
-                        return;
+                        resourcesLists = new List<ResourcesList>();
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = successStories.Is100Percent });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = successStories.Total });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = double.Parse(successStories.Total.ToString()) });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = successStories.Total.ToString() });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = successStories.Unlocked });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = double.Parse(successStories.Unlocked.ToString()) });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = successStories.Unlocked.ToString() });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = successStories.Locked });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = double.Parse(successStories.Locked.ToString()) });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = successStories.Locked.ToString() });
                     }
-
-#if DEBUG
-                    logger.Debug($"SuccessStory - SuccessStory.SelectedGameAchievements: ({JsonConvert.SerializeObject(SuccessStory.SelectedGameAchievements)})");
-#endif
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_HasData", Value = true });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_Is100Percent", Value = SuccessStory.SelectedGameAchievements.Is100Percent });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_Total", Value = SuccessStory.SelectedGameAchievements.Total });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_TotalDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Total.ToString()) });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_TotalString", Value = SuccessStory.SelectedGameAchievements.Total.ToString() });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_Unlocked", Value = SuccessStory.SelectedGameAchievements.Unlocked });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Unlocked.ToString()) });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_UnlockedString", Value = SuccessStory.SelectedGameAchievements.Unlocked.ToString() });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = SuccessStory.SelectedGameAchievements.Locked });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = double.Parse(SuccessStory.SelectedGameAchievements.Locked.ToString()) });
-                    resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = SuccessStory.SelectedGameAchievements.Locked.ToString() });
-
 
                     // If not cancel, show
-                    if (!ct.IsCancellationRequested && _PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
+                    if (!ct.IsCancellationRequested && GameSelected.Id == SuccessStory.GameSelected.Id)
                     {
                         ui.AddResources(resourcesLists);
 
-                        if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
+                        if (_PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
                         {
-                            Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                            {
-                                if (_Settings.EnableIntegrationButton)
-                                {
-#if DEBUG
-                                    logger.Debug($"SuccessStory - RefreshBtActionBar()");
-#endif
-                                    try
-                                    {
-                                        RefreshBtActionBar();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Common.LogError(ex, "SuccessStory", $"Error on RefreshBtActionBar()");
-                                    }
-                                }
-
-                                if (_Settings.EnableIntegrationInDescription)
-                                {
-#if DEBUG
-                                    logger.Debug($"SuccessStory - RefreshSpDescription()");
-#endif
-                                    try
-                                    {
-                                        RefreshSpDescription();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Common.LogError(ex, "SuccessStory", $"Error on RefreshSpDescription()");
-                                    }
-                                }
-
-                                if (_Settings.EnableIntegrationInCustomTheme)
-                                {
-#if DEBUG
-                                    logger.Debug($"SuccessStory - RefreshCustomElements()");
-#endif
-                                    try
-                                    {
-                                        RefreshCustomElements();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Common.LogError(ex, "SuccessStory", $"Error on RefreshCustomElements()");
-                                    }
-                                }
-                            });
+                            PluginDatabase.SetCurrent(successStories);
                         }
-                        else
-                        {
-#if DEBUG
-                            logger.Debug($"SuccessStory - No data for {SuccessStory.GameSelected.Name}");
-#endif
-                        }
-                    }
-                    else
-                    {
-#if DEBUG
-                        IsCanceld = " canceled";
-#endif
                     }
                 }
                 catch (Exception ex)
@@ -356,16 +241,7 @@ namespace SuccessStory.Services
         #region BtActionBar
         public override void InitialBtActionBar()
         {
-            Application.Current.Dispatcher.BeginInvoke((Action)delegate
-            {
-                if (PART_BtActionBar != null)
-                {
-#if DEBUG
-                    logger.Debug($"SuccessStory - PART_BtActionBar {PART_BtActionBar.Name}");
-#endif
-                    PART_BtActionBar.Visibility = Visibility.Collapsed;
-                }
-            });
+
         }
 
         public override void AddBtActionBar()
@@ -380,36 +256,36 @@ namespace SuccessStory.Services
 
             FrameworkElement BtActionBar;
 
-            if (_Settings.EnableIntegrationInDescriptionWithToggle)
+            if (PluginDatabase.PluginSettings.EnableIntegrationInDescriptionWithToggle)
             {
-                if (_Settings.EnableIntegrationButtonDetails)
+                if (PluginDatabase.PluginSettings.EnableIntegrationButtonDetails)
                 {
                     BtActionBar = new SuccessStoryToggleButtonDetails();
                 }
                 else
                 {
-                    BtActionBar = new SuccessStoryToggleButton(_Settings);
+                    BtActionBar = new SuccessStoryToggleButton();
                 }
 
                 ((ToggleButton)BtActionBar).Click += OnBtActionBarToggleButtonClick;
             }
             else
             {
-                if (_Settings.EnableIntegrationButtonDetails)
+                if (PluginDatabase.PluginSettings.EnableIntegrationButtonDetails)
                 {
                     BtActionBar = new SuccessStoryButtonDetails();
                 }
                 else
                 {
-                    BtActionBar = new SuccessStoryButton(_Settings.EnableIntegrationInDescriptionOnlyIcon);
+                    BtActionBar = new SuccessStoryButton(PluginDatabase.PluginSettings.EnableIntegrationInDescriptionOnlyIcon);
                 }
 
                 ((Button)BtActionBar).Click += OnBtActionBarClick;
             }
 
-            if (!_Settings.EnableIntegrationInDescriptionOnlyIcon)
+            if (!PluginDatabase.PluginSettings.EnableIntegrationInDescriptionOnlyIcon)
             {
-                BtActionBar.Width = 150;
+                BtActionBar.MinWidth = 150;
             }
 
             BtActionBar.Name = BtActionBarName;
@@ -428,29 +304,7 @@ namespace SuccessStory.Services
 
         public override void RefreshBtActionBar()
         {
-            if (PART_BtActionBar != null)
-            {
-                PART_BtActionBar.Visibility = Visibility.Visible;
 
-                try
-                {
-                    if (PART_BtActionBar != null && PART_BtActionBar is SuccessStoryButtonDetails)
-                    {
-                        ((SuccessStoryButtonDetails)PART_BtActionBar).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
-                    }
-                    if (PART_BtActionBar != null && PART_BtActionBar is SuccessStoryToggleButtonDetails)
-                    {
-                        ((SuccessStoryToggleButtonDetails)PART_BtActionBar).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
-                    }
-                }
-                catch
-                {
-                }
-            }
-            else
-            {
-                logger.Warn($"SuccessStory - PART_BtActionBar is not defined");
-            }
         }
 
 
@@ -460,13 +314,13 @@ namespace SuccessStory.Services
             logger.Debug($"SuccessStory - OnBtActionBarClick()");
 #endif
             SuccessView ViewExtension = null;
-            if (_Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(_PlayniteApi, SuccessStory.GameSelected))
+            if (PluginDatabase.PluginSettings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(_PlayniteApi, SuccessStory.GameSelected))
             {
-                ViewExtension = new SuccessView(_Plugin, _Settings, _PlayniteApi, _Plugin.GetPluginUserDataPath(), true, SuccessStory.GameSelected);
+                ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), true, SuccessStory.GameSelected);
             }
             else
             {
-                ViewExtension = new SuccessView(_Plugin, _Settings, _PlayniteApi, _Plugin.GetPluginUserDataPath(), false, SuccessStory.GameSelected);
+                ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), false, SuccessStory.GameSelected);
             }
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
             windowExtension.ShowDialog();
@@ -474,7 +328,7 @@ namespace SuccessStory.Services
 
         public void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)
         {
-            if (_Settings.EnableIntegrationInCustomTheme)
+            if (PluginDatabase.PluginSettings.EnableIntegrationInCustomTheme)
             {
                 string ButtonName = string.Empty;
                 try
@@ -500,13 +354,7 @@ namespace SuccessStory.Services
         #region SpDescription
         public override void InitialSpDescription()
         {
-            Application.Current.Dispatcher.BeginInvoke((Action)delegate
-            {
-                if (PART_SpDescription != null)
-                {
-                    PART_SpDescription.Visibility = Visibility.Collapsed;
-                }
-            });
+
         }
 
         public override void AddSpDescription()
@@ -521,13 +369,13 @@ namespace SuccessStory.Services
 
             try
             {
-                ScDescriptionIntegration SpDescription = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements);
+                ScDescriptionIntegration SpDescription = new ScDescriptionIntegration();
                 SpDescription.Name = SpDescriptionName;
 
-                ui.AddElementInGameSelectedDescription(SpDescription, _Settings.IntegrationTopGameDetails);
+                ui.AddElementInGameSelectedDescription(SpDescription, PluginDatabase.PluginSettings.IntegrationTopGameDetails);
                 PART_SpDescription = IntegrationUI.SearchElementByName(SpDescriptionName);
 
-                if (_Settings.EnableIntegrationInDescriptionWithToggle && PART_SpDescription != null)
+                if (PluginDatabase.PluginSettings.EnableIntegrationInDescriptionWithToggle && PART_SpDescription != null)
                 {
                     if (PART_BtActionBar != null && PART_BtActionBar is ToggleButton)
                     {
@@ -537,7 +385,7 @@ namespace SuccessStory.Services
                     {
                         logger.Warn($"SuccessStory - PART_BtActionBar is null or not ToggleButton");
                     }
-                    
+
                     PART_SpDescription.Visibility = Visibility.Collapsed;
                 }
             }
@@ -549,35 +397,7 @@ namespace SuccessStory.Services
 
         public override void RefreshSpDescription()
         {
-            if (PART_SpDescription != null)
-            {
-                if (PART_SpDescription is ScDescriptionIntegration)
-                {
-                    ((ScDescriptionIntegration)PART_SpDescription).SetScData(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements);
 
-                    if (_Settings.EnableIntegrationInDescriptionWithToggle && PART_SpDescription != null)
-                    {
-                        if (PART_BtActionBar != null && PART_BtActionBar is ToggleButton)
-                        {
-                            ((ToggleButton)PART_BtActionBar).IsChecked = false;
-                        }
-                        else
-                        {
-                            logger.Warn($"SuccessStory - PART_BtActionBar is null or not ToggleButton");
-                        }
-
-                        PART_SpDescription.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        PART_SpDescription.Visibility = Visibility.Visible;
-                    }
-                }
-            }
-            else
-            {
-                logger.Warn($"SuccessStory - PART_SpDescription is not defined");
-            }
         }
         #endregion
 
@@ -585,13 +405,7 @@ namespace SuccessStory.Services
         #region CustomElements
         public override void InitialCustomElements()
         {
-            Application.Current.Dispatcher.BeginInvoke((Action)delegate
-            {
-                foreach (CustomElement customElement in ListCustomElements)
-                {
-                    customElement.Element.Visibility = Visibility.Collapsed;
-                }
-            });
+
         }
 
         public override void AddCustomElements()
@@ -694,9 +508,9 @@ namespace SuccessStory.Services
             }
 
 
-            if (PART_Achievements_ProgressBar != null && _Settings.IntegrationShowProgressBar)
+            if (PART_Achievements_ProgressBar != null && PluginDatabase.PluginSettings.IntegrationShowProgressBar)
             {
-                PART_Achievements_ProgressBar = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements, true, false, false, false, false, true);
+                PART_Achievements_ProgressBar = new SuccessStoryAchievementsProgressBar();
                 PART_Achievements_ProgressBar.Name = "Achievements_ProgressBar";
                 try
                 {
@@ -715,9 +529,9 @@ namespace SuccessStory.Services
 #endif
             }
 
-            if (PART_Achievements_Graphics != null && _Settings.IntegrationShowGraphic)
+            if (PART_Achievements_Graphics != null && PluginDatabase.PluginSettings.IntegrationShowGraphic)
             {
-                PART_Achievements_Graphics = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements, true, true, false, false, false, false);
+                PART_Achievements_Graphics = new SuccessStoryAchievementsGraphics();
                 PART_Achievements_Graphics.Name = "Achievements_Graphics";
                 try
                 {
@@ -736,9 +550,9 @@ namespace SuccessStory.Services
 #endif
             }
 
-            if (PART_Achievements_List != null && _Settings.IntegrationShowAchievements)
+            if (PART_Achievements_List != null && PluginDatabase.PluginSettings.IntegrationShowAchievements)
             {
-                PART_Achievements_List = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements, true, false, true, false, false, false);
+                PART_Achievements_List = new SuccessStoryAchievementsList();
                 PART_Achievements_List.Name = "Achievements_List";
                 try
                 {
@@ -757,9 +571,9 @@ namespace SuccessStory.Services
 #endif
             }
 
-            if (PART_Achievements_ListCompactUnlocked != null && _Settings.IntegrationShowAchievements)
+            if (PART_Achievements_ListCompactUnlocked != null && PluginDatabase.PluginSettings.IntegrationShowAchievements)
             {
-                PART_Achievements_ListCompactUnlocked = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements, true, false, false, false, true, false);
+                PART_Achievements_ListCompactUnlocked = new SuccessStoryAchievementsCompact(true);
                 PART_Achievements_ListCompactUnlocked.Name = "Achievements_ListCompactUnlocked";
                 try
                 {
@@ -778,9 +592,9 @@ namespace SuccessStory.Services
 #endif
             }
 
-            if (PART_Achievements_ListCompactLocked != null && _Settings.IntegrationShowAchievements)
+            if (PART_Achievements_ListCompactLocked != null && PluginDatabase.PluginSettings.IntegrationShowAchievements)
             {
-                PART_Achievements_ListCompactLocked = new ScDescriptionIntegration(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements, true, false, false, true, false, false);
+                PART_Achievements_ListCompactLocked = new SuccessStoryAchievementsCompact();
                 PART_Achievements_ListCompactLocked.Name = "Achievements_ListCompactLocked";
                 try
                 {
@@ -802,81 +616,7 @@ namespace SuccessStory.Services
 
         public override void RefreshCustomElements()
         {
-#if DEBUG
-            logger.Debug($"SuccessStory - ListCustomElements - {ListCustomElements.Count}");
-#endif
-            foreach (CustomElement customElement in ListCustomElements)
-            {
-                try
-                {
-                    bool isFind = false;
 
-                    if (customElement.Element is SuccessStoryButton)
-                    {
-#if DEBUG
-                        logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButton");
-#endif
-                        isFind = true;
-                        if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
-                        {
-                            customElement.Element.Visibility = Visibility.Visible;
-                        }
-                        else
-                        {
-#if DEBUG
-                            logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButton with no data");
-#endif
-                        }
-                    }
-
-                    if (customElement.Element is SuccessStoryButtonDetails)
-                    {
-#if DEBUG
-                        logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButtonDetails");
-#endif
-                        isFind = true;
-                        if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
-                        {
-                            customElement.Element.Visibility = Visibility.Visible;
-                            ((SuccessStoryButtonDetails)customElement.Element).SetScData(SuccessStory.SelectedGameAchievements.Unlocked, SuccessStory.SelectedGameAchievements.Total);
-                        }
-                        else
-                        {
-#if DEBUG
-                            logger.Debug($"SuccessStory - customElement.Element is SuccessStoryButton with no data");
-#endif
-                        }                        
-                    }
-
-                    if (customElement.Element is ScDescriptionIntegration)
-                    {
-#if DEBUG
-                        logger.Debug($"SuccessStory - customElement.Element is ScDescriptionIntegration");
-#endif
-                        isFind = true;
-                        if (SuccessStory.SelectedGameAchievements != null && SuccessStory.SelectedGameAchievements.HaveAchivements)
-                        {
-                            customElement.Element.Visibility = Visibility.Visible;
-                            ((ScDescriptionIntegration)customElement.Element).SetScData(_Settings, SuccessStory.achievementsDatabase, SuccessStory.SelectedGameAchievements);
-                        }
-                        else
-                        {
-#if DEBUG
-                            logger.Debug($"SuccessStory - customElement.Element is ScDescriptionIntegration with no data");
-#endif
-                        }
-                    }
-
-                    if (!isFind)
-                    {
-                        logger.Warn($"SuccessStory - RefreshCustomElements({customElement.ParentElementName})");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, "SuccessStory", $"Error on RefreshCustomElements()");
-                }
-            }
         }
         #endregion
     }

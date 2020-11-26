@@ -109,10 +109,12 @@
     <Compile Include="Clients\XboxAchievements.cs" />
     <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\Achievements.cs" />
-    <Compile Include="Database\AchievementsDatabase.cs" />
     <Compile Include="Models\ListAchievements.cs" />
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
+    <Compile Include="Models\SuccessStories.cs" />
+    <Compile Include="Models\SuccessStoryCollection.cs" />
+    <Compile Include="Services\SuccessStoryDatabase.cs" />
     <Compile Include="Services\SuccessStoryUI.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
@@ -217,6 +219,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Common.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </None>
     <Page Include="Views\Interface\ScDescriptionIntegration.xaml">
       <SubType>Designer</SubType>

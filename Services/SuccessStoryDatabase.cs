@@ -1,37 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using LiveCharts;
+using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using System;
-using System.Linq;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using SuccessStory.Database;
-using SuccessStory.Clients;
 using PluginCommon;
-using LiveCharts;
+using PluginCommon.Collections;
 using PluginCommon.LiveChartsCommon;
-using Newtonsoft.Json.Linq;
+using SuccessStory.Clients;
+using SuccessStory.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SuccessStory.Models
+namespace SuccessStory.Services
 {
-    public class AchievementsDatabase : ICloneable
+    public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettings, SuccessStoryCollection, SuccessStories>
     {
-        // Variable Playnite
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
+        private SuccessStory _plugin;
 
-        private IPlayniteAPI _PlayniteApi { get; set; }
-
-        SuccessStory _plugin { get; set; }
-        SuccessStorySettings _settings { get; set; }
-
-        // Variable AchievementsCollection
-        private ConcurrentDictionary<Guid, GameAchievements> PluginDatabase { get; set; } = new ConcurrentDictionary<Guid, GameAchievements>();
-        private string _PluginUserDataPath { get; set; }
-        private string PluginDatabasePath { get; set; }
-        private bool _isRetroachievements { get; set; }
+        private GogAchievements gogAPI { get; set; }
+        private OriginAchievements originAPI { get; set; }
+        private XboxAchievements xboxAPI { get; set; }
 
         public static bool? VerifToAddOrShowGog = null;
         public static bool? VerifToAddOrShowOrigin = null;
@@ -39,143 +29,169 @@ namespace SuccessStory.Models
         public static bool? VerifToAddOrShowSteam = null;
         public static bool? VerifToAddOrShowXbox = null;
 
+        private bool _isRetroachievements { get; set; }
 
         public static CumulErrors ListErrors = new CumulErrors();
 
-        public ConcurrentDictionary<Guid, GameAchievements> gameAchievements
-        {
-            get
-            {
-                return PluginDatabase;
-            }
-        }
 
-        public bool VerifAchievementsLoad(Guid gameID)
-        {
-            return File.Exists(PluginDatabasePath + gameID.ToString() + ".json");
-        }
-
-        public AchievementsDatabase(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings Settings, string PluginUserDataPath, bool isRetroachievements = false)
+        public SuccessStoryDatabase(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings PluginSettings, string PluginUserDataPath) : base(PlayniteApi, PluginSettings, PluginUserDataPath)
         {
             _plugin = plugin;
-            _PlayniteApi = PlayniteApi;
-            _settings = Settings;
-            _PluginUserDataPath = PluginUserDataPath;
-            _isRetroachievements = isRetroachievements;
-            PluginDatabasePath = PluginUserDataPath + "\\achievements\\";
 
-            if (!Directory.Exists(PluginDatabasePath))
-            {
-                Directory.CreateDirectory(PluginDatabasePath);
-            }
+            PluginName = "SuccessStory";
+
+            ControlAndCreateDirectory(PluginUserDataPath, "Achievements");
         }
+
+
+        protected override bool LoadDatabase()
+        {
+            IsLoaded = false;
+            Database = new SuccessStoryCollection(PluginDatabaseDirectory);
+            Database.SetGameInfo<Achievements>(_PlayniteApi);
+
+#if DEBUG
+            logger.Debug($"{PluginName} - db: {JsonConvert.SerializeObject(Database)}");
+#endif
+
+            GameSelectedData = new SuccessStories();
+            GetPluginTags();
+
+            IsLoaded = true;
+            return true;
+        }
+
+
+        public override SuccessStories Get(Guid Id, bool OnlyCache = false)
+        {
+            GameIsLoaded = false;
+            SuccessStories successStories = GetOnlyCache(Id);
+#if DEBUG
+            logger.Debug($"{PluginName} - GetFromDb({Id.ToString()}) - successStories: {JsonConvert.SerializeObject(successStories)}");
+#endif
+
+            // Get from web
+            if (successStories == null && !OnlyCache)
+            {
+                successStories = GetFromWeb(_PlayniteApi.Database.Games.Get(Id));
+                Add(successStories);
+
+#if DEBUG
+                logger.Debug($"{PluginName} - GetFromWeb({Id.ToString()}) - successStories: {JsonConvert.SerializeObject(successStories)}");
+#endif
+            }
+
+            if (successStories == null)
+            {
+                Game game = _PlayniteApi.Database.Games.Get(Id);
+                successStories = GetDefault(game);
+                Add(successStories);
+            }
+
+            GameIsLoaded = true;
+            return successStories;
+        }
+
+
+        public override SuccessStories GetDefault(Game game)
+        {
+            return new SuccessStories
+            {
+                Id = game.Id,
+                Name = game.Name,
+                SourceId = game.SourceId,
+                Hidden = game.Hidden,
+                Icon = game.Icon,
+                CoverImage = game.CoverImage,
+                GenreIds = game.GenreIds,
+                Genres = game.Genres,
+                Playtime = game.Playtime,
+                LastActivity = game.LastActivity
+            };
+        }
+
 
         /// <summary>
-        /// Initialize database / create directory.
+        /// Generate database achivements for the game if achievement exist and game not exist in database.
         /// </summary>
-        /// <param name="PlayniteApi"></param>
-        /// <param name="PluginUserDataPath"></param>
-        public void Initialize(bool ignore = true)
+        /// <param name="game"></param>
+        public SuccessStories GetFromWeb(Game game)
         {
-            ListErrors = new CumulErrors();
+            SuccessStories successStories = GetDefault(game);
 
-            PluginDatabase = new ConcurrentDictionary<Guid, GameAchievements>();
+            Guid GameId = game.Id;
+            Guid GameSourceId = game.SourceId;
+            string GameSourceName = PlayniteTools.GetSourceName(_PlayniteApi, game);
 
-            Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
+            List<Achievements> Achievements = new List<Achievements>();
+
+            // Generate database only this source
+            if (VerifToAddOrShow(_plugin, _PlayniteApi, PluginSettings, PluginUserDataPath, GameSourceName))
             {
-                try
-                {
-                    // Get game achievements.
-                    Guid gameId = Guid.Parse(objectFile.Replace(PluginDatabasePath, string.Empty).Replace(".json", string.Empty));
-
-                    bool IncludeGame = true;
-                    if (!_settings.IncludeHiddenGames)
-                    {
-                        Game tempGame = _PlayniteApi.Database.Games.Get(gameId);                       
-                        
-                        if (tempGame != null)
-                        {
-                            IncludeGame = !tempGame.Hidden;
-                        }
-                        else
-                        {
-                            IncludeGame = false;
 #if DEBUG
-                            logger.Debug($"SuccessStory - {gameId} is null");
+                logger.Debug($"SuccessStory - VerifToAddOrShow({game.Name}, {GameSourceName}) - OK");
 #endif
-                        }
-                    }
 
-                    if (IncludeGame)
+                // TODO one func
+                if (GameSourceName.ToLower() == "gog")
+                {
+                    if (gogAPI == null)
                     {
-                        GameAchievements objGameAchievements = JsonConvert.DeserializeObject<GameAchievements>(File.ReadAllText(objectFile));
-
-                        // Set game achievements in database.
-                        PluginDatabase.TryAdd(gameId, objGameAchievements);
+                        gogAPI = new GogAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     }
+                    successStories = gogAPI.GetAchievements(game);
                 }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, "SuccessStory", $"Failed to load item from { objectFile}");
-                    ListErrors.Add($"SuccessStory - Failed to load item from {objectFile}");
-                }
-            });
 
-            // Filters
-            if (_settings.EnableRetroAchievementsView && !ignore)
+                if (GameSourceName.ToLower() == "steam")
+                {
+                    SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    successStories = steamAPI.GetAchievements(game);
+                }
+
+                if (GameSourceName.ToLower() == "origin")
+                {
+                    if (originAPI == null)
+                    {
+                        originAPI = new OriginAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    }
+                    successStories = originAPI.GetAchievements(game);
+                }
+
+                if (GameSourceName.ToLower() == "xbox")
+                {
+                    if (xboxAPI == null)
+                    {
+                        xboxAPI = new XboxAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    }
+                    successStories = xboxAPI.GetAchievements(game);
+                }
+
+                if (GameSourceName.ToLower() == "playnite")
+                {
+                    SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    steamAPI.SetLocal();
+                    successStories = steamAPI.GetAchievements(game);
+                }
+
+                if (GameSourceName.ToLower() == "retroachievements")
+                {
+                    RetroAchievements retroAchievementsAPI = new RetroAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    successStories = retroAchievementsAPI.GetAchievements(game);
+                }
+
+#if DEBUG
+                logger.Debug($"SuccessStory - Achievements for {game.Name} - {GameSourceName} - {JsonConvert.SerializeObject(successStories)}");
+#endif
+            }
+            else
             {
-                if (_isRetroachievements)
-                {
-                    var a = PluginDatabase.Where(x => IsEmulatedGame(x));
-                    var b = a.ToDictionary(x => x.Key, x => x.Value);
-                    PluginDatabase = ToConcurrent(b);
-                }
-                else
-                {
-                    var a = PluginDatabase.Where(x => !IsEmulatedGame(x));
-                    var b = a.ToDictionary(x => x.Key, x => x.Value);
-                    PluginDatabase = ToConcurrent(b);
-                }
+#if DEBUG
+                logger.Debug($"SuccessStory - VerifToAddOrShow({game.Name}, {GameSourceName}) - KO");
+#endif
             }
 
-            if (ListErrors.Get() != string.Empty)
-            {
-                _PlayniteApi.Dialogs.ShowErrorMessage(ListErrors.Get(), "SuccessStory errors");
-            }
-
-            ListErrors = new CumulErrors();
+            return successStories;
         }
-
-        public void Filter(bool ignore = true)
-        {
-            if (_settings.EnableRetroAchievementsView && !ignore)
-            {
-                if (_isRetroachievements)
-                {
-                    var a = PluginDatabase.Where(x => IsEmulatedGame(x));
-                    var b = a.ToDictionary(x => x.Key, x => x.Value);
-                    PluginDatabase = ToConcurrent(b);
-                }
-                else
-                {
-                    var a = PluginDatabase.Where(x => !IsEmulatedGame(x));
-                    var b = a.ToDictionary(x => x.Key, x => x.Value);
-                    PluginDatabase = ToConcurrent(b);
-                }
-            }
-        }
-
-        private ConcurrentDictionary<TKey, TValue> ToConcurrent<TKey, TValue>(Dictionary<TKey, TValue> dic)
-        {
-            return new ConcurrentDictionary<TKey, TValue>(dic);
-        }
-
-        private bool IsEmulatedGame(KeyValuePair<Guid, GameAchievements> x)
-        {
-            Game game = _PlayniteApi.Database.Games.Get(x.Key);
-            return PlayniteTools.IsGameEmulated(_PlayniteApi, game);
-        }
-
 
 
         /// <summary>
@@ -207,9 +223,14 @@ namespace SuccessStory.Models
 
                 try
                 {
-                    foreach (var item in PluginDatabase)
+                    foreach (var item in Database.Items)
                     {
-                        List<Achievements> temp = item.Value.Achievements;
+                        if (!item.Value.HaveAchivements || item.Value.IsDeleted == false)
+                        {
+                            continue;
+                        }
+
+                        List<Achievements> temp = item.Value.Items;
                         foreach (Achievements itemAchievements in temp)
                         {
                             if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
@@ -236,7 +257,7 @@ namespace SuccessStory.Models
             {
                 try
                 {
-                    List<Achievements> Achievements = Get((Guid)GameID).Achievements;
+                    List<Achievements> Achievements = GetOnlyCache((Guid)GameID).Items;
 
                     if (Achievements != null && Achievements.Count > 0)
                     {
@@ -286,34 +307,34 @@ namespace SuccessStory.Models
         {
             List<string> tempSourcesLabels = new List<string>();
 
-            if (_settings.EnableRetroAchievementsView && _settings.EnableRetroAchievements)
+            if (PluginSettings.EnableRetroAchievementsView && PluginSettings.EnableRetroAchievements)
             {
                 if (_isRetroachievements)
                 {
-                    if (_settings.EnableRetroAchievements)
+                    if (PluginSettings.EnableRetroAchievements)
                     {
                         tempSourcesLabels.Add("RetroAchievements");
                     }
                 }
                 else
                 {
-                    if (_settings.EnableGog)
+                    if (PluginSettings.EnableGog)
                     {
                         tempSourcesLabels.Add("GOG");
                     }
-                    if (_settings.EnableSteam)
+                    if (PluginSettings.EnableSteam)
                     {
                         tempSourcesLabels.Add("Steam");
                     }
-                    if (_settings.EnableOrigin)
+                    if (PluginSettings.EnableOrigin)
                     {
                         tempSourcesLabels.Add("Origin");
                     }
-                    if (_settings.EnableXbox)
+                    if (PluginSettings.EnableXbox)
                     {
                         tempSourcesLabels.Add("Xbox");
                     }
-                    if (_settings.EnableLocal)
+                    if (PluginSettings.EnableLocal)
                     {
                         tempSourcesLabels.Add("Playnite");
                     }
@@ -321,27 +342,27 @@ namespace SuccessStory.Models
             }
             else
             {
-                if (_settings.EnableGog)
+                if (PluginSettings.EnableGog)
                 {
                     tempSourcesLabels.Add("GOG");
                 }
-                if (_settings.EnableSteam)
+                if (PluginSettings.EnableSteam)
                 {
                     tempSourcesLabels.Add("Steam");
                 }
-                if (_settings.EnableOrigin)
+                if (PluginSettings.EnableOrigin)
                 {
                     tempSourcesLabels.Add("Origin");
                 }
-                if (_settings.EnableXbox)
+                if (PluginSettings.EnableXbox)
                 {
                     tempSourcesLabels.Add("Xbox");
                 }
-                if (_settings.EnableRetroAchievements)
+                if (PluginSettings.EnableRetroAchievements)
                 {
                     tempSourcesLabels.Add("RetroAchievements");
                 }
-                if (_settings.EnableLocal)
+                if (PluginSettings.EnableLocal)
                 {
                     tempSourcesLabels.Add("Playnite");
                 }
@@ -362,15 +383,18 @@ namespace SuccessStory.Models
             }
 
 
-            foreach (var item in PluginDatabase)
+            foreach (var item in Database.Items)
             {
+                if (!item.Value.HaveAchivements || item.Value.IsDeleted == false)
+                {
+                    continue;
+                }
+
                 try
                 {
-                    Game game = _PlayniteApi.Database.Games.Get(item.Key);
+                    string SourceName = PlayniteTools.GetSourceName(_PlayniteApi, item.Key);
 
-                    string SourceName = PlayniteTools.GetSourceName(game, _PlayniteApi);
-
-                    foreach (Achievements achievements in item.Value.Achievements)
+                    foreach (Achievements achievements in item.Value.Items)
                     {
                         for (int i = 0; i < tempDataUnlocked.Count; i++)
                         {
@@ -455,10 +479,15 @@ namespace SuccessStory.Models
                 }
 
                 try
-                { 
-                    foreach (var item in PluginDatabase)
+                {
+                    foreach (var item in Database.Items)
                     {
-                        List<Achievements> temp = item.Value.Achievements;
+                        if (!item.Value.HaveAchivements || item.Value.IsDeleted == false)
+                        {
+                            continue;
+                        }
+
+                        List<Achievements> temp = item.Value.Items;
                         foreach (Achievements itemAchievements in temp)
                         {
                             if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
@@ -483,8 +512,9 @@ namespace SuccessStory.Models
             // Achievement for a game
             else
             {
-                try { 
-                    List<Achievements> Achievements = Get((Guid)GameID).Achievements;
+                try
+                {
+                    List<Achievements> Achievements = GetOnlyCache((Guid)GameID).Items;
 
                     if (Achievements != null && Achievements.Count > 0)
                     {
@@ -533,29 +563,12 @@ namespace SuccessStory.Models
 
 
         /// <summary>
-        /// Get Config and Achivements for a game.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public GameAchievements Get(Guid id)
-        {
-            if (PluginDatabase.TryGetValue(id, out var item))
-            {
-                return item;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="GameSourceName"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI PlayniteApi, string GameSourceName, SuccessStorySettings settings, string PluginUserDataPath)
+        public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath, string GameSourceName)
         {
             if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
@@ -679,16 +692,16 @@ namespace SuccessStory.Models
                 {
                     XboxAchievements xboxAchievements = new XboxAchievements(PlayniteApi, settings, PluginUserDataPath);
 
-//#if DEBUG
+                    //#if DEBUG
                     logger.Debug($"SuccessStory - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
-//#endif
+                    //#endif
                     if (VerifToAddOrShowXbox == null)
                     {
                         VerifToAddOrShowXbox = xboxAchievements.IsConnected();
                     }
-//#if DEBUG
+                    //#if DEBUG
                     logger.Debug($"SuccessStory - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
-//#endif
+                    //#endif
 
                     if (!(bool)VerifToAddOrShowXbox)
                     {
@@ -732,41 +745,37 @@ namespace SuccessStory.Models
         }
 
 
-        private GogAchievements gogAPI { get; set; }
-        private OriginAchievements originAPI { get; set; }
-        private XboxAchievements xboxAPI { get; set; }
-
-        public void InitializeMultipleAdd(SuccessStorySettings settings, string GameSourceName = "all")
+        public void InitializeMultipleAdd(string GameSourceName = "all")
         {
             switch (GameSourceName.ToLower())
             {
                 case "all":
-                    InitializeMultipleAdd(settings, "Steam");
-                    InitializeMultipleAdd(settings, "GOG");
-                    InitializeMultipleAdd(settings, "Origin");
+                    InitializeMultipleAdd("Steam");
+                    InitializeMultipleAdd("GOG");
+                    InitializeMultipleAdd("Origin");
                     break;
 
                 case "steam":
                     break;
 
                 case "gog":
-                    if (!PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", _PlayniteApi.Paths.ConfigurationPath) && settings.EnableGog && gogAPI == null)
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", _PlayniteApi.Paths.ConfigurationPath) && PluginSettings.EnableGog && gogAPI == null)
                     {
-                        gogAPI = new GogAchievements(_PlayniteApi, settings, _PluginUserDataPath);
+                        gogAPI = new GogAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     }
                     break;
 
                 case "origin":
                     if (!PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary", _PlayniteApi.Paths.ConfigurationPath) && originAPI == null)
                     {
-                        originAPI = new OriginAchievements(_PlayniteApi, settings, _PluginUserDataPath);
+                        originAPI = new OriginAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     }
                     break;
 
                 case "Xbox":
                     if (!PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary", _PlayniteApi.Paths.ConfigurationPath) && xboxAPI == null)
                     {
-                        xboxAPI = new XboxAchievements(_PlayniteApi, settings, _PluginUserDataPath);
+                        xboxAPI = new XboxAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     }
                     break;
 
@@ -776,141 +785,9 @@ namespace SuccessStory.Models
         }
 
 
-
-        /// <summary>
-        /// Generate database achivements for the game if achievement exist and game not exist in database.
-        /// </summary>
-        /// <param name="GameAdded"></param>
-        public void Add(Game GameAdded, SuccessStorySettings settings)
+        public bool VerifAchievementsLoad(Guid gameID)
         {
-            GameAchievements GameAchievements = new GameAchievements();
-
-            Guid GameId = GameAdded.Id;
-            Guid GameSourceId = GameAdded.SourceId;
-            string GameSourceName = PlayniteTools.GetSourceName(GameAdded, _PlayniteApi);
-            string PluginDatabaseGamePath = PluginDatabasePath + GameId.ToString() + ".json";
-      
-            List<Achievements> Achievements = new List<Achievements>();
-
-            // Generate database only this source
-            if (VerifToAddOrShow(_plugin, _PlayniteApi, GameSourceName, settings, _PluginUserDataPath))
-            {
-                // Generate only not exist
-                if (!File.Exists(PluginDatabaseGamePath))
-                {
-#if DEBUG
-                    logger.Debug($"SuccessStory - VerifToAddOrShow({GameAdded.Name}, {GameSourceName}) - OK");
-#endif
-
-                    // TODO one func
-                    if (GameSourceName.ToLower() == "gog")
-                    {
-                        if (gogAPI == null)
-                        {
-                            gogAPI = new GogAchievements(_PlayniteApi, settings, _PluginUserDataPath);
-                        }
-                        GameAchievements = gogAPI.GetAchievements(GameAdded);
-                    }
-
-                    if (GameSourceName.ToLower() == "steam")
-                    {
-                        SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, settings, _PluginUserDataPath);
-                        GameAchievements = steamAPI.GetAchievements(GameAdded);
-                    }
-
-                    if (GameSourceName.ToLower() == "origin")
-                    {
-                        if (originAPI == null)
-                        {
-                            originAPI = new OriginAchievements(_PlayniteApi, settings, _PluginUserDataPath);
-                        }
-                        GameAchievements = originAPI.GetAchievements(GameAdded);
-                    }
-
-                    if (GameSourceName.ToLower() == "xbox")
-                    {
-                        if (xboxAPI == null)
-                        {
-                            xboxAPI = new XboxAchievements(_PlayniteApi, settings, _PluginUserDataPath);
-                        }
-                        GameAchievements = xboxAPI.GetAchievements(GameAdded);
-                    }
-
-                    if (GameSourceName.ToLower() == "playnite")
-                    {
-                        SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, settings, _PluginUserDataPath);
-                        steamAPI.SetLocal();
-                        GameAchievements = steamAPI.GetAchievements(GameAdded);
-                    }
-
-                    if (GameSourceName.ToLower() == "retroachievements")
-                    {
-                        RetroAchievements retroAchievementsAPI = new RetroAchievements(_PlayniteApi, settings, _PluginUserDataPath);
-                        GameAchievements = retroAchievementsAPI.GetAchievements(GameAdded);
-                    }
-
-#if DEBUG
-                    logger.Debug($"SuccessStory - Achievements for {GameAdded.Name} - {GameSourceName} - {JsonConvert.SerializeObject(GameAchievements)}");
-#endif
-
-                    if (GameAchievements != null)
-                    {
-                        File.WriteAllText(PluginDatabaseGamePath, JsonConvert.SerializeObject(GameAchievements));
-                    }
-                }
-            }
-            else
-            {
-#if DEBUG
-                logger.Debug($"SuccessStory - VerifToAddOrShow({GameAdded.Name}, {GameSourceName}) - KO");
-#endif
-            }
-        }
-
-        /// <summary>
-        /// Remove game achievements in database for a game.
-        /// </summary>
-        /// <param name="GameRemoved"></param>
-        public void Remove(Game GameRemoved)
-        {
-            Guid GameId = GameRemoved.Id;
-            string PluginDatabaseGamePath = PluginDatabasePath + GameId.ToString() + ".json";
-
-            try
-            {
-                if (File.Exists(PluginDatabaseGamePath))
-                {
-                    File.Delete(PluginDatabaseGamePath);
-                    PluginDatabase.TryRemove(GameRemoved.Id, out var value);
-                }
-            }
-            catch
-            {
-            }
-        }
-
-        /// <summary>
-        /// Delete achievements database.
-        /// </summary>
-        public void ResetData()
-        {
-            Parallel.ForEach(Directory.EnumerateFiles(PluginDatabasePath, "*.json"), (objectFile) =>
-            {
-                File.Delete(objectFile);
-            });
-        }
-
-        /// <summary>
-        /// Control game have achieveements.
-        /// </summary>
-        /// <param name="GameId"></param>
-        /// <returns></returns>
-        public bool HaveAchievements(Guid GameId)
-        {
-            if (Get(GameId) != null)
-                return Get(GameId).HaveAchivements;
-            else
-                return false;
+            return GetOnlyCache(gameID) != null;
         }
 
 
@@ -921,10 +798,11 @@ namespace SuccessStory.Models
             int Locked = 0;
             int Unlocked = 0;
 
-            try { 
-                foreach(var item in PluginDatabase)
+            try
+            {
+                foreach (var item in Database.Items)
                 {
-                    GameAchievements GameAchievements = item.Value;
+                    var GameAchievements = item.Value;
 
                     if (GameAchievements.HaveAchivements)
                     {
@@ -956,9 +834,9 @@ namespace SuccessStory.Models
 
             try
             {
-                foreach (var item in PluginDatabase)
+                foreach (var item in Database.Items)
                 {
-                    GameAchievements GameAchievements = item.Value;
+                    var GameAchievements = item.Value;
 
                     if (GameAchievements.HaveAchivements && _PlayniteApi.Database.Games.Get(item.Key).Playtime > 0)
                     {
@@ -970,7 +848,7 @@ namespace SuccessStory.Models
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStroy",  $"Error on ProgessionLaunched()");
+                Common.LogError(ex, "SuccessStroy", $"Error on ProgessionLaunched()");
             }
 
             Result.Total = Total;
@@ -988,11 +866,12 @@ namespace SuccessStory.Models
             int Locked = 0;
             int Unlocked = 0;
 
-            try { 
-                foreach (var item in PluginDatabase)
+            try
+            {
+                foreach (var item in Database.Items)
                 {
                     Guid Id = item.Key;
-                    GameAchievements GameAchievements = item.Value;
+                    var GameAchievements = item.Value;
 
                     if (GameAchievements.HaveAchivements && Id == GameId)
                     {
@@ -1022,12 +901,13 @@ namespace SuccessStory.Models
             int Locked = 0;
             int Unlocked = 0;
 
-            try { 
-                foreach (var item in PluginDatabase)
+            try
+            {
+                foreach (var item in Database.Items)
                 {
                     Guid Id = item.Key;
                     Game Game = _PlayniteApi.Database.Games.Get(Id);
-                    GameAchievements GameAchievements = item.Value;
+                    var GameAchievements = item.Value;
 
                     if (GameAchievements.HaveAchivements && Game.SourceId == GameSourceId)
                     {
@@ -1049,12 +929,8 @@ namespace SuccessStory.Models
 
             return Result;
         }
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
     }
+
 
     public class AchievementsGraphicsDataCount
     {

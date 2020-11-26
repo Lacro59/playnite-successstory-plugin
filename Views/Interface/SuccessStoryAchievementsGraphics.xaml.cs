@@ -1,11 +1,18 @@
 ﻿using LiveCharts;
 using LiveCharts.Configurations;
+using LiveCharts.Wpf;
+using Newtonsoft.Json;
 using Playnite.SDK;
 using PluginCommon;
 using PluginCommon.LiveChartsCommon;
+using SuccessStory.Models;
+using SuccessStory.Services;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace SuccessStory.Views.Interface
 {
@@ -16,12 +23,13 @@ namespace SuccessStory.Views.Interface
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        private bool _withContener;
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
 
-        public SuccessStoryAchievementsGraphics(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels, SuccessStorySettings settings, bool withContener = false)
+        public SuccessStoryAchievementsGraphics()
         {
             InitializeComponent();
+
 
             //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
             var customerVmMapper = Mappers.Xy<CustomerForSingle>()
@@ -30,49 +38,83 @@ namespace SuccessStory.Views.Interface
 
             //lets save the mapper globally
             Charting.For<CustomerForSingle>(customerVmMapper);
-
-            SetScData(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings, withContener);
-        }
-
-        private void StatsGraphicAchievements_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Define height & width
-            var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
-            if (_withContener)
-            {
-                //parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent).Parent);
-                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent);
-            }
-
-#if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsGraphics({_withContener}) - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
-#endif
-
-            if (!double.IsNaN(parent.Height))
-            {
-                ((FrameworkElement)sender).Height = parent.Height;
-            }
-            ((FrameworkElement)((FrameworkElement)sender).Parent).Height = ((FrameworkElement)sender).Height;
-            ((FrameworkElement)sender).Height = ((FrameworkElement)sender).Height + 18;
             
-            if (!double.IsNaN(parent.Width))
+
+            PluginDatabase.PropertyChanged += OnPropertyChanged;
+        }
+
+
+        protected void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            try
             {
-                ((FrameworkElement)sender).Width = parent.Width;
+#if DEBUG
+                logger.Debug($"SuccessStoryAchievementsGraphics.OnPropertyChanged({e.PropertyName}): {JsonConvert.SerializeObject(PluginDatabase.GameSelectedData)}");
+#endif
+                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
+                {
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        SetScData(PluginDatabase.GameSelectedData.Id);
+                    }));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory");
             }
         }
 
-        public void SetScData(SeriesCollection StatsGraphicAchievementsSeries, IList<string> StatsGraphicsAchievementsLabels, SuccessStorySettings settings, bool withContener = false)
+
+        public void SetScData(Guid? Id = null, int limit = 0)
         {
-            _withContener = withContener;
+            AchievementsGraphicsDataCount GraphicsData = null;
+
+            if (limit == 0)
+            {
+                limit = (PluginDatabase.PluginSettings.IntegrationGraphicOptionsCountAbscissa - 1);
+            }
+
+            if (!PluginDatabase.PluginSettings.GraphicAllUnlockedByDay)
+            {
+                GraphicsData = PluginDatabase.GetCountByMonth(Id, limit);
+            }
+            else
+            {
+                GraphicsData = PluginDatabase.GetCountByDay(Id, limit);
+            }
+            string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+            StatsGraphicAchievementsSeries.Add(new LineSeries
+            {
+                Title = string.Empty,
+                Values = GraphicsData.Series
+            });
+
 
             StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
             StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
 
-            if (!settings.IgnoreSettings)
+            if (!PluginDatabase.PluginSettings.IgnoreSettings)
             {
-                StatsGraphicAchievementsX.ShowLabels = settings.EnableIntegrationAxisGraphic;
-                StatsGraphicAchievementsY.ShowLabels = settings.EnableIntegrationOrdinatesGraphic;
+                StatsGraphicAchievementsX.ShowLabels = PluginDatabase.PluginSettings.EnableIntegrationAxisGraphic;
+                StatsGraphicAchievementsY.ShowLabels = PluginDatabase.PluginSettings.EnableIntegrationOrdinatesGraphic;
             }
+        }
+
+
+        public void DisableAnimations(bool IsDisable)
+        {
+            StatsGraphicAchievements.DisableAnimations = IsDisable;
+        }
+
+
+        private void StatsGraphicAchievements_Loaded(object sender, RoutedEventArgs e)
+        {
+            IntegrationUI.SetControlSize((FrameworkElement)sender);
+
+            ((FrameworkElement)((FrameworkElement)sender).Parent).Height = ((FrameworkElement)sender).Height;
+            ((FrameworkElement)sender).Height = ((FrameworkElement)sender).Height + 18;
         }
     }
 }

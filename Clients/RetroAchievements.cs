@@ -1,19 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using PluginCommon;
-using PluginCommon.PlayniteResources;
-using PluginCommon.PlayniteResources.API;
-using PluginCommon.PlayniteResources.Common;
-using PluginCommon.PlayniteResources.Converters;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using SuccessStory.Models;
 using Newtonsoft.Json;
-using SuccessStory.Database;
 using Playnite.SDK.Models;
 using System.IO;
+using SuccessStory.Services;
 
 namespace SuccessStory.Clients
 {
@@ -33,33 +29,21 @@ namespace SuccessStory.Clients
             Key = settings.RetroAchievementsKey;
         }
 
-        public override GameAchievements GetAchievements(Game game)
+
+        public override SuccessStories GetAchievements(Game game)
         {
-            List<Achievements> Achievements = new List<Achievements>();
+            List<Achievements> AllAchievements = new List<Achievements>();
             string GameName = game.Name;
             string ClientId = game.PlayAction.EmulatorId.ToString();
-            bool HaveAchivements = false;
-            int Total = 0;
-            int Unlocked = 0;
-            int Locked = 0;
 
-            GameAchievements Result = new GameAchievements
-            {
-                Name = GameName,
-                HaveAchivements = HaveAchivements,
-                IsEmulators = true,
-                Total = Total,
-                Unlocked = Unlocked,
-                Locked = Locked,
-                Progression = 0,
-                Achievements = Achievements
-            };
+            SuccessStories Result = SuccessStory.PluginDatabase.GetDefault(game);
+            Result.Items = AllAchievements;
 
 
             if (User == string.Empty || Key == string.Empty)
             {
                 logger.Error($"SuccessStory - No RetroAchievement configuration.");
-                AchievementsDatabase.ListErrors.Add($"Error on RetroAchievement: no RetroAchievement configuration in settings menu of plugin.");
+                SuccessStoryDatabase.ListErrors.Add($"Error on RetroAchievement: no RetroAchievement configuration in settings menu of plugin.");
                 return null;
             }
 
@@ -154,7 +138,7 @@ namespace SuccessStory.Clients
             // Get achievements
             if (gameID != 0)
             {
-                Achievements = GetGameInfoAndUserProgress(gameID);
+                AllAchievements = GetGameInfoAndUserProgress(gameID);
             }
             else
             {
@@ -162,16 +146,17 @@ namespace SuccessStory.Clients
                 return Result;
             }
 
-            Result.HaveAchivements = (Achievements.Count > 0);
-            Result.Achievements = Achievements;
-            Result.Total = Achievements.Count;
-            Result.Unlocked = Achievements.FindAll(x => x.DateUnlocked != default(DateTime)).Count;
+            Result.HaveAchivements = (AllAchievements.Count > 0);
+            Result.Items = AllAchievements;
+            Result.Total = AllAchievements.Count;
+            Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != default(DateTime)).Count;
             Result.Locked = Result.Total - Result.Unlocked;
             Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
 
 
             return Result;
         }
+
 
         public override bool IsConfigured()
         {
@@ -263,6 +248,7 @@ namespace SuccessStory.Clients
             return resultObj;
         }
 
+
         private List<Achievements> GetGameInfoAndUserProgress(int gameID)
         {
             List<Achievements> Achievements = new List<Achievements>();
@@ -339,5 +325,4 @@ namespace SuccessStory.Clients
         public string ImageIcon { get; set; }
         public string ConsoleName { get; set; }
     }
-
 }

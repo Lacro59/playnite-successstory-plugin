@@ -7,7 +7,7 @@ using PluginCommon;
 
 namespace SuccessStory.Models
 {
-    public class Achievements
+    public class Achievements : ObservableObject
     {
         public string Name { get; set; }
         public string ApiName { get; set; } = string.Empty;

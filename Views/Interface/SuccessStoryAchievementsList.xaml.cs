@@ -10,6 +10,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Globalization;
 using PluginCommon;
+using SuccessStory.Services;
+using Newtonsoft.Json;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace SuccessStory.Views.Interface
 {
@@ -20,83 +24,41 @@ namespace SuccessStory.Views.Interface
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        private bool _withContener;
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
 
         public SuccessStoryAchievementsList()
         {
             InitializeComponent();
+
+            PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
 
-        /// <summary>
-        /// Show or not the ToolTip.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+
+        protected void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            string Text = ((TextBlock)sender).Text;
-            TextBlock textBlock = (TextBlock)sender;
-
-            Typeface typeface = new Typeface(
-                textBlock.FontFamily,
-                textBlock.FontStyle,
-                textBlock.FontWeight,
-                textBlock.FontStretch);
-
-            FormattedText formattedText = new FormattedText(
-                textBlock.Text,
-                System.Threading.Thread.CurrentThread.CurrentCulture,
-                textBlock.FlowDirection,
-                typeface,
-                textBlock.FontSize,
-                textBlock.Foreground,
-                VisualTreeHelper.GetDpi(this).PixelsPerDip);
-
-            if (formattedText.Width > textBlock.DesiredSize.Width)
+            try
             {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
-            }
-        }
-
-        /// <summary>
-        /// Resize ListBox on parent.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Define height & width
-            var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
-            if (_withContener)
-            {
-                //parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent).Parent);
-                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent);
-            }
-
 #if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsList({_withContener}) - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
+                logger.Debug($"SuccessStoryAchievementsList.OnPropertyChanged({e.PropertyName}): {JsonConvert.SerializeObject(PluginDatabase.GameSelectedData)}");
 #endif
-
-            if (!double.IsNaN(parent.Height))
-            {
-                ((FrameworkElement)sender).Height = parent.Height;
+                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
+                {
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        SetScData(PluginDatabase.GameSelectedData.Items);
+                    }));
+                }
             }
-
-            if (!double.IsNaN(parent.Width))
+            catch (Exception ex)
             {
-                ((FrameworkElement)sender).Width = parent.Width;
+                Common.LogError(ex, "SuccessStory");
             }
         }
 
-        public void SetScData(List<Achievements> ListAchievements, bool withContener = false, bool EnableRaretyIndicator = true)
-        {
-            _withContener = withContener;
 
+        public void SetScData(List<Achievements> ListAchievements)
+        {
             List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
 
             for (int i = 0; i < ListAchievements.Count; i++)
@@ -144,7 +106,7 @@ namespace SuccessStory.Views.Interface
                 {
                     Name = NameAchievement,
                     DateUnlock = dateUnlock,
-                    EnableRaretyIndicator = EnableRaretyIndicator,
+                    EnableRaretyIndicator = PluginDatabase.PluginSettings.EnableRaretyIndicator,
                     Icon = urlImg,
                     IconImage = urlImg,
                     IsGray = IsGray,
@@ -160,6 +122,53 @@ namespace SuccessStory.Views.Interface
             lbAchievements.ItemsSource = ListBoxAchievements;
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
             view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
+        }
+
+
+        /// <summary>
+        /// Show or not the ToolTip.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            string Text = ((TextBlock)sender).Text;
+            TextBlock textBlock = (TextBlock)sender;
+
+            Typeface typeface = new Typeface(
+                textBlock.FontFamily,
+                textBlock.FontStyle,
+                textBlock.FontWeight,
+                textBlock.FontStretch);
+
+            FormattedText formattedText = new FormattedText(
+                textBlock.Text,
+                System.Threading.Thread.CurrentThread.CurrentCulture,
+                textBlock.FlowDirection,
+                typeface,
+                textBlock.FontSize,
+                textBlock.Foreground,
+                VisualTreeHelper.GetDpi(this).PixelsPerDip);
+
+            if (formattedText.Width > textBlock.DesiredSize.Width)
+            {
+                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
+            }
+        }
+
+
+        /// <summary>
+        /// Resize ListBox on parent.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
+        {
+            IntegrationUI.SetControlSize((FrameworkElement)sender);
         }
     }
 

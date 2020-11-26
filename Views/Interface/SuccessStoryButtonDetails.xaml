@@ -1,10 +1,10 @@
 ﻿<Button x:Class="SuccessStory.Views.Interface.SuccessStoryButtonDetails"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SuccessStory.Views.Interface"
-             mc:Ignorable="d" Width="150" Height="40">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:SuccessStory.Views.Interface"
+        mc:Ignorable="d" MinWidth="150" Height="40">
 
     <Button.Resources>
         <FontFamily x:Key="font">pack://application:,,,/PluginCommon;component/Resources/font.ttf#font</FontFamily>
@@ -39,7 +39,7 @@
             </Style.Triggers>
         </Style>
     </Button.Style>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -165,5 +165,4 @@
         </ProgressBar>
 
     </Grid>
-
 </Button>

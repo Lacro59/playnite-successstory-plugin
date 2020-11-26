@@ -39,6 +39,8 @@
                 <ResourceDictionary Source="playnite-plugincommon/Resources/PlayniteResources/DefaultControls/ToolTip.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/Resources/PlayniteResources/DefaultControls/TreeView.xaml" />
 
+                <!--PluginResources-->
+                <ResourceDictionary Source="Resources/Common.xaml" />
                 <!--PluginCommon-->
                 <ResourceDictionary Source="playnite-plugincommon/Resources/Common.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/Resources/LiveChartsCommon/Common.xaml" />

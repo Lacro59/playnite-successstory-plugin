@@ -14,18 +14,20 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
 using System.Diagnostics;
+using SuccessStory.Services;
 
 namespace SuccessStory.Views
 {
     public partial class SuccessStorySettingsView : UserControl
     {
         private static readonly ILogger logger = LogManager.GetLogger();
-        IPlayniteAPI PlayniteApi;
         private static IResourceProvider resources = new ResourceProvider();
-        SuccessStorySettings settings;
 
-        string PluginUserDataPath;
-        AchievementsDatabase achievementsDatabase;
+        private IPlayniteAPI _PlayniteApi;
+
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+
+        private string _PluginUserDataPath;
 
         public static bool WithoutMessage = false;
         public static CancellationTokenSource tokenSource;
@@ -46,13 +48,10 @@ namespace SuccessStory.Views
         int LocalTotalAchievements;
 
 
-        public SuccessStorySettingsView(SuccessStory plugin, IPlayniteAPI PlayniteApi, string PluginUserDataPath, SuccessStorySettings settings)
+        public SuccessStorySettingsView(SuccessStory plugin, IPlayniteAPI PlayniteApi, string PluginUserDataPath)
         {
-            this.PlayniteApi = PlayniteApi;
-            this.PluginUserDataPath = PluginUserDataPath;
-            this.settings = settings;
-
-            achievementsDatabase = new AchievementsDatabase(plugin, PlayniteApi, settings, PluginUserDataPath);
+            _PlayniteApi = PlayniteApi;
+            _PluginUserDataPath = PluginUserDataPath;
 
             InitializeComponent();
 
@@ -60,7 +59,7 @@ namespace SuccessStory.Views
 
             SetTotal();
 
-            switch (settings.NameSorting)
+            switch (PluginDatabase.PluginSettings.NameSorting)
             {
                 case "Name":
                     cbDefaultSorting.Text = resources.GetString("LOCGameNameTitle");
@@ -95,50 +94,50 @@ namespace SuccessStory.Views
 
             try
             {
-                foreach (var game in PlayniteApi.Database.Games)
+                foreach (var game in _PlayniteApi.Database.Games)
                 {
-                    string GameSourceName = PlayniteTools.GetSourceName(game, PlayniteApi);
+                    string GameSourceName = PlayniteTools.GetSourceName(_PlayniteApi, game);
 
                     switch (GameSourceName.ToLower())
                     {
                         case "steam":
                             SteamTotal += 1;
-                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
                             {
                                 SteamTotalAchievements += 1;
                             }
                             break;
                         case "gog":
                             GogTotal += 1;
-                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
                             {
                                 GogTotalAchievements += 1;
                             }
                             break;
                         case "origin":
                             OriginTotal += 1;
-                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
                             {
                                 OriginTotalAchievements += 1;
                             }
                             break;
                         case "xbox":
                             XboxTotal += 1;
-                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
                             {
                                 XboxTotalAchievements += 1;
                             }
                             break;
                         case "retroachievements":
                             RetroAchievementsTotal += 1;
-                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
                             {
                                 RetroAchievementsTotalAchievements += 1;
                             }
                             break;
                         case "playnite":
                             LocalTotal += 1;
-                            if (achievementsDatabase.VerifAchievementsLoad(game.Id))
+                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
                             {
                                 LocalTotalAchievements += 1;
                             }
@@ -178,7 +177,7 @@ namespace SuccessStory.Views
 
         private void Button_Click_Get_Installed(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings);
+            PluginDatabase.InitializeMultipleAdd();
 
             SteamLoad.Content = 0 + "/" + SteamTotal;
             GogLoad.Content = 0 + "/" + GogTotal;
@@ -188,7 +187,7 @@ namespace SuccessStory.Views
         }
         private void Button_Click_All_Installed(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings);
+            PluginDatabase.InitializeMultipleAdd();
 
             SteamLoad.Content = 0 + "/" + SteamTotal;
             GogLoad.Content = 0 + "/" + GogTotal;
@@ -199,7 +198,7 @@ namespace SuccessStory.Views
 
         private void Button_Click_Get_Recent(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings);
+            PluginDatabase.InitializeMultipleAdd();
 
             SteamLoad.Content = 0 + "/" + SteamTotal;
             GogLoad.Content = 0 + "/" + GogTotal;
@@ -209,7 +208,7 @@ namespace SuccessStory.Views
         }
         private void Button_Click_All_Recent(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings);
+            PluginDatabase.InitializeMultipleAdd();
 
             SteamLoad.Content = 0 + "/" + SteamTotal;
             GogLoad.Content = 0 + "/" + GogTotal;
@@ -220,7 +219,7 @@ namespace SuccessStory.Views
 
         private void Button_Click_Get_Steam(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "Steam");
+            PluginDatabase.InitializeMultipleAdd("Steam");
 
             SteamLoad.Content = 0 + "/" + SteamTotal;
             RefreshData("Steam", true);
@@ -228,7 +227,7 @@ namespace SuccessStory.Views
         }
         private void Button_Click_Steam(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "Steam");
+            PluginDatabase.InitializeMultipleAdd("Steam");
 
             SteamLoad.Content = 0 + "/" + SteamTotal;
             RefreshData("Steam");
@@ -237,7 +236,7 @@ namespace SuccessStory.Views
 
         private void Button_Click_Get_Gog(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "GOG");
+            PluginDatabase.InitializeMultipleAdd("GOG");
 
             GogLoad.Content = 0 + "/" + GogTotal;
             RefreshData("GOG", true);
@@ -245,7 +244,7 @@ namespace SuccessStory.Views
         }
         private void Button_Click_Gog(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "GOG");
+            PluginDatabase.InitializeMultipleAdd("GOG");
 
             GogLoad.Content = 0 + "/" + GogTotal;
             RefreshData("GOG");
@@ -254,7 +253,7 @@ namespace SuccessStory.Views
 
         private void Button_Click_Get_RetroAchievements(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "RetroAchievements");
+            PluginDatabase.InitializeMultipleAdd("RetroAchievements");
 
             RetroAchievementsLoad.Content = 0 + "/" + RetroAchievementsTotal;
             RefreshData("RetroAchievements", true);
@@ -262,7 +261,7 @@ namespace SuccessStory.Views
         }
         private void Button_Click_RetroAchievements(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "RetroAchievements");
+            PluginDatabase.InitializeMultipleAdd("RetroAchievements");
 
             RetroAchievementsLoad.Content = 0 + "/" + RetroAchievementsTotal;
             RefreshData("RetroAchievements");
@@ -271,7 +270,7 @@ namespace SuccessStory.Views
 
         private void Button_Click_Get_Origin(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "Origin");
+            PluginDatabase.InitializeMultipleAdd("Origin");
 
             OriginLoad.Content = 0 + "/" + OriginTotal;
             RefreshData("Origin", true);
@@ -279,7 +278,7 @@ namespace SuccessStory.Views
         }
         private void Button_Click_Origin(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "Origin");
+            PluginDatabase.InitializeMultipleAdd("Origin");
 
             OriginLoad.Content = 0 + "/" + OriginTotal;
             RefreshData("Origin");
@@ -288,7 +287,7 @@ namespace SuccessStory.Views
 
         private void Button_Click_Get_Xbox(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "Xbox");
+            PluginDatabase.InitializeMultipleAdd( "Xbox");
 
             XboxLoad.Content = 0 + "/" + OriginTotal;
             RefreshData("Xbox", true);
@@ -296,7 +295,7 @@ namespace SuccessStory.Views
         }
         private void Button_Click_Xbox(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "Xbox");
+            PluginDatabase.InitializeMultipleAdd("Xbox");
 
             XboxLoad.Content = 0 + "/" + XboxTotal;
             RefreshData("Xbox");
@@ -305,7 +304,7 @@ namespace SuccessStory.Views
 
         private void Button_Click_Get_Local(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "Playnite");
+            PluginDatabase.InitializeMultipleAdd("Playnite");
 
             LocalLoad.Content = 0 + "/" + LocalTotal;
             RefreshData("Playnite", true);
@@ -313,7 +312,7 @@ namespace SuccessStory.Views
         }
         private void Button_Click_Local(object sender, RoutedEventArgs e)
         {
-            achievementsDatabase.InitializeMultipleAdd(settings, "Playnite");
+            PluginDatabase.InitializeMultipleAdd("Playnite");
 
             LocalLoad.Content = 0 + "/" + LocalTotal;
             RefreshData("Playnite");
@@ -327,6 +326,8 @@ namespace SuccessStory.Views
 
         private void RefreshData(string SourceName, bool IsGet = false)
         {
+            SuccessStoryDatabase.ListErrors = new CumulErrors();
+
 #if DEBUG
             logger.Info($"SuccessStory - RefreshData() - Start");
             Stopwatch stopwatch = new Stopwatch();
@@ -356,22 +357,22 @@ namespace SuccessStory.Views
                     switch (SourceName.ToLower())
                     {
                         case "all":
-                            FilterDatabaseGame = PlayniteApi.Database.Games;
+                            FilterDatabaseGame = _PlayniteApi.Database.Games;
                             break;
 
                         case "allrecent":
-                            FilterDatabaseGame = PlayniteApi.Database.Games.Where(
+                            FilterDatabaseGame = _PlayniteApi.Database.Games.Where(
                                 x => x.LastActivity > DateTime.Now.AddMonths(-2) || (x.Added != null && x.Added > DateTime.Now.AddMonths(-2))
                             );
                             break;
 
                         case "allinstalled":
-                            FilterDatabaseGame = PlayniteApi.Database.Games.Where(x => x.IsInstalled);
+                            FilterDatabaseGame = _PlayniteApi.Database.Games.Where(x => x.IsInstalled);
                             break;
 
                         default:
-                            FilterDatabaseGame = PlayniteApi.Database.Games.Where(
-                                x => PlayniteTools.GetSourceName(x, PlayniteApi).ToLower() == SourceName.ToLower()
+                            FilterDatabaseGame = _PlayniteApi.Database.Games.Where(
+                                x => PlayniteTools.GetSourceName(_PlayniteApi, x).ToLower() == SourceName.ToLower()
                             );
                             break;
                     }
@@ -390,12 +391,12 @@ namespace SuccessStory.Views
                                 logger.Debug($"SuccessStory - Check Steam profil with {game.GameId}");
 #endif
 
-                                SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
+                                SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginDatabase.PluginSettings, _PluginUserDataPath);
                                 int AppId = 0;
                                 int.TryParse(game.GameId, out AppId);
                                 if (!steamAPI.CheckIsPublic(AppId))
                                 {
-                                    AchievementsDatabase.ListErrors.Add(resources.GetString("LOCSuccessStoryNotificationsSteamPrivate"));
+                                    SuccessStoryDatabase.ListErrors.Add(resources.GetString("LOCSuccessStoryNotificationsSteamPrivate"));
                                     break;
                                 }
                                 IsFirstLoop = false;
@@ -407,15 +408,15 @@ namespace SuccessStory.Views
                             if (IsGet)
                             {
                                 // Add only it's not loaded
-                                if (!achievementsDatabase.VerifAchievementsLoad(game.Id))
+                                if (!PluginDatabase.VerifAchievementsLoad(game.Id))
                                 {
-                                    achievementsDatabase.Add(game, settings);
+                                    PluginDatabase.Get(game);
                                 }
                             }
                             else
                             {
-                                achievementsDatabase.Remove(game);
-                                achievementsDatabase.Add(game, settings);
+                                PluginDatabase.Remove(game);
+                                PluginDatabase.Get(game);
                             }
 
                             Application.Current.Dispatcher.BeginInvoke((Action)delegate { pbDataLoad.Value += 1; });
@@ -431,8 +432,6 @@ namespace SuccessStory.Views
                             break;
                         }
                     }
-
-                    achievementsDatabase.Initialize();
                 }
                 catch(Exception ex)
                 {
@@ -448,13 +447,13 @@ namespace SuccessStory.Views
 
                     if (!WithoutMessage)
                     {
-                        if (AchievementsDatabase.ListErrors.Get() != string.Empty)
+                        if (SuccessStoryDatabase.ListErrors.Get() != string.Empty)
                         {
-                            PlayniteApi.Dialogs.ShowErrorMessage(AchievementsDatabase.ListErrors.Get(), "SuccessStory errors");
+                            _PlayniteApi.Dialogs.ShowErrorMessage(SuccessStoryDatabase.ListErrors.Get(), "SuccessStory errors");
                         }
                         else
                         {
-                            PlayniteApi.Dialogs.ShowMessage((string)ResourceProvider.GetResource("LOCSuccessStoryRefreshDataMessage"), "Success Story");
+                            _PlayniteApi.Dialogs.ShowMessage((string)ResourceProvider.GetResource("LOCSuccessStoryRefreshDataMessage"), "Success Story");
                         }
                     }
 
@@ -525,7 +524,7 @@ namespace SuccessStory.Views
 
         private void cbDefaultSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            settings.NameSorting = ((ComboBoxItem)cbDefaultSorting.SelectedItem).Tag.ToString();
+            PluginDatabase.PluginSettings.NameSorting = ((ComboBoxItem)cbDefaultSorting.SelectedItem).Tag.ToString();
         }
     }
 

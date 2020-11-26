@@ -4,7 +4,10 @@ using PluginCommon;
 using SuccessStory.Models;
 using SuccessStory.Views;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace SuccessStory
 {
@@ -195,9 +198,11 @@ namespace SuccessStory
             SuccessStory.successStoryUI.RemoveElements();
             var TaskIntegrationUI = Task.Run(() =>
             {
-                SuccessStory.successStoryUI.AddElements();
-                SuccessStory.successStoryUI.RefreshElements(SuccessStory.GameSelected);
+                var dispatcherOp = SuccessStory.successStoryUI.AddElements();
+                dispatcherOp.Completed += (s, e) => { SuccessStory.successStoryUI.RefreshElements(SuccessStory.GameSelected); };
             });
+
+            SuccessStory.PluginDatabase.PluginSettings = this;
         }
 
         public bool VerifySettings(out List<string> errors)

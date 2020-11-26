@@ -6,12 +6,92 @@
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
              mc:Ignorable="d">
 
-    <TextBlock Name="PART_Title" Text="{DynamicResource  LOCSuccessStory}" Margin="0,15,0,5" Style="{DynamicResource BaseTextBlockStyle}"  />
-    <Separator Name="PART_Separator" Background="{DynamicResource PanelSeparatorBrush}" />
+    <StackPanel.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </StackPanel.Resources>
 
-    <StackPanel Name="PART_SuccessStory_ProgressBar" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
-    <StackPanel Name="PART_SuccessStory_Graphic" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
-    <StackPanel Name="PART_SuccessStory_List" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
-    <StackPanel Name="PART_SuccessStory_Compact_Unlocked" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
-    <StackPanel Name="PART_SuccessStory_Compact_Locked" DockPanel.Dock="Bottom" MinHeight="40" MinWidth="200" Margin="0, 5, 0, 5"></StackPanel>
+    <TextBlock Name="PART_Title" Text="{DynamicResource LOCSuccessStory}" Margin="0,15,0,5" Style="{DynamicResource BaseTextBlockStyle}" 
+               Visibility="{Binding IntegrationShowTitle, Converter={StaticResource BooleanToVisibilityConverter}}" />
+    <Separator Name="PART_Separator" Background="{DynamicResource PanelSeparatorBrush}" 
+               Visibility="{Binding IntegrationShowTitle, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+    <StackPanel Name="PART_SuccessStory_ProgressBar" MinHeight="40" MinWidth="200">
+        <StackPanel.Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IntegrationShowProgressBar}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Visibility" Value="Visible" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Style>
+    </StackPanel>
+    
+    <StackPanel Name="PART_SuccessStory_Graphic" MinHeight="40" MinWidth="200">
+        <StackPanel.Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IntegrationShowGraphic}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Visibility" Value="Visible" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Style>
+    </StackPanel>
+    
+    <StackPanel Name="PART_SuccessStory_List" MinHeight="40" MinWidth="200">
+        <StackPanel.Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IntegrationShowAchievements}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Visibility" Value="Visible" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Style>
+    </StackPanel>
+    
+    <StackPanel Name="PART_SuccessStory_Compact_Unlocked" MinHeight="40" MinWidth="200">
+        <StackPanel.Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IntegrationShowAchievementsCompactUnlocked}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Visibility" Value="Visible" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Style>
+    </StackPanel>
+    
+    <StackPanel Name="PART_SuccessStory_Compact_Locked" MinHeight="40" MinWidth="200">
+        <StackPanel.Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IntegrationShowAchievementsCompactLocked}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Visibility" Value="Visible" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Style>
+    </StackPanel>
 </StackPanel>

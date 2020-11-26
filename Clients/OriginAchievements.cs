@@ -3,13 +3,8 @@ using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
-using PluginCommon.PlayniteResources;
-using PluginCommon.PlayniteResources.API;
-using PluginCommon.PlayniteResources.Common;
-using PluginCommon.PlayniteResources.Converters;
 using PluginCommon.PlayniteResources.PluginLibrary.OriginLibrary.Models;
 using PluginCommon.PlayniteResources.PluginLibrary.OriginLibrary.Services;
-using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -29,31 +24,24 @@ namespace SuccessStory.Clients
             originAPI = new OriginAccountClient(view);
         }
 
+
         /// <summary>
         /// Get all achievements for a Origin game.
         /// </summary>
         /// <param name="PlayniteApi"></param>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public override GameAchievements GetAchievements(Game game)
+        public override SuccessStories GetAchievements(Game game)
         {
-            List<Achievements> Achievements = new List<Achievements>();
+            List<Achievements> AllAchievements = new List<Achievements>();
             string GameName = game.Name;
             bool HaveAchivements = false;
             int Total = 0;
             int Unlocked = 0;
             int Locked = 0;
 
-            GameAchievements Result = new GameAchievements
-            {
-                Name = GameName,
-                HaveAchivements = HaveAchivements,
-                Total = Total,
-                Unlocked = Unlocked,
-                Locked = Locked,
-                Progression = 0,
-                Achievements = Achievements
-            };
+            SuccessStories Result = SuccessStory.PluginDatabase.GetDefault(game);
+            Result.Items = AllAchievements;
 
             // Only if user is logged. 
             if (originAPI.GetIsUserLoggedIn())
@@ -84,7 +72,7 @@ namespace SuccessStory.Clients
                             var val = item.Value;
                             HaveAchivements = true;
 
-                            Achievements.Add(new Achievements
+                            AllAchievements.Add(new Achievements
                             {
                                 Name = (string)item.Value["name"],
                                 Description = (string)item.Value["desc"],
@@ -124,19 +112,17 @@ namespace SuccessStory.Clients
                 }
             }
 
-            Result = new GameAchievements
-            {
-                Name = GameName,
-                HaveAchivements = HaveAchivements,
-                Total = Total,
-                Unlocked = Unlocked,
-                Locked = Locked,
-                Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
-                Achievements = Achievements
-            };
+            Result.Name = GameName;
+            Result.HaveAchivements = HaveAchivements;
+            Result.Total = Total;
+            Result.Unlocked = Unlocked;
+            Result.Locked = Locked;
+            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
+            Result.Items = AllAchievements;
 
             return Result;
         }
+
 
         public override bool IsConfigured()
         {

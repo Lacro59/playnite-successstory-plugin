@@ -77,7 +77,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="465" />
+                        <ColumnDefinition Width="354" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30" />
@@ -86,14 +86,14 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="0" Grid.Row="0" x:Name="lProgressionGlobal" Content="{DynamicResource LOCSuccessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" />
-                    <Grid Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="465">
+                    <Grid Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="354">
                         <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" />
                         <Label x:Name="labelProgressionGlobalCount" HorizontalAlignment="Center">
                         </Label>
                     </Grid>
 
                     <Label Grid.Column="0" Grid.Row="2" x:Name="lProgressionLaunched" Content="{DynamicResource LOCSuccessStoryProgressionLaunched}" HorizontalAlignment="Left" FontSize="16" />
-                    <Grid Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" Width="465">
+                    <Grid Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" Width="354">
                         <ProgressBar x:Name="pbProgressionLaunchedCount" Minimum="0" Maximum="100" />
                         <Label x:Name="labelProgressionLaunchedCount" HorizontalAlignment="Center">
                         </Label>

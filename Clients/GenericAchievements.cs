@@ -1,6 +1,8 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Database;
+using SuccessStory.Models;
+using System;
 
 namespace SuccessStory.Clients
 {
@@ -23,7 +25,15 @@ namespace SuccessStory.Clients
             _PluginUserDataPath = PluginUserDataPath;
         }
 
-        public abstract GameAchievements GetAchievements(Game game);
+
+        public SuccessStories GetAchievements(Guid Id)
+        {
+            Game game = _PlayniteApi.Database.Games.Get(Id);
+            return GetAchievements(game);
+        }
+
+        public abstract SuccessStories GetAchievements(Game game);
+
 
         public abstract bool IsConnected();
 

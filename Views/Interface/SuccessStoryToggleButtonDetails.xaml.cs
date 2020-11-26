@@ -1,5 +1,12 @@
-﻿using System.Windows;
+﻿using Newtonsoft.Json;
+using Playnite.SDK;
+using PluginCommon;
+using SuccessStory.Services;
+using System;
+using System.Threading;
+using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 
 namespace SuccessStory.Views.Interface
 {
@@ -8,22 +15,63 @@ namespace SuccessStory.Views.Interface
     /// </summary>
     public partial class SuccessStoryToggleButtonDetails : ToggleButton
     {
+        private static readonly ILogger logger = LogManager.GetLogger();
+
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+
+
         public SuccessStoryToggleButtonDetails()
         {
             InitializeComponent();
+
+            PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
 
-        public void SetScData(int Unlocked, int Total)
+
+        protected void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (Total != Unlocked)
+            try
             {
-                Sc_Icon100Percent.Visibility = Visibility.Collapsed;
+#if DEBUG
+                logger.Debug($"SuccessStoryToggleButtonDetails.OnPropertyChanged({e.PropertyName}): {JsonConvert.SerializeObject(PluginDatabase.GameSelectedData)}");
+#endif
+                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
+                {
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        if (PluginDatabase.GameSelectedData.HasData)
+                        {
+                            this.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            this.Visibility = Visibility.Collapsed;
+                            return;
+                        }
+
+                        if (PluginDatabase.GameSelectedData.Total != PluginDatabase.GameSelectedData.Unlocked)
+                        {
+                            Sc_Icon100Percent.Visibility = Visibility.Collapsed;
+                        }
+
+                        sc_labelButton.Content = PluginDatabase.GameSelectedData.Unlocked + "/" + PluginDatabase.GameSelectedData.Total;
+
+                        sc_pbButton.Value = PluginDatabase.GameSelectedData.Unlocked;
+                        sc_pbButton.Maximum = PluginDatabase.GameSelectedData.Total;
+                    }));
+                }
+                else
+                {
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        this.Visibility = Visibility.Collapsed;
+                    }));
+                }
             }
-
-            sc_labelButton.Content = Unlocked + "/" + Total;
-
-            sc_pbButton.Value = Unlocked;
-            sc_pbButton.Maximum = Total;
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory");
+            }
         }
     }
 }

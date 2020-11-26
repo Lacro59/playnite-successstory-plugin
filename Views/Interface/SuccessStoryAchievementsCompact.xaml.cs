@@ -2,15 +2,18 @@
 using Playnite.SDK;
 using PluginCommon;
 using SuccessStory.Models;
+using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace SuccessStory.Views.Interface
 {
@@ -21,124 +24,50 @@ namespace SuccessStory.Views.Interface
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+
         List<ListBoxAchievements> AchievementsList = new List<ListBoxAchievements>();
         private bool _withUnlocked;
-        private bool _EnableRaretyIndicator;
 
 
-        public SuccessStoryAchievementsCompact(List<Achievements> ListAchievements, bool withUnlocked = false, bool EnableRaretyIndicator = true)
+        public SuccessStoryAchievementsCompact(bool withUnlocked = false)
         {
+            _withUnlocked = withUnlocked;
+
             InitializeComponent();
 
-            SetScData(ListAchievements, withUnlocked, EnableRaretyIndicator);
+            PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
 
-        private void PART_ScCompactView_IsLoaded(object sender, RoutedEventArgs e)
+
+        protected void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            PART_ScCompactView.Children.Clear();
-            PART_ScCompactView.ColumnDefinitions.Clear();
-
-            // Prepare Grid 40x40 & add data
-            double actualWidth = PART_ScCompactView.ActualWidth;
-            int nbGrid = (int)actualWidth / 52;
-
-#if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - actualWidth: {actualWidth} - nbGrid: {nbGrid} - AchievementsList: {AchievementsList.Count}");
-#endif
-
-            if (nbGrid > 0)
+            try
             {
-                for (int i = 0; i < nbGrid; i++)
-                {
-                    ColumnDefinition gridCol = new ColumnDefinition();
-                    gridCol.Width = new GridLength(1, GridUnitType.Star);
-                    PART_ScCompactView.ColumnDefinitions.Add(gridCol);
-
-                    if (i < AchievementsList.Count)
-                    {
-                        if (i < nbGrid - 1)
-                        {
-                            Image gridImage = new Image();
-                            gridImage.Stretch = Stretch.UniformToFill;
-                            gridImage.Width = 48;
-                            gridImage.Height = 48;
-                            gridImage.ToolTip = AchievementsList[i].Name;
-                            gridImage.SetValue(Grid.ColumnProperty, i);
-
-                            if (_withUnlocked)
-                            {
-                                var converter = new LocalDateTimeConverter();
-                                converter.Convert(AchievementsList[i].DateUnlock, null, null, null);
-                                gridImage.ToolTip += " (" + converter.Convert(AchievementsList[i].DateUnlock, null, null, null) +")";
-                            }
-
-                            if (AchievementsList[i].IsGray)
-                            {
-                                var tmpImg = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
-                                gridImage.Source = ImageTools.ConvertBitmapImage(tmpImg, ImageColor.Gray);
-
-                                ImageBrush imgB = new ImageBrush
-                                {
-                                    ImageSource = new BitmapImage(new Uri(AchievementsList[i].IconImage, UriKind.Absolute))
-                                };
-                                gridImage.OpacityMask = imgB;
-                            }
-                            else
-                            {
-                                gridImage.Source = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
-                            }
-
-                            DropShadowEffect myDropShadowEffect = new DropShadowEffect();
-                            myDropShadowEffect.ShadowDepth = 0;
-                            myDropShadowEffect.BlurRadius = 30;
-
-                            SetColorConverter setColorConverter = new SetColorConverter();
-                            var color = setColorConverter.Convert(AchievementsList[i].Percent, null, null, CultureInfo.CurrentCulture);
-
-                            if (color != null)
-                            {
-                                myDropShadowEffect.Color = (Color)color;
-                            }
-
-                            if (_EnableRaretyIndicator)
-                            {
-                                gridImage.Effect = myDropShadowEffect;
-                            }
-
-                            PART_ScCompactView.Children.Add(gridImage);
-                        }
-                        else
-                        {
-                            Label lb = new Label();
-                            lb.FontSize = 16;
-                            lb.Content = $"+{AchievementsList.Count - i}";
-                            lb.VerticalAlignment = VerticalAlignment.Center;
-                            lb.HorizontalAlignment = HorizontalAlignment.Center;
-                            lb.SetValue(Grid.ColumnProperty, i);
-
-                            PART_ScCompactView.Children.Add(lb);
-
 #if DEBUG
-                            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - AchievementsList.Count: {AchievementsList.Count} - nbGrid: {nbGrid} - i: {i}");
+                logger.Debug($"SuccessStoryAchievementsCompact.OnPropertyChanged({e.PropertyName}): {JsonConvert.SerializeObject(PluginDatabase.GameSelectedData)}");
 #endif
-                        }
-                    }
+                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
+                {
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        SetScData(PluginDatabase.GameSelectedData.Items);
+                    }));
                 }
             }
-            else
+            catch (Exception ex)
             {
+                Common.LogError(ex, "SuccessStory");
             }
         }
 
-        public void SetScData(List<Achievements> ListAchievements, bool withUnlocked = false, bool EnableRaretyIndicator = true)
+
+        public void SetScData(List<Achievements> ListAchievements)
         {
             AchievementsList = new List<ListBoxAchievements>();
 
-            _withUnlocked = withUnlocked;
-            _EnableRaretyIndicator = EnableRaretyIndicator;
-
             // Select data
-            if (withUnlocked)
+            if (_withUnlocked)
             {
                 ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked != default(DateTime));
                 ListAchievements.Sort((x, y) => DateTime.Compare((DateTime)x.DateUnlocked, (DateTime)y.DateUnlocked));
@@ -205,10 +134,108 @@ namespace SuccessStory.Views.Interface
                 iconImage = null;
             }
 #if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - ListAchievements({withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
 #endif
 
             PART_ScCompactView_IsLoaded(null, null);
+        }
+
+
+        private void PART_ScCompactView_IsLoaded(object sender, RoutedEventArgs e)
+        {
+            PART_ScCompactView.Children.Clear();
+            PART_ScCompactView.ColumnDefinitions.Clear();
+
+            // Prepare Grid 40x40 & add data
+            double actualWidth = PART_ScCompactView.ActualWidth;
+            int nbGrid = (int)actualWidth / 52;
+
+#if DEBUG
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - actualWidth: {actualWidth} - nbGrid: {nbGrid} - AchievementsList: {AchievementsList.Count}");
+#endif
+
+            if (nbGrid > 0)
+            {
+                for (int i = 0; i < nbGrid; i++)
+                {
+                    ColumnDefinition gridCol = new ColumnDefinition();
+                    gridCol.Width = new GridLength(1, GridUnitType.Star);
+                    PART_ScCompactView.ColumnDefinitions.Add(gridCol);
+
+                    if (i < AchievementsList.Count)
+                    {
+                        if (i < nbGrid - 1)
+                        {
+                            Image gridImage = new Image();
+                            gridImage.Stretch = Stretch.UniformToFill;
+                            gridImage.Width = 48;
+                            gridImage.Height = 48;
+                            gridImage.ToolTip = AchievementsList[i].Name;
+                            gridImage.SetValue(Grid.ColumnProperty, i);
+
+                            if (_withUnlocked)
+                            {
+                                var converter = new LocalDateTimeConverter();
+                                converter.Convert(AchievementsList[i].DateUnlock, null, null, null);
+                                gridImage.ToolTip += " (" + converter.Convert(AchievementsList[i].DateUnlock, null, null, null) + ")";
+                            }
+
+                            if (AchievementsList[i].IsGray)
+                            {
+                                var tmpImg = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
+                                gridImage.Source = ImageTools.ConvertBitmapImage(tmpImg, ImageColor.Gray);
+
+                                ImageBrush imgB = new ImageBrush
+                                {
+                                    ImageSource = new BitmapImage(new Uri(AchievementsList[i].IconImage, UriKind.Absolute))
+                                };
+                                gridImage.OpacityMask = imgB;
+                            }
+                            else
+                            {
+                                gridImage.Source = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
+                            }
+
+                            DropShadowEffect myDropShadowEffect = new DropShadowEffect();
+                            myDropShadowEffect.ShadowDepth = 0;
+                            myDropShadowEffect.BlurRadius = 30;
+
+                            SetColorConverter setColorConverter = new SetColorConverter();
+                            var color = setColorConverter.Convert(AchievementsList[i].Percent, null, null, CultureInfo.CurrentCulture);
+
+                            if (color != null)
+                            {
+                                myDropShadowEffect.Color = (Color)color;
+                            }
+
+                            if (PluginDatabase.PluginSettings.EnableRaretyIndicator)
+                            {
+                                gridImage.Effect = myDropShadowEffect;
+                            }
+
+                            PART_ScCompactView.Children.Add(gridImage);
+                        }
+                        else
+                        {
+                            Label lb = new Label();
+                            lb.FontSize = 16;
+                            lb.Content = $"+{AchievementsList.Count - i}";
+                            lb.VerticalAlignment = VerticalAlignment.Center;
+                            lb.HorizontalAlignment = HorizontalAlignment.Center;
+                            lb.SetValue(Grid.ColumnProperty, i);
+
+                            PART_ScCompactView.Children.Add(lb);
+
+#if DEBUG
+                            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - AchievementsList.Count: {AchievementsList.Count} - nbGrid: {nbGrid} - i: {i}");
+#endif
+                        }
+                    }
+                }
+            }
+            else
+            {
+            }
         }
     }
 }

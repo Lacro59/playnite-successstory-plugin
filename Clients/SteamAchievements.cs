@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using PluginCommon;
-using PluginCommon.PlayniteResources;
-using PluginCommon.PlayniteResources.API;
-using PluginCommon.PlayniteResources.Common;
-using PluginCommon.PlayniteResources.Converters;
-using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -22,6 +17,7 @@ using SteamKit2;
 using System.Globalization;
 using System.Threading.Tasks;
 using PluginCommon.PlayniteResources.Common.Web;
+using SuccessStory.Services;
 
 namespace SuccessStory.Clients
 {
@@ -43,20 +39,13 @@ namespace SuccessStory.Clients
             LocalLang = CodeLang.GetSteamLang(_PlayniteApi.ApplicationSettings.Language);
         }
 
-        public override GameAchievements GetAchievements(Game game)
+
+        public override SuccessStories GetAchievements(Game game)
         {
             int AppId = 0;
             List<Achievements> AllAchievements = new List<Achievements>();
-            GameAchievements Result = new GameAchievements
-            {
-                Name = game.Name,
-                HaveAchivements = false,
-                Total = 0,
-                Unlocked = 0,
-                Locked = 0,
-                Progression = 0,
-                Achievements = AllAchievements
-            };
+            SuccessStories Result = SuccessStory.PluginDatabase.GetDefault(game);
+            Result.Items = AllAchievements;
 
 
             // Get Steam configuration if exist.
@@ -90,7 +79,7 @@ namespace SuccessStory.Clients
                     Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
                     Result.Locked = Result.Total - Result.Locked;
                     Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
-                    Result.Achievements = AllAchievements;
+                    Result.Items = AllAchievements;
                 }
             }
             else
@@ -113,7 +102,7 @@ namespace SuccessStory.Clients
 
                     for (int i = 0; i < temp.Achievements.Count; i++)
                     {
-                        Result.Achievements.Add(new Achievements
+                        Result.Items.Add(new Achievements
                         {
                             Name = temp.Achievements[i].Name,
                             ApiName = temp.Achievements[i].ApiName,
@@ -127,13 +116,14 @@ namespace SuccessStory.Clients
             }
 
 
-            if (Result.Achievements.Count > 0)
+            if (Result.Items.Count > 0)
             {
-                Result.Achievements = GetGlobalAchievementPercentagesForApp(AppId, Result.Achievements);
+                Result.Items = GetGlobalAchievementPercentagesForApp(AppId, Result.Items);
             }
 
             return Result;
         }
+
 
         public override bool IsConfigured()
         {
@@ -165,7 +155,7 @@ namespace SuccessStory.Clients
                 else
                 {
                     logger.Error($"SuccessStory - No Steam configuration find");
-                    AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
+                    SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
                     return false;
                 }
             }
@@ -177,7 +167,7 @@ namespace SuccessStory.Clients
             if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty())
             {
                 logger.Error($"SuccessStory - No Steam configuration");
-                AchievementsDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
+                SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
                 return false;
             }
 
@@ -272,6 +262,7 @@ namespace SuccessStory.Clients
                 return true;
             }
         }
+
 
         private List<Achievements> GetPlayerAchievements(int AppId)
         {
@@ -385,6 +376,7 @@ namespace SuccessStory.Clients
             return AllAchievements;
         }
 
+
         // TODO Use "profileurl" in "ISteamUser"
         private string FindHiddenDescription(int AppId, string DisplayName, bool TryByName = false)
         {
@@ -466,6 +458,7 @@ namespace SuccessStory.Clients
 
             return string.Empty;
         }
+
 
         private List<Achievements> GetGlobalAchievementPercentagesForApp(int AppId, List<Achievements> AllAchievements)
         {

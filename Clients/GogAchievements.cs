@@ -3,7 +3,6 @@ using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
 using PluginCommon.PlayniteResources.PluginLibrary.Services.GogLibrary;
-using SuccessStory.Database;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -25,15 +24,16 @@ namespace SuccessStory.Clients
             gogAPI = new GogAccountClient(view);
         }
 
+
         /// <summary>
         /// Get all achievements for a GOG game.
         /// </summary>
         /// <param name="PlayniteApi"></param>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public override GameAchievements GetAchievements(Game game)
+        public override SuccessStories GetAchievements(Game game)
         {
-            List<Achievements> Achievements = new List<Achievements>();
+            List<Achievements> AllAchievements = new List<Achievements>();
             string GameName = game.Name;
             string ClientId = game.GameId;
             bool HaveAchivements = false;
@@ -41,16 +41,8 @@ namespace SuccessStory.Clients
             int Unlocked = 0;
             int Locked = 0;
 
-            GameAchievements Result = new GameAchievements
-            {
-                Name = GameName,
-                HaveAchivements = HaveAchivements,
-                Total = Total,
-                Unlocked = Unlocked,
-                Locked = Locked,
-                Progression = 0,
-                Achievements = Achievements
-            };
+            SuccessStories Result = SuccessStory.PluginDatabase.GetDefault(game);
+            Result.Items = AllAchievements;
 
             string ResultWeb = string.Empty;
 
@@ -118,7 +110,7 @@ namespace SuccessStory.Clients
                                 else
                                     Unlocked += 1;
 
-                                Achievements.Add(temp);
+                                AllAchievements.Add(temp);
                             }
                         }
                     }
@@ -139,19 +131,17 @@ namespace SuccessStory.Clients
                 logger.Warn("SuccessStory - GOG user is not Authenticate");
             }
 
-            Result = new GameAchievements
-            {
-                Name = GameName,
-                HaveAchivements = HaveAchivements,
-                Total = Total,
-                Unlocked = Unlocked,
-                Locked = Locked,
-                Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
-                Achievements = Achievements
-            };
+            Result.Name = GameName;
+            Result.HaveAchivements = HaveAchivements;
+            Result.Total = Total;
+            Result.Unlocked = Unlocked;
+            Result.Locked = Locked;
+            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
+            Result.Items = AllAchievements;
 
             return Result;
         }
+
 
         public override bool IsConfigured()
         {
@@ -171,7 +161,7 @@ namespace SuccessStory.Clients
         /// <param name="UrlAchievements"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        internal async Task<string> DonwloadStringData(string UrlChangeLang, string UrlAchievements, string token)
+        private async Task<string> DonwloadStringData(string UrlChangeLang, string UrlAchievements, string token)
         {
             using (var client = new HttpClient())
             {

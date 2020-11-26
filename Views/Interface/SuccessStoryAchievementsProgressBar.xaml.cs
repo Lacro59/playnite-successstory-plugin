@@ -1,7 +1,12 @@
-﻿using Playnite.SDK;
+﻿using Newtonsoft.Json;
+using Playnite.SDK;
+using PluginCommon;
+using SuccessStory.Services;
 using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace SuccessStory.Views.Interface
 {
@@ -12,43 +17,42 @@ namespace SuccessStory.Views.Interface
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        private bool _withContener;
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
 
         public SuccessStoryAchievementsProgressBar()
         {            
             InitializeComponent();
+
+            PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
 
-        private void Grid_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Define height & width
-            var parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent);
-            if (_withContener)
-            {
-                parent = ((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)((FrameworkElement)sender).Parent).Parent).Parent).Parent);
-            }
 
+        protected void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            try
+            {
 #if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsProgressBar({_withContener}) - parent.name: {parent.Name} - parent.Height: {parent.Height} - parent.Width: {parent.Width}");
+                logger.Debug($"SuccessStoryAchievementsProgressBar.OnPropertyChanged({e.PropertyName}): {JsonConvert.SerializeObject(PluginDatabase.GameSelectedData)}");
 #endif
-
-            if (!double.IsNaN(parent.Height))
-            {
-                ((FrameworkElement)sender).Height = parent.Height;
+                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
+                {
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        SetScData(PluginDatabase.GameSelectedData.Unlocked, PluginDatabase.GameSelectedData.Total);
+                    }));
+                }
             }
-
-            if (!double.IsNaN(parent.Width))
+            catch (Exception ex)
             {
-                ((FrameworkElement)sender).Width = parent.Width;
+                Common.LogError(ex, "SuccessStory");
             }
         }
 
-        public void SetScData(long value, long maxValue, bool showPercent, bool showIndicator, bool withContener = false)
-        {
-            _withContener = withContener;
 
-            if (showIndicator)
+        public void SetScData(long value, long maxValue)
+        {
+            if (PluginDatabase.PluginSettings.IntegrationShowProgressBarIndicator)
             {
                 AchievementsIndicator.Content = value + "/" + maxValue;
             }
@@ -62,7 +66,7 @@ namespace SuccessStory.Views.Interface
             AchievementsProgressBar.Value = value;
             AchievementsProgressBar.Maximum = maxValue;
 
-            if (showPercent)
+            if (PluginDatabase.PluginSettings.IntegrationShowProgressBarPercent)
             {
                 AchievementsPercent.Content = (maxValue != 0) ? (int)Math.Round((double)(value * 100 / maxValue)) + "%" : 0 + "%";
             }
@@ -70,6 +74,12 @@ namespace SuccessStory.Views.Interface
             {
                 AchievementsPercent.Content = string.Empty;
             }
+        }
+
+
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
+        {
+            IntegrationUI.SetControlSize((FrameworkElement)sender);
         }
     }
 }

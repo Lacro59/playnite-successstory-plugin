@@ -18,5 +18,4 @@
         <ProgressBar Grid.Column="2" Name="AchievementsProgressBar" Value="20" Height="{Binding ElementName=pbGridContener, Path=ActualHeight}" />
         <Label Grid.Column="2"  Name="AchievementsPercent" HorizontalAlignment="Center" Content="33%" Height="{Binding ElementName=pbGridContener, Path=ActualHeight}" />
     </Grid>
-    
 </UserControl>

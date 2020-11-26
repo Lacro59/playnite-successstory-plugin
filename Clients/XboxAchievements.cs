@@ -12,12 +12,8 @@ using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using PluginCommon;
-using PluginCommon.PlayniteResources;
-using PluginCommon.PlayniteResources.API;
 using PluginCommon.PlayniteResources.Common;
-using PluginCommon.PlayniteResources.Converters;
 using PluginCommon.PlayniteResources.PluginLibrary.XboxLibrary.Models;
-using SuccessStory.Database;
 using SuccessStory.Models;
 
 namespace SuccessStory.Clients
@@ -41,19 +37,12 @@ namespace SuccessStory.Clients
             xstsLoginTokesPath = Path.Combine(_PluginUserDataPath + "\\..\\7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287", "xsts.json");
         }
 
-        public override GameAchievements GetAchievements(Game game)
+
+        public override SuccessStories GetAchievements(Game game)
         {
             List<Achievements> AllAchievements = new List<Achievements>();
-            GameAchievements Result = new GameAchievements
-            {
-                Name = game.Name,
-                HaveAchivements = false,
-                Total = 0,
-                Unlocked = 0,
-                Locked = 0,
-                Progression = 0,
-                Achievements = AllAchievements
-            };
+            SuccessStories Result = SuccessStory.PluginDatabase.GetDefault(game);
+            Result.Items = AllAchievements;
 
 
             List<XboxAchievement> ListAchievements = new List<XboxAchievement>();
@@ -80,17 +69,13 @@ namespace SuccessStory.Clients
                     });
                 }
 
-                Result = new GameAchievements
-                {
-                    Name = game.Name,
-                    HaveAchivements = AllAchievements.HasItems(),
-                    Total = AllAchievements.Count,
-                    Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != default(DateTime)).Count,
-                    Locked = AllAchievements.FindAll(x => x.DateUnlocked == default(DateTime)).Count,
-                    Progression = 0,
-                    Achievements = AllAchievements
-                };
+                Result.Name = game.Name;
+                Result.HaveAchivements = AllAchievements.HasItems();
+                Result.Total = AllAchievements.Count;
+                Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != default(DateTime)).Count;
+                Result.Locked = AllAchievements.FindAll(x => x.DateUnlocked == default(DateTime)).Count;
                 Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
+                Result.Items = AllAchievements;
             }
             catch (Exception ex)
             {
@@ -99,6 +84,7 @@ namespace SuccessStory.Clients
 
             return Result;
         }
+
 
         public override bool IsConfigured()
         {

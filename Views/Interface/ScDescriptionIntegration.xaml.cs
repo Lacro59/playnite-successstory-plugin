@@ -6,6 +6,11 @@ using Newtonsoft.Json;
 using System.Windows;
 using LiveCharts;
 using LiveCharts.Wpf;
+using SuccessStory.Services;
+using System.Windows.Threading;
+using System.Threading;
+using System;
+using PluginCommon;
 
 namespace SuccessStory.Views.Interface
 {
@@ -16,238 +21,159 @@ namespace SuccessStory.Views.Interface
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        private bool _IsCustom;
-        private bool _ShowAchievementsGraphic;
-        private bool _ShowAchievementsList;
-        private bool _ShowAchievementsCompactLocked;
-        private bool _ShowAchievementsCompactUnlocked;
-        private bool _ShowProgressBar;
-
-        private SuccessStoryAchievementsProgressBar successStoryAchievementsProgressBar;
-        private SuccessStoryAchievementsGraphics successStoryAchievementsGraphics;
-        private SuccessStoryAchievementsList successStoryAchievementsList;
-        private SuccessStoryAchievementsCompact successStoryAchievementsCompact_Locked;
-        private SuccessStoryAchievementsCompact successStoryAchievementsCompact_Unlocked;
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
 
-        public ScDescriptionIntegration(SuccessStorySettings settings, AchievementsDatabase achievementsDatabase, GameAchievements SelectedGameAchievements, 
-            bool IsCustom = false, bool ShowAchievementsGraphic = false, bool ShowAchievementsList = false, bool ShowAchievementsCompactLocked = false, 
-            bool ShowAchievementsCompactUnlocked = false, bool ShowProgressBar = false)
+        public ScDescriptionIntegration()
         {
             InitializeComponent();
 
-            _IsCustom = IsCustom;
-            _ShowAchievementsGraphic = ShowAchievementsGraphic;
-            _ShowAchievementsList = ShowAchievementsList;
-            _ShowAchievementsCompactLocked = ShowAchievementsCompactLocked;
-            _ShowAchievementsCompactUnlocked = ShowAchievementsCompactUnlocked;
-            _ShowProgressBar = ShowProgressBar;
+            if (PluginDatabase.PluginSettings.IntegrationShowProgressBar)
+            {
+                SuccessStoryAchievementsProgressBar successStoryAchievementsProgressBar = new SuccessStoryAchievementsProgressBar();
+                PART_SuccessStory_ProgressBar.Children.Add(successStoryAchievementsProgressBar);
+            }
 
-#if DEBUG
-            logger.Debug($"SuccessStory - ScDescriptionIntegration() - _IsCustom: {_IsCustom}");
-#endif
-            SetScData(settings, achievementsDatabase, SelectedGameAchievements);
+            if (PluginDatabase.PluginSettings.IntegrationShowGraphic)
+            {
+                SuccessStoryAchievementsGraphics successStoryAchievementsGraphics = new SuccessStoryAchievementsGraphics();
+                successStoryAchievementsGraphics.DisableAnimations(true);
+                PART_SuccessStory_Graphic.Children.Add(successStoryAchievementsGraphics);
+            }
+
+            if (PluginDatabase.PluginSettings.IntegrationShowAchievements)
+            {
+                SuccessStoryAchievementsList successStoryAchievementsList = new SuccessStoryAchievementsList();
+                PART_SuccessStory_List.Children.Add(successStoryAchievementsList);
+            }
+
+            if (PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactUnlocked)
+            {
+                SuccessStoryAchievementsCompact successStoryAchievementsCompact_Unlocked = new SuccessStoryAchievementsCompact(true);
+                PART_SuccessStory_Compact_Unlocked.Children.Add(successStoryAchievementsCompact_Unlocked);
+            }
+
+            if (PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactLocked)
+            {
+                SuccessStoryAchievementsCompact successStoryAchievementsCompact_Locked = new SuccessStoryAchievementsCompact();
+                PART_SuccessStory_Compact_Locked.Children.Add(successStoryAchievementsCompact_Locked);
+            }
+
+
+            PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
 
-        public void SetScData(SuccessStorySettings settings, AchievementsDatabase achievementsDatabase, GameAchievements SelectedGameAchievements)
+
+        protected void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (!settings.IntegrationShowTitle || _IsCustom)
+            try
             {
-                PART_Title.Visibility = Visibility.Collapsed;
-                PART_Separator.Visibility = Visibility.Collapsed;
-            }
-
 #if DEBUG
-            logger.Debug($"SuccessStory - _IsCustom: {_IsCustom} - _ShowAchievementsGraphic: {_ShowAchievementsGraphic} - _ShowAchievementsList: {_ShowAchievementsList} - _ShowAchievementsCompactLocked: {_ShowAchievementsCompactLocked} - _ShowAchievementsCompactUnlocked: {_ShowAchievementsCompactUnlocked} - _ShowProgressBar: {_ShowProgressBar}");
+                logger.Debug($"GaDescriptionIntegration.OnPropertyChanged({e.PropertyName}): {JsonConvert.SerializeObject(PluginDatabase.GameSelectedData)}");
 #endif
-
-            bool Show = true;
-
-            if (SelectedGameAchievements == null || !SelectedGameAchievements.HaveAchivements)
-            {
-                return;
-            }
-
-            PART_SuccessStory_ProgressBar.Visibility = Visibility.Collapsed;
-            if (settings.IntegrationShowProgressBar)
-            {
-                Show = true;
-                if (_IsCustom && !_ShowProgressBar)
+                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
                 {
-                    Show = false;
-                }
-
-#if DEBUG
-                logger.Debug($"SuccessStory - PART_SuccessStory_ProgressBar - Show: {Show} - SelectedGameAchievements: {JsonConvert.SerializeObject(SelectedGameAchievements)}");
-#endif
-                if (Show)
-                {
-                    PART_SuccessStory_ProgressBar.Visibility = Visibility.Visible;
-
-                    if (successStoryAchievementsProgressBar == null)
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                     {
-                        successStoryAchievementsProgressBar = new SuccessStoryAchievementsProgressBar();
-
-                        if (!_IsCustom)
+                        // ToggleButton
+                        if (PluginDatabase.PluginSettings.EnableIntegrationInDescriptionWithToggle && PluginDatabase.PluginSettings.EnableIntegrationButton)
                         {
-                            PART_SuccessStory_ProgressBar.Height = 40;
+                            this.Visibility = Visibility.Collapsed;
+                        }
+                        else
+                        {
+                            // No data
+                            if (!PluginDatabase.GameSelectedData.HasData)
+                            {
+                                this.Visibility = Visibility.Collapsed;
+                                return;
+                            }
+                            else
+                            {
+                                this.Visibility = Visibility.Visible;
+                            }
+                        }
+
+                        // Margin with title
+                        if (PluginDatabase.PluginSettings.IntegrationShowTitle)
+                        {
                             PART_SuccessStory_ProgressBar.Margin = new Thickness(0, 5, 0, 5);
-                        }
-
-                        PART_SuccessStory_ProgressBar.Children.Add(successStoryAchievementsProgressBar);
-                    }
-
-                    successStoryAchievementsProgressBar.SetScData(SelectedGameAchievements.Unlocked, SelectedGameAchievements.Total, settings.IntegrationShowProgressBarPercent, settings.IntegrationShowProgressBarIndicator, _IsCustom);
-                }
-            }
-
-            PART_SuccessStory_Graphic.Visibility = Visibility.Collapsed;
-            if (settings.IntegrationShowGraphic)
-            {
-                Show = true;
-                if (_IsCustom && !_ShowAchievementsGraphic)
-                {
-                    Show = false;
-                }
-
-#if DEBUG
-                logger.Debug($"SuccessStory - PART_SuccessStory_Graphic - Show: {Show} - SelectedGameAchievements: {JsonConvert.SerializeObject(SelectedGameAchievements)}");
-#endif
-                if (Show)
-                {
-                    PART_SuccessStory_Graphic.Visibility = Visibility.Visible;
-
-                    AchievementsGraphicsDataCount GraphicsData = null;
-                    if (!settings.GraphicAllUnlockedByDay)
-                    {
-                        GraphicsData = achievementsDatabase.GetCountByMonth(SuccessStory.GameSelected.Id, (settings.IntegrationGraphicOptionsCountAbscissa - 1));
-                    }
-                    else
-                    {
-                        GraphicsData = achievementsDatabase.GetCountByDay(SuccessStory.GameSelected.Id, (settings.IntegrationGraphicOptionsCountAbscissa - 1));
-                    }
-                    string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
-                    SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-                    StatsGraphicAchievementsSeries.Add(new LineSeries
-                    {
-                        Title = string.Empty,
-                        Values = GraphicsData.Series
-                    });
-
-                    if (successStoryAchievementsGraphics == null)
-                    {
-                        successStoryAchievementsGraphics = new SuccessStoryAchievementsGraphics(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings);
-
-                        if (!_IsCustom)
-                        {
-                            PART_SuccessStory_Graphic.Height = settings.IntegrationShowGraphicHeight;
                             PART_SuccessStory_Graphic.Margin = new Thickness(0, 5, 0, 5);
-                        }
-
-                        PART_SuccessStory_Graphic.Children.Add(successStoryAchievementsGraphics);
-                    }
-
-                    successStoryAchievementsGraphics.SetScData(StatsGraphicAchievementsSeries, StatsGraphicsAchievementsLabels, settings);
-                }
-            }
-
-            PART_SuccessStory_List.Visibility = Visibility.Collapsed;
-            if (settings.IntegrationShowAchievements)
-            {
-                Show = true;
-                if (_IsCustom && !_ShowAchievementsList)
-                {
-                    Show = false;
-                }
-
-#if DEBUG
-                logger.Debug($"SuccessStory - PART_SuccessStory_List - Show: {Show} - SelectedGameAchievements: {JsonConvert.SerializeObject(SelectedGameAchievements)}");
-#endif
-                if (Show)
-                {
-                    PART_SuccessStory_List.Visibility = Visibility.Visible;
-
-                    if (successStoryAchievementsList == null)
-                    {
-                        successStoryAchievementsList = new SuccessStoryAchievementsList();
-
-                        if (!_IsCustom)
-                        {
-                            PART_SuccessStory_List.Height = settings.IntegrationShowAchievementsHeight;
                             PART_SuccessStory_List.Margin = new Thickness(0, 5, 0, 5);
-                        }
-
-                        PART_SuccessStory_List.Children.Add(successStoryAchievementsList);
-                    }
-
-                    successStoryAchievementsList.SetScData(SelectedGameAchievements.Achievements, _IsCustom, settings.EnableRaretyIndicator);
-                }
-            }
-
-            PART_SuccessStory_Compact_Locked.Visibility = Visibility.Collapsed;
-            if (settings.IntegrationShowAchievementsCompactLocked)
-            {
-                Show = true;
-                if (_IsCustom && !_ShowAchievementsCompactLocked)
-                {
-                    Show = false;
-                }
-
-#if DEBUG
-                logger.Debug($"SuccessStory - PART_SuccessStory_Compact_Locked - Show: {Show} - SelectedGameAchievements: {JsonConvert.SerializeObject(SelectedGameAchievements)}");
-#endif
-                if (Show)
-                {
-                    PART_SuccessStory_Compact_Locked.Visibility = Visibility.Visible;
-
-                    if (successStoryAchievementsCompact_Locked == null)
-                    {
-                        successStoryAchievementsCompact_Locked = new SuccessStoryAchievementsCompact(SelectedGameAchievements.Achievements, false, settings.EnableRaretyIndicator);
-
-                        if (!_IsCustom)
-                        {
-                            PART_SuccessStory_Compact_Locked.Margin = new Thickness(0, 5, 0, 5);
-                            PART_SuccessStory_Compact_Locked.Height = successStoryAchievementsCompact_Locked.Height;
-                        }
-
-                        PART_SuccessStory_Compact_Locked.Children.Add(successStoryAchievementsCompact_Locked);
-                    }
-
-                    successStoryAchievementsCompact_Locked.SetScData(SelectedGameAchievements.Achievements, false, settings.EnableRaretyIndicator);
-                }
-            }
-
-            PART_SuccessStory_Compact_Unlocked.Visibility = Visibility.Collapsed;
-            if (settings.IntegrationShowAchievementsCompactUnlocked)
-            {
-                Show = true;
-                if (_IsCustom && !_ShowAchievementsCompactUnlocked)
-                {
-                    Show = false;
-                }
-
-#if DEBUG
-                logger.Debug($"SuccessStory - PART_SuccessStory_Compact_Unlocked - Show: {Show} - SelectedGameAchievements: {JsonConvert.SerializeObject(SelectedGameAchievements)}");
-#endif
-                if (Show)
-                {
-                    PART_SuccessStory_Compact_Unlocked.Visibility = Visibility.Visible;
-
-                    if (successStoryAchievementsCompact_Unlocked == null)
-                    {
-                        successStoryAchievementsCompact_Unlocked = new SuccessStoryAchievementsCompact(SelectedGameAchievements.Achievements, true, settings.EnableRaretyIndicator);
-
-                        if (!_IsCustom)
-                        {
                             PART_SuccessStory_Compact_Unlocked.Margin = new Thickness(0, 5, 0, 5);
-                            PART_SuccessStory_Compact_Unlocked.Height = successStoryAchievementsCompact_Unlocked.Height;
+                            PART_SuccessStory_Compact_Locked.Margin = new Thickness(0, 5, 0, 5);
+                        }
+                        // Without title
+                        else
+                        {
+                            PART_SuccessStory_ProgressBar.Margin = new Thickness(0, 5, 0, 5);
+                            PART_SuccessStory_Graphic.Margin = new Thickness(0, 5, 0, 5);
+                            PART_SuccessStory_List.Margin = new Thickness(0, 5, 0, 5);
+                            PART_SuccessStory_Compact_Unlocked.Margin = new Thickness(0, 5, 0, 5);
+                            PART_SuccessStory_Compact_Locked.Margin = new Thickness(0, 5, 0, 5);
+
+                            if (!PluginDatabase.PluginSettings.IntegrationTopGameDetails)
+                            {
+                                if (PluginDatabase.PluginSettings.IntegrationShowGraphic)
+                                {
+                                    PART_SuccessStory_ProgressBar.Margin = new Thickness(0, 15, 0, 5);
+                                }
+                                else if (PluginDatabase.PluginSettings.IntegrationShowGraphic)
+                                {
+                                    PART_SuccessStory_Graphic.Margin = new Thickness(0, 15, 0, 5);
+                                }
+                                else if (PluginDatabase.PluginSettings.IntegrationShowAchievements)
+                                {
+                                    PART_SuccessStory_List.Margin = new Thickness(0, 15, 0, 5);
+                                }
+                                else if (PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactUnlocked)
+                                {
+                                    PART_SuccessStory_Compact_Unlocked.Margin = new Thickness(0, 15, 0, 5);
+                                }
+                                else if (PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactLocked)
+                                {
+                                    PART_SuccessStory_Compact_Locked.Margin = new Thickness(0, 15, 0, 5);
+                                }
+                            }
                         }
 
-                        PART_SuccessStory_Compact_Unlocked.Children.Add(successStoryAchievementsCompact_Unlocked);
-                    }
 
-                    successStoryAchievementsCompact_Unlocked.SetScData(SelectedGameAchievements.Achievements, true, settings.EnableRaretyIndicator);
+                        bool IntegrationShowTitle = PluginDatabase.PluginSettings.IntegrationShowTitle;
+                        if (PluginDatabase.PluginSettings.EnableIntegrationInDescriptionWithToggle)
+                        {
+                            IntegrationShowTitle = true;
+                        }
+
+
+                        PART_SuccessStory_Graphic.Height = PluginDatabase.PluginSettings.IntegrationShowGraphicHeight;
+                        PART_SuccessStory_List.Height = PluginDatabase.PluginSettings.IntegrationShowAchievementsHeight;
+
+
+                        this.DataContext = new
+                        {
+                            IntegrationShowTitle = IntegrationShowTitle,
+                            IntegrationShowProgressBar = PluginDatabase.PluginSettings.IntegrationShowProgressBar,
+                            IntegrationShowGraphic = PluginDatabase.PluginSettings.IntegrationShowGraphic,
+                            IntegrationShowAchievements = PluginDatabase.PluginSettings.IntegrationShowAchievements,
+                            IntegrationShowAchievementsCompactUnlocked = PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactUnlocked,
+                            IntegrationShowAchievementsCompactLocked = PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactLocked
+                        };
+#if DEBUG
+                        logger.Debug($"SuccessStory - DataContext: {JsonConvert.SerializeObject(DataContext)}");
+#endif
+                    }));
                 }
+                else
+                {
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        this.Visibility = Visibility.Collapsed;
+                    }));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory");
             }
         }
     }
