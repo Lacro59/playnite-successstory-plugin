@@ -1,5 +1,4 @@
-﻿using AchievementsLocal.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Playnite.SDK;
 using PluginCommon;
 using SuccessStory.Models;
@@ -110,7 +109,7 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                logger.Info($"CheckLocalizations - ConvertDB()");
+                logger.Info($"SuccessStory - ConvertDB()");
 
                 int Converted = 0;
 
