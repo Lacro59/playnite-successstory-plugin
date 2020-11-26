@@ -114,6 +114,7 @@
     <Compile Include="Models\ProgressionAchievements.cs" />
     <Compile Include="Models\SuccessStories.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
+    <Compile Include="Services\OldToNew.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />
     <Compile Include="Services\SuccessStoryUI.cs" />
     <Compile Include="SuccessStory.cs" />

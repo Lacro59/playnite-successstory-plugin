@@ -46,11 +46,16 @@ namespace SuccessStory
         public static SuccessStoryUI successStoryUI { get; set; }
 
         CancellationTokenSource tokenSource = new CancellationTokenSource();
-        
+
+        private OldToNew oldToNew;
+
 
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
             settings = new SuccessStorySettings(this);
+
+            // Old database
+            oldToNew = new OldToNew(this.GetPluginUserDataPath());
 
             // Loading plugin database 
             PluginDatabase = new SuccessStoryDatabase(this, PlayniteApi, settings, this.GetPluginUserDataPath());
@@ -243,6 +248,12 @@ namespace SuccessStory
 
         public override void OnGameSelected(GameSelectionEventArgs args)
         {
+            // Old database
+            if (oldToNew.IsOld)
+            {
+                oldToNew.ConvertDB(PlayniteApi);
+            }
+
             try
             {
                 if (args.NewValue != null && args.NewValue.Count == 1)
