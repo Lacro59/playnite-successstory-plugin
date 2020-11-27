@@ -107,12 +107,11 @@
     <Compile Include="Clients\RetroAchievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />
-    <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\Achievements.cs" />
     <Compile Include="Models\ListAchievements.cs" />
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
-    <Compile Include="Models\SuccessStories.cs" />
+    <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
     <Compile Include="Services\OldToNew.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />

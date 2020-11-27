@@ -38,10 +38,10 @@ namespace SuccessStory.Clients
         }
 
 
-        public override SuccessStories GetAchievements(Game game)
+        public override GameAchievements GetAchievements(Game game)
         {
             List<Achievements> AllAchievements = new List<Achievements>();
-            SuccessStories Result = SuccessStory.PluginDatabase.GetDefault(game);
+            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
             Result.Items = AllAchievements;
 
 

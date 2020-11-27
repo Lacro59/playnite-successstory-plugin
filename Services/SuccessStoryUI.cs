@@ -67,9 +67,11 @@ namespace SuccessStory.Services
 #if DEBUG
             logger.Debug($"SuccessStory - OnBtHeaderClick()");
 #endif
+            PluginDatabase.IsViewOpen = true;
             var ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath());
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
             windowExtension.ShowDialog();
+            PluginDatabase.IsViewOpen = false;
 
             /*
             SuccessView ViewExtension = null;
@@ -190,11 +192,11 @@ namespace SuccessStory.Services
 
 
                     // Load data
-                    if (!SuccessStory.PluginDatabase.IsLoaded)
+                    if (!PluginDatabase.IsLoaded)
                     {
                         return;
                     }
-                    SuccessStories successStories = SuccessStory.PluginDatabase.Get(GameSelected);
+                    GameAchievements successStories = PluginDatabase.Get(GameSelected);
 
                     if (successStories.HasData)
                     {
@@ -313,6 +315,7 @@ namespace SuccessStory.Services
 #if DEBUG
             logger.Debug($"SuccessStory - OnBtActionBarClick()");
 #endif
+            PluginDatabase.IsViewOpen = true;
             SuccessView ViewExtension = null;
             if (PluginDatabase.PluginSettings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(_PlayniteApi, SuccessStory.GameSelected))
             {
@@ -324,6 +327,7 @@ namespace SuccessStory.Services
             }
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
             windowExtension.ShowDialog();
+            PluginDatabase.IsViewOpen = false;
         }
 
         public void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)

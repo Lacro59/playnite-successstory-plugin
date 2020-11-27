@@ -23,7 +23,7 @@ namespace SuccessStory.Services
 
         private string PathActivityDB = "achievements";
 
-        private ConcurrentDictionary<Guid, GameAchievements> Items { get; set; } = new ConcurrentDictionary<Guid, GameAchievements>();
+        private ConcurrentDictionary<Guid, GameAchievementsOld> Items { get; set; } = new ConcurrentDictionary<Guid, GameAchievementsOld>();
 
 
         public OldToNew(string PluginUserDataPath)
@@ -83,7 +83,7 @@ namespace SuccessStory.Services
 #endif
                     Guid gameId = Guid.Parse(objectFile.Replace(PathActivityDB, "").Replace(".json", "").Replace("\\", ""));
 
-                    GameAchievements objGameAchievements = JsonConvert.DeserializeObject<GameAchievements>(File.ReadAllText(objectFile));
+                    GameAchievementsOld objGameAchievements = JsonConvert.DeserializeObject<GameAchievementsOld>(File.ReadAllText(objectFile));
 
                     Items.TryAdd(gameId, objGameAchievements);
                 }
@@ -104,7 +104,7 @@ namespace SuccessStory.Services
             );
             globalProgressOptions.IsIndeterminate = true;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            PlayniteApi.Dialogs.ActivateGlobalProgress((Action<GlobalProgressActionArgs>)((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -119,18 +119,18 @@ namespace SuccessStory.Services
                     {
                         if (PlayniteApi.Database.Games.Get(item.Key) != null)
                         {
-                            SuccessStories successStories = SuccessStory.PluginDatabase.Get(item.Key, true);
+                            GameAchievements gameAchievements = SuccessStory.PluginDatabase.Get(item.Key, true);
 
-                            successStories.HaveAchivements = item.Value.HaveAchivements;
-                            successStories.IsEmulators = item.Value.IsEmulators;
-                            successStories.Total = item.Value.Total;
-                            successStories.Unlocked = item.Value.Unlocked;
-                            successStories.Locked = item.Value.Locked;
-                            successStories.Progression = item.Value.Progression;
-                            successStories.Items = item.Value.Achievements;
+                            gameAchievements.HaveAchivements = item.Value.HaveAchivements;
+                            gameAchievements.IsEmulators = item.Value.IsEmulators;
+                            gameAchievements.Total = item.Value.Total;
+                            gameAchievements.Unlocked = item.Value.Unlocked;
+                            gameAchievements.Locked = item.Value.Locked;
+                            gameAchievements.Progression = item.Value.Progression;
+                            gameAchievements.Items = item.Value.Achievements;
 
                             Thread.Sleep(10);
-                            SuccessStory.PluginDatabase.Update(successStories);
+                            SuccessStory.PluginDatabase.Update(gameAchievements);
                             Converted++;
                         }
                         else
@@ -148,15 +148,15 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"SuccessStory - Migration - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
-            }, globalProgressOptions);
+                logger.Info($"SuccessStory - Migration - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+            }), globalProgressOptions);
 
             IsOld = false;
         }
     }
 
 
-    public class GameAchievements
+    public class GameAchievementsOld
     {
         /// <summary>
         /// Game Name in the Playnite database.

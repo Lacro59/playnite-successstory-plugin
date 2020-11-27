@@ -40,11 +40,11 @@ namespace SuccessStory.Clients
         }
 
 
-        public override SuccessStories GetAchievements(Game game)
+        public override GameAchievements GetAchievements(Game game)
         {
             int AppId = 0;
             List<Achievements> AllAchievements = new List<Achievements>();
-            SuccessStories Result = SuccessStory.PluginDatabase.GetDefault(game);
+            Models.GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
             Result.Items = AllAchievements;
 
 

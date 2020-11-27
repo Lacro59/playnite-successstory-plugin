@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SuccessStory.Services
 {
-    public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettings, SuccessStoryCollection, SuccessStories>
+    public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettings, SuccessStoryCollection, GameAchievements>
     {
         private SuccessStory _plugin;
 
@@ -54,7 +54,7 @@ namespace SuccessStory.Services
             logger.Debug($"{PluginName} - db: {JsonConvert.SerializeObject(Database)}");
 #endif
 
-            GameSelectedData = new SuccessStories();
+            GameSelectedData = new GameAchievements();
             GetPluginTags();
 
             IsLoaded = true;
@@ -62,40 +62,40 @@ namespace SuccessStory.Services
         }
 
 
-        public override SuccessStories Get(Guid Id, bool OnlyCache = false)
+        public override GameAchievements Get(Guid Id, bool OnlyCache = false)
         {
             GameIsLoaded = false;
-            SuccessStories successStories = GetOnlyCache(Id);
+            GameAchievements gameAchievements = base.GetOnlyCache(Id);
 #if DEBUG
-            logger.Debug($"{PluginName} - GetFromDb({Id.ToString()}) - successStories: {JsonConvert.SerializeObject(successStories)}");
+            logger.Debug($"{PluginName} - GetFromDb({Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
 #endif
 
             // Get from web
-            if (successStories == null && !OnlyCache)
+            if (gameAchievements == null && !OnlyCache)
             {
-                successStories = GetFromWeb(_PlayniteApi.Database.Games.Get(Id));
-                Add(successStories);
+                gameAchievements = GetFromWeb(_PlayniteApi.Database.Games.Get(Id));
+                Add(gameAchievements);
 
 #if DEBUG
-                logger.Debug($"{PluginName} - GetFromWeb({Id.ToString()}) - successStories: {JsonConvert.SerializeObject(successStories)}");
+                logger.Debug($"{PluginName} - GetFromWeb({Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
 #endif
             }
 
-            if (successStories == null)
+            if (gameAchievements == null)
             {
                 Game game = _PlayniteApi.Database.Games.Get(Id);
-                successStories = GetDefault(game);
-                Add(successStories);
+                gameAchievements = GetDefault(game);
+                Add(gameAchievements);
             }
 
             GameIsLoaded = true;
-            return successStories;
+            return gameAchievements;
         }
 
 
-        public override SuccessStories GetDefault(Game game)
+        public override GameAchievements GetDefault(Game game)
         {
-            return new SuccessStories
+            return new GameAchievements
             {
                 Id = game.Id,
                 Name = game.Name,
@@ -115,9 +115,9 @@ namespace SuccessStory.Services
         /// Generate database achivements for the game if achievement exist and game not exist in database.
         /// </summary>
         /// <param name="game"></param>
-        public SuccessStories GetFromWeb(Game game)
+        public GameAchievements GetFromWeb(Game game)
         {
-            SuccessStories successStories = GetDefault(game);
+            GameAchievements gameAchievements = GetDefault(game);
 
             Guid GameId = game.Id;
             Guid GameSourceId = game.SourceId;
@@ -139,13 +139,13 @@ namespace SuccessStory.Services
                     {
                         gogAPI = new GogAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     }
-                    successStories = gogAPI.GetAchievements(game);
+                    gameAchievements = gogAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "steam")
                 {
                     SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
-                    successStories = steamAPI.GetAchievements(game);
+                    gameAchievements = steamAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "origin")
@@ -154,7 +154,7 @@ namespace SuccessStory.Services
                     {
                         originAPI = new OriginAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     }
-                    successStories = originAPI.GetAchievements(game);
+                    gameAchievements = originAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "xbox")
@@ -163,24 +163,24 @@ namespace SuccessStory.Services
                     {
                         xboxAPI = new XboxAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     }
-                    successStories = xboxAPI.GetAchievements(game);
+                    gameAchievements = xboxAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "playnite")
                 {
                     SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     steamAPI.SetLocal();
-                    successStories = steamAPI.GetAchievements(game);
+                    gameAchievements = steamAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "retroachievements")
                 {
                     RetroAchievements retroAchievementsAPI = new RetroAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
-                    successStories = retroAchievementsAPI.GetAchievements(game);
+                    gameAchievements = retroAchievementsAPI.GetAchievements(game);
                 }
 
 #if DEBUG
-                logger.Debug($"SuccessStory - Achievements for {game.Name} - {GameSourceName} - {JsonConvert.SerializeObject(successStories)}");
+                logger.Debug($"SuccessStory - Achievements for {game.Name} - {GameSourceName} - {JsonConvert.SerializeObject(gameAchievements)}");
 #endif
             }
             else
@@ -190,7 +190,7 @@ namespace SuccessStory.Services
 #endif
             }
 
-            return successStories;
+            return gameAchievements;
         }
 
 

@@ -1,5 +1,4 @@
 ﻿using Playnite.SDK;
-using SuccessStory.Database;
 using SuccessStory.Models;
 using System.Windows.Controls;
 using Newtonsoft.Json;
@@ -167,7 +166,10 @@ namespace SuccessStory.Views.Interface
                 {
                     this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                     {
-                        this.Visibility = Visibility.Collapsed;
+                        if (!PluginDatabase.IsViewOpen)
+                        {
+                            this.Visibility = Visibility.Collapsed;
+                        }
                     }));
                 }
             }

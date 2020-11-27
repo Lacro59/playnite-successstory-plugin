@@ -1,18 +1,31 @@
 ﻿using Newtonsoft.Json;
-using SuccessStory.Models;
+using PluginCommon.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SuccessStory.Database
+namespace SuccessStory.Models
 {
-    /// <summary>
-    /// Represents GameAchievements file.
-    /// </summary>
-    public class GameAchievements
+    public class GameAchievements : PluginDataBaseGame<Achievements>
     {
-        /// <summary>
-        /// Game Name in the Playnite database.
-        /// </summary>
-        public string Name { get; set; }
+        private List<Achievements> _Items = new List<Achievements>();
+        public override List<Achievements> Items
+        {
+            get
+            {
+                return _Items;
+            }
+
+            set
+            {
+                _Items = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -20,7 +33,7 @@ namespace SuccessStory.Database
         /// <summary>
         /// 
         /// </summary>
-        public bool IsEmulators { get; set; } = false;
+        public bool IsEmulators { get; set; }
         /// <summary>
         /// 
         /// </summary>
@@ -48,9 +61,5 @@ namespace SuccessStory.Database
         /// Percentage
         /// </summary>
         public int Progression { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public List<Achievements> Achievements { get; set; }
     }
 }

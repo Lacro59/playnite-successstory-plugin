@@ -31,7 +31,7 @@ namespace SuccessStory.Clients
         /// <param name="PlayniteApi"></param>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public override SuccessStories GetAchievements(Game game)
+        public override GameAchievements GetAchievements(Game game)
         {
             List<Achievements> AllAchievements = new List<Achievements>();
             string GameName = game.Name;
@@ -41,7 +41,7 @@ namespace SuccessStory.Clients
             int Unlocked = 0;
             int Locked = 0;
 
-            SuccessStories Result = SuccessStory.PluginDatabase.GetDefault(game);
+            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
             Result.Items = AllAchievements;
 
             string ResultWeb = string.Empty;

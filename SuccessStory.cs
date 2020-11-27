@@ -7,7 +7,6 @@ using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 using PluginCommon;
 using SuccessStory.Clients;
-using SuccessStory.Database;
 using SuccessStory.Models;
 using SuccessStory.Views;
 using SuccessStory.Views.Interface;
@@ -133,9 +132,11 @@ namespace SuccessStory
                     Description = resources.GetString("LOCSuccessStoryViewGame"),
                     Action = (gameMenuItem) =>
                     {
+                        PluginDatabase.IsViewOpen = true;
                         var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                         windowExtension.ShowDialog();
+                        PluginDatabase.IsViewOpen = false;
                     }
                 },
 
@@ -190,9 +191,11 @@ namespace SuccessStory
                     Description = resources.GetString("LOCSuccessStoryViewGames"),
                     Action = (mainMenuItem) =>
                     {
+                        PluginDatabase.IsViewOpen = true;
                         var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath());
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                         windowExtension.ShowDialog();
+                        PluginDatabase.IsViewOpen = false;
                     }
                 }
             };
@@ -205,6 +208,7 @@ namespace SuccessStory
                     Description = resources.GetString("LOCSuccessStoryViewGames") + " - RetroAchievements",
                     Action = (mainMenuItem) =>
                     {
+                        PluginDatabase.IsViewOpen = true;
                         SuccessView ViewExtension = null;
                         if (settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, GameSelected))
                         {
@@ -216,11 +220,12 @@ namespace SuccessStory
                         }
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                         windowExtension.ShowDialog();
+                        PluginDatabase.IsViewOpen = false;
                     }
                 });
             }
 
-            // Download missing localizations data for all game in database
+            // Download missing data for all game in database
             mainMenuItems.Add(
                 new MainMenuItem
                 {
@@ -349,7 +354,7 @@ namespace SuccessStory
                     {
                         try
                         {
-                            SuccessStories successStories = PluginDatabase.GetOnlyCache(game.Id);
+                            Models.GameAchievements successStories = PluginDatabase.GetOnlyCache(game.Id);
                             if (successStories != null && successStories.HaveAchivements)
                             {
 #if DEBUG

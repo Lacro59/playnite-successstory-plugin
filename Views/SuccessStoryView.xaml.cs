@@ -16,7 +16,6 @@ using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
 using PluginCommon.LiveChartsCommon;
-using SuccessStory.Database;
 using SuccessStory.Models;
 using SuccessStory.Views.Interface;
 using System.Threading.Tasks;
@@ -274,7 +273,7 @@ namespace SuccessStory
                 if (ListGames.Count == 0)
                 {
                     var dataGameAchievements = PluginDatabase.Database.Where(x => x.HaveAchivements && x.IsDeleted == false);
-                    foreach (SuccessStories item in dataGameAchievements)
+                    foreach (Models.GameAchievements item in dataGameAchievements)
                     {
                         string SourceName = PlayniteTools.GetSourceName(_PlayniteApi, item.Id);
 
@@ -286,7 +285,7 @@ namespace SuccessStory
                             string Icon100 = string.Empty;
                             DateTime? GameLastActivity = null;
 
-                            SuccessStories successStories = PluginDatabase.Get(item.Id);
+                            Models.GameAchievements successStories = PluginDatabase.Get(item.Id);
 
                             if (item.LastActivity != null)
                             {
@@ -353,7 +352,7 @@ namespace SuccessStory
 
                 Guid GameId = Guid.Parse(GameSelected.Id);
 
-                SuccessStories successStories = PluginDatabase.Get(GameId);
+                Models.GameAchievements successStories = PluginDatabase.Get(GameId);
                 List<Achievements> ListAchievements = successStories.Items;
 
                 SuccessStory_Achievements_List.Children.Clear();

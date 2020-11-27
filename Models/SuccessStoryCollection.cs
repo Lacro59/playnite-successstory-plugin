@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SuccessStory.Models
 {
-    public class SuccessStoryCollection : PluginItemCollection<SuccessStories>
+    public class SuccessStoryCollection : PluginItemCollection<GameAchievements>
     {
         public SuccessStoryCollection(string path, GameDatabaseCollection type = GameDatabaseCollection.Uknown) : base(path, type)
         {
