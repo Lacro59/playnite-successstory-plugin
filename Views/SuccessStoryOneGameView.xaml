@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="SuccessStory.Views.SuccessStoryOneGameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuccessStory.Views"
+             mc:Ignorable="d" Height="700" Width="1080">
+    
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" DockPanel.Dock="Top">
+            <StackPanel DockPanel.Dock="Top">
+                <Label Name="PART_ChartTitle" Content="{DynamicResource LOCSuccessStoryGraphicTitle}" 
+                       FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
+            </StackPanel>
+
+            <StackPanel x:Name="PART_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168">
+            </StackPanel>
+        </DockPanel>
+
+        <Grid Name="PART_Achievements_List_Contener" Grid.Column="0" Grid.Row="2">
+            <StackPanel Name="PART_Achievements_List"
+                        Height="{Binding ElementName=PART_Achievements_List_Contener, Path=ActualHeight}">
+            </StackPanel>
+        </Grid>
+
+        <DockPanel Grid.Column="2" Grid.Row="2">
+            <StackPanel DockPanel.Dock="Top">
+                <Label Content="{DynamicResource LOCSuccessStoryUserStats}" 
+                       FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
+            </StackPanel>
+
+            <Grid Name="PART_ScUserStats_Contener">
+                <StackPanel Name="PART_ScUserStats" 
+                        Height="{Binding ElementName=PART_ScUserStats_Contener, Path=ActualHeight}">
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</UserControl>

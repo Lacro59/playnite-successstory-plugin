@@ -132,8 +132,16 @@ namespace SuccessStory
                     Description = resources.GetString("LOCSuccessStoryViewGame"),
                     Action = (gameMenuItem) =>
                     {
+                        dynamic ViewExtension = null;
                         PluginDatabase.IsViewOpen = true;
-                        var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
+                        if (PluginDatabase.PluginSettings.EnableOneGameView)
+                        {
+                            ViewExtension = new SuccessStoryOneGameView(GameMenu);
+                        }
+                        else
+                        {
+                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
+                        }
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                         windowExtension.ShowDialog();
                         PluginDatabase.IsViewOpen = false;

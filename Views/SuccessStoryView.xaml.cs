@@ -352,7 +352,7 @@ namespace SuccessStory
 
                 Guid GameId = Guid.Parse(GameSelected.Id);
 
-                Models.GameAchievements successStories = PluginDatabase.Get(GameId);
+                GameAchievements successStories = PluginDatabase.Get(GameId);
                 List<Achievements> ListAchievements = successStories.Items;
 
                 SuccessStory_Achievements_List.Children.Clear();

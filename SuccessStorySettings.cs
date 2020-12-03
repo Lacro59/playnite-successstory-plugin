@@ -66,6 +66,7 @@ namespace SuccessStory
         public bool EnableRetroAchievements { get; set; } = false;
 
         public bool EnableRetroAchievementsView { get; set; } = false;
+        public bool EnableOneGameView { get; set; } = true;
 
         public string RetroAchievementsUser { get; set; } = string.Empty;
         public string RetroAchievementsKey { get; set; } = string.Empty;
@@ -152,6 +153,7 @@ namespace SuccessStory
                 EnableRetroAchievements = savedSettings.EnableRetroAchievements;
 
                 EnableRetroAchievementsView = savedSettings.EnableRetroAchievementsView;
+                EnableOneGameView = savedSettings.EnableOneGameView;
 
                 RetroAchievementsUser = savedSettings.RetroAchievementsUser;
                 RetroAchievementsKey = savedSettings.RetroAchievementsKey;

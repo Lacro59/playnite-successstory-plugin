@@ -3,6 +3,7 @@ using Playnite.SDK;
 using Playnite.SDK.Models;
 using PluginCommon;
 using SuccessStory.Models;
+using SuccessStory.Views;
 using SuccessStory.Views.Interface;
 using System;
 using System.Collections.Generic;
@@ -316,14 +317,21 @@ namespace SuccessStory.Services
             logger.Debug($"SuccessStory - OnBtActionBarClick()");
 #endif
             PluginDatabase.IsViewOpen = true;
-            SuccessView ViewExtension = null;
-            if (PluginDatabase.PluginSettings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(_PlayniteApi, SuccessStory.GameSelected))
+            dynamic ViewExtension = null;
+            if (PluginDatabase.PluginSettings.EnableOneGameView)
             {
-                ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), true, SuccessStory.GameSelected);
+                ViewExtension = new SuccessStoryOneGameView(SuccessStory.GameSelected);
             }
             else
             {
-                ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), false, SuccessStory.GameSelected);
+                if (PluginDatabase.PluginSettings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(_PlayniteApi, SuccessStory.GameSelected))
+                {
+                    ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), true, SuccessStory.GameSelected);
+                }
+                else
+                {
+                    ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), false, SuccessStory.GameSelected);
+                }
             }
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
             windowExtension.ShowDialog();

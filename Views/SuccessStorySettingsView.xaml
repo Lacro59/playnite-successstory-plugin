@@ -136,15 +136,21 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="30" />
                             </Grid.RowDefinitions>
 
                             <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableRaretyIndicator}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableRaretyIndicator}" />
                             </CheckBox>
+
+                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding EnableOneGameView}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableOneGameView}" />
+                            </CheckBox>
                         </Grid>
 
                         
-                        <Label Content="{DynamicResource LOCSuccessStoryListGames}" FontSize="18" Margin="0,20,0,0" />
+                        <Label Content="{DynamicResource LOCSuccessStoryListGames}" FontSize="18" Margin="0,30,0,0" />
                         <Separator Margin="0,0,0,10" />
 
                         <Grid DockPanel.Dock="Top">
@@ -210,7 +216,7 @@
                         </Grid>
 
                         
-                        <Label Content="{DynamicResource LOCSuccessStoryChartWithAllAchievements}" FontSize="18" Margin="0,20,0,0" />
+                        <Label Content="{DynamicResource LOCSuccessStoryChartWithAllAchievements}" FontSize="18" Margin="0,30,0,0" />
                         <Separator Margin="0,0,0,10" />
 
                         <Grid>
@@ -290,12 +296,10 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
-                                <RowDefinition Height="10" />
+                                <RowDefinition Height="25" />
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="30" />
@@ -551,9 +555,6 @@
 
                                     <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding IntegrationShowAchievements}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievements}" />
-                                    </CheckBox>
-                                    <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding IntegrationShowUserStats}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowUserStats}" />
                                     </CheckBox>
 
                                     <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding IntegrationShowAchievementsCompactUnlocked}" VerticalAlignment="Center">

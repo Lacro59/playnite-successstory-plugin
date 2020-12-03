@@ -51,6 +51,10 @@ namespace SuccessStory.Clients
                 string personasId = GetPersonas(originAPI.GetAccessToken());
                 string origineGameId = GetOrigineGameAchievementId(_PlayniteApi, game.Id);
 
+#if DEBUG
+                logger.Debug($"SuccessStory - Origin token: {accessToken}");
+#endif
+
                 string lang = CodeLang.GetOriginLang(_PlayniteApi.ApplicationSettings.Language);
                 // Achievements (default return in english)
                 var url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",

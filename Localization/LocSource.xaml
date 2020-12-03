@@ -61,6 +61,7 @@
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Extension view</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarety indicator on achievement</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the selected game with plugin actions</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">List games</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">Default game list sorting</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Chart with all achievements</sys:String>
@@ -89,6 +90,10 @@
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Experimental non-blocking process which can increase memory usage a bit when caching only.
 Especially useful for Xbox achievements  with their larges images which are reduced when caching.</sys:String>
 
+    <!-- SuccessStoryOneGameView -->
+
+    <sys:String x:Key="LOCSuccessStoryUserStats">User statistiques</sys:String>
+    
     <!-- SuccessStoryView -->
 
     <!-- UI -->
