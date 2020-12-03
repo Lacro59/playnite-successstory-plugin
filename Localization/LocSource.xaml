@@ -48,6 +48,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Show achievements progress bar</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Show summary of unlocked achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">Show summary of locked achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">Show user game stats</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Chart options</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Number of days to display on chart</sys:String>

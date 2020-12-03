@@ -93,24 +93,6 @@ namespace SuccessStory.Services
         }
 
 
-        public override GameAchievements GetDefault(Game game)
-        {
-            return new GameAchievements
-            {
-                Id = game.Id,
-                Name = game.Name,
-                SourceId = game.SourceId,
-                Hidden = game.Hidden,
-                Icon = game.Icon,
-                CoverImage = game.CoverImage,
-                GenreIds = game.GenreIds,
-                Genres = game.Genres,
-                Playtime = game.Playtime,
-                LastActivity = game.LastActivity
-            };
-        }
-
-
         /// <summary>
         /// Generate database achivements for the game if achievement exist and game not exist in database.
         /// </summary>

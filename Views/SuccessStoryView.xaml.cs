@@ -530,6 +530,7 @@ namespace SuccessStory
                         }
                         if (headerClicked.Name == "lvProgression")
                         {
+
                             columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
                             sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
                         }

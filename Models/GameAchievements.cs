@@ -25,6 +25,29 @@ namespace SuccessStory.Models
             }
         }
 
+        private List<GameStats> _ItemsStats = new List<GameStats>();
+        public List<GameStats> ItemsStats
+        {
+            get
+            {
+                return _ItemsStats;
+            }
+
+            set
+            {
+                _ItemsStats = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public virtual bool HasDataStats
+        {
+            get
+            {
+                return ItemsStats.Count > 0;
+            }
+        }
 
         /// <summary>
         /// 

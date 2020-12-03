@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\Dropbox\Playnite\PlayniteCurrent\Extensions\playnite-successstory-plugin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -108,6 +108,7 @@
     <Compile Include="Clients\SteamAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />
     <Compile Include="Models\Achievements.cs" />
+    <Compile Include="Models\GameStats.cs" />
     <Compile Include="Models\ListAchievements.cs" />
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
@@ -144,6 +145,9 @@
     </Compile>
     <Compile Include="Views\Interface\SuccessStoryToggleButton.xaml.cs">
       <DependentUpon>SuccessStoryToggleButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Interface\SuccessStoryUserStats.xaml.cs">
+      <DependentUpon>SuccessStoryUserStats.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SuccessStorySettingsView.xaml.cs">
       <DependentUpon>SuccessStorySettingsView.xaml</DependentUpon>
@@ -257,6 +261,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Interface\SuccessStoryToggleButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Interface\SuccessStoryUserStats.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Linq;
 using AchievementsLocal;
 using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
@@ -44,7 +45,8 @@ namespace SuccessStory.Clients
         {
             int AppId = 0;
             List<Achievements> AllAchievements = new List<Achievements>();
-            Models.GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
+            List<GameStats> AllStats = new List<GameStats>();
+            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
             Result.Items = AllAchievements;
 
 
@@ -69,10 +71,13 @@ namespace SuccessStory.Clients
                 }
 
                 AllAchievements = GetPlayerAchievements(AppId);
+                AllStats = GetUsersStats(AppId);
 
                 if (AllAchievements.Count > 0)
                 {
-                    AllAchievements = GetSchemaForGame(AppId, AllAchievements);
+                    var DataCompleted = GetSchemaForGame(AppId, AllAchievements, AllStats);
+                    AllAchievements = DataCompleted.Item1;
+                    AllStats = DataCompleted.Item2;
 
                     Result.HaveAchivements = true;
                     Result.Total = AllAchievements.Count;
@@ -80,6 +85,7 @@ namespace SuccessStory.Clients
                     Result.Locked = Result.Total - Result.Locked;
                     Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
                     Result.Items = AllAchievements;
+                    Result.ItemsStats = AllStats;
                 }
             }
             else
@@ -264,6 +270,89 @@ namespace SuccessStory.Clients
         }
 
 
+        private List<GameStats> GetUsersStats(int AppId)
+        {
+            List<GameStats> AllStats = new List<GameStats>();
+
+            try
+            {
+                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
+                {
+                    KeyValue UserStats = steamWebAPI.GetUserStatsForGame(steamid: SteamId, appid: AppId, l: LocalLang);
+
+                    if (UserStats != null && UserStats.Children != null)
+                    {
+                        var UserStatsData = UserStats.Children.Find(x => x.Name == "stats");
+                        if (UserStatsData != null)
+                        {
+                            foreach (KeyValue StatsData in UserStatsData.Children)
+                            {
+                                double.TryParse(StatsData.Children.First().Value.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out double ValueStats);
+
+                                AllStats.Add(new GameStats
+                                {
+                                    Name = StatsData.Name,
+                                    DisplayName = string.Empty,
+                                    Value = ValueStats
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            // TODO With recent SteamKit
+            //catch (WebAPIRequestException wex)
+            //{
+            //    if (wex.StatusCode == HttpStatusCode.Forbidden)
+            //    {
+            //        _PlayniteApi.Notifications.Add(new NotificationMessage(
+            //            $"SuccessStory-Steam-PrivateProfil",
+            //            "SuccessStory - Steam profil is private",
+            //            NotificationType.Error
+            //        ));
+            //        logger.Warn("SuccessStory - Steam profil is private");
+            //    }
+            //    else
+            //    {
+            //        Common.LogError(wex, "SuccessStory", $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
+            //    }
+            //}
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    if (ex.Response is HttpWebResponse response)
+                    {
+                        if (response.StatusCode == HttpStatusCode.Forbidden)
+                        {
+                            _PlayniteApi.Notifications.Add(new NotificationMessage(
+                                "SuccessStory-Steam-PrivateProfil",
+                                $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
+                                NotificationType.Error,
+                                () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
+                            ));
+                            logger.Warn("SuccessStory - Steam profil is private");
+
+                            // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
+                            Common.LogError(ex, "SuccessStory", $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
+                        }
+                    }
+                    else
+                    {
+                        // no http status code available
+                        Common.LogError(ex, "SuccessStory", $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
+                    }
+                }
+                else
+                {
+                    // no http status code available
+                    Common.LogError(ex, "SuccessStory", $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
+                }
+            }
+
+            return AllStats;
+        }
+
         private List<Achievements> GetPlayerAchievements(int AppId)
         {
             List<Achievements> AllAchievements = new List<Achievements>();
@@ -348,13 +437,14 @@ namespace SuccessStory.Clients
             return AllAchievements;
         }
 
-        private List<Achievements> GetSchemaForGame(int AppId, List<Achievements> AllAchievements)
+        private Tuple<List<Achievements>, List<GameStats>> GetSchemaForGame(int AppId, List<Achievements> AllAchievements, List<GameStats> AllStats)
         {
             try
             {
                 using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
                 {
                     KeyValue SchemaForGame = steamWebAPI.GetSchemaForGame(appid: AppId, l: LocalLang);
+
                     foreach (KeyValue AchievementsData in SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "achievements").Children)
                     {
                         AllAchievements.Find(x => x.ApiName == AchievementsData.Name).IsHidden = AchievementsData.Children.Find(x => x.Name == "hidden").Value == "1";
@@ -366,6 +456,26 @@ namespace SuccessStory.Clients
                             AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Description = FindHiddenDescription(AppId, AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Name);
                         }
                     }
+
+                    var ListStatsData = SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "stats").Children;
+                    foreach (KeyValue StatsData in ListStatsData)
+                    {
+                        if (AllStats.Find(x => x.Name == StatsData.Name) == null)
+                        {
+                            double.TryParse(StatsData.Children.Find(x => x.Name == "defaultvalue").Value, out double ValueStats);
+
+                            AllStats.Add(new GameStats
+                            {
+                                Name = StatsData.Name,
+                                DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value,
+                                Value = ValueStats
+                        });
+                        }
+                        else
+                        {
+                            AllStats.Find(x => x.Name == StatsData.Name).DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -373,7 +483,7 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
             }
 
-            return AllAchievements;
+            return Tuple.Create(AllAchievements, AllStats);
         }
 
 

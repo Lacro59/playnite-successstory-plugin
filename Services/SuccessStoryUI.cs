@@ -111,7 +111,7 @@ namespace SuccessStory.Services
                     IsFirstLoad = false;
                 }
 
-                return Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
+                return Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     CheckTypeView();
 
@@ -431,6 +431,8 @@ namespace SuccessStory.Services
             FrameworkElement PART_Achievements_List = null;
             FrameworkElement PART_Achievements_ListCompactUnlocked = null;
             FrameworkElement PART_Achievements_ListCompactLocked = null;
+
+            FrameworkElement PART_ScUserStats = null;
             try
             {
                 PART_ScButtonWithJustIcon = IntegrationUI.SearchElementByName("PART_ScButtonWithJustIcon", false, true);
@@ -442,6 +444,8 @@ namespace SuccessStory.Services
                 PART_Achievements_List = IntegrationUI.SearchElementByName("PART_Achievements_List", false, true);
                 PART_Achievements_ListCompactUnlocked = IntegrationUI.SearchElementByName("PART_Achievements_ListCompactUnlocked", false, true);
                 PART_Achievements_ListCompactLocked = IntegrationUI.SearchElementByName("PART_Achievements_ListCompactLocked", false, true);
+
+                PART_ScUserStats = IntegrationUI.SearchElementByName("PART_ScUserStats", false, true);
             }
             catch (Exception ex)
             {
@@ -614,6 +618,27 @@ namespace SuccessStory.Services
             {
 #if DEBUG
                 logger.Debug($"SuccessStory - PART_Achievements_ListCompactLocked not find");
+#endif
+            }
+            
+            if (PART_ScUserStats != null && PluginDatabase.PluginSettings.IntegrationShowUserStats)
+            {
+                PART_ScUserStats = new SuccessStoryUserStats();
+                PART_ScUserStats.Name = "UserStats_List";
+                try
+                {
+                    ui.AddElementInCustomTheme(PART_ScUserStats, "PART_ScUserStats");
+                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_ScUserStats", Element = PART_ScUserStats });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error on AddCustomElements()");
+                }
+            }
+            else
+            {
+#if DEBUG
+                logger.Debug($"SuccessStory - PART_UserStats not find");
 #endif
             }
         }

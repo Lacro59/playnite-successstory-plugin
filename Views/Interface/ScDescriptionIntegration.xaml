@@ -94,4 +94,20 @@
             </Style>
         </StackPanel.Style>
     </StackPanel>
+
+    <StackPanel Name="PART_SuccessStoryUserStats" MinHeight="40" MinWidth="200">
+        <StackPanel.Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IntegrationShowUserStats}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Visibility" Value="Visible" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Style>
+    </StackPanel>
 </StackPanel>
