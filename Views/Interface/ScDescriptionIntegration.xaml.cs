@@ -160,6 +160,15 @@ namespace SuccessStory.Views.Interface
                         PART_SuccessStory_List.Height = PluginDatabase.PluginSettings.IntegrationShowAchievementsHeight;
                         PART_SuccessStoryUserStats.Height = 100;
 
+                        if (!PluginDatabase.GameSelectedData.HasDataStats)
+                        {
+                            PART_SuccessStoryUserStats.Visibility = Visibility.Collapsed;
+                        }
+                        else
+                        {
+                            PART_SuccessStoryUserStats.Visibility = Visibility.Visible;
+                        }
+
 
                         this.DataContext = new
                         {

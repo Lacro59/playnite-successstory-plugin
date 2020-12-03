@@ -14,13 +14,13 @@
                 <DataTemplate>
                     <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" SharedSizeGroup="A" />
-                            <ColumnDefinition Width="10" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="auto" SharedSizeGroup="A" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}" />
-                        <TextBlock Grid.Column="2" Text="{Binding Value}" />
+                        <TextBlock Grid.Column="0" Text="{Binding NameShow}" />
+                        <TextBlock Grid.Column="2" Text="{Binding ValueShow}" TextAlignment="Right" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
