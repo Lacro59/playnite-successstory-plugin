@@ -119,6 +119,11 @@ namespace SuccessStory.Models
             {
                 NameFromUrl = "ea_" + Name.Replace(" ", "");
             }
+            
+            if (url.IndexOf("retroachievements") > -1)
+            {
+                NameFromUrl = "ra_" + Name.Replace(" ", "");
+            }
 
             return NameFromUrl;
         }
