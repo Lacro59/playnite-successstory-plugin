@@ -64,6 +64,9 @@ namespace SuccessStory
         public bool EnableOrigin { get; set; } = false;
         public bool EnableXbox { get; set; } = false;
         public bool EnableRetroAchievements { get; set; } = false;
+        public bool EnableRpcs3Achievements { get; set; } = false;
+
+        public string Rpcs3InstallationFolder { get; set; } = string.Empty;
 
         public bool EnableRetroAchievementsView { get; set; } = false;
         public bool EnableOneGameView { get; set; } = true;
@@ -151,6 +154,9 @@ namespace SuccessStory
                 EnableOrigin = savedSettings.EnableOrigin;
                 EnableXbox = savedSettings.EnableXbox;
                 EnableRetroAchievements = savedSettings.EnableRetroAchievements;
+                EnableRpcs3Achievements = savedSettings.EnableRpcs3Achievements;
+
+                Rpcs3InstallationFolder = savedSettings.Rpcs3InstallationFolder;
 
                 EnableRetroAchievementsView = savedSettings.EnableRetroAchievementsView;
                 EnableOneGameView = savedSettings.EnableOneGameView;

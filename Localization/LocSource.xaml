@@ -19,6 +19,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements has not been correctly configured in settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">Rpcs3 has not been correctly configured in settings</sys:String>
 
     <!-- SuccessStorySettingsView -->
 
@@ -29,6 +30,9 @@
     <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable Origin achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Enable Xbox achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Enable RetroAchievements achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Enable Rpcs3 achievements</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Home user folder</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Show separate view for RetroAchievements achievements</sys:String>
 

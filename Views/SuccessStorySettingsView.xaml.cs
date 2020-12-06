@@ -43,6 +43,8 @@ namespace SuccessStory.Views
         int XboxTotalAchievements;
         int RetroAchievementsTotal;
         int RetroAchievementsTotalAchievements;
+        int Rpcs3Total;
+        int Rpcs3TotalAchievements;
 
         int LocalTotal;
         int LocalTotalAchievements;
@@ -88,6 +90,8 @@ namespace SuccessStory.Views
             XboxTotalAchievements = 0;
             RetroAchievementsTotal = 0;
             RetroAchievementsTotalAchievements = 0;
+            Rpcs3Total = 0;
+            Rpcs3TotalAchievements = 0;
 
             LocalTotal = 0;
             LocalTotalAchievements = 0;
@@ -135,6 +139,13 @@ namespace SuccessStory.Views
                                 RetroAchievementsTotalAchievements += 1;
                             }
                             break;
+                        case "rpcs3":
+                            Rpcs3Total += 1;
+                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                Rpcs3TotalAchievements += 1;
+                            }
+                            break;
                         case "playnite":
                             LocalTotal += 1;
                             if (PluginDatabase.VerifAchievementsLoad(game.Id))
@@ -156,6 +167,7 @@ namespace SuccessStory.Views
             XboxLoad.Content = XboxTotalAchievements + "/" + XboxTotal;
             RetroAchievementsLoad.Content = RetroAchievementsTotalAchievements + "/" + RetroAchievementsTotal;
             LocalLoad.Content = LocalTotalAchievements + "/" + LocalTotal;
+            Rpcs3Load.Content = Rpcs3TotalAchievements + "/" + Rpcs3Total;
         }
 
         private void Button_Click_Get_All(object sender, RoutedEventArgs e)
@@ -299,6 +311,23 @@ namespace SuccessStory.Views
 
             XboxLoad.Content = 0 + "/" + XboxTotal;
             RefreshData("Xbox");
+            SetTotal();
+        }
+
+        private void Button_Click_Get_Rpcs3(object sender, RoutedEventArgs e)
+        {
+            PluginDatabase.InitializeMultipleAdd("Rpcs3");
+
+            Rpcs3Load.Content = 0 + "/" + Rpcs3Total;
+            RefreshData("Rpcs3", true);
+            SetTotal();
+        }
+        private void Button_Click_Rpcs3(object sender, RoutedEventArgs e)
+        {
+            PluginDatabase.InitializeMultipleAdd("Rpcs3");
+
+            Rpcs3Load.Content = 0 + "/" + Rpcs3Total;
+            RefreshData("Rpcs3");
             SetTotal();
         }
 
@@ -525,6 +554,18 @@ namespace SuccessStory.Views
         private void cbDefaultSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PluginDatabase.PluginSettings.NameSorting = ((ComboBoxItem)cbDefaultSorting.SelectedItem).Tag.ToString();
+        }
+
+
+        private void ButtonSelectFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string SelectedFolder = _PlayniteApi.Dialogs.SelectFolder();
+            if (!SelectedFolder.IsNullOrEmpty())
+            {
+                PART_Rpcs3Folder.Text = SelectedFolder;
+                PluginDatabase.PluginSettings.Rpcs3InstallationFolder = SelectedFolder;
+            }
+
         }
     }
 

@@ -28,6 +28,7 @@ namespace SuccessStory.Services
         public static bool? VerifToAddOrShowRetroAchievements = null;
         public static bool? VerifToAddOrShowSteam = null;
         public static bool? VerifToAddOrShowXbox = null;
+        public static bool? VerifToAddOrShowRpcs3 = null;
 
         private bool _isRetroachievements { get; set; }
 
@@ -159,6 +160,12 @@ namespace SuccessStory.Services
                 {
                     RetroAchievements retroAchievementsAPI = new RetroAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     gameAchievements = retroAchievementsAPI.GetAchievements(game);
+                }
+
+                if (GameSourceName.ToLower() == "rpcs3")
+                {
+                    Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    gameAchievements = rpcs3Achievements.GetAchievements(game);
                 }
 
 #if DEBUG
@@ -714,6 +721,23 @@ namespace SuccessStory.Services
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-RetroAchievements-NoConfig",
                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig")}",
+                        NotificationType.Error,
+                        () => plugin.OpenSettingsView()
+                    ));
+                    return false;
+                }
+                return true;
+            }
+
+            if (settings.EnableRpcs3Achievements && GameSourceName.ToLower() == "rpcs3")
+            {
+                Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements(PlayniteApi, settings, PluginUserDataPath);
+                if (!rpcs3Achievements.IsConfigured())
+                {
+                    logger.Warn("SuccessStory - Bad RPCS3 configuration");
+                    PlayniteApi.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-Rpcs3-NoConfig",
+                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig")}",
                         NotificationType.Error,
                         () => plugin.OpenSettingsView()
                     ));

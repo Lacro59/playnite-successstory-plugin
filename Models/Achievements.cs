@@ -4,11 +4,14 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using PluginCommon;
+using SuccessStory.Services;
 
 namespace SuccessStory.Models
 {
     public class Achievements : ObservableObject
     {
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+
         public string Name { get; set; }
         public string ApiName { get; set; } = string.Empty;
         public string Description { get; set; }
@@ -38,10 +41,16 @@ namespace SuccessStory.Models
         {
             get
             {
+                string TempUrlUnlocked = UrlUnlocked;
+                if (TempUrlUnlocked.IndexOf("rpcs3") > -1)
+                {
+                    TempUrlUnlocked = Path.Combine(PluginDatabase.PluginUserDataPath, UrlUnlocked); ;
+                }
+
                 string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
                 if (pathImageUnlocked.IsNullOrEmpty())
                 {
-                    pathImageUnlocked = UrlUnlocked;
+                    pathImageUnlocked = TempUrlUnlocked;
                 }
                 return pathImageUnlocked;
             }
@@ -74,7 +83,7 @@ namespace SuccessStory.Models
                     string pathImageLocked = PlayniteTools.GetCacheFile(CacheLocked, "SuccessStory");
                     if (pathImageLocked.IsNullOrEmpty())
                     {
-                        pathImageLocked = UrlLocked;
+                        pathImageLocked = ImageUnlocked;
                     }
                     return pathImageLocked;
                 }
@@ -123,6 +132,11 @@ namespace SuccessStory.Models
             if (url.IndexOf("retroachievements") > -1)
             {
                 NameFromUrl = "ra_" + Name.Replace(" ", "");
+            }
+
+            if (!url.Contains("http"))
+            {
+                return url;
             }
 
             return NameFromUrl;

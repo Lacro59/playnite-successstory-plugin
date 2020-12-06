@@ -49,6 +49,8 @@
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="35" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="35" />
                             </Grid.RowDefinitions>
 
                             <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableSteam}" VerticalAlignment="Center">
@@ -107,18 +109,46 @@
                                     <Label Content="{DynamicResource LOCSuccessStoryEnableRetroAchievementsView}"></Label>
                                 </CheckBox>
 
-                                <Label Grid.Column="1" Grid.Row="1" Content="User" VerticalAlignment="Center" />
+                                <Label Grid.Column="1" Grid.Row="1" Content="{DynamicResource LOCGOGUseAccountName}" VerticalAlignment="Center" />
                                 <TextBox Grid.Column="3" Grid.Row="1"  Text="{Binding RetroAchievementsUser}" VerticalAlignment="Center" />
-                                <Label Grid.Column="5" Grid.Row="1"  Content="Key" VerticalAlignment="Center" />
+                                <Label Grid.Column="5" Grid.Row="1"  Content="{DynamicResource LOCAPIKey}" VerticalAlignment="Center" />
                                 <TextBox Grid.Column="7" Grid.Row="1"  Text="{Binding RetroAchievementsKey}" VerticalAlignment="Center" />
                             </Grid>
 
-                            <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding EnableOrigin}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center">
+
+                            <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding EnableRpcs3Achievements}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableRpcs3Achievements}"></Label>
+                            </CheckBox>
+                            <Label Grid.Column="2" Grid.Row="6" x:Name="Rpcs3Load" HorizontalAlignment="Center">xxx / xxx</Label>
+                            <Button Grid.Column="4" Grid.Row="6" Height="30" Content="" FontFamily="{StaticResource font}" Click="Button_Click_Get_Rpcs3" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="6" Grid.Row="6" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Rpcs3" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
+
+                            <Grid Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="7" IsEnabled="{Binding EnableRpcs3Achievements}">
+                                <Grid.ColumnDefinitions>
+
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35" />
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Column="1" Content="{DynamicResource LOCSuccessStoryEnableRpcs3HomeFolder}" VerticalAlignment="Center" />
+                                <TextBox Name="PART_Rpcs3Folder" Grid.Column="3" Text="{Binding Rpcs3InstallationFolder}" VerticalAlignment="Center" />
+                                <Button Grid.Column="5" Content="" FontFamily="{StaticResource font}" Click="ButtonSelectFolder_Click" 
+                                        VerticalAlignment="Center" Grid.ColumnSpan="2" />
+                            </Grid>
+
+                            <CheckBox Grid.Column="0" Grid.Row="8" IsChecked="{Binding EnableLocal}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center">
                                 <Label Content="Enable Local"></Label>
                             </CheckBox>
-                            <Label Grid.Column="2" Grid.Row="6" x:Name="LocalLoad" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">xxx / xxx</Label>
-                            <Button Grid.Column="4" Grid.Row="6" Height="30" Content="" FontFamily="{StaticResource font}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
-                            <Button Grid.Column="6" Grid.Row="6" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
+                            <Label Grid.Column="2" Grid.Row="8" x:Name="LocalLoad" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">xxx / xxx</Label>
+                            <Button Grid.Column="4" Grid.Row="8" Height="30" Content="" FontFamily="{StaticResource font}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="6" Grid.Row="8" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
                         </Grid>
                     </DockPanel>
                 </ScrollViewer>
@@ -149,7 +179,7 @@
                             </CheckBox>
                         </Grid>
 
-                        
+
                         <Label Content="{DynamicResource LOCSuccessStoryListGames}" FontSize="18" Margin="0,30,0,0" />
                         <Separator Margin="0,0,0,10" />
 
@@ -215,7 +245,7 @@
                             </Grid>
                         </Grid>
 
-                        
+
                         <Label Content="{DynamicResource LOCSuccessStoryChartWithAllAchievements}" FontSize="18" Margin="0,30,0,0" />
                         <Separator Margin="0,0,0,10" />
 
@@ -227,7 +257,7 @@
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="30" />
                             </Grid.RowDefinitions>
-                            
+
                             <CheckBox Name="Sc_AllMonth" Grid.Column="0" Grid.Row="0" Click="CheckboxGraphicType_Click" IsChecked="{Binding GraphicAllUnlockedByMonth}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSuccessStoryAllUnlockedByMonth}"></Label>
                             </CheckBox>
@@ -238,7 +268,7 @@
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
-            
+
             <TabItem Header="{DynamicResource LOCSuccessStoryDatabase}">
                 <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
@@ -314,7 +344,7 @@
                             <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" IsChecked="{Binding EnableIntegrationInCustomTheme}" Name="Sc_IntegrationInCustomTheme" Click="Checkbox_Click" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCCommonIntegrationInCustomTheme}" />
                             </CheckBox>
-                            
+
                             <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableIntegrationButton}" Name="Sc_IntegrationInButton" Click="Checkbox_Click" VerticalAlignment="Center" Grid.ColumnSpan="2">
                                 <Label Content="{DynamicResource LOCCommonIntegrationButton}" />
                             </CheckBox>
@@ -323,7 +353,7 @@
                                 <Label Content="{DynamicResource LOCCommonIntegrationInDescription}" />
                             </CheckBox>
                         </Grid>
-                        
+
                         <GroupBox Header="{DynamicResource LOCCommonIntegrationButtonOptions}" Margin="0,10,0,0">
                             <GroupBox.Style>
                                 <Style TargetType="GroupBox">
@@ -624,7 +654,7 @@
                                         </Style.Triggers>
                                     </Style>
                                 </GroupBox.Style>
-                            
+
                                 <Grid Margin="5">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>

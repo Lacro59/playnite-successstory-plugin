@@ -53,8 +53,17 @@ namespace SuccessStory.Views
 
 
             // Chart achievements
-            int limit = 16;
-            PART_ChartTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitleDay");
+            int limit = 0;
+            if (!PluginDatabase.PluginSettings.GraphicAllUnlockedByDay)
+            {
+                PART_ChartTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitle");
+                limit = 20;
+            }
+            else
+            {
+                PART_ChartTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitleDay");
+                limit = 16;
+            }
 
             PluginDatabase.PluginSettings.IgnoreSettings = true;
             SuccessStoryAchievementsGraphics successStoryAchievementsGraphics = new SuccessStoryAchievementsGraphics();

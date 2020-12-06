@@ -107,6 +107,7 @@
     <Compile Include="Clients\GogAchievements.cs" />
     <Compile Include="Clients\OriginAchievements.cs" />
     <Compile Include="Clients\RetroAchievements.cs" />
+    <Compile Include="Clients\Rpcs3Achievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />
     <Compile Include="Models\Achievements.cs" />
