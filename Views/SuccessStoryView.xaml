@@ -124,7 +124,7 @@
                                 </lvc:CartesianChart.DataTooltip>
                             
                                 <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Name="StatsGraphicAchievementsSourcesX" MinValue="0" ShowLabels="True" FontFamily="{StaticResource font}">
+                                    <lvc:Axis Name="StatsGraphicAchievementsSourcesX" MinValue="0" ShowLabels="True" FontFamily="{StaticResource font}" FontSize="16">
                                         <lvc:Axis.Separator>
                                             <lvc:Separator Step="1" />
                                         </lvc:Axis.Separator>
@@ -187,7 +187,8 @@
                                     <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Label Content="{Binding SourceIcon}" FontFamily="{StaticResource font}" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+                                            <Label Content="{Binding SourceIcon}" FontFamily="{StaticResource font}" 
+                                                   HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="24" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

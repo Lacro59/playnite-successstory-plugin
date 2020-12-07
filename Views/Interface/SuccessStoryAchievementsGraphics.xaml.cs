@@ -66,7 +66,7 @@ namespace SuccessStory.Views.Interface
         }
 
 
-        public void SetScData(Guid? Id = null, int limit = 0)
+        public void SetScData(Guid? Id = null, int limit = 0, bool ForceMonth = false)
         {
             AchievementsGraphicsDataCount GraphicsData = null;
 
@@ -75,14 +75,22 @@ namespace SuccessStory.Views.Interface
                 limit = (PluginDatabase.PluginSettings.IntegrationGraphicOptionsCountAbscissa - 1);
             }
 
-            if (!PluginDatabase.PluginSettings.GraphicAllUnlockedByDay)
+            if (!ForceMonth)
             {
-                GraphicsData = PluginDatabase.GetCountByMonth(Id, limit);
+                if (PluginDatabase.PluginSettings.GraphicAllUnlockedByDay)
+                {
+                    GraphicsData = PluginDatabase.GetCountByDay(Id, limit);
+                }
+                else
+                {
+                    GraphicsData = PluginDatabase.GetCountByMonth(Id, limit);
+                }
             }
             else
             {
-                GraphicsData = PluginDatabase.GetCountByDay(Id, limit);
+                GraphicsData = PluginDatabase.GetCountByMonth(Id, limit);
             }
+
             string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
             SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
             StatsGraphicAchievementsSeries.Add(new LineSeries

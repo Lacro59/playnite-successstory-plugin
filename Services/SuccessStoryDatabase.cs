@@ -327,6 +327,10 @@ namespace SuccessStory.Services
                     {
                         tempSourcesLabels.Add("Playnite");
                     }
+                    if (PluginSettings.EnableRpcs3Achievements)
+                    {
+                        tempSourcesLabels.Add("RPCS3");
+                    }
                 }
             }
             else
@@ -351,6 +355,10 @@ namespace SuccessStory.Services
                 {
                     tempSourcesLabels.Add("RetroAchievements");
                 }
+                if (PluginSettings.EnableRpcs3Achievements)
+                {
+                    tempSourcesLabels.Add("RPCS3");
+                }
                 if (PluginSettings.EnableLocal)
                 {
                     tempSourcesLabels.Add("Playnite");
@@ -374,7 +382,7 @@ namespace SuccessStory.Services
 
             foreach (var item in Database.Items)
             {
-                if (!item.Value.HaveAchivements || item.Value.IsDeleted == false)
+                if (!item.Value.HaveAchivements || item.Value.IsDeleted)
                 {
                     continue;
                 }

@@ -113,21 +113,21 @@ namespace SuccessStory
                     }
 
                     int limit = 0;
-                    if (PluginDatabase.PluginSettings.GraphicAllUnlockedByMonth)
-                    {
-                        limit = 6;
-                        GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
-                    }
-                    else
-                    {
+                    //if (PluginDatabase.PluginSettings.GraphicAllUnlockedByMonth)
+                    //{
                         limit = 5;
-                        GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALLDay");
-                    }
+                        GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
+                    //}
+                    //else
+                    //{
+                    //    limit = 4;
+                    //    GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALLDay");
+                    //}
 
                     SuccessStory_Achievements_Graphics.Children.Clear();
                     PluginDatabase.PluginSettings.IgnoreSettings = true;
                     SuccessStoryAchievementsGraphics successStoryAchievementsGraphics = new SuccessStoryAchievementsGraphics();
-                    successStoryAchievementsGraphics.SetScData(null, limit);
+                    successStoryAchievementsGraphics.SetScData(null, limit, true);
                     SuccessStory_Achievements_Graphics.Children.Add(successStoryAchievementsGraphics);
                     SuccessStory_Achievements_Graphics.UpdateLayout();
 
@@ -187,6 +187,11 @@ namespace SuccessStory
                                 icon = TransformIcon.Get("Xbox") + " ";
                                 FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Xbox", SourceNameShort = "Xbox", IsCheck = false });
                             }
+                            if (PluginDatabase.PluginSettings.EnableRpcs3Achievements)
+                            {
+                                icon = TransformIcon.Get("Rpcs3") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Rpcs3", SourceNameShort = "Rpcs3", IsCheck = false });
+                            }
                         }
                     }
                     else
@@ -220,6 +225,11 @@ namespace SuccessStory
                         {
                             icon = TransformIcon.Get("RetroAchievements") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
+                        }
+                        if (PluginDatabase.PluginSettings.EnableRpcs3Achievements)
+                        {
+                            icon = TransformIcon.Get("RPCS3") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RPCS3", SourceNameShort = "Rpcs3", IsCheck = false });
                         }
                     }
 
@@ -362,7 +372,7 @@ namespace SuccessStory
 
 
                 int limit = 0;
-                if (PluginDatabase.PluginSettings.GraphicAllUnlockedByDay)
+                if (!PluginDatabase.PluginSettings.GraphicAllUnlockedByDay)
                 {
                     GraphicTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitle");
                 }
