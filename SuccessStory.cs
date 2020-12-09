@@ -90,9 +90,16 @@ namespace SuccessStory
 
             // Add Event for WindowBase for get the "WindowSettings".
             EventManager.RegisterClassHandler(typeof(Window), Window.LoadedEvent, new RoutedEventHandler(WindowBase_LoadedEvent));
+
+            // Add event fullScreen
+            if (api.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
+            {
+                EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(BtFullScreen_ClickEvent));
+            }
         }
 
 
+        #region Custom event
         private void WindowBase_LoadedEvent(object sender, System.EventArgs e)
         {
             string WinIdProperty = String.Empty;
@@ -117,6 +124,29 @@ namespace SuccessStory
                 Common.LogError(ex, "SuccessStory", $"Error on WindowBase_LoadedEvent for {WinIdProperty}");
             }
         }
+
+
+        private void BtFullScreen_ClickEvent(object sender, System.EventArgs e)
+        {
+            try
+            {
+                if (((Button)sender).Name == "PART_ButtonDetails")
+                {
+                    var TaskIntegrationUI = Task.Run(() =>
+                    {
+                        successStoryUI.Initial();
+                        successStoryUI.taskHelper.Check();
+                        var dispatcherOp = successStoryUI.AddElementsFS();
+                        dispatcherOp.Completed += (s, ev) => { successStoryUI.RefreshElements(GameSelected); };
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory");
+            }
+        }
+        #endregion
 
 
         // To add new game menu items override GetGameMenuItems
@@ -283,7 +313,10 @@ namespace SuccessStory
                             successStoryUI.Initial();
                             successStoryUI.taskHelper.Check();
                             var dispatcherOp = successStoryUI.AddElements();
-                            dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(args.NewValue[0]); };
+                            if (dispatcherOp != null)
+                            {
+                                dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(args.NewValue[0]); };
+                            }
                         });
                     }
                 }

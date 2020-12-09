@@ -88,6 +88,10 @@ namespace SuccessStory
         public bool lvGamesSource { get; set; } = true;
         public bool lvGamesProgression { get; set; } = true;
 
+
+        public bool EnableIntegrationFS { get; set; } = false;
+
+
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonIgnore` ignore attribute.
         [JsonIgnore]
@@ -177,6 +181,8 @@ namespace SuccessStory
                 lvGamesLastSession = savedSettings.lvGamesLastSession;
                 lvGamesSource = savedSettings.lvGamesSource;
                 lvGamesProgression = savedSettings.lvGamesProgression;
+
+                EnableIntegrationFS = savedSettings.EnableIntegrationFS;
             }
         }
 

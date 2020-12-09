@@ -38,9 +38,6 @@ namespace SuccessStory.Views.Interface
         {
             try
             {
-#if DEBUG
-                logger.Debug($"SuccessStoryToggleButton.OnPropertyChanged({e.PropertyName}): {JsonConvert.SerializeObject(PluginDatabase.GameSelectedData)}");
-#endif
                 if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
                 {
                     this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate

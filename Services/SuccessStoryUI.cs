@@ -5,6 +5,7 @@ using PluginCommon;
 using SuccessStory.Models;
 using SuccessStory.Views;
 using SuccessStory.Views.Interface;
+using SuccessStory.Views.InterfaceFS;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,11 +29,20 @@ namespace SuccessStory.Services
 
         public override bool IsFirstLoad { get; set; } = true;
 
+
         public override string BtActionBarName { get; set; } = string.Empty;
         public override FrameworkElement PART_BtActionBar { get; set; }
 
         public override string SpDescriptionName { get; set; } = string.Empty;
         public override FrameworkElement PART_SpDescription { get; set; }
+
+
+        public override string SpInfoBarFSName { get; set; } = string.Empty;
+        public override FrameworkElement PART_SpInfoBarFS { get; set; }
+
+        public override string BtActionBarFSName { get; set; } = string.Empty;
+        public override FrameworkElement PART_BtActionBarFS { get; set; }
+
 
         public override List<CustomElement> ListCustomElements { get; set; } = new List<CustomElement>();
 
@@ -44,6 +54,8 @@ namespace SuccessStory.Services
 
             BtActionBarName = "PART_ScButton";
             SpDescriptionName = "PART_ScDescriptionIntegration";
+
+            SpInfoBarFSName = "PART_Sc_SpInfoBar";
         }
 
 
@@ -121,7 +133,6 @@ namespace SuccessStory.Services
 #if DEBUG
                         logger.Debug($"SuccessStory - AddBtActionBar()");
 #endif
-
                         AddBtActionBar();
                     }
 
@@ -652,6 +663,105 @@ namespace SuccessStory.Services
         }
 
         public override void RefreshCustomElements()
+        {
+
+        }
+        #endregion
+
+
+
+
+        public override DispatcherOperation AddElementsFS()
+        {
+            if (_PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
+            {
+                if (IsFirstLoad)
+                {
+#if DEBUG
+                    logger.Debug($"SuccessStory - IsFirstLoad");
+#endif
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        System.Threading.SpinWait.SpinUntil(() => IntegrationUI.SearchElementByName("PART_ButtonContext") != null, 5000);
+                    })).Wait();
+                    IsFirstLoad = false;
+                }
+
+                return Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                {
+                    if (PluginDatabase.PluginSettings.EnableIntegrationFS)
+                    {
+#if DEBUG
+                        logger.Debug($"SuccessStory - AddBtInfoBarFS()");
+#endif
+                        AddSpInfoBarFS();
+                    }
+                }));
+            }
+
+            return null;
+        }
+
+
+        #region SpInfoBarFS
+        public override void InitialSpInfoBarFS()
+        {
+
+        }
+
+        public override void AddSpInfoBarFS()
+        {
+            if (PART_SpInfoBarFS != null)
+            {
+#if DEBUG
+                logger.Debug($"SuccessStory - PART_BtInfoBar allready insert");
+#endif
+
+                ((SuccessStoryProgressionFS)PART_SpInfoBarFS).SetData(PluginDatabase.Get(SuccessStory.GameSelected));
+                return;
+            }
+
+            FrameworkElement SpInfoBar;
+            SpInfoBar = new SuccessStoryProgressionFS();
+
+            SpInfoBar.Name = SpInfoBarFSName;
+            SpInfoBar.Margin = new Thickness(50, 0, 0, 0);
+
+            try
+            {
+                ui.AddStackPanelInGameSelectedInfoBarFS(SpInfoBar);
+                PART_SpInfoBarFS = IntegrationUI.SearchElementByName(SpInfoBarFSName);
+
+                if (PART_SpInfoBarFS != null)
+                {
+                    ((SuccessStoryProgressionFS)PART_SpInfoBarFS).SetData(PluginDatabase.Get(SuccessStory.GameSelected));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory");
+            }
+        }
+
+        public override void RefreshSpInfoBarFS()
+        {
+
+        }
+        #endregion
+
+
+        #region BtActionBarFS
+        public override void InitialBtActionBarFS()
+        {
+
+        }
+
+        public override void AddBtActionBarFS()
+        {
+
+        }
+
+        public override void RefreshBtActionBarFS()
         {
 
         }
