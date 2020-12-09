@@ -342,7 +342,7 @@ namespace SuccessStory
         // Add code to be executed when game is preparing to be started.
         public override void OnGameStarting(Game game)
         {
-
+            PlayniteUiHelper.ResetToggle();
         }
 
         // Add code to be executed when game is preparing to be started.

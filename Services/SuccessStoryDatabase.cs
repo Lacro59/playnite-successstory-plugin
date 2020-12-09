@@ -51,10 +51,6 @@ namespace SuccessStory.Services
             Database = new SuccessStoryCollection(PluginDatabaseDirectory);
             Database.SetGameInfo<Achievements>(_PlayniteApi);
 
-#if DEBUG
-            logger.Debug($"{PluginName} - db: {JsonConvert.SerializeObject(Database)}");
-#endif
-
             GameSelectedData = new GameAchievements();
             GetPluginTags();
 

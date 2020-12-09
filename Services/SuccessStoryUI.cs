@@ -55,7 +55,7 @@ namespace SuccessStory.Services
             BtActionBarName = "PART_ScButton";
             SpDescriptionName = "PART_ScDescriptionIntegration";
 
-            SpInfoBarFSName = "PART_Sc_SpInfoBar";
+            SpInfoBarFSName = "PART_ScSpInfoBar";
         }
 
 
@@ -694,6 +694,7 @@ namespace SuccessStory.Services
 #if DEBUG
                         logger.Debug($"SuccessStory - AddBtInfoBarFS()");
 #endif
+                        AddSpInfoBarFS();
                         AddSpInfoBarFS();
                     }
                 }));
