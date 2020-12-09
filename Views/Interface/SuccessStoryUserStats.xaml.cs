@@ -36,6 +36,8 @@ namespace SuccessStory.Views.Interface
         {
             InitializeComponent();
 
+            PART_LbUserStats.PreviewMouseWheel += Tools.HandlePreviewMouseWheel;
+
             PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
 

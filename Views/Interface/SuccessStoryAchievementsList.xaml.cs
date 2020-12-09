@@ -1,6 +1,7 @@
 ﻿using Playnite.SDK;
 using SuccessStory.Models;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -14,6 +15,7 @@ using SuccessStory.Services;
 using Newtonsoft.Json;
 using System.Windows.Threading;
 using System.Threading;
+using System.Windows.Input;
 
 namespace SuccessStory.Views.Interface
 {
@@ -30,6 +32,8 @@ namespace SuccessStory.Views.Interface
         public SuccessStoryAchievementsList()
         {
             InitializeComponent();
+
+            lbAchievements.PreviewMouseWheel += Tools.HandlePreviewMouseWheel;
 
             PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
@@ -168,6 +172,7 @@ namespace SuccessStory.Views.Interface
             IntegrationUI.SetControlSize((FrameworkElement)sender);
         }
     }
+
 
     public class SetColorConverter : IValueConverter
     {
