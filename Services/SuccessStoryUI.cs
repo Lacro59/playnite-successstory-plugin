@@ -695,7 +695,6 @@ namespace SuccessStory.Services
                         logger.Debug($"SuccessStory - AddBtInfoBarFS()");
 #endif
                         AddSpInfoBarFS();
-                        AddSpInfoBarFS();
                     }
                 }));
             }
