@@ -124,7 +124,7 @@ namespace SuccessStory.Services
                     IsFirstLoad = false;
                 }
 
-                return Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                return Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
                 {
                     CheckTypeView();
 
@@ -303,7 +303,6 @@ namespace SuccessStory.Services
             }
 
             BtActionBar.Name = BtActionBarName;
-            BtActionBar.Margin = new Thickness(10, 0, 0, 0);
 
             try
             {

@@ -115,34 +115,6 @@ namespace SuccessStory.Views.Interface
                             PART_SuccessStory_Compact_Unlocked.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStory_Compact_Locked.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStoryUserStats.Margin = new Thickness(0, 5, 0, 5);
-
-                            if (!PluginDatabase.PluginSettings.IntegrationTopGameDetails)
-                            {
-                                if (PluginDatabase.PluginSettings.IntegrationShowGraphic)
-                                {
-                                    PART_SuccessStory_ProgressBar.Margin = new Thickness(0, 15, 0, 5);
-                                }
-                                else if (PluginDatabase.PluginSettings.IntegrationShowGraphic)
-                                {
-                                    PART_SuccessStory_Graphic.Margin = new Thickness(0, 15, 0, 5);
-                                }
-                                else if (PluginDatabase.PluginSettings.IntegrationShowAchievements)
-                                {
-                                    PART_SuccessStory_List.Margin = new Thickness(0, 15, 0, 5);
-                                }
-                                else if (PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactUnlocked)
-                                {
-                                    PART_SuccessStory_Compact_Unlocked.Margin = new Thickness(0, 15, 0, 5);
-                                }
-                                else if (PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactLocked)
-                                {
-                                    PART_SuccessStory_Compact_Locked.Margin = new Thickness(0, 15, 0, 5);
-                                }
-                                else if (PluginDatabase.PluginSettings.IntegrationShowUserStats)
-                                {
-                                    PART_SuccessStoryUserStats.Margin = new Thickness(0, 15, 0, 5);
-                                }
-                            }
                         }
 
 

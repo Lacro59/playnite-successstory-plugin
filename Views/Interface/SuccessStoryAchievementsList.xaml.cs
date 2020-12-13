@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.Windows.Threading;
 using System.Threading;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace SuccessStory.Views.Interface
 {
@@ -45,10 +46,7 @@ namespace SuccessStory.Views.Interface
             {
                 if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
                 {
-                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                    {
-                        SetScData(PluginDatabase.GameSelectedData.Items);
-                    }));
+                    SetScData(PluginDatabase.GameSelectedData);
                 }
             }
             catch (Exception ex)
@@ -58,71 +56,92 @@ namespace SuccessStory.Views.Interface
         }
 
 
-        public void SetScData(List<Achievements> ListAchievements)
+        public void SetScData(GameAchievements gameAchievements, bool noControl = false)
         {
-            List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
+            List<Achievements> ListAchievements = gameAchievements.Items;
 
-            for (int i = 0; i < ListAchievements.Count; i++)
+            this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
             {
-                DateTime? dateUnlock = null;
-                BitmapImage iconImage = new BitmapImage();
+                lbAchievements.ItemsSource = null;
+            }));
 
-                bool IsGray = false;
+            Task.Run(() =>
+            {
+                List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
 
-                string urlImg = string.Empty;
-                try
+                for (int i = 0; i < ListAchievements.Count; i++)
                 {
-                    if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
+                    DateTime? dateUnlock = null;
+                    BitmapImage iconImage = new BitmapImage();
+
+                    bool IsGray = false;
+
+                    string urlImg = string.Empty;
+                    try
                     {
-                        if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
+                        if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
                         {
-                            urlImg = ListAchievements[i].ImageUnlocked;
-                            IsGray = true;
+                            if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
+                            {
+                                urlImg = ListAchievements[i].ImageUnlocked;
+                                IsGray = true;
+                            }
+                            else
+                            {
+                                urlImg = ListAchievements[i].ImageLocked;
+                            }
                         }
                         else
                         {
-                            urlImg = ListAchievements[i].ImageLocked;
+                            urlImg = ListAchievements[i].ImageUnlocked;
+                            dateUnlock = ListAchievements[i].DateUnlocked;
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        urlImg = ListAchievements[i].ImageUnlocked;
-                        dateUnlock = ListAchievements[i].DateUnlocked;
+                        Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
                     }
+
+                    string NameAchievement = ListAchievements[i].Name;
+
+                    // Achievement without unlocktime but achieved = 1
+                    if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
+                    {
+                        dateUnlock = null;
+                    }
+
+                    ListBoxAchievements.Add(new ListBoxAchievements()
+                    {
+                        Name = NameAchievement,
+                        DateUnlock = dateUnlock,
+                        EnableRaretyIndicator = PluginDatabase.PluginSettings.EnableRaretyIndicator,
+                        Icon = urlImg,
+                        IconImage = urlImg,
+                        IsGray = IsGray,
+                        Description = ListAchievements[i].Description,
+                        Percent = ListAchievements[i].Percent
+                    });
+
+                    iconImage = null;
                 }
-                catch (Exception ex)
+
+
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
                 {
-                    Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
-                }
+                    if (!noControl)
+                    {
+                        if (gameAchievements.Id != SuccessStory.GameSelected.Id)
+                        {
+                            return;
+                        }
+                    }
 
-                string NameAchievement = ListAchievements[i].Name;
-
-                // Achievement without unlocktime but achieved = 1
-                if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
-                {
-                    dateUnlock = null;
-                }
-
-                ListBoxAchievements.Add(new ListBoxAchievements()
-                {
-                    Name = NameAchievement,
-                    DateUnlock = dateUnlock,
-                    EnableRaretyIndicator = PluginDatabase.PluginSettings.EnableRaretyIndicator,
-                    Icon = urlImg,
-                    IconImage = urlImg,
-                    IsGray = IsGray,
-                    Description = ListAchievements[i].Description,
-                    Percent = ListAchievements[i].Percent
-                });
-
-                iconImage = null;
-            }
-
-
-            // Sorting default.
-            lbAchievements.ItemsSource = ListBoxAchievements;
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
-            view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
+                    // Sorting default.
+                    lbAchievements.ItemsSource = ListBoxAchievements;
+                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
+                    view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
+                }));
+            });
         }
 
 

@@ -34,7 +34,7 @@ namespace SuccessStory.Views.Interface
             {
                 if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
                 {
-                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
                     {
                         SetScData(PluginDatabase.GameSelectedData.Unlocked, PluginDatabase.GameSelectedData.Total);
                     }));

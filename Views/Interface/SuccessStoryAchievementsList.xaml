@@ -85,7 +85,7 @@
                                 <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float"/>
                             </Image.Source>
                             <Image.OpacityMask>
-                                <ImageBrush ImageSource="{Binding IconImage}" />
+                                <ImageBrush ImageSource="{Binding IconImage, IsAsync=True}" />
                             </Image.OpacityMask>
                         </Image>
                         <Image Stretch="UniformToFill" 
@@ -94,7 +94,7 @@
                                 <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float"/>
                             </Image.Source>
                             <Image.OpacityMask>
-                                <ImageBrush ImageSource="{Binding IconImage}" />
+                                <ImageBrush ImageSource="{Binding IconImage, IsAsync=True}" />
                             </Image.OpacityMask>
                             <Image.Effect>
                                 <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}"/>

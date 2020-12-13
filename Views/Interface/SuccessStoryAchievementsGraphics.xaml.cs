@@ -10,6 +10,7 @@ using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -50,10 +51,7 @@ namespace SuccessStory.Views.Interface
             {
                 if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
                 {
-                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                    {
-                        SetScData(PluginDatabase.GameSelectedData.Id);
-                    }));
+                    SetScData(PluginDatabase.GameSelectedData.Id);
                 }
             }
             catch (Exception ex)
@@ -65,46 +63,58 @@ namespace SuccessStory.Views.Interface
 
         public void SetScData(Guid? Id = null, int limit = 0, bool ForceMonth = false)
         {
-            AchievementsGraphicsDataCount GraphicsData = null;
-
-            if (limit == 0)
+            this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
             {
-                limit = (PluginDatabase.PluginSettings.IntegrationGraphicOptionsCountAbscissa - 1);
-            }
+                StatsGraphicAchievements.Series = null;
+                StatsGraphicAchievementsX.Labels = null;
+            }));
 
-            if (!ForceMonth)
+            Task.Run(() =>
             {
-                if (PluginDatabase.PluginSettings.GraphicAllUnlockedByDay)
+                AchievementsGraphicsDataCount GraphicsData = null;
+
+                if (limit == 0)
                 {
-                    GraphicsData = PluginDatabase.GetCountByDay(Id, limit);
+                    limit = (PluginDatabase.PluginSettings.IntegrationGraphicOptionsCountAbscissa - 1);
+                }
+
+                if (!ForceMonth)
+                {
+                    if (PluginDatabase.PluginSettings.GraphicAllUnlockedByDay)
+                    {
+                        GraphicsData = PluginDatabase.GetCountByDay(Id, limit);
+                    }
+                    else
+                    {
+                        GraphicsData = PluginDatabase.GetCountByMonth(Id, limit);
+                    }
                 }
                 else
                 {
                     GraphicsData = PluginDatabase.GetCountByMonth(Id, limit);
                 }
-            }
-            else
-            {
-                GraphicsData = PluginDatabase.GetCountByMonth(Id, limit);
-            }
 
-            string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
-            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-            StatsGraphicAchievementsSeries.Add(new LineSeries
-            {
-                Title = string.Empty,
-                Values = GraphicsData.Series
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
+                {
+                    string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+                    SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+                    StatsGraphicAchievementsSeries.Add(new LineSeries
+                    {
+                        Title = string.Empty,
+                        Values = GraphicsData.Series
+                    });
+
+
+                    StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
+                    StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
+
+                    if (!PluginDatabase.PluginSettings.IgnoreSettings)
+                    {
+                        StatsGraphicAchievementsX.ShowLabels = PluginDatabase.PluginSettings.EnableIntegrationAxisGraphic;
+                        StatsGraphicAchievementsY.ShowLabels = PluginDatabase.PluginSettings.EnableIntegrationOrdinatesGraphic;
+                    }
+                }));
             });
-
-
-            StatsGraphicAchievements.Series = StatsGraphicAchievementsSeries;
-            StatsGraphicAchievementsX.Labels = StatsGraphicsAchievementsLabels;
-
-            if (!PluginDatabase.PluginSettings.IgnoreSettings)
-            {
-                StatsGraphicAchievementsX.ShowLabels = PluginDatabase.PluginSettings.EnableIntegrationAxisGraphic;
-                StatsGraphicAchievementsY.ShowLabels = PluginDatabase.PluginSettings.EnableIntegrationOrdinatesGraphic;
-            }
         }
 
 

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -46,10 +47,7 @@ namespace SuccessStory.Views.Interface
             {
                 if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
                 {
-                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                    {
-                        SetScData(PluginDatabase.GameSelectedData.Items);
-                    }));
+                    SetScData(PluginDatabase.GameSelectedData);
                 }
             }
             catch (Exception ex)
@@ -59,90 +57,109 @@ namespace SuccessStory.Views.Interface
         }
 
 
-        public void SetScData(List<Achievements> ListAchievements)
+        public void SetScData(GameAchievements gameAchievements, bool noControl = false)
         {
-            AchievementsList = new List<ListBoxAchievements>();
+            List<Achievements> ListAchievements = gameAchievements.Items;
 
-            // Select data
-            if (_withUnlocked)
+            this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
             {
-                ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked != default(DateTime));
-                ListAchievements.Sort((x, y) => DateTime.Compare((DateTime)x.DateUnlocked, (DateTime)y.DateUnlocked));
-                ListAchievements.Reverse();
-            }
-            else
+                PART_ScCompactView.Children.Clear();
+                PART_ScCompactView.ColumnDefinitions.Clear();
+            }));
+
+            Task.Run(() =>
             {
-                ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked == default(DateTime));
-                ListAchievements.Sort((x, y) => string.Compare(x.Name, y.Name));
-            }
+                AchievementsList = new List<ListBoxAchievements>();
 
-            // Prepare data
-            for (int i = 0; i < ListAchievements.Count; i++)
-            {
-                DateTime? dateUnlock = null;
-                BitmapImage iconImage = new BitmapImage();
-
-                bool IsGray = false;
-
-                string urlImg = string.Empty;
-                try
+                // Select data
+                if (_withUnlocked)
                 {
-                    if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
+                    ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked != default(DateTime));
+                    ListAchievements.Sort((x, y) => DateTime.Compare((DateTime)x.DateUnlocked, (DateTime)y.DateUnlocked));
+                    ListAchievements.Reverse();
+                }
+                else
+                {
+                    ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked == default(DateTime));
+                    ListAchievements.Sort((x, y) => string.Compare(x.Name, y.Name));
+                }
+
+                // Prepare data
+                for (int i = 0; i < ListAchievements.Count; i++)
+                {
+                    DateTime? dateUnlock = null;
+                    BitmapImage iconImage = new BitmapImage();
+
+                    bool IsGray = false;
+
+                    string urlImg = string.Empty;
+                    try
                     {
-                        if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
+                        if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
                         {
-                            urlImg = ListAchievements[i].ImageUnlocked;
-                            IsGray = true;
+                            if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
+                            {
+                                urlImg = ListAchievements[i].ImageUnlocked;
+                                IsGray = true;
+                            }
+                            else
+                            {
+                                urlImg = ListAchievements[i].ImageLocked;
+                            }
                         }
                         else
                         {
-                            urlImg = ListAchievements[i].ImageLocked;
+                            urlImg = ListAchievements[i].ImageUnlocked;
+                            dateUnlock = ListAchievements[i].DateUnlocked;
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        urlImg = ListAchievements[i].ImageUnlocked;
-                        dateUnlock = ListAchievements[i].DateUnlocked;
+                        Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
                     }
+
+                    string NameAchievement = ListAchievements[i].Name;
+
+                    if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
+                    {
+                        dateUnlock = null;
+                    }
+
+                    AchievementsList.Add(new ListBoxAchievements()
+                    {
+                        Name = NameAchievement,
+                        DateUnlock = dateUnlock,
+                        Icon = urlImg,
+                        IconImage = urlImg,
+                        IsGray = IsGray,
+                        Description = ListAchievements[i].Description,
+                        Percent = ListAchievements[i].Percent
+                    });
+
+                    iconImage = null;
                 }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
-                }
-
-                string NameAchievement = ListAchievements[i].Name;
-
-                if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
-                {
-                    dateUnlock = null;
-                }
-
-                AchievementsList.Add(new ListBoxAchievements()
-                {
-                    Name = NameAchievement,
-                    DateUnlock = dateUnlock,
-                    Icon = urlImg,
-                    IconImage = urlImg,
-                    IsGray = IsGray,
-                    Description = ListAchievements[i].Description,
-                    Percent = ListAchievements[i].Percent
-                });
-
-                iconImage = null;
-            }
 #if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
+                logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
 #endif
 
-            PART_ScCompactView_IsLoaded(null, null);
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
+                {
+                    if (!noControl)
+                    {
+                        if (gameAchievements.Id != SuccessStory.GameSelected.Id)
+                        {
+                            return;
+                        }
+                    }
+
+                    PART_ScCompactView_IsLoaded(null, null);
+                }));
+            });
         }
 
 
         private void PART_ScCompactView_IsLoaded(object sender, RoutedEventArgs e)
         {
-            PART_ScCompactView.Children.Clear();
-            PART_ScCompactView.ColumnDefinitions.Clear();
-
             // Prepare Grid 40x40 & add data
             double actualWidth = PART_ScCompactView.ActualWidth;
             int nbGrid = (int)actualWidth / 52;
@@ -222,10 +239,6 @@ namespace SuccessStory.Views.Interface
                             lb.SetValue(Grid.ColumnProperty, i);
 
                             PART_ScCompactView.Children.Add(lb);
-
-#if DEBUG
-                            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - AchievementsList.Count: {AchievementsList.Count} - nbGrid: {nbGrid} - i: {i}");
-#endif
                         }
                     }
                 }

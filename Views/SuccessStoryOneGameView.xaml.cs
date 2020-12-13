@@ -48,7 +48,7 @@ namespace SuccessStory.Views
 
             // List Achievements
             SuccessStoryAchievementsList successStoryAchievementsList = new SuccessStoryAchievementsList();
-            successStoryAchievementsList.SetScData(ListAchievements);
+            successStoryAchievementsList.SetScData(successStories);
             PART_Achievements_List.Children.Add(successStoryAchievementsList);
 
 
