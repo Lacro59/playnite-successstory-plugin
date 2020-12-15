@@ -46,9 +46,13 @@ namespace SuccessStory.Views.Interface
                             return;
                         }
 
-                        if (PluginDatabase.GameSelectedData.Total != PluginDatabase.GameSelectedData.Unlocked)
+                        if (!PluginDatabase.GameSelectedData.Is100Percent)
                         {
                             Sc_Icon100Percent.Visibility = Visibility.Collapsed;
+                        }
+                        else
+                        {
+                            Sc_Icon100Percent.Visibility = Visibility.Visible;
                         }
 
                         sc_labelButton.Content = PluginDatabase.GameSelectedData.Unlocked + "/" + PluginDatabase.GameSelectedData.Total;
