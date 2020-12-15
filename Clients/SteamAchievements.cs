@@ -70,8 +70,15 @@ namespace SuccessStory.Clients
                     logger.Warn("SuccessStory - No Steam user");
                 }
 
-                AllAchievements = GetPlayerAchievements(AppId);
-                AllStats = GetUsersStats(AppId);
+                if (_settings.EnableSteamWithoutWebApi)
+                {
+                    AllAchievements = GetAchievementsInPublic(AppId);
+                }
+                else
+                {
+                    AllAchievements = GetPlayerAchievements(AppId);
+                    AllStats = GetUsersStats(AppId);
+                }
 
                 if (AllAchievements.Count > 0)
                 {
@@ -206,51 +213,101 @@ namespace SuccessStory.Clients
         {
             GetSteamConfig();
 
-            try
+            if (_settings.EnableSteamWithoutWebApi)
             {
-                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
+                string ProfilById = @"https://steamcommunity.com/profiles/{0}/";
+                string ProfilByName = @"https://steamcommunity.com/id/{0}";
+
+                ProfilById = string.Format(ProfilById, SteamId);
+                ProfilByName = string.Format(UrlProfilByName, SteamUser);
+
+                string ResultWeb = string.Empty;
+                HtmlParser parser = new HtmlParser();
+                IHtmlDocument HtmlDoc = null;
+
+                try
                 {
-                    KeyValue PlayerAchievements = steamWebAPI.GetPlayerAchievements(steamid: SteamId, appid: AppId, l: LocalLang);
-                    return true;
+                    ResultWeb = HttpDownloader.DownloadString(ProfilById);
+                    HtmlDoc = parser.Parse(ResultWeb);
+                    if (HtmlDocument.QuerySelectorAll("div.achieveRow").Length > 0)
+                    {
+                        return true;
+                    }
+                }
+                catch (WebException ex)
+                {
+                    Common.LogError(ex, "SuccessStory");
+                    return false;
+                }
+
+                try
+                {
+                    ResultWeb = HttpDownloader.DownloadString(ProfilByName);
+                    HtmlDoc = parser.Parse(ResultWeb);
+                    if (HtmlDocument.QuerySelectorAll("div.achieveRow").Length > 0)
+                    {
+                        return true;
+                    }
+                }
+                catch (WebException ex)
+                {
+                    Common.LogError(ex, "SuccessStory");
+                    return false;
                 }
             }
-            // TODO With recent SteamKit
-            //catch (WebAPIRequestException wex)
-            //{
-            //    if (wex.StatusCode == HttpStatusCode.Forbidden)
-            //    {
-            //        _PlayniteApi.Notifications.Add(new NotificationMessage(
-            //            $"SuccessStory-Steam-PrivateProfil",
-            //            "SuccessStory - Steam profil is private",
-            //            NotificationType.Error
-            //        ));
-            //        logger.Warn("SuccessStory - Steam profil is private");
-            //    }
-            //    else
-            //    {
-            //        Common.LogError(wex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
-            //    }
-            //}
-            catch (WebException ex)
+            else
             {
-                if (ex.Status == WebExceptionStatus.ProtocolError)
+                try
                 {
-                    if (ex.Response is HttpWebResponse response)
+                    using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
                     {
-                        if (response.StatusCode == HttpStatusCode.Forbidden)
+                        KeyValue PlayerAchievements = steamWebAPI.GetPlayerAchievements(steamid: SteamId, appid: AppId, l: LocalLang);
+                        return true;
+                    }
+                }
+                // TODO With recent SteamKit
+                //catch (WebAPIRequestException wex)
+                //{
+                //    if (wex.StatusCode == HttpStatusCode.Forbidden)
+                //    {
+                //        _PlayniteApi.Notifications.Add(new NotificationMessage(
+                //            $"SuccessStory-Steam-PrivateProfil",
+                //            "SuccessStory - Steam profil is private",
+                //            NotificationType.Error
+                //        ));
+                //        logger.Warn("SuccessStory - Steam profil is private");
+                //    }
+                //    else
+                //    {
+                //        Common.LogError(wex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                //    }
+                //}
+                catch (WebException ex)
+                {
+                    if (ex.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        if (ex.Response is HttpWebResponse response)
                         {
-                            _PlayniteApi.Notifications.Add(new NotificationMessage(
-                                "SuccessStory-Steam-PrivateProfil",
-                                $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
-                                NotificationType.Error,
-                                () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
-                            ));
-                            logger.Warn("SuccessStory - Steam profil is private");
+                            if (response.StatusCode == HttpStatusCode.Forbidden)
+                            {
+                                _PlayniteApi.Notifications.Add(new NotificationMessage(
+                                    "SuccessStory-Steam-PrivateProfil",
+                                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
+                                    NotificationType.Error,
+                                    () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
+                                ));
+                                logger.Warn("SuccessStory - Steam profil is private");
 
-                            // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
-                            Common.LogError(ex, "SuccessStory", "Error on CheckIsPublic()");
+                                // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
+                                Common.LogError(ex, "SuccessStory", "Error on CheckIsPublic()");
 
-                            return false;
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            // no http status code available
+                            Common.LogError(ex, "SuccessStory", $"Error on CheckIsPublic({AppId})");
                         }
                     }
                     else
@@ -258,15 +315,12 @@ namespace SuccessStory.Clients
                         // no http status code available
                         Common.LogError(ex, "SuccessStory", $"Error on CheckIsPublic({AppId})");
                     }
-                }
-                else
-                {
-                    // no http status code available
-                    Common.LogError(ex, "SuccessStory", $"Error on CheckIsPublic({AppId})");
-                }
 
-                return true;
+                    return true;
+                }
             }
+
+            return false;
         }
 
 
@@ -559,9 +613,25 @@ namespace SuccessStory.Clients
             {
                 foreach (var achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
                 {
-                    if (achieveRow.QuerySelector("h3").InnerHtml.Trim().ToLower() == DisplayName.Trim().ToLower())
+                    try { 
+                        if (achieveRow.QuerySelector("h3").InnerHtml.Trim().ToLower() == DisplayName.Trim().ToLower())
+                        {
+                            string TempDescription = achieveRow.QuerySelector("h5").InnerHtml;
+
+                            if (TempDescription.Contains("steamdb_achievement_spoiler"))
+                            {
+                                TempDescription = achieveRow.QuerySelector("h5 span").InnerHtml;
+                                return WebUtility.HtmlDecode(TempDescription.Trim());
+                            }
+                            else
+                            {
+                                return WebUtility.HtmlDecode(TempDescription.Trim());
+                            }
+                        }
+                    }
+                    catch (Exception ex)
                     {
-                        return achieveRow.QuerySelector("h5").InnerHtml;
+                        Common.LogError(ex, "SuccessStory");
                     }
                 }
             }
@@ -569,6 +639,145 @@ namespace SuccessStory.Clients
             return string.Empty;
         }
 
+        private List<Achievements> GetAchievementsInPublic(int AppId, bool TryByName = false)
+        {
+            List<Achievements> achievements = new List<Achievements>();
+
+            string url = string.Empty;
+            string ResultWeb = string.Empty;
+            bool noData = true;
+
+            // Get data
+            if (HtmlDocument == null)
+            {
+                var cookieLang = new Cookie("Steam_Language", "en_US");
+                var cookies = new List<Cookie>();
+                cookies.Add(cookieLang);
+
+                if (!TryByName)
+                {
+#if DEBUG
+                    logger.Debug($"SuccessStory - GetAchievementsInPublic() for {SteamId} - {AppId}");
+#endif
+                    url = string.Format(UrlProfilById, SteamId, AppId);
+                    try
+                    {
+                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                    }
+                    catch (WebException ex)
+                    {
+                        Common.LogError(ex, "SuccessStory");
+                    }
+                }
+                else
+                {
+#if DEBUG
+                    logger.Debug($"SuccessStory - GetAchievementsInPublic() for {SteamUser} - {AppId}");
+#endif
+                    url = string.Format(UrlProfilByName, SteamUser, AppId);
+                    try
+                    {
+                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                    }
+                    catch (WebException ex)
+                    {
+                        Common.LogError(ex, "SuccessStory");
+                    }
+                }
+
+                if (!ResultWeb.IsNullOrEmpty())
+                {
+                    HtmlParser parser = new HtmlParser();
+                    HtmlDocument = parser.Parse(ResultWeb);
+
+                    if (HtmlDocument.QuerySelectorAll("div.achieveRow").Length != 0)
+                    {
+                        noData = false;
+                    }
+                }
+
+                if (!TryByName && noData)
+                {
+                    HtmlDocument = null;
+                    return GetAchievementsInPublic(AppId, TryByName = true);
+                }
+                else if (noData)
+                {
+                    return achievements;
+                }
+            }
+
+
+            // Find the achievement description
+            if (HtmlDocument != null)
+            {
+                foreach (var achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
+                {
+                    try
+                    {
+                        string UrlUnlocked = achieveRow.QuerySelector(".achieveImgHolder img").GetAttribute("src");
+
+                        DateTime DateUnlocked = default(DateTime);
+                        string TempDate = string.Empty;
+                        if (achieveRow.QuerySelector(".achieveUnlockTime") != null)
+                        {
+                            TempDate = achieveRow.QuerySelector(".achieveUnlockTime").InnerHtml.Trim();
+                            TempDate = TempDate.ToLower().Replace("unlocked", string.Empty).Replace("@ ", string.Empty).Replace("<br>", string.Empty).Trim();
+                            try
+                            {
+                                DateUnlocked = DateTime.ParseExact(TempDate, "d MMM h:mmtt", CultureInfo.InvariantCulture);
+                            }
+                            catch
+                            {
+                            }
+                            try
+                            {
+                                DateUnlocked = DateTime.ParseExact(TempDate, "d MMM, yyyy h:mmtt", CultureInfo.InvariantCulture);
+                            }
+                            catch
+                            {
+                            }
+                        }
+
+                        string Name = string.Empty;
+                        if (achieveRow.QuerySelector("h3") != null)
+                        {
+                            Name = achieveRow.QuerySelector("h3").InnerHtml.Trim();
+                        }
+
+                        string Description = string.Empty;
+                        if (achieveRow.QuerySelector("h5") != null)
+                        {
+                            Description = achieveRow.QuerySelector("h5").InnerHtml;
+                            if (Description.Contains("steamdb_achievement_spoiler"))
+                            {
+                                Description = achieveRow.QuerySelector("h5 span").InnerHtml.Trim();
+                            }
+
+                            Description = WebUtility.HtmlDecode(Description);
+                        }
+
+                        achievements.Add(new Achievements
+                        {
+                            Name = Name,
+                            ApiName = string.Empty,
+                            Description = Description,
+                            UrlUnlocked = UrlUnlocked,
+                            UrlLocked = string.Empty,
+                            DateUnlocked = DateUnlocked,
+                            IsHidden = false,
+                            Percent = 100
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, "SuccessStory");
+                    }
+                }
+            }
+
+            return achievements;
+        }
 
         private List<Achievements> GetGlobalAchievementPercentagesForApp(int AppId, List<Achievements> AllAchievements)
         {

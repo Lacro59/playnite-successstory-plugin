@@ -66,6 +66,8 @@ namespace SuccessStory
         public bool EnableRetroAchievements { get; set; } = false;
         public bool EnableRpcs3Achievements { get; set; } = false;
 
+        public bool EnableSteamWithoutWebApi { get; set; } = false;
+
         public string Rpcs3InstallationFolder { get; set; } = string.Empty;
 
         public bool EnableRetroAchievementsView { get; set; } = false;
@@ -159,6 +161,8 @@ namespace SuccessStory
                 EnableXbox = savedSettings.EnableXbox;
                 EnableRetroAchievements = savedSettings.EnableRetroAchievements;
                 EnableRpcs3Achievements = savedSettings.EnableRpcs3Achievements;
+
+                EnableSteamWithoutWebApi = savedSettings.EnableSteamWithoutWebApi;
 
                 Rpcs3InstallationFolder = savedSettings.Rpcs3InstallationFolder;
 
