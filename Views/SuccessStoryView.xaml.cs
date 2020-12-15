@@ -283,50 +283,47 @@ namespace SuccessStory
                 if (ListGames.Count == 0)
                 {
                     var dataGameAchievements = PluginDatabase.Database.Where(x => x.HaveAchivements && x.IsDeleted == false);
-                    foreach (Models.GameAchievements item in dataGameAchievements)
+                    foreach (GameAchievements item in dataGameAchievements)
                     {
                         string SourceName = PlayniteTools.GetSourceName(_PlayniteApi, item.Id);
 
-                        if (SuccessStoryDatabase.VerifToAddOrShow(_plugin, _PlayniteApi, PluginDatabase.PluginSettings, _PluginUserDataPath, SourceName))
+                        string GameId = item.Id.ToString();
+                        string GameName = item.Name;
+                        string GameIcon = string.Empty;
+                        string Icon100 = string.Empty;
+                        DateTime? GameLastActivity = null;
+
+                        GameAchievements successStories = PluginDatabase.Get(item.Id);
+
+                        if (item.LastActivity != null)
                         {
-                            string GameId = item.Id.ToString();
-                            string GameName = item.Name;
-                            string GameIcon = string.Empty;
-                            string Icon100 = string.Empty;
-                            DateTime? GameLastActivity = null;
-
-                            Models.GameAchievements successStories = PluginDatabase.Get(item.Id);
-
-                            if (item.LastActivity != null)
-                            {
-                                GameLastActivity = ((DateTime)item.LastActivity).ToLocalTime();
-                            }
-
-                            if (!item.Icon.IsNullOrEmpty())
-                            {
-                                GameIcon = _PlayniteApiDatabase.GetFullFilePath(item.Icon);
-                            }
-                            
-                            if (successStories.Is100Percent)
-                            {
-                                Icon100 = Path.Combine(pluginFolder, "Resources\\badge.png");
-                            }
-
-                            ListGames.Add(new ListViewGames()
-                            {
-                                Icon100Percent = Icon100,
-                                Id = GameId,
-                                Name = GameName,
-                                Icon = GameIcon,
-                                LastActivity = GameLastActivity,
-                                SourceName = SourceName,
-                                SourceIcon = TransformIcon.Get(SourceName),
-                                ProgressionValue = successStories.Progression,
-                                Total = successStories.Total,
-                                TotalPercent = successStories.Progression + "%",
-                                Unlocked = successStories.Unlocked
-                            });
+                            GameLastActivity = ((DateTime)item.LastActivity).ToLocalTime();
                         }
+
+                        if (!item.Icon.IsNullOrEmpty())
+                        {
+                            GameIcon = _PlayniteApiDatabase.GetFullFilePath(item.Icon);
+                        }
+                            
+                        if (successStories.Is100Percent)
+                        {
+                            Icon100 = Path.Combine(pluginFolder, "Resources\\badge.png");
+                        }
+
+                        ListGames.Add(new ListViewGames()
+                        {
+                            Icon100Percent = Icon100,
+                            Id = GameId,
+                            Name = GameName,
+                            Icon = GameIcon,
+                            LastActivity = GameLastActivity,
+                            SourceName = SourceName,
+                            SourceIcon = TransformIcon.Get(SourceName),
+                            ProgressionValue = successStories.Progression,
+                            Total = successStories.Total,
+                            TotalPercent = successStories.Progression + "%",
+                            Unlocked = successStories.Unlocked
+                        });
                     }
 
 #if DEBUG
