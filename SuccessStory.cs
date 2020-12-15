@@ -154,10 +154,14 @@ namespace SuccessStory
         {
             var GameMenu = args.Games.First();
 
-            List<GameMenuItem> gameMenuItems = new List<GameMenuItem>
-            {
+            List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
+            
+            if (!PluginDatabase.PluginSettings.EnableOneGameView 
+                || (PluginDatabase.PluginSettings.EnableOneGameView && PluginDatabase.Get(GameMenu, true).HasData))
+            { 
                 // Show list achievements for the selected game
-                new GameMenuItem {
+                gameMenuItems.Add(new GameMenuItem
+                {
                     MenuSection = resources.GetString("LOCSuccessStory"),
                     Description = resources.GetString("LOCSuccessStoryViewGame"),
                     Action = (gameMenuItem) =>
@@ -176,28 +180,29 @@ namespace SuccessStory
                         windowExtension.ShowDialog();
                         PluginDatabase.IsViewOpen = false;
                     }
-                },
+                });
+            }
 
+            gameMenuItems.Add(new GameMenuItem
+            {
                 // Delete & download localizations data for the selected game
-                new GameMenuItem {
-                    MenuSection = resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonRefreshGameData"),
-                    Action = (gameMenuItem) =>
+                MenuSection = resources.GetString("LOCSuccessStory"),
+                Description = resources.GetString("LOCCommonRefreshGameData"),
+                Action = (gameMenuItem) =>
+                {
+                    if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
                     {
-                        if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
-                        {
-                            PlayniteUiHelper.ResetToggle();
-                        }
-
-                        var TaskIntegrationUI = Task.Run(() =>
-                        {
-                            PluginDatabase.Remove(GameMenu);
-                            var dispatcherOp = successStoryUI.AddElements();
-                            dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(GameMenu); };
-                        });
+                        PlayniteUiHelper.ResetToggle();
                     }
+
+                    var TaskIntegrationUI = Task.Run(() =>
+                    {
+                        PluginDatabase.Remove(GameMenu);
+                        var dispatcherOp = successStoryUI.AddElements();
+                        dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(GameMenu); };
+                    });
                 }
-            };
+            });
 
 #if DEBUG
             gameMenuItems.Add(new GameMenuItem
