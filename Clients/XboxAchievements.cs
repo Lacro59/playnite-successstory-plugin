@@ -12,8 +12,8 @@ using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using PluginCommon;
-using PluginCommon.PlayniteResources.Common;
-using PluginCommon.PlayniteResources.PluginLibrary.XboxLibrary.Models;
+using CommonPlaynite.Common;
+using CommonPlaynite.PluginLibrary.XboxLibrary.Models;
 using SuccessStory.Models;
 
 namespace SuccessStory.Clients

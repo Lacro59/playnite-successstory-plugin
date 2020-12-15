@@ -5,13 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:localLVC="clr-namespace:PluginCommon.LiveChartsCommon;assembly=PluginCommon"
+             xmlns:livechartscommon="clr-namespace:PluginCommon.LiveChartsCommon;assembly=CommonControls"
              mc:Ignorable="d">
  
     <!-- TODO https://github.com/Live-Charts/Live-Charts/issues/619 -->
     <lvc:CartesianChart x:Name="StatsGraphicAchievements" LegendLocation="Bottom" Loaded="StatsGraphicAchievements_Loaded" Height="120">
         <lvc:CartesianChart.DataTooltip>
-            <localLVC:CustomerToolTipForSingle />
+            <livechartscommon:CustomerToolTipForSingle />
         </lvc:CartesianChart.DataTooltip>
 
         <lvc:CartesianChart.AxisX>

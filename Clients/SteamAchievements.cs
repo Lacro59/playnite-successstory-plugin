@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 using SteamKit2;
 using System.Globalization;
 using System.Threading.Tasks;
-using PluginCommon.PlayniteResources.Common.Web;
+using CommonPlaynite.Common.Web;
 using SuccessStory.Services;
 
 namespace SuccessStory.Clients

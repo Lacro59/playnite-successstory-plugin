@@ -20,7 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using PluginCommon.PlayniteResources;
+using CommonPlaynite;
 using System.Diagnostics;
 using SuccessStory.Services;
 using System.Windows.Automation;
@@ -67,7 +67,7 @@ namespace SuccessStory
             PluginCommon.PluginLocalization.SetPluginLanguage(pluginFolder, api.ApplicationSettings.Language);
             // Add common in application ressource.
             PluginCommon.Common.Load(pluginFolder);
-
+            
             // Check version
             if (settings.EnableCheckVersion)
             {

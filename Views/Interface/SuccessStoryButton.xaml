@@ -4,13 +4,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:SuccessStory.Views.Interface"
-        xmlns:converters="clr-namespace:PluginCommon.PlayniteResources.Converters;assembly=PluginCommon"
+        xmlns:converters="clr-namespace:CommonPlaynite.Converters;assembly=CommonPlaynite"
         mc:Ignorable="d" Height="40">
 
     <Button.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <FontFamily x:Key="font">pack://application:,,,/PluginCommon;component/Resources/font.ttf#font</FontFamily>
+        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
     </Button.Resources>
 
     <Button.Style>

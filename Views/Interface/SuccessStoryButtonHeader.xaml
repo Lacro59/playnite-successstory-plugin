@@ -7,7 +7,7 @@
              mc:Ignorable="d">
 
     <Button.Resources>
-        <FontFamily x:Key="font">pack://application:,,,/PluginCommon;component/Resources/font.ttf#font</FontFamily>
+        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
     </Button.Resources>
     
     <Button.Style>
@@ -46,7 +46,7 @@
         </Style>
     </Button.Style>
 
-    <TextBlock Name="btHeaderName" Text="S" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="{StaticResource font}">
+    <TextBlock Name="btHeaderName" Text="" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="{StaticResource font}">
         <TextBlock.Style>
             <Style TargetType="TextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource GlyphBrush}" />

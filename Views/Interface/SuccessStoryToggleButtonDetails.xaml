@@ -7,7 +7,7 @@
               mc:Ignorable="d" MinWidth="150" Height="40">
 
     <ToggleButton.Resources>
-        <FontFamily x:Key="font">pack://application:,,,/PluginCommon;component/Resources/font.ttf#font</FontFamily>
+        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
     </ToggleButton.Resources>
 
     <ToggleButton.Style>

@@ -80,9 +80,11 @@
     </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -119,6 +121,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="YamlDotNet, Version=9.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+      <HintPath>packages\YamlDotNet.9.1.0\lib\net45\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\GenericAchievements.cs" />
@@ -370,12 +375,6 @@
     <None Include="Resources\Achievements.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="playnite-plugincommon\PluginCommon.csproj">
-      <Project>{e05ac297-6067-4270-a572-1df926bb3635}</Project>
-      <Name>PluginCommon</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\badge.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -391,5 +390,16 @@
   <ItemGroup>
     <Folder Include="PlayniteResources\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="playnite-plugincommon\CommonControls\CommonControls.csproj">
+      <Project>{9acfa07b-718c-4546-ac27-a9fce42f61f7}</Project>
+      <Name>CommonControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="playnite-plugincommon\CommonPlaynite\CommonPlaynite.csproj">
+      <Project>{a4c600fb-92f5-4fd6-ad6b-0c0e0cf2ec81}</Project>
+      <Name>CommonPlaynite</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="playnite-plugincommon\CommonShared\CommonShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

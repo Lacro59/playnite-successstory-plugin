@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory"
-             xmlns:localLVC="clr-namespace:PluginCommon.LiveChartsCommon;assembly=PluginCommon"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:localPlugin="clr-namespace:PluginCommon;assembly=PluginCommon"
+             xmlns:livechartscommon="clr-namespace:PluginCommon.LiveChartsCommon;assembly=CommonControls"
+             xmlns:plugincommon="clr-namespace:PluginCommon;assembly=CommonControls"
              mc:Ignorable="d" Height="740" Width="1280" Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <localPlugin:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <FontFamily x:Key="font">pack://application:,,,/PluginCommon;component/Resources/font.ttf#font</FontFamily>
+        <plugincommon:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -120,7 +120,7 @@
                                 </lvc:CartesianChart.ChartLegend>
                                 
                                 <lvc:CartesianChart.DataTooltip>
-                                    <localLVC:CustomerToolTipForSingle />
+                                    <livechartscommon:CustomerToolTipForSingle />
                                 </lvc:CartesianChart.DataTooltip>
                             
                                 <lvc:CartesianChart.AxisX>
