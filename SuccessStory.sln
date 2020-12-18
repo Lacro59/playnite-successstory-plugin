@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonControls", "playnite-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonPlaynite", "playnite-plugincommon\CommonPlaynite\CommonPlaynite.csproj", "{A4C600FB-92F5-4FD6-AD6B-0C0E0CF2EC81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchievementsLocal", "playnite-successstory-extension\AchievementsLocal.csproj", "{100A4BDC-BD53-472D-B189-75C4EB3C60E9}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		playnite-plugincommon\CommonShared\CommonShared.projitems*{27e5d35b-f3ce-4a3f-9705-4564674615a5}*SharedItemsImports = 13
@@ -62,6 +64,18 @@ Global
 		{A4C600FB-92F5-4FD6-AD6B-0C0E0CF2EC81}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A4C600FB-92F5-4FD6-AD6B-0C0E0CF2EC81}.Release|x86.ActiveCfg = Release|Any CPU
 		{A4C600FB-92F5-4FD6-AD6B-0C0E0CF2EC81}.Release|x86.Build.0 = Release|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.Debug|x86.Build.0 = Debug|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.DebugFS|Any CPU.ActiveCfg = Debug|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.DebugFS|Any CPU.Build.0 = Debug|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.DebugFS|x86.ActiveCfg = Debug|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.DebugFS|x86.Build.0 = Debug|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.Release|x86.ActiveCfg = Release|Any CPU
+		{100A4BDC-BD53-472D-B189-75C4EB3C60E9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

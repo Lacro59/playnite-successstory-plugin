@@ -70,10 +70,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Achievements, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Resources\Achievements.dll</HintPath>
-    </Reference>
     <Reference Include="AngleSharp, Version=0.9.9.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
       <HintPath>packages\AngleSharp.0.9.9\lib\net45\AngleSharp.dll</HintPath>
       <Private>False</Private>
@@ -372,9 +368,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Achievements.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\badge.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -398,6 +391,10 @@
     <ProjectReference Include="playnite-plugincommon\CommonPlaynite\CommonPlaynite.csproj">
       <Project>{a4c600fb-92f5-4fd6-ad6b-0c0e0cf2ec81}</Project>
       <Name>CommonPlaynite</Name>
+    </ProjectReference>
+    <ProjectReference Include="playnite-successstory-extension\AchievementsLocal.csproj">
+      <Project>{100a4bdc-bd53-472d-b189-75c4eb3c60e9}</Project>
+      <Name>AchievementsLocal</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="playnite-plugincommon\CommonShared\CommonShared.projitems" Label="Shared" />
