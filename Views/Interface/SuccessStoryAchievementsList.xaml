@@ -69,6 +69,12 @@
             </Style>
         </ListBox.ItemContainerStyle>
 
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <UniformGrid Columns="{Binding ColDefinied}" />
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <Grid Margin="0,5">

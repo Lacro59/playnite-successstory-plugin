@@ -705,6 +705,7 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="15" />
                                         </Grid.ColumnDefinitions>
+                                        
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa}" Grid.Column="0" />
                                         <Slider Minimum="3" Maximum="30" Value="{Binding IntegrationGraphicOptionsCountAbscissa}" 
                                                 IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
@@ -846,9 +847,25 @@
                                             <ColumnDefinition Width="auto" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
+                                        
                                         <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
                                         <TextBox Text="{Binding IntegrationShowAchievementsHeight, FallbackValue=200}" Width="40" Grid.Column="1"
                                                  VerticalAlignment="Center" TextAlignment="Center"/>
+                                    </Grid>
+                                    
+                                    <Grid Grid.Column="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="15" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Content="{DynamicResource LOCColumns}" Grid.Column="0" />
+                                        <Slider Minimum="1" Maximum="5" Value="{Binding IntegrationAchievementsColCount}" 
+                                                IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
+                                                ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
+                                                Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sColCount" />
+                                        <Label Grid.Column="2" Content="{Binding ElementName=sColCount, Path=Value}" HorizontalAlignment="Center"/>
                                     </Grid>
                                 </Grid>
                             </GroupBox>

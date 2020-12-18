@@ -63,6 +63,7 @@ namespace SuccessStory.Views.Interface
             this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
             {
                 lbAchievements.ItemsSource = null;
+                lbAchievements.Items.Clear();
             }));
 
             Task.Run(() =>
@@ -140,6 +141,12 @@ namespace SuccessStory.Views.Interface
                     lbAchievements.ItemsSource = ListBoxAchievements;
                     CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
                     view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
+
+
+                    this.DataContext = new
+                    {
+                        ColDefinied = PluginDatabase.PluginSettings.IntegrationAchievementsColCount
+                    };
                 }));
             });
         }
