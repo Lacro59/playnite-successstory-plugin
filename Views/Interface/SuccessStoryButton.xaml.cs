@@ -82,9 +82,6 @@ namespace SuccessStory.Views.Interface
                         {
                             EnableIntegrationButtonJustIcon = EnableIntegrationButtonJustIcon
                         };
-#if DEBUG
-                        logger.Debug($"SuccessStory - DataContext: {JsonConvert.SerializeObject(DataContext)}");
-#endif
                     }));
                 }
                 else

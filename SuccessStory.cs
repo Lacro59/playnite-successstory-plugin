@@ -35,8 +35,7 @@ namespace SuccessStory
 
         private SuccessStorySettings settings { get; set; }
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
-
-        private readonly IntegrationUI ui = new IntegrationUI();
+        
         private readonly TaskHelper taskHelper = new TaskHelper();
 
         public static string pluginFolder;
