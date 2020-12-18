@@ -412,59 +412,104 @@ namespace SuccessStory.Clients
 
             if (platformType == PlatformType.SNES)
             {
-                if (length > 512)
+                try
                 {
-                    byteSequenceFinal = new byte[byteSequence.Length - 512];
-                    Buffer.BlockCopy(byteSequence, 512, byteSequenceFinal, 0, byteSequenceFinal.Length);
+                    if (length > 512)
+                    {
+                        byteSequenceFinal = new byte[byteSequence.Length - 512];
+                        Buffer.BlockCopy(byteSequence, 512, byteSequenceFinal, 0, byteSequenceFinal.Length);
+                    }
+                    else
+                    {
+                        byteSequenceFinal = byteSequence;
+                    }
                 }
-                else
+                catch(Exception ex)
                 {
-                    byteSequenceFinal = byteSequence;
+#if DEBUG
+                    Common.LogError(ex, "SuccessStory [ignored]");
+#endif
                 }
             }
 
             if (platformType == PlatformType.NES)
             {
-                string hexData = Tools.ToHex(byteSequence);
+                try
+                { 
+                    string hexData = Tools.ToHex(byteSequence);
 
-                //$4E $45 $53 $1A
-                if (hexData.ToLower().IndexOf("4e45531a") == 0)
-                {
-                    byteSequenceFinal = new byte[byteSequence.Length - 16];
-                    Buffer.BlockCopy(byteSequence, 16, byteSequenceFinal, 0, byteSequenceFinal.Length);
+                    //$4E $45 $53 $1A
+                    if (hexData.ToLower().IndexOf("4e45531a") == 0)
+                    {
+                        byteSequenceFinal = new byte[byteSequence.Length - 16];
+                        Buffer.BlockCopy(byteSequence, 16, byteSequenceFinal, 0, byteSequenceFinal.Length);
+                    }
+                    else
+                    {
+                        byteSequenceFinal = byteSequence;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    byteSequenceFinal = byteSequence;
+#if DEBUG
+                    Common.LogError(ex, "SuccessStory [ignored]");
+#endif
                 }
             }
 
             if (platformType == PlatformType.Famicom)
             {
-                string hexData = Tools.ToHex(byteSequence);
+                try
+                { 
+                    string hexData = Tools.ToHex(byteSequence);
 
-                //$46 $44 $53 $1A
-                if (hexData.ToLower().IndexOf("4644531a") == 0)
-                {
-                    byteSequenceFinal = new byte[byteSequence.Length - 16];
-                    Buffer.BlockCopy(byteSequence, 16, byteSequenceFinal, 0, byteSequenceFinal.Length);
+                    //$46 $44 $53 $1A
+                    if (hexData.ToLower().IndexOf("4644531a") == 0)
+                    {
+                        byteSequenceFinal = new byte[byteSequence.Length - 16];
+                        Buffer.BlockCopy(byteSequence, 16, byteSequenceFinal, 0, byteSequenceFinal.Length);
+                    }
+                    else
+                    {
+                        byteSequenceFinal = byteSequence;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    byteSequenceFinal = byteSequence;
+#if DEBUG
+                    Common.LogError(ex, "SuccessStory [ignored]");
+#endif
                 }
             }
 
             if (platformType == PlatformType.Sega_CD_Saturn)
             {
-                byteSequenceFinal = new byte[512];
-                Buffer.BlockCopy(byteSequence, 0, byteSequenceFinal, 0, 512);
+                try
+                { 
+                    byteSequenceFinal = new byte[512];
+                    Buffer.BlockCopy(byteSequence, 0, byteSequenceFinal, 0, 512);
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Common.LogError(ex, "SuccessStory [ignored]");
+#endif
+                }
             }
 
             if (platformType == PlatformType.Arcade)
             {
-                string FileName = Path.GetFileNameWithoutExtension(FilePath);
-                byteSequenceFinal = Encoding.ASCII.GetBytes(FileName);
+                try
+                { 
+                    string FileName = Path.GetFileNameWithoutExtension(FilePath);
+                    byteSequenceFinal = Encoding.ASCII.GetBytes(FileName);
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Common.LogError(ex, "SuccessStory [ignored]");
+#endif
+                }
             }
 
             return GetMd5(byteSequenceFinal);
