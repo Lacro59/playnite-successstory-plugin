@@ -1,3 +1,6 @@
 [submodule "playnite-plugincommon"]
 	path = playnite-plugincommon
 	url = https://github.com/Lacro59/playnite-plugincommon.git
+[submodule "playnite-successstory-extension"]
+	path = playnite-successstory-extension
+	url = https://github.com/Lacro59/playnite-successstory-extension.git
