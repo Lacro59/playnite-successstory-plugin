@@ -212,7 +212,7 @@ namespace SuccessStory.Views.Interface
 
                             DropShadowEffect myDropShadowEffect = new DropShadowEffect();
                             myDropShadowEffect.ShadowDepth = 0;
-                            myDropShadowEffect.BlurRadius = 30;
+                            myDropShadowEffect.BlurRadius = 15;
 
                             SetColorConverter setColorConverter = new SetColorConverter();
                             var color = setColorConverter.Convert(AchievementsList[i].Percent, null, null, CultureInfo.CurrentCulture);

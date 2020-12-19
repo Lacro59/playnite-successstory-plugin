@@ -29,9 +29,13 @@ namespace SuccessStory.Views.Interface
 
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
+        private bool _ForceOneCol;
 
-        public SuccessStoryAchievementsList()
+
+        public SuccessStoryAchievementsList(bool ForceOneCol = false)
         {
+            _ForceOneCol = ForceOneCol;
+
             InitializeComponent();
 
             lbAchievements.PreviewMouseWheel += Tools.HandlePreviewMouseWheel;
@@ -143,9 +147,21 @@ namespace SuccessStory.Views.Interface
                     view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
 
 
+                    int RowDefinied = (int)lbAchievements.Height / 75;
+
+                    int ColDefinied = 1;
+                    if (!_ForceOneCol)
+                    {
+                        ColDefinied = PluginDatabase.PluginSettings.IntegrationAchievementsColCount;
+                    }
+
+                    double WidthDefinied = lbAchievements.ActualWidth / ColDefinied;
+
                     this.DataContext = new
                     {
-                        ColDefinied = PluginDatabase.PluginSettings.IntegrationAchievementsColCount
+                        WidthDefinied = WidthDefinied,
+                        ColDefinied = ColDefinied,
+                        RowDefinied = RowDefinied
                     };
                 }));
             });

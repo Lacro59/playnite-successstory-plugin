@@ -363,7 +363,7 @@ namespace SuccessStory
                 List<Achievements> ListAchievements = successStories.Items;
 
                 SuccessStory_Achievements_List.Children.Clear();
-                SuccessStoryAchievementsList successStoryAchievementsList = new SuccessStoryAchievementsList();
+                SuccessStoryAchievementsList successStoryAchievementsList = new SuccessStoryAchievementsList(true);
                 successStoryAchievementsList.SetScData(successStories, true);
                 SuccessStory_Achievements_List.Children.Add(successStoryAchievementsList);
 
