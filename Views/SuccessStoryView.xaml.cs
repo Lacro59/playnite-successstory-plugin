@@ -112,17 +112,8 @@ namespace SuccessStory
                         lvGameProgression.Width = 0;
                     }
 
-                    int limit = 0;
-                    //if (PluginDatabase.PluginSettings.GraphicAllUnlockedByMonth)
-                    //{
-                        limit = 5;
-                        GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
-                    //}
-                    //else
-                    //{
-                    //    limit = 4;
-                    //    GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALLDay");
-                    //}
+                    int limit = 5;
+                    GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
 
                     SuccessStory_Achievements_Graphics.Children.Clear();
                     PluginDatabase.PluginSettings.IgnoreSettings = true;

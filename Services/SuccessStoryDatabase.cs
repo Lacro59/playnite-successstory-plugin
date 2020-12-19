@@ -210,7 +210,7 @@ namespace SuccessStory.Services
                 {
                     foreach (var item in Database.Items)
                     {
-                        if (!item.Value.HaveAchivements || item.Value.IsDeleted == false)
+                        if (!item.Value.HaveAchivements || item.Value.IsDeleted)
                         {
                             continue;
                         }
