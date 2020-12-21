@@ -145,8 +145,17 @@
     <Compile Include="Views\InterfaceFS\SuccessStoryProgressionFS.xaml.cs">
       <DependentUpon>SuccessStoryProgressionFS.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Interface\ScAchievementsListCompactVertical.xaml.cs">
+      <DependentUpon>ScAchievementsListCompactVertical.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Interface\ScAchievementsListCompact.xaml.cs">
+      <DependentUpon>ScAchievementsListCompact.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Interface\ScDescriptionIntegration.xaml.cs">
       <DependentUpon>ScDescriptionIntegration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Interface\SuccessStoryAchievementsCompactVertical.xaml.cs">
+      <DependentUpon>SuccessStoryAchievementsCompactVertical.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Interface\SuccessStoryAchievementsCompact.xaml.cs">
       <DependentUpon>SuccessStoryAchievementsCompact.xaml</DependentUpon>
@@ -306,9 +315,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Interface\ScAchievementsListCompactVertical.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Interface\ScAchievementsListCompact.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Interface\ScDescriptionIntegration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Interface\SuccessStoryAchievementsCompactVertical.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Interface\SuccessStoryAchievementsCompact.xaml">
       <SubType>Designer</SubType>

@@ -589,6 +589,7 @@
                                         <RowDefinition Height="30" />
                                         <RowDefinition Height="30" />
                                         <RowDefinition Height="30" />
+                                        <RowDefinition Height="30" />
                                     </Grid.RowDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IntegrationShowGraphic}" VerticalAlignment="Center">
@@ -601,8 +602,8 @@
                                     <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding IntegrationShowAchievements}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievements}" />
                                     </CheckBox>
-                                    <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding IntegrationShowUserStats}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowUserStats}" />
+                                    <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding IntegrationShowAchievementsCompact}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompact}" />
                                     </CheckBox>
 
                                     <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding IntegrationShowAchievementsCompactUnlocked}" VerticalAlignment="Center">
@@ -610,6 +611,10 @@
                                     </CheckBox>
                                     <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding IntegrationShowAchievementsCompactLocked}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactLocked}" />
+                                    </CheckBox>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding IntegrationShowUserStats}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowUserStats}" />
                                     </CheckBox>
                                 </Grid>
                             </GroupBox>

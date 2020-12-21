@@ -62,7 +62,23 @@
             </Style>
         </StackPanel.Style>
     </StackPanel>
-    
+
+    <StackPanel Name="PART_SuccessStory_ListCompact" MinHeight="40" MinWidth="200">
+        <StackPanel.Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IntegrationShowAchievementsCompact}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <Setter Property="Visibility" Value="Visible" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </StackPanel.Style>
+    </StackPanel>
+
     <StackPanel Name="PART_SuccessStory_Compact_Unlocked" MinHeight="40" MinWidth="200">
         <StackPanel.Style>
             <Style TargetType="StackPanel">

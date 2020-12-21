@@ -447,8 +447,12 @@ namespace SuccessStory.Services
             FrameworkElement PART_Achievements_ProgressBar = null;
             FrameworkElement PART_Achievements_Graphics = null;
             FrameworkElement PART_Achievements_List = null;
+            FrameworkElement PART_Achievements_ListComptact = null;
+            FrameworkElement PART_Achievements_ListComptactVertical = null;
             FrameworkElement PART_Achievements_ListCompactUnlocked = null;
             FrameworkElement PART_Achievements_ListCompactLocked = null;
+            FrameworkElement PART_Achievements_ListCompactVerticalUnlocked = null;
+            FrameworkElement PART_Achievements_ListCompactVerticalLocked = null;
 
             FrameworkElement PART_ScUserStats = null;
             try
@@ -460,8 +464,12 @@ namespace SuccessStory.Services
                 PART_Achievements_ProgressBar = IntegrationUI.SearchElementByName("PART_Achievements_ProgressBar", false, true);
                 PART_Achievements_Graphics = IntegrationUI.SearchElementByName("PART_Achievements_Graphics", false, true);
                 PART_Achievements_List = IntegrationUI.SearchElementByName("PART_Achievements_List", false, true);
+                PART_Achievements_ListComptact = IntegrationUI.SearchElementByName("PART_Achievements_ListComptact", false, true);
+                PART_Achievements_ListComptactVertical = IntegrationUI.SearchElementByName("PART_Achievements_ListComptactVertical", false, true);
                 PART_Achievements_ListCompactUnlocked = IntegrationUI.SearchElementByName("PART_Achievements_ListCompactUnlocked", false, true);
                 PART_Achievements_ListCompactLocked = IntegrationUI.SearchElementByName("PART_Achievements_ListCompactLocked", false, true);
+                PART_Achievements_ListCompactVerticalUnlocked = IntegrationUI.SearchElementByName("PART_Achievements_ListCompactVerticalUnlocked", false, true);
+                PART_Achievements_ListCompactVerticalLocked = IntegrationUI.SearchElementByName("PART_Achievements_ListCompactVerticalLocked", false, true);
 
                 PART_ScUserStats = IntegrationUI.SearchElementByName("PART_ScUserStats", false, true);
             }
@@ -576,6 +584,48 @@ namespace SuccessStory.Services
 #endif
             }
 
+            if (PART_Achievements_ListComptact != null && PluginDatabase.PluginSettings.IntegrationShowAchievementsCompact)
+            {
+                PART_Achievements_ListComptact = new ScAchievementsListCompact();
+                PART_Achievements_ListComptact.Name = "Achievements_ListCompact";
+                try
+                {
+                    ui.AddElementInCustomTheme(PART_Achievements_ListComptact, "PART_Achievements_ListComptact");
+                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_Achievements_ListComptact", Element = PART_Achievements_ListComptact });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error on AddCustomElements()");
+                }
+            }
+            else
+            {
+#if DEBUG
+                logger.Debug($"SuccessStory - PART_Achievements_ListComptact not find");
+#endif
+            }
+
+            if (PART_Achievements_ListComptactVertical != null)// && PluginDatabase.PluginSettings.IntegrationShowAchievementsCompact)
+            {
+                PART_Achievements_ListComptactVertical = new ScAchievementsListCompactVertical();
+                PART_Achievements_ListComptactVertical.Name = "Achievements_ListCompactVertical";
+                try
+                {
+                    ui.AddElementInCustomTheme(PART_Achievements_ListComptactVertical, "PART_Achievements_ListComptactVertical");
+                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_Achievements_ListComptactVertical", Element = PART_Achievements_ListComptactVertical });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error on AddCustomElements()");
+                }
+            }
+            else
+            {
+#if DEBUG
+                logger.Debug($"SuccessStory - PART_Achievements_ListComptactVertical not find");
+#endif
+            }
+
             if (PART_Achievements_List != null && PluginDatabase.PluginSettings.IntegrationShowAchievements)
             {
                 PART_Achievements_List = new SuccessStoryAchievementsList();
@@ -638,7 +688,49 @@ namespace SuccessStory.Services
                 logger.Debug($"SuccessStory - PART_Achievements_ListCompactLocked not find");
 #endif
             }
-            
+
+            if (PART_Achievements_ListCompactVerticalUnlocked != null)// && PluginDatabase.PluginSettings.IntegrationShowAchievements)
+            {
+                PART_Achievements_ListCompactVerticalUnlocked = new SuccessStoryAchievementsCompactVertical(true);
+                PART_Achievements_ListCompactVerticalUnlocked.Name = "Achievements_ListCompactVerticalUnlocked";
+                try
+                {
+                    ui.AddElementInCustomTheme(PART_Achievements_ListCompactVerticalUnlocked, "PART_Achievements_ListCompactVerticalUnlocked");
+                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_Achievements_ListCompactVerticalUnlocked", Element = PART_Achievements_ListCompactVerticalUnlocked });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error on AddCustomElements()");
+                }
+            }
+            else
+            {
+#if DEBUG
+                logger.Debug($"SuccessStory - PART_Achievements_ListCompactVerticalUnlocked not find");
+#endif
+            }
+
+            if (PART_Achievements_ListCompactVerticalLocked != null)// && PluginDatabase.PluginSettings.IntegrationShowAchievements)
+            {
+                PART_Achievements_ListCompactVerticalLocked = new SuccessStoryAchievementsCompactVertical();
+                PART_Achievements_ListCompactVerticalLocked.Name = "Achievements_ListCompactVerticalLocked";
+                try
+                {
+                    ui.AddElementInCustomTheme(PART_Achievements_ListCompactVerticalLocked, "PART_Achievements_ListCompactVerticalLocked");
+                    ListCustomElements.Add(new CustomElement { ParentElementName = "PART_Achievements_ListCompactVerticalLocked", Element = PART_Achievements_ListCompactVerticalLocked });
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, "SuccessStory", "Error on AddCustomElements()");
+                }
+            }
+            else
+            {
+#if DEBUG
+                logger.Debug($"SuccessStory - PART_Achievements_ListCompactLocked not find");
+#endif
+            }
+
             if (PART_ScUserStats != null && PluginDatabase.PluginSettings.IntegrationShowUserStats)
             {
                 PART_ScUserStats = new SuccessStoryUserStats();

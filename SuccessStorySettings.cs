@@ -35,6 +35,7 @@ namespace SuccessStory
         public bool IntegrationShowTitle { get; set; } = true;
         public bool IntegrationShowGraphic { get; set; } = true;
         public bool IntegrationShowAchievements { get; set; } = true;
+        public bool IntegrationShowAchievementsCompact { get; set; } = false;
         public bool IntegrationShowAchievementsCompactLocked { get; set; } = true;
         public bool IntegrationShowAchievementsCompactUnlocked { get; set; } = true;
         public bool IntegrationShowUserStats { get; set; } = true;
@@ -133,6 +134,7 @@ namespace SuccessStory
                 IntegrationShowTitle = savedSettings.IntegrationShowTitle;
                 IntegrationShowGraphic = savedSettings.IntegrationShowGraphic;
                 IntegrationShowAchievements = savedSettings.IntegrationShowAchievements;
+                IntegrationShowAchievementsCompact = savedSettings.IntegrationShowAchievementsCompact;
                 IntegrationShowAchievementsCompactLocked = savedSettings.IntegrationShowAchievementsCompactLocked;
                 IntegrationShowAchievementsCompactUnlocked = savedSettings.IntegrationShowAchievementsCompactUnlocked;
                 IntegrationShowUserStats = savedSettings.IntegrationShowUserStats;

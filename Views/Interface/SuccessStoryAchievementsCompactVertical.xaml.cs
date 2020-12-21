@@ -21,7 +21,7 @@ namespace SuccessStory.Views.Interface
     /// <summary>
     /// Logique d'interaction pour SuccessStoryAchievementsCompact.xaml
     /// </summary>
-    public partial class SuccessStoryAchievementsCompact : UserControl
+    public partial class SuccessStoryAchievementsCompactVertical : UserControl
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
@@ -31,7 +31,7 @@ namespace SuccessStory.Views.Interface
         private bool _withUnlocked;
 
 
-        public SuccessStoryAchievementsCompact(bool withUnlocked = false)
+        public SuccessStoryAchievementsCompactVertical(bool withUnlocked = false)
         {
             _withUnlocked = withUnlocked;
 
@@ -64,7 +64,7 @@ namespace SuccessStory.Views.Interface
             this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
             {
                 PART_ScCompactView.Children.Clear();
-                PART_ScCompactView.ColumnDefinitions.Clear();
+                PART_ScCompactView.RowDefinitions.Clear();
             }));
 
             Task.Run(() =>
@@ -160,32 +160,37 @@ namespace SuccessStory.Views.Interface
 
         private void PART_ScCompactView_IsLoaded(object sender, RoutedEventArgs e)
         {
+            if (sender != null)
+            { 
+                IntegrationUI.SetControlSize((FrameworkElement)sender);
+            }   
+
             // Prepare Grid 40x40 & add data
-            double actualWidth = PART_ScCompactView.ActualWidth;
-            int nbGrid = (int)actualWidth / 52;
+            double actualHeight = PART_ScCompactView.Height;
+            int nbRow = (int)actualHeight / 52;
 
 #if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - actualWidth: {actualWidth} - nbGrid: {nbGrid} - AchievementsList: {AchievementsList.Count}");
+            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - ActualHeight: {actualHeight} - nbGrid: {nbRow} - AchievementsList: {AchievementsList.Count}");
 #endif
 
-            if (nbGrid > 0)
+            if (nbRow > 0)
             {
-                for (int i = 0; i < nbGrid; i++)
+                for (int i = 0; i < nbRow; i++)
                 {
-                    ColumnDefinition gridCol = new ColumnDefinition();
-                    gridCol.Width = new GridLength(1, GridUnitType.Star);
-                    PART_ScCompactView.ColumnDefinitions.Add(gridCol);
+                    RowDefinition gridRow = new RowDefinition();
+                    gridRow.Height = new GridLength(1, GridUnitType.Star);
+                    PART_ScCompactView.RowDefinitions.Add(gridRow);
 
                     if (i < AchievementsList.Count)
                     {
-                        if (i < nbGrid - 1)
+                        if (i < nbRow - 1)
                         {
                             Image gridImage = new Image();
                             gridImage.Stretch = Stretch.UniformToFill;
                             gridImage.Width = 48;
                             gridImage.Height = 48;
                             gridImage.ToolTip = AchievementsList[i].Name;
-                            gridImage.SetValue(Grid.ColumnProperty, i);
+                            gridImage.SetValue(Grid.RowProperty, i);
 
                             if (_withUnlocked)
                             {
@@ -235,7 +240,7 @@ namespace SuccessStory.Views.Interface
                             lb.Content = $"+{AchievementsList.Count - i}";
                             lb.VerticalAlignment = VerticalAlignment.Center;
                             lb.HorizontalAlignment = HorizontalAlignment.Center;
-                            lb.SetValue(Grid.ColumnProperty, i);
+                            lb.SetValue(Grid.RowProperty, i);
 
                             PART_ScCompactView.Children.Add(lb);
                         }

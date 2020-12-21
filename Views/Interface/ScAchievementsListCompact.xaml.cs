@@ -1,44 +1,40 @@
 ﻿using Playnite.SDK;
+using PluginCommon;
 using SuccessStory.Models;
+using SuccessStory.Services;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Globalization;
-using PluginCommon;
-using SuccessStory.Services;
-using Newtonsoft.Json;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using System.Windows.Threading;
-using System.Threading;
-using System.Windows.Input;
-using System.Threading.Tasks;
 
 namespace SuccessStory.Views.Interface
 {
     /// <summary>
-    /// Logique d'interaction pour SuccessStoryAchievementsList.xaml
+    /// Logique d'interaction pour ScAchievementsListCompact.xaml
     /// </summary>
-    public partial class SuccessStoryAchievementsList : UserControl
+    public partial class ScAchievementsListCompact : UserControl
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
-        private bool _ForceOneCol;
 
-
-        public SuccessStoryAchievementsList(bool ForceOneCol = false)
+        public ScAchievementsListCompact()
         {
-            _ForceOneCol = ForceOneCol;
-
             InitializeComponent();
-
-            lbAchievements.PreviewMouseWheel += Tools.HandlePreviewMouseWheel;
 
             PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
@@ -77,7 +73,6 @@ namespace SuccessStory.Views.Interface
                 for (int i = 0; i < ListAchievements.Count; i++)
                 {
                     DateTime? dateUnlock = null;
-                    BitmapImage iconImage = new BitmapImage();
 
                     bool IsGray = false;
 
@@ -126,8 +121,6 @@ namespace SuccessStory.Views.Interface
                         Description = ListAchievements[i].Description,
                         Percent = ListAchievements[i].Percent
                     });
-
-                    iconImage = null;
                 }
 
 
@@ -145,109 +138,36 @@ namespace SuccessStory.Views.Interface
                     lbAchievements.ItemsSource = ListBoxAchievements;
                     CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
                     view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
-
-
-                    int RowDefinied = (int)lbAchievements.Height / 70;
-
-                    int ColDefinied = 1;
-                    if (!_ForceOneCol)
-                    {
-                        ColDefinied = PluginDatabase.PluginSettings.IntegrationAchievementsColCount;
-                    }
-
-                    double WidthDefinied = lbAchievements.ActualWidth / ColDefinied;
-
-                    this.DataContext = new
-                    {
-                        WidthDefinied = WidthDefinied,
-                        ColDefinied = ColDefinied,
-                        RowDefinied = RowDefinied
-                    };
                 }));
             });
         }
 
 
-        /// <summary>
-        /// Show or not the ToolTip.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            string Text = ((TextBlock)sender).Text;
-            TextBlock textBlock = (TextBlock)sender;
-
-            Typeface typeface = new Typeface(
-                textBlock.FontFamily,
-                textBlock.FontStyle,
-                textBlock.FontWeight,
-                textBlock.FontStretch);
-
-            FormattedText formattedText = new FormattedText(
-                textBlock.Text,
-                System.Threading.Thread.CurrentThread.CurrentCulture,
-                textBlock.FlowDirection,
-                typeface,
-                textBlock.FontSize,
-                textBlock.Foreground,
-                VisualTreeHelper.GetDpi(this).PixelsPerDip);
-
-            if (formattedText.Width > textBlock.DesiredSize.Width)
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
-            }
-        }
-
-
-        /// <summary>
-        /// Resize ListBox on parent.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
         {
-            IntegrationUI.SetControlSize((FrameworkElement)sender);
-        }
-    }
+            //IntegrationUI.SetControlSize((FrameworkElement)sender);
 
-
-    public class SetColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            Color color = Brushes.Transparent.Color;
-
-            if ((float)value > 30)
+            int RowDefinied = 1;
+            int ColDefinied = 1;
+            if (lbAchievements.ActualWidth > 0)
             {
-                return null;
+                ColDefinied = (int)lbAchievements.ActualWidth / 60;
             }
 
-            if ((float)value <= 30)
+            this.DataContext = new
             {
-                color = Brushes.DarkGray.Color;
-            }
-            if ((float)value <= 10)
-            {
-                color = Brushes.Gold.Color;
-            }
-
-            Color newColor = new Color();
-            newColor.ScR = (float)color.R / 255;
-            newColor.ScG = (float)color.G / 255;
-            newColor.ScB = (float)color.B / 255;
-
-            return newColor;
-
+                ColDefinied = ColDefinied,
+                RowDefinied = RowDefinied
+            };
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        private void VirtualizingStackPanel_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            throw new NotSupportedException();
+            if (e.Delta > 0)
+                ((VirtualizingStackPanel)sender).LineLeft();
+            else
+                ((VirtualizingStackPanel)sender).LineRight();
+            e.Handled = true;
         }
     }
 }

@@ -46,6 +46,12 @@ namespace SuccessStory.Views.Interface
                 PART_SuccessStory_List.Children.Add(successStoryAchievementsList);
             }
 
+            if (PluginDatabase.PluginSettings.IntegrationShowAchievementsCompact)
+            {
+                ScAchievementsListCompact successStoryAchievementsListCompact = new ScAchievementsListCompact();
+                PART_SuccessStory_ListCompact.Children.Add(successStoryAchievementsListCompact);
+            }
+
             if (PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactUnlocked)
             {
                 SuccessStoryAchievementsCompact successStoryAchievementsCompact_Unlocked = new SuccessStoryAchievementsCompact(true);
@@ -102,6 +108,7 @@ namespace SuccessStory.Views.Interface
                             PART_SuccessStory_ProgressBar.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStory_Graphic.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStory_List.Margin = new Thickness(0, 5, 0, 5);
+                            PART_SuccessStory_ListCompact.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStory_Compact_Unlocked.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStory_Compact_Locked.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStoryUserStats.Margin = new Thickness(0, 5, 0, 5);
@@ -112,6 +119,7 @@ namespace SuccessStory.Views.Interface
                             PART_SuccessStory_ProgressBar.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStory_Graphic.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStory_List.Margin = new Thickness(0, 5, 0, 5);
+                            PART_SuccessStory_ListCompact.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStory_Compact_Unlocked.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStory_Compact_Locked.Margin = new Thickness(0, 5, 0, 5);
                             PART_SuccessStoryUserStats.Margin = new Thickness(0, 5, 0, 5);
@@ -145,13 +153,11 @@ namespace SuccessStory.Views.Interface
                             IntegrationShowProgressBar = PluginDatabase.PluginSettings.IntegrationShowProgressBar,
                             IntegrationShowGraphic = PluginDatabase.PluginSettings.IntegrationShowGraphic,
                             IntegrationShowAchievements = PluginDatabase.PluginSettings.IntegrationShowAchievements,
+                            IntegrationShowAchievementsCompact = PluginDatabase.PluginSettings.IntegrationShowAchievementsCompact,
                             IntegrationShowAchievementsCompactUnlocked = PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactUnlocked,
                             IntegrationShowAchievementsCompactLocked = PluginDatabase.PluginSettings.IntegrationShowAchievementsCompactLocked,
                             IntegrationShowUserStats = PluginDatabase.PluginSettings.IntegrationShowUserStats
                         };
-#if DEBUG
-                        logger.Debug($"SuccessStory - DataContext: {JsonConvert.SerializeObject(DataContext)}");
-#endif
                     }));
                 }
                 else
