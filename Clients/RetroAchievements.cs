@@ -309,6 +309,20 @@ namespace SuccessStory.Clients
             RA_MD5List rA_MD5List = null;
             string FilePath = _PlayniteApi.Database.GetFullFilePath(game.GameImagePath);
 
+            // Exclude for performance
+            if (FilePath.Contains(".rar") && FilePath.Contains(".7z"))
+            {
+                return GameId;
+            }
+            if (!File.Exists(FilePath))
+            {
+                FileInfo fi = new FileInfo(FilePath);
+                if (fi.Length > 50000000)
+                {
+                    return GameId;
+                }
+            }
+
             if (FilePath.Contains(".zip"))
             {
                 FilePath = ZipFileManafeExtract(FilePath);
