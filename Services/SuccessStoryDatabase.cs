@@ -145,7 +145,7 @@ namespace SuccessStory.Services
                     gameAchievements = xboxAPI.GetAchievements(game);
                 }
 
-                if (GameSourceName.ToLower() == "playnite")
+                if (GameSourceName.ToLower() == "playnite" || GameSourceName.ToLower() == "hacked")
                 {
                     SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
                     steamAPI.SetLocal();
@@ -711,7 +711,7 @@ namespace SuccessStory.Services
                 return true;
             }
 
-            if (settings.EnableLocal && GameSourceName.ToLower() == "playnite")
+            if (settings.EnableLocal && (GameSourceName.ToLower() == "playnite" || GameSourceName.ToLower() == "hacked"))
             {
                 return true;
             }
