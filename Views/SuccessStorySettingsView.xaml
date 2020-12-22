@@ -889,7 +889,7 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IntegrationFS}" >
+                        <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding EnableIntegrationFS}" >
                             <Label Content="{DynamicResource LOCCommonIntegrationFullScreenEnable}" />
                         </CheckBox>
                     </Grid>
