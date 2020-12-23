@@ -196,11 +196,9 @@ namespace SuccessStory.Services
             {
                 for (int i = limit; i >= 0; i--)
                 {
-                    //GraphicsAchievementsLabels[(limit - i)] = DateTime.Now.AddMonths(-i).ToString("yyyy-MM");
                     GraphicsAchievementsLabels[(limit - i)] = (string)localDateYMConverter.Convert(DateTime.Now.AddMonths(-i), null, null, null);
                     SourceAchievementsSeries.Add(new CustomerForSingle
                     {
-                        //Name = DateTime.Now.AddMonths(-i).ToString("yyyy-MM"),
                         Name = (string)localDateYMConverter.Convert(DateTime.Now.AddMonths(-i), null, null, null),
                         Values = 0
                     });
@@ -220,7 +218,6 @@ namespace SuccessStory.Services
                         {
                             if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
                             {
-                                //string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM");
                                 string tempDate = (string)localDateYMConverter.Convert(((DateTime)itemAchievements.DateUnlocked).ToLocalTime(), null, null, null);
                                 int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
@@ -322,6 +319,7 @@ namespace SuccessStory.Services
                     if (PluginSettings.EnableLocal)
                     {
                         tempSourcesLabels.Add("Playnite");
+                        tempSourcesLabels.Add("Hacked");
                     }
                     if (PluginSettings.EnableRpcs3Achievements)
                     {
@@ -358,6 +356,7 @@ namespace SuccessStory.Services
                 if (PluginSettings.EnableLocal)
                 {
                     tempSourcesLabels.Add("Playnite");
+                    tempSourcesLabels.Add("Hacked");
                 }
             }
 

@@ -145,24 +145,6 @@ namespace SuccessStory.Views.Interface
                     lbAchievements.ItemsSource = ListBoxAchievements;
                     CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
                     view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
-
-
-                    int RowDefinied = (int)lbAchievements.Height / 70;
-
-                    int ColDefinied = 1;
-                    if (!_ForceOneCol)
-                    {
-                        ColDefinied = PluginDatabase.PluginSettings.IntegrationAchievementsColCount;
-                    }
-
-                    double WidthDefinied = lbAchievements.ActualWidth / ColDefinied;
-
-                    this.DataContext = new
-                    {
-                        WidthDefinied = WidthDefinied,
-                        ColDefinied = ColDefinied,
-                        RowDefinied = RowDefinied
-                    };
                 }));
             });
         }
@@ -212,6 +194,24 @@ namespace SuccessStory.Views.Interface
         private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
         {
             IntegrationUI.SetControlSize((FrameworkElement)sender);
+
+
+            int RowDefinied = (int)lbAchievements.Height / 70;
+
+            int ColDefinied = 1;
+            if (!_ForceOneCol)
+            {
+                ColDefinied = PluginDatabase.PluginSettings.IntegrationAchievementsColCount;
+            }
+
+            double WidthDefinied = lbAchievements.ActualWidth / ColDefinied;
+
+            this.DataContext = new
+            {
+                WidthDefinied = WidthDefinied,
+                ColDefinied = ColDefinied,
+                RowDefinied = RowDefinied
+            };
         }
     }
 

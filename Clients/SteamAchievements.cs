@@ -457,7 +457,7 @@ namespace SuccessStory.Clients
             //}
             catch (WebException ex)
             {
-                if (ex.Status == WebExceptionStatus.ProtocolError)
+                if (ex != null && ex.Status == WebExceptionStatus.ProtocolError)
                 {
                     if (ex.Response is HttpWebResponse response)
                     {

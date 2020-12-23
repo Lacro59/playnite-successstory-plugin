@@ -28,7 +28,10 @@ namespace SuccessStory.Models
                 string ImageFileName = string.Empty;
 
                 if (!UrlUnlocked.IsNullOrEmpty()) {
+                    int maxLenght = (Name.Replace(" ", "").Length >= 10) ? 10 : Name.Replace(" ", "").Length;
+
                     ImageFileName = GetNameFromUrl(UrlUnlocked);
+                    ImageFileName += "_" + Name.Replace(" ", "").Substring(0, maxLenght);
                     ImageFileName = string.Concat(ImageFileName.Split(Path.GetInvalidFileNameChars()));
                     ImageFileName += "_Unlocked";
                 }
@@ -65,7 +68,10 @@ namespace SuccessStory.Models
 
                 if (!UrlLocked.IsNullOrEmpty())
                 {
+                    int maxLenght = (Name.Replace(" ", "").Length >= 10) ? 10 : Name.Replace(" ", "").Length;
+
                     ImageFileName = GetNameFromUrl(UrlLocked);
+                    ImageFileName += "_" + Name.Replace(" ", "").Substring(0, maxLenght);
                     ImageFileName = string.Concat(ImageFileName.Split(Path.GetInvalidFileNameChars()));
                     ImageFileName += "_Locked";
                 }
@@ -83,7 +89,7 @@ namespace SuccessStory.Models
                     string pathImageLocked = PlayniteTools.GetCacheFile(CacheLocked, "SuccessStory");
                     if (pathImageLocked.IsNullOrEmpty())
                     {
-                        pathImageLocked = ImageUnlocked;
+                        pathImageLocked = UrlLocked;
                     }
                     return pathImageLocked;
                 }
