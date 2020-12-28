@@ -749,7 +749,7 @@ namespace SuccessStory.Services
                 return true;
             }
 
-            logger.Warn($"SuccessStory - VerifToAddOrShow() find no action");
+            logger.Warn($"SuccessStory - VerifToAddOrShow() find no action for {GameSourceName}");
             return false;
         }
 

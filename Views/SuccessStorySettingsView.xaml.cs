@@ -565,7 +565,6 @@ namespace SuccessStory.Views
                 PART_Rpcs3Folder.Text = SelectedFolder;
                 PluginDatabase.PluginSettings.Rpcs3InstallationFolder = SelectedFolder;
             }
-
         }
     }
 
