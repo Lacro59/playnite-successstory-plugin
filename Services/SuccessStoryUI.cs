@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using PluginCommon;
+using CommonShared;
 using SuccessStory.Models;
 using SuccessStory.Views;
 using SuccessStory.Views.Interface;

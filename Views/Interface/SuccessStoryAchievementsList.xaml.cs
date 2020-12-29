@@ -10,7 +10,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Globalization;
-using PluginCommon;
+using CommonShared;
 using SuccessStory.Services;
 using Newtonsoft.Json;
 using System.Windows.Threading;

@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
-using PluginCommon;
+using CommonShared;
 using CommonPlaynite.Common;
 using CommonPlaynite.PluginLibrary.XboxLibrary.Models;
 using SuccessStory.Models;

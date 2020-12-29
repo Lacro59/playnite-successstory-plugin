@@ -14,13 +14,13 @@ using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using PluginCommon;
-using PluginCommon.LiveChartsCommon;
+using CommonShared;
 using SuccessStory.Models;
 using SuccessStory.Views.Interface;
 using System.Threading.Tasks;
 using SuccessStory.Services;
 using Newtonsoft.Json;
+using CommonControls.LiveChartsCommon;
 
 namespace SuccessStory
 {

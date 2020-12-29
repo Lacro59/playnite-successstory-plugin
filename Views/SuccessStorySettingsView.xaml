@@ -8,7 +8,6 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:NegateConverter x:Key="NegateConverter" />
         <local:BooleanAndConverter x:Key="booleanAndConverter" />
@@ -59,7 +58,7 @@
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableSteam}"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="0" x:Name="SteamLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                            <Button Grid.Column="4" Grid.Row="0" Height="30" Content="" FontFamily="{StaticResource font}" Click="Button_Click_Get_Steam" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="4" Grid.Row="0" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Steam" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
                             <Button Grid.Column="6" Grid.Row="0" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Steam" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
                             <Grid Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="1" IsEnabled="{Binding EnableSteam}">
@@ -80,21 +79,21 @@
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableGog}"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="3" x:Name="GogLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                            <Button Grid.Column="4" Grid.Row="3" Height="30" Content="" FontFamily="{StaticResource font}" Click="Button_Click_Get_Gog" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="4" Grid.Row="3" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Gog" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
                             <Button Grid.Column="6" Grid.Row="3" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Gog" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
                             <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding EnableOrigin}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableOrigin}"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="4" x:Name="OriginLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                            <Button Grid.Column="4" Grid.Row="4" Height="30" Content="" FontFamily="{StaticResource font}" Click="Button_Click_Get_Origin" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="4" Grid.Row="4" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Origin" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
                             <Button Grid.Column="6" Grid.Row="4" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Origin" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
                             <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding EnableXbox}" VerticalAlignment="Center">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableXbox}"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="5" x:Name="XboxLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                            <Button Grid.Column="4" Grid.Row="5" Height="30" Content="" FontFamily="{StaticResource font}" Click="Button_Click_Get_Xbox" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="4" Grid.Row="5" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Xbox" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
                             <Button Grid.Column="6" Grid.Row="5" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Xbox" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
 
@@ -102,7 +101,7 @@
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableRetroAchievements}"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="6" x:Name="RetroAchievementsLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                            <Button Grid.Column="4" Grid.Row="6" Height="30" Content="" FontFamily="{StaticResource font}" Click="Button_Click_Get_RetroAchievements" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="4" Grid.Row="6" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_RetroAchievements" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
                             <Button Grid.Column="6" Grid.Row="6" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_RetroAchievements" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
                             <Grid Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="7" IsEnabled="{Binding EnableRetroAchievements}">
@@ -136,7 +135,7 @@
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableRpcs3Achievements}"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="8" x:Name="Rpcs3Load" HorizontalAlignment="Center">xxx / xxx</Label>
-                            <Button Grid.Column="4" Grid.Row="8" Height="30" Content="" FontFamily="{StaticResource font}" Click="Button_Click_Get_Rpcs3" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="4" Grid.Row="8" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Rpcs3" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
                             <Button Grid.Column="6" Grid.Row="8" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Rpcs3" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
 
                             <Grid Grid.Column="0" Grid.ColumnSpan="7" Grid.Row="9" IsEnabled="{Binding EnableRpcs3Achievements}">
@@ -154,7 +153,7 @@
 
                                 <Label Grid.Column="1" Content="{DynamicResource LOCSuccessStoryEnableRpcs3HomeFolder}" VerticalAlignment="Center" />
                                 <TextBox Name="PART_Rpcs3Folder" Grid.Column="3" Text="{Binding Rpcs3InstallationFolder}" VerticalAlignment="Center" />
-                                <Button Grid.Column="5" Content="" FontFamily="{StaticResource font}" Click="ButtonSelectFolder_Click" 
+                                <Button Grid.Column="5" Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" 
                                         VerticalAlignment="Center" Grid.ColumnSpan="2" />
                             </Grid>
 
@@ -162,7 +161,7 @@
                                 <Label Content="Enable Local"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="10" x:Name="LocalLoad" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">xxx / xxx</Label>
-                            <Button Grid.Column="4" Grid.Row="10" Height="30" Content="" FontFamily="{StaticResource font}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="4" Grid.Row="10" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
                             <Button Grid.Column="6" Grid.Row="10" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
                         </Grid>
                     </DockPanel>

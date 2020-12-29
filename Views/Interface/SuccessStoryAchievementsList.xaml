@@ -6,13 +6,13 @@
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
              xmlns:converters="clr-namespace:CommonPlaynite.Converters;assembly=CommonPlaynite"
              xmlns:controls="clr-namespace:CommonPlaynite.Controls;assembly=CommonPlaynite"
-             xmlns:plugincommon="clr-namespace:PluginCommon"
+             xmlns:commonshared="clr-namespace:CommonShared"
              mc:Ignorable="d" d:DesignWidth="200">
 
     <UserControl.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <plugincommon:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <commonshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:SetColorConverter x:Key="SetColorConverter" />
     </UserControl.Resources>
 

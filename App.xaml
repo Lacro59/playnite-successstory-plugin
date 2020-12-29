@@ -1,47 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!--Playnite Resources-->
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/Constants.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/Common.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/Constants.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/Common.xaml" />
                 <!--Playnite Default localization-->
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/LocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/LocSource.xaml" />
                 <!--Default Controls-->
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/Border.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/TextBlock.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/TextBox.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/Button.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/ComboBox.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/ContextMenu.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/DatePicker.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/Expander.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/GridSplitter.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/GroupBox.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/Hyperlink.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/CheckBox.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/Label.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/ListBox.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/ListView.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/Menu.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/PasswordBox.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/Popup.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/ProgressBar.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/RadioButton.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/RepeatButton.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/RichTextBox.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/ScrollViewer.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/Slider.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/TabControl.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/Thumb.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/ToggleButton.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/ToolTip.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/PlayniteResources/DefaultControls/TreeView.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/Border.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/TextBlock.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/TextBox.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/Button.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/ComboBox.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/ContextMenu.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/DatePicker.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/Expander.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/GridSplitter.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/GroupBox.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/Hyperlink.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/CheckBox.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/Label.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/ListBox.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/ListView.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/Menu.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/PasswordBox.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/Popup.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/ProgressBar.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/RadioButton.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/RepeatButton.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/RichTextBox.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/ScrollViewer.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/Slider.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/TabControl.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/Thumb.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/ToggleButton.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/ToolTip.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DefaultControls/TreeView.xaml" />
+                <!--Derived Controls-->
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DerivedStyles/BottomButton.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPlaynite/Resources/DerivedStyles/HighlightBorder.xaml" />
 
                 <!--PluginResources-->
                 <ResourceDictionary Source="Resources/Common.xaml" />
                 <!--PluginCommon-->
+                <ResourceDictionary>
+                    <FontFamily x:Key="CommonFont">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
+                </ResourceDictionary>
                 <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/Common.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/CommonControls/Resources/LiveChartsCommon/Common.xaml" />
                 <!--Plugin default localization-->
@@ -51,3 +57,4 @@
         </ResourceDictionary>
     </Application.Resources>
 </Application>
+    

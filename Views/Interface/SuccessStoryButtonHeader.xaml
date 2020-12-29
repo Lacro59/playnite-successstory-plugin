@@ -6,10 +6,6 @@
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
              mc:Ignorable="d">
 
-    <Button.Resources>
-        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
-    </Button.Resources>
-    
     <Button.Style>
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Background" Value="Transparent" />
@@ -46,7 +42,7 @@
         </Style>
     </Button.Style>
 
-    <TextBlock Name="btHeaderName" Text="" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="{StaticResource font}">
+    <TextBlock Name="btHeaderName" Text="" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="{DynamicResource CommonFont}">
         <TextBlock.Style>
             <Style TargetType="TextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource GlyphBrush}" />

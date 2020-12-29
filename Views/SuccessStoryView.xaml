@@ -5,14 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:livechartscommon="clr-namespace:PluginCommon.LiveChartsCommon;assembly=CommonControls"
-             xmlns:plugincommon="clr-namespace:PluginCommon;assembly=CommonControls"
+             xmlns:commonshared="clr-namespace:CommonShared"
+             xmlns:livechartscommon="clr-namespace:CommonControls.LiveChartsCommon;assembly=CommonControls"
              mc:Ignorable="d" Height="740" Width="1280" Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <plugincommon:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
+        <commonshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -56,7 +55,7 @@
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Tag="{Binding SourceNameShort}"
-                                          Content="{Binding SourceName}" IsChecked="{Binding isCheck}" FontFamily="{StaticResource font}">
+                                          Content="{Binding SourceName}" IsChecked="{Binding isCheck}" FontFamily="{DynamicResource CommonFont}">
                                 </CheckBox>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
@@ -114,7 +113,7 @@
                         </StackPanel>
 
                         <StackPanel Name="SuccessStory_Achievements_Graphics_Sources" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
-                            <lvc:CartesianChart Name="StatsGraphicAchievementsSources" Height="168" LegendLocation="Bottom" FontFamily="{StaticResource font}">
+                            <lvc:CartesianChart Name="StatsGraphicAchievementsSources" Height="168" LegendLocation="Bottom" FontFamily="{DynamicResource CommonFont}">
                                 <lvc:CartesianChart.ChartLegend>
                                     <lvc:DefaultLegend Height="5" Width="0" />
                                 </lvc:CartesianChart.ChartLegend>
@@ -124,7 +123,7 @@
                                 </lvc:CartesianChart.DataTooltip>
                             
                                 <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Name="StatsGraphicAchievementsSourcesX" MinValue="0" ShowLabels="True" FontFamily="{StaticResource font}" FontSize="16">
+                                    <lvc:Axis Name="StatsGraphicAchievementsSourcesX" MinValue="0" ShowLabels="True" FontFamily="{DynamicResource CommonFont}" FontSize="16">
                                         <lvc:Axis.Separator>
                                             <lvc:Separator Step="1" />
                                         </lvc:Axis.Separator>
@@ -187,7 +186,7 @@
                                     <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Label Content="{Binding SourceIcon}" FontFamily="{StaticResource font}" 
+                                            <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
                                                    HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="24" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>

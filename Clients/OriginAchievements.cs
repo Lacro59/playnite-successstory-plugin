@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using PluginCommon;
+using CommonShared;
 using CommonPlaynite.PluginLibrary.OriginLibrary.Models;
 using CommonPlaynite.PluginLibrary.OriginLibrary.Services;
 using SuccessStory.Models;

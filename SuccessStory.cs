@@ -5,7 +5,7 @@ using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
-using PluginCommon;
+using CommonShared;
 using SuccessStory.Clients;
 using SuccessStory.Models;
 using SuccessStory.Views;
@@ -63,10 +63,10 @@ namespace SuccessStory
             pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Add plugin localization in application ressource.
-            PluginCommon.PluginLocalization.SetPluginLanguage(pluginFolder, api.ApplicationSettings.Language);
+            PluginLocalization.SetPluginLanguage(pluginFolder, api.ApplicationSettings.Language);
             // Add common in application ressource.
-            PluginCommon.Common.Load(pluginFolder);
-            PluginCommon.Common.SetEvent(PlayniteApi);
+            Common.Load(pluginFolder);
+            Common.SetEvent(PlayniteApi);
             
             // Check version
             if (settings.EnableCheckVersion)

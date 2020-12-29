@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
              xmlns:converters="clr-namespace:CommonPlaynite.Converters;assembly=CommonPlaynite"
-             xmlns:plugincommon="clr-namespace:PluginCommon"
              xmlns:controls="clr-namespace:CommonPlaynite.Controls;assembly=CommonPlaynite"
+             xmlns:commonshared="clr-namespace:CommonShared"
              mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100">
 
     <UserControl.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <plugincommon:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <commonshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:SetColorConverter x:Key="SetColorConverter" />
     </UserControl.Resources>
 

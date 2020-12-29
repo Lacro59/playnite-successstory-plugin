@@ -3,8 +3,7 @@ using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Newtonsoft.Json;
 using Playnite.SDK;
-using PluginCommon;
-using PluginCommon.LiveChartsCommon;
+using CommonShared;
 using SuccessStory.Models;
 using SuccessStory.Services;
 using System;
@@ -14,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using CommonControls.LiveChartsCommon;
 
 namespace SuccessStory.Views.Interface
 {

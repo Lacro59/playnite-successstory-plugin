@@ -6,10 +6,6 @@
               xmlns:local="clr-namespace:SuccessStory.Views.Interface"
               mc:Ignorable="d" MinWidth="150" Height="40">
 
-    <ToggleButton.Resources>
-        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
-    </ToggleButton.Resources>
-
     <ToggleButton.Style>
         <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Background" Value="{DynamicResource NormalBrushDark}" />
@@ -51,7 +47,7 @@
             <RowDefinition Height="18" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Content="" FontFamily="{StaticResource font}" Name="Sc_Icon100Percent" 
+        <Label Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Content="" FontFamily="{DynamicResource CommonFont}" Name="Sc_Icon100Percent" 
                VerticalAlignment="Center" FontSize="20" Margin="-3">
             <Label.Style>
                 <Style TargetType="Label">

@@ -10,7 +10,6 @@
     <Button.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <FontFamily x:Key="font">pack://application:,,,/CommonControls;component/Resources/font.ttf#font</FontFamily>
     </Button.Resources>
 
     <Button.Style>
@@ -47,7 +46,7 @@
     </Button.Style>
 
     <Grid>
-        <TextBlock Name="PART_ButtonIcon" Text="" FontFamily="{StaticResource font}" 
+        <TextBlock Name="PART_ButtonIcon" Text="" FontFamily="{DynamicResource CommonFont}" 
                    Visibility="{Binding EnableIntegrationButtonJustIcon, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <TextBlock Name="PART_ButtonText"  Text="{DynamicResource LOCSuccessStory}"
                    Visibility="{Binding EnableIntegrationButtonJustIcon, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />

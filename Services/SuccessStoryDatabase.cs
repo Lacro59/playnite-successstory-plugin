@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using PluginCommon;
-using PluginCommon.Collections;
-using PluginCommon.LiveChartsCommon;
+using CommonShared;
+using CommonShared.Collections;
+using CommonControls.LiveChartsCommon;
 using SuccessStory.Clients;
 using SuccessStory.Models;
 using System;
