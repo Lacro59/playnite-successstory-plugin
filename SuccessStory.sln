@@ -15,7 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchievementsLocal", "playni
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		playnite-plugincommon\CommonShared\CommonShared.projitems*{100a4bdc-bd53-472d-b189-75c4eb3c60e9}*SharedItemsImports = 4
 		playnite-plugincommon\CommonShared\CommonShared.projitems*{27e5d35b-f3ce-4a3f-9705-4564674615a5}*SharedItemsImports = 13
 		playnite-plugincommon\CommonShared\CommonShared.projitems*{4fdf1e89-5bc3-4c72-8fda-0d580e7a5d5f}*SharedItemsImports = 4
 	EndGlobalSection
