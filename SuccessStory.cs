@@ -40,7 +40,6 @@ namespace SuccessStory
 
         public static string pluginFolder;
         public static SuccessStoryDatabase PluginDatabase;
-        public static Game GameSelected { get; set; }
         public static SuccessStoryUI successStoryUI { get; set; }
 
         CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -137,7 +136,7 @@ namespace SuccessStory
                         successStoryUI.Initial();
                         successStoryUI.taskHelper.Check();
                         var dispatcherOp = successStoryUI.AddElementsFS();
-                        dispatcherOp.Completed += (s, ev) => { successStoryUI.RefreshElements(GameSelected); };
+                        dispatcherOp.Completed += (s, ev) => { successStoryUI.RefreshElements(SuccessStoryDatabase.GameSelected); };
                     });
                 }
             }
@@ -253,13 +252,13 @@ namespace SuccessStory
                     {
                         PluginDatabase.IsViewOpen = true;
                         SuccessView ViewExtension = null;
-                        if (settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, GameSelected))
+                        if (settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, SuccessStoryDatabase.GameSelected))
                         {
-                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), true, GameSelected);
+                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), true, SuccessStoryDatabase.GameSelected);
                         }
                         else
                         {
-                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameSelected);
+                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, SuccessStoryDatabase.GameSelected);
                         }
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                         windowExtension.ShowDialog();
@@ -306,9 +305,9 @@ namespace SuccessStory
             {
                 if (args.NewValue != null && args.NewValue.Count == 1)
                 {
-                    GameSelected = args.NewValue[0];
+                    SuccessStoryDatabase.GameSelected = args.NewValue[0];
 #if DEBUG
-                    logger.Debug($"SuccessStory - OnGameSelected() - {GameSelected.Name} - {GameSelected.Id.ToString()}");
+                    logger.Debug($"SuccessStory - OnGameSelected() - {SuccessStoryDatabase.GameSelected.Name} - {SuccessStoryDatabase.GameSelected.Id.ToString()}");
 #endif
                     if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
                     {
@@ -358,7 +357,7 @@ namespace SuccessStory
             {
                 PluginDatabase.Remove(game);
                 var dispatcherOp = successStoryUI.AddElements();
-                dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(GameSelected); };
+                dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(SuccessStoryDatabase.GameSelected); };
             });
         }
 

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using SuccessStory.Services;
 
 namespace SuccessStory
 {
@@ -223,7 +224,7 @@ namespace SuccessStory
             var TaskIntegrationUI = Task.Run(() =>
             {
                 var dispatcherOp = SuccessStory.successStoryUI.AddElements();
-                dispatcherOp.Completed += (s, e) => { SuccessStory.successStoryUI.RefreshElements(SuccessStory.GameSelected); };
+                dispatcherOp.Completed += (s, e) => { SuccessStory.successStoryUI.RefreshElements(SuccessStoryDatabase.GameSelected); };
             });
 
             SuccessStory.PluginDatabase.PluginSettings = this;

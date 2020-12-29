@@ -227,7 +227,7 @@ namespace SuccessStory.Services
                     }
 
                     // If not cancel, show
-                    if (!ct.IsCancellationRequested && GameSelected.Id == SuccessStory.GameSelected.Id)
+                    if (!ct.IsCancellationRequested && GameSelected.Id == SuccessStoryDatabase.GameSelected.Id)
                     {
                         ui.AddResources(resourcesLists);
 
@@ -330,17 +330,17 @@ namespace SuccessStory.Services
             dynamic ViewExtension = null;
             if (PluginDatabase.PluginSettings.EnableOneGameView)
             {
-                ViewExtension = new SuccessStoryOneGameView(SuccessStory.GameSelected);
+                ViewExtension = new SuccessStoryOneGameView(SuccessStoryDatabase.GameSelected);
             }
             else
             {
-                if (PluginDatabase.PluginSettings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(_PlayniteApi, SuccessStory.GameSelected))
+                if (PluginDatabase.PluginSettings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(_PlayniteApi, SuccessStoryDatabase.GameSelected))
                 {
-                    ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), true, SuccessStory.GameSelected);
+                    ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), true, SuccessStoryDatabase.GameSelected);
                 }
                 else
                 {
-                    ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), false, SuccessStory.GameSelected);
+                    ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath(), false, SuccessStoryDatabase.GameSelected);
                 }
             }
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(_PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
@@ -808,7 +808,7 @@ namespace SuccessStory.Services
                 logger.Debug($"SuccessStory - PART_BtInfoBar allready insert");
 #endif
 
-                ((SuccessStoryProgressionFS)PART_SpInfoBarFS).SetData(PluginDatabase.Get(SuccessStory.GameSelected));
+                ((SuccessStoryProgressionFS)PART_SpInfoBarFS).SetData(PluginDatabase.Get(SuccessStoryDatabase.GameSelected));
                 return;
             }
 
@@ -825,7 +825,7 @@ namespace SuccessStory.Services
 
                 if (PART_SpInfoBarFS != null)
                 {
-                    ((SuccessStoryProgressionFS)PART_SpInfoBarFS).SetData(PluginDatabase.Get(SuccessStory.GameSelected));
+                    ((SuccessStoryProgressionFS)PART_SpInfoBarFS).SetData(PluginDatabase.Get(SuccessStoryDatabase.GameSelected));
                 }
             }
             catch (Exception ex)

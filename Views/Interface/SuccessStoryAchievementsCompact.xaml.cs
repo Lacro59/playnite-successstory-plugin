@@ -146,7 +146,7 @@ namespace SuccessStory.Views.Interface
                 {
                     if (!noControl)
                     {
-                        if (gameAchievements.Id != SuccessStory.GameSelected.Id)
+                        if (gameAchievements.Id != SuccessStoryDatabase.GameSelected.Id)
                         {
                             return;
                         }
