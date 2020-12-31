@@ -1,5 +1,5 @@
 # playnite-successstory-plugin
-Generic plugin for [Playnite](https://playnite).
+Generic plugin for [Playnite](https://playnite.link).  
 This plugin shows the game achievements in Playnite. 
 
 More information here: https://playnite.link/forum/thread-275.html
