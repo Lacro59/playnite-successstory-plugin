@@ -2,9 +2,9 @@
 using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using CommonShared;
-using CommonShared.Collections;
-using CommonControls.LiveChartsCommon;
+using CommonPluginsShared;
+using CommonPluginsShared.Collections;
+using CommonPluginsControls.LiveChartsCommon;
 using SuccessStory.Clients;
 using SuccessStory.Models;
 using System;
@@ -64,7 +64,7 @@ namespace SuccessStory.Services
             GameIsLoaded = false;
             GameAchievements gameAchievements = base.GetOnlyCache(Id);
 #if DEBUG
-            logger.Debug($"{PluginName} - GetFromDb({Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
+            logger.Debug($"{PluginName} [Ignored] - GetFromDb({Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
 #endif
 
             // Get from web
@@ -74,7 +74,7 @@ namespace SuccessStory.Services
                 Add(gameAchievements);
 
 #if DEBUG
-                logger.Debug($"{PluginName} - GetFromWeb({Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
+                logger.Debug($"{PluginName} [Ignored] - GetFromWeb({Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
 #endif
             }
 
@@ -108,7 +108,7 @@ namespace SuccessStory.Services
             if (VerifToAddOrShow(_plugin, _PlayniteApi, PluginSettings, PluginUserDataPath, GameSourceName))
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - VerifToAddOrShow({game.Name}, {GameSourceName}) - OK");
+                logger.Debug($"SuccessStory [Ignored] - VerifToAddOrShow({game.Name}, {GameSourceName}) - OK");
 #endif
 
                 // TODO one func
@@ -165,13 +165,13 @@ namespace SuccessStory.Services
                 }
 
 #if DEBUG
-                logger.Debug($"SuccessStory - Achievements for {game.Name} - {GameSourceName} - {JsonConvert.SerializeObject(gameAchievements)}");
+                logger.Debug($"SuccessStory [Ignored] - Achievements for {game.Name} - {GameSourceName} - {JsonConvert.SerializeObject(gameAchievements)}");
 #endif
             }
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - VerifToAddOrShow({game.Name}, {GameSourceName}) - KO");
+                logger.Debug($"SuccessStory [Ignored] - VerifToAddOrShow({game.Name}, {GameSourceName}) - KO");
 #endif
             }
 
@@ -684,16 +684,16 @@ namespace SuccessStory.Services
                 {
                     XboxAchievements xboxAchievements = new XboxAchievements(PlayniteApi, settings, PluginUserDataPath);
 
-                    //#if DEBUG
-                    logger.Debug($"SuccessStory - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
-                    //#endif
+#if DEBUG
+                    logger.Debug($"SuccessStory [Ignored] - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
+#endif
                     if (VerifToAddOrShowXbox == null)
                     {
                         VerifToAddOrShowXbox = xboxAchievements.IsConnected();
                     }
-                    //#if DEBUG
-                    logger.Debug($"SuccessStory - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
-                    //#endif
+#if DEBUG
+                    logger.Debug($"SuccessStory [Ignored] - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
+#endif
 
                     if (!(bool)VerifToAddOrShowXbox)
                     {

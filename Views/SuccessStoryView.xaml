@@ -5,13 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:commonshared="clr-namespace:CommonShared"
-             xmlns:livechartscommon="clr-namespace:CommonControls.LiveChartsCommon;assembly=CommonControls"
+             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+             xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
              mc:Ignorable="d" Height="740" Width="1280" Background="{DynamicResource WindowBackgourndBrush}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <commonshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -158,7 +158,7 @@
                                     <GridViewColumnHeader Content="100%"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent}"/>
+                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -167,7 +167,7 @@
                                     <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}"/>
+                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

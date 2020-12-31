@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:SuccessStory.Views"
-             xmlns:converters="clr-namespace:CommonPlaynite.Converters;assembly=CommonPlaynite"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -36,7 +36,7 @@
                                 <ColumnDefinition Width="8" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="8" />
-                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="8" />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
@@ -144,7 +144,7 @@
                                     <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="10" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="10" />
                                     <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -390,7 +390,7 @@
                                                             </TextBlock>
                                                         </Border>
                                                         <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                                 Margin="{TemplateBinding Padding}"/>
+                                                                 Margin="{TemplateBinding Padding}" />
                                                     </DockPanel>
                                                 </Border>
                                             </ControlTemplate>
@@ -411,9 +411,9 @@
 
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
@@ -458,7 +458,7 @@
                                                             </TextBlock>
                                                         </Border>
                                                         <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                                 Margin="{TemplateBinding Padding}"/>
+                                                                 Margin="{TemplateBinding Padding}" />
                                                     </DockPanel>
                                                 </Border>
                                             </ControlTemplate>
@@ -487,9 +487,9 @@
 
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
@@ -547,7 +547,7 @@
                                                                 </TextBlock>
                                                             </Border>
                                                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                             Margin="{TemplateBinding Padding}"/>
+                                                             Margin="{TemplateBinding Padding}" />
                                                         </DockPanel>
                                                     </Border>
                                                 </ControlTemplate>
@@ -580,9 +580,9 @@
 
                                 <Grid Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="10"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="30" />
@@ -640,7 +640,7 @@
                                                                 </TextBlock>
                                                             </Border>
                                                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                                 Margin="{TemplateBinding Padding}"/>
+                                                                 Margin="{TemplateBinding Padding}" />
                                                         </DockPanel>
                                                     </Border>
                                                 </ControlTemplate>
@@ -676,8 +676,8 @@
 
                                 <Grid Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="30" />
@@ -692,7 +692,7 @@
                                         </Grid.ColumnDefinitions>
                                         <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
                                         <TextBox Text="{Binding IntegrationShowGraphicHeight, FallbackValue=200}" Width="40" Grid.Column="1"
-                                                 VerticalAlignment="Center" TextAlignment="Center"/>
+                                                 VerticalAlignment="Center" TextAlignment="Center" />
                                     </Grid>
 
                                     <CheckBox Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding EnableIntegrationAxisGraphic}">
@@ -715,7 +715,7 @@
                                                 IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
                                                 ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
                                                 Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sCountAbscissa" />
-                                        <Label Grid.Column="2" Content="{Binding ElementName=sCountAbscissa, Path=Value}" HorizontalAlignment="Center"/>
+                                        <Label Grid.Column="2" Content="{Binding ElementName=sCountAbscissa, Path=Value}" HorizontalAlignment="Center" />
                                     </Grid>
                                 </Grid>
                             </GroupBox>
@@ -742,7 +742,7 @@
                                                                 </TextBlock>
                                                             </Border>
                                                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                                 Margin="{TemplateBinding Padding}"/>
+                                                                 Margin="{TemplateBinding Padding}" />
                                                         </DockPanel>
                                                     </Border>
                                                 </ControlTemplate>
@@ -778,8 +778,8 @@
 
                                 <Grid Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" IsChecked="{Binding IntegrationShowProgressBarIndicator}">
@@ -813,7 +813,7 @@
                                                                 </TextBlock>
                                                             </Border>
                                                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" DockPanel.Dock="Top"
-                                                                 Margin="{TemplateBinding Padding}"/>
+                                                                 Margin="{TemplateBinding Padding}" />
                                                         </DockPanel>
                                                     </Border>
                                                 </ControlTemplate>
@@ -842,8 +842,8 @@
 
                                 <Grid Margin="5">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
                                     <Grid Grid.Column="0">
@@ -854,7 +854,7 @@
                                         
                                         <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
                                         <TextBox Text="{Binding IntegrationShowAchievementsHeight, FallbackValue=200}" Width="40" Grid.Column="1"
-                                                 VerticalAlignment="Center" TextAlignment="Center"/>
+                                                 VerticalAlignment="Center" TextAlignment="Center" />
                                     </Grid>
                                     
                                     <Grid Grid.Column="2">
@@ -869,7 +869,7 @@
                                                 IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
                                                 ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
                                                 Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sColCount" />
-                                        <Label Grid.Column="2" Content="{Binding ElementName=sColCount, Path=Value}" HorizontalAlignment="Center"/>
+                                        <Label Grid.Column="2" Content="{Binding ElementName=sColCount, Path=Value}" HorizontalAlignment="Center" />
                                     </Grid>
                                 </Grid>
                             </GroupBox>

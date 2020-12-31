@@ -1,6 +1,6 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Models;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;

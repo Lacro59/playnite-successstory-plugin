@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using CommonShared;
-using CommonPlaynite.PluginLibrary.Services.GogLibrary;
+using CommonPluginsShared;
+using CommonPluginsPlaynite.PluginLibrary.Services.GogLibrary;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Models;
 using SuccessStory.Views;
 using SuccessStory.Views.Interface;
@@ -78,7 +78,7 @@ namespace SuccessStory.Services
         public void OnBtHeaderClick(object sender, RoutedEventArgs e)
         {
 #if DEBUG
-            logger.Debug($"SuccessStory - OnBtHeaderClick()");
+            logger.Debug($"SuccessStory [Ignored] - OnBtHeaderClick()");
 #endif
             PluginDatabase.IsViewOpen = true;
             var ViewExtension = new SuccessView(_Plugin, _PlayniteApi, _Plugin.GetPluginUserDataPath());
@@ -115,7 +115,7 @@ namespace SuccessStory.Services
                 if (IsFirstLoad)
                 {
 #if DEBUG
-                    logger.Debug($"SuccessStory - IsFirstLoad");
+                    logger.Debug($"SuccessStory [Ignored] - IsFirstLoad");
 #endif
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                     {
@@ -131,7 +131,7 @@ namespace SuccessStory.Services
                     if (PluginDatabase.PluginSettings.EnableIntegrationButton)
                     {
 #if DEBUG
-                        logger.Debug($"SuccessStory - AddBtActionBar()");
+                        logger.Debug($"SuccessStory [Ignored] - AddBtActionBar()");
 #endif
                         AddBtActionBar();
                     }
@@ -139,7 +139,7 @@ namespace SuccessStory.Services
                     if (PluginDatabase.PluginSettings.EnableIntegrationInDescription)
                     {
 #if DEBUG
-                        logger.Debug($"SuccessStory - AddSpDescription()");
+                        logger.Debug($"SuccessStory [Ignored] - AddSpDescription()");
 #endif
                         AddSpDescription();
                     }
@@ -147,7 +147,7 @@ namespace SuccessStory.Services
                     if (PluginDatabase.PluginSettings.EnableIntegrationInCustomTheme)
                     {
 #if DEBUG
-                        logger.Debug($"SuccessStory - AddCustomElements()");
+                        logger.Debug($"SuccessStory [Ignored] - AddCustomElements()");
 #endif
                         AddCustomElements();
                     }
@@ -160,7 +160,7 @@ namespace SuccessStory.Services
         public override void RefreshElements(Game GameSelected, bool force = false)
         {
 #if DEBUG
-            logger.Debug($"SuccessStory - RefreshElements({GameSelected.Name})");
+            logger.Debug($"SuccessStory [Ignored] - RefreshElements({GameSelected.Name})");
 #endif
 
             CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -171,7 +171,7 @@ namespace SuccessStory.Services
 #if DEBUG
                 string IsCanceld = string.Empty;
 
-                logger.Debug($"SuccessStory - TaskRefresh() - Start");
+                logger.Debug($"SuccessStory [Ignored] - TaskRefresh() - Start");
                 Stopwatch stopwatch = new Stopwatch();
                 TimeSpan ts;
                 stopwatch.Start();
@@ -244,7 +244,7 @@ namespace SuccessStory.Services
 #if DEBUG
                 stopwatch.Stop();
                 ts = stopwatch.Elapsed;
-                logger.Debug($"SuccessStory - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                logger.Debug($"SuccessStory [Ignored] - TaskRefresh(){IsCanceld} - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
             }, ct);
 
@@ -263,7 +263,7 @@ namespace SuccessStory.Services
             if (PART_BtActionBar != null)
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_BtActionBar allready insert");
+                logger.Debug($"SuccessStory [Ignored] - PART_BtActionBar allready insert");
 #endif
                 return;
             }
@@ -324,7 +324,7 @@ namespace SuccessStory.Services
         public void OnBtActionBarClick(object sender, RoutedEventArgs e)
         {
 #if DEBUG
-            logger.Debug($"SuccessStory - OnBtActionBarClick()");
+            logger.Debug($"SuccessStory [Ignored] - OnBtActionBarClick()");
 #endif
             PluginDatabase.IsViewOpen = true;
             dynamic ViewExtension = null;
@@ -359,7 +359,7 @@ namespace SuccessStory.Services
                     if (ButtonName == "PART_ScCustomButton")
                     {
 #if DEBUG
-                        logger.Debug($"SuccessStory - OnCustomThemeButtonClick()");
+                        logger.Debug($"SuccessStory [Ignored] - OnCustomThemeButtonClick()");
 #endif
                         OnBtActionBarClick(sender, e);
                     }
@@ -384,7 +384,7 @@ namespace SuccessStory.Services
             if (PART_SpDescription != null)
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_SpDescription allready insert");
+                logger.Debug($"SuccessStory [Ignored] - PART_SpDescription allready insert");
 #endif
                 return;
             }
@@ -435,7 +435,7 @@ namespace SuccessStory.Services
             if (ListCustomElements.Count > 0)
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - CustomElements allready insert - {ListCustomElements.Count}");
+                logger.Debug($"SuccessStory [Ignored] - CustomElements allready insert - {ListCustomElements.Count}");
 #endif
                 return;
             }
@@ -495,7 +495,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_ScButtonWithJustIcon not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_ScButtonWithJustIcon not find");
 #endif
             }
 
@@ -516,7 +516,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_ScButtonWithTitle not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_ScButtonWithTitle not find");
 #endif
             }
 
@@ -537,7 +537,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_ScButtonWithTitleAndDetails not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_ScButtonWithTitleAndDetails not find");
 #endif
             }
 
@@ -559,7 +559,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_Achievements_ProgressBar not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_Achievements_ProgressBar not find");
 #endif
             }
 
@@ -580,7 +580,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_Achievements_Graphics not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_Achievements_Graphics not find");
 #endif
             }
 
@@ -601,7 +601,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_Achievements_ListComptact not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_Achievements_ListComptact not find");
 #endif
             }
 
@@ -622,7 +622,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_Achievements_ListComptactVertical not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_Achievements_ListComptactVertical not find");
 #endif
             }
 
@@ -643,7 +643,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_Achievements_List not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_Achievements_List not find");
 #endif
             }
 
@@ -664,7 +664,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_Achievements_ListCompactUnlocked not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_Achievements_ListCompactUnlocked not find");
 #endif
             }
 
@@ -685,7 +685,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_Achievements_ListCompactLocked not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_Achievements_ListCompactLocked not find");
 #endif
             }
 
@@ -706,7 +706,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_Achievements_ListCompactVerticalUnlocked not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_Achievements_ListCompactVerticalUnlocked not find");
 #endif
             }
 
@@ -727,7 +727,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_Achievements_ListCompactLocked not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_Achievements_ListCompactLocked not find");
 #endif
             }
 
@@ -748,7 +748,7 @@ namespace SuccessStory.Services
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_UserStats not find");
+                logger.Debug($"SuccessStory [Ignored] - PART_UserStats not find");
 #endif
             }
         }
@@ -769,7 +769,7 @@ namespace SuccessStory.Services
                 if (IsFirstLoad)
                 {
 #if DEBUG
-                    logger.Debug($"SuccessStory - IsFirstLoad");
+                    logger.Debug($"SuccessStory [Ignored] - IsFirstLoad");
 #endif
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                     {
@@ -783,7 +783,7 @@ namespace SuccessStory.Services
                     if (PluginDatabase.PluginSettings.EnableIntegrationFS)
                     {
 #if DEBUG
-                        logger.Debug($"SuccessStory - AddBtInfoBarFS()");
+                        logger.Debug($"SuccessStory [Ignored] - AddBtInfoBarFS()");
 #endif
                         AddSpInfoBarFS();
                     }
@@ -805,7 +805,7 @@ namespace SuccessStory.Services
             if (PART_SpInfoBarFS != null)
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - PART_BtInfoBar allready insert");
+                logger.Debug($"SuccessStory [Ignored] - PART_BtInfoBar allready insert");
 #endif
 
                 ((SuccessStoryProgressionFS)PART_SpInfoBarFS).SetData(PluginDatabase.Get(SuccessStoryDatabase.GameSelected));

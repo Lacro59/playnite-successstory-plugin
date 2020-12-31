@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:SuccessStory.Views.Interface"
-        xmlns:converters="clr-namespace:CommonPlaynite.Converters;assembly=CommonPlaynite"
+        xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
         mc:Ignorable="d" Height="40">
 
     <Button.Resources>

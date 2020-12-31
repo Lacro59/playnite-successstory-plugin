@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Services;
 using System;
 using System.Threading;

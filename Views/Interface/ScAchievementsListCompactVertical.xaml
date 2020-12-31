@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
-             xmlns:converters="clr-namespace:CommonPlaynite.Converters;assembly=CommonPlaynite"
-             xmlns:controls="clr-namespace:CommonPlaynite.Controls;assembly=CommonPlaynite"
-             xmlns:commonshared="clr-namespace:CommonShared"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:controls="clr-namespace:CommonPluginsPlaynite.Controls"
+             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100">
 
     <UserControl.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <commonshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:SetColorConverter x:Key="SetColorConverter" />
     </UserControl.Resources>
 
@@ -37,7 +37,7 @@
                                 <Border x:Name="HoverRectangle" IsHitTestVisible="False" Visibility="Collapsed"
                                     Background="{DynamicResource HoverBrush}" CornerRadius="{DynamicResource ControlCornerRadius}" />
                                 <Border x:Name="SelectedRectangle" IsHitTestVisible="False" Visibility="Collapsed"
-                                    Background="{DynamicResource GlyphBrush}" CornerRadius="{DynamicResource ControlCornerRadius}"/>
+                                    Background="{DynamicResource GlyphBrush}" CornerRadius="{DynamicResource ControlCornerRadius}" />
                                 <Border Padding="{TemplateBinding Padding}" Background="Transparent">
                                     <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -89,7 +89,7 @@
                         <Image Stretch="UniformToFill"
                                Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                             <Image.Source>
-                                <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float"/>
+                                <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float" />
                             </Image.Source>
                             <Image.OpacityMask>
                                 <ImageBrush ImageSource="{Binding IconImage, IsAsync=True}" />
@@ -98,13 +98,13 @@
                         <Image Stretch="UniformToFill" 
                                Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Image.Source>
-                                <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float"/>
+                                <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float" />
                             </Image.Source>
                             <Image.OpacityMask>
                                 <ImageBrush ImageSource="{Binding IconImage, IsAsync=True}" />
                             </Image.OpacityMask>
                             <Image.Effect>
-                                <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}"/>
+                                <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
                             </Image.Effect>
                         </Image>
                     </StackPanel>
@@ -117,7 +117,7 @@
                         <Image Stretch="UniformToFill" Source="{Binding Icon}" 
                                Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Image.Effect>
-                                <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}"/>
+                                <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
                             </Image.Effect>
                         </Image>
                     </StackPanel>

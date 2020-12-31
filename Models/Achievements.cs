@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Services;
 
 namespace SuccessStory.Models

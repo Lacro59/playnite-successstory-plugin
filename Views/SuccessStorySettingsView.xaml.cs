@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Clients;
 using SuccessStory.Models;
 using System;
@@ -358,7 +358,7 @@ namespace SuccessStory.Views
             SuccessStoryDatabase.ListErrors = new CumulErrors();
 
 #if DEBUG
-            logger.Info($"SuccessStory - RefreshData() - Start");
+            logger.Info($"SuccessStory [Ignored] - RefreshData() - Start");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 #endif
@@ -408,7 +408,7 @@ namespace SuccessStory.Views
 
                     Application.Current.Dispatcher.BeginInvoke((Action)delegate { pbDataLoad.Maximum = FilterDatabaseGame.Count(); });
 #if DEBUG
-                    logger.Debug($"SuccessStory - FilterDatabaseGame: {FilterDatabaseGame.Count()}");
+                    logger.Debug($"SuccessStory [Ignored] - FilterDatabaseGame: {FilterDatabaseGame.Count()}");
 #endif
                     foreach (var game in FilterDatabaseGame)
                     {
@@ -417,7 +417,7 @@ namespace SuccessStory.Views
                             if (SourceName.ToLower() == "steam" && IsFirstLoop)
                             {
 #if DEBUG
-                                logger.Debug($"SuccessStory - Check Steam profil with {game.GameId}");
+                                logger.Debug($"SuccessStory [Ignored] - Check Steam profil with {game.GameId}");
 #endif
 
                                 SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginDatabase.PluginSettings, _PluginUserDataPath);
@@ -491,7 +491,7 @@ namespace SuccessStory.Views
                     SuccessStorySettings.IsEnabled = true;
 #if DEBUG
                     stopwatch.Stop();
-                    logger.Debug($"SuccessStory - RefreshData() - End - {stopwatch.Elapsed}");
+                    logger.Debug($"SuccessStory [Ignored] - RefreshData() - End - {stopwatch.Elapsed}");
 #endif
                 });
             });

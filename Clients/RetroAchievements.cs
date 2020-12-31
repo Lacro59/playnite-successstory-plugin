@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Playnite.SDK;
-using CommonShared;
+using CommonPluginsShared;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -441,7 +441,7 @@ namespace SuccessStory.Clients
                 catch(Exception ex)
                 {
 #if DEBUG
-                    Common.LogError(ex, "SuccessStory [ignored]");
+                    Common.LogError(ex, "SuccessStory [Ignored]");
 #endif
                 }
             }
@@ -466,7 +466,7 @@ namespace SuccessStory.Clients
                 catch (Exception ex)
                 {
 #if DEBUG
-                    Common.LogError(ex, "SuccessStory [ignored]");
+                    Common.LogError(ex, "SuccessStory [Ignored]");
 #endif
                 }
             }
@@ -491,7 +491,7 @@ namespace SuccessStory.Clients
                 catch (Exception ex)
                 {
 #if DEBUG
-                    Common.LogError(ex, "SuccessStory [ignored]");
+                    Common.LogError(ex, "SuccessStory [Ignored]");
 #endif
                 }
             }
@@ -506,7 +506,7 @@ namespace SuccessStory.Clients
                 catch (Exception ex)
                 {
 #if DEBUG
-                    Common.LogError(ex, "SuccessStory [ignored]");
+                    Common.LogError(ex, "SuccessStory [Ignored]");
 #endif
                 }
             }
@@ -521,7 +521,7 @@ namespace SuccessStory.Clients
                 catch (Exception ex)
                 {
 #if DEBUG
-                    Common.LogError(ex, "SuccessStory [ignored]");
+                    Common.LogError(ex, "SuccessStory [Ignored]");
 #endif
                 }
             }

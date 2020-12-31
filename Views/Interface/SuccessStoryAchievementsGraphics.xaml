@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:livechartscommon="clr-namespace:CommonControls.LiveChartsCommon;assembly=CommonControls"
+             xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
              mc:Ignorable="d">
  
     <!-- TODO https://github.com/Live-Charts/Live-Charts/issues/619 -->

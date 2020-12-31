@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Playnite.SDK;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 using SteamKit2;
 using System.Globalization;
 using System.Threading.Tasks;
-using CommonPlaynite.Common.Web;
+using CommonPluginsPlaynite.Common.Web;
 using SuccessStory.Services;
 
 namespace SuccessStory.Clients
@@ -60,7 +60,7 @@ namespace SuccessStory.Clients
             if (!IsLocal)
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - Steam - GetAchievements()");
+                logger.Debug($"SuccessStory [Ignored] - Steam - GetAchievements()");
 #endif
                 int.TryParse(game.GameId, out AppId);
 
@@ -98,7 +98,7 @@ namespace SuccessStory.Clients
             else
             {
 #if DEBUG
-                logger.Debug($"SuccessStory - Steam - GetAchievementsLocal()");
+                logger.Debug($"SuccessStory [Ignored] - Steam - GetAchievementsLocal()");
 #endif
 
                 SteamEmulators se = new SteamEmulators(_PlayniteApi, _PluginUserDataPath);
@@ -558,7 +558,7 @@ namespace SuccessStory.Clients
                 if (!TryByName)
                 {
 #if DEBUG
-                    logger.Debug($"SuccessStory - FindHiddenDescription() for {SteamId} - {AppId}");
+                    logger.Debug($"SuccessStory [Ignored] - FindHiddenDescription() for {SteamId} - {AppId}");
 #endif
                     url = string.Format(UrlProfilById, SteamId, AppId);
                     try
@@ -573,7 +573,7 @@ namespace SuccessStory.Clients
                 else
                 {
 #if DEBUG
-                    logger.Debug($"SuccessStory - FindHiddenDescription() for {SteamUser} - {AppId}");
+                    logger.Debug($"SuccessStory [Ignored] - FindHiddenDescription() for {SteamUser} - {AppId}");
 #endif
                     url = string.Format(UrlProfilByName, SteamUser, AppId);
                     try
@@ -657,7 +657,7 @@ namespace SuccessStory.Clients
                 if (!TryByName)
                 {
 #if DEBUG
-                    logger.Debug($"SuccessStory - GetAchievementsInPublic() for {SteamId} - {AppId}");
+                    logger.Debug($"SuccessStory [Ignored] - GetAchievementsInPublic() for {SteamId} - {AppId}");
 #endif
                     url = string.Format(UrlProfilById, SteamId, AppId);
                     try
@@ -672,7 +672,7 @@ namespace SuccessStory.Clients
                 else
                 {
 #if DEBUG
-                    logger.Debug($"SuccessStory - GetAchievementsInPublic() for {SteamUser} - {AppId}");
+                    logger.Debug($"SuccessStory [Ignored] - GetAchievementsInPublic() for {SteamUser} - {AppId}");
 #endif
                     url = string.Format(UrlProfilByName, SteamUser, AppId);
                     try

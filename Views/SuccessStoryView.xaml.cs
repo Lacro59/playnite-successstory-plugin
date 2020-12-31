@@ -14,13 +14,13 @@ using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Models;
 using SuccessStory.Views.Interface;
 using System.Threading.Tasks;
 using SuccessStory.Services;
 using Newtonsoft.Json;
-using CommonControls.LiveChartsCommon;
+using CommonPluginsControls.LiveChartsCommon;
 
 namespace SuccessStory
 {
@@ -324,7 +324,7 @@ namespace SuccessStory
                     }
 
 #if DEBUG
-                    logger.Debug($"SuccessStory - ListGames: {JsonConvert.SerializeObject(ListGames)}");
+                    logger.Debug($"SuccessStory [Ignored] - ListGames: {JsonConvert.SerializeObject(ListGames)}");
 #endif
                 }
 

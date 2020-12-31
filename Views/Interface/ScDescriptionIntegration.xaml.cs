@@ -9,7 +9,7 @@ using SuccessStory.Services;
 using System.Windows.Threading;
 using System.Threading;
 using System;
-using CommonShared;
+using CommonPluginsShared;
 
 namespace SuccessStory.Views.Interface
 {

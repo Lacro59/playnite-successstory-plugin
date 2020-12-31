@@ -1,4 +1,4 @@
-﻿using CommonShared;
+﻿using CommonPluginsShared;
 using System;
 using System.Windows.Media.Imaging;
 

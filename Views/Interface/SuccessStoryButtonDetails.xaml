@@ -100,9 +100,9 @@
             <ProgressBar.Style>
                 <Style TargetType="ProgressBar">
                     <Setter Property="SnapsToDevicePixels" Value="True" />
-                    <Setter Property="Foreground" Value="{DynamicResource HoverBrush}"/>
-                    <Setter Property="Background" Value="{DynamicResource NormalBrushDark}"/>
-                    <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource HoverBrush}" />
+                    <Setter Property="Background" Value="{DynamicResource NormalBrushDark}" />
+                    <Setter Property="BorderThickness" Value="{DynamicResource ControlBorderThickness}" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ProgressBar}">
@@ -117,7 +117,7 @@
                                                 <Grid x:Name="Animation" Visibility="Hidden">
                                                     <Rectangle Fill="{TemplateBinding Background}" Margin="0,0,50,0">
                                                         <Rectangle.RenderTransform>
-                                                            <ScaleTransform x:Name="HiderPreTransform" ScaleX="0"/>
+                                                            <ScaleTransform x:Name="HiderPreTransform" ScaleX="0" />
                                                         </Rectangle.RenderTransform>
                                                     </Rectangle>
                                                     <Rectangle Fill="{TemplateBinding Background}" RenderTransformOrigin="1, 0" Margin="50,0,0,0">
@@ -137,9 +137,9 @@
                                             <BeginStoryboard>
                                                 <Storyboard RepeatBehavior="Forever">
                                                     <DoubleAnimation Storyboard.TargetName="HiderPreTransform" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
-                                                         To="1" Duration="0:00:2" AutoReverse="True"/>
+                                                         To="1" Duration="0:00:2" AutoReverse="True" />
                                                     <DoubleAnimation Storyboard.TargetName="HiderPostTransform" Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
-                                                         To="0" Duration="0:00:2" AutoReverse="True"/>
+                                                         To="0" Duration="0:00:2" AutoReverse="True" />
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </Trigger.EnterActions>

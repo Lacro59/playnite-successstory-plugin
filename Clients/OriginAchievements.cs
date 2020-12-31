@@ -2,9 +2,9 @@
 using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using CommonShared;
-using CommonPlaynite.PluginLibrary.OriginLibrary.Models;
-using CommonPlaynite.PluginLibrary.OriginLibrary.Services;
+using CommonPluginsShared;
+using CommonPluginsPlaynite.PluginLibrary.OriginLibrary.Models;
+using CommonPluginsPlaynite.PluginLibrary.OriginLibrary.Services;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -52,7 +52,7 @@ namespace SuccessStory.Clients
                 string origineGameId = GetOrigineGameAchievementId(_PlayniteApi, game.Id);
 
 #if DEBUG
-                logger.Debug($"SuccessStory - Origin token: {accessToken}");
+                logger.Debug($"SuccessStory [Ignored] - Origin token: {accessToken}");
 #endif
 
                 string lang = CodeLang.GetOriginLang(_PlayniteApi.ApplicationSettings.Language);

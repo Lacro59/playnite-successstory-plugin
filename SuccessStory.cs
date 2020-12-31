@@ -5,7 +5,7 @@ using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Clients;
 using SuccessStory.Models;
 using SuccessStory.Views;
@@ -20,7 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using CommonPlaynite;
+using CommonPluginsPlaynite;
 using System.Diagnostics;
 using SuccessStory.Services;
 using System.Windows.Automation;
@@ -109,7 +109,7 @@ namespace SuccessStory
                 if (WinIdProperty == "WindowSettings")
                 {
 #if DEBUG
-                    logger.Debug($"SuccessStory - Reset VerifToAdd");
+                    logger.Debug($"SuccessStory [Ignored] - Reset VerifToAdd");
 #endif
                     SuccessStoryDatabase.VerifToAddOrShowGog = null;
                     SuccessStoryDatabase.VerifToAddOrShowOrigin = null;
@@ -307,7 +307,7 @@ namespace SuccessStory
                 {
                     SuccessStoryDatabase.GameSelected = args.NewValue[0];
 #if DEBUG
-                    logger.Debug($"SuccessStory - OnGameSelected() - {SuccessStoryDatabase.GameSelected.Name} - {SuccessStoryDatabase.GameSelected.Id.ToString()}");
+                    logger.Debug($"SuccessStory [Ignored] - OnGameSelected() - {SuccessStoryDatabase.GameSelected.Name} - {SuccessStoryDatabase.GameSelected.Id.ToString()}");
 #endif
                     if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
                     {
@@ -372,7 +372,7 @@ namespace SuccessStory
         public override void OnApplicationStopped()
         {
 #if DEBUG
-            logger.Debug($"SuccessStory - Cancel TaskCacheImage");
+            logger.Debug($"SuccessStory [Ignored] - Cancel TaskCacheImage");
 #endif
             tokenSource.Cancel();
         }
@@ -391,7 +391,7 @@ namespace SuccessStory
                     // Wait Playnite & extension database are loaded
                     Thread.Sleep(50000);
 #if DEBUG
-                    logger.Debug($"SuccessStory - TaskCacheImage - {PlayniteApi.Database.Games.Count} - Start");
+                    logger.Debug($"SuccessStory [Ignored] - TaskCacheImage - {PlayniteApi.Database.Games.Count} - Start");
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
 #endif
@@ -403,14 +403,14 @@ namespace SuccessStory
                             if (successStories != null && successStories.HaveAchivements)
                             {
 #if DEBUG
-                                logger.Debug($"SuccessStory - TaskCacheImage - {game.Name} - {successStories.Items.Count}");
+                                logger.Debug($"SuccessStory [Ignored] - TaskCacheImage - {game.Name} - {successStories.Items.Count}");
 #endif
                                 foreach (var achievement in successStories.Items)
                                 {
                                     if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
                                     {
 #if DEBUG
-                                        logger.Debug($"SuccessStory - TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name + "_Locked"})");
+                                        logger.Debug($"SuccessStory [Ignored] - TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name + "_Locked"})");
 #endif
                                         Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.ImagesCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
@@ -424,7 +424,7 @@ namespace SuccessStory
                                     if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, "SuccessStory").IsNullOrEmpty())
                                     {
 #if DEBUG
-                                        logger.Debug($"SuccessStory - TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name + "_Unlocked"})");
+                                        logger.Debug($"SuccessStory [Ignored] - TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name + "_Unlocked"})");
 #endif
                                         Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.ImagesCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
@@ -440,7 +440,7 @@ namespace SuccessStory
                         catch (Exception ex)
                         {
 #if DEBUG
-                            Common.LogError(ex, "SuccessStory", $"Error on TaskCacheImage");
+                            Common.LogError(ex, "SuccessStory [Ignored]", $"Error on TaskCacheImage");
 #endif
                         }
                     }
@@ -448,7 +448,7 @@ namespace SuccessStory
 #if DEBUG
                     stopwatch.Stop();
                     TimeSpan ts = stopwatch.Elapsed;
-                    logger.Debug($"SuccessStory - TaskCacheImage() - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                    logger.Debug($"SuccessStory [Ignored] - TaskCacheImage() - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
                 }, tokenSource.Token);
             }

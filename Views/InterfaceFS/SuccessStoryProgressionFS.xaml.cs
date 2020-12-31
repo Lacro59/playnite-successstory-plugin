@@ -1,5 +1,5 @@
 ﻿using Playnite.SDK;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Models;
 using SuccessStory.Services;
 using System;

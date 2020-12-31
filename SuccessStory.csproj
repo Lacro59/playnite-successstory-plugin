@@ -43,6 +43,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="akr.WPF.Controls.ColorPicker">
+      <HintPath>playnite-plugincommon\CommonPluginsResources\Resources\akr.WPF.Controls.ColorPicker.dll</HintPath>
+    </Reference>
     <Reference Include="AngleSharp, Version=0.9.9.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
       <HintPath>packages\AngleSharp.0.9.9\lib\net45\AngleSharp.dll</HintPath>
       <Private>False</Private>
@@ -77,8 +80,13 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Abstractions, Version=2.1.0.227, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
+      <HintPath>packages\System.IO.Abstractions.2.1.0.227\lib\net40\System.IO.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
@@ -110,6 +118,23 @@
     <Compile Include="Models\ProgressionAchievements.cs" />
     <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.xaml.cs">
+      <DependentUpon>ControlPickerGradient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerForSingle.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerForTime.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForMultipleSingle.xaml.cs">
+      <DependentUpon>CustomerToolTipForMultipleSingle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForMultipleTime.xaml.cs">
+      <DependentUpon>CustomerTooltipForMultipleTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForSingle.xaml.cs">
+      <DependentUpon>CustomerTooltipForSingle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForTime.xaml.cs">
+      <DependentUpon>CustomerToolTipForTime.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\OldToNew.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />
     <Compile Include="Services\SuccessStoryUI.cs" />
@@ -283,6 +308,26 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForMultipleSingle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerTooltipForMultipleTime.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerTooltipForSingle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForTime.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\InterfaceFS\SuccessStoryProgressionFS.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -374,23 +419,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="PlayniteResources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="playnite-plugincommon\CommonControls\CommonControls.csproj">
-      <Project>{9acfa07b-718c-4546-ac27-a9fce42f61f7}</Project>
-      <Name>CommonControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="playnite-plugincommon\CommonPlaynite\CommonPlaynite.csproj">
-      <Project>{a4c600fb-92f5-4fd6-ad6b-0c0e0cf2ec81}</Project>
-      <Name>CommonPlaynite</Name>
+    <ProjectReference Include="playnite-plugincommon\CommonPluginsResources\CommonPluginsResources.csproj">
+      <Project>{4effe926-9c64-4750-a399-f344710edc09}</Project>
+      <Name>CommonPluginsResources</Name>
     </ProjectReference>
     <ProjectReference Include="playnite-successstory-extension\AchievementsLocal.csproj">
       <Project>{100a4bdc-bd53-472d-b189-75c4eb3c60e9}</Project>
       <Name>AchievementsLocal</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="playnite-plugincommon\CommonShared\CommonShared.projitems" Label="Shared" />
+  <Import Project="playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems" Label="Shared" />
+  <Import Project="playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

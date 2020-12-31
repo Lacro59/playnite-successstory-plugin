@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
-using CommonShared;
+using CommonPluginsShared;
 using SuccessStory.Models;
 using SuccessStory.Services;
 using System;
@@ -139,7 +139,7 @@ namespace SuccessStory.Views.Interface
                     iconImage = null;
                 }
 #if DEBUG
-                logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
+                logger.Debug($"SuccessStory [Ignored] - SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
 #endif
 
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
@@ -165,7 +165,7 @@ namespace SuccessStory.Views.Interface
             int nbGrid = (int)actualWidth / 52;
 
 #if DEBUG
-            logger.Debug($"SuccessStory - SuccessStoryAchievementsCompact - actualWidth: {actualWidth} - nbGrid: {nbGrid} - AchievementsList: {AchievementsList.Count}");
+            logger.Debug($"SuccessStory [Ignored] - SuccessStoryAchievementsCompact - actualWidth: {actualWidth} - nbGrid: {nbGrid} - AchievementsList: {AchievementsList.Count}");
 #endif
 
             if (nbGrid > 0)
