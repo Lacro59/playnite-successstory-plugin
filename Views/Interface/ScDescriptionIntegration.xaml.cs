@@ -87,6 +87,7 @@ namespace SuccessStory.Views.Interface
                         if (PluginDatabase.PluginSettings.EnableIntegrationInDescriptionWithToggle && PluginDatabase.PluginSettings.EnableIntegrationButton)
                         {
                             this.Visibility = Visibility.Collapsed;
+                            this.Tag = "tb";
                         }
                         else
                         {
@@ -94,12 +95,20 @@ namespace SuccessStory.Views.Interface
                             if (!PluginDatabase.GameSelectedData.HasData)
                             {
                                 this.Visibility = Visibility.Collapsed;
+                                this.Tag = "nodata";
                                 return;
                             }
                             else
                             {
                                 this.Visibility = Visibility.Visible;
+                                this.Tag = "data";
                             }
+                        }
+
+                        this.Tag = "data";
+                        if (!PluginDatabase.GameSelectedData.HasData)
+                        {
+                            this.Tag = "nodata";
                         }
 
                         // Margin with title
