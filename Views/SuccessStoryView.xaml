@@ -38,20 +38,20 @@
             <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" BorderThickness="{DynamicResource PopupBorderThickness}" BorderBrush="{DynamicResource NormalBorderBrush}" Margin="0,0,0,10">
                 <Grid Margin="10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="6" />
                         <ColumnDefinition Width="200" />
                         <ColumnDefinition Width="20" />
-                        <ColumnDefinition Width="140" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="6" />
-                        <ColumnDefinition Width="180" />
+                        <ColumnDefinition Width="275" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
                     <TextBox Grid.Column="2" x:Name="TextboxSearch" TextWrapping="NoWrap" KeyUp="TextboxSearch_KeyUp" />
 
-                    <Label Grid.Column="4" Content="{DynamicResource LOCSuccessStoryFilterSource}" FontSize="16" />
+                    <Label Grid.Column="4" Content="{DynamicResource LOCSourceLabel}" FontSize="16" />
                     <ComboBox Grid.Column="6" Name="FilterSource" IsEditable="True" IsReadOnly="True">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
