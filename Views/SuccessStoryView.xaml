@@ -12,6 +12,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <commonpluginsshared:DefaultIconConverter x:Key="DefaultIconConverter" />
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -167,7 +168,8 @@
                                     <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon}" />
+                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
+                                                   Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
