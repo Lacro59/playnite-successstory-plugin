@@ -309,20 +309,27 @@ namespace SuccessStory
 #if DEBUG
                     logger.Debug($"SuccessStory [Ignored] - OnGameSelected() - {SuccessStoryDatabase.GameSelected.Name} - {SuccessStoryDatabase.GameSelected.Id.ToString()}");
 #endif
-                    if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
+                    PlayniteUiHelper.ResetToggle();
+                    var TaskIntegrationUI = Task.Run(() =>
                     {
-                        PlayniteUiHelper.ResetToggle();
-                        var TaskIntegrationUI = Task.Run(() =>
+                        successStoryUI.Initial();
+                        successStoryUI.taskHelper.Check();
+
+                        DispatcherOperation dispatcherOp = null;
+                        if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
                         {
-                            successStoryUI.Initial();
-                            successStoryUI.taskHelper.Check();
-                            var dispatcherOp = successStoryUI.AddElements();
-                            if (dispatcherOp != null)
-                            {
-                                dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(args.NewValue[0]); };
-                            }
-                        });
-                    }
+                            dispatcherOp = successStoryUI.AddElements();
+                        }
+                        else
+                        {
+                            dispatcherOp = successStoryUI.AddElementsFS();
+                        }
+
+                        if (dispatcherOp != null)
+                        {
+                            dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(args.NewValue[0]); };
+                        }
+                    });
                 }
             }
             catch (Exception ex)
