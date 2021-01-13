@@ -320,7 +320,7 @@ namespace SuccessStory
                         {
                             dispatcherOp = successStoryUI.AddElements();
                         }
-                        else
+                        else if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
                         {
                             dispatcherOp = successStoryUI.AddElementsFS();
                         }
