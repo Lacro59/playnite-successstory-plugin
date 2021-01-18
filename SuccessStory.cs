@@ -363,8 +363,21 @@ namespace SuccessStory
             var TaskGameStopped = Task.Run(() =>
             {
                 PluginDatabase.Remove(game);
-                var dispatcherOp = successStoryUI.AddElements();
-                dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(SuccessStoryDatabase.GameSelected); };
+
+                DispatcherOperation dispatcherOp = null;
+                if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
+                {
+                    dispatcherOp = successStoryUI.AddElements();
+                }
+                else if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
+                {
+                    dispatcherOp = successStoryUI.AddElementsFS();
+                }
+
+                if (dispatcherOp != null)
+                {
+                    dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(SuccessStoryDatabase.GameSelected); };
+                }
             });
         }
 
