@@ -71,11 +71,7 @@ namespace SuccessStory
             if (settings.EnableCheckVersion)
             {
                 CheckVersion cv = new CheckVersion();
-
-                if (cv.Check("SuccessStory", pluginFolder))
-                {
-                    cv.ShowNotification(api, "SuccessStory - " + resources.GetString("LOCUpdaterWindowTitle"));
-                }
+                cv.Check("SuccessStory", pluginFolder, api);
             }
 
             // Init ui interagration
