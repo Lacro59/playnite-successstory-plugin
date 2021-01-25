@@ -61,14 +61,14 @@ namespace SuccessStory.Views.Interface
         {
             List<Achievements> ListAchievements = gameAchievements.Items;
 
-            this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-            {
-                PART_ScCompactView.Children.Clear();
-                PART_ScCompactView.RowDefinitions.Clear();
-            }));
-
             Task.Run(() =>
             {
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                {
+                    PART_ScCompactView.Children.Clear();
+                    PART_ScCompactView.RowDefinitions.Clear();
+                }));
+
                 AchievementsList = new List<ListBoxAchievements>();
 
                 // Select data
