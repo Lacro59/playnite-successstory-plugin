@@ -35,8 +35,6 @@ namespace SuccessStory.Views.InterfaceFS
         public SuccessStoryProgressionFS()
         {
             InitializeComponent();
-
-            //PluginDatabase.PropertyChanged += OnPropertyChanged;
         }
 
 

@@ -12,6 +12,9 @@
     <Sys:Int32 x:Key="Sc_Locked">0</Sys:Int32>
     <Sys:Double x:Key="Sc_LockedDouble">0</Sys:Double>
     <Sys:String x:Key="Sc_LockedString">0</Sys:String>
+    <Sys:Int32 x:Key="Sc_PercentageUnlocked">0</Sys:Int32>
+    <Sys:Double x:Key="Sc_PercentageUnlockedDouble">0</Sys:Double>
+    <Sys:String x:Key="Sc_PercentageUnlockedString">0</Sys:String>
 
     <Sys:Boolean x:Key="Sc_EnableIntegrationInCustomTheme">True</Sys:Boolean>
     <Sys:Boolean x:Key="Sc_IntegrationShowGraphic">True</Sys:Boolean>

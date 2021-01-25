@@ -193,6 +193,9 @@ namespace SuccessStory.Services
                     resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = 0 });
                     resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = (double)0 });
                     resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = "0" });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlocked", Value = 0 });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlockedDouble", Value = (double)0 });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlockedString", Value = "0" });
 
                     resourcesLists.Add(new ResourcesList { Key = "Sc_EnableIntegrationInCustomTheme", Value = PluginDatabase.PluginSettings.EnableIntegrationInCustomTheme });
                     resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowGraphic", Value = PluginDatabase.PluginSettings.IntegrationShowGraphic });
@@ -224,6 +227,9 @@ namespace SuccessStory.Services
                         resourcesLists.Add(new ResourcesList { Key = "Sc_Locked", Value = successStories.Locked });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_LockedDouble", Value = double.Parse(successStories.Locked.ToString()) });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_LockedString", Value = successStories.Locked.ToString() });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlocked", Value = successStories.Progression });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlockedDouble", Value = (double)successStories.Progression });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlockedString", Value = successStories.Progression.ToString() });
                     }
 
                     // If not cancel, show
