@@ -141,10 +141,9 @@ namespace SuccessStory.Views.Interface
                         }
                     }
 
-                    // Sorting default.
+                    // Sorting
+                    ListBoxAchievements = ListBoxAchievements.OrderByDescending(x => x.DateUnlock).ThenBy(x => x.Name).ToList();
                     lbAchievements.ItemsSource = ListBoxAchievements;
-                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
-                    view.SortDescriptions.Add(new SortDescription("DateUnlock", ListSortDirection.Descending));
                 }));
             });
         }

@@ -505,11 +505,7 @@ namespace SuccessStory
                 ListSortDirection direction;
 
                 // No sort
-                if (headerClicked.Name == "lvGameIcon100Percent")
-                {
-                    headerClicked = null;
-                }
-                if (headerClicked.Name == "lvGameIcon")
+                if (headerClicked.Tag is string && (string)headerClicked.Tag == "noSort")
                 {
                     headerClicked = null;
                 }
@@ -545,7 +541,6 @@ namespace SuccessStory
                         }
                         if (headerClicked.Name == "lvProgression")
                         {
-
                             columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
                             sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
                         }
@@ -595,6 +590,18 @@ namespace SuccessStory
             dataView.SortDescriptions.Clear();
             SortDescription sd = new SortDescription(sortBy, direction);
             dataView.SortDescriptions.Add(sd);
+
+            List<string> lists = new List<string>
+            {
+                "ProgressionValue", "SourceName", "GameIcon100Percent", "LastActivity"
+            };
+
+            if (lists.IndexOf(sortBy) > -1)
+            {
+                SortDescription sd2 = new SortDescription("Name", ListSortDirection.Ascending);
+                dataView.SortDescriptions.Add(sd2);
+            }
+
             dataView.Refresh();
         }
         #endregion

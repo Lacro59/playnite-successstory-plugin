@@ -23,7 +23,7 @@ namespace SuccessStory.Models
             {
                 string NameWithDateUnlock = Name;
 
-                if (DateUnlock != null && DateUnlock != default(DateTime))
+                if (DateUnlock != null && DateUnlock != default(DateTime) && DateUnlock != new DateTime(1982,12,15,0,0,0))
                 {
                     var converter = new LocalDateTimeConverter();
                     NameWithDateUnlock += " (" + converter.Convert(DateUnlock, null, null, null) + ")";

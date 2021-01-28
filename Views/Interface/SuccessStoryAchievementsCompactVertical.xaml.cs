@@ -4,6 +4,7 @@ using CommonPluginsShared;
 using SuccessStory.Models;
 using SuccessStory.Services;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
@@ -138,6 +139,15 @@ namespace SuccessStory.Views.Interface
 
                     iconImage = null;
                 }
+
+                if (_withUnlocked)
+                {
+                    AchievementsList = AchievementsList.OrderByDescending(x => x.DateUnlock).ThenBy(x => x.Name).ToList();
+                }
+                else
+                {
+                    AchievementsList = AchievementsList.OrderBy(x => x.Name).ToList();
+                }
 #if DEBUG
                 logger.Debug($"SuccessStory [Ignored] - SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
 #endif
@@ -195,7 +205,7 @@ namespace SuccessStory.Views.Interface
                             if (_withUnlocked)
                             {
                                 var converter = new LocalDateTimeConverter();
-                                gridImage.ToolTip += " (" + converter.Convert(AchievementsList[i].DateUnlock, null, null, null) + ")";
+                                gridImage.ToolTip += AchievementsList[i].NameWithDateUnlock;
                             }
 
                             if (AchievementsList[i].IsGray)

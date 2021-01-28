@@ -156,7 +156,7 @@
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="46" x:Name="lvGameIcon100Percent">
-                                    <GridViewColumnHeader Content="100%"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Content="100%" Tag="noSort"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent}" />
@@ -165,7 +165,7 @@
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="50" x:Name="lvGameIcon">
-                                    <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}" Tag="noSort"></GridViewColumnHeader>
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
