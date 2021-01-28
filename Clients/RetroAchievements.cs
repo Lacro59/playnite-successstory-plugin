@@ -65,12 +65,23 @@ namespace SuccessStory.Clients
             }
 
             // List MD5
-            List<RA_MD5List> ListMD5 = GetMD5List(_PluginUserDataPath, ra_Consoles);
-
+            List<RA_MD5List> ListMD5 = new List<RA_MD5List>();
+            try
+            {
+                ListMD5 = GetMD5List(_PluginUserDataPath, ra_Consoles);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, "SuccessStory");
+            }
 
             // Game Id
             int gameID = 0;
-            gameID = GetGameIdByHash(game, ListMD5);
+            if (ListMD5.Count > 0)
+            {
+                gameID = GetGameIdByHash(game, ListMD5);
+            }
+
             if (gameID == 0)
             {
                 gameID = GetGameIdByName(game, ra_Consoles);
@@ -309,23 +320,27 @@ namespace SuccessStory.Clients
             RA_MD5List rA_MD5List = null;
             string FilePath = _PlayniteApi.Database.GetFullFilePath(game.GameImagePath);
 
+            if (!File.Exists(FilePath))
+            {
+                return GameId;
+            }
+
             // Exclude for performance
             if (FilePath.Contains(".rar") && FilePath.Contains(".7z"))
             {
                 return GameId;
             }
-            if (!File.Exists(FilePath))
+            if (FilePath.Contains(".zip"))
             {
                 FileInfo fi = new FileInfo(FilePath);
-                if (fi.Length > 50000000)
+                if (fi.Length > 10000000)
                 {
                     return GameId;
                 }
-            }
-
-            if (FilePath.Contains(".zip"))
-            {
-                FilePath = ZipFileManafeExtract(FilePath);
+                else
+                {
+                    FilePath = ZipFileManafeExtract(FilePath);
+                }              
             }
 
             if (!File.Exists(FilePath))
@@ -564,9 +579,6 @@ namespace SuccessStory.Clients
                 {
                     return;
                 }
-
-
-                
             });
 
             return FilePathReturn;
