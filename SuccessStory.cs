@@ -249,7 +249,6 @@ namespace SuccessStory
                 Action = (mainMenuItem) => { }
             });
 #endif
-
             return gameMenuItems;
         }
 

@@ -44,7 +44,7 @@ namespace SuccessStory.Views.Interface
         {
             try
             {
-                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
+                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings" || e.PropertyName == "GameIsLoaded")
                 {
                     SetScData(PluginDatabase.GameSelectedData);
                 }
