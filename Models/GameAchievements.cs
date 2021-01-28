@@ -49,17 +49,11 @@ namespace SuccessStory.Models
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+
         public bool HaveAchivements { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+
         public bool IsEmulators { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+
         [JsonIgnore]
         public bool Is100Percent
         {
@@ -68,21 +62,21 @@ namespace SuccessStory.Models
                 return Total == Unlocked;
             }
         }
+
         /// <summary>
         /// Total achievements for the game.
         /// </summary>
         public int Total { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+
         public int Unlocked { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+
         public int Locked { get; set; }
+
         /// <summary>
         /// Percentage
         /// </summary>
         public int Progression { get; set; }
+
+        public bool IsManual { get; set; }
     }
 }

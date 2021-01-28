@@ -182,6 +182,9 @@
     <Compile Include="Views\Interface\SuccessStoryUserStats.xaml.cs">
       <DependentUpon>SuccessStoryUserStats.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SuccessStoryEditManual.xaml.cs">
+      <DependentUpon>SuccessStoryEditManual.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SuccessStoryOneGameView.xaml.cs">
       <DependentUpon>SuccessStoryOneGameView.xaml</DependentUpon>
     </Compile>
@@ -381,6 +384,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Interface\SuccessStoryUserStats.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SuccessStoryEditManual.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

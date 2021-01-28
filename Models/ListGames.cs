@@ -19,5 +19,6 @@ namespace SuccessStory.Models
         public int Total { get; set; }
         public string TotalPercent { get; set; }
         public int Unlocked { get; set; }
+        public bool IsManual { get; set; }
     }
 }

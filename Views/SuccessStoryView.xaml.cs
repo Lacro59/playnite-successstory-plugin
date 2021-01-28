@@ -186,6 +186,11 @@ namespace SuccessStory
                                 icon = TransformIcon.Get("Rpcs3") + " ";
                                 FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Rpcs3", SourceNameShort = "Rpcs3", IsCheck = false });
                             }
+                            if (PluginDatabase.PluginSettings.EnableManual)
+                            {
+                                icon = TransformIcon.Get("Manual") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Manual", SourceNameShort = "Manual", IsCheck = false });
+                            }
                         }
                     }
                     else
@@ -227,6 +232,11 @@ namespace SuccessStory
                         {
                             icon = TransformIcon.Get("RPCS3") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RPCS3", SourceNameShort = "Rpcs3", IsCheck = false });
+                        }
+                        if (PluginDatabase.PluginSettings.EnableManual)
+                        {
+                            icon = TransformIcon.Get("Manual") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Manual", SourceNameShort = "Manual", IsCheck = false });
                         }
                     }
 
@@ -319,7 +329,8 @@ namespace SuccessStory
                             ProgressionValue = successStories.Progression,
                             Total = successStories.Total,
                             TotalPercent = successStories.Progression + "%",
-                            Unlocked = successStories.Unlocked
+                            Unlocked = successStories.Unlocked,
+                            IsManual = successStories.IsManual
                         });
                     }
 
@@ -592,12 +603,22 @@ namespace SuccessStory
         #region Filter
         private void Filter()
         {
+            List<ListViewGames> SourcesManual = new List<ListViewGames>();
+
             // Filter
             if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
             {
+                if (SearchSources.IndexOf("Manual") > -1)
+                {
+                    SourcesManual = ListGames.FindAll(x => x.IsManual);
+                }
+
                 ListviewGames.ItemsSource = ListGames.FindAll(
                     x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1 && SearchSources.Contains(x.SourceName)
                 );
+
+                ListviewGames.ItemsSource = ((List<ListViewGames>)ListviewGames.ItemsSource).Union(SourcesManual).ToList();
+
                 Sorting();
                 return;
             }
@@ -613,9 +634,17 @@ namespace SuccessStory
 
             if (SearchSources.Count != 0)
             {
+                if (SearchSources.IndexOf("Manual") > -1)
+                {
+                    SourcesManual = ListGames.FindAll(x => x.IsManual);
+                }
+
                 ListviewGames.ItemsSource = ListGames.FindAll(
                     x => SearchSources.Contains(x.SourceName)
                 );
+
+                ListviewGames.ItemsSource = ((List<ListViewGames>)ListviewGames.ItemsSource).Union(SourcesManual).ToList();
+
                 Sorting();
                 return;
             }
@@ -662,7 +691,6 @@ namespace SuccessStory
                 FilterSource.Text = String.Join(", ", SearchSources);
             }
 
-            //GetListGame();
             Filter();
         }
         #endregion

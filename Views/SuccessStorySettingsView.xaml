@@ -51,6 +51,7 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="35" />
+                                <RowDefinition Height="35" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
@@ -157,12 +158,16 @@
                                         VerticalAlignment="Center" Grid.ColumnSpan="2" />
                             </Grid>
 
-                            <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding EnableLocal}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center">
+                            <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding EnableManual}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableManualAchievements}"></Label>
+                            </CheckBox>
+
+                            <CheckBox Grid.Column="0" Grid.Row="11" IsChecked="{Binding EnableLocal}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center">
                                 <Label Content="Enable Local"></Label>
                             </CheckBox>
-                            <Label Grid.Column="2" Grid.Row="10" x:Name="LocalLoad" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">xxx / xxx</Label>
-                            <Button Grid.Column="4" Grid.Row="10" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
-                            <Button Grid.Column="6" Grid.Row="10" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
+                            <Label Grid.Column="2" Grid.Row="11" x:Name="LocalLoad" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">xxx / xxx</Label>
+                            <Button Grid.Column="4" Grid.Row="11" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
+                            <Button Grid.Column="6" Grid.Row="11" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
                         </Grid>
                     </DockPanel>
                 </ScrollViewer>

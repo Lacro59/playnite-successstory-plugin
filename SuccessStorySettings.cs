@@ -80,6 +80,7 @@ namespace SuccessStory
         public string RetroAchievementsKey { get; set; } = string.Empty;
 
         public bool EnableLocal { get; set; } = false;
+        public bool EnableManual { get; set; } = false;
 
         public string NameSorting { get; set; } = "LastActivity";
         public bool IsAsc { get; set; } = false;
@@ -178,6 +179,7 @@ namespace SuccessStory
                 RetroAchievementsKey = savedSettings.RetroAchievementsKey;
 
                 EnableLocal = savedSettings.EnableLocal;
+                EnableManual = savedSettings.EnableManual;
 
                 NameSorting = savedSettings.NameSorting;
                 IsAsc = savedSettings.IsAsc;

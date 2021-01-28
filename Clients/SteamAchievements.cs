@@ -89,7 +89,7 @@ namespace SuccessStory.Clients
                     Result.HaveAchivements = true;
                     Result.Total = AllAchievements.Count;
                     Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
-                    Result.Locked = Result.Total - Result.Locked;
+                    Result.Locked = Result.Total - Result.Unlocked;
                     Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
                     Result.Items = AllAchievements;
                     Result.ItemsStats = AllStats;

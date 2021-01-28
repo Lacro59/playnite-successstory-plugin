@@ -59,6 +59,24 @@ namespace SuccessStory.Services
         }
 
 
+        public GameAchievements GetManual(Game game)
+        {
+            GameAchievements gameAchievements = GetDefault(game);
+
+            SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+            steamAPI.SetLocal();
+            gameAchievements = steamAPI.GetAchievements(game);
+            gameAchievements.IsManual = true;
+
+            Add(gameAchievements);
+
+#if DEBUG
+            logger.Debug($"{PluginName} [Ignored] - GetManual({game.Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
+#endif
+
+            return gameAchievements;
+        }
+
         public override GameAchievements Get(Guid Id, bool OnlyCache = false)
         {
             GameIsLoaded = false;
@@ -562,7 +580,7 @@ namespace SuccessStory.Services
         /// <returns></returns>
         public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath, string GameSourceName)
         {
-            if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
+            if (settings.EnableSteam && GameSourceName == "steam")
             {
                 if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
@@ -750,6 +768,26 @@ namespace SuccessStory.Services
             }
 
             logger.Warn($"SuccessStory - VerifToAddOrShow() find no action for {GameSourceName}");
+            return false;
+        }
+
+        public static bool IsAddOrShowManual(Game game, string GameSourceName)
+        {
+            if (game.PluginId.ToString() != "00000000-0000-0000-0000-000000000000")
+            {
+                return
+                (
+                    GameSourceName.ToLower().IndexOf("steam") == -1 &&
+                    GameSourceName.ToLower().IndexOf("gog") == -1 &&
+                    GameSourceName.ToLower().IndexOf("origin") == -1 &&
+                    GameSourceName.ToLower().IndexOf("xbox") == -1 &&
+                    GameSourceName.ToLower().IndexOf("playnite") == -1 &&
+                    GameSourceName.ToLower().IndexOf("hacked") == -1 &&
+                    GameSourceName.ToLower().IndexOf("retroachievements") == -1 &&
+                    GameSourceName.ToLower().IndexOf("rpcs3") == -1
+                );
+            }
+
             return false;
         }
 

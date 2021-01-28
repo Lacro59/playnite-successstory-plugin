@@ -32,5 +32,9 @@ namespace SuccessStory.Models
                 return NameWithDateUnlock;
             }
         }
+
+        public bool IsUnlock { get; set; }
+        public string IconImageUnlocked { get; set; }
+        public string IconImageLocked { get; set; }
     }
 }
