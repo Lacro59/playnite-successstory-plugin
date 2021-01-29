@@ -68,14 +68,14 @@ namespace SuccessStory.Views.Interface
         {
             List<Achievements> ListAchievements = gameAchievements.Items;
 
-            this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-            {
-                lbAchievements.ItemsSource = null;
-                lbAchievements.Items.Clear();
-            }));
-
             Task.Run(() =>
             {
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                {
+                    lbAchievements.ItemsSource = null;
+                    lbAchievements.Items.Clear();
+                }));
+
                 List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
 
                 for (int i = 0; i < ListAchievements.Count; i++)

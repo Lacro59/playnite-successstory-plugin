@@ -57,7 +57,7 @@ namespace SuccessStory.Models
                 }
 
                 string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
-                if (pathImageUnlocked.IsNullOrEmpty() && File.Exists(pathImageUnlocked))
+                if (pathImageUnlocked.IsNullOrEmpty() && !File.Exists(pathImageUnlocked))
                 {
                     pathImageUnlocked = TempUrlUnlocked;
                 }
@@ -96,7 +96,7 @@ namespace SuccessStory.Models
                 if (!UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked)
                 {
                     string pathImageLocked = PlayniteTools.GetCacheFile(CacheLocked, "SuccessStory");
-                    if (pathImageLocked.IsNullOrEmpty() && File.Exists(pathImageLocked))
+                    if (pathImageLocked.IsNullOrEmpty() && !File.Exists(pathImageLocked))
                     {
                         pathImageLocked = UrlLocked;
                     }
@@ -105,7 +105,7 @@ namespace SuccessStory.Models
                 else
                 {
                     string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
-                    if (pathImageUnlocked.IsNullOrEmpty() && File.Exists(pathImageUnlocked))
+                    if (pathImageUnlocked.IsNullOrEmpty() && !File.Exists(pathImageUnlocked))
                     {
                         pathImageUnlocked = UrlUnlocked;
                     }
