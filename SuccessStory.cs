@@ -184,7 +184,6 @@ namespace SuccessStory
             {
                 gameMenuItems.Add(new GameMenuItem
                 {
-                    // Delete & download localizations data for the selected game
                     MenuSection = resources.GetString("LOCSuccessStory"),
                     Description = resources.GetString("LOCCommonRefreshGameData"),
                     Action = (gameMenuItem) =>
@@ -236,6 +235,26 @@ namespace SuccessStory
                             var ViewExtension = new SuccessStoryEditManual(GameMenu);
                             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                             windowExtension.ShowDialog();
+                        }
+                    });
+
+                    gameMenuItems.Add(new GameMenuItem
+                    {
+                        MenuSection = resources.GetString("LOCSuccessStory"),
+                        Description = resources.GetString("LOCRemoveTitle"),
+                        Action = (gameMenuItem) =>
+                        {
+                            if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
+                            {
+                                PlayniteUiHelper.ResetToggle();
+                            }
+
+                            var TaskIntegrationUI = Task.Run(() =>
+                            {
+                                PluginDatabase.Remove(GameMenu);
+                                var dispatcherOp = successStoryUI.AddElements();
+                                dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(GameMenu); };
+                            });
                         }
                     });
                 }
