@@ -68,12 +68,6 @@ namespace SuccessStory.Views.Interface
 
             Task.Run(() =>
             {
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    PART_ScCompactView.Children.Clear();
-                    PART_ScCompactView.ColumnDefinitions.Clear();
-                }));
-
                 AchievementsList = new List<ListBoxAchievements>();
 
                 // Select data
@@ -174,6 +168,14 @@ namespace SuccessStory.Views.Interface
 
         private void PART_ScCompactView_IsLoaded(object sender, RoutedEventArgs e)
         {
+            if (double.IsNaN(PART_ScCompactView.ActualWidth) || PART_ScCompactView.ActualWidth == 0)
+            {
+                return;
+            }
+
+            PART_ScCompactView.Children.Clear();
+            PART_ScCompactView.ColumnDefinitions.Clear();
+
             // Prepare Grid 40x40 & add data
             double actualWidth = PART_ScCompactView.ActualWidth;
             int nbGrid = (int)actualWidth / 52;
@@ -259,6 +261,11 @@ namespace SuccessStory.Views.Interface
             else
             {
             }
+        }
+
+        private void PART_ScCompactView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            PART_ScCompactView_IsLoaded(null, null);
         }
     }
 }
