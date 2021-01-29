@@ -8,6 +8,8 @@
 
     <Border CornerRadius="{DynamicResource ControlCornerRadius}" BorderThickness="{DynamicResource ControlBorderThickness}" Background="Transparent" Padding="5"
             BorderBrush="{DynamicResource NormalBorderBrush}" MaxWidth="70">
-        <Grid Name="PART_ScCompactView" Loaded="PART_ScCompactView_IsLoaded" MinHeight="50" MaxWidth="50"></Grid>
+        <Grid Name="PART_ScCompactView" Loaded="PART_ScCompactView_IsLoaded" 
+              SizeChanged="PART_ScCompactView_SizeChanged"
+              MinHeight="50" MaxWidth="50"></Grid>
     </Border>
 </UserControl>
