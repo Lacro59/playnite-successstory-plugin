@@ -19,6 +19,9 @@ namespace SuccessStory.Models
         public string UrlLocked { get; set; }
         public DateTime? DateUnlocked { get; set; }
         public bool IsHidden { get; set; } = false;
+        /// <summary>
+        /// Rarety
+        /// </summary>
         public float Percent { get; set; } = 100;
 
         [JsonIgnore]
@@ -39,6 +42,9 @@ namespace SuccessStory.Models
                 return ImageFileName;
             }
         }
+        /// <summary>
+        /// Image for unlocked achievement
+        /// </summary>
         [JsonIgnore]
         public string ImageUnlocked
         {
@@ -79,6 +85,9 @@ namespace SuccessStory.Models
                 return ImageFileName;
             }
         }
+        /// <summary>
+        /// Image for locked achievement
+        /// </summary>
         [JsonIgnore]
         public string ImageLocked
         {

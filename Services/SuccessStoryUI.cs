@@ -196,6 +196,7 @@ namespace SuccessStory.Services
                     resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlocked", Value = 0 });
                     resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlockedDouble", Value = (double)0 });
                     resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlockedString", Value = "0" });
+                    resourcesLists.Add(new ResourcesList { Key = "Sc_ListAchievements", Value = new List<Achievements>() });
 
                     resourcesLists.Add(new ResourcesList { Key = "Sc_EnableIntegrationInCustomTheme", Value = PluginDatabase.PluginSettings.EnableIntegrationInCustomTheme });
                     resourcesLists.Add(new ResourcesList { Key = "Sc_IntegrationShowGraphic", Value = PluginDatabase.PluginSettings.IntegrationShowGraphic });
@@ -230,6 +231,7 @@ namespace SuccessStory.Services
                         resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlocked", Value = successStories.Progression });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlockedDouble", Value = (double)successStories.Progression });
                         resourcesLists.Add(new ResourcesList { Key = "Sc_PercentageUnlockedString", Value = successStories.Progression.ToString() });
+                        resourcesLists.Add(new ResourcesList { Key = "Sc_ListAchievements", Value = successStories.Items });
                     }
 
                     // If not cancel, show
