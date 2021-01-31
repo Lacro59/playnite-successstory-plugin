@@ -418,7 +418,10 @@ namespace SuccessStory
             // Refresh Achievements database for game played.
             var TaskGameStopped = Task.Run(() =>
             {
-                PluginDatabase.Remove(game);
+                if (!PluginDatabase.Get(game, true).IsManual)
+                {
+                    PluginDatabase.Remove(game);
+                }
 
                 DispatcherOperation dispatcherOp = null;
                 if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
