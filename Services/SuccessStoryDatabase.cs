@@ -885,11 +885,18 @@ namespace SuccessStory.Services
                 {
                     var GameAchievements = item.Value;
 
-                    if (GameAchievements.HaveAchivements && _PlayniteApi.Database.Games.Get(item.Key).Playtime > 0)
+                    if (_PlayniteApi.Database.Games.Get(item.Key) != null)
                     {
-                        Total += GameAchievements.Total;
-                        Locked += GameAchievements.Locked;
-                        Unlocked += GameAchievements.Unlocked;
+                        if (GameAchievements.HaveAchivements && _PlayniteApi.Database.Games.Get(item.Key).Playtime > 0)
+                        {
+                            Total += GameAchievements.Total;
+                            Locked += GameAchievements.Locked;
+                            Unlocked += GameAchievements.Unlocked;
+                        }
+                    }
+                    else
+                    {
+                        logger.Warn($"SuccessStory - Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
                     }
                 }
             }
