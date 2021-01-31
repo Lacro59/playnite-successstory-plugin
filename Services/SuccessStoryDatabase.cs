@@ -580,7 +580,7 @@ namespace SuccessStory.Services
         /// <returns></returns>
         public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath, string GameSourceName)
         {
-            if (settings.EnableSteam && GameSourceName == "steam")
+            if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
                 if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
