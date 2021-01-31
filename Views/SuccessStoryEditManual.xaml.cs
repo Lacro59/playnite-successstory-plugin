@@ -240,6 +240,7 @@ namespace SuccessStory.Views
 
             gameAchievements.Unlocked = gameAchievements.Items.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
             gameAchievements.Locked = gameAchievements.Total - gameAchievements.Unlocked;
+            gameAchievements.Progression = (gameAchievements.Total != 0) ? (int)Math.Ceiling((double)(gameAchievements.Unlocked * 100 / gameAchievements.Total)) : 0;
 
             PluginDatabase.Update(gameAchievements);
 
