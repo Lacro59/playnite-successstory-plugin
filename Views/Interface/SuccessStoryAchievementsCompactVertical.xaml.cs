@@ -216,18 +216,32 @@ namespace SuccessStory.Views.Interface
 
                             if (AchievementsList[i].IsGray)
                             {
-                                var tmpImg = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
-                                gridImage.Source = ImageTools.ConvertBitmapImage(tmpImg, ImageColor.Gray);
-
-                                ImageBrush imgB = new ImageBrush
+                                if (AchievementsList[i].Icon.IsNullOrEmpty() || AchievementsList[i].IconImage.IsNullOrEmpty())
                                 {
-                                    ImageSource = new BitmapImage(new Uri(AchievementsList[i].IconImage, UriKind.Absolute))
-                                };
-                                gridImage.OpacityMask = imgB;
+                                    logger.Warn($"SuccessStory - Empty image");
+                                }
+                                else
+                                {
+                                    var tmpImg = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
+                                    gridImage.Source = ImageTools.ConvertBitmapImage(tmpImg, ImageColor.Gray);
+
+                                    ImageBrush imgB = new ImageBrush
+                                    {
+                                        ImageSource = new BitmapImage(new Uri(AchievementsList[i].IconImage, UriKind.Absolute))
+                                    };
+                                    gridImage.OpacityMask = imgB;
+                                }
                             }
                             else
                             {
-                                gridImage.Source = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
+                                if (AchievementsList[i].Icon.IsNullOrEmpty())
+                                {
+                                    logger.Warn($"SuccessStory - Empty image");
+                                }
+                                else
+                                {
+                                    gridImage.Source = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
+                                }
                             }
 
                             DropShadowEffect myDropShadowEffect = new DropShadowEffect();
