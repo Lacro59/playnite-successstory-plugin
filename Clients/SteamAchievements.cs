@@ -499,42 +499,59 @@ namespace SuccessStory.Clients
                 {
                     KeyValue SchemaForGame = steamWebAPI.GetSchemaForGame(appid: AppId, l: LocalLang);
 
-                    foreach (KeyValue AchievementsData in SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "achievements").Children)
+                    try
                     {
-                        AllAchievements.Find(x => x.ApiName == AchievementsData.Name).IsHidden = AchievementsData.Children.Find(x => x.Name == "hidden").Value == "1";
-                        AllAchievements.Find(x => x.ApiName == AchievementsData.Name).UrlUnlocked = AchievementsData.Children.Find(x => x.Name == "icon").Value;
-                        AllAchievements.Find(x => x.ApiName == AchievementsData.Name).UrlLocked = AchievementsData.Children.Find(x => x.Name == "icongray").Value;
-
-                        if (AllAchievements.Find(x => x.ApiName == AchievementsData.Name).IsHidden)
+                        foreach (KeyValue AchievementsData in SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "achievements").Children)
                         {
-                            AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Description = FindHiddenDescription(AppId, AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Name);
+                            AllAchievements.Find(x => x.ApiName == AchievementsData.Name).IsHidden = AchievementsData.Children.Find(x => x.Name == "hidden").Value == "1";
+                            AllAchievements.Find(x => x.ApiName == AchievementsData.Name).UrlUnlocked = AchievementsData.Children.Find(x => x.Name == "icon").Value;
+                            AllAchievements.Find(x => x.ApiName == AchievementsData.Name).UrlLocked = AchievementsData.Children.Find(x => x.Name == "icongray").Value;
+
+                            if (AllAchievements.Find(x => x.ApiName == AchievementsData.Name).IsHidden)
+                            {
+                                AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Description = FindHiddenDescription(AppId, AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Name);
+                            }
                         }
                     }
-
-                    var ListStatsData = SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "stats").Children;
-                    foreach (KeyValue StatsData in ListStatsData)
+                    catch (Exception ex)
                     {
-                        if (AllStats.Find(x => x.Name == StatsData.Name) == null)
-                        {
-                            double.TryParse(StatsData.Children.Find(x => x.Name == "defaultvalue").Value, out double ValueStats);
+                        Common.LogError(ex, "SuccessStory", $"Error on AchievementsData({AppId}, {LocalLang})");
+                    }
 
-                            AllStats.Add(new GameStats
-                            {
-                                Name = StatsData.Name,
-                                DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value,
-                                Value = ValueStats
-                        });
-                        }
-                        else
+                    try
+                    { 
+                        var ListStatsData = SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "stats").Children;
+                        foreach (KeyValue StatsData in ListStatsData)
                         {
-                            AllStats.Find(x => x.Name == StatsData.Name).DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value;
+                            if (AllStats.Find(x => x.Name == StatsData.Name) == null)
+                            {
+                                double.TryParse(StatsData.Children.Find(x => x.Name == "defaultvalue").Value, out double ValueStats);
+
+                                AllStats.Add(new GameStats
+                                {
+                                    Name = StatsData.Name,
+                                    DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value,
+                                    Value = ValueStats
+                                });
+                            }
+                            else
+                            {
+                                AllStats.Find(x => x.Name == StatsData.Name).DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value;
+                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Warn($"SuccessStory - No Steam stats for {AppId}");
+#if DEBUG
+                        Common.LogError(ex, "SuccessStory [Ignored]", $"Error on AvailableGameStats({AppId}, {LocalLang})");
+#endif
                     }
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                Common.LogError(ex, "SuccessStory", $"Error on GetSchemaForGame({AppId}, {LocalLang})");
             }
 
             return Tuple.Create(AllAchievements, AllStats);
