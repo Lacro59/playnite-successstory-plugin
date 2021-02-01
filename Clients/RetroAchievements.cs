@@ -229,7 +229,7 @@ namespace SuccessStory.Clients
                 consoleID = FindConsole.ID;
             }
 
-            if (consoleID != 0)
+            if (consoleID == 0)
             {
                 foreach (RA_Console ra_Console in ra_Consoles.ListConsoles)
                 {
@@ -324,14 +324,14 @@ namespace SuccessStory.Clients
             {
                 return GameId;
             }
-
-            // Exclude for performance
+            
             if (FilePath.Contains(".rar") && FilePath.Contains(".7z"))
             {
                 return GameId;
             }
             if (FilePath.Contains(".zip"))
             {
+                // Exclude for performance
                 FileInfo fi = new FileInfo(FilePath);
                 if (fi.Length > 10000000)
                 {
@@ -348,6 +348,16 @@ namespace SuccessStory.Clients
                 logger.Warn($"SuccessStory - No file found for RA hash - {FilePath}");
                 ZipFileManafeRemove();
                 return GameId;
+            }
+            else
+            {
+                // Exclude for performance
+                FileInfo fi = new FileInfo(FilePath);
+                if (fi.Length > 800000000)
+                {
+                    logger.Warn($"SuccessStory - The file is too long - {FilePath}");
+                    return GameId;
+                }
             }
             
             HashMD5 = GetHash(FilePath, PlatformType.All);
@@ -434,114 +444,122 @@ namespace SuccessStory.Clients
 
         private string GetHash(string FilePath, PlatformType platformType)
         {
-            byte[] byteSequence = File.ReadAllBytes(FilePath);
-            long length = new FileInfo(FilePath).Length;
-
-            byte[] byteSequenceFinal = byteSequence;
-
-            if (platformType == PlatformType.SNES)
+            try
             {
-                try
-                {
-                    if (length > 512)
-                    {
-                        byteSequenceFinal = new byte[byteSequence.Length - 512];
-                        Buffer.BlockCopy(byteSequence, 512, byteSequenceFinal, 0, byteSequenceFinal.Length);
-                    }
-                    else
-                    {
-                        byteSequenceFinal = byteSequence;
-                    }
-                }
-                catch(Exception ex)
-                {
-#if DEBUG
-                    Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
-                }
-            }
+                byte[] byteSequence = File.ReadAllBytes(FilePath);
+                long length = new FileInfo(FilePath).Length;
 
-            if (platformType == PlatformType.NES)
+                byte[] byteSequenceFinal = byteSequence;
+
+                if (platformType == PlatformType.SNES)
+                {
+                    try
+                    {
+                        if (length > 512)
+                        {
+                            byteSequenceFinal = new byte[byteSequence.Length - 512];
+                            Buffer.BlockCopy(byteSequence, 512, byteSequenceFinal, 0, byteSequenceFinal.Length);
+                        }
+                        else
+                        {
+                            byteSequenceFinal = byteSequence;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+#if DEBUG
+                        Common.LogError(ex, "SuccessStory [Ignored]");
+#endif
+                    }
+                }
+
+                if (platformType == PlatformType.NES)
+                {
+                    try
+                    {
+                        string hexData = Tools.ToHex(byteSequence);
+
+                        //$4E $45 $53 $1A
+                        if (hexData.ToLower().IndexOf("4e45531a") == 0)
+                        {
+                            byteSequenceFinal = new byte[byteSequence.Length - 16];
+                            Buffer.BlockCopy(byteSequence, 16, byteSequenceFinal, 0, byteSequenceFinal.Length);
+                        }
+                        else
+                        {
+                            byteSequenceFinal = byteSequence;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+#if DEBUG
+                        Common.LogError(ex, "SuccessStory [Ignored]");
+#endif
+                    }
+                }
+
+                if (platformType == PlatformType.Famicom)
+                {
+                    try
+                    {
+                        string hexData = Tools.ToHex(byteSequence);
+
+                        //$46 $44 $53 $1A
+                        if (hexData.ToLower().IndexOf("4644531a") == 0)
+                        {
+                            byteSequenceFinal = new byte[byteSequence.Length - 16];
+                            Buffer.BlockCopy(byteSequence, 16, byteSequenceFinal, 0, byteSequenceFinal.Length);
+                        }
+                        else
+                        {
+                            byteSequenceFinal = byteSequence;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+#if DEBUG
+                        Common.LogError(ex, "SuccessStory [Ignored]");
+#endif
+                    }
+                }
+
+                if (platformType == PlatformType.Sega_CD_Saturn)
+                {
+                    try
+                    {
+                        byteSequenceFinal = new byte[512];
+                        Buffer.BlockCopy(byteSequence, 0, byteSequenceFinal, 0, 512);
+                    }
+                    catch (Exception ex)
+                    {
+#if DEBUG
+                        Common.LogError(ex, "SuccessStory [Ignored]");
+#endif
+                    }
+                }
+
+                if (platformType == PlatformType.Arcade)
+                {
+                    try
+                    {
+                        string FileName = Path.GetFileNameWithoutExtension(FilePath);
+                        byteSequenceFinal = Encoding.ASCII.GetBytes(FileName);
+                    }
+                    catch (Exception ex)
+                    {
+#if DEBUG
+                        Common.LogError(ex, "SuccessStory [Ignored]");
+#endif
+                    }
+                }
+
+                return GetMd5(byteSequenceFinal);
+            }
+            catch (Exception ex)
             {
-                try
-                { 
-                    string hexData = Tools.ToHex(byteSequence);
-
-                    //$4E $45 $53 $1A
-                    if (hexData.ToLower().IndexOf("4e45531a") == 0)
-                    {
-                        byteSequenceFinal = new byte[byteSequence.Length - 16];
-                        Buffer.BlockCopy(byteSequence, 16, byteSequenceFinal, 0, byteSequenceFinal.Length);
-                    }
-                    else
-                    {
-                        byteSequenceFinal = byteSequence;
-                    }
-                }
-                catch (Exception ex)
-                {
-#if DEBUG
-                    Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
-                }
+                Common.LogError(ex, "SuccessStory");
+                return string.Empty;
             }
-
-            if (platformType == PlatformType.Famicom)
-            {
-                try
-                { 
-                    string hexData = Tools.ToHex(byteSequence);
-
-                    //$46 $44 $53 $1A
-                    if (hexData.ToLower().IndexOf("4644531a") == 0)
-                    {
-                        byteSequenceFinal = new byte[byteSequence.Length - 16];
-                        Buffer.BlockCopy(byteSequence, 16, byteSequenceFinal, 0, byteSequenceFinal.Length);
-                    }
-                    else
-                    {
-                        byteSequenceFinal = byteSequence;
-                    }
-                }
-                catch (Exception ex)
-                {
-#if DEBUG
-                    Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
-                }
-            }
-
-            if (platformType == PlatformType.Sega_CD_Saturn)
-            {
-                try
-                { 
-                    byteSequenceFinal = new byte[512];
-                    Buffer.BlockCopy(byteSequence, 0, byteSequenceFinal, 0, 512);
-                }
-                catch (Exception ex)
-                {
-#if DEBUG
-                    Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
-                }
-            }
-
-            if (platformType == PlatformType.Arcade)
-            {
-                try
-                { 
-                    string FileName = Path.GetFileNameWithoutExtension(FilePath);
-                    byteSequenceFinal = Encoding.ASCII.GetBytes(FileName);
-                }
-                catch (Exception ex)
-                {
-#if DEBUG
-                    Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
-                }
-            }
-
-            return GetMd5(byteSequenceFinal);
         }
 
         private static string GetMd5(byte[] byteSequence)
