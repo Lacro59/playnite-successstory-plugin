@@ -1,0 +1,20 @@
+name: Build
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+
+    - uses: nuget/setup-nuget@v1
+    - name: Restore packages in SuccessStory.sln
+      run: nuget restore SuccessStory.sln
+    - name: Restore packages in AchievementsLocal.sln
+      run: nuget restore playnite-successstory-extension/AchievementsLocal.sln
+
+    - uses: microsoft/setup-msbuild@v1.0.2
+    - name: Build
+      run: msbuild SuccessStory.sln /t:build
