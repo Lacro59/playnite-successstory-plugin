@@ -32,6 +32,8 @@ namespace SuccessStory.Views
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         private GameAchievements gameAchievements;
 
+        private List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
+
 
         public SuccessStoryEditManual(Game game)
         {
@@ -45,8 +47,7 @@ namespace SuccessStory.Views
         {
             List<Achievements> ListAchievements = gameAchievements.Items;
 
-
-            List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
+            ListBoxAchievements = new List<ListBoxAchievements>();
 
             for (int i = 0; i < ListAchievements.Count; i++)
             {
@@ -253,6 +254,12 @@ namespace SuccessStory.Views
             });
 
             ((Window)this.Parent).Close();
+        }
+
+
+        private void SearchElement_KeyUp(object sender, KeyEventArgs e)
+        {
+            lbAchievements.ItemsSource = ListBoxAchievements.FindAll(x => x.Name.ToLower().Contains(SearchElement.Text.ToLower()));
         }
     }
 }
