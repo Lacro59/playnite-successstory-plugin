@@ -336,6 +336,18 @@ namespace SuccessStory
                 }
             );
 
+            mainMenuItems.Add(
+                new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCCommonSelectData"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.GetSelectDatas();
+                    }
+                }
+            );
+
 #if DEBUG
             mainMenuItems.Add(new MainMenuItem
             {

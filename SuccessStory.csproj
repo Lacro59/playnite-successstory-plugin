@@ -135,6 +135,9 @@
     <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForTime.xaml.cs">
       <DependentUpon>CustomerToolTipForTime.xaml</DependentUpon>
     </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.xaml.cs">
+      <DependentUpon>OptionsDownloadData.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\OldToNew.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />
     <Compile Include="Services\SuccessStoryUI.cs" />
@@ -328,6 +331,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForTime.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
