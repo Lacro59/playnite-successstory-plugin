@@ -211,7 +211,7 @@ namespace SuccessStory.Views.Interface
                             if (_withUnlocked)
                             {
                                 var converter = new LocalDateTimeConverter();
-                                gridImage.ToolTip += AchievementsList[i].NameWithDateUnlock;
+                                gridImage.ToolTip = AchievementsList[i].NameWithDateUnlock;
                             }
 
                             if (AchievementsList[i].IsGray)
