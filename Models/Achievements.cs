@@ -20,7 +20,7 @@ namespace SuccessStory.Models
         public DateTime? DateUnlocked { get; set; }
         public bool IsHidden { get; set; } = false;
         /// <summary>
-        /// Rarety
+        /// Rarety indicator
         /// </summary>
         public float Percent { get; set; } = 100;
 

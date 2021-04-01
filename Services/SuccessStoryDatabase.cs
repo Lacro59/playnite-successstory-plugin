@@ -829,6 +829,7 @@ namespace SuccessStory.Services
             PluginSettings.Settings.Unlocked = gameAchievements.Unlocked;
             PluginSettings.Settings.Locked = gameAchievements.Locked;
             PluginSettings.Settings.Total = gameAchievements.Total;
+            PluginSettings.Settings.ListAchievements = gameAchievements.Items;
         }
 
         public override void Games_ItemUpdated(object sender, ItemUpdatedEventArgs<Game> e)

@@ -4,6 +4,7 @@ using CommonPluginsShared;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SuccessStory.Services;
+using SuccessStory.Models;
 using Playnite.SDK.Data;
 using SuccessStory.Views;
 
@@ -260,6 +261,18 @@ namespace SuccessStory
             set
             {
                 _Total = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [DontSerialize]
+        private List<Achievements> _ListAchievements { get; set; } = new List<Achievements>();
+        public List<Achievements> ListAchievements
+        {
+            get => _ListAchievements;
+            set
+            {
+                _ListAchievements = value;
                 OnPropertyChanged();
             }
         }
