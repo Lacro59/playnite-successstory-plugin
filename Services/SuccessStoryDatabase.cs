@@ -12,16 +12,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommonPluginsShared.Interfaces;
 
 namespace SuccessStory.Services
 {
-    public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettings, SuccessStoryCollection, GameAchievements>
+    public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettingsViewModel, SuccessStoryCollection, GameAchievements>
     {
-        private SuccessStory _plugin;
+        public SuccessStory Plugin;
 
-        private GogAchievements gogAPI { get; set; }
-        private OriginAchievements originAPI { get; set; }
-        private XboxAchievements xboxAPI { get; set; }
+        private GogAchievements GogAPI { get; set; }
+        private OriginAchievements OriginAPI { get; set; }
+        private XboxAchievements XboxAPI { get; set; }
 
         public static bool? VerifToAddOrShowGog = null;
         public static bool? VerifToAddOrShowOrigin = null;
@@ -35,26 +36,25 @@ namespace SuccessStory.Services
         public static CumulErrors ListErrors = new CumulErrors();
 
 
-        public SuccessStoryDatabase(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings PluginSettings, string PluginUserDataPath) : base(PlayniteApi, PluginSettings, PluginUserDataPath)
+        public SuccessStoryDatabase(IPlayniteAPI PlayniteApi, SuccessStorySettingsViewModel PluginSettings, string PluginUserDataPath) : base(PlayniteApi, PluginSettings, "SuccessStory", PluginUserDataPath)
         {
-            _plugin = plugin;
 
-            PluginName = "SuccessStory";
+        }
 
-            ControlAndCreateDirectory(PluginUserDataPath, "Achievements");
+
+        public void InitializeClient(SuccessStory Plugin)
+        {
+            this.Plugin = Plugin;
         }
 
 
         protected override bool LoadDatabase()
         {
-            IsLoaded = false;
-            Database = new SuccessStoryCollection(PluginDatabaseDirectory);
-            Database.SetGameInfo<Achievements>(_PlayniteApi);
+            Database = new SuccessStoryCollection(Paths.PluginDatabasePath);
+            Database.SetGameInfo<Achievements>(PlayniteApi);
 
-            GameSelectedData = new GameAchievements();
             GetPluginTags();
 
-            IsLoaded = true;
             return true;
         }
 
@@ -63,47 +63,35 @@ namespace SuccessStory.Services
         {
             GameAchievements gameAchievements = GetDefault(game);
 
-            SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+            SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
             steamAPI.SetLocal();
             gameAchievements = steamAPI.GetAchievements(game);
             gameAchievements.IsManual = true;
 
             Add(gameAchievements);
 
-#if DEBUG
-            logger.Debug($"{PluginName} [Ignored] - GetManual({game.Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
-#endif
+            Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
 
             return gameAchievements;
         }
 
-        public override GameAchievements Get(Guid Id, bool OnlyCache = false)
+        public override GameAchievements Get(Guid Id, bool OnlyCache = false, bool Force = false)
         {
-            GameIsLoaded = false;
             GameAchievements gameAchievements = base.GetOnlyCache(Id);
-#if DEBUG
-            logger.Debug($"{PluginName} [Ignored] - GetFromDb({Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
-#endif
 
             // Get from web
-            if (gameAchievements == null && !OnlyCache)
+            if ((gameAchievements == null && !OnlyCache) || Force)
             {
-                gameAchievements = GetFromWeb(_PlayniteApi.Database.Games.Get(Id));
-                Add(gameAchievements);
-
-#if DEBUG
-                logger.Debug($"{PluginName} [Ignored] - GetFromWeb({Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
-#endif
+                gameAchievements = GetWeb(Id);
+                AddOrUpdate(gameAchievements);
             }
-
-            if (gameAchievements == null)
+            else if (gameAchievements == null)
             {
-                Game game = _PlayniteApi.Database.Games.Get(Id);
+                Game game = PlayniteApi.Database.Games.Get(Id);
                 gameAchievements = GetDefault(game);
                 Add(gameAchievements);
             }
-
-            GameIsLoaded = true;
+            
             return gameAchievements;
         }
 
@@ -112,85 +100,80 @@ namespace SuccessStory.Services
         /// Generate database achivements for the game if achievement exist and game not exist in database.
         /// </summary>
         /// <param name="game"></param>
-        public GameAchievements GetFromWeb(Game game)
+        public override GameAchievements GetWeb(Guid Id)
         {
+            Game game = PlayniteApi.Database.Games.Get(Id);
             GameAchievements gameAchievements = GetDefault(game);
 
             Guid GameId = game.Id;
             Guid GameSourceId = game.SourceId;
-            string GameSourceName = PlayniteTools.GetSourceName(_PlayniteApi, game);
+            string GameSourceName = PlayniteTools.GetSourceName(PlayniteApi, game);
 
             List<Achievements> Achievements = new List<Achievements>();
 
             // Generate database only this source
-            if (VerifToAddOrShow(_plugin, _PlayniteApi, PluginSettings, PluginUserDataPath, GameSourceName))
+            if (VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, GameSourceName))
             {
-#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - VerifToAddOrShow({game.Name}, {GameSourceName}) - OK");
-#endif
+                Common.LogDebug(true, $"VerifToAddOrShow({game.Name}, {GameSourceName}) - OK");
 
                 // TODO one func
                 if (GameSourceName.ToLower() == "gog")
                 {
-                    if (gogAPI == null)
+                    if (GogAPI == null)
                     {
-                        gogAPI = new GogAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                        GogAPI = new GogAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     }
-                    gameAchievements = gogAPI.GetAchievements(game);
+                    gameAchievements = GogAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "steam")
                 {
-                    SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     gameAchievements = steamAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "origin")
                 {
-                    if (originAPI == null)
+                    if (OriginAPI == null)
                     {
-                        originAPI = new OriginAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                        OriginAPI = new OriginAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     }
-                    gameAchievements = originAPI.GetAchievements(game);
+                    gameAchievements = OriginAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "xbox")
                 {
-                    if (xboxAPI == null)
+                    if (XboxAPI == null)
                     {
-                        xboxAPI = new XboxAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                        XboxAPI = new XboxAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     }
-                    gameAchievements = xboxAPI.GetAchievements(game);
+                    gameAchievements = XboxAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "playnite" || GameSourceName.ToLower() == "hacked")
                 {
-                    SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     steamAPI.SetLocal();
                     gameAchievements = steamAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "retroachievements")
                 {
-                    RetroAchievements retroAchievementsAPI = new RetroAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    RetroAchievements retroAchievementsAPI = new RetroAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     gameAchievements = retroAchievementsAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "rpcs3")
                 {
-                    Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                    Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     gameAchievements = rpcs3Achievements.GetAchievements(game);
                 }
 
-#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - Achievements for {game.Name} - {GameSourceName} - {JsonConvert.SerializeObject(gameAchievements)}");
-#endif
+                Common.LogDebug(true, $"Achievements for {game.Name} - {GameSourceName} - {JsonConvert.SerializeObject(gameAchievements)}");
             }
             else
             {
-#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - VerifToAddOrShow({game.Name}, {GameSourceName}) - KO");
-#endif
+                Common.LogDebug(true, $"VerifToAddOrShow({game.Name}, {GameSourceName}) - KO");
             }
 
             return gameAchievements;
@@ -249,7 +232,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", "Error in load GetCountByMonth()");
+                    Common.LogError(ex, false, "Error in load GetCountByMonth()");
                 }
             }
             // Achievement for a game
@@ -296,7 +279,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", $"Error in load GetCountByMonth({GameID.ToString()})");
+                    Common.LogError(ex, false, $"Error in load GetCountByMonth({GameID.ToString()})");
                 }
             }
 
@@ -307,39 +290,39 @@ namespace SuccessStory.Services
         {
             List<string> tempSourcesLabels = new List<string>();
 
-            if (PluginSettings.EnableRetroAchievementsView && PluginSettings.EnableRetroAchievements)
+            if (PluginSettings.Settings.EnableRetroAchievementsView && PluginSettings.Settings.EnableRetroAchievements)
             {
                 if (_isRetroachievements)
                 {
-                    if (PluginSettings.EnableRetroAchievements)
+                    if (PluginSettings.Settings.EnableRetroAchievements)
                     {
                         tempSourcesLabels.Add("RetroAchievements");
                     }
                 }
                 else
                 {
-                    if (PluginSettings.EnableGog)
+                    if (PluginSettings.Settings.EnableGog)
                     {
                         tempSourcesLabels.Add("GOG");
                     }
-                    if (PluginSettings.EnableSteam)
+                    if (PluginSettings.Settings.EnableSteam)
                     {
                         tempSourcesLabels.Add("Steam");
                     }
-                    if (PluginSettings.EnableOrigin)
+                    if (PluginSettings.Settings.EnableOrigin)
                     {
                         tempSourcesLabels.Add("Origin");
                     }
-                    if (PluginSettings.EnableXbox)
+                    if (PluginSettings.Settings.EnableXbox)
                     {
                         tempSourcesLabels.Add("Xbox");
                     }
-                    if (PluginSettings.EnableLocal)
+                    if (PluginSettings.Settings.EnableLocal)
                     {
                         tempSourcesLabels.Add("Playnite");
                         tempSourcesLabels.Add("Hacked");
                     }
-                    if (PluginSettings.EnableRpcs3Achievements)
+                    if (PluginSettings.Settings.EnableRpcs3Achievements)
                     {
                         tempSourcesLabels.Add("RPCS3");
                     }
@@ -347,31 +330,31 @@ namespace SuccessStory.Services
             }
             else
             {
-                if (PluginSettings.EnableGog)
+                if (PluginSettings.Settings.EnableGog)
                 {
                     tempSourcesLabels.Add("GOG");
                 }
-                if (PluginSettings.EnableSteam)
+                if (PluginSettings.Settings.EnableSteam)
                 {
                     tempSourcesLabels.Add("Steam");
                 }
-                if (PluginSettings.EnableOrigin)
+                if (PluginSettings.Settings.EnableOrigin)
                 {
                     tempSourcesLabels.Add("Origin");
                 }
-                if (PluginSettings.EnableXbox)
+                if (PluginSettings.Settings.EnableXbox)
                 {
                     tempSourcesLabels.Add("Xbox");
                 }
-                if (PluginSettings.EnableRetroAchievements)
+                if (PluginSettings.Settings.EnableRetroAchievements)
                 {
                     tempSourcesLabels.Add("RetroAchievements");
                 }
-                if (PluginSettings.EnableRpcs3Achievements)
+                if (PluginSettings.Settings.EnableRpcs3Achievements)
                 {
                     tempSourcesLabels.Add("RPCS3");
                 }
-                if (PluginSettings.EnableLocal)
+                if (PluginSettings.Settings.EnableLocal)
                 {
                     tempSourcesLabels.Add("Playnite");
                     tempSourcesLabels.Add("Hacked");
@@ -402,7 +385,7 @@ namespace SuccessStory.Services
 
                 try
                 {
-                    string SourceName = PlayniteTools.GetSourceName(_PlayniteApi, item.Key);
+                    string SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Key);
 
                     foreach (Achievements achievements in item.Value.Items)
                     {
@@ -425,7 +408,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", $"Error on GetCountBySources() for {item.Key}");
+                    Common.LogError(ex, false, $"Error on GetCountBySources() for {item.Key}");
                 }
             }
 
@@ -516,7 +499,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", $"Error in load GetCountByDay()");
+                    Common.LogError(ex, false, $"Error in load GetCountByDay()");
                 }
             }
             // Achievement for a game
@@ -564,7 +547,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", $"Error in load GetCountByDay({GameID.ToString()})");
+                    Common.LogError(ex, false, $"Error in load GetCountByDay({GameID.ToString()})");
                 }
             }
 
@@ -702,16 +685,14 @@ namespace SuccessStory.Services
                 {
                     XboxAchievements xboxAchievements = new XboxAchievements(PlayniteApi, settings, PluginUserDataPath);
 
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
-#endif
+                    Common.LogDebug(true, $"VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
+
                     if (VerifToAddOrShowXbox == null)
                     {
                         VerifToAddOrShowXbox = xboxAchievements.IsConnected();
                     }
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
-#endif
+
+                    Common.LogDebug(true, $"VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
 
                     if (!(bool)VerifToAddOrShowXbox)
                     {
@@ -806,23 +787,23 @@ namespace SuccessStory.Services
                     break;
 
                 case "gog":
-                    if (!PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", _PlayniteApi.Paths.ConfigurationPath) && PluginSettings.EnableGog && gogAPI == null)
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", PlayniteApi.Paths.ConfigurationPath) && PluginSettings.Settings.EnableGog && GogAPI == null)
                     {
-                        gogAPI = new GogAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                        GogAPI = new GogAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     }
                     break;
 
                 case "origin":
-                    if (!PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary", _PlayniteApi.Paths.ConfigurationPath) && originAPI == null)
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary", PlayniteApi.Paths.ConfigurationPath) && OriginAPI == null)
                     {
-                        originAPI = new OriginAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                        OriginAPI = new OriginAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     }
                     break;
 
                 case "Xbox":
-                    if (!PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary", _PlayniteApi.Paths.ConfigurationPath) && xboxAPI == null)
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary", PlayniteApi.Paths.ConfigurationPath) && XboxAPI == null)
                     {
-                        xboxAPI = new XboxAchievements(_PlayniteApi, PluginSettings, PluginUserDataPath);
+                        XboxAPI = new XboxAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
                     }
                     break;
 
@@ -835,6 +816,27 @@ namespace SuccessStory.Services
         public bool VerifAchievementsLoad(Guid gameID)
         {
             return GetOnlyCache(gameID) != null;
+        }
+
+
+        public override void SetThemesResources(Game game)
+        {
+            GameAchievements gameAchievements = Get(game, true);
+
+            PluginSettings.Settings.HasData = gameAchievements.HasData;
+
+            PluginSettings.Settings.Is100Percent = gameAchievements.Is100Percent;
+            PluginSettings.Settings.Unlocked = gameAchievements.Unlocked;
+            PluginSettings.Settings.Locked = gameAchievements.Locked;
+            PluginSettings.Settings.Total = gameAchievements.Total;
+        }
+
+        public override void Games_ItemUpdated(object sender, ItemUpdatedEventArgs<Game> e)
+        {
+            foreach (var GameUpdated in e.UpdatedItems)
+            {
+                Database.SetGameInfo<Achievements>(PlayniteApi, GameUpdated.NewData.Id);
+            }
         }
 
 
@@ -866,7 +868,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStroy", $"Error on Progession()");
+                Common.LogError(ex, false, $"Error on Progession()");
             }
 
             return Result;
@@ -885,9 +887,9 @@ namespace SuccessStory.Services
                 {
                     var GameAchievements = item.Value;
 
-                    if (_PlayniteApi.Database.Games.Get(item.Key) != null)
+                    if (PlayniteApi.Database.Games.Get(item.Key) != null)
                     {
-                        if (GameAchievements.HaveAchivements && _PlayniteApi.Database.Games.Get(item.Key).Playtime > 0)
+                        if (GameAchievements.HaveAchivements && PlayniteApi.Database.Games.Get(item.Key).Playtime > 0)
                         {
                             Total += GameAchievements.Total;
                             Locked += GameAchievements.Locked;
@@ -902,7 +904,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStroy", $"Error on ProgessionLaunched()");
+                Common.LogError(ex, false, $"Error on ProgessionLaunched()");
             }
 
             Result.Total = Total;
@@ -937,7 +939,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStroy", $"Error on ProgessionGame()");
+                Common.LogError(ex, false, $"Error on ProgessionGame()");
             }
 
             Result.Total = Total;
@@ -960,7 +962,7 @@ namespace SuccessStory.Services
                 foreach (var item in Database.Items)
                 {
                     Guid Id = item.Key;
-                    Game Game = _PlayniteApi.Database.Games.Get(Id);
+                    Game Game = PlayniteApi.Database.Games.Get(Id);
                     var GameAchievements = item.Value;
 
                     if (GameAchievements.HaveAchivements && Game.SourceId == GameSourceId)
@@ -973,7 +975,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStroy", $"Error on ProgessionSource()");
+                Common.LogError(ex, false, $"Error on ProgessionSource()");
             }
 
             Result.Total = Total;

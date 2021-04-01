@@ -25,76 +25,88 @@ using System.Diagnostics;
 using SuccessStory.Services;
 using System.Windows.Automation;
 using System.Windows.Threading;
+using CommonPluginsShared.PlayniteExtended;
+using System.Windows.Media;
+using CommonPluginsShared.Controls;
+using SuccessStory.Controls;
 
 namespace SuccessStory
 {
-    public class SuccessStory : Plugin
+    public class SuccessStory : PluginExtended<SuccessStorySettingsViewModel, SuccessStoryDatabase>
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
-
-        private SuccessStorySettings settings { get; set; }
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
-        
-        private readonly TaskHelper taskHelper = new TaskHelper();
 
-        public static string pluginFolder;
-        public static SuccessStoryDatabase PluginDatabase;
-        public static SuccessStoryUI successStoryUI { get; set; }
-
-        CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         private OldToNew oldToNew;
 
 
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
-            settings = new SuccessStorySettings(this);
+            PluginDatabase.InitializeClient(this);
 
             // Old database
             oldToNew = new OldToNew(this.GetPluginUserDataPath());
 
-            // Loading plugin database 
-            PluginDatabase = new SuccessStoryDatabase(this, PlayniteApi, settings, this.GetPluginUserDataPath());
-            PluginDatabase.InitializeDatabase();
-
-            // Get plugin's location 
-            pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            // Add plugin localization in application ressource.
-            PluginLocalization.SetPluginLanguage(pluginFolder, api.ApplicationSettings.Language);
-            // Add common in application ressource.
-            Common.Load(pluginFolder);
-            Common.SetEvent(PlayniteApi);
-            
-            // Check version
-            if (settings.EnableCheckVersion)
-            {
-                CheckVersion cv = new CheckVersion();
-                cv.Check("SuccessStory", pluginFolder, api);
-            }
-
-            // Init ui interagration
-            successStoryUI = new SuccessStoryUI(this, api, this.GetPluginUserDataPath());
-
             // Custom theme button
-            if (settings.EnableIntegrationInCustomTheme)
-            {
-                EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(successStoryUI.OnCustomThemeButtonClick));
-            }
+            EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(OnCustomThemeButtonClick));
 
             // Add Event for WindowBase for get the "WindowSettings".
             EventManager.RegisterClassHandler(typeof(Window), Window.LoadedEvent, new RoutedEventHandler(WindowBase_LoadedEvent));
 
-            // Add event fullScreen
-            if (api.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
+            // Custom elements integration
+            AddCustomElementSupport(new AddCustomElementSupportArgs
             {
-                EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(BtFullScreen_ClickEvent));
-            }
+                ElementList = new List<string> {
+                    "PluginButton", "PluginViewItem", "PluginProgressBar", "PluginCompactList",
+                    "PluginCompactLocked", "PluginCompactUnlocked", "PluginChart",
+                    "PluginUserStats", "PluginList"
+                },
+                SourceName = "SuccessStory",
+                SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
+            });
         }
 
 
         #region Custom event
+        public void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)
+        {
+            string ButtonName = string.Empty;
+            try
+            {
+                ButtonName = ((Button)sender).Name;
+                if (ButtonName == "PART_ScCustomButton")
+                {
+                    Common.LogDebug(true, $"OnCustomThemeButtonClick()");
+
+                    PluginDatabase.IsViewOpen = true;
+                    dynamic ViewExtension = null;
+                    if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
+                    {
+                        ViewExtension = new SuccessStoryOneGameView(PluginDatabase.GameContext);
+                    }
+                    else
+                    {
+                        if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, PluginDatabase.GameContext))
+                        {
+                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), true, PluginDatabase.GameContext);
+                        }
+                        else
+                        {
+                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, PluginDatabase.GameContext);
+                        }
+                    }
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                    windowExtension.ShowDialog();
+                    PluginDatabase.IsViewOpen = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
+        }
+
         private void WindowBase_LoadedEvent(object sender, System.EventArgs e)
         {
             string WinIdProperty = String.Empty;
@@ -104,9 +116,8 @@ namespace SuccessStory
 
                 if (WinIdProperty == "WindowSettings")
                 {
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - Reset VerifToAdd");
-#endif
+                    Common.LogDebug(true, $"Reset VerifToAdd");
+
                     SuccessStoryDatabase.VerifToAddOrShowGog = null;
                     SuccessStoryDatabase.VerifToAddOrShowOrigin = null;
                     SuccessStoryDatabase.VerifToAddOrShowRetroAchievements = null;
@@ -116,94 +127,216 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Error on WindowBase_LoadedEvent for {WinIdProperty}");
-            }
-        }
-
-
-        private void BtFullScreen_ClickEvent(object sender, System.EventArgs e)
-        {
-            try
-            {
-                if (((Button)sender).Name == "PART_ButtonDetails")
-                {
-                    var TaskIntegrationUI = Task.Run(() =>
-                    {
-                        successStoryUI.Initial();
-                        successStoryUI.taskHelper.Check();
-                        var dispatcherOp = successStoryUI.AddElementsFS();
-                        dispatcherOp.Completed += (s, ev) => { successStoryUI.RefreshElements(SuccessStoryDatabase.GameSelected); };
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, "SuccessStory");
+                Common.LogError(ex, false, $"Error on WindowBase_LoadedEvent for {WinIdProperty}");
             }
         }
         #endregion
 
 
+        #region Theme integration
+        // Button on top panel
+        public override List<TopPanelItem> GetTopPanelItems()
+        {
+            if (PluginSettings.Settings.EnableIntegrationButtonHeader)
+            {
+                return new List<TopPanelItem>
+                {
+                    new TopPanelItem()
+                    {
+                        Icon = new TextBlock
+                        {
+                            Text = "\ue820",
+                            FontSize = 22,
+                            FontFamily = resources.GetResource("FontIcoFont") as FontFamily
+                        },
+                        ToolTip = resources.GetString("LOCSuccessStoryViewGames"),
+                        Action = () =>
+                        {
+                            var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath());
+                            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                            windowExtension.ShowDialog();
+                            PluginDatabase.IsViewOpen = false;
+                        }
+                    }
+                };
+            }
+
+            return null;
+        }
+
+        // List custom controls
+        public override Control GetGameViewControl(GetGameViewControlArgs args)
+        {
+            if (args.Name == "PluginButton")
+            {
+                return new PluginButton();
+            }
+
+            if (args.Name == "PluginViewItem")
+            {
+                return new PluginViewItem();
+            }
+
+            if (args.Name == "PluginProgressBar")
+            {
+                return new PluginProgressBar();
+            }
+
+            if (args.Name == "PluginCompactList")
+            {
+                return new PluginCompactList();
+            }
+
+            if (args.Name == "PluginCompactLocked")
+            {
+                return new PluginCompact { IsUnlocked = false };
+            }
+
+            if (args.Name == "PluginCompactUnlocked")
+            {
+                return new PluginCompact { IsUnlocked = true };
+            }
+
+            if (args.Name == "PluginChart")
+            {
+                return new PluginChart();
+            }
+
+            if (args.Name == "PluginUserStats")
+            {
+                return new PluginUserStats();
+            }
+
+            if (args.Name == "PluginList")
+            {
+                return new PluginList();
+            }
+
+            return null;
+        }
+
+        // SidebarItem
+        public class SuccessStoryViewSidebar : SidebarItem
+        {
+            public SuccessStoryViewSidebar()
+            {
+                Type = SiderbarItemType.View;
+                Title = resources.GetString("LOCSuccessStoryAchievements");
+                Icon = new TextBlock
+                {
+                    Text = "\ue820",
+                    FontFamily = resources.GetResource("FontIcoFont") as FontFamily
+                };
+            }
+
+            public override Control Opened()
+            {
+                SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
+                sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryAchievements"));
+                sidebarItemControl.AddContent(new SuccessView(PluginDatabase.Plugin, PluginDatabase.PlayniteApi, PluginDatabase.Paths.PluginUserDataPath));
+
+                return sidebarItemControl;
+            }
+        }
+
+        public class SuccessStoryViewRaSidebar : SidebarItem
+        {
+            public SuccessStoryViewRaSidebar()
+            {
+                Type = SiderbarItemType.View;
+                Title = resources.GetString("LOCSuccessStoryRetroAchievements");
+                Icon = new TextBlock
+                {
+                    Text = "\ue910",
+                    FontFamily = resources.GetResource("CommonFont") as FontFamily
+                };
+            }
+
+            public override Control Opened()
+            {
+                SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
+                sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryRetroAchievements"));
+                sidebarItemControl.AddContent(new SuccessView(PluginDatabase.Plugin, PluginDatabase.PlayniteApi, PluginDatabase.Paths.PluginUserDataPath, true));
+
+                return sidebarItemControl;
+            }
+        }
+
+        public override List<SidebarItem> GetSidebarItems()
+        {
+            var items = new List<SidebarItem>
+            {
+                new SuccessStoryViewSidebar()
+            };
+
+            if (PluginSettings.Settings.EnableRetroAchievementsView)
+            {
+                items.Add(new SuccessStoryViewRaSidebar());
+            }
+
+            return items;
+        }
+        #endregion
+
+
+        #region Menus
         // To add new game menu items override GetGameMenuItems
         public override List<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
             Game GameMenu = args.Games.First();
             string SourceName = PlayniteTools.GetSourceName(PlayniteApi, GameMenu);
             bool IsAddOrShowManual = SuccessStoryDatabase.IsAddOrShowManual(GameMenu, SourceName);
+            bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, this.GetPluginUserDataPath(), SourceName);
             GameAchievements gameAchievements = PluginDatabase.Get(GameMenu, true);
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
-            
-            if (!settings.EnableOneGameView || (settings.EnableOneGameView && gameAchievements.HasData))
-            { 
-                // Show list achievements for the selected game
-                gameMenuItems.Add(new GameMenuItem
-                {
-                    MenuSection = resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCSuccessStoryViewGame"),
-                    Action = (gameMenuItem) =>
-                    {
-                        dynamic ViewExtension = null;
-                        PluginDatabase.IsViewOpen = true;
-                        if (PluginDatabase.PluginSettings.EnableOneGameView)
-                        {
-                            ViewExtension = new SuccessStoryOneGameView(GameMenu);
-                        }
-                        else
-                        {
-                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
-                        }
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
-                        windowExtension.ShowDialog();
-                        PluginDatabase.IsViewOpen = false;
-                    }
-                });
-            }
 
-            if (!IsAddOrShowManual)
+            if (VerifToAddOrShow)
             {
-                gameMenuItems.Add(new GameMenuItem
+                if (!PluginSettings.Settings.EnableOneGameView || (PluginSettings.Settings.EnableOneGameView && gameAchievements.HasData))
                 {
-                    MenuSection = resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonRefreshGameData"),
-                    Action = (gameMenuItem) =>
+                    // Show list achievements for the selected game
+                    gameMenuItems.Add(new GameMenuItem
                     {
-                        if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
+                        MenuSection = resources.GetString("LOCSuccessStory"),
+                        Description = resources.GetString("LOCSuccessStoryViewGame"),
+                        Action = (gameMenuItem) =>
                         {
-                            PlayniteUiHelper.ResetToggle();
+                            dynamic ViewExtension = null;
+                            PluginDatabase.IsViewOpen = true;
+                            if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
+                            {
+                                ViewExtension = new SuccessStoryOneGameView(GameMenu);
+                            }
+                            else
+                            {
+                                ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
+                            }
+                            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                            windowExtension.ShowDialog();
+                            PluginDatabase.IsViewOpen = false;
                         }
+                    });
+                }
 
-                        var TaskIntegrationUI = Task.Run(() =>
+                if (!IsAddOrShowManual)
+                {
+                    gameMenuItems.Add(new GameMenuItem
+                    {
+                        MenuSection = resources.GetString("LOCSuccessStory"),
+                        Description = resources.GetString("LOCCommonRefreshGameData"),
+                        Action = (gameMenuItem) =>
                         {
-                            PluginDatabase.Remove(GameMenu);
-                            var dispatcherOp = successStoryUI.AddElements();
-                            dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(GameMenu); };
-                        });
-                    }
-                });
+                            var TaskIntegrationUI = Task.Run(() =>
+                            {
+                                PluginDatabase.Refresh(GameMenu.Id);
+                            });
+                        }
+                    });
+                }
             }
 
-            if (settings.EnableManual && IsAddOrShowManual)
+            if (PluginSettings.Settings.EnableManual && IsAddOrShowManual)
             {
                 if (!gameAchievements.HasData)
                 {
@@ -217,9 +350,6 @@ namespace SuccessStory
                             {
                                 PluginDatabase.Remove(GameMenu);
                                 PluginDatabase.GetManual(GameMenu);
-
-                                var dispatcherOp = successStoryUI.AddElements();
-                                dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(GameMenu); };
                             });
                         }
                     });
@@ -244,16 +374,9 @@ namespace SuccessStory
                         Description = resources.GetString("LOCRemoveTitle"),
                         Action = (gameMenuItem) =>
                         {
-                            if (settings.EnableIntegrationInCustomTheme || settings.EnableIntegrationInDescription)
-                            {
-                                PlayniteUiHelper.ResetToggle();
-                            }
-
                             var TaskIntegrationUI = Task.Run(() =>
                             {
                                 PluginDatabase.Remove(GameMenu);
-                                var dispatcherOp = successStoryUI.AddElements();
-                                dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(GameMenu); };
                             });
                         }
                     });
@@ -275,7 +398,7 @@ namespace SuccessStory
         public override List<MainMenuItem> GetMainMenuItems(GetMainMenuItemsArgs args)
         {
             string MenuInExtensions = string.Empty;
-            if (settings.MenuInExtensions)
+            if (PluginSettings.Settings.MenuInExtensions)
             {
                 MenuInExtensions = "@";
             }
@@ -298,7 +421,7 @@ namespace SuccessStory
                 }
             };
 
-            if (settings.EnableRetroAchievementsView && settings.EnableRetroAchievements)
+            if (PluginSettings.Settings.EnableRetroAchievementsView && PluginSettings.Settings.EnableRetroAchievements)
             {
                 mainMenuItems.Add(new MainMenuItem
                 {
@@ -308,13 +431,13 @@ namespace SuccessStory
                     {
                         PluginDatabase.IsViewOpen = true;
                         SuccessView ViewExtension = null;
-                        if (settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, SuccessStoryDatabase.GameSelected))
+                        if (PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, PluginDatabase.GameContext))
                         {
-                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), true, SuccessStoryDatabase.GameSelected);
+                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), true, PluginDatabase.GameContext);
                         }
                         else
                         {
-                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, SuccessStoryDatabase.GameSelected);
+                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, PluginDatabase.GameContext);
                         }
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                         windowExtension.ShowDialog();
@@ -328,22 +451,10 @@ namespace SuccessStory
                 new MainMenuItem
                 {
                     MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonGetAllDatas"),
+                    Description = resources.GetString("LOCCommonDownloadPluginData"),
                     Action = (mainMenuItem) =>
                     {
-                        PluginDatabase.GetAllDatas();
-                    }
-                }
-            );
-
-            mainMenuItems.Add(
-                new MainMenuItem
-                {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonSelectData"),
-                    Action = (mainMenuItem) =>
-                    {
-                        PluginDatabase.GetSelectDatas();
+                        PluginDatabase.GetSelectData();
                     }
                 }
             );
@@ -359,8 +470,10 @@ namespace SuccessStory
 
             return mainMenuItems;
         }
+        #endregion
 
 
+        #region Game event
         public override void OnGameSelected(GameSelectionEventArgs args)
         {
             // Old database
@@ -373,36 +486,13 @@ namespace SuccessStory
             {
                 if (args.NewValue != null && args.NewValue.Count == 1)
                 {
-                    SuccessStoryDatabase.GameSelected = args.NewValue[0];
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - OnGameSelected() - {SuccessStoryDatabase.GameSelected.Name} - {SuccessStoryDatabase.GameSelected.Id.ToString()}");
-#endif
-                    PlayniteUiHelper.ResetToggle();
-                    var TaskIntegrationUI = Task.Run(() =>
-                    {
-                        successStoryUI.Initial();
-                        successStoryUI.taskHelper.Check();
-
-                        DispatcherOperation dispatcherOp = null;
-                        if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
-                        {
-                            dispatcherOp = successStoryUI.AddElements();
-                        }
-                        else if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
-                        {
-                            dispatcherOp = successStoryUI.AddElementsFS();
-                        }
-
-                        if (dispatcherOp != null)
-                        {
-                            dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(args.NewValue[0]); };
-                        }
-                    });
+                    PluginDatabase.GameContext = args.NewValue[0];
+                    PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Error on OnGameSelected()");
+                Common.LogError(ex, false);
             }
         }
 
@@ -421,7 +511,7 @@ namespace SuccessStory
         // Add code to be executed when game is preparing to be started.
         public override void OnGameStarting(Game game)
         {
-            PlayniteUiHelper.ResetToggle();
+
         }
 
         // Add code to be executed when game is preparing to be started.
@@ -430,24 +520,9 @@ namespace SuccessStory
             // Refresh Achievements database for game played.
             var TaskGameStopped = Task.Run(() =>
             {
-                if (!PluginDatabase.Get(game, true).IsManual)
+                if (game.Id == PluginDatabase.GameContext.Id)
                 {
-                    PluginDatabase.Remove(game);
-                }
-
-                DispatcherOperation dispatcherOp = null;
-                if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop)
-                {
-                    dispatcherOp = successStoryUI.AddElements();
-                }
-                else if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
-                {
-                    dispatcherOp = successStoryUI.AddElementsFS();
-                }
-
-                if (dispatcherOp != null)
-                {
-                    dispatcherOp.Completed += (s, e) => { successStoryUI.RefreshElements(SuccessStoryDatabase.GameSelected); };
+                    PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
                 }
             });
         }
@@ -462,27 +537,23 @@ namespace SuccessStory
         // Add code to be executed when Playnite is shutting down.
         public override void OnApplicationStopped()
         {
-#if DEBUG
-            logger.Debug($"SuccessStory [Ignored] - Cancel TaskCacheImage");
-#endif
+            Common.LogDebug(true, $"Cancel TaskCacheImage");
             tokenSource.Cancel();
         }
 
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted()
         {
-            successStoryUI.AddBtHeader();
-
             // Cache images
-            if (settings.EnableImageCache)
+            if (PluginSettings.Settings.EnableImageCache)
             {
                 CancellationToken ct = tokenSource.Token;
                 var TaskCacheImage = Task.Run(() =>
                 {
                     // Wait Playnite & extension database are loaded
-                    Thread.Sleep(50000);
+                    System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
 #if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - TaskCacheImage - {PlayniteApi.Database.Games.Count} - Start");
+                    Common.LogDebug(true, $"TaskCacheImage - {PlayniteApi.Database.Games.Count} - Start");
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
 #endif
@@ -493,16 +564,13 @@ namespace SuccessStory
                             Models.GameAchievements successStories = PluginDatabase.GetOnlyCache(game.Id);
                             if (successStories != null && successStories.HaveAchivements)
                             {
-#if DEBUG
-                                logger.Debug($"SuccessStory [Ignored] - TaskCacheImage - {game.Name} - {successStories.Items.Count}");
-#endif
+                                Common.LogDebug(true, $"TaskCacheImage - {game.Name} - {successStories.Items.Count}");
+
                                 foreach (var achievement in successStories.Items)
                                 {
                                     if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
                                     {
-#if DEBUG
-                                        logger.Debug($"SuccessStory [Ignored] - TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name}" + "_Locked)");
-#endif
+                                        Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name}" + "_Locked)");
                                         Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.ImagesCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
 
@@ -514,9 +582,7 @@ namespace SuccessStory
 
                                     if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, "SuccessStory").IsNullOrEmpty())
                                     {
-#if DEBUG
-                                        logger.Debug($"SuccessStory [Ignored] - TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
-#endif
+                                        Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
                                         Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.ImagesCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
 
@@ -530,20 +596,19 @@ namespace SuccessStory
                         }
                         catch (Exception ex)
                         {
-#if DEBUG
-                            Common.LogError(ex, "SuccessStory [Ignored]", $"Error on TaskCacheImage");
-#endif
+                            Common.LogError(ex, true, $"Error on TaskCacheImage");
                         }
                     }
 
 #if DEBUG
                     stopwatch.Stop();
                     TimeSpan ts = stopwatch.Elapsed;
-                    logger.Debug($"SuccessStory [Ignored] - TaskCacheImage() - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                    Common.LogDebug(true, $"TaskCacheImage() - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
                 }, tokenSource.Token);
             }
         }
+        #endregion
 
 
         // Add code to be executed when library is updated.
@@ -553,14 +618,16 @@ namespace SuccessStory
         }
 
 
+        #region Settings
         public override ISettings GetSettings(bool firstRunSettings)
         {
-            return settings;
+            return PluginSettings;
         }
 
         public override UserControl GetSettingsView(bool firstRunSettings)
         {
             return new SuccessStorySettingsView(this, PlayniteApi, this.GetPluginUserDataPath());
         }
+        #endregion
     }
 }

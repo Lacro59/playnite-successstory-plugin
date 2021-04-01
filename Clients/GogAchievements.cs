@@ -70,10 +70,10 @@ namespace SuccessStory.Clients
                         switch (resp.StatusCode)
                         {
                             case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                Common.LogError(ex, "SuccessStory", $"HTTP 503 to load from {url}");
+                                Common.LogError(ex, false, $"HTTP 503 to load from {url}");
                                 break;
                             default:
-                                Common.LogError(ex, "SuccessStory", $"Failed to load from {url}");
+                                Common.LogError(ex, false, $"Failed to load from {url}");
                                 break;
                         }
                     }
@@ -116,7 +116,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, "SuccessStory", $"Failed to parse");
+                        Common.LogError(ex, false, $"Failed to parse");
                         return Result;
                     }
                 }

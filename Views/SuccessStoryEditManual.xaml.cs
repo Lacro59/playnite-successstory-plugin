@@ -79,7 +79,7 @@ namespace SuccessStory.Views
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
+                    Common.LogError(ex, false, "Error on convert bitmap");
                 }
 
                 string NameAchievement = ListAchievements[i].Name;
@@ -105,7 +105,7 @@ namespace SuccessStory.Views
                 {
                     Name = NameAchievement,
                     DateUnlock = dateUnlock,
-                    EnableRaretyIndicator = PluginDatabase.PluginSettings.EnableRaretyIndicator,
+                    EnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
                     Icon = urlImg,
                     IconImage = urlImg,
                     IsGray = IsGray,
@@ -244,14 +244,6 @@ namespace SuccessStory.Views
             gameAchievements.Progression = (gameAchievements.Total != 0) ? (int)Math.Ceiling((double)(gameAchievements.Unlocked * 100 / gameAchievements.Total)) : 0;
 
             PluginDatabase.Update(gameAchievements);
-
-            PlayniteUiHelper.ResetToggle();
-            SuccessStory.successStoryUI.RemoveElements();
-            var TaskIntegrationUI = Task.Run(() =>
-            {
-                var dispatcherOp = SuccessStory.successStoryUI.AddElements();
-                dispatcherOp.Completed += (s, ev) => { SuccessStory.successStoryUI.RefreshElements(SuccessStoryDatabase.GameSelected); };
-            });
 
             ((Window)this.Parent).Close();
         }

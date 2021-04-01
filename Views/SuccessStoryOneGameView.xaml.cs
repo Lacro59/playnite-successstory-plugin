@@ -1,5 +1,6 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Models;
+using SuccessStory.Controls;
 using SuccessStory.Models;
 using SuccessStory.Services;
 using SuccessStory.Views.Interface;
@@ -31,50 +32,14 @@ namespace SuccessStory.Views
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
 
-        public SuccessStoryOneGameView(Game GameSelected)
+        public SuccessStoryOneGameView(Game GameContext)
         {
             InitializeComponent();
 
-            LoadData(GameSelected);
-        }
-
-        private void LoadData(Game GameSelected)
-        {
-            Guid GameId = GameSelected.Id;
-            GameAchievements successStories = PluginDatabase.Get(GameSelected);
-            List<Achievements> ListAchievements = successStories.Items;
-            List<GameStats> ListGameStats = successStories.ItemsStats;
-
-
-            // List Achievements
-            SuccessStoryAchievementsList successStoryAchievementsList = new SuccessStoryAchievementsList(true);
-            successStoryAchievementsList.SetScData(successStories);
-            PART_Achievements_List.Children.Add(successStoryAchievementsList);
-
-
-            // Chart achievements
-            int limit = 0;
-            if (!PluginDatabase.PluginSettings.GraphicAllUnlockedByDay)
+            this.DataContext = new
             {
-                PART_ChartTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitle");
-                limit = 20;
-            }
-            else
-            {
-                PART_ChartTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitleDay");
-                limit = 16;
-            }
-
-            PluginDatabase.PluginSettings.IgnoreSettings = true;
-            SuccessStoryAchievementsGraphics successStoryAchievementsGraphics = new SuccessStoryAchievementsGraphics();
-            successStoryAchievementsGraphics.SetScData(GameId, limit);
-            PART_Achievements_Graphics.Children.Add(successStoryAchievementsGraphics);
-
-
-            // User stats
-            SuccessStoryUserStats successStoryUserStats = new SuccessStoryUserStats();
-            successStoryUserStats.SetScData(ListGameStats);
-            PART_ScUserStats.Children.Add(successStoryUserStats);
+                GameContext
+            };
         }
     }
 }

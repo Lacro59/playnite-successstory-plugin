@@ -1,0 +1,138 @@
+﻿<controls:PluginUserControlExtend
+        xmlns:controls="clr-namespace:CommonPluginsShared.Controls" 
+        x:Class="SuccessStory.Controls.PluginButton"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:SuccessStory.Controls"
+        xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+        xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+        mc:Ignorable="d" d:DesignHeight="40" d:DesignWidth="150">
+
+    <controls:PluginUserControlExtend.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <commonpluginsshared:HeightToFontSizeConverter x:Key="HeightToFontSizeConverter" />
+    </controls:PluginUserControlExtend.Resources>
+
+    <Button Name="PART_PluginButton" Click="PART_PluginButton_Click">
+        <Button.Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="Border" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}"                            
+                                    CornerRadius="{DynamicResource ControlCornerRadius}" Style="{DynamicResource HighlightBorder}"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <ContentPresenter HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Margin="10,2,10,2" RecognizesAccessKey="True" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter Property="BorderBrush" Value="{DynamicResource GlyphBrush}" TargetName="Border" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Button.Style>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Without details -->
+            <TextBlock Text="&#xe820;" FontFamily="{DynamicResource FontIcoFont}"
+                       Grid.Column="0" VerticalAlignment="Center"
+                       Visibility="{Binding DisplayDetails, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                       FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" />
+
+            <!-- With details -->
+            <Grid Grid.Column="1" HorizontalAlignment="Stretch"
+                  Visibility="{Binding DisplayDetails, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="3" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="3" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="3" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Content="&#xea33;" FontFamily="{DynamicResource CommonFont}" 
+                       Visibility="{Binding Is100Percent, Converter={StaticResource BooleanToVisibilityConverter}}"
+                       VerticalAlignment="Center"
+                       FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Padding" Value="5,3,5,5" />
+                            <Setter Property="Foreground" Value="{DynamicResource GlyphBrush}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+
+                <Label Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,-3,0,-3"
+                       Content="{DynamicResource LOCSuccessStoryAchievements}" 
+                       FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Padding" Value="5,3,5,5" />
+                            <Setter Property="Foreground" Value="{DynamicResource GlyphBrush}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+
+                <Label Content="{Binding LabelContent, FallbackValue='15/23'}" 
+                       Margin="0,-3,0,-3" Grid.Column="1" Grid.Row="2" 
+                       FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}">
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Padding" Value="5,3,5,5" />
+                            <Setter Property="Foreground" Value="{DynamicResource GlyphBrush}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+                <ProgressBar Grid.Column="3" Grid.Row="2" Height="12"
+                             Maximum="{Binding Maximum, Mode=OneWay, FallbackValue='100'}" 
+                             Value="{Binding Value, Mode=OneWay, FallbackValue='30'}">
+                    <ProgressBar.Style>
+                        <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsChecked}" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
+            </Grid>
+        </Grid>
+    </Button>
+</controls:PluginUserControlExtend>

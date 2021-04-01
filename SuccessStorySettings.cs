@@ -1,65 +1,190 @@
 ﻿using Newtonsoft.Json;
 using Playnite.SDK;
 using CommonPluginsShared;
-using SuccessStory.Models;
-using SuccessStory.Views;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 using SuccessStory.Services;
+using Playnite.SDK.Data;
+using SuccessStory.Views;
 
 namespace SuccessStory
 {
-    public class SuccessStorySettings : ISettings
+    public class SuccessStorySettings : ObservableObject
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-
-        private readonly SuccessStory plugin;
-
-        public bool EnableCheckVersion { get; set; } = true;
+        #region Settings variables
         public bool MenuInExtensions { get; set; } = true;
+
+
         public bool EnableImageCache { get; set; } = false;
         public bool IgnoreSettings { get; set; } = false;
 
         public bool EnableIntegrationInDescription { get; set; } = false;
         public bool EnableIntegrationInDescriptionWithToggle { get; set; } = false;
 
-        public bool EnableIntegrationInDescriptionOnlyIcon { get; set; } = false;
-
         public bool GraphicAllUnlockedByMonth { get; set; } = true;
         public bool GraphicAllUnlockedByDay { get; set; } = false;
 
         public bool IncludeHiddenGames { get; set; } = false;
 
-        public bool IntegrationShowTitle { get; set; } = true;
-        public bool IntegrationShowGraphic { get; set; } = true;
-        public bool IntegrationShowAchievements { get; set; } = true;
-        public bool IntegrationShowAchievementsCompact { get; set; } = false;
-        public bool IntegrationShowAchievementsCompactLocked { get; set; } = true;
-        public bool IntegrationShowAchievementsCompactUnlocked { get; set; } = true;
-        public bool IntegrationShowUserStats { get; set; } = true;
-        public bool IntegrationTopGameDetails { get; set; } = true;
-        public bool IntegrationToggleDetails { get; set; } = true;
-
-        public bool EnableIntegrationAxisGraphic { get; set; } = true;
-        public bool EnableIntegrationOrdinatesGraphic { get; set; } = false;
-        public double IntegrationShowAchievementsHeight { get; set; } = 200;
-        public double IntegrationShowGraphicHeight { get; set; } = 120;
-        public int IntegrationGraphicOptionsCountAbscissa { get; set; } = 11;
-        public int IntegrationAchievementsColCount { get; set; } = 1;
-
-        public bool EnableIntegrationInCustomTheme { get; set; } = false;
-
-        public bool EnableIntegrationButton { get; set; } = false;
-        public bool EnableIntegrationButtonDetails { get; set; } = false;
 
         public bool EnableIntegrationButtonHeader { get; set; } = false;
 
-        public bool IntegrationShowProgressBar { get; set; } = false;
+
+        private bool _EnableIntegrationViewItem { get; set; } = false;
+        public bool EnableIntegrationViewItem
+        {
+            get => _EnableIntegrationViewItem;
+            set
+            {
+                _EnableIntegrationViewItem = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IntegrationViewItemWithProgressBar { get; set; } = false;
+
+
+        private bool _EnableIntegrationButton { get; set; } = false;
+        public bool EnableIntegrationButton
+        {
+            get => _EnableIntegrationButton;
+            set
+            {
+                _EnableIntegrationButton = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _EnableIntegrationButtonDetails { get; set; } = false;
+        public bool EnableIntegrationButtonDetails
+        {
+            get => _EnableIntegrationButtonDetails;
+            set
+            {
+                _EnableIntegrationButtonDetails = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private bool _IntegrationShowProgressBar { get; set; } = false;
+        public bool IntegrationShowProgressBar
+        {
+            get => _IntegrationShowProgressBar;
+            set
+            {
+                _IntegrationShowProgressBar = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IntegrationShowProgressBarIndicator { get; set; } = false;
         public bool IntegrationShowProgressBarPercent { get; set; } = false;
+
+
+        private bool _IntegrationShowAchievementsCompact { get; set; } = false;
+        public bool IntegrationShowAchievementsCompact
+        {
+            get => _IntegrationShowAchievementsCompact;
+            set
+            {
+                _IntegrationShowAchievementsCompact = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double IntegrationAchievementsCompactListHeight { get; set; } = 48;
+
+
+        private bool _IntegrationShowAchievementsCompactLocked { get; set; } = false;
+        public bool IntegrationShowAchievementsCompactLocked
+        {
+            get => _IntegrationShowAchievementsCompactLocked;
+            set
+            {
+                _IntegrationShowAchievementsCompactLocked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _IntegrationShowAchievementsCompactUnlocked { get; set; } = false;
+        public bool IntegrationShowAchievementsCompactUnlocked
+        {
+            get => _IntegrationShowAchievementsCompactUnlocked;
+            set
+            {
+                _IntegrationShowAchievementsCompactUnlocked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double IntegrationAchievementsCompactHeight { get; set; } = 48;
+
+
+        private bool _IntegrationShowGraphic { get; set; } = true;
+        public bool IntegrationShowGraphic
+        {
+            get => _IntegrationShowGraphic;
+            set
+            {
+                _IntegrationShowGraphic = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double IntegrationShowGraphicHeight { get; set; } = 120;
+        public bool EnableIntegrationAxisGraphic { get; set; } = true;
+        public bool EnableIntegrationOrdinatesGraphic { get; set; } = false;
+        public int IntegrationGraphicOptionsCountAbscissa { get; set; } = 11;
+
+
+        private bool _IntegrationShowUserStats { get; set; } = true;
+        public bool IntegrationShowUserStats
+        {
+            get => _IntegrationShowUserStats;
+            set
+            {
+                _IntegrationShowUserStats = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double IntegrationUserStatsHeight { get; set; } = 120;
+
+
+        public bool _IntegrationShowAchievements { get; set; } = true;
+        public bool IntegrationShowAchievements
+        {
+            get => _IntegrationShowAchievements;
+            set
+            {
+                _IntegrationShowAchievements = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double IntegrationShowAchievementsHeight { get; set; } = 200;
+        public int IntegrationAchievementsColCount { get; set; } = 1;
+
+   
+
+
+
+
+        public bool IntegrationShowTitle { get; set; } = true;
+        
+
+
+        public bool IntegrationTopGameDetails { get; set; } = true;
+        public bool IntegrationToggleDetails { get; set; } = true;
+
+        
+        
+
+        public bool EnableIntegrationInCustomTheme { get; set; } = false;
+
+
+
 
 
         public bool EnableSteam { get; set; } = false;
@@ -93,25 +218,95 @@ namespace SuccessStory
         public bool lvGamesLastSession { get; set; } = true;
         public bool lvGamesSource { get; set; } = true;
         public bool lvGamesProgression { get; set; } = true;
-
-
-        public bool EnableIntegrationFS { get; set; } = false;
-
+        #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
-        // If you want to exclude some property from being saved then use `JsonIgnore` ignore attribute.
-        [JsonIgnore]
-        public bool OptionThatWontBeSaved { get; set; } = false;
-
-        // Parameterless constructor must exist if you want to use LoadPluginSettings method.
-        public SuccessStorySettings()
+        // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
+        #region Variables exposed
+        [DontSerialize]
+        private bool _HasData { get; set; } = false;
+        public bool HasData
         {
+            get => _HasData;
+            set
+            {
+                _HasData = value;
+                OnPropertyChanged();
+            }
         }
 
-        public SuccessStorySettings(SuccessStory plugin)
+        [DontSerialize]
+        private bool _Is100Percent { get; set; } = false;
+        public bool Is100Percent
+        {
+            get => _Is100Percent;
+            set
+            {
+                _Is100Percent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [DontSerialize]
+        private int _Unlocked { get; set; } = 0;
+        public int Unlocked
+        {
+            get => _Unlocked;
+            set
+            {
+                _Unlocked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [DontSerialize]
+        private int _Locked { get; set; } = 0;
+        public int Locked
+        {
+            get => _Locked;
+            set
+            {
+                _Locked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [DontSerialize]
+        private int _Total { get; set; } = 0;
+        public int Total
+        {
+            get => _Total;
+            set
+            {
+                _Total = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion  
+    }
+
+
+    public class SuccessStorySettingsViewModel : ObservableObject, ISettings
+    {
+        private readonly SuccessStory Plugin;
+        private SuccessStorySettings EditingClone { get; set; }
+
+        private SuccessStorySettings _Settings;
+        public SuccessStorySettings Settings
+        {
+            get => _Settings;
+            set
+            {
+                _Settings = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        public SuccessStorySettingsViewModel(SuccessStory plugin)
         {
             // Injecting your plugin instance is required for Save/Load method because Playnite saves data to a location based on what plugin requested the operation.
-            this.plugin = plugin;
+            Plugin = plugin;
 
             // Load saved settings.
             var savedSettings = plugin.LoadPluginSettings<SuccessStorySettings>();
@@ -119,94 +314,25 @@ namespace SuccessStory
             // LoadPluginSettings returns null if not saved data is available.
             if (savedSettings != null)
             {
-                EnableCheckVersion = savedSettings.EnableCheckVersion;
-                MenuInExtensions = savedSettings.MenuInExtensions;
-                EnableImageCache = savedSettings.EnableImageCache;
-
-                EnableIntegrationInDescription = savedSettings.EnableIntegrationInDescription;
-                EnableIntegrationInDescriptionWithToggle = savedSettings.EnableIntegrationInDescriptionWithToggle;
-
-                EnableIntegrationInDescriptionOnlyIcon = savedSettings.EnableIntegrationInDescriptionOnlyIcon;
-
-                GraphicAllUnlockedByMonth = savedSettings.GraphicAllUnlockedByMonth;
-                GraphicAllUnlockedByDay = savedSettings.GraphicAllUnlockedByDay;
-
-                IncludeHiddenGames = savedSettings.IncludeHiddenGames;
-
-                IntegrationShowTitle = savedSettings.IntegrationShowTitle;
-                IntegrationShowGraphic = savedSettings.IntegrationShowGraphic;
-                IntegrationShowAchievements = savedSettings.IntegrationShowAchievements;
-                IntegrationShowAchievementsCompact = savedSettings.IntegrationShowAchievementsCompact;
-                IntegrationShowAchievementsCompactLocked = savedSettings.IntegrationShowAchievementsCompactLocked;
-                IntegrationShowAchievementsCompactUnlocked = savedSettings.IntegrationShowAchievementsCompactUnlocked;
-                IntegrationShowUserStats = savedSettings.IntegrationShowUserStats;
-                IntegrationTopGameDetails = savedSettings.IntegrationTopGameDetails;
-                IntegrationToggleDetails = savedSettings.IntegrationToggleDetails;
-
-                EnableIntegrationAxisGraphic = savedSettings.EnableIntegrationAxisGraphic;
-                EnableIntegrationOrdinatesGraphic = savedSettings.EnableIntegrationOrdinatesGraphic;
-                IntegrationShowAchievementsHeight = savedSettings.IntegrationShowAchievementsHeight;
-                IntegrationShowGraphicHeight = savedSettings.IntegrationShowGraphicHeight;
-                IntegrationGraphicOptionsCountAbscissa = savedSettings.IntegrationGraphicOptionsCountAbscissa;
-                IntegrationAchievementsColCount = savedSettings.IntegrationAchievementsColCount;
-
-                EnableIntegrationInCustomTheme = savedSettings.EnableIntegrationInCustomTheme;
-
-                EnableIntegrationButton = savedSettings.EnableIntegrationButton;
-                EnableIntegrationButtonDetails = savedSettings.EnableIntegrationButtonDetails;
-
-                EnableIntegrationButtonHeader = savedSettings.EnableIntegrationButtonHeader;
-
-                IntegrationShowProgressBar = savedSettings.IntegrationShowProgressBar;
-                IntegrationShowProgressBarIndicator = savedSettings.IntegrationShowProgressBarIndicator;
-                IntegrationShowProgressBarPercent = savedSettings.IntegrationShowProgressBarPercent;
-
-                EnableSteam = savedSettings.EnableSteam;
-                EnableGog = savedSettings.EnableGog;
-                EnableOrigin = savedSettings.EnableOrigin;
-                EnableXbox = savedSettings.EnableXbox;
-                EnableRetroAchievements = savedSettings.EnableRetroAchievements;
-                EnableRpcs3Achievements = savedSettings.EnableRpcs3Achievements;
-
-                EnableSteamWithoutWebApi = savedSettings.EnableSteamWithoutWebApi;
-
-                Rpcs3InstallationFolder = savedSettings.Rpcs3InstallationFolder;
-
-                EnableRetroAchievementsView = savedSettings.EnableRetroAchievementsView;
-                EnableOneGameView = savedSettings.EnableOneGameView;
-
-                RetroAchievementsUser = savedSettings.RetroAchievementsUser;
-                RetroAchievementsKey = savedSettings.RetroAchievementsKey;
-
-                EnableLocal = savedSettings.EnableLocal;
-                EnableManual = savedSettings.EnableManual;
-
-                NameSorting = savedSettings.NameSorting;
-                IsAsc = savedSettings.IsAsc;
-
-                EnableRaretyIndicator = savedSettings.EnableRaretyIndicator;
-
-                lvGamesIcon100Percent = savedSettings.lvGamesIcon100Percent;
-                lvGamesIcon = savedSettings.lvGamesIcon;
-                lvGamesName = savedSettings.lvGamesName;
-                lvGamesLastSession = savedSettings.lvGamesLastSession;
-                lvGamesSource = savedSettings.lvGamesSource;
-                lvGamesProgression = savedSettings.lvGamesProgression;
-
-                EnableIntegrationFS = savedSettings.EnableIntegrationFS;
+                Settings = savedSettings;
+            }
+            else
+            {
+                Settings = new SuccessStorySettings();
             }
         }
 
+        // Code executed when settings view is opened and user starts editing values.
         public void BeginEdit()
         {
-            // Code executed when settings view is opened and user starts editing values.
-
+            EditingClone = Serialization.GetClone(Settings);
         }
 
+        // Code executed when user decides to cancel any changes made since BeginEdit was called.
+        // This method should revert any changes made to Option1 and Option2.
         public void CancelEdit()
         {
-            // Code executed when user decides to cancel any changes made since BeginEdit was called.
-            // This method should revert any changes made to Option1 and Option2.
+            Settings = EditingClone;
 
             if (SuccessStorySettingsView.tokenSource != null)
             {
@@ -215,28 +341,20 @@ namespace SuccessStory
             }
         }
 
+        // Code executed when user decides to confirm changes made since BeginEdit was called.
+        // This method should save settings made to Option1 and Option2.
         public void EndEdit()
         {
-            // Code executed when user decides to confirm changes made since BeginEdit was called.
-            // This method should save settings made to Option1 and Option2.
-            plugin.SavePluginSettings(this);
-
-            PlayniteUiHelper.ResetToggle();
-            SuccessStory.successStoryUI.RemoveElements();
-            var TaskIntegrationUI = Task.Run(() =>
-            {
-                var dispatcherOp = SuccessStory.successStoryUI.AddElements();
-                dispatcherOp.Completed += (s, e) => { SuccessStory.successStoryUI.RefreshElements(SuccessStoryDatabase.GameSelected); };
-            });
-
+            Plugin.SavePluginSettings(Settings);
             SuccessStory.PluginDatabase.PluginSettings = this;
+            this.OnPropertyChanged();
         }
 
+        // Code execute when user decides to confirm changes made since BeginEdit was called.
+        // Executed before EndEdit is called and EndEdit is not called if false is returned.
+        // List of errors is presented to user if verification fails.
         public bool VerifySettings(out List<string> errors)
         {
-            // Code execute when user decides to confirm changes made since BeginEdit was called.
-            // Executed before EndEdit is called and EndEdit is not called if false is returned.
-            // List of errors is presented to user if verification fails.
             errors = new List<string>();
             return true;
         }

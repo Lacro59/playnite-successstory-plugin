@@ -40,11 +40,9 @@ namespace SuccessStory.Clients
         {
             List<Achievements> AllAchievements = new List<Achievements>();
             string GameName = game.Name;
-            string ClientId = game.PlayAction.EmulatorId.ToString();
 
             GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
             Result.Items = AllAchievements;
-
 
             if (User == string.Empty || Key == string.Empty)
             {
@@ -72,7 +70,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory");
+                Common.LogError(ex, false);
             }
 
             // Game Id
@@ -142,7 +140,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Failed to load from {url}");
+                Common.LogError(ex, false, $"Failed to load from {url}");
             }
 
 
@@ -155,7 +153,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", $"Failed to parse {ResultWeb}");
+                    Common.LogError(ex, false, $"Failed to parse {ResultWeb}");
                 }
             }
 
@@ -194,7 +192,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", $"Error GetConsoleIDs({rA_Console.ID}, {rA_Console.Name})");
+                    Common.LogError(ex, false, $"Error GetConsoleIDs({rA_Console.ID}, {rA_Console.Name})");
                 }
             }
 
@@ -207,7 +205,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", $"Failed to save ListMD5");
+                    Common.LogError(ex, false, $"Failed to save ListMD5");
                 }
             }
 
@@ -467,9 +465,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-#if DEBUG
-                        Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
+                        Common.LogError(ex, true);
                     }
                 }
 
@@ -492,9 +488,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-#if DEBUG
-                        Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
+                        Common.LogError(ex, true);
                     }
                 }
 
@@ -517,9 +511,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-#if DEBUG
-                        Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
+                        Common.LogError(ex, true);
                     }
                 }
 
@@ -532,9 +524,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-#if DEBUG
-                        Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
+                        Common.LogError(ex,true);
                     }
                 }
 
@@ -547,9 +537,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-#if DEBUG
-                        Common.LogError(ex, "SuccessStory [Ignored]");
-#endif
+                        Common.LogError(ex, true);
                     }
                 }
 
@@ -557,7 +545,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory");
+                Common.LogError(ex, false);
                 return string.Empty;
             }
         }
@@ -574,6 +562,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
+                Common.LogError(ex, true);
                 return string.Empty;
             }
         }
@@ -633,7 +622,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Failed to load from {url}");
+                Common.LogError(ex, false, $"Failed to load from {url}");
             }
 
             try
@@ -643,7 +632,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Failed to parse {ResultWeb}");
+                Common.LogError(ex, false, $"Failed to parse {ResultWeb}");
             }
 
             return resultObj;
@@ -664,7 +653,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Failed to load from {url}");
+                Common.LogError(ex, false, $"Failed to load from {url}");
                 return Achievements;
             }
 
@@ -696,7 +685,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", $"[{gameID}] Failed to parse {ResultWeb}");
+                Common.LogError(ex, false, $"[{gameID}] Failed to parse {ResultWeb}");
                 return Achievements;
             }
 

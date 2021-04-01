@@ -7,13 +7,14 @@
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:controls="clr-namespace:CommonPluginsPlaynite.Controls"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+             xmlns:local1="clr-namespace:SuccessStory.Controls"
              mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100">
 
     <UserControl.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <local:SetColorConverter x:Key="SetColorConverter" />
+        <local1:SetColorConverter x:Key="SetColorConverter" />
     </UserControl.Resources>
 
     <ListBox Name="lbAchievements" Loaded="LbAchievements_Loaded" MaxWidth="80"

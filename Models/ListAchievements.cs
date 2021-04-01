@@ -36,5 +36,7 @@ namespace SuccessStory.Models
         public bool IsUnlock { get; set; }
         public string IconImageUnlocked { get; set; }
         public string IconImageLocked { get; set; }
+
+        public double PictureSize { get; set; }
     }
 }

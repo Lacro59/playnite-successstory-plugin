@@ -78,9 +78,8 @@ namespace SuccessStory.Services
                 {
                     var JsonStringData = File.ReadAllText(objectFile);
 
-#if DEBUG
-                    logger.Debug(objectFile.Replace(PathActivityDB, "").Replace(".json", "").Replace("\\", ""));
-#endif
+                    Common.LogDebug(true, objectFile.Replace(PathActivityDB, "").Replace(".json", "").Replace("\\", ""));
+
                     Guid gameId = Guid.Parse(objectFile.Replace(PathActivityDB, "").Replace(".json", "").Replace("\\", ""));
 
                     GameAchievementsOld objGameAchievements = JsonConvert.DeserializeObject<GameAchievementsOld>(File.ReadAllText(objectFile));
@@ -89,7 +88,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, "CheckLocalizations", $"Failed to load item from {objectFile} or {objectFileManual}");
+                    Common.LogError(ex, false, $"Failed to load item from {objectFile} or {objectFileManual}");
                 }
             });
 
@@ -140,7 +139,7 @@ namespace SuccessStory.Services
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, "SuccessStory", $"Failed to load ConvertDB from {item.Key.ToString()}");
+                        Common.LogError(ex, false, $"Failed to load ConvertDB from {item.Key.ToString()}");
                     }
                 }
 

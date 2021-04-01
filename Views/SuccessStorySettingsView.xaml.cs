@@ -61,7 +61,7 @@ namespace SuccessStory.Views
 
             SetTotal();
 
-            switch (PluginDatabase.PluginSettings.NameSorting)
+            switch (PluginDatabase.PluginSettings.Settings.NameSorting)
             {
                 case "Name":
                     cbDefaultSorting.Text = resources.GetString("LOCGameNameTitle");
@@ -158,7 +158,7 @@ namespace SuccessStory.Views
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Error on SetTotal()");
+                Common.LogError(ex, false);
             }
 
             SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
@@ -358,7 +358,7 @@ namespace SuccessStory.Views
             SuccessStoryDatabase.ListErrors = new CumulErrors();
 
 #if DEBUG
-            logger.Info($"SuccessStory [Ignored] - RefreshData() - Start");
+            Common.LogDebug(true, $"RefreshData() - Start");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 #endif
@@ -407,20 +407,18 @@ namespace SuccessStory.Views
                     }
 
                     Application.Current.Dispatcher.BeginInvoke((Action)delegate { pbDataLoad.Maximum = FilterDatabaseGame.Count(); });
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - FilterDatabaseGame: {FilterDatabaseGame.Count()}");
-#endif
+
+                    Common.LogDebug(true, $"FilterDatabaseGame: {FilterDatabaseGame.Count()}");
+
                     foreach (var game in FilterDatabaseGame)
                     {
                         try
                         {
                             if (SourceName.ToLower() == "steam" && IsFirstLoop)
                             {
-#if DEBUG
-                                logger.Debug($"SuccessStory [Ignored] - Check Steam profil with {game.GameId}");
-#endif
+                                Common.LogDebug(true, $"Check Steam profil with {game.GameId}");
 
-                                SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginDatabase.PluginSettings, _PluginUserDataPath);
+                                SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginDatabase.PluginSettings.Settings, _PluginUserDataPath);
                                 int AppId = 0;
                                 int.TryParse(game.GameId, out AppId);
                                 if (!steamAPI.CheckIsPublic(AppId))
@@ -452,7 +450,7 @@ namespace SuccessStory.Views
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, "SuccessStory", $"Error on RefreshData({SourceName}, {IsGet}) for {game.Name}");
+                            Common.LogError(ex, false, $"Error on RefreshData({SourceName}, {IsGet}) for {game.Name}");
                         }
 
                         if (ct.IsCancellationRequested)
@@ -464,7 +462,7 @@ namespace SuccessStory.Views
                 }
                 catch(Exception ex)
                 {
-                    Common.LogError(ex, "SuccessStory", $"Error on RefreshData({SourceName}, {IsGet})");
+                    Common.LogError(ex, false, $"Error on RefreshData({SourceName}, {IsGet})");
                 }
             }, tokenSource.Token)
             .ContinueWith(antecedent =>
@@ -491,69 +489,16 @@ namespace SuccessStory.Views
                     SuccessStorySettings.IsEnabled = true;
 #if DEBUG
                     stopwatch.Stop();
-                    logger.Debug($"SuccessStory [Ignored] - RefreshData() - End - {stopwatch.Elapsed}");
+                    Common.LogDebug(true, $"RefreshData() - End - {stopwatch.Elapsed}");
 #endif
                 });
             });
         }
 
 
-        private void Checkbox_Click(object sender, RoutedEventArgs e)
-        {
-            CheckBox cb = (CheckBox)sender;
-
-            if ((cb.Name == "Sc_IntegrationInButtonDetails") && (bool)cb.IsChecked)
-            {
-                Sc_IntegrationInDescriptionOnlyIcon.IsChecked = false;
-            }
-            if ((cb.Name == "Sc_IntegrationInDescriptionOnlyIcon") && (bool)cb.IsChecked)
-            {
-                Sc_IntegrationInButtonDetails.IsChecked = false;
-            }
-
-
-            if ((cb.Name == "Sc_IntegrationInButton") && (bool)cb.IsChecked)
-            {
-                Sc_IntegrationInCustomTheme.IsChecked = false;
-            }
-            if ((cb.Name == "Sc_IntegrationInDescription") && (bool)cb.IsChecked)
-            {
-                Sc_IntegrationInCustomTheme.IsChecked = false;
-            }
-
-            if ((cb.Name == "Sc_IntegrationInCustomTheme") && (bool)cb.IsChecked)
-            {
-                Sc_IntegrationInButton.IsChecked = false;
-                Sc_IntegrationInDescription.IsChecked = false;
-            }
-        }
-
-        private void CheckboxGraphicType_Click(object sender, RoutedEventArgs e)
-        {
-            CheckBox cb = (CheckBox)sender;
-
-            if ((cb.Name == "Sc_AllMonth") && (bool)cb.IsChecked)
-            {
-                Sc_AllDay.IsChecked = false;
-            }
-            else if ((cb.Name == "Sc_AllMonth") && !(bool)cb.IsChecked)
-            {
-                Sc_AllDay.IsChecked = true;
-            }
-
-            if ((cb.Name == "Sc_AllDay") && (bool)cb.IsChecked)
-            {
-                Sc_AllMonth.IsChecked = false;
-            }
-            else if ((cb.Name == "Sc_AllDay") && !(bool)cb.IsChecked)
-            {
-                Sc_AllMonth.IsChecked = true;
-            }
-        }
-
         private void cbDefaultSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PluginDatabase.PluginSettings.NameSorting = ((ComboBoxItem)cbDefaultSorting.SelectedItem).Tag.ToString();
+            PluginDatabase.PluginSettings.Settings.NameSorting = ((ComboBoxItem)cbDefaultSorting.SelectedItem).Tag.ToString();
         }
 
 
@@ -563,7 +508,7 @@ namespace SuccessStory.Views
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 PART_Rpcs3Folder.Text = SelectedFolder;
-                PluginDatabase.PluginSettings.Rpcs3InstallationFolder = SelectedFolder;
+                PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder = SelectedFolder;
             }
         }
     }

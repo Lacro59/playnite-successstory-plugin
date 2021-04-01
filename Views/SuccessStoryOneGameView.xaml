@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views"
+             xmlns:controls="clr-namespace:SuccessStory.Controls"
              mc:Ignorable="d" Height="700" Width="1080">
     
     <Grid Margin="10">
@@ -13,25 +14,28 @@
             <ColumnDefinition Width="400" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="20" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" DockPanel.Dock="Top">
-            <StackPanel DockPanel.Dock="Top">
-                <Label Name="PART_ChartTitle" Content="{DynamicResource LOCSuccessStoryGraphicTitle}" 
-                       FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
+        <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0">
+                <Label Content="{DynamicResource LOCSuccessStoryGraphicTitleDay}" FontSize="16" HorizontalAlignment="Center" />
             </StackPanel>
 
-            <StackPanel x:Name="PART_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168">
-            </StackPanel>
-        </DockPanel>
+            <controls:PluginChart Grid.Row="2" IgnoreSettings="True" AxisLimit="16" GameContext="{Binding GameContext}" />
+        </Grid>
 
         <Grid Name="PART_Achievements_List_Contener" Grid.Column="0" Grid.Row="2">
-            <StackPanel Name="PART_Achievements_List"
-                        Height="{Binding ElementName=PART_Achievements_List_Contener, Path=ActualHeight}">
-            </StackPanel>
+            <controls:PluginList IgnoreSettings="True" ForceOneCol="True" GameContext="{Binding GameContext}"
+                                 Height="{Binding ElementName=PART_Achievements_List_Contener, Path=ActualHeight}" />
         </Grid>
 
         <DockPanel Grid.Column="2" Grid.Row="2">
@@ -41,9 +45,8 @@
             </StackPanel>
 
             <Grid Name="PART_ScUserStats_Contener">
-                <StackPanel Name="PART_ScUserStats" 
-                        Height="{Binding ElementName=PART_ScUserStats_Contener, Path=ActualHeight}">
-                </StackPanel>
+                <controls:PluginUserStats Height="{Binding ElementName=PART_ScUserStats_Contener, Path=ActualHeight}"
+                                          IgnoreSettings="True" GameContext="{Binding GameContext}" />
             </Grid>
         </DockPanel>
     </Grid>

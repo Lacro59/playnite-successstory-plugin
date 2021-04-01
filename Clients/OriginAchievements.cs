@@ -51,9 +51,7 @@ namespace SuccessStory.Clients
                 string personasId = GetPersonas(originAPI.GetAccessToken());
                 string origineGameId = GetOrigineGameAchievementId(_PlayniteApi, game.Id);
 
-#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - Origin token: {accessToken}");
-#endif
+                Common.LogDebug(true, $"Origin token: {accessToken}");
 
                 string lang = CodeLang.GetOriginLang(_PlayniteApi.ApplicationSettings.Language);
                 // Achievements (default return in english)
@@ -107,7 +105,7 @@ namespace SuccessStory.Clients
                                 case HttpStatusCode.NotFound: // HTTP 404
                                     break;
                                 default:
-                                    Common.LogError(ex, "SuccessStory", $"Failed to load from {url}. ");
+                                    Common.LogError(ex, false, $"Failed to load from {url}. ");
                                     break;
                             }
                             return Result;

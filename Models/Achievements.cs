@@ -53,7 +53,7 @@ namespace SuccessStory.Models
                 string TempUrlUnlocked = UrlUnlocked;
                 if (TempUrlUnlocked.IndexOf("rpcs3") > -1)
                 {
-                    TempUrlUnlocked = Path.Combine(PluginDatabase.PluginUserDataPath, UrlUnlocked); ;
+                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, UrlUnlocked); ;
                 }
 
                 string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");

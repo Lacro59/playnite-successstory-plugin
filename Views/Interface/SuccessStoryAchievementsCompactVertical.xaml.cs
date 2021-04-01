@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using SuccessStory.Controls;
 
 namespace SuccessStory.Views.Interface
 {
@@ -52,12 +53,12 @@ namespace SuccessStory.Views.Interface
                 }
                 if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
                 {
-                    SetScData(PluginDatabase.GameSelectedData);
+                    //SetScData(PluginDatabase.GameSelectedData);
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory");
+                Common.LogError(ex, false);
             }
         }
 
@@ -114,7 +115,7 @@ namespace SuccessStory.Views.Interface
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
+                        Common.LogError(ex, false, "Error on convert bitmap");
                     }
 
                     string NameAchievement = ListAchievements[i].Name;
@@ -146,15 +147,14 @@ namespace SuccessStory.Views.Interface
                 {
                     AchievementsList = AchievementsList.OrderBy(x => x.Name).ToList();
                 }
-#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
-#endif
+
+                Common.LogDebug(true, $"SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
 
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
                 {
                     if (!noControl)
                     {
-                        if (gameAchievements.Id != SuccessStoryDatabase.GameSelected.Id)
+                        if (gameAchievements.Id != PluginDatabase.GameContext.Id)
                         {
                             return;
                         }
@@ -185,9 +185,7 @@ namespace SuccessStory.Views.Interface
             double actualHeight = PART_ScCompactView.ActualHeight;
             int nbRow = (int)actualHeight / 52;
 
-#if DEBUG
-            logger.Debug($"SuccessStory [Ignored] - SuccessStoryAchievementsCompact - ActualHeight: {actualHeight} - nbGrid: {nbRow} - AchievementsList: {AchievementsList.Count}");
-#endif
+            Common.LogDebug(true, $"SuccessStoryAchievementsCompact - ActualHeight: {actualHeight} - nbGrid: {nbRow} - AchievementsList: {AchievementsList.Count}");
 
             if (nbRow > 0)
             {
@@ -256,7 +254,7 @@ namespace SuccessStory.Views.Interface
                                 myDropShadowEffect.Color = (Color)color;
                             }
 
-                            if (PluginDatabase.PluginSettings.EnableRaretyIndicator)
+                            if (PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator)
                             {
                                 gridImage.Effect = myDropShadowEffect;
                             }

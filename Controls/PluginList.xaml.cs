@@ -1,0 +1,305 @@
+﻿using CommonPluginsShared;
+using CommonPluginsShared.Collections;
+using CommonPluginsShared.Controls;
+using CommonPluginsShared.Interfaces;
+using Playnite.SDK.Models;
+using SuccessStory.Models;
+using SuccessStory.Services;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+
+namespace SuccessStory.Controls
+{
+    /// <summary>
+    /// Logique d'interaction pour PluginList.xaml
+    /// </summary>
+    public partial class PluginList : PluginUserControlExtend
+    {
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        internal override IPluginDatabase _PluginDatabase
+        {
+            get
+            {
+                return PluginDatabase;
+            }
+            set
+            {
+                PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
+            }
+        }
+
+        private PluginListDataContext ControlDataContext;
+        internal override IDataContext _ControlDataContext
+        {
+            get
+            {
+                return ControlDataContext;
+            }
+            set
+            {
+                ControlDataContext = (PluginListDataContext)_ControlDataContext;
+            }
+        }
+
+
+        #region Properties
+        public static readonly DependencyProperty ForceOneColProperty;
+        public bool ForceOneCol { get; set; } = false;
+        #endregion
+
+
+        public PluginList()
+        {
+            InitializeComponent();
+
+            Task.Run(() =>
+            {
+                // Wait extension database are loaded
+                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+
+                this.Dispatcher.BeginInvoke((Action)delegate
+                {
+                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
+                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
+                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
+                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+
+                    // Apply settings
+                    PluginSettings_PropertyChanged(null, null);
+                });
+            });
+        }
+
+
+        public override void SetDefaultDataContext()
+        {
+            double Height = PluginDatabase.PluginSettings.Settings.IntegrationShowAchievementsHeight;
+            if (IgnoreSettings)
+            {
+                Height = double.NaN;
+            }
+
+            int ColDefinied = PluginDatabase.PluginSettings.Settings.IntegrationAchievementsColCount;
+            if (ForceOneCol)
+            {
+                ColDefinied = 1;
+            }
+
+            ControlDataContext = new PluginListDataContext
+            {
+                IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowAchievements,
+                Height = Height,
+                ColDefinied = ColDefinied,
+
+                RowDefinied = 1,
+                ItemsSource = null
+            };
+
+            LbAchievements_SizeChanged(null, null);
+        }
+
+
+        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        {
+            return Task.Run(() =>
+            {
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(delegate
+                {
+                    this.DataContext = null;
+                    this.DataContext = ControlDataContext;
+                })).Wait();
+
+                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
+                List<Achievements> ListAchievements = gameAchievements.Items;
+                List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
+
+                try
+                {
+                    for (int i = 0; i < ListAchievements.Count; i++)
+                    {
+                        DateTime? dateUnlock = null;
+                        BitmapImage iconImage = new BitmapImage();
+
+                        bool IsGray = false;
+
+                        string urlImg = string.Empty;
+                        try
+                        {
+                            if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
+                            {
+                                if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
+                                {
+                                    urlImg = ListAchievements[i].ImageUnlocked;
+                                    IsGray = true;
+                                }
+                                else
+                                {
+                                    urlImg = ListAchievements[i].ImageLocked;
+                                }
+                            }
+                            else
+                            {
+                                urlImg = ListAchievements[i].ImageUnlocked;
+                                dateUnlock = ListAchievements[i].DateUnlocked;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false, "Error on convert bitmap");
+                        }
+
+                        string NameAchievement = ListAchievements[i].Name;
+
+                        // Achievement without unlocktime but achieved = 1
+                        if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
+                        {
+                            dateUnlock = null;
+                        }
+
+                        ListBoxAchievements.Add(new ListBoxAchievements()
+                        {
+                            Name = NameAchievement,
+                            DateUnlock = dateUnlock,
+                            EnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
+                            Icon = urlImg,
+                            IconImage = urlImg,
+                            IsGray = IsGray,
+                            Description = ListAchievements[i].Description,
+                            Percent = ListAchievements[i].Percent
+                        });
+
+                        iconImage = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+
+                // Sorting
+                ListBoxAchievements = ListBoxAchievements.OrderByDescending(x => x.DateUnlock).ThenBy(x => x.Name).ToList();
+                ControlDataContext.ItemsSource = ListBoxAchievements;
+
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                {
+                    this.DataContext = null;
+                    this.DataContext = ControlDataContext;
+                }));
+
+                return true;
+            });
+        }
+
+
+        #region Events
+        /// <summary>
+        /// Show or not the ToolTip.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            string Text = ((TextBlock)sender).Text;
+            TextBlock textBlock = (TextBlock)sender;
+
+            Typeface typeface = new Typeface(
+                textBlock.FontFamily,
+                textBlock.FontStyle,
+                textBlock.FontWeight,
+                textBlock.FontStretch);
+
+            FormattedText formattedText = new FormattedText(
+                textBlock.Text,
+                System.Threading.Thread.CurrentThread.CurrentCulture,
+                textBlock.FlowDirection,
+                typeface,
+                textBlock.FontSize,
+                textBlock.Foreground,
+                VisualTreeHelper.GetDpi(this).PixelsPerDip);
+
+            if (formattedText.Width > textBlock.DesiredSize.Width)
+            {
+                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void LbAchievements_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            int RowDefinied = (int)lbAchievements.ActualHeight / 70;
+            RowDefinied = (RowDefinied == 0) ? 1 : RowDefinied;
+            
+            if (ControlDataContext != null)
+            {
+                ControlDataContext.RowDefinied = RowDefinied;
+                this.DataContext = null;
+                this.DataContext = ControlDataContext;
+            }
+        }
+        #endregion
+    }
+
+
+    public class PluginListDataContext : IDataContext
+    {
+        public bool IsActivated { get; set; }
+        public double Height { get; set; }
+        public int ColDefinied { get; set; }
+
+        public int RowDefinied { get; set; }
+        public List<ListBoxAchievements> ItemsSource { get; set; }
+    }
+
+    public class SetColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Color color = Brushes.Transparent.Color;
+
+            if ((float)value > 30)
+            {
+                return null;
+            }
+
+            if ((float)value <= 30)
+            {
+                color = Brushes.DarkGray.Color;
+            }
+            if ((float)value <= 10)
+            {
+                color = Brushes.Gold.Color;
+            }
+
+            Color newColor = new Color();
+            newColor.ScR = (float)color.R / 255;
+            newColor.ScG = (float)color.G / 255;
+            newColor.ScB = (float)color.B / 255;
+
+            return newColor;
+
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
+}

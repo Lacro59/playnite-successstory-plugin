@@ -3,6 +3,9 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <FontFamily x:Key="FontIcoFont">pack://application:,,,/CommonPluginsResources;component/ResourcesPlaynite/icofont.ttf#icofont</FontFamily>
+                </ResourceDictionary>
                 <!--Playnite Resources-->
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/Constants.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/Common.xaml" />
@@ -42,14 +45,13 @@
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/DerivedStyles/BottomButton.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/DerivedStyles/HighlightBorder.xaml" />
 
-                <!--PluginResources-->
-                <ResourceDictionary Source="Resources/Common.xaml" />
                 <!--PluginCommon-->
                 <ResourceDictionary>
                     <FontFamily x:Key="CommonFont">pack://application:,,,/CommonPluginsResources;component/Resources/font.ttf#font</FontFamily>
                 </ResourceDictionary>
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/Resources/Common.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/Resources/LiveChartsCommon/Common.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/Resources/Controls/ListExtendStyle.xaml" />
                 <!--Plugin default localization-->
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/Localization/Common/LocSource.xaml" />
                 <ResourceDictionary Source="Localization/LocSource.xaml" />

@@ -175,7 +175,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory");
+                Common.LogError(ex, false);
             }
 
             return TrophyGameFolder;

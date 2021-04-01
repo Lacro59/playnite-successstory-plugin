@@ -59,9 +59,8 @@ namespace SuccessStory.Clients
 
             if (!IsLocal)
             {
-#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - Steam - GetAchievements()");
-#endif
+                Common.LogDebug(true, $"Steam - GetAchievements()");
+
                 int.TryParse(game.GameId, out AppId);
 
                 VerifSteamUser();
@@ -97,9 +96,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - Steam - GetAchievementsLocal()");
-#endif
+                Common.LogDebug(true, $"Steam - GetAchievementsLocal()");
 
                 SteamEmulators se = new SteamEmulators(_PlayniteApi, _PluginUserDataPath);
                 var temp = se.GetAchievementsLocal(game.Name, SteamApiKey);
@@ -174,7 +171,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", "Error on GetSteamConfig");
+                Common.LogError(ex, false, "Error on GetSteamConfig");
             }
 
             if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty())
@@ -205,7 +202,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", "Error on VerifSteamUser()");
+                Common.LogError(ex, false, "Error on VerifSteamUser()");
             }
         }
 
@@ -236,7 +233,7 @@ namespace SuccessStory.Clients
                 }
                 catch (WebException ex)
                 {
-                    Common.LogError(ex, "SuccessStory");
+                    Common.LogError(ex, false);
                     return false;
                 }
 
@@ -251,7 +248,7 @@ namespace SuccessStory.Clients
                 }
                 catch (WebException ex)
                 {
-                    Common.LogError(ex, "SuccessStory");
+                    Common.LogError(ex, false);
                     return false;
                 }
             }
@@ -279,7 +276,7 @@ namespace SuccessStory.Clients
                 //    }
                 //    else
                 //    {
-                //        Common.LogError(wex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                //        Common.LogError(wex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
                 //    }
                 //}
                 catch (WebException ex)
@@ -299,7 +296,7 @@ namespace SuccessStory.Clients
                                 logger.Warn("SuccessStory - Steam profil is private");
 
                                 // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
-                                Common.LogError(ex, "SuccessStory", "Error on CheckIsPublic()");
+                                Common.LogError(ex, false, "Error on CheckIsPublic()");
 
                                 return false;
                             }
@@ -307,13 +304,13 @@ namespace SuccessStory.Clients
                         else
                         {
                             // no http status code available
-                            Common.LogError(ex, "SuccessStory", $"Error on CheckIsPublic({AppId})");
+                            Common.LogError(ex, false, $"Error on CheckIsPublic({AppId})");
                         }
                     }
                     else
                     {
                         // no http status code available
-                        Common.LogError(ex, "SuccessStory", $"Error on CheckIsPublic({AppId})");
+                        Common.LogError(ex, false, $"Error on CheckIsPublic({AppId})");
                     }
 
                     return true;
@@ -368,7 +365,7 @@ namespace SuccessStory.Clients
             //    }
             //    else
             //    {
-            //        Common.LogError(wex, "SuccessStory", $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
+            //        Common.LogError(wex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
             //    }
             //}
             catch (WebException ex)
@@ -388,19 +385,19 @@ namespace SuccessStory.Clients
                             logger.Warn("SuccessStory - Steam profil is private");
 
                             // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
-                            Common.LogError(ex, "SuccessStory", $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
+                            Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
                         }
                     }
                     else
                     {
                         // no http status code available
-                        Common.LogError(ex, "SuccessStory", $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
+                        Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
                     }
                 }
                 else
                 {
                     // no http status code available
-                    Common.LogError(ex, "SuccessStory", $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
+                    Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
                 }
             }
 
@@ -452,7 +449,7 @@ namespace SuccessStory.Clients
             //    }
             //    else
             //    {
-            //        Common.LogError(wex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+            //        Common.LogError(wex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
             //    }
             //}
             catch (WebException ex)
@@ -472,19 +469,19 @@ namespace SuccessStory.Clients
                             logger.Warn("SuccessStory - Steam profil is private");
 
                             // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
-                            Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                            Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
                         }
                     }
                     else
                     {
                         // no http status code available
-                        Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                        Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
                     }
                 }
                 else
                 {
                     // no http status code available
-                    Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                    Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
                 }
             }
 
@@ -515,7 +512,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, "SuccessStory", $"Error on AchievementsData({AppId}, {LocalLang})");
+                        Common.LogError(ex, false, $"Error on AchievementsData({AppId}, {LocalLang})");
                     }
 
                     try
@@ -543,15 +540,13 @@ namespace SuccessStory.Clients
                     catch (Exception ex)
                     {
                         logger.Warn($"SuccessStory - No Steam stats for {AppId}");
-#if DEBUG
-                        Common.LogError(ex, "SuccessStory [Ignored]", $"Error on AvailableGameStats({AppId}, {LocalLang})");
-#endif
+                        Common.LogError(ex, true, $"Error on AvailableGameStats({AppId}, {LocalLang})");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Error on GetSchemaForGame({AppId}, {LocalLang})");
+                Common.LogError(ex, false, $"Error on GetSchemaForGame({AppId}, {LocalLang})");
             }
 
             return Tuple.Create(AllAchievements, AllStats);
@@ -574,9 +569,8 @@ namespace SuccessStory.Clients
 
                 if (!TryByName)
                 {
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - FindHiddenDescription() for {SteamId} - {AppId}");
-#endif
+                    Common.LogDebug(true, $"FindHiddenDescription() for {SteamId} - {AppId}");
+
                     url = string.Format(UrlProfilById, SteamId, AppId);
                     try
                     {
@@ -584,14 +578,13 @@ namespace SuccessStory.Clients
                     }
                     catch (WebException ex)
                     {
-                        Common.LogError(ex, "SuccessStory", $"Error on FindHiddenDescription()");
+                        Common.LogError(ex, false, $"Error on FindHiddenDescription()");
                     }
                 }
                 else
                 {
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - FindHiddenDescription() for {SteamUser} - {AppId}");
-#endif
+                    Common.LogDebug(true, $"FindHiddenDescription() for {SteamUser} - {AppId}");
+
                     url = string.Format(UrlProfilByName, SteamUser, AppId);
                     try
                     {
@@ -599,7 +592,7 @@ namespace SuccessStory.Clients
                     }
                     catch (WebException ex)
                     {
-                        Common.LogError(ex, "SuccessStory", $"Error on FindHiddenDescription()");
+                        Common.LogError(ex, false, $"Error on FindHiddenDescription()");
                     }
                 }
 
@@ -648,7 +641,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, "SuccessStory");
+                        Common.LogError(ex, false);
                     }
                 }
             }
@@ -673,9 +666,8 @@ namespace SuccessStory.Clients
 
                 if (!TryByName)
                 {
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - GetAchievementsInPublic() for {SteamId} - {AppId}");
-#endif
+                    Common.LogDebug(true, $"GetAchievementsInPublic() for {SteamId} - {AppId}");
+
                     url = string.Format(UrlProfilById, SteamId, AppId);
                     try
                     {
@@ -683,14 +675,13 @@ namespace SuccessStory.Clients
                     }
                     catch (WebException ex)
                     {
-                        Common.LogError(ex, "SuccessStory");
+                        Common.LogError(ex, false);
                     }
                 }
                 else
                 {
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - GetAchievementsInPublic() for {SteamUser} - {AppId}");
-#endif
+                    Common.LogDebug(true, $"GetAchievementsInPublic() for {SteamUser} - {AppId}");
+
                     url = string.Format(UrlProfilByName, SteamUser, AppId);
                     try
                     {
@@ -698,7 +689,7 @@ namespace SuccessStory.Clients
                     }
                     catch (WebException ex)
                     {
-                        Common.LogError(ex, "SuccessStory");
+                        Common.LogError(ex, false);
                     }
                 }
 
@@ -788,7 +779,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, "SuccessStory");
+                        Common.LogError(ex, false);
                     }
                 }
             }
@@ -814,7 +805,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
             }
 
             return AllAchievements;

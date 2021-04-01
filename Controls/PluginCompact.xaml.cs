@@ -1,93 +1,169 @@
-﻿using Newtonsoft.Json;
-using Playnite.SDK;
-using CommonPluginsShared;
+﻿using CommonPluginsShared;
+using CommonPluginsShared.Collections;
+using CommonPluginsShared.Controls;
+using CommonPluginsShared.Interfaces;
+using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
+using SuccessStory.Views.Interface;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace SuccessStory.Views.Interface
+namespace SuccessStory.Controls
 {
     /// <summary>
-    /// Logique d'interaction pour SuccessStoryAchievementsCompact.xaml
+    /// Logique d'interaction pour PluginCompact.xaml
     /// </summary>
-    public partial class SuccessStoryAchievementsCompact : UserControl
+    public partial class PluginCompact : PluginUserControlExtend
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-
-        List<ListBoxAchievements> AchievementsList = new List<ListBoxAchievements>();
-        private bool _withUnlocked;
-
-
-        public SuccessStoryAchievementsCompact(bool withUnlocked = false)
+        internal override IPluginDatabase _PluginDatabase
         {
-            _withUnlocked = withUnlocked;
+            get
+            {
+                return PluginDatabase;
+            }
+            set
+            {
+                PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
+            }
+        }
 
+        private PluginCompactDataContext ControlDataContext;
+        internal override IDataContext _ControlDataContext
+        {
+            get
+            {
+                return ControlDataContext;
+            }
+            set
+            {
+                ControlDataContext = (PluginCompactDataContext)_ControlDataContext;
+            }
+        }
+
+
+        #region Properties
+        public bool IsUnlocked
+        {
+            get { return (bool)GetValue(IsUnlockedProperty); }
+            set { SetValue(IsUnlockedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsUnlockedProperty = DependencyProperty.Register(
+            nameof(IsUnlocked),
+            typeof(bool),
+            typeof(PluginCompact),
+            new FrameworkPropertyMetadata(false, ControlsPropertyChangedCallback));
+        #endregion
+
+
+        public PluginCompact()
+        {
             InitializeComponent();
-
-            PluginDatabase.PropertyChanged += OnPropertyChanged;
-        }
-
-
-        protected void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            try
-            {
-                if (e.PropertyName == "GameIsLoaded")
-                {
-                    return;
-                }
-                if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
-                {
-                    SetScData(PluginDatabase.GameSelectedData);
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, "SuccessStory");
-            }
-        }
-
-
-        public void SetScData(GameAchievements gameAchievements, bool noControl = false)
-        {
-            List<Achievements> ListAchievements = gameAchievements.Items;
 
             Task.Run(() =>
             {
-                AchievementsList = new List<ListBoxAchievements>();
+                // Wait extension database are loaded
+                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+
+                this.Dispatcher.BeginInvoke((Action)delegate
+                {
+                    PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
+                    PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
+                    PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
+                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+
+                    // Apply settings
+                    PluginSettings_PropertyChanged(null, null);
+                });
+            });
+        }
+
+
+        public override void SetDefaultDataContext()
+        {
+            bool IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowAchievementsCompactLocked;
+            if (IsUnlocked)
+            {
+                IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowAchievementsCompactUnlocked;
+            }
+
+            ControlDataContext = new PluginCompactDataContext
+            {
+                IsActivated = IsActivated,
+                Height = PluginDatabase.PluginSettings.Settings.IntegrationAchievementsCompactHeight,
+
+                ItemsSource = new ObservableCollection<ListBoxAchievements>()
+            };
+        }
+
+
+        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        {
+            bool IsUnlocked = this.IsUnlocked;
+
+            return Task.Run(() =>
+            {
+                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
+
+                SetScData(gameAchievements, IsUnlocked);
+
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                {
+                    this.DataContext = ControlDataContext;
+                }));
+
+                return true;
+            });
+        }
+
+
+        public void SetScData(GameAchievements gameAchievements, bool IsUnlocked)
+        {
+            Task.Run(() =>
+            {
+                List<Achievements> ListAchievements = gameAchievements.Items;
+                List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
+
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(delegate
+                {
+                    this.DataContext = null;
+                    this.DataContext = ControlDataContext;
+                }));
+
 
                 // Select data
-                if (_withUnlocked)
+                if (IsUnlocked)
                 {
                     ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked != default(DateTime));
-                    ListAchievements.Sort((x, y) => DateTime.Compare((DateTime)x.DateUnlocked, (DateTime)y.DateUnlocked));
-                    ListAchievements.Reverse();
                 }
                 else
                 {
                     ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked == default(DateTime));
-                    ListAchievements.Sort((x, y) => string.Compare(x.Name, y.Name));
                 }
 
-                // Prepare data
+
                 for (int i = 0; i < ListAchievements.Count; i++)
                 {
                     DateTime? dateUnlock = null;
-                    BitmapImage iconImage = new BitmapImage();
 
                     bool IsGray = false;
 
@@ -114,51 +190,39 @@ namespace SuccessStory.Views.Interface
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
+                        Common.LogError(ex, false, "Error on convert bitmap");
                     }
 
                     string NameAchievement = ListAchievements[i].Name;
 
+                    // Achievement without unlocktime but achieved = 1
                     if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
                     {
                         dateUnlock = null;
                     }
 
-                    AchievementsList.Add(new ListBoxAchievements()
+                    ListBoxAchievements.Add(new ListBoxAchievements()
                     {
                         Name = NameAchievement,
                         DateUnlock = dateUnlock,
+                        EnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
                         Icon = urlImg,
                         IconImage = urlImg,
                         IsGray = IsGray,
                         Description = ListAchievements[i].Description,
-                        Percent = ListAchievements[i].Percent
+                        Percent = ListAchievements[i].Percent,
+
+                        PictureSize = (int)ControlDataContext.Height
                     });
-
-                    iconImage = null;
                 }
 
-                if (_withUnlocked)
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
-                    AchievementsList = AchievementsList.OrderByDescending(x => x.DateUnlock).ThenBy(x => x.Name).ToList();
-                }
-                else
-                {
-                    AchievementsList = AchievementsList.OrderBy(x => x.Name).ToList();
-                }
-#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
-#endif
+                    // Sorting
+                    ListBoxAchievements = ListBoxAchievements.OrderByDescending(x => x.DateUnlock).ThenBy(x => x.Name).ToList();
 
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
-                {
-                    if (!noControl)
-                    {
-                        if (gameAchievements.Id != SuccessStoryDatabase.GameSelected.Id)
-                        {
-                            return;
-                        }
-                    }
+                    ControlDataContext.ItemsSource = ListBoxAchievements.ToObservable();
+                    this.DataContext = ControlDataContext;
 
                     PART_ScCompactView_IsLoaded(null, null);
                 }));
@@ -166,6 +230,7 @@ namespace SuccessStory.Views.Interface
         }
 
 
+        #region Events
         private void PART_ScCompactView_IsLoaded(object sender, RoutedEventArgs e)
         {
             if (double.IsNaN(PART_ScCompactView.ActualWidth) || PART_ScCompactView.ActualWidth == 0)
@@ -173,16 +238,20 @@ namespace SuccessStory.Views.Interface
                 return;
             }
 
+            if (ControlDataContext.ItemsSource == null)
+            {
+                return;
+            }
+
+            var AchievementsList = ControlDataContext.ItemsSource;
+
             PART_ScCompactView.Children.Clear();
             PART_ScCompactView.ColumnDefinitions.Clear();
 
-            // Prepare Grid 40x40 & add data
             double actualWidth = PART_ScCompactView.ActualWidth;
-            int nbGrid = (int)actualWidth / 52;
+            int nbGrid = (int)(actualWidth / (ControlDataContext.Height + 6));
 
-#if DEBUG
-            logger.Debug($"SuccessStory [Ignored] - SuccessStoryAchievementsCompact - actualWidth: {actualWidth} - nbGrid: {nbGrid} - AchievementsList: {AchievementsList.Count}");
-#endif
+            Common.LogDebug(true, $"actualWidth: {actualWidth} - nbGrid: {nbGrid} - AchievementsList: {AchievementsList.Count}");
 
             if (nbGrid > 0)
             {
@@ -198,12 +267,12 @@ namespace SuccessStory.Views.Interface
                         {
                             Image gridImage = new Image();
                             gridImage.Stretch = Stretch.UniformToFill;
-                            gridImage.Width = 48;
-                            gridImage.Height = 48;
+                            gridImage.Width = ControlDataContext.Height;
+                            gridImage.Height = ControlDataContext.Height;
                             gridImage.ToolTip = AchievementsList[i].Name;
                             gridImage.SetValue(Grid.ColumnProperty, i);
 
-                            if (_withUnlocked)
+                            if (IsUnlocked)
                             {
                                 var converter = new LocalDateTimeConverter();
                                 gridImage.ToolTip = AchievementsList[i].NameWithDateUnlock;
@@ -251,7 +320,7 @@ namespace SuccessStory.Views.Interface
                                 myDropShadowEffect.Color = (Color)color;
                             }
 
-                            if (PluginDatabase.PluginSettings.EnableRaretyIndicator)
+                            if (PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator)
                             {
                                 gridImage.Effect = myDropShadowEffect;
                             }
@@ -272,14 +341,21 @@ namespace SuccessStory.Views.Interface
                     }
                 }
             }
-            else
-            {
-            }
         }
 
         private void PART_ScCompactView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             PART_ScCompactView_IsLoaded(null, null);
         }
+        #endregion
+    }
+
+
+    public class PluginCompactDataContext : IDataContext
+    {
+        public bool IsActivated { get; set; }
+        public double Height { get; set; }
+
+        public ObservableCollection<ListBoxAchievements> ItemsSource { get; set; }
     }
 }

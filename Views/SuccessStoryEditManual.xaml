@@ -7,15 +7,15 @@
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"             
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
-             xmlns:local1="clr-namespace:SuccessStory.Views.Interface"
-             xmlns:controls="clr-namespace:CommonPluginsPlaynite.Controls"
+             xmlns:controls="clr-namespace:SuccessStory.Controls"
+             xmlns:Commonplaynitecontrols="clr-namespace:CommonPluginsPlaynite.Controls"
              mc:Ignorable="d" Height="700" Width="800">
 
     <UserControl.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <local1:SetColorConverter x:Key="SetColorConverter" />
+        <controls:SetColorConverter x:Key="SetColorConverter" />
     </UserControl.Resources>
 
     <Grid Margin="10" Name="PART_GridContener">
@@ -98,7 +98,7 @@
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <controls:VirtualizingGridPanel Columns="{Binding ColDefinied}" Rows="{Binding RowDefinied}" />
+                        <Commonplaynitecontrols:VirtualizingGridPanel Columns="{Binding ColDefinied}" Rows="{Binding RowDefinied}" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 

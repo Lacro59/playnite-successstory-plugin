@@ -50,9 +50,7 @@ namespace SuccessStory.Clients
             {
                 ListAchievements = GetXboxAchievements(game.GameId, game.Name).GetAwaiter().GetResult();
 
-#if DEBUG
-                logger.Debug("SuccessStory [Ignored] - XboxAchievements - " + JsonConvert.SerializeObject(ListAchievements));
-#endif
+                Common.LogDebug(true, $"XboxAchievements - " + JsonConvert.SerializeObject(ListAchievements));
                 
                 foreach (XboxAchievement xboxAchievement in ListAchievements)
                 {
@@ -79,7 +77,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory", "Failed to Xbox profile achievements");
+                Common.LogError(ex, false, "Failed to Xbox profile achievements");
             }
 
             return Result;
@@ -127,9 +125,9 @@ namespace SuccessStory.Clients
                     var response = await client.PostAsync(
                         @"https://profile.xboxlive.com/users/batch/profile/settings",
                         new StringContent(Playnite.SDK.Data.Serialization.ToJson(requestData), Encoding.UTF8, "application/json"));
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - Xbox GetIsUserLoggedIn() - {response.StatusCode}");
-#endif
+
+                    Common.LogDebug(true, $"Xbox GetIsUserLoggedIn() - {response.StatusCode}");
+
                     return response.StatusCode == System.Net.HttpStatusCode.OK;
                 }
             }
@@ -232,9 +230,7 @@ namespace SuccessStory.Clients
 
         private async Task<List<XboxAchievement>> GetXboxAchievements(string pfn, string name)
         {
-//#if DEBUG
-            logger.Debug($"SuccessStory [Ignored] - GetXboxAchievements() - name: {name} - pfn: {pfn}");
-//#endif
+            Common.LogDebug(true, $"GetXboxAchievements() - name: {name} - pfn: {pfn}");
 
             if (!File.Exists(xstsLoginTokesPath))
             {
@@ -278,9 +274,9 @@ namespace SuccessStory.Clients
             if (!pfn.IsNullOrEmpty())
             {
                 var libTitle = GetTitleInfo(pfn).Result;
-//#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - XboxAchievements - name: {name} - pfn: {pfn} - titleId: {titleId}");
-//#endif
+
+                Common.LogDebug(true, $"XboxAchievements - name: {name} - pfn: {pfn} - titleId: {titleId}");
+
                 titleId = libTitle.titleId;
             }
 
@@ -291,9 +287,9 @@ namespace SuccessStory.Clients
                 url = string.Format(urlAchievements + $"?maxItems=10000", tokens.DisplayClaims.xui[0].xid);
                 logger.Warn($"SuccessStory - XboxAchievements - Bad request");
             }
-#if DEBUG
-            logger.Debug($"SuccessStory [Ignored] - XboxAchievements - url: {url}");
-#endif
+
+            Common.LogDebug(true, $"XboxAchievements - url: {url}");
+
             using (var client = new HttpClient())
             {
                 SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
@@ -329,15 +325,12 @@ namespace SuccessStory.Clients
                 if (titleId.IsNullOrEmpty())
                 {
                     ListAchievements = ListAchievements.Where(x => x.titleAssociations.First().name.ToLower() == name.ToLower()).ToList();
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - XboxAchievements - Not find with {pfn} for {name} - {ListAchievements.Count}");
-#endif
+
+                    Common.LogDebug(true, $"XboxAchievements - Not find with {pfn} for {name} - {ListAchievements.Count}");
                 }                
                 else
                 {
-#if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - XboxAchievements - Find with {titleId} & {pfn} for {name} - {ListAchievements.Count}");
-#endif
+                    Common.LogDebug(true, $"Find with {titleId} & {pfn} for {name} - {ListAchievements.Count}");
                 }
 
                 return ListAchievements;

@@ -50,12 +50,12 @@ namespace SuccessStory.Views.Interface
                 }
                 if (e.PropertyName == "GameSelectedData" || e.PropertyName == "PluginSettings")
                 {
-                    SetScData(PluginDatabase.GameSelectedData);
+                    //SetScData(PluginDatabase.GameSelectedData);
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, "SuccessStory");
+                Common.LogError(ex, false);
             }
         }
 
@@ -103,7 +103,7 @@ namespace SuccessStory.Views.Interface
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, "SuccessStory", "Error on convert bitmap");
+                        Common.LogError(ex, false, "Error on convert bitmap");
                     }
 
                     string NameAchievement = ListAchievements[i].Name;
@@ -118,7 +118,7 @@ namespace SuccessStory.Views.Interface
                     {
                         Name = NameAchievement,
                         DateUnlock = dateUnlock,
-                        EnableRaretyIndicator = PluginDatabase.PluginSettings.EnableRaretyIndicator,
+                        EnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
                         Icon = urlImg,
                         IconImage = urlImg,
                         IsGray = IsGray,
@@ -132,7 +132,7 @@ namespace SuccessStory.Views.Interface
                 {
                     if (!noControl)
                     {
-                        if (gameAchievements.Id != SuccessStoryDatabase.GameSelected.Id)
+                        if (gameAchievements.Id != PluginDatabase.GameContext.Id)
                         {
                             return;
                         }

@@ -42,6 +42,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug9|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\Dropbox\Playnite\Playnite9\Extensions\playnite-successstory-plugin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="akr.WPF.Controls.ColorPicker">
       <HintPath>playnite-plugincommon\CommonPluginsResources\Resources\akr.WPF.Controls.ColorPicker.dll</HintPath>
@@ -62,8 +71,8 @@
       <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Playnite.SDK, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\PlayniteSDK.5.5.0\lib\net462\Playnite.SDK.dll</HintPath>
+    <Reference Include="Playnite.SDK">
+      <HintPath>..\..\..\Dropbox\Playnite\Playnite9\Playnite.SDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -74,7 +83,7 @@
     </Reference>
     <Reference Include="SteamKit2, Version=1.8.3.0, Culture=neutral, PublicKeyToken=ed3ce47ed5aad940, processorArchitecture=MSIL">
       <HintPath>packages\SteamKit2.1.8.3\lib\net45\SteamKit2.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -111,6 +120,30 @@
     <Compile Include="Clients\Rpcs3Achievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />
+    <Compile Include="Controls\PluginButton.xaml.cs">
+      <DependentUpon>PluginButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginChart.xaml.cs">
+      <DependentUpon>PluginChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginCompact.xaml.cs">
+      <DependentUpon>PluginCompact.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginCompactList.xaml.cs">
+      <DependentUpon>PluginCompactList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginList.xaml.cs">
+      <DependentUpon>PluginList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginProgressBar.xaml.cs">
+      <DependentUpon>PluginProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginUserStats.xaml.cs">
+      <DependentUpon>PluginUserStats.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginViewItem.xaml.cs">
+      <DependentUpon>PluginViewItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Achievements.cs" />
     <Compile Include="Models\GameStats.cs" />
     <Compile Include="Models\ListAchievements.cs" />
@@ -135,6 +168,9 @@
     <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForTime.xaml.cs">
       <DependentUpon>CustomerToolTipForTime.xaml</DependentUpon>
     </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\PlayniteControls\NumericBox.xaml.cs">
+      <DependentUpon>NumericBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="playnite-plugincommon\CommonPluginsControls\PlayniteControls\SearchBox.xaml.cs">
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>
@@ -143,50 +179,13 @@
     </Compile>
     <Compile Include="Services\OldToNew.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />
-    <Compile Include="Services\SuccessStoryUI.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
-    <Compile Include="Views\InterfaceFS\SuccessStoryProgressionFS.xaml.cs">
-      <DependentUpon>SuccessStoryProgressionFS.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Interface\ScAchievementsListCompactVertical.xaml.cs">
       <DependentUpon>ScAchievementsListCompactVertical.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Interface\ScAchievementsListCompact.xaml.cs">
-      <DependentUpon>ScAchievementsListCompact.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\ScDescriptionIntegration.xaml.cs">
-      <DependentUpon>ScDescriptionIntegration.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Interface\SuccessStoryAchievementsCompactVertical.xaml.cs">
       <DependentUpon>SuccessStoryAchievementsCompactVertical.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SuccessStoryAchievementsCompact.xaml.cs">
-      <DependentUpon>SuccessStoryAchievementsCompact.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SuccessStoryAchievementsGraphics.xaml.cs">
-      <DependentUpon>SuccessStoryAchievementsGraphics.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SuccessStoryAchievementsList.xaml.cs">
-      <DependentUpon>SuccessStoryAchievementsList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SuccessStoryAchievementsProgressBar.xaml.cs">
-      <DependentUpon>SuccessStoryAchievementsProgressBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SuccessStoryButtonDetails.xaml.cs">
-      <DependentUpon>SuccessStoryButtonDetails.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SuccessStoryButtonHeader.xaml.cs">
-      <DependentUpon>SuccessStoryButtonHeader.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SuccessStoryButton.xaml.cs">
-      <DependentUpon>SuccessStoryButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SuccessStoryToggleButton.xaml.cs">
-      <DependentUpon>SuccessStoryToggleButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Interface\SuccessStoryUserStats.xaml.cs">
-      <DependentUpon>SuccessStoryUserStats.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SuccessStoryEditManual.xaml.cs">
       <DependentUpon>SuccessStoryEditManual.xaml</DependentUpon>
@@ -198,9 +197,6 @@
       <DependentUpon>SuccessStorySettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\Interface\SuccessStoryToggleButtonDetails.xaml.cs">
-      <DependentUpon>SuccessStoryToggleButtonDetails.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\SuccessStoryView.xaml.cs">
       <DependentUpon>SuccessStoryView.xaml</DependentUpon>
     </Compile>
@@ -317,6 +313,38 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Include="Controls\PluginButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PluginChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PluginCompact.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PluginCompactList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PluginList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PluginProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PluginUserStats.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PluginViewItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -337,6 +365,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\PlayniteControls\NumericBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="playnite-plugincommon\CommonPluginsControls\PlayniteControls\SearchBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -345,61 +377,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\InterfaceFS\SuccessStoryProgressionFS.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Interface\ScAchievementsListCompactVertical.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Interface\ScAchievementsListCompact.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\ScDescriptionIntegration.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Interface\SuccessStoryAchievementsCompactVertical.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryAchievementsCompact.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryAchievementsGraphics.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryAchievementsList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryAchievementsProgressBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryButtonDetails.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryButtonHeader.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryToggleButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryUserStats.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SuccessStoryEditManual.xaml">
       <SubType>Designer</SubType>
@@ -410,10 +394,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SuccessStorySettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Interface\SuccessStoryToggleButtonDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
