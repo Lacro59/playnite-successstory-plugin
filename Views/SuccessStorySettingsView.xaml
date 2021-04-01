@@ -445,7 +445,7 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.IntegrationShowProgressBar}" Name="PART_IntegrationProgressBar">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationProgressBar}" Name="PART_IntegrationProgressBar">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowProgressBar}" />
                                     </CheckBox>
                                 </Expander.Header>
@@ -461,10 +461,10 @@
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
 
-                                            <CheckBox Grid.Column="0" IsChecked="{Binding Settings.IntegrationShowProgressBarIndicator}">
+                                            <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableIntegrationProgressBarIndicator}">
                                                 <Label Content="{DynamicResource LOCSuccessStoryIntegrationProgressBarShowIndicator}" />
                                             </CheckBox>
-                                            <CheckBox Grid.Column="1" IsChecked="{Binding Settings.IntegrationShowProgressBarPercent}">
+                                            <CheckBox Grid.Column="1" IsChecked="{Binding Settings.EnableIntegrationProgressBarPercent}">
                                                 <Label Content="{DynamicResource LOCSuccessStoryIntegrationProgressBarShowPercent}" />
                                             </CheckBox>
                                         </Grid>
@@ -480,7 +480,7 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.IntegrationShowAchievementsCompact}" Name="PART_IntegrationCompactList">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompact}" Name="PART_IntegrationCompactList">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompact}" />
                                     </CheckBox>
                                 </Expander.Header>
@@ -503,7 +503,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationAchievementsCompactListHeight}" 
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactHeight}" 
                                                                              Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
                                         </Grid>
@@ -519,7 +519,7 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.IntegrationShowAchievementsCompactUnlocked}" Name="PART_IntegrationCompactUnlocked">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompactLocked}" Name="PART_IntegrationCompactUnlocked">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked}" />
                                     </CheckBox>
                                 </Expander.Header>
@@ -542,7 +542,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationAchievementsCompactHeight}" 
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactPartialHeight}" 
                                                                              Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
                                         </Grid>
@@ -558,7 +558,7 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.IntegrationShowAchievementsCompactLocked}" Name="PART_IntegrationCompactLocked">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompactUnlocked}" Name="PART_IntegrationCompactLocked">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactLocked}" />
                                     </CheckBox>
                                 </Expander.Header>
@@ -581,7 +581,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationAchievementsCompactHeight}" 
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactPartialHeight}" 
                                                                              Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
                                         </Grid>
@@ -597,7 +597,7 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.IntegrationShowGraphic}" Name="PART_IntegrationChart">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationChart}" Name="PART_IntegrationChart">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowGraphic}" />
                                     </CheckBox>
                                 </Expander.Header>
@@ -626,14 +626,14 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowGraphicHeight}" 
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationChartHeight}" 
                                                                      Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
 
-                                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.EnableIntegrationAxisGraphic}">
+                                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.EnableIntegrationAxisChart}">
                                                 <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicShowLabels}" />
                                             </CheckBox>
-                                            <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding Settings.EnableIntegrationOrdinatesGraphic}">
+                                            <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding Settings.EnableIntegrationOrdinatesChart}">
                                                 <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates}" />
                                             </CheckBox>
 
@@ -645,7 +645,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa}" Grid.Column="0" />
-                                                <Slider Minimum="3" Maximum="30" Value="{Binding Settings.IntegrationGraphicOptionsCountAbscissa}" 
+                                                <Slider Minimum="3" Maximum="30" Value="{Binding Settings.IntegrationChartCountAbscissa}" 
                                                         IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
                                                         ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
                                                         Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sCountAbscissa" />
@@ -664,7 +664,7 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.IntegrationShowUserStats}" Name="PART_IntegrationUserStats">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationUserStats}" Name="PART_IntegrationUserStats">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowUserStats}" />
                                     </CheckBox>
                                 </Expander.Header>
@@ -703,7 +703,7 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.IntegrationShowAchievements}" Name="PART_IntegrationAchievements">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationList}" Name="PART_IntegrationAchievements">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievements}" />
                                     </CheckBox>
                                 </Expander.Header>
@@ -726,7 +726,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
-                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationShowAchievementsHeight}" 
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationListHeight}" 
                                                                              Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
 
@@ -738,7 +738,7 @@
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Content="{DynamicResource LOCColumns}" Grid.Column="0" />
-                                                <Slider Minimum="1" Maximum="5" Value="{Binding Settings.IntegrationAchievementsColCount}" 
+                                                <Slider Minimum="1" Maximum="5" Value="{Binding Settings.IntegrationListColCount}" 
                                                         IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
                                                         ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
                                                         Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sColCount" />

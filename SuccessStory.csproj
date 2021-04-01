@@ -264,10 +264,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Common.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Localization\cs_CZ.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

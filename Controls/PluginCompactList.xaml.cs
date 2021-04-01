@@ -86,8 +86,8 @@ namespace SuccessStory.Controls
         {
             ControlDataContext = new PluginCompactListDataContext
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowAchievementsCompact,
-                Height = PluginDatabase.PluginSettings.Settings.IntegrationAchievementsCompactListHeight + 12,
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompact,
+                Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight + 12,
 
                 ItemsSource = null
             };

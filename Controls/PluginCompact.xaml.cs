@@ -100,16 +100,16 @@ namespace SuccessStory.Controls
 
         public override void SetDefaultDataContext()
         {
-            bool IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowAchievementsCompactLocked;
+            bool IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompactLocked;
             if (IsUnlocked)
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowAchievementsCompactUnlocked;
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompactUnlocked;
             }
 
             ControlDataContext = new PluginCompactDataContext
             {
                 IsActivated = IsActivated,
-                Height = PluginDatabase.PluginSettings.Settings.IntegrationAchievementsCompactHeight,
+                Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialHeight,
 
                 ItemsSource = new ObservableCollection<ListBoxAchievements>()
             };

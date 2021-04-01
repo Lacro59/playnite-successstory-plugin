@@ -88,13 +88,13 @@ namespace SuccessStory.Controls
 
         public override void SetDefaultDataContext()
         {
-            double Height = PluginDatabase.PluginSettings.Settings.IntegrationShowAchievementsHeight;
+            double Height = PluginDatabase.PluginSettings.Settings.IntegrationListHeight;
             if (IgnoreSettings)
             {
                 Height = double.NaN;
             }
 
-            int ColDefinied = PluginDatabase.PluginSettings.Settings.IntegrationAchievementsColCount;
+            int ColDefinied = PluginDatabase.PluginSettings.Settings.IntegrationListColCount;
             if (ForceOneCol)
             {
                 ColDefinied = 1;
@@ -102,7 +102,7 @@ namespace SuccessStory.Controls
 
             ControlDataContext = new PluginListDataContext
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowAchievements,
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationList,
                 Height = Height,
                 ColDefinied = ColDefinied,
 

@@ -85,9 +85,9 @@ namespace SuccessStory.Controls
         {
             ControlDataContext = new PluginProgressBarDataContext
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowProgressBar,
-                IntegrationShowProgressBarIndicator = PluginDatabase.PluginSettings.Settings.IntegrationShowProgressBarIndicator,
-                IntegrationShowProgressBarPercent = PluginDatabase.PluginSettings.Settings.IntegrationShowProgressBarPercent,
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBar,
+                IntegrationShowProgressBarIndicator = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBarIndicator,
+                IntegrationShowProgressBarPercent = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBarPercent,
 
                 Percent = 0,
                 Value = 0,

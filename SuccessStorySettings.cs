@@ -67,84 +67,84 @@ namespace SuccessStory
         }
 
 
-        private bool _IntegrationShowProgressBar { get; set; } = false;
-        public bool IntegrationShowProgressBar
+        private bool _EnableIntegrationProgressBar { get; set; } = false;
+        public bool EnableIntegrationProgressBar
         {
-            get => _IntegrationShowProgressBar;
+            get => _EnableIntegrationProgressBar;
             set
             {
-                _IntegrationShowProgressBar = value;
+                _EnableIntegrationProgressBar = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IntegrationShowProgressBarIndicator { get; set; } = false;
-        public bool IntegrationShowProgressBarPercent { get; set; } = false;
+        public bool EnableIntegrationProgressBarIndicator { get; set; } = false;
+        public bool EnableIntegrationProgressBarPercent { get; set; } = false;
 
 
-        private bool _IntegrationShowAchievementsCompact { get; set; } = false;
-        public bool IntegrationShowAchievementsCompact
+        private bool _EnableIntegrationCompact { get; set; } = false;
+        public bool EnableIntegrationCompact
         {
-            get => _IntegrationShowAchievementsCompact;
+            get => _EnableIntegrationCompact;
             set
             {
-                _IntegrationShowAchievementsCompact = value;
+                _EnableIntegrationCompact = value;
                 OnPropertyChanged();
             }
         }
 
-        public double IntegrationAchievementsCompactListHeight { get; set; } = 48;
+        public double IntegrationCompactHeight { get; set; } = 48;
 
 
-        private bool _IntegrationShowAchievementsCompactLocked { get; set; } = false;
-        public bool IntegrationShowAchievementsCompactLocked
+        private bool _EnableIntegrationCompactLocked { get; set; } = false;
+        public bool EnableIntegrationCompactLocked
         {
-            get => _IntegrationShowAchievementsCompactLocked;
+            get => _EnableIntegrationCompactLocked;
             set
             {
-                _IntegrationShowAchievementsCompactLocked = value;
+                _EnableIntegrationCompactLocked = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool _IntegrationShowAchievementsCompactUnlocked { get; set; } = false;
-        public bool IntegrationShowAchievementsCompactUnlocked
+        private bool _EnableIntegrationCompactUnlocked { get; set; } = false;
+        public bool EnableIntegrationCompactUnlocked
         {
-            get => _IntegrationShowAchievementsCompactUnlocked;
+            get => _EnableIntegrationCompactUnlocked;
             set
             {
-                _IntegrationShowAchievementsCompactUnlocked = value;
+                _EnableIntegrationCompactUnlocked = value;
                 OnPropertyChanged();
             }
         }
 
-        public double IntegrationAchievementsCompactHeight { get; set; } = 48;
+        public double IntegrationCompactPartialHeight { get; set; } = 48;
 
-
-        private bool _IntegrationShowGraphic { get; set; } = true;
-        public bool IntegrationShowGraphic
+         
+        private bool _EnableIntegrationChart { get; set; } = true;
+        public bool EnableIntegrationChart
         {
-            get => _IntegrationShowGraphic;
+            get => _EnableIntegrationChart;
             set
             {
-                _IntegrationShowGraphic = value;
+                _EnableIntegrationChart = value;
                 OnPropertyChanged();
             }
         }
 
-        public double IntegrationShowGraphicHeight { get; set; } = 120;
-        public bool EnableIntegrationAxisGraphic { get; set; } = true;
-        public bool EnableIntegrationOrdinatesGraphic { get; set; } = false;
-        public int IntegrationGraphicOptionsCountAbscissa { get; set; } = 11;
+        public double IntegrationChartHeight { get; set; } = 120;
+        public bool EnableIntegrationAxisChart { get; set; } = true;
+        public bool EnableIntegrationOrdinatesChart { get; set; } = false;
+        public int IntegrationChartCountAbscissa { get; set; } = 11;
 
 
-        private bool _IntegrationShowUserStats { get; set; } = true;
-        public bool IntegrationShowUserStats
+        private bool _EnableIntegrationUserStats { get; set; } = true;
+        public bool EnableIntegrationUserStats
         {
-            get => _IntegrationShowUserStats;
+            get => _EnableIntegrationUserStats;
             set
             {
-                _IntegrationShowUserStats = value;
+                _EnableIntegrationUserStats = value;
                 OnPropertyChanged();
             }
         }
@@ -152,38 +152,19 @@ namespace SuccessStory
         public double IntegrationUserStatsHeight { get; set; } = 120;
 
 
-        public bool _IntegrationShowAchievements { get; set; } = true;
-        public bool IntegrationShowAchievements
+        public bool _EnableIntegrationList { get; set; } = true;
+        public bool EnableIntegrationList
         {
-            get => _IntegrationShowAchievements;
+            get => _EnableIntegrationList;
             set
             {
-                _IntegrationShowAchievements = value;
+                _EnableIntegrationList = value;
                 OnPropertyChanged();
             }
         }
 
-        public double IntegrationShowAchievementsHeight { get; set; } = 200;
-        public int IntegrationAchievementsColCount { get; set; } = 1;
-
-   
-
-
-
-
-        public bool IntegrationShowTitle { get; set; } = true;
-        
-
-
-        public bool IntegrationTopGameDetails { get; set; } = true;
-        public bool IntegrationToggleDetails { get; set; } = true;
-
-        
-        
-
-        public bool EnableIntegrationInCustomTheme { get; set; } = false;
-
-
+        public double IntegrationListHeight { get; set; } = 200;
+        public int IntegrationListColCount { get; set; } = 1;
 
 
 

@@ -75,7 +75,7 @@ namespace SuccessStory
             try
             {
                 ButtonName = ((Button)sender).Name;
-                if (ButtonName == "PART_ScCustomButton")
+                if (ButtonName == "PART_CustomScButton")
                 {
                     Common.LogDebug(true, $"OnCustomThemeButtonClick()");
 

@@ -112,10 +112,10 @@ namespace SuccessStory.Controls
 
         public override void SetDefaultDataContext()
         {
-            double ChartHeight = PluginDatabase.PluginSettings.Settings.IntegrationShowGraphicHeight;
-            bool EnableAxisLabel = PluginDatabase.PluginSettings.Settings.EnableIntegrationAxisGraphic;
-            bool EnableOrdinatesLabel = PluginDatabase.PluginSettings.Settings.EnableIntegrationOrdinatesGraphic;
-            int CountAbscissa = PluginDatabase.PluginSettings.Settings.IntegrationGraphicOptionsCountAbscissa;
+            double ChartHeight = PluginDatabase.PluginSettings.Settings.IntegrationChartHeight;
+            bool EnableAxisLabel = PluginDatabase.PluginSettings.Settings.EnableIntegrationAxisChart;
+            bool EnableOrdinatesLabel = PluginDatabase.PluginSettings.Settings.EnableIntegrationOrdinatesChart;
+            int CountAbscissa = PluginDatabase.PluginSettings.Settings.IntegrationChartCountAbscissa;
             if (IgnoreSettings)
             {
                 ChartHeight = double.NaN;
@@ -127,7 +127,7 @@ namespace SuccessStory.Controls
 
             ControlDataContext = new PluginChartDataContext
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowGraphic,
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationChart,
                 ChartHeight = ChartHeight,
                 EnableAxisLabel = EnableAxisLabel,
                 EnableOrdinatesLabel = EnableOrdinatesLabel,

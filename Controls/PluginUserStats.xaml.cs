@@ -89,7 +89,7 @@ namespace SuccessStory.Controls
 
             ControlDataContext = new PluginUserStatsDataContext
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.IntegrationShowUserStats,
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationUserStats,
                 Height = Height,
 
                 ItemsSource = null
