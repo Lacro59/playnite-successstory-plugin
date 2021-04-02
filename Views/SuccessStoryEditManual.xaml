@@ -35,7 +35,7 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="{DynamicResource LOCSearchLabel}" Grid.Column="0" />
-            <playnitecontrols:SearchBox Grid.Column="2" x:Name="SearchElement" KeyUp="SearchElement_KeyUp" />
+            <playnitecontrols:SearchBox Grid.Column="2" x:Name="SearchElement" TextChanged="SearchElement_TextChanged" />
         </Grid>
 
         <Grid Name="PART_LbContener" Grid.Row="2">
@@ -44,58 +44,6 @@
                      Width="{Binding ElementName=PART_LbContener, Path=ActualWidth}" 
                      Loaded="LbAchievements_Loaded" Grid.Row="2"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
-
-                <!-- Force the style because HorizontalContentAlignment not work. -->
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="SnapsToDevicePixels" Value="True" />
-                        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-                        <Setter Property="OverridesDefaultStyle" Value="True" />
-                        <Setter Property="Padding" Value="3" />
-                        <Setter Property="Margin" Value="0" />
-                        <Setter Property="HorizontalAlignment" Value="Stretch" />
-                        <Setter Property="VerticalAlignment" Value="Stretch" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Grid>
-                                        <Border x:Name="HoverRectangle" IsHitTestVisible="False" Visibility="Collapsed"
-                                    Background="{DynamicResource HoverBrush}" CornerRadius="{DynamicResource ControlCornerRadius}" />
-                                        <Border x:Name="SelectedRectangle" IsHitTestVisible="False" Visibility="Collapsed"
-                                    Background="{DynamicResource GlyphBrush}" CornerRadius="{DynamicResource ControlCornerRadius}" />
-                                        <Border Padding="{TemplateBinding Padding}" Background="Transparent">
-                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                  Margin="3,0,0,0" />
-                                        </Border>
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsFocused" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed" TargetName="SelectedRectangle" />
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="true">
-                                            <Setter Property="Visibility" Value="Collapsed" TargetName="SelectedRectangle" />
-                                        </Trigger>
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="IsMouseOver" Value="True" />
-                                                <Condition Property="Selector.IsSelected" Value="False" />
-                                            </MultiTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible" TargetName="HoverRectangle" />
-                                        </MultiTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="Selector.IsSelected" Value="True">
-                                <Setter Property="Foreground" Value="{DynamicResource TextBrushDark}" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Commonplaynitecontrols:VirtualizingGridPanel Columns="{Binding ColDefinied}" Rows="{Binding RowDefinied}" />
@@ -112,9 +60,9 @@
 
                             <StackPanel Grid.Column="0" Visibility="{Binding IsUnlock, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
-                                Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Image Stretch="UniformToFill"
-                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                         <Image.Source>
                                             <FormatConvertedBitmap Source="{Binding IconImageUnlocked}" DestinationFormat="Gray32Float" />
                                         </Image.Source>
@@ -123,7 +71,7 @@
                                         </Image.OpacityMask>
                                     </Image>
                                     <Image Stretch="UniformToFill" 
-                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Image.Source>
                                             <FormatConvertedBitmap Source="{Binding IconImageUnlocked}" DestinationFormat="Gray32Float" />
                                         </Image.Source>
@@ -137,11 +85,11 @@
                                 </StackPanel>
 
                                 <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
-                                Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                            Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                     <Image Stretch="UniformToFill" Source="{Binding IconImageUnlocked}"
-                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
                                     <Image Stretch="UniformToFill" Source="{Binding IconImageUnlocked}" 
-                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Image.Effect>
                                             <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
                                         </Image.Effect>
@@ -151,9 +99,9 @@
 
                             <StackPanel Grid.Column="0" Visibility="{Binding IsUnlock, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                 <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
-                                Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Image Stretch="UniformToFill"
-                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                         <Image.Source>
                                             <FormatConvertedBitmap Source="{Binding IconImageLocked}" DestinationFormat="Gray32Float" />
                                         </Image.Source>
@@ -162,7 +110,7 @@
                                         </Image.OpacityMask>
                                     </Image>
                                     <Image Stretch="UniformToFill" 
-                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Image.Source>
                                             <FormatConvertedBitmap Source="{Binding IconImageLocked}" DestinationFormat="Gray32Float" />
                                         </Image.Source>
@@ -176,11 +124,11 @@
                                 </StackPanel>
 
                                 <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
-                                Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                            Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                     <Image Stretch="UniformToFill" Source="{Binding IconImageLocked}"
-                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
                                     <Image Stretch="UniformToFill" Source="{Binding IconImageLocked}" 
-                               Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Image.Effect>
                                             <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
                                         </Image.Effect>
@@ -221,12 +169,12 @@
 
 
                                 <CheckBox Grid.Column="2" Grid.Row="0" Name="PART_CbUnlock"
-                                      IsChecked="{Binding IsUnlock}" Unchecked="PART_CbUnlock_Unchecked">
+                                          IsChecked="{Binding IsUnlock}" Unchecked="PART_CbUnlock_Unchecked">
                                     <Label Content="Is unlocked" />
                                 </CheckBox>
                                 <DatePicker Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" Margin="0,10,0,0"
-                                        SelectedDate="{Binding DateUnlock}" Width="130" Name="PART_DtUnlock"
-                                        SelectedDateChanged="DatePicker_SelectedDateChanged" />
+                                            SelectedDate="{Binding DateUnlock}" Width="130" Name="PART_DtUnlock"
+                                            SelectedDateChanged="DatePicker_SelectedDateChanged" />
                             </Grid>
                         </Grid>
                     </DataTemplate>

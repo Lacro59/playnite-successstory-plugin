@@ -59,20 +59,39 @@ namespace SuccessStory.Services
         }
 
 
-        public GameAchievements GetManual(Game game)
+        public void GetManual(Game game)
         {
-            GameAchievements gameAchievements = GetDefault(game);
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {resources.GetString("LOCCommonProcessing")}",
+                false
+            );
+            globalProgressOptions.IsIndeterminate = true;
 
-            SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
-            steamAPI.SetLocal();
-            gameAchievements = steamAPI.GetAchievements(game);
-            gameAchievements.IsManual = true;
+            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                try
+                {
+                    GameAchievements gameAchievements = GetDefault(game);
 
-            Add(gameAchievements);
+                    SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                    steamAPI.SetLocal();
+                    gameAchievements = steamAPI.GetAchievements(game);
+                    gameAchievements.IsManual = true;
 
-            Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
+                    AddOrUpdate(gameAchievements);
 
-            return gameAchievements;
+                    Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                    PlayniteApi.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-error-manual",
+                        $"SuccessStory\r\n{ex.Message}",
+                        NotificationType.Error
+                    ));
+                }
+            }, globalProgressOptions);
         }
 
         public override GameAchievements Get(Guid Id, bool OnlyCache = false, bool Force = false)
@@ -754,7 +773,7 @@ namespace SuccessStory.Services
 
         public static bool IsAddOrShowManual(Game game, string GameSourceName)
         {
-            if (game.PluginId.ToString() != "00000000-0000-0000-0000-000000000000")
+            if (game.PluginId!= default(Guid))
             {
                 return
                 (

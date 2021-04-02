@@ -249,9 +249,16 @@ namespace SuccessStory.Views
         }
 
 
-        private void SearchElement_KeyUp(object sender, KeyEventArgs e)
+        private void SearchElement_TextChanged(object sender, TextChangedEventArgs e)
         {
-            lbAchievements.ItemsSource = ListBoxAchievements.FindAll(x => x.Name.ToLower().Contains(SearchElement.Text.ToLower()));
+            if (SearchElement.Text.IsNullOrEmpty())
+            {
+                lbAchievements.ItemsSource = ListBoxAchievements;
+            }
+            else
+            {
+                lbAchievements.ItemsSource = ListBoxAchievements.FindAll(x => x.Name.ToLower().Contains(SearchElement.Text.ToLower()));
+            }
         }
     }
 }
