@@ -80,16 +80,18 @@ namespace SuccessStory.Controls
 
         public override void SetDefaultDataContext()
         {
+            bool IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationUserStats;
             double Height = PluginDatabase.PluginSettings.Settings.IntegrationUserStatsHeight;
             if (IgnoreSettings)
             {
+                IsActivated = true;
                 Height = double.NaN;
             }
 
 
             ControlDataContext = new PluginUserStatsDataContext
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationUserStats,
+                IsActivated = IsActivated,
                 Height = Height,
 
                 ItemsSource = null

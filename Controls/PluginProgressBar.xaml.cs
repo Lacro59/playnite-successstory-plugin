@@ -83,9 +83,15 @@ namespace SuccessStory.Controls
 
         public override void SetDefaultDataContext()
         {
+            bool IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBar;
+            if (IgnoreSettings)
+            {
+                IsActivated = true;
+            }
+
             ControlDataContext = new PluginProgressBarDataContext
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBar,
+                IsActivated = IsActivated,
                 IntegrationShowProgressBarIndicator = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBarIndicator,
                 IntegrationShowProgressBarPercent = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBarPercent,
 

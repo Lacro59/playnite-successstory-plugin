@@ -89,9 +89,11 @@ namespace SuccessStory.Controls
 
         public override void SetDefaultDataContext()
         {
+            bool IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationList;
             double Height = PluginDatabase.PluginSettings.Settings.IntegrationListHeight;
             if (IgnoreSettings)
             {
+                IsActivated = true;
                 Height = double.NaN;
             }
 
@@ -103,7 +105,7 @@ namespace SuccessStory.Controls
 
             ControlDataContext = new PluginListDataContext
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationList,
+                IsActivated = IsActivated,
                 Height = Height,
                 ColDefinied = ColDefinied,
 
