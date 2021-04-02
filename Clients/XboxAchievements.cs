@@ -108,7 +108,7 @@ namespace SuccessStory.Clients
             {
                 if (!File.Exists(xstsLoginTokesPath))
                 {
-                    logger.Warn("SuccessStory - Xbox GetIsUserLoggedIn() - User is not authenticated - File not exist");
+                    logger.Warn("Xbox GetIsUserLoggedIn() - User is not authenticated - File not exist");
                     return false;
                 }
 
@@ -234,7 +234,7 @@ namespace SuccessStory.Clients
 
             if (!File.Exists(xstsLoginTokesPath))
             {
-                logger.Warn("SuccessStory - XboxAchievements - User is not authenticated - File not exist");
+                logger.Warn("XboxAchievements - User is not authenticated - File not exist");
                 _PlayniteApi.Notifications.Add(new NotificationMessage(
                     "SuccessStory-Xbox-notAuthenticate",
                     $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
@@ -259,7 +259,7 @@ namespace SuccessStory.Clients
 
                 if (!loggedIn)
                 {
-                    logger.Warn("SuccessStory - XboxAchievements - User is not authenticated");
+                    logger.Warn("XboxAchievements - User is not authenticated");
                     _PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Xbox-notAuthenticate",
                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
@@ -285,7 +285,7 @@ namespace SuccessStory.Clients
             if (titleId.IsNullOrEmpty())
             {
                 url = string.Format(urlAchievements + $"?maxItems=10000", tokens.DisplayClaims.xui[0].xid);
-                logger.Warn($"SuccessStory - XboxAchievements - Bad request");
+                logger.Warn($"XboxAchievements - Bad request");
             }
 
             Common.LogDebug(true, $"XboxAchievements - url: {url}");
@@ -298,7 +298,7 @@ namespace SuccessStory.Clients
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                     {
-                        logger.Warn($"SuccessStory - XboxAchievements - User is not authenticated - {response.StatusCode}");
+                        logger.Warn($"XboxAchievements - User is not authenticated - {response.StatusCode}");
                         _PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Xbox-notAuthenticate",
                             $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
@@ -307,7 +307,7 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        logger.Warn($"SuccessStory - XboxAchievements - Error on GetXboxAchievements() - {response.StatusCode}");
+                        logger.Warn($"XboxAchievements - Error on GetXboxAchievements() - {response.StatusCode}");
                         _PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Xbox-webError",
                             $"SuccessStory\r\nXbox achievements: {resources.GetString("LOCImportError")}",

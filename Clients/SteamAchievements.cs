@@ -66,7 +66,7 @@ namespace SuccessStory.Clients
                 VerifSteamUser();
                 if (SteamUser.IsNullOrEmpty())
                 {
-                    logger.Warn("SuccessStory - No Steam user");
+                    logger.Warn("No Steam user");
                 }
 
                 if (_settings.EnableSteamWithoutWebApi)
@@ -164,7 +164,7 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    logger.Error($"SuccessStory - No Steam configuration find");
+                    logger.Error($"No Steam configuration find");
                     SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
                     return false;
                 }
@@ -176,7 +176,7 @@ namespace SuccessStory.Clients
 
             if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty())
             {
-                logger.Error($"SuccessStory - No Steam configuration");
+                logger.Error($"No Steam configuration");
                 SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
                 return false;
             }
@@ -195,7 +195,7 @@ namespace SuccessStory.Clients
 
                     if (personaname != SteamUser)
                     {
-                        logger.Warn($"SuccessStory - SteamUser is different {SteamUser} != {personaname}");
+                        logger.Warn($"SteamUser is different {SteamUser} != {personaname}");
                         SteamUser = personaname;
                     }
                 }
@@ -272,7 +272,7 @@ namespace SuccessStory.Clients
                 //            "SuccessStory - Steam profil is private",
                 //            NotificationType.Error
                 //        ));
-                //        logger.Warn("SuccessStory - Steam profil is private");
+                //        logger.Warn("Steam profil is private");
                 //    }
                 //    else
                 //    {
@@ -293,7 +293,7 @@ namespace SuccessStory.Clients
                                     NotificationType.Error,
                                     () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                                 ));
-                                logger.Warn("SuccessStory - Steam profil is private");
+                                logger.Warn("Steam profil is private");
 
                                 // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
                                 Common.LogError(ex, false, "Error on CheckIsPublic()");
@@ -361,7 +361,7 @@ namespace SuccessStory.Clients
             //            "SuccessStory - Steam profil is private",
             //            NotificationType.Error
             //        ));
-            //        logger.Warn("SuccessStory - Steam profil is private");
+            //        logger.Warn("Steam profil is private");
             //    }
             //    else
             //    {
@@ -382,7 +382,7 @@ namespace SuccessStory.Clients
                                 NotificationType.Error,
                                 () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                             ));
-                            logger.Warn("SuccessStory - Steam profil is private");
+                            logger.Warn("Steam profil is private");
 
                             // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
                             Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})");
@@ -445,7 +445,7 @@ namespace SuccessStory.Clients
             //            "SuccessStory - Steam profil is private",
             //            NotificationType.Error
             //        ));
-            //        logger.Warn("SuccessStory - Steam profil is private");
+            //        logger.Warn("Steam profil is private");
             //    }
             //    else
             //    {
@@ -466,7 +466,7 @@ namespace SuccessStory.Clients
                                 NotificationType.Error,
                                 () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                             ));
-                            logger.Warn("SuccessStory - Steam profil is private");
+                            logger.Warn("Steam profil is private");
 
                             // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
                             Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
@@ -539,7 +539,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        logger.Warn($"SuccessStory - No Steam stats for {AppId}");
+                        logger.Warn($"No Steam stats for {AppId}");
                         Common.LogError(ex, true, $"Error on AvailableGameStats({AppId}, {LocalLang})");
                     }
                 }

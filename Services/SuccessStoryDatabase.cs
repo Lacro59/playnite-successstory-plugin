@@ -586,7 +586,7 @@ namespace SuccessStory.Services
             {
                 if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
-                    logger.Warn("SuccessStory - Steam is enable then disabled");
+                    logger.Warn("Steam is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Steam-disabled",
                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamDisabled")}",
@@ -600,7 +600,7 @@ namespace SuccessStory.Services
                     SteamAchievements steamAchievements = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
                     if (!steamAchievements.IsConfigured())
                     {
-                        logger.Warn("SuccessStory - Bad Steam configuration");
+                        logger.Warn("Bad Steam configuration");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Steam-NoConfig",
                             $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig")}",
@@ -617,7 +617,7 @@ namespace SuccessStory.Services
             {
                 if (PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
-                    logger.Warn("SuccessStory - GOG is enable then disabled");
+                    logger.Warn("GOG is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-GOG-disabled",
                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsGogDisabled")}",
@@ -637,7 +637,7 @@ namespace SuccessStory.Services
 
                     if (!(bool)VerifToAddOrShowGog)
                     {
-                        logger.Warn("SuccessStory - Gog user is not authenticate");
+                        logger.Warn("Gog user is not authenticate");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Gog-NoAuthenticated",
                             $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate")}",
@@ -654,7 +654,7 @@ namespace SuccessStory.Services
             {
                 if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
-                    logger.Warn("SuccessStory - Origin is enable then disabled");
+                    logger.Warn("Origin is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Origin-disabled",
                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsOriginDisabled")}",
@@ -674,7 +674,7 @@ namespace SuccessStory.Services
 
                     if (!(bool)VerifToAddOrShowOrigin)
                     {
-                        logger.Warn("SuccessStory - Origin user is not authenticated");
+                        logger.Warn("Origin user is not authenticated");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Origin-NoAuthenticate",
                             $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate")}",
@@ -691,7 +691,7 @@ namespace SuccessStory.Services
             {
                 if (PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary", PlayniteApi.Paths.ConfigurationPath))
                 {
-                    logger.Warn("SuccessStory - Xbox is enable then disabled");
+                    logger.Warn("Xbox is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Xbox-disabled",
                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxDisabled")}",
@@ -715,7 +715,7 @@ namespace SuccessStory.Services
 
                     if (!(bool)VerifToAddOrShowXbox)
                     {
-                        logger.Warn("SuccessStory - Xbox user is not authenticated");
+                        logger.Warn("Xbox user is not authenticated");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Xbox-NoAuthenticate",
                             $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
@@ -738,7 +738,7 @@ namespace SuccessStory.Services
                 RetroAchievements retroAchievements = new RetroAchievements(PlayniteApi, settings, PluginUserDataPath);
                 if (!retroAchievements.IsConfigured())
                 {
-                    logger.Warn("SuccessStory - Bad RetroAchievements configuration");
+                    logger.Warn("Bad RetroAchievements configuration");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-RetroAchievements-NoConfig",
                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig")}",
@@ -755,7 +755,7 @@ namespace SuccessStory.Services
                 Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements(PlayniteApi, settings, PluginUserDataPath);
                 if (!rpcs3Achievements.IsConfigured())
                 {
-                    logger.Warn("SuccessStory - Bad RPCS3 configuration");
+                    logger.Warn("Bad RPCS3 configuration");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
                         "SuccessStory-Rpcs3-NoConfig",
                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig")}",
@@ -767,7 +767,7 @@ namespace SuccessStory.Services
                 return true;
             }
 
-            logger.Warn($"SuccessStory - VerifToAddOrShow() find no action for {GameSourceName}");
+            logger.Warn($"VerifToAddOrShow() find no action for {GameSourceName}");
             return false;
         }
 
@@ -918,7 +918,7 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        logger.Warn($"SuccessStory - Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
+                        logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
                     }
                 }
             }

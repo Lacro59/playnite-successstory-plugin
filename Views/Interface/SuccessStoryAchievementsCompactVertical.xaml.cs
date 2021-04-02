@@ -216,7 +216,7 @@ namespace SuccessStory.Views.Interface
                             {
                                 if (AchievementsList[i].Icon.IsNullOrEmpty() || AchievementsList[i].IconImage.IsNullOrEmpty())
                                 {
-                                    logger.Warn($"SuccessStory - Empty image");
+                                    logger.Warn($"Empty image");
                                 }
                                 else
                                 {
@@ -234,7 +234,7 @@ namespace SuccessStory.Views.Interface
                             {
                                 if (AchievementsList[i].Icon.IsNullOrEmpty())
                                 {
-                                    logger.Warn($"SuccessStory - Empty image");
+                                    logger.Warn($"Empty image");
                                 }
                                 else
                                 {

@@ -128,7 +128,7 @@ namespace SuccessStory.Clients
                     $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate")}",
                     NotificationType.Error
                 ));
-                logger.Warn("SuccessStory - GOG user is not Authenticate");
+                logger.Warn("GOG user is not Authenticate");
             }
 
             Result.Name = GameName;

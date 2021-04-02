@@ -34,17 +34,17 @@ namespace SuccessStory.Clients
             // Directory control
             if (TrophyDirectory.IsNullOrEmpty())
             {
-                logger.Warn($"SuccessStory - No Trophy directoy found for {game.Name}");
+                logger.Warn($"No Trophy directoy found for {game.Name}");
                 return Result;
             }
             if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFile)))
             {
-                logger.Warn($"SuccessStory - File {TrophyFile} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFile)}");
+                logger.Warn($"File {TrophyFile} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFile)}");
                 return Result;
             }
             if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFileDetails)))
             {
-                logger.Warn($"SuccessStory - File {TrophyFileDetails} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFileDetails)}");
+                logger.Warn($"File {TrophyFileDetails} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFileDetails)}");
                 return Result;
             }
 

@@ -68,7 +68,7 @@ namespace SuccessStory.Services
 
         public void LoadOldDB()
         {
-            logger.Info($"CheckLocalizations - LoadOldDB()");
+            logger.Info($"LoadOldDB()");
 
             Parallel.ForEach(Directory.EnumerateFiles(PathActivityDB, "*.json"), (objectFile) =>
             {
@@ -92,7 +92,7 @@ namespace SuccessStory.Services
                 }
             });
 
-            logger.Info($"CheckLocalizations - Find {Items.Count} items");
+            logger.Info($"Find {Items.Count} items");
         }
 
         public void ConvertDB(IPlayniteAPI PlayniteApi)
@@ -108,7 +108,7 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                logger.Info($"SuccessStory - ConvertDB()");
+                logger.Info($"ConvertDB()");
 
                 int Converted = 0;
 
@@ -134,7 +134,7 @@ namespace SuccessStory.Services
                         }
                         else
                         {
-                            logger.Warn($"SuccessStory - Game is deleted - {item.Key.ToString()}");
+                            logger.Warn($"Game is deleted - {item.Key.ToString()}");
                         }
                     }
                     catch (Exception ex)
@@ -143,11 +143,11 @@ namespace SuccessStory.Services
                     }
                 }
 
-                logger.Info($"SuccessStory - Converted {Converted} / {Items.Count}");
+                logger.Info($"Converted {Converted} / {Items.Count}");
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"SuccessStory - Migration - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                logger.Info($"Migration - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
             }), globalProgressOptions);
 
             IsOld = false;
