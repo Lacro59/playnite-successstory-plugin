@@ -50,7 +50,7 @@
                                     <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float" />
                                 </Image.Source>
                                 <Image.OpacityMask>
-                                    <ImageBrush ImageSource="{Binding IconImage, IsAsync=True}" />
+                                    <ImageBrush ImageSource="{Binding Icon, IsAsync=True}" />
                                 </Image.OpacityMask>
                             </Image>
                             <Image Stretch="UniformToFill" 
@@ -59,7 +59,7 @@
                                     <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float" />
                                 </Image.Source>
                                 <Image.OpacityMask>
-                                    <ImageBrush ImageSource="{Binding IconImage, IsAsync=True}" />
+                                    <ImageBrush ImageSource="{Binding Icon, IsAsync=True}" />
                                 </Image.OpacityMask>
                                 <Image.Effect>
                                     <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
@@ -69,9 +69,9 @@
 
                         <StackPanel Grid.Column="0" Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
                                     Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                            <Image Stretch="UniformToFill" Source="{Binding Icon}"
+                            <Image Stretch="UniformToFill" Source="{Binding Icon, IsAsync=True}"
                                    Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
-                            <Image Stretch="UniformToFill" Source="{Binding Icon}" 
+                            <Image Stretch="UniformToFill" Source="{Binding Icon, IsAsync=True}" 
                                    Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Image.Effect>
                                     <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
@@ -101,7 +101,8 @@
                                         <ToolTip Content="{Binding Name}"></ToolTip>
                                     </TextBlock.ToolTip>
                                 </TextBlock>
-                                <TextBlock Grid.Column="1" TextAlignment="Right" Text="{Binding DateUnlock, Converter={StaticResource LocalDateTimeConverter}}"  Foreground="{DynamicResource TextBrush}" />
+                                <TextBlock Grid.Column="1" TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
+                                           Text="{Binding DateWhenUnlocked, Converter={StaticResource LocalDateTimeConverter}}" />
                             </Grid>
 
                             <TextBlock Grid.Row="1" Text="{Binding Description}" VerticalAlignment="Top"

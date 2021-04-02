@@ -87,10 +87,10 @@
 
                         <StackPanel ToolTip="{Binding NameWithDateUnlock}" Margin="2"
                                     Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                            <Image Stretch="UniformToFill" Source="{Binding Icon}" RenderOptions.BitmapScalingMode="Fant"
+                            <Image Stretch="UniformToFill" Source="{Binding Icon, IsAsync=True}" RenderOptions.BitmapScalingMode="Fant"
                                    VerticalAlignment="center" HorizontalAlignment="Center"    
                                    Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
-                            <Image Stretch="UniformToFill" Source="{Binding Icon}" RenderOptions.BitmapScalingMode="Fant"
+                            <Image Stretch="UniformToFill" Source="{Binding Icon, IsAsync=True}" RenderOptions.BitmapScalingMode="Fant"
                                    VerticalAlignment="center" HorizontalAlignment="Center"    
                                    Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Image.Effect>

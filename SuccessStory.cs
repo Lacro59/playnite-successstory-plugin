@@ -336,10 +336,6 @@ namespace SuccessStory
                 }
             }
 
-#if DEBUG
-            IsAddOrShowManual = true;
-#endif
-
             if (PluginSettings.Settings.EnableManual && IsAddOrShowManual)
             {
                 if (!gameAchievements.HasData)

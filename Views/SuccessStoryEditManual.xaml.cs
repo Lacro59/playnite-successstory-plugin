@@ -32,7 +32,7 @@ namespace SuccessStory.Views
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         private GameAchievements gameAchievements;
 
-        private List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
+        private List<Achievements> ListAchievements = new List<Achievements>();
 
 
         public SuccessStoryEditManual(Game game)
@@ -45,102 +45,21 @@ namespace SuccessStory.Views
 
         private void LoadData(Game GameSelected)
         {
-            List<Achievements> ListAchievements = gameAchievements.Items;
-
-            ListBoxAchievements = new List<ListBoxAchievements>();
-
-            for (int i = 0; i < ListAchievements.Count; i++)
-            {
-                DateTime? dateUnlock = null;
-                BitmapImage iconImage = new BitmapImage();
-
-                bool IsGray = false;
-
-                string urlImg = string.Empty;
-                try
-                {
-                    if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
-                    {
-                        if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
-                        {
-                            urlImg = ListAchievements[i].ImageUnlocked;
-                            IsGray = true;
-                        }
-                        else
-                        {
-                            urlImg = ListAchievements[i].ImageLocked;
-                        }
-                    }
-                    else
-                    {
-                        urlImg = ListAchievements[i].ImageUnlocked;
-                        dateUnlock = ListAchievements[i].DateUnlocked;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, "Error on convert bitmap");
-                }
-
-                string NameAchievement = ListAchievements[i].Name;
-                bool IsUnlock = dateUnlock != null;
-
-                // Achievement without unlocktime but achieved = 1
-                if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
-                {
-                    dateUnlock = null;
-                }
-
-
-                string IconImageUnlocked = ListAchievements[i].ImageUnlocked;
-                string IconImageLocked = ListAchievements[i].ImageLocked;
-                if (IconImageLocked == string.Empty || IconImageLocked == ListAchievements[i].UrlUnlocked)
-                {
-                    IconImageLocked = ListAchievements[i].ImageUnlocked;
-                    IsGray = true;
-                }
-
-
-                ListBoxAchievements.Add(new ListBoxAchievements()
-                {
-                    Name = NameAchievement,
-                    DateUnlock = dateUnlock,
-                    EnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
-                    Icon = urlImg,
-                    IconImage = urlImg,
-                    IsGray = IsGray,
-                    Description = ListAchievements[i].Description,
-                    Percent = ListAchievements[i].Percent,
-
-                    IsUnlock = IsUnlock,
-                    IconImageLocked = IconImageLocked,
-                    IconImageUnlocked = IconImageUnlocked
-                });
-
-                iconImage = null;
-            }
-
-
-            // Sorting 
-            lbAchievements.ItemsSource = ListBoxAchievements;
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
-            view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            ListAchievements = gameAchievements.Items.GetClone();
+            ListAchievements = ListAchievements.OrderByDescending(x => x.Name).ToList();
+            lbAchievements.ItemsSource = ListAchievements;
         }
-
 
 
         private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
         {
             int RowDefinied = (int)lbAchievements.Height / 70;
-
             int ColDefinied = 1;
-            double WidthDefinied = lbAchievements.ActualWidth / ColDefinied;
 
             this.DataContext = new
             {
-                WidthDefinied = WidthDefinied,
-                ColDefinied = ColDefinied,
-                RowDefinied = RowDefinied
+                ColDefinied,
+                RowDefinied
             };
         }
 
@@ -193,13 +112,26 @@ namespace SuccessStory.Views
             }
         }
 
-        private void PART_CbUnlock_Unchecked(object sender, RoutedEventArgs e)
+        private void PART_CbUnlock_Click(object sender, RoutedEventArgs e)
         {
             try
-            {
+            {                
                 CheckBox checkBox = sender as CheckBox;
-                DatePicker datePicker = ((Grid)checkBox.Parent).FindName("PART_DtUnlock") as DatePicker;
-                datePicker.SelectedDate = null;
+                int index = int.Parse(checkBox.Tag.ToString());
+
+                if ((bool)checkBox.IsChecked)
+                {
+                    if (((Achievements)lbAchievements.Items[index]).DateWhenUnlocked == null)
+                    {
+                        ((Achievements)lbAchievements.Items[index]).DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                    }
+                }
+                else
+                {
+                    DatePicker datePicker = ((Grid)checkBox.Parent).FindName("PART_DtUnlock") as DatePicker;
+                    datePicker.SelectedDate = null;
+                    ((Achievements)lbAchievements.Items[index]).DateUnlocked = default(DateTime);
+                }
             }
             catch
             {
@@ -215,29 +147,7 @@ namespace SuccessStory.Views
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
-            foreach (ListBoxAchievements el in lbAchievements.ItemsSource)
-            {
-                int index = gameAchievements.Items.FindIndex(x => x.Name == el.Name);
-
-                if (index > -1)
-                {
-                    if (el.IsUnlock)
-                    {
-                        if (el.DateUnlock != null)
-                        {
-                            gameAchievements.Items[index].DateUnlocked = el.DateUnlock;
-                        }
-                        else
-                        {
-                            gameAchievements.Items[index].DateUnlocked = new DateTime(1982,12,15,0,0,0);
-                        }
-                    }
-                    else
-                    {
-                        gameAchievements.Items[index].DateUnlocked = default(DateTime);
-                    }
-                }
-            }
+            gameAchievements.Items = (List<Achievements>)lbAchievements.ItemsSource;
 
             gameAchievements.Unlocked = gameAchievements.Items.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
             gameAchievements.Locked = gameAchievements.Total - gameAchievements.Unlocked;
@@ -253,11 +163,11 @@ namespace SuccessStory.Views
         {
             if (SearchElement.Text.IsNullOrEmpty())
             {
-                lbAchievements.ItemsSource = ListBoxAchievements;
+                lbAchievements.ItemsSource = ListAchievements;
             }
             else
             {
-                lbAchievements.ItemsSource = ListBoxAchievements.FindAll(x => x.Name.ToLower().Contains(SearchElement.Text.ToLower()));
+                lbAchievements.ItemsSource = ListAchievements.FindAll(x => x.Name.ToLower().Contains(SearchElement.Text.ToLower()));
             }
         }
     }

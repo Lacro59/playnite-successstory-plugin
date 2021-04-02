@@ -111,7 +111,7 @@ namespace SuccessStory.Controls
                 IsActivated = IsActivated,
                 Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialHeight,
 
-                ItemsSource = new ObservableCollection<ListBoxAchievements>()
+                ItemsSource = new ObservableCollection<Achievements>()
             };
         }
 
@@ -140,15 +140,13 @@ namespace SuccessStory.Controls
         {
             Task.Run(() =>
             {
-                List<Achievements> ListAchievements = gameAchievements.Items;
-                List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
-
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(delegate
                 {
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;
                 }));
 
+                List<Achievements> ListAchievements = gameAchievements.Items.GetClone();
 
                 // Select data
                 if (IsUnlocked)
@@ -160,68 +158,12 @@ namespace SuccessStory.Controls
                     ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked == default(DateTime));
                 }
 
+                ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
+                ControlDataContext.ItemsSource = ListAchievements.ToObservable();
 
-                for (int i = 0; i < ListAchievements.Count; i++)
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
                 {
-                    DateTime? dateUnlock = null;
-
-                    bool IsGray = false;
-
-                    string urlImg = string.Empty;
-                    try
-                    {
-                        if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
-                        {
-                            if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
-                            {
-                                urlImg = ListAchievements[i].ImageUnlocked;
-                                IsGray = true;
-                            }
-                            else
-                            {
-                                urlImg = ListAchievements[i].ImageLocked;
-                            }
-                        }
-                        else
-                        {
-                            urlImg = ListAchievements[i].ImageUnlocked;
-                            dateUnlock = ListAchievements[i].DateUnlocked;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, "Error on convert bitmap");
-                    }
-
-                    string NameAchievement = ListAchievements[i].Name;
-
-                    // Achievement without unlocktime but achieved = 1
-                    if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
-                    {
-                        dateUnlock = null;
-                    }
-
-                    ListBoxAchievements.Add(new ListBoxAchievements()
-                    {
-                        Name = NameAchievement,
-                        DateUnlock = dateUnlock,
-                        EnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
-                        Icon = urlImg,
-                        IconImage = urlImg,
-                        IsGray = IsGray,
-                        Description = ListAchievements[i].Description,
-                        Percent = ListAchievements[i].Percent,
-
-                        PictureSize = (int)ControlDataContext.Height
-                    });
-                }
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    // Sorting
-                    ListBoxAchievements = ListBoxAchievements.OrderByDescending(x => x.DateUnlock).ThenBy(x => x.Name).ToList();
-
-                    ControlDataContext.ItemsSource = ListBoxAchievements.ToObservable();
+                    this.DataContext = null;
                     this.DataContext = ControlDataContext;
 
                     PART_ScCompactView_IsLoaded(null, null);
@@ -280,9 +222,9 @@ namespace SuccessStory.Controls
 
                             if (AchievementsList[i].IsGray)
                             {
-                                if (AchievementsList[i].Icon.IsNullOrEmpty() || AchievementsList[i].IconImage.IsNullOrEmpty())
+                                if (AchievementsList[i].Icon.IsNullOrEmpty() || AchievementsList[i].Icon.IsNullOrEmpty())
                                 {
-                                    logger.Warn($"SuccessStory - Empty image");
+                                    logger.Warn($"Empty image");
                                 }
                                 else
                                 {
@@ -291,7 +233,7 @@ namespace SuccessStory.Controls
 
                                     ImageBrush imgB = new ImageBrush
                                     {
-                                        ImageSource = new BitmapImage(new Uri(AchievementsList[i].IconImage, UriKind.Absolute))
+                                        ImageSource = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute))
                                     };
                                     gridImage.OpacityMask = imgB;
                                 }
@@ -300,7 +242,7 @@ namespace SuccessStory.Controls
                             {
                                 if (AchievementsList[i].Icon.IsNullOrEmpty())
                                 {
-                                    logger.Warn($"SuccessStory - Empty image");
+                                    logger.Warn($"Empty image");
                                 }
                                 else
                                 {
@@ -356,6 +298,6 @@ namespace SuccessStory.Controls
         public bool IsActivated { get; set; }
         public double Height { get; set; }
 
-        public ObservableCollection<ListBoxAchievements> ItemsSource { get; set; }
+        public ObservableCollection<Achievements> ItemsSource { get; set; }
     }
 }

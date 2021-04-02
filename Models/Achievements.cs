@@ -115,6 +115,117 @@ namespace SuccessStory.Models
         }
 
 
+        /// <summary>
+        /// Get the icon according to the achievement state
+        /// </summary>
+        [JsonIgnore]
+        public string Icon {
+            get
+            {
+                if (DateUnlocked == default(DateTime) || DateUnlocked == null)
+                {
+                    return ImageLocked;
+                }
+                else
+                {
+                    return ImageUnlocked;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Indicates if there is no locked icon
+        /// </summary>
+        [JsonIgnore]
+        public bool IsGray
+        {
+            get
+            {
+                if (IsUnlock)
+                {
+                    return false;
+                }
+
+                return (UrlLocked == string.Empty || UrlLocked == UrlUnlocked);
+            }
+        }
+
+        [JsonIgnore]
+        public bool EnableRaretyIndicator
+        {
+            get
+            {
+                return PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
+            }
+        }
+
+        [JsonIgnore]
+        public string NameWithDateUnlock
+        {
+            get
+            {
+                string NameWithDateUnlock = Name;
+
+                if (DateUnlocked != null && DateUnlocked != default(DateTime) && DateUnlocked != new DateTime(1982, 12, 15, 0, 0, 0))
+                {
+                    var converter = new LocalDateTimeConverter();
+                    NameWithDateUnlock += " (" + converter.Convert(DateUnlocked, null, null, null) + ")";
+                }
+
+                return NameWithDateUnlock;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsUnlock
+        {
+            get
+            {
+                return !(DateUnlocked == default(DateTime) || DateUnlocked == null);
+            }
+        }
+
+        [JsonIgnore]
+        public DateTime? DateWhenUnlocked
+        {
+            get
+            {
+                if (DateUnlocked == default(DateTime) || DateUnlocked == new DateTime(1982, 12, 15, 0, 0, 0, 0))
+                {
+                    return null;
+                }
+
+                return DateUnlocked;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    DateUnlocked = default(DateTime);
+                }
+                else
+                {
+                    DateUnlocked = value;
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public string DateWhenUnlockedString
+        {
+            get
+            {
+                if (DateUnlocked == default(DateTime) || DateUnlocked == new DateTime(1982, 12, 15, 0, 0, 0, 0))
+                {
+                    return string.Empty;
+                }
+
+                var converter = new LocalDateTimeConverter();
+                return (string)converter.Convert(DateUnlocked, null, null, null);
+            }
+        }
+
+
         private string GetNameFromUrl(string url)
         {
             string NameFromUrl = string.Empty;

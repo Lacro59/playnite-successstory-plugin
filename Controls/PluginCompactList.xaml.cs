@@ -89,7 +89,7 @@ namespace SuccessStory.Controls
                 IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompact,
                 Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight + 12,
 
-                ItemsSource = null
+                ItemsSource = new ObservableCollection<Achievements>()
             };
         }
 
@@ -106,71 +106,9 @@ namespace SuccessStory.Controls
                 
                 GameAchievements gameAchievements = (GameAchievements)PluginGameData;
 
-                List<Achievements> ListAchievements = gameAchievements.Items;
-                List<ListBoxAchievements> ListBoxAchievements = new List<ListBoxAchievements>();
-
-                for (int i = 0; i < ListAchievements.Count; i++)
-                {
-                    DateTime? dateUnlock = null;
-
-                    bool IsGray = false;
-
-                    string urlImg = string.Empty;
-                    try
-                    {
-                        if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
-                        {
-                            if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
-                            {
-                                urlImg = ListAchievements[i].ImageUnlocked;
-                                IsGray = true;
-                            }
-                            else
-                            {
-                                urlImg = ListAchievements[i].ImageLocked;
-                            }
-                        }
-                        else
-                        {
-                            urlImg = ListAchievements[i].ImageUnlocked;
-                            dateUnlock = ListAchievements[i].DateUnlocked;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, "Error on convert bitmap");
-                    }
-
-                    string NameAchievement = ListAchievements[i].Name;
-
-                    // Achievement without unlocktime but achieved = 1
-                    if (dateUnlock == new DateTime(1982, 12, 15, 0, 0, 0, 0))
-                    {
-                        dateUnlock = null;
-                    }
-
-                    ListBoxAchievements.Add(new ListBoxAchievements()
-                    {
-                        Name = NameAchievement,
-                        DateUnlock = dateUnlock,
-                        EnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
-                        Icon = urlImg,
-                        IconImage = urlImg,
-                        IsGray = IsGray,
-                        Description = ListAchievements[i].Description,
-                        Percent = ListAchievements[i].Percent,
-
-                        PictureSize = (ControlDataContext.Height - 12)
-                    });
-                }
-
-                // Sorting
-                //ListBoxAchievements = ListBoxAchievements.OrderByDescending(x => x.DateUnlock).ThenBy(x => x.Name).ToList();
-                //var tt = new ListItems();
-                //tt._ListBoxAchievements = ListBoxAchievements;
-                //ControlDataContext.ItemsSource = new AsyncVirtualizingCollection<ListBoxAchievements>(tt);
-
-                ControlDataContext.ItemsSource = ListBoxAchievements.OrderByDescending(x => x.DateUnlock).ThenBy(x => x.Name).ToObservable();
+                List<Achievements> ListAchievements = gameAchievements.Items.GetClone();
+                ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
+                ControlDataContext.ItemsSource = ListAchievements.ToObservable();
 
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
                 {
@@ -198,24 +136,7 @@ namespace SuccessStory.Controls
     {
         public bool IsActivated { get; set; }
         public double Height { get; set; }
-
-        //public AsyncVirtualizingCollection<ListBoxAchievements> ItemsSource { get; set; }
-        public ObservableCollection<ListBoxAchievements> ItemsSource { get; set; }
+        
+        public ObservableCollection<Achievements> ItemsSource { get; set; }
     }
-
-    //public class ListItems : IItemsProvider<ListBoxAchievements>
-    //{
-    //    public List<ListBoxAchievements> _ListBoxAchievements { get; set; } = new List<ListBoxAchievements>();
-    //
-    //
-    //    public int FetchCount()
-    //    {
-    //        return _ListBoxAchievements.Count;
-    //    }
-    //
-    //    public IList<ListBoxAchievements> FetchRange(int startIndex, int count)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
 }
