@@ -9,7 +9,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Linq;
-using AchievementsLocal;
 using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using Playnite.SDK.Models;
@@ -98,11 +97,11 @@ namespace SuccessStory.Clients
             {
                 Common.LogDebug(true, $"Steam - GetAchievementsLocal()");
 
-                SteamEmulators se = new SteamEmulators(_PlayniteApi, _PluginUserDataPath);
+                SteamEmulators se = new SteamEmulators(_PlayniteApi, _settings, _PluginUserDataPath);
                 var temp = se.GetAchievementsLocal(game.Name, SteamApiKey);
                 AppId = se.GetSteamId();
 
-                if (temp.Achievements.Count > 0)
+                if (temp.Items.Count > 0)
                 {
                     Result.HaveAchivements = true;
                     Result.Total = temp.Total;
@@ -110,16 +109,16 @@ namespace SuccessStory.Clients
                     Result.Unlocked = temp.Unlocked;
                     Result.Progression = temp.Progression;
 
-                    for (int i = 0; i < temp.Achievements.Count; i++)
+                    for (int i = 0; i < temp.Items.Count; i++)
                     {
                         Result.Items.Add(new Achievements
                         {
-                            Name = temp.Achievements[i].Name,
-                            ApiName = temp.Achievements[i].ApiName,
-                            Description = temp.Achievements[i].Description,
-                            UrlUnlocked = temp.Achievements[i].UrlUnlocked,
-                            UrlLocked = temp.Achievements[i].UrlLocked,
-                            DateUnlocked = temp.Achievements[i].DateUnlocked
+                            Name = temp.Items[i].Name,
+                            ApiName = temp.Items[i].ApiName,
+                            Description = temp.Items[i].Description,
+                            UrlUnlocked = temp.Items[i].UrlUnlocked,
+                            UrlLocked = temp.Items[i].UrlLocked,
+                            DateUnlocked = temp.Items[i].DateUnlocked
                         });
                     }
                 }

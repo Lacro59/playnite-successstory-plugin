@@ -119,6 +119,7 @@
     <Compile Include="Clients\RetroAchievements.cs" />
     <Compile Include="Clients\Rpcs3Achievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
+    <Compile Include="Clients\SteamEmulators.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />
     <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
       <DependentUpon>AchievementImage.xaml</DependentUpon>
@@ -428,10 +429,6 @@
     <ProjectReference Include="playnite-plugincommon\CommonPluginsResources\CommonPluginsResources.csproj">
       <Project>{4effe926-9c64-4750-a399-f344710edc09}</Project>
       <Name>CommonPluginsResources</Name>
-    </ProjectReference>
-    <ProjectReference Include="playnite-successstory-extension\AchievementsLocal.csproj">
-      <Project>{100a4bdc-bd53-472d-b189-75c4eb3c60e9}</Project>
-      <Name>AchievementsLocal</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems" Label="Shared" />
