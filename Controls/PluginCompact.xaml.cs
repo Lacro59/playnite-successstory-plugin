@@ -109,9 +109,11 @@ namespace SuccessStory.Controls
             ControlDataContext = new PluginCompactDataContext
             {
                 IsActivated = IsActivated,
+                DisplayLastest = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastest,
                 Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialHeight,
 
-                ItemsSource = new ObservableCollection<Achievements>()
+                ItemsSource = new ObservableCollection<Achievements>(),
+                LastestAchievement = new Achievements()
             };
         }
 
@@ -122,30 +124,21 @@ namespace SuccessStory.Controls
 
             return Task.Run(() =>
             {
-                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-
-                SetScData(gameAchievements, IsUnlocked);
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                if (!IsUnlocked)
                 {
-                    this.DataContext = ControlDataContext;
-                }));
+                    ControlDataContext.DisplayLastest = false;
+                }
 
-                return true;
-            });
-        }
-
-
-        public void SetScData(GameAchievements gameAchievements, bool IsUnlocked)
-        {
-            Task.Run(() =>
-            {
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(delegate
                 {
+                    PART_ScCompactView.Children.Clear();
+                    PART_ScCompactView.ColumnDefinitions.Clear();
+
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;
-                }));
+                })).Wait();
 
+                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
                 List<Achievements> ListAchievements = gameAchievements.Items.GetClone();
 
                 // Select data
@@ -159,20 +152,64 @@ namespace SuccessStory.Controls
                 }
 
                 ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
+
+                if (IsUnlocked)
+                {
+                    ControlDataContext.LastestAchievement = ListAchievements[0];
+                    ListAchievements.RemoveAt(0);
+                }
+
                 ControlDataContext.ItemsSource = ListAchievements.ToObservable();
 
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;
 
                     PART_ScCompactView_IsLoaded(null, null);
                 }));
+
+                return true;
             });
         }
 
 
         #region Events
+        /// <summary>
+        /// Show or not the ToolTip.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            string Text = ((TextBlock)sender).Text;
+            TextBlock textBlock = (TextBlock)sender;
+
+            Typeface typeface = new Typeface(
+                textBlock.FontFamily,
+                textBlock.FontStyle,
+                textBlock.FontWeight,
+                textBlock.FontStretch);
+
+            FormattedText formattedText = new FormattedText(
+                textBlock.Text,
+                System.Threading.Thread.CurrentThread.CurrentCulture,
+                textBlock.FlowDirection,
+                typeface,
+                textBlock.FontSize,
+                textBlock.Foreground,
+                VisualTreeHelper.GetDpi(this).PixelsPerDip);
+
+            if (formattedText.Width > textBlock.DesiredSize.Width)
+            {
+                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
+            }
+        }
+
         private void PART_ScCompactView_IsLoaded(object sender, RoutedEventArgs e)
         {
             if (double.IsNaN(PART_ScCompactView.ActualWidth) || PART_ScCompactView.ActualWidth == 0)
@@ -296,8 +333,10 @@ namespace SuccessStory.Controls
     public class PluginCompactDataContext : IDataContext
     {
         public bool IsActivated { get; set; }
+        public bool DisplayLastest { get; set; }
         public double Height { get; set; }
 
         public ObservableCollection<Achievements> ItemsSource { get; set; }
+        public Achievements LastestAchievement { get; set; }
     }
 }

@@ -120,6 +120,9 @@
     <Compile Include="Clients\Rpcs3Achievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />
+    <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
+      <DependentUpon>AchievementImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PluginButton.xaml.cs">
       <DependentUpon>PluginButton.xaml</DependentUpon>
     </Compile>
@@ -309,6 +312,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Include="Controls\Customs\AchievementImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\PluginButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -110,7 +110,7 @@ namespace SuccessStory.Controls
                 ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
                 ControlDataContext.ItemsSource = ListAchievements.ToObservable();
 
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;

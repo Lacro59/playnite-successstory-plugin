@@ -19,6 +19,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:SetColorConverter x:Key="SetColorConverter" />
+        <commonpluginsshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
     </controls:PluginUserControlExtend.Resources>
 
     <Grid Name="PART_GridContener">
@@ -42,43 +43,36 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0" Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
-                                    Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Image Stretch="UniformToFill"
-                                   Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                                <Image.Source>
-                                    <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float" />
-                                </Image.Source>
-                                <Image.OpacityMask>
-                                    <ImageBrush ImageSource="{Binding Icon, IsAsync=True}" />
-                                </Image.OpacityMask>
-                            </Image>
-                            <Image Stretch="UniformToFill" 
-                                   Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Image.Source>
-                                    <FormatConvertedBitmap Source="{Binding Icon}" DestinationFormat="Gray32Float" />
-                                </Image.Source>
-                                <Image.OpacityMask>
-                                    <ImageBrush ImageSource="{Binding Icon, IsAsync=True}" />
-                                </Image.OpacityMask>
-                                <Image.Effect>
-                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
-                                </Image.Effect>
+                        <StackPanel Grid.Column="0" Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0">
+                            <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant">
+                                <Image.Style>
+                                    <Style TargetType="{x:Type Image}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EnableRaretyIndicator}" Value="True">
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding IsGray}" Value="False">
+                                                <Setter Property="Source" Value="{Binding Icon, IsAsync=True}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsGray}" Value="True">
+                                                <Setter Property="Source" Value="{Binding Icon, Converter={StaticResource ImageToGrayConverter}}" />
+                                                <Setter Property="OpacityMask">
+                                                    <Setter.Value>
+                                                        <ImageBrush ImageSource="{Binding Icon, IsAsync=True}" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Style>
                             </Image>
                         </StackPanel>
-
-                        <StackPanel Grid.Column="0" Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
-                                    Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                            <Image Stretch="UniformToFill" Source="{Binding Icon, IsAsync=True}"
-                                   Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
-                            <Image Stretch="UniformToFill" Source="{Binding Icon, IsAsync=True}" 
-                                   Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Image.Effect>
-                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
-                                </Image.Effect>
-                            </Image>
-                        </StackPanel>
-
+                        
                         <Grid Grid.Column="1" Margin="10,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />

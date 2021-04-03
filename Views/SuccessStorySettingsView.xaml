@@ -545,6 +545,9 @@
                                                 <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactPartialHeight}" 
                                                                              Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
+                                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.IntegrationCompactPartialDisplayLastest}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryIntegrationCompactPartialDisplayLastest}" />
+                                            </CheckBox>
                                         </Grid>
                                     </Border>
                                 </Expander.Content>

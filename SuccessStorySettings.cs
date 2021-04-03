@@ -120,6 +120,7 @@ namespace SuccessStory
         }
 
         public double IntegrationCompactPartialHeight { get; set; } = 48;
+        public bool IntegrationCompactPartialDisplayLastest { get; set; } = true;
 
          
         private bool _EnableIntegrationChart { get; set; } = true;

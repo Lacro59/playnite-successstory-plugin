@@ -6,15 +6,112 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:SuccessStory.Controls"
+        xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+        xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+        xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
         mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
+
+    <controls:PluginUserControlExtend.Resources>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <local:SetColorConverter x:Key="SetColorConverter" />
+    </controls:PluginUserControlExtend.Resources>
 
     <Grid>
         <Border CornerRadius="{DynamicResource ControlCornerRadius}" BorderThickness="{DynamicResource ControlBorderThickness}" 
                 Background="Transparent" Padding="5"
                 BorderBrush="{DynamicResource NormalBorderBrush}">
-            <Grid Name="PART_ScCompactView" Loaded="PART_ScCompactView_IsLoaded" MinHeight="{Binding Height}"
-                  SizeChanged="PART_ScCompactView_SizeChanged" />
+
+            <Grid MinHeight="{Binding Height}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Grid Margin="0,0,0,5" Visibility="{Binding DisplayLastest, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Height="{Binding Height}" Width="{Binding Height}" VerticalAlignment="Top">
+                        <Image Stretch="UniformToFill" Source="{Binding LastestAchievement.Icon, IsAsync=True}"
+                               RenderOptions.BitmapScalingMode="Fant">
+                            <Image.Style>
+                                <Style TargetType="{x:Type Image}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding LastestAchievement.EnableRaretyIndicator}" Value="True">
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding LastestAchievement.Percent, Converter={StaticResource SetColorConverter}}" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </StackPanel>
+
+                    <!--StackPanel Grid.Column="0" Height="{Binding Height}" Width="{Binding Height}" VerticalAlignment="Top">
+                        <Image Stretch="UniformToFill" Source="{Binding LastestAchievement.Icon, IsAsync=True}"
+                               RenderOptions.BitmapScalingMode="Fant"
+                               Visibility="{Binding LastestAchievement.EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+                        <Image Stretch="UniformToFill" Source="{Binding LastestAchievement.Icon, IsAsync=True}" 
+                               RenderOptions.BitmapScalingMode="Fant"
+                               Visibility="{Binding LastestAchievement.EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Image.Effect>
+                                <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding LastestAchievement.Percent, Converter={StaticResource SetColorConverter}}" />
+                            </Image.Effect>
+                        </Image>
+                    </StackPanel-->
+
+                    <!--customs:AchievementImage Grid.Column="0" VerticalAlignment="Top"
+                                              Height="{Binding Height}" Width="{Binding Height}"
+                                              IsGray="{Binding LastestAchievement.IsGray}" 
+                                              Icon="{Binding LastestAchievement.Icon}"
+                                              Percent="{Binding LastestAchievement.Percent}"
+                                              EnableRaretyIndicator="{Binding LastestAchievement.EnableRaretyIndicator}" /-->
+
+                    <!--customs:AchievementImage AchievementContext="{Binding LastestAchievement}" /-->
+
+                    <Grid Grid.Column="1" Margin="10,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="130" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding LastestAchievement.Name}" Foreground="{DynamicResource TextBrush}" 
+                                       MouseEnter="TextBlock_MouseEnter" TextTrimming="CharacterEllipsis">
+                                <TextBlock.ToolTip>
+                                    <ToolTip Content="{Binding LastestAchievement.Name}" />
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                            <TextBlock Grid.Column="1" TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
+                                      Text="{Binding LastestAchievement.DateWhenUnlocked, Converter={StaticResource LocalDateTimeConverter}}" />
+                        </Grid>
+
+                        <TextBlock Grid.Row="1" Text="{Binding LastestAchievement.Description}" VerticalAlignment="Top"
+                                   TextTrimming="CharacterEllipsis"
+                                   TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}" />
+                    </Grid>
+                </Grid>
+
+                <Grid Name="PART_ScCompactView" Loaded="PART_ScCompactView_IsLoaded" Margin="0,5,0,0" 
+                      Grid.Row="1" SizeChanged="PART_ScCompactView_SizeChanged" />
+            </Grid>
         </Border>
     </Grid>
 </controls:PluginUserControlExtend>

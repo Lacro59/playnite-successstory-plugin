@@ -103,7 +103,7 @@ namespace SuccessStory.Controls
                 ControlDataContext.Total = gameAchievements.Total;
                 ControlDataContext.LabelContent = gameAchievements.Unlocked + "/" + gameAchievements.Total;
 
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Render, new ThreadStart(delegate
+                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     MustDisplay = true;
                     this.DataContext = ControlDataContext;
