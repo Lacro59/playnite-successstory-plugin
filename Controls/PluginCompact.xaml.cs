@@ -230,8 +230,6 @@ namespace SuccessStory.Controls
             double actualWidth = PART_ScCompactView.ActualWidth;
             int nbGrid = (int)(actualWidth / (ControlDataContext.Height + 10));
 
-            Common.LogDebug(true, $"actualWidth: {actualWidth} - nbGrid: {nbGrid} - AchievementsList: {AchievementsList.Count}");
-
             if (nbGrid > 0)
             {
                 for (int i = 0; i < nbGrid; i++)

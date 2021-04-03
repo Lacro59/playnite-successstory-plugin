@@ -532,15 +532,10 @@ namespace SuccessStory
         {
 
         }
+        #endregion  
 
 
-        // Add code to be executed when Playnite is shutting down.
-        public override void OnApplicationStopped()
-        {
-            Common.LogDebug(true, $"Cancel TaskCacheImage");
-            tokenSource.Cancel();
-        }
-
+        #region Application event
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted()
         {
@@ -576,7 +571,7 @@ namespace SuccessStory
 
                                     if (ct.IsCancellationRequested)
                                     {
-                                        logger.Info($"IsCancellationRequested for TaskCacheImage()");
+                                        logger.Info($"TaskCacheImage - IsCancellationRequested");
                                         break;
                                     }
 
@@ -588,7 +583,7 @@ namespace SuccessStory
 
                                     if (ct.IsCancellationRequested)
                                     {
-                                        logger.Info($"IsCancellationRequested for TaskCacheImage()");
+                                        logger.Info($"TaskCacheImage - IsCancellationRequested");
                                         break;
                                     }
                                 }
@@ -607,6 +602,12 @@ namespace SuccessStory
 #endif
                 }, tokenSource.Token);
             }
+        }
+
+        // Add code to be executed when Playnite is shutting down.
+        public override void OnApplicationStopped()
+        {
+            tokenSource.Cancel();
         }
         #endregion
 
