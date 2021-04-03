@@ -27,34 +27,6 @@ namespace SuccessStory.Controls.Customs
     public partial class AchievementImage : UserControl
     {
         #region Properties
-        public Achievements AchievementContext
-        {
-            get { return (Achievements)GetValue(AchievementContextProperty); }
-            set { SetValue(AchievementContextProperty, value); }
-        }
-
-        public static readonly DependencyProperty AchievementContextProperty = DependencyProperty.Register(
-            nameof(AchievementContext),
-            typeof(Achievements),
-            typeof(AchievementImage),
-            new FrameworkPropertyMetadata(null, AchievementContextPropertyChangedCallback)
-        );
-
-        private static void AchievementContextPropertyChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (sender is AchievementImage obj && e.NewValue != e.OldValue)
-            {
-                obj.Dispatcher.BeginInvoke(DispatcherPriority.Render, new ThreadStart(delegate
-                {
-                    obj.LoadIcon(e.NewValue);
-                }));
-            }
-        }
-
-
-
-
-
         public string Icon
         {
             get { return (string)GetValue(IconProperty); }
@@ -65,46 +37,46 @@ namespace SuccessStory.Controls.Customs
             nameof(Icon),
             typeof(string),
             typeof(AchievementImage),
-            new FrameworkPropertyMetadata(string.Empty, IconPropertyChangedCallback)
+            new FrameworkPropertyMetadata(string.Empty)
         );
 
-        private static void IconPropertyChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (sender is AchievementImage obj && e.NewValue != e.OldValue)
-            {
-                obj.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
-                {
-                    //obj.LoadIcon(e.NewValue);
-                }));
-            }
-        }
-
-        private async void LoadIcon(object AchievementContext)
-        {
-            var IconSource = await Task.Factory.StartNew(() =>
-            {
-                if (AchievementContext is Achievements achievements)
-                {
-                    return BitmapExtensions.BitmapFromFile(achievements.UrlUnlocked);
-                }
-                else
-                {
-                    return null;
-                }
-            });
-
-            PART_Icon.Source = IconSource;
-
-            if (AchievementContext != null)
-            {
-                this.DataContext = new
-                {
-                    IsGray = ((Achievements)AchievementContext).IsGray,
-                    EnableRaretyIndicator = ((Achievements)AchievementContext).EnableRaretyIndicator,
-                    Percent = ((Achievements)AchievementContext).Percent
-                };
-            }
-        }
+        //private static void IconPropertyChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (sender is AchievementImage obj && e.NewValue != e.OldValue)
+        //    {
+        //        obj.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
+        //        {
+        //            //obj.LoadIcon(e.NewValue);
+        //        }));
+        //    }
+        //}
+        //
+        //private async void LoadIcon(object AchievementContext)
+        //{
+        //    var IconSource = await Task.Factory.StartNew(() =>
+        //    {
+        //        if (AchievementContext is Achievements achievements)
+        //        {
+        //            return BitmapExtensions.BitmapFromFile(achievements.UrlUnlocked);
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    });
+        //
+        //    PART_Icon.Source = IconSource;
+        //
+        //    if (AchievementContext != null)
+        //    {
+        //        this.DataContext = new
+        //        {
+        //            IsGray = ((Achievements)AchievementContext).IsGray,
+        //            EnableRaretyIndicator = ((Achievements)AchievementContext).EnableRaretyIndicator,
+        //            Percent = ((Achievements)AchievementContext).Percent
+        //        };
+        //    }
+        //}
 
 
         public static readonly DependencyProperty IsGrayProperty = DependencyProperty.Register(

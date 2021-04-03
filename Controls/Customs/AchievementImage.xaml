@@ -14,56 +14,37 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <controls:SetColorConverter x:Key="SetColorConverter" />
+        <commonpluginsshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
     </UserControl.Resources>
 
     <Grid Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Height}" 
           Width="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Width}">
+        <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant">
+            <Image.Style>
+                <Style TargetType="{x:Type Image}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=EnableRaretyIndicator}" Value="True">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Percent, Converter={StaticResource SetColorConverter}}" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
 
-        <!--Image Name="PART_Test"
-               RenderOptions.BitmapScalingMode="Fant" /-->
-        
-        <!--StackPanel Visibility="{Binding IsGray, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Image Stretch="UniformToFill"
-                   Visibility="{Binding EnableRaretyIndicator, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                <Image.Source>
-                    <FormatConvertedBitmap Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=UserControl}}" DestinationFormat="Gray32Float" />
-                </Image.Source>
-                <Image.OpacityMask>
-                    <ImageBrush ImageSource="{Binding Icon, RelativeSource={RelativeSource AncestorType=UserControl}, IsAsync=True}" />
-                </Image.OpacityMask>
-            </Image>
-            
-            <Image Stretch="UniformToFill" 
-                  Visibility="{Binding EnableRaretyIndicator, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Image.Source>
-                    <FormatConvertedBitmap Source="{Binding Icon, RelativeSource={RelativeSource AncestorType=UserControl}}" DestinationFormat="Gray32Float" />
-                </Image.Source>
-                <Image.OpacityMask>
-                    <ImageBrush ImageSource="{Binding Icon, RelativeSource={RelativeSource AncestorType=UserControl}, IsAsync=True}" />
-                </Image.OpacityMask>
-                <Image.Effect>
-                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource SetColorConverter}}" />
-                </Image.Effect>
-            </Image>
-        </StackPanel-->
-
-        <StackPanel Visibility="{Binding Path=IsGray, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-            <Image Stretch="UniformToFill" Name="PART_Icon"
-                   RenderOptions.BitmapScalingMode="Fant">
-                <Image.Style>
-                    <Style TargetType="{x:Type Image}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=EnableRaretyIndicator, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                <Setter Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Path=Percent, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource SetColorConverter}}" />
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-        </StackPanel>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsGray}" Value="False">
+                            <Setter Property="Source" Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, IsAsync=True}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsGray}" Value="True">
+                            <Setter Property="Source" Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, Converter={StaticResource ImageToGrayConverter}}" />
+                            <Setter Property="OpacityMask">
+                                <Setter.Value>
+                                    <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, IsAsync=True}" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Image.Style>
+        </Image>
     </Grid>
 </UserControl>
