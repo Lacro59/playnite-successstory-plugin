@@ -89,6 +89,7 @@ namespace SuccessStory.Controls
                 IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompact,
                 Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight + 12,
 
+                PictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight,
                 ItemsSource = new ObservableCollection<Achievements>()
             };
         }
@@ -136,7 +137,8 @@ namespace SuccessStory.Controls
     {
         public bool IsActivated { get; set; }
         public double Height { get; set; }
-        
+
+        public double PictureHeight { get; set; }
         public ObservableCollection<Achievements> ItemsSource { get; set; }
     }
 }
