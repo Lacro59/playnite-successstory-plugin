@@ -29,10 +29,10 @@ namespace SuccessStory.Clients
         private string Key { get; set; }
 
 
-        public RetroAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
+        public RetroAchievements() : base()
         {
-            User = settings.RetroAchievementsUser;
-            Key = settings.RetroAchievementsKey;
+            User = PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
+            Key = PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
         }
 
 
@@ -52,7 +52,7 @@ namespace SuccessStory.Clients
             }
 
             // Load list console
-            RA_Consoles ra_Consoles = GetConsoleIDs(_PluginUserDataPath);
+            RA_Consoles ra_Consoles = GetConsoleIDs(PluginDatabase.Paths.PluginUserDataPath);
             if (ra_Consoles != null && ra_Consoles != new RA_Consoles())
             {
                 ra_Consoles.ListConsoles.Sort((x, y) => (y.Name).CompareTo(x.Name));
@@ -66,7 +66,7 @@ namespace SuccessStory.Clients
             List<RA_MD5List> ListMD5 = new List<RA_MD5List>();
             try
             {
-                ListMD5 = GetMD5List(_PluginUserDataPath, ra_Consoles);
+                ListMD5 = GetMD5List(PluginDatabase.Paths.PluginUserDataPath, ra_Consoles);
             }
             catch (Exception ex)
             {
@@ -257,7 +257,7 @@ namespace SuccessStory.Clients
             int gameID = 0;
             if (consoleID != 0)
             {
-                RA_Games ra_Games = GetGameList(consoleID, _PluginUserDataPath);
+                RA_Games ra_Games = GetGameList(consoleID, PluginDatabase.Paths.PluginUserDataPath);
                 ra_Games.ListGames.Sort((x, y) => (y.Title).CompareTo(x.Title));
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
                 {
@@ -316,7 +316,7 @@ namespace SuccessStory.Clients
             int GameId = 0;
             string HashMD5 = string.Empty;
             RA_MD5List rA_MD5List = null;
-            string FilePath = _PlayniteApi.Database.GetFullFilePath(game.GameImagePath);
+            string FilePath = PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.GameImagePath);
 
             if (!File.Exists(FilePath))
             {
@@ -572,7 +572,7 @@ namespace SuccessStory.Clients
         {
             ZipFileManafeRemove();
 
-            string extractPath = Path.Combine(_PluginUserDataPath, "tempZip");
+            string extractPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "tempZip");
             ZipFile.ExtractToDirectory(FilePath, extractPath);
 
             string FilePathReturn = string.Empty;
@@ -593,7 +593,7 @@ namespace SuccessStory.Clients
 
         private void ZipFileManafeRemove()
         {
-            string extractPath = Path.Combine(_PluginUserDataPath, "tempZip");
+            string extractPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "tempZip");
             if (Directory.Exists(extractPath))
             {
                 Directory.Delete(extractPath, true);

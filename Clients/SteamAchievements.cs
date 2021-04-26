@@ -34,9 +34,9 @@ namespace SuccessStory.Clients
         private readonly string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}/?tab=achievements";
 
 
-        public SteamAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
+        public SteamAchievements() : base()
         {
-            LocalLang = CodeLang.GetSteamLang(_PlayniteApi.ApplicationSettings.Language);
+            LocalLang = CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
         }
 
 
@@ -58,22 +58,22 @@ namespace SuccessStory.Clients
 
             if (!IsLocal)
             {
-                Common.LogDebug(true, $"Steam - GetAchievements()");
+                Common.LogDebug(true, $"GetAchievements()");
 
                 int.TryParse(game.GameId, out AppId);
 
-                VerifSteamUser();
-                if (SteamUser.IsNullOrEmpty())
-                {
-                    logger.Warn("No Steam user");
-                }
-
-                if (_settings.EnableSteamWithoutWebApi)
+                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
                 {
                     AllAchievements = GetAchievementsInPublic(AppId);
                 }
                 else
                 {
+                    VerifSteamUser();
+                    if (SteamUser.IsNullOrEmpty())
+                    {
+                        logger.Warn("No Steam user");
+                    }
+
                     AllAchievements = GetPlayerAchievements(AppId);
                     AllStats = GetUsersStats(AppId);
                 }
@@ -95,9 +95,9 @@ namespace SuccessStory.Clients
             }
             else
             {
-                Common.LogDebug(true, $"Steam - GetAchievementsLocal()");
+                Common.LogDebug(true, $"GetAchievementsLocal()");
 
-                SteamEmulators se = new SteamEmulators(_PlayniteApi, _settings, _PluginUserDataPath);
+                SteamEmulators se = new SteamEmulators();
                 var temp = se.GetAchievementsLocal(game.Name, SteamApiKey);
                 AppId = se.GetSteamId();
 
@@ -154,9 +154,9 @@ namespace SuccessStory.Clients
         {
             try
             {
-                if (File.Exists(_PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"))
+                if (File.Exists(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"))
                 {
-                    JObject SteamConfig = JObject.Parse(File.ReadAllText(_PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"));
+                    JObject SteamConfig = JObject.Parse(File.ReadAllText(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"));
                     SteamId = (string)SteamConfig["UserId"];
                     SteamApiKey = (string)SteamConfig["ApiKey"];
                     SteamUser = (string)SteamConfig["UserName"];
@@ -173,11 +173,24 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, false, "Error on GetSteamConfig");
             }
 
-            if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty())
+
+            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
             {
-                logger.Error($"No Steam configuration");
-                SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
-                return false;
+                if (SteamUser.IsNullOrEmpty())
+                {
+                    logger.Error($"No Steam user configuration");
+                    SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam user in settings menu for Steam Library.");
+                    return false;
+                }
+            }
+            else
+            {
+                if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty())
+                {
+                    logger.Error($"No Steam configuration");
+                    SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
+                    return false;
+                }
             }
 
             return true;
@@ -185,6 +198,17 @@ namespace SuccessStory.Clients
 
         private void VerifSteamUser()
         {
+            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            {
+                return;
+            }
+
+            if (SteamApiKey.IsNullOrEmpty())
+            {
+                logger.Warn($"No Steam API key");
+                return;
+            }
+
             try
             {
                 using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUser", SteamApiKey))
@@ -194,7 +218,7 @@ namespace SuccessStory.Clients
 
                     if (personaname != SteamUser)
                     {
-                        logger.Warn($"SteamUser is different {SteamUser} != {personaname}");
+                        logger.Warn($"Steam user is different {SteamUser} != {personaname}");
                         SteamUser = personaname;
                     }
                 }
@@ -209,13 +233,13 @@ namespace SuccessStory.Clients
         {
             GetSteamConfig();
 
-            if (_settings.EnableSteamWithoutWebApi)
+            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
             {
                 string ProfilById = @"https://steamcommunity.com/profiles/{0}/";
                 string ProfilByName = @"https://steamcommunity.com/id/{0}";
 
                 ProfilById = string.Format(ProfilById, SteamId);
-                ProfilByName = string.Format(UrlProfilByName, SteamUser);
+                ProfilByName = string.Format(ProfilByName, SteamUser);
 
                 string ResultWeb = string.Empty;
                 HtmlParser parser = new HtmlParser();
@@ -253,6 +277,12 @@ namespace SuccessStory.Clients
             }
             else
             {
+                if (SteamApiKey.IsNullOrEmpty())
+                {
+                    logger.Warn($"No Steam API key");
+                    return false;
+                }
+
                 try
                 {
                     using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
@@ -286,7 +316,7 @@ namespace SuccessStory.Clients
                         {
                             if (response.StatusCode == HttpStatusCode.Forbidden)
                             {
-                                _PlayniteApi.Notifications.Add(new NotificationMessage(
+                                PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
                                     "SuccessStory-Steam-PrivateProfil",
                                     $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                                     NotificationType.Error,
@@ -323,6 +353,17 @@ namespace SuccessStory.Clients
         private List<GameStats> GetUsersStats(int AppId)
         {
             List<GameStats> AllStats = new List<GameStats>();
+
+            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            {
+                return AllStats;
+            }
+
+            if (SteamApiKey.IsNullOrEmpty())
+            {
+                logger.Warn($"No Steam API key");
+                return AllStats;
+            }
 
             try
             {
@@ -375,7 +416,7 @@ namespace SuccessStory.Clients
                     {
                         if (response.StatusCode == HttpStatusCode.Forbidden)
                         {
-                            _PlayniteApi.Notifications.Add(new NotificationMessage(
+                            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
                                 "SuccessStory-Steam-PrivateProfil",
                                 $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                                 NotificationType.Error,
@@ -406,6 +447,17 @@ namespace SuccessStory.Clients
         private List<Achievements> GetPlayerAchievements(int AppId)
         {
             List<Achievements> AllAchievements = new List<Achievements>();
+
+            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            {
+                return AllAchievements;
+            }
+
+            if (SteamApiKey.IsNullOrEmpty())
+            {
+                logger.Warn($"No Steam API key");
+                return AllAchievements;
+            }
 
             try
             {
@@ -459,7 +511,7 @@ namespace SuccessStory.Clients
                     {
                         if (response.StatusCode == HttpStatusCode.Forbidden)
                         {
-                            _PlayniteApi.Notifications.Add(new NotificationMessage(
+                            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
                                 "SuccessStory-Steam-PrivateProfil",
                                 $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                                 NotificationType.Error,
@@ -491,6 +543,17 @@ namespace SuccessStory.Clients
         {
             try
             {
+                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+                {
+                    return Tuple.Create(AllAchievements, AllStats);
+                }
+
+                if (SteamApiKey.IsNullOrEmpty())
+                {
+                    logger.Warn($"No Steam API key");
+                    return Tuple.Create(AllAchievements, AllStats);
+                }
+
                 using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
                 {
                     KeyValue SchemaForGame = steamWebAPI.GetSchemaForGame(appid: AppId, l: LocalLang);
@@ -515,31 +578,48 @@ namespace SuccessStory.Clients
                     }
 
                     try
-                    { 
-                        var ListStatsData = SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "stats").Children;
-                        foreach (KeyValue StatsData in ListStatsData)
-                        {
-                            if (AllStats.Find(x => x.Name == StatsData.Name) == null)
-                            {
-                                double.TryParse(StatsData.Children.Find(x => x.Name == "defaultvalue").Value, out double ValueStats);
+                    {
+                        var availableGameStats = SchemaForGame.Children.Find(x => x.Name == "availableGameStats");
 
-                                AllStats.Add(new GameStats
+                        if (availableGameStats != null)
+                        {
+                            var stats = availableGameStats.Children.Find(x => x.Name == "stats");
+
+                            if (stats != null)
+                            {
+                                var ListStatsData = stats.Children;
+                                foreach (KeyValue StatsData in ListStatsData)
                                 {
-                                    Name = StatsData.Name,
-                                    DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value,
-                                    Value = ValueStats
-                                });
+                                    if (AllStats.Find(x => x.Name == StatsData.Name) == null)
+                                    {
+                                        double.TryParse(StatsData.Children.Find(x => x.Name == "defaultvalue").Value, out double ValueStats);
+
+                                        AllStats.Add(new GameStats
+                                        {
+                                            Name = StatsData.Name,
+                                            DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value,
+                                            Value = ValueStats
+                                        });
+                                    }
+                                    else
+                                    {
+                                        AllStats.Find(x => x.Name == StatsData.Name).DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value;
+                                    }
+                                }
                             }
                             else
                             {
-                                AllStats.Find(x => x.Name == StatsData.Name).DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value;
+                                logger.Warn($"No Steam stats for {AppId}");
                             }
+                        }
+                        else
+                        {
+                            logger.Warn($"No Steam stats for {AppId}");
                         }
                     }
                     catch (Exception ex)
                     {
-                        logger.Warn($"No Steam stats for {AppId}");
-                        Common.LogError(ex, true, $"Error on AvailableGameStats({AppId}, {LocalLang})");
+                        Common.LogError(ex, false, $"Error on AvailableGameStats({AppId}, {LocalLang})");
                     }
                 }
             }
@@ -788,6 +868,17 @@ namespace SuccessStory.Clients
 
         private List<Achievements> GetGlobalAchievementPercentagesForApp(int AppId, List<Achievements> AllAchievements)
         {
+            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            {
+                return AllAchievements;
+            }
+
+            if (SteamApiKey.IsNullOrEmpty())
+            {
+                logger.Warn($"No Steam API key");
+                return AllAchievements;
+            }
+
             try
             {
                 using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))

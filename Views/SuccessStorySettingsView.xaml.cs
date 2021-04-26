@@ -418,7 +418,7 @@ namespace SuccessStory.Views
                             {
                                 Common.LogDebug(true, $"Check Steam profil with {game.GameId}");
 
-                                SteamAchievements steamAPI = new SteamAchievements(_PlayniteApi, PluginDatabase.PluginSettings.Settings, _PluginUserDataPath);
+                                SteamAchievements steamAPI = new SteamAchievements();
                                 int AppId = 0;
                                 int.TryParse(game.GameId, out AppId);
                                 if (!steamAPI.CheckIsPublic(AppId))

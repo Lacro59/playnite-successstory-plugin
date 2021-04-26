@@ -199,7 +199,7 @@ namespace SuccessStory
                             }
                             if (PluginDatabase.PluginSettings.Settings.EnableManual)
                             {
-                                icon = TransformIcon.Get("Manual") + " ";
+                                icon = TransformIcon.Get("Manual Achievements") + " ";
                                 FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Manual", SourceNameShort = "Manual", IsCheck = false });
                             }
                         }
@@ -246,7 +246,7 @@ namespace SuccessStory
                         }
                         if (PluginDatabase.PluginSettings.Settings.EnableManual)
                         {
-                            icon = TransformIcon.Get("Manual") + " ";
+                            icon = TransformIcon.Get("Manual Achievements") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Manual", SourceNameShort = "Manual", IsCheck = false });
                         }
                     }

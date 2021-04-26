@@ -20,7 +20,7 @@ namespace SuccessStory.Clients
         private int SteamId { get; set; } = 0;
 
 
-        public SteamEmulators(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
+        public SteamEmulators() : base()
         {
             AchievementsDirectories.Add("%PUBLIC%\\Documents\\Steam\\CODEX");
             AchievementsDirectories.Add("%appdata%\\Steam\\CODEX");
@@ -38,7 +38,7 @@ namespace SuccessStory.Clients
             int Unlocked = 0;
             int Locked = 0;
 
-            SteamApi steamApi = new SteamApi(_PluginUserDataPath);
+            SteamApi steamApi = new SteamApi(PluginDatabase.Paths.PluginUserDataPath);
             SteamId = steamApi.GetSteamId(GameName);
 
             Achievements = Get(SteamId, apiKey);
@@ -224,7 +224,7 @@ namespace SuccessStory.Clients
 
             #region Get details achievements
             // List details acheviements
-            string lang = CodeLang.GetSteamLang(_PlayniteApi.ApplicationSettings.Language);
+            string lang = CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
             string url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}",
                 apiKey, SteamId, lang);
 

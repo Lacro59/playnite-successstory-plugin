@@ -153,7 +153,7 @@ namespace SuccessStory.Controls
 
                 ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
 
-                if (IsUnlocked)
+                if (IsUnlocked && ListAchievements.Count > 0)
                 {
                     ControlDataContext.LastestAchievement = ListAchievements[0];
                     ListAchievements.RemoveAt(0);

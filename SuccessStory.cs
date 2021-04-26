@@ -298,7 +298,7 @@ namespace SuccessStory
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
 
-            if (VerifToAddOrShow)
+            if (VerifToAddOrShow || IsAddOrShowManual)
             {
                 if (!PluginSettings.Settings.EnableOneGameView || (PluginSettings.Settings.EnableOneGameView && gameAchievements.HasData))
                 {

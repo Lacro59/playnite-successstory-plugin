@@ -18,9 +18,9 @@ namespace SuccessStory.Clients
     {
         OriginAccountClient originAPI;
 
-        public OriginAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
+        public OriginAchievements() : base()
         {
-            var view = PlayniteApi.WebViews.CreateOffscreenView();
+            var view = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
             originAPI = new OriginAccountClient(view);
         }
 
@@ -49,11 +49,11 @@ namespace SuccessStory.Clients
                 // Get informations from Origin plugin.
                 string accessToken = originAPI.GetAccessToken().access_token;
                 string personasId = GetPersonas(originAPI.GetAccessToken());
-                string origineGameId = GetOrigineGameAchievementId(_PlayniteApi, game.Id);
+                string origineGameId = GetOrigineGameAchievementId(PluginDatabase.PlayniteApi, game.Id);
 
                 Common.LogDebug(true, $"Origin token: {accessToken}");
 
-                string lang = CodeLang.GetOriginLang(_PlayniteApi.ApplicationSettings.Language);
+                string lang = CodeLang.GetOriginLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
                 // Achievements (default return in english)
                 var url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",
                     personasId, origineGameId, lang);

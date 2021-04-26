@@ -1,6 +1,7 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
+using SuccessStory.Services;
 using System;
 
 namespace SuccessStory.Clients
@@ -10,24 +11,20 @@ namespace SuccessStory.Clients
         internal static readonly ILogger logger = LogManager.GetLogger();
         internal static readonly IResourceProvider resources = new ResourceProvider();
 
-        internal readonly IPlayniteAPI _PlayniteApi;
-        internal readonly SuccessStorySettings _settings;
-        internal readonly string _PluginUserDataPath;
+        internal SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
         internal string LocalLang { get; set; } = string.Empty;
 
 
-        public GenericAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath)
+        public GenericAchievements()
         {
-            _PlayniteApi = PlayniteApi;
-            _settings = settings;
-            _PluginUserDataPath = PluginUserDataPath;
+
         }
 
 
         public GameAchievements GetAchievements(Guid Id)
         {
-            Game game = _PlayniteApi.Database.Games.Get(Id);
+            Game game = PluginDatabase.PlayniteApi.Database.Games.Get(Id);
             return GetAchievements(game);
         }
 

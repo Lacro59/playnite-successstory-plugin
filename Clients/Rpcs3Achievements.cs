@@ -14,7 +14,7 @@ namespace SuccessStory.Clients
 {
     class Rpcs3Achievements : GenericAchievements
     {
-        public Rpcs3Achievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
+        public Rpcs3Achievements() : base()
         {
 
         }
@@ -131,12 +131,12 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
-            if (_settings.Rpcs3InstallationFolder.IsNullOrEmpty())
+            if (PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder.IsNullOrEmpty())
             {
                 return false;
             }
 
-            if (!Directory.Exists(Path.Combine(_settings.Rpcs3InstallationFolder, "trophy")))
+            if (!Directory.Exists(Path.Combine(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder, "trophy")))
             {
                 return false;
             }
@@ -153,7 +153,7 @@ namespace SuccessStory.Clients
         private string FindTrophyGameFolder(Game game)
         {
             string TrophyGameFolder = string.Empty;
-            string TrophyFolder = Path.Combine(_settings.Rpcs3InstallationFolder, "trophy");
+            string TrophyFolder = Path.Combine(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder, "trophy");
             string TempTrophyGameFolder = Directory.GetParent(game.InstallDirectory).FullName;
 
             try
@@ -187,18 +187,18 @@ namespace SuccessStory.Clients
             DirectoryInfo di = new DirectoryInfo(TrophyDirectory);
             string NameFolder = di.Name;
 
-            if (!Directory.Exists(Path.Combine(_PluginUserDataPath, "rpcs3")))
+            if (!Directory.Exists(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3")))
             {
-                Directory.CreateDirectory(Path.Combine(_PluginUserDataPath, "rpcs3"));
+                Directory.CreateDirectory(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3"));
             }
-            if (!Directory.Exists(Path.Combine(_PluginUserDataPath, "rpcs3", NameFolder)))
+            if (!Directory.Exists(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder)))
             {
-                Directory.CreateDirectory(Path.Combine(_PluginUserDataPath, "rpcs3", NameFolder));
+                Directory.CreateDirectory(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder));
             }
 
             try
             {
-                File.Copy(Path.Combine(TrophyDirectory, TrophyFile), Path.Combine(_PluginUserDataPath, "rpcs3", NameFolder, TrophyFile));
+                File.Copy(Path.Combine(TrophyDirectory, TrophyFile), Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder, TrophyFile));
             }
             catch
             {

@@ -18,9 +18,9 @@ namespace SuccessStory.Clients
         private GogAccountClient gogAPI;
 
 
-        public GogAchievements(IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath) : base(PlayniteApi, settings, PluginUserDataPath)
+        public GogAchievements() : base()
         {
-            var view = PlayniteApi.WebViews.CreateOffscreenView();
+            var view = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
             gogAPI = new GogAccountClient(view);
         }
 
@@ -52,7 +52,7 @@ namespace SuccessStory.Clients
                 string accessToken = gogAPI.GetAccountInfo().accessToken;
 
                 string userId = gogAPI.GetAccountInfo().userId;
-                string lang = CodeLang.GetGogLang(_PlayniteApi.ApplicationSettings.Language);
+                string lang = CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
 
                 // Achievements
                 string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements", ClientId, userId);
@@ -123,7 +123,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                _PlayniteApi.Notifications.Add(new NotificationMessage(
+                PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
                     "SuccessStory-Gog-NoAuthenticate",
                     $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate")}",
                     NotificationType.Error

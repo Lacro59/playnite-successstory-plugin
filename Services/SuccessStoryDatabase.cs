@@ -73,7 +73,7 @@ namespace SuccessStory.Services
                 {
                     GameAchievements gameAchievements = GetDefault(game);
 
-                    SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                    SteamAchievements steamAPI = new SteamAchievements();
                     steamAPI.SetLocal();
                     gameAchievements = steamAPI.GetAchievements(game);
                     gameAchievements.IsManual = true;
@@ -140,14 +140,14 @@ namespace SuccessStory.Services
                 {
                     if (GogAPI == null)
                     {
-                        GogAPI = new GogAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                        GogAPI = new GogAchievements();
                     }
                     gameAchievements = GogAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "steam")
                 {
-                    SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                    SteamAchievements steamAPI = new SteamAchievements();
                     gameAchievements = steamAPI.GetAchievements(game);
                 }
 
@@ -155,7 +155,7 @@ namespace SuccessStory.Services
                 {
                     if (OriginAPI == null)
                     {
-                        OriginAPI = new OriginAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                        OriginAPI = new OriginAchievements();
                     }
                     gameAchievements = OriginAPI.GetAchievements(game);
                 }
@@ -164,27 +164,27 @@ namespace SuccessStory.Services
                 {
                     if (XboxAPI == null)
                     {
-                        XboxAPI = new XboxAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                        XboxAPI = new XboxAchievements();
                     }
                     gameAchievements = XboxAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "playnite" || GameSourceName.ToLower() == "hacked")
                 {
-                    SteamAchievements steamAPI = new SteamAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                    SteamAchievements steamAPI = new SteamAchievements();
                     steamAPI.SetLocal();
                     gameAchievements = steamAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "retroachievements")
                 {
-                    RetroAchievements retroAchievementsAPI = new RetroAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                    RetroAchievements retroAchievementsAPI = new RetroAchievements();
                     gameAchievements = retroAchievementsAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "rpcs3")
                 {
-                    Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                    Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements();
                     gameAchievements = rpcs3Achievements.GetAchievements(game);
                 }
 
@@ -597,7 +597,7 @@ namespace SuccessStory.Services
                 }
                 else
                 {
-                    SteamAchievements steamAchievements = new SteamAchievements(PlayniteApi, settings, PluginUserDataPath);
+                    SteamAchievements steamAchievements = new SteamAchievements();
                     if (!steamAchievements.IsConfigured())
                     {
                         logger.Warn("Bad Steam configuration");
@@ -628,7 +628,7 @@ namespace SuccessStory.Services
                 }
                 else
                 {
-                    GogAchievements gogAchievements = new GogAchievements(PlayniteApi, settings, PluginUserDataPath);
+                    GogAchievements gogAchievements = new GogAchievements();
 
                     if (VerifToAddOrShowGog == null)
                     {
@@ -665,7 +665,7 @@ namespace SuccessStory.Services
                 }
                 else
                 {
-                    OriginAchievements originAchievements = new OriginAchievements(PlayniteApi, settings, PluginUserDataPath);
+                    OriginAchievements originAchievements = new OriginAchievements();
 
                     if (VerifToAddOrShowOrigin == null)
                     {
@@ -702,7 +702,7 @@ namespace SuccessStory.Services
                 }
                 else
                 {
-                    XboxAchievements xboxAchievements = new XboxAchievements(PlayniteApi, settings, PluginUserDataPath);
+                    XboxAchievements xboxAchievements = new XboxAchievements();
 
                     Common.LogDebug(true, $"VerifToAddOrShowXbox: {VerifToAddOrShowXbox}");
 
@@ -735,7 +735,7 @@ namespace SuccessStory.Services
 
             if (settings.EnableRetroAchievements && GameSourceName.ToLower() == "retroachievements")
             {
-                RetroAchievements retroAchievements = new RetroAchievements(PlayniteApi, settings, PluginUserDataPath);
+                RetroAchievements retroAchievements = new RetroAchievements();
                 if (!retroAchievements.IsConfigured())
                 {
                     logger.Warn("Bad RetroAchievements configuration");
@@ -752,7 +752,7 @@ namespace SuccessStory.Services
 
             if (settings.EnableRpcs3Achievements && GameSourceName.ToLower() == "rpcs3")
             {
-                Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements(PlayniteApi, settings, PluginUserDataPath);
+                Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements();
                 if (!rpcs3Achievements.IsConfigured())
                 {
                     logger.Warn("Bad RPCS3 configuration");
@@ -767,7 +767,7 @@ namespace SuccessStory.Services
                 return true;
             }
 
-            logger.Warn($"VerifToAddOrShow() find no action for {GameSourceName}");
+            Common.LogDebug(true, $"VerifToAddOrShow() find no action for {GameSourceName}");
             return false;
         }
 
@@ -808,21 +808,21 @@ namespace SuccessStory.Services
                 case "gog":
                     if (!PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", PlayniteApi.Paths.ConfigurationPath) && PluginSettings.Settings.EnableGog && GogAPI == null)
                     {
-                        GogAPI = new GogAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                        GogAPI = new GogAchievements();
                     }
                     break;
 
                 case "origin":
                     if (!PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary", PlayniteApi.Paths.ConfigurationPath) && OriginAPI == null)
                     {
-                        OriginAPI = new OriginAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                        OriginAPI = new OriginAchievements();
                     }
                     break;
 
                 case "Xbox":
                     if (!PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary", PlayniteApi.Paths.ConfigurationPath) && XboxAPI == null)
                     {
-                        XboxAPI = new XboxAchievements(PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath);
+                        XboxAPI = new XboxAchievements();
                     }
                     break;
 
