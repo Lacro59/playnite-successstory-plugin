@@ -520,6 +520,21 @@ namespace SuccessStory
             // Refresh Achievements database for game played.
             var TaskGameStopped = Task.Run(() =>
             {
+                PluginDatabase.Refresh(game.Id);
+
+                // Set to Beaten
+                if (PluginSettings.Settings.Auto100PercentCompleted)
+                {
+                    GameAchievements gameAchievements = PluginDatabase.Get(game, true);
+
+                    if (gameAchievements.Is100Percent)
+                    {
+                        game.CompletionStatus = CompletionStatus.Beaten;
+                        PlayniteApi.Database.Games.Update(game);
+                    }
+                }
+
+                // refresh themes resources
                 if (game.Id == PluginDatabase.GameContext.Id)
                 {
                     PluginDatabase.SetThemesResources(PluginDatabase.GameContext);

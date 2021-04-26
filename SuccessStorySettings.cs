@@ -16,6 +16,8 @@ namespace SuccessStory
         public bool MenuInExtensions { get; set; } = true;
 
 
+        public bool Auto100PercentCompleted { get; set; } = true;
+
         public bool EnableImageCache { get; set; } = false;
         public bool IgnoreSettings { get; set; } = false;
 
