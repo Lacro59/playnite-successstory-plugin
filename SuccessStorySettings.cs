@@ -16,7 +16,7 @@ namespace SuccessStory
         public bool MenuInExtensions { get; set; } = true;
 
 
-        public bool Auto100PercentCompleted { get; set; } = true;
+        public bool Auto100PercentCompleted { get; set; } = false;
 
         public bool EnableImageCache { get; set; } = false;
         public bool IgnoreSettings { get; set; } = false;
@@ -125,7 +125,7 @@ namespace SuccessStory
         public bool IntegrationCompactPartialDisplayLastest { get; set; } = true;
 
          
-        private bool _EnableIntegrationChart { get; set; } = true;
+        private bool _EnableIntegrationChart { get; set; } = false;
         public bool EnableIntegrationChart
         {
             get => _EnableIntegrationChart;
@@ -142,7 +142,7 @@ namespace SuccessStory
         public int IntegrationChartCountAbscissa { get; set; } = 11;
 
 
-        private bool _EnableIntegrationUserStats { get; set; } = true;
+        private bool _EnableIntegrationUserStats { get; set; } = false;
         public bool EnableIntegrationUserStats
         {
             get => _EnableIntegrationUserStats;
@@ -156,7 +156,7 @@ namespace SuccessStory
         public double IntegrationUserStatsHeight { get; set; } = 120;
 
 
-        public bool _EnableIntegrationList { get; set; } = true;
+        public bool _EnableIntegrationList { get; set; } = false;
         public bool EnableIntegrationList
         {
             get => _EnableIntegrationList;

@@ -63,6 +63,13 @@ namespace SuccessStory
                     "PluginUserStats", "PluginList"
                 },
                 SourceName = "SuccessStory",
+                
+            });
+
+            // Settings integration
+            AddSettingsSupport(new AddSettingsSupportArgs
+            {
+                SourceName = "SuccessStory",
                 SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
             });
         }
