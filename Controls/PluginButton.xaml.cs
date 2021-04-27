@@ -85,7 +85,13 @@ namespace SuccessStory.Controls
         {
             ControlDataContext = new PluginButtonDataContext
             {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationButton
+                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationButton,
+                DisplayDetails = PluginDatabase.PluginSettings.Settings.EnableIntegrationButtonDetails,
+
+                Is100Percent = false,
+                LabelContent = string.Empty,
+                Value = 0,
+                Maximum = 0
             };
         }
 
@@ -96,6 +102,7 @@ namespace SuccessStory.Controls
             {
                 GameAchievements gameAchievements = (GameAchievements)PluginGameData;
 
+                ControlDataContext.Is100Percent = gameAchievements.Is100Percent;
                 ControlDataContext.LabelContent = gameAchievements.Unlocked + "/" + gameAchievements.Total;
                 ControlDataContext.Value = gameAchievements.Unlocked;
                 ControlDataContext.Maximum = gameAchievements.Total;
