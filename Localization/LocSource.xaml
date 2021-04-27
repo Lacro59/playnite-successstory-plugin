@@ -3,6 +3,8 @@
 
     <sys:String x:Key="LOCSuccessStoryProgress">Progress</sys:String>
     <sys:String x:Key="LOCSuccessStoryEarned">Earned</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryManualAchievements">Manual Achievements</sys:String>
     
     <!-- MainView -->
 

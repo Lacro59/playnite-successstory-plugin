@@ -345,6 +345,22 @@ namespace SuccessStory.Services
                     {
                         tempSourcesLabels.Add("RPCS3");
                     }
+                    if (PluginSettings.Settings.EnableManual)
+                    {
+                        var db = Database.Items.Where(x => x.Value.IsManual);
+                        if (db != null && db.Count() > 0)
+                        {
+                            var ListSources = db.Select(x => x.Value.SourceId).Distinct();
+                            foreach (var Source in ListSources)
+                            {
+                                var gameSource = PlayniteApi.Database.Sources.Get(Source);
+                                if (gameSource != null)
+                                {
+                                    tempSourcesLabels.Add(gameSource.Name);
+                                }
+                            }
+                        }
+                    }
                 }
             }
             else
@@ -377,6 +393,22 @@ namespace SuccessStory.Services
                 {
                     tempSourcesLabels.Add("Playnite");
                     tempSourcesLabels.Add("Hacked");
+                }
+                if (PluginSettings.Settings.EnableManual)
+                {
+                    var db = Database.Items.Where(x => x.Value.IsManual);
+                    if (db != null && db.Count() > 0)
+                    {
+                        var ListSources = db.Select(x => x.Value.SourceId).Distinct();
+                        foreach (var Source in ListSources)
+                        {
+                            var gameSource = PlayniteApi.Database.Sources.Get(Source);
+                            if (gameSource != null)
+                            {
+                                tempSourcesLabels.Add(gameSource.Name);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -873,11 +905,18 @@ namespace SuccessStory.Services
                 {
                     var GameAchievements = item.Value;
 
-                    if (GameAchievements.HaveAchivements)
+                    if (PlayniteApi.Database.Games.Get(item.Key) != null)
                     {
-                        Total += GameAchievements.Total;
-                        Locked += GameAchievements.Locked;
-                        Unlocked += GameAchievements.Unlocked;
+                        if (GameAchievements.HaveAchivements)
+                        {
+                            Total += GameAchievements.Total;
+                            Locked += GameAchievements.Locked;
+                            Unlocked += GameAchievements.Unlocked;
+                        }
+                    }
+                    else
+                    {
+                        logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
                     }
                 }
 
@@ -935,41 +974,6 @@ namespace SuccessStory.Services
             return Result;
         }
 
-        public ProgressionAchievements ProgessionGame(Guid GameId)
-        {
-            ProgressionAchievements Result = new ProgressionAchievements();
-            int Total = 0;
-            int Locked = 0;
-            int Unlocked = 0;
-
-            try
-            {
-                foreach (var item in Database.Items)
-                {
-                    Guid Id = item.Key;
-                    var GameAchievements = item.Value;
-
-                    if (GameAchievements.HaveAchivements && Id == GameId)
-                    {
-                        Total += GameAchievements.Total;
-                        Locked += GameAchievements.Locked;
-                        Unlocked += GameAchievements.Unlocked;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, $"Error on ProgessionGame()");
-            }
-
-            Result.Total = Total;
-            Result.Locked = Locked;
-            Result.Unlocked = Unlocked;
-            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
-
-            return Result;
-        }
-
         public ProgressionAchievements ProgessionSource(Guid GameSourceId)
         {
             ProgressionAchievements Result = new ProgressionAchievements();
@@ -979,17 +983,21 @@ namespace SuccessStory.Services
 
             try
             {
-                foreach (var item in Database.Items)
+                foreach (var item in Database.Items.Where(x => x.Value.SourceId == GameSourceId))
                 {
                     Guid Id = item.Key;
                     Game Game = PlayniteApi.Database.Games.Get(Id);
                     var GameAchievements = item.Value;
 
-                    if (GameAchievements.HaveAchivements && Game.SourceId == GameSourceId)
+                    if (PlayniteApi.Database.Games.Get(item.Key) != null)
                     {
                         Total += GameAchievements.Total;
                         Locked += GameAchievements.Locked;
                         Unlocked += GameAchievements.Unlocked;
+                    }
+                    else
+                    {
+                        logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
                     }
                 }
             }

@@ -200,7 +200,7 @@ namespace SuccessStory
                             if (PluginDatabase.PluginSettings.Settings.EnableManual)
                             {
                                 icon = TransformIcon.Get("Manual Achievements") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Manual", SourceNameShort = "Manual", IsCheck = false });
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
                             }
                         }
                     }
@@ -247,7 +247,7 @@ namespace SuccessStory
                         if (PluginDatabase.PluginSettings.Settings.EnableManual)
                         {
                             icon = TransformIcon.Get("Manual Achievements") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Manual", SourceNameShort = "Manual", IsCheck = false });
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
                         }
                     }
 
@@ -627,7 +627,7 @@ namespace SuccessStory
             // Filter
             if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
             {
-                if (SearchSources.IndexOf("Manual") > -1)
+                if (SearchSources.IndexOf(resources.GetString("LOCSuccessStoryManualAchievements")) > -1)
                 {
                     SourcesManual = ListGames.FindAll(x => x.IsManual);
                 }
@@ -653,7 +653,7 @@ namespace SuccessStory
 
             if (SearchSources.Count != 0)
             {
-                if (SearchSources.IndexOf("Manual") > -1)
+                if (SearchSources.IndexOf(resources.GetString("LOCSuccessStoryManualAchievements")) > -1)
                 {
                     SourcesManual = ListGames.FindAll(x => x.IsManual);
                 }
