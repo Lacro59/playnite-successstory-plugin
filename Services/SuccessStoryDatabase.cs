@@ -226,13 +226,9 @@ namespace SuccessStory.Services
 
                 try
                 {
-                    foreach (var item in Database.Items)
+                    var db = Database.Items.Where(x => x.Value.HaveAchivements && !x.Value.IsDeleted).ToList();
+                    foreach (var item in db)
                     {
-                        if (!item.Value.HaveAchivements || item.Value.IsDeleted)
-                        {
-                            continue;
-                        }
-
                         List<Achievements> temp = item.Value.Items;
                         foreach (Achievements itemAchievements in temp)
                         {
@@ -308,6 +304,7 @@ namespace SuccessStory.Services
         public AchievementsGraphicsDataCountSources GetCountBySources()
         {
             List<string> tempSourcesLabels = new List<string>();
+            var db = Database.Items.Where(x => x.Value.IsManual);
 
             if (PluginSettings.Settings.EnableRetroAchievementsView && PluginSettings.Settings.EnableRetroAchievements)
             {
@@ -347,7 +344,6 @@ namespace SuccessStory.Services
                     }
                     if (PluginSettings.Settings.EnableManual)
                     {
-                        var db = Database.Items.Where(x => x.Value.IsManual);
                         if (db != null && db.Count() > 0)
                         {
                             var ListSources = db.Select(x => x.Value.SourceId).Distinct();
@@ -396,7 +392,6 @@ namespace SuccessStory.Services
                 }
                 if (PluginSettings.Settings.EnableManual)
                 {
-                    var db = Database.Items.Where(x => x.Value.IsManual);
                     if (db != null && db.Count() > 0)
                     {
                         var ListSources = db.Select(x => x.Value.SourceId).Distinct();
@@ -427,13 +422,9 @@ namespace SuccessStory.Services
             }
 
 
-            foreach (var item in Database.Items)
+            db = Database.Items.Where(x => x.Value.HaveAchivements && !x.Value.IsDeleted).ToList();
+            foreach (var item in db)
             {
-                if (!item.Value.HaveAchivements || item.Value.IsDeleted)
-                {
-                    continue;
-                }
-
                 try
                 {
                     string SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Key);
@@ -524,13 +515,9 @@ namespace SuccessStory.Services
 
                 try
                 {
-                    foreach (var item in Database.Items)
+                    var db = Database.Items.Where(x => x.Value.HaveAchivements && !x.Value.IsDeleted).ToList();
+                    foreach (var item in db)
                     {
-                        if (!item.Value.HaveAchivements || item.Value.IsDeleted == false)
-                        {
-                            continue;
-                        }
-
                         List<Achievements> temp = item.Value.Items;
                         foreach (Achievements itemAchievements in temp)
                         {
@@ -979,7 +966,8 @@ namespace SuccessStory.Services
 
             try
             {
-                foreach (var item in Database.Items.Where(x => x.Value.SourceId == GameSourceId))
+                var db = Database.Items.Where(x => x.Value.SourceId == GameSourceId).ToList();
+                foreach (var item in db)
                 {
                     Guid Id = item.Key;
                     Game Game = PlayniteApi.Database.Games.Get(Id);
