@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Playnite.SDK;
+using SuccessStory.Services;
+using System;
 using System.Windows.Media.Imaging;
 
 namespace SuccessStory.Models
@@ -8,6 +11,9 @@ namespace SuccessStory.Models
     /// </summary>
     public class ListViewGames
     {
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+
+
         public string Icon100Percent { get; set; }
         public string Id { get; set; }
         public string Icon { get; set; }
@@ -20,5 +26,24 @@ namespace SuccessStory.Models
         public string TotalPercent { get; set; }
         public int Unlocked { get; set; }
         public bool IsManual { get; set; }
+
+        [JsonIgnore]
+        public Guid GameId
+        {
+            get
+            {
+                Guid.TryParse(Id, out Guid result);
+                return result;
+            }
+        }
+
+        [JsonIgnore]
+        public RelayCommand<Guid> GoToGame
+        {
+            get
+            {
+                return PluginDatabase.GoToGame;
+            }
+        }
     }
 }

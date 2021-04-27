@@ -62,8 +62,7 @@ namespace SuccessStory
                     "PluginCompactLocked", "PluginCompactUnlocked", "PluginChart",
                     "PluginUserStats", "PluginList"
                 },
-                SourceName = "SuccessStory",
-                
+                SourceName = "SuccessStory"
             });
 
             // Settings integration

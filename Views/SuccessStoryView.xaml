@@ -208,8 +208,17 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="240" DisplayMemberBinding="{Binding Name}" x:Name="lvGameName">
+                                <GridViewColumn Width="240" x:Name="lvGameName">
                                     <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}"></GridViewColumnHeader>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
+                                                    <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
+                                                </Hyperlink>
+                                        </TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
                                     <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}"></GridViewColumnHeader>
