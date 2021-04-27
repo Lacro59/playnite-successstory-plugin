@@ -80,13 +80,15 @@ namespace SuccessStory
                     lvSourceName.IsEnabled = false;
 
 
-                    pbProgressionGlobalCount.Value = PluginDatabase.Progession().Unlocked;
-                    pbProgressionGlobalCount.Maximum = PluginDatabase.Progession().Total;
-                    labelProgressionGlobalCount.Content = PluginDatabase.Progession().Progression + "%";
+                    var ProgressionGlobal = PluginDatabase.Progession();
+                    pbProgressionGlobalCount.Value = ProgressionGlobal.Unlocked;
+                    pbProgressionGlobalCount.Maximum = ProgressionGlobal.Total;
+                    labelProgressionGlobalCount.Content = ProgressionGlobal.Progression + "%";
 
-                    pbProgressionLaunchedCount.Value = PluginDatabase.ProgessionLaunched().Unlocked;
-                    pbProgressionLaunchedCount.Maximum = PluginDatabase.ProgessionLaunched().Total;
-                    labelProgressionLaunchedCount.Content = PluginDatabase.ProgessionLaunched().Progression + "%";
+                    var ProgressionLaunched = PluginDatabase.ProgessionLaunched();
+                    pbProgressionLaunchedCount.Value = ProgressionLaunched.Unlocked;
+                    pbProgressionLaunchedCount.Maximum = ProgressionLaunched.Total;
+                    labelProgressionLaunchedCount.Content = ProgressionLaunched.Progression + "%";
 
 
                     GraphicTitle.Content = string.Empty;

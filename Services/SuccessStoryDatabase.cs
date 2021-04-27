@@ -901,18 +901,16 @@ namespace SuccessStory.Services
 
             try
             {
-                foreach (var item in Database.Items)
+                var db = Database.Items.Where(x => x.Value.HaveAchivements).ToList();
+                foreach (var item in db)
                 {
                     var GameAchievements = item.Value;
 
                     if (PlayniteApi.Database.Games.Get(item.Key) != null)
                     {
-                        if (GameAchievements.HaveAchivements)
-                        {
-                            Total += GameAchievements.Total;
-                            Locked += GameAchievements.Locked;
-                            Unlocked += GameAchievements.Unlocked;
-                        }
+                        Total += GameAchievements.Total;
+                        Locked += GameAchievements.Locked;
+                        Unlocked += GameAchievements.Unlocked;
                     }
                     else
                     {
@@ -942,18 +940,16 @@ namespace SuccessStory.Services
 
             try
             {
-                foreach (var item in Database.Items)
+                var db = Database.Items.Where(x => x.Value.Playtime > 0 && x.Value.HaveAchivements).ToList();
+                foreach (var item in db)
                 {
                     var GameAchievements = item.Value;
 
                     if (PlayniteApi.Database.Games.Get(item.Key) != null)
                     {
-                        if (GameAchievements.HaveAchivements && PlayniteApi.Database.Games.Get(item.Key).Playtime > 0)
-                        {
-                            Total += GameAchievements.Total;
-                            Locked += GameAchievements.Locked;
-                            Unlocked += GameAchievements.Unlocked;
-                        }
+                        Total += GameAchievements.Total;
+                        Locked += GameAchievements.Locked;
+                        Unlocked += GameAchievements.Unlocked;
                     }
                     else
                     {
