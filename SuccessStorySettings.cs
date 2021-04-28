@@ -179,6 +179,8 @@ namespace SuccessStory
         public bool EnableRetroAchievements { get; set; } = false;
         public bool EnableRpcs3Achievements { get; set; } = false;
 
+        public bool EnableOverwatchAchievements { get; set; } = false;
+
         public bool EnableSteamWithoutWebApi { get; set; } = false;
 
         public string Rpcs3InstallationFolder { get; set; } = string.Empty;

@@ -29,6 +29,8 @@ using CommonPluginsShared.PlayniteExtended;
 using System.Windows.Media;
 using CommonPluginsShared.Controls;
 using SuccessStory.Controls;
+using AngleSharp.Parser.Html;
+using AngleSharp.Dom.Html;
 
 namespace SuccessStory
 {
@@ -291,8 +293,9 @@ namespace SuccessStory
         {
             Game GameMenu = args.Games.First();
             string SourceName = PlayniteTools.GetSourceName(PlayniteApi, GameMenu);
+            string GameName = GameMenu.Name;
             bool IsAddOrShowManual = SuccessStoryDatabase.IsAddOrShowManual(GameMenu, SourceName);
-            bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, this.GetPluginUserDataPath(), SourceName);
+            bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, this.GetPluginUserDataPath(), SourceName, GameName);
             GameAchievements gameAchievements = PluginDatabase.Get(GameMenu, true);
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
@@ -470,7 +473,10 @@ namespace SuccessStory
             {
                 MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
                 Description = "Test",
-                Action = (mainMenuItem) => { }
+                Action = (mainMenuItem) => 
+                {
+                    
+                }
             });
 #endif
 

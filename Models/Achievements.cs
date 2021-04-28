@@ -24,6 +24,8 @@ namespace SuccessStory.Models
         /// </summary>
         public float Percent { get; set; } = 100;
 
+        public string Category { get; set; } = string.Empty;
+
         [JsonIgnore]
         public string CacheUnlocked {
             get
@@ -146,7 +148,7 @@ namespace SuccessStory.Models
                     return false;
                 }
 
-                return (UrlLocked == string.Empty || UrlLocked == UrlUnlocked);
+                return (UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
             }
         }
 

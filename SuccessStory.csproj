@@ -114,6 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\BattleNetAchievements.cs" />
     <Compile Include="Clients\GenericAchievements.cs" />
     <Compile Include="Clients\GogAchievements.cs" />
     <Compile Include="Clients\OriginAchievements.cs" />

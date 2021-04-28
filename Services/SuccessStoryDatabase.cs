@@ -30,6 +30,7 @@ namespace SuccessStory.Services
         public static bool? VerifToAddOrShowSteam = null;
         public static bool? VerifToAddOrShowXbox = null;
         public static bool? VerifToAddOrShowRpcs3 = null;
+        public static bool? VerifToAddOrShowOverwatch = null;
 
         private bool _isRetroachievements { get; set; }
 
@@ -127,11 +128,12 @@ namespace SuccessStory.Services
             Guid GameId = game.Id;
             Guid GameSourceId = game.SourceId;
             string GameSourceName = PlayniteTools.GetSourceName(PlayniteApi, game);
+            string GameName = game.Name;
 
             List<Achievements> Achievements = new List<Achievements>();
 
             // Generate database only this source
-            if (VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, GameSourceName))
+            if (VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, GameSourceName, GameName))
             {
                 Common.LogDebug(true, $"VerifToAddOrShow({game.Name}, {GameSourceName}) - OK");
 
@@ -186,6 +188,12 @@ namespace SuccessStory.Services
                 {
                     Rpcs3Achievements rpcs3Achievements = new Rpcs3Achievements();
                     gameAchievements = rpcs3Achievements.GetAchievements(game);
+                }
+
+                if (GameSourceName.ToLower() == "battle.net")
+                {
+                    BattleNetAchievements battleNetAchievements = new BattleNetAchievements();
+                    gameAchievements = battleNetAchievements.GetAchievements(game);
                 }
 
                 Common.LogDebug(true, $"Achievements for {game.Name} - {GameSourceName} - {JsonConvert.SerializeObject(gameAchievements)}");
@@ -599,7 +607,7 @@ namespace SuccessStory.Services
         /// <param name="GameSourceName"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath, string GameSourceName)
+        public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath, string GameSourceName, string GameName)
         {
             if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
@@ -786,13 +794,54 @@ namespace SuccessStory.Services
                 return true;
             }
 
+            if (settings.EnableOverwatchAchievements && GameSourceName.ToLower() == "battle.net" && GameName.ToLower() == "overwatch")
+            {
+                if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary", PlayniteApi.Paths.ConfigurationPath))
+                {
+                    logger.Warn("Battle.net is enable then disabled");
+                    PlayniteApi.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-BattleNet-disabled",
+                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetDisabled")}",
+                        NotificationType.Error,
+                        () => plugin.OpenSettingsView()
+                    ));
+                    return false;
+                }
+                else
+                {
+                    BattleNetAchievements battleNetAchievements = new BattleNetAchievements();
+
+                    Common.LogDebug(true, $"VerifToAddOrShowOverwatch: {VerifToAddOrShowOverwatch}");
+
+                    if (VerifToAddOrShowOverwatch == null)
+                    {
+                        VerifToAddOrShowOverwatch = battleNetAchievements.IsConnected();
+                    }
+
+                    Common.LogDebug(true, $"VerifToAddOrShowOverwatch: {VerifToAddOrShowOverwatch}");
+
+                    if (!(bool)VerifToAddOrShowOverwatch)
+                    {
+                        logger.Warn("Battle.net user is not authenticated");
+                        PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-BattleNet-NoAuthenticate",
+                            $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate")}",
+                            NotificationType.Error,
+                            () => plugin.OpenSettingsView()
+                        ));
+                        return false;
+                    }
+                }
+                return true;
+            }
+
             Common.LogDebug(true, $"VerifToAddOrShow() find no action for {GameSourceName}");
             return false;
         }
 
         public static bool IsAddOrShowManual(Game game, string GameSourceName)
         {
-            if (game.PluginId!= default(Guid))
+            if (game.PluginId != default(Guid))
             {
                 return
                 (
@@ -803,7 +852,8 @@ namespace SuccessStory.Services
                     GameSourceName.ToLower().IndexOf("playnite") == -1 &&
                     GameSourceName.ToLower().IndexOf("hacked") == -1 &&
                     GameSourceName.ToLower().IndexOf("retroachievements") == -1 &&
-                    GameSourceName.ToLower().IndexOf("rpcs3") == -1
+                    GameSourceName.ToLower().IndexOf("rpcs3") == -1 &&
+                    GameSourceName.ToLower().IndexOf("battle.net") == -1
                 );
             }
 
