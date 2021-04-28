@@ -131,6 +131,8 @@ namespace SuccessStory
                     SuccessStoryDatabase.VerifToAddOrShowRetroAchievements = null;
                     SuccessStoryDatabase.VerifToAddOrShowSteam = null;
                     SuccessStoryDatabase.VerifToAddOrShowXbox = null;
+                    SuccessStoryDatabase.VerifToAddOrShowOverwatch = null;
+                    SuccessStoryDatabase.VerifToAddOrShowRpcs3 = null;
                 }
             }
             catch (Exception ex)
