@@ -29,10 +29,11 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <Grid Margin="2">
+                                <Grid>
                                     <Border Padding="{TemplateBinding Padding}" Background="Transparent">
                                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                          Margin="3,0,0,0" />
                                     </Border>
                                 </Grid>
                             </ControlTemplate>

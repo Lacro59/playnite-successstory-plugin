@@ -137,4 +137,14 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Achievements unlocked by source</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Achievements unlocked by day</sys:String>
 
+    <!-- ListViewGames -->
+
+    <sys:String x:Key="LOCSsOverwatchQuickPlay">Quick Play</sys:String>
+    <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Competitive Play</sys:String>
+
+    <sys:String x:Key="LOCSsOverwatchGamesWon">{0} games won</sys:String>
+    
+    <sys:String x:Key="LOCSsOverwatchTopHero">Top Hero</sys:String>
+    <sys:String x:Key="LOCSsOverwatchCareerStats">Career Stats</sys:String>
+
 </ResourceDictionary>

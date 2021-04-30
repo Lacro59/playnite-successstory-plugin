@@ -91,7 +91,14 @@ namespace SuccessStory
                     dynamic ViewExtension = null;
                     if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                     {
-                        ViewExtension = new SuccessStoryOneGameView(PluginDatabase.GameContext);
+                        if (PluginDatabase.GameContext.Source.Name.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+                        {
+                            ViewExtension = new SuccessStoryOverwatchView(PluginDatabase.GameContext);
+                        }
+                        else
+                        {
+                            ViewExtension = new SuccessStoryOneGameView(PluginDatabase.GameContext);
+                        }
                     }
                     else
                     {
@@ -317,7 +324,14 @@ namespace SuccessStory
                             PluginDatabase.IsViewOpen = true;
                             if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                             {
-                                ViewExtension = new SuccessStoryOneGameView(GameMenu);
+                                if (PluginDatabase.GameContext.Source.Name.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+                                {
+                                    ViewExtension = new SuccessStoryOverwatchView(GameMenu);
+                                }
+                                else
+                                {
+                                    ViewExtension = new SuccessStoryOneGameView(GameMenu);
+                                }
                             }
                             else
                             {

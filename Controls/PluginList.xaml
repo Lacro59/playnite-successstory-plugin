@@ -28,7 +28,30 @@
                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" 
                                 ItemsSource="{Binding ItemsSource}"
                                 Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
-                                Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}">           
+                                Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Grid>
+                                    <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                          Margin="3,0,0,0" />
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="Selector.IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource TextBrushDark}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <playnitecontrols:VirtualizingGridPanel Columns="{Binding ColDefinied}" Rows="{Binding RowDefinied}" />

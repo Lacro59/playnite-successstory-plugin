@@ -187,6 +187,12 @@
     <Compile Include="Services\SuccessStoryDatabase.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
+    <Compile Include="Views\Interfaces\OverwatchCareerStats.xaml.cs">
+      <DependentUpon>OverwatchCareerStats.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Interfaces\OverwatchStats.xaml.cs">
+      <DependentUpon>OverwatchStats.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Interface\ScAchievementsListCompactVertical.xaml.cs">
       <DependentUpon>ScAchievementsListCompactVertical.xaml</DependentUpon>
     </Compile>
@@ -198,6 +204,9 @@
     </Compile>
     <Compile Include="Views\SuccessStoryOneGameView.xaml.cs">
       <DependentUpon>SuccessStoryOneGameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SuccessStoryOverwatchView.xaml.cs">
+      <DependentUpon>SuccessStoryOverwatchView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SuccessStorySettingsView.xaml.cs">
       <DependentUpon>SuccessStorySettingsView.xaml</DependentUpon>
@@ -383,6 +392,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Interfaces\OverwatchCareerStats.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Interfaces\OverwatchStats.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Interface\ScAchievementsListCompactVertical.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -396,6 +413,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SuccessStoryOneGameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SuccessStoryOverwatchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -433,6 +454,23 @@
       <Name>CommonPluginsResources</Name>
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Overwatch\Endorsement_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems" Label="Shared" />
   <Import Project="playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.projitems" Label="Shared" />

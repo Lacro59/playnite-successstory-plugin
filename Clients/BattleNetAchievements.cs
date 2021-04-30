@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using AngleSharp.Dom.Html;
+﻿using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using CommonPlayniteShared.PluginLibrary.BattleNetLibrary.Models;
 using CommonPluginsShared;
@@ -13,6 +6,11 @@ using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SuccessStory.Clients
 {
@@ -22,9 +20,46 @@ namespace SuccessStory.Clients
 
         private const string apiStatusUrl = @"https://account.blizzard.com/api/";
 
+
         private const string UrlOverwatchProfil = @"https://playoverwatch.com/";
         private const string UrlOverwatchLogin = @"https://playoverwatch.com/login";
         private string UrlOverwatchProfilLocalised { get; set; }
+
+        private List<ColorElement> OverwatchColor = new List<ColorElement>
+        {
+            new ColorElement { Name = "ow-ana-color", Color = "#9c978a" },
+            new ColorElement { Name = "ow-ashe-color", Color = "#b3a05f" },
+            new ColorElement { Name = "ow-bastion-color", Color = "#24f9f8" },
+            new ColorElement { Name = "ow-baptiste-color", Color = "#2892a8" },
+            new ColorElement { Name = "ow-brigitte-color", Color = "#efb016" },
+            new ColorElement { Name = "ow-doomfist-color", Color = "#762c21" },
+            new ColorElement { Name = "ow-dva-color", Color = "#ee4bb5" },
+            new ColorElement { Name = "ow-echo-color", Color = "#89c8ff" },
+            new ColorElement { Name = "ow-genji-color", Color = "#abe50b" },
+            new ColorElement { Name = "ow-hanzo-color", Color = "#837c46" },
+            new ColorElement { Name = "ow-junkrat-color", Color = "#fbd73a" },
+            new ColorElement { Name = "ow-lucio-color", Color = "#aaf531" },
+            new ColorElement { Name = "ow-mccree-color", Color = "#c23f46" },
+            new ColorElement { Name = "ow-mei-color", Color = "#87d7f6" },
+            new ColorElement { Name = "ow-mercy-color", Color = "#fcd849" },
+            new ColorElement { Name = "ow-moira-color", Color = "#7112f4" },
+            new ColorElement { Name = "ow-orisa-color", Color = "#ccb370" },
+            new ColorElement { Name = "ow-pharah-color", Color = "#3461a4" },
+            new ColorElement { Name = "ow-reaper-color", Color = "#333" },
+            new ColorElement { Name = "ow-reinhardt-color", Color = "#b9b5ad" },
+            new ColorElement { Name = "ow-roadhog-color", Color = "#54515a" },
+            new ColorElement { Name = "ow-sigma-color", Color = "#3ba" },
+            new ColorElement { Name = "ow-soldier-76-color", Color = "#525d9b" },
+            new ColorElement { Name = "ow-sombra-color", Color = "#9762ec" },
+            new ColorElement { Name = "ow-symmetra-color", Color = "#3e90b5" },
+            new ColorElement { Name = "ow-torbjorn-color", Color = "#b04a33" },
+            new ColorElement { Name = "ow-tracer-color", Color = "#ffcf35" },
+            new ColorElement { Name = "ow-widowmaker-color", Color = "#af5e9e" },
+            new ColorElement { Name = "ow-winston-color", Color = "#595959" },
+            new ColorElement { Name = "ow-wrecking-ball-color", Color = "#4a575f" },
+            new ColorElement { Name = "ow-zarya-color", Color = "#ff73c1" },
+            new ColorElement { Name = "ow-zenyatta-color", Color = "#e1c931" }
+        };
 
 
         public BattleNetAchievements() : base()
@@ -208,6 +243,16 @@ namespace SuccessStory.Clients
 
             AllStats.Add(new GameStats
             {
+                Name = "PlayerPortrait", ImageUrl = htmlDocument.QuerySelector(".player-portrait").GetAttribute("src")
+            });
+
+            AllStats.Add(new GameStats
+            {
+                Name = "PlayerName", DisplayName = htmlDocument.QuerySelector(".header-masthead").InnerHtml
+            });
+
+            AllStats.Add(new GameStats
+            {
                 Name = "PlayerLevel",
                 Value = double.Parse(htmlDocument.QuerySelector(".player-level-tooltip .player-level .u-vertical-center").InnerHtml)
             });
@@ -298,11 +343,14 @@ namespace SuccessStory.Clients
                     }
 
                     string id = item.ElementSection.GetAttribute("value");
-                    var DataTable = DataTableSection.Where(x => x.GetAttribute("data-category-id") == id).FirstOrDefault();
+                    var DataTables = DataTableSection.Where(x => x.GetAttribute("data-category-id") == id).FirstOrDefault();
 
-                    if (DataTable != null)
+                    if (DataTables != null)
                     {
-                        AllStats = ParseDataTableOverwatch(DataTable, AllStats, Mode, CareerType);
+                        foreach (var DataTable in DataTables.QuerySelectorAll("table.DataTable"))
+                        {
+                            AllStats = ParseDataTableOverwatch(DataTable, AllStats, Mode, CareerType);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -325,11 +373,22 @@ namespace SuccessStory.Clients
                     string Name = element.QuerySelector(".ProgressBar-title").InnerHtml;
                     string ImageUrl = element.QuerySelector("img").GetAttribute("src");
 
+                    string stringClass = element.QuerySelector(".ProgressBar-bar").GetAttribute("class")
+                        .Replace("ProgressBar-bar", string.Empty).Replace("velocity-animating", string.Empty).Trim();
+                    string Color = OverwatchColor.Find(x => x.Name == stringClass).Color;
+
                     double Value = 0;
                     TimeSpan Time = default(TimeSpan);
 
                     string ValueData = element.QuerySelector(".ProgressBar-description").InnerHtml;
-                    double.TryParse(ValueData.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out Value);
+
+                    string DisplayName = string.Empty;
+                    if (ValueData.IndexOf("%") > -1)
+                    {
+                        DisplayName = ValueData;
+                    }
+
+                    double.TryParse(ValueData.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace("%", string.Empty), out Value);
 
                     if (DateTime.TryParse(ValueData, out DateTime dateTime))
                     {
@@ -344,11 +403,14 @@ namespace SuccessStory.Clients
                     AllStats.Add(new GameStats
                     {
                         Name = Name,
+                        DisplayName = DisplayName,
                         Value = Value,
 
                         ImageUrl = ImageUrl,
                         Mode = Mode,
                         CareerType = CareerType,
+                        Category = "TopHero",
+                        Color = Color,
                         Time = Time
                     });
                 }
@@ -363,7 +425,7 @@ namespace SuccessStory.Clients
 
         private List<GameStats> ParseDataTableOverwatch(AngleSharp.Dom.IElement DataTable, List<GameStats> AllStats, string Mode, string CareerType)
         {
-            string Category = DataTable.QuerySelector("th.DataTable-tableHeading h5").InnerHtml;
+            string SubCategory = DataTable.QuerySelector("th.DataTable-tableHeading h5").InnerHtml;
 
             foreach (var tr in DataTable.QuerySelectorAll("tr.DataTable-tableRow"))
             {
@@ -396,7 +458,8 @@ namespace SuccessStory.Clients
 
                         Mode = Mode,
                         CareerType = CareerType,
-                        Category = Category
+                        Category = "CarrerStats",
+                        SubCategory = SubCategory
                     });
                 }
                 catch (Exception ex)
@@ -442,4 +505,11 @@ namespace SuccessStory.Clients
             return Serialization.FromJson<BattleNetApiStatus>(textStatus);
         }
     }
+
+
+    class ColorElement
+    {
+        public string Name { get; set; }
+        public string Color { get; set; }
+    } 
 }

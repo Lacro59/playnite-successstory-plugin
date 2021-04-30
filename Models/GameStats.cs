@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace SuccessStory.Models
 {
@@ -13,6 +14,7 @@ namespace SuccessStory.Models
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public double Value { get; set; }
+        #endregion
 
         [JsonIgnore]
         public string NameShow
@@ -36,16 +38,16 @@ namespace SuccessStory.Models
                 return Math.Round(Value, 2, MidpointRounding.AwayFromZero);
             }
         }
-        #endregion
-
 
         #region More for Battle.net
         public string ImageUrl { get; set; }
         public TimeSpan Time { get; set; }
+        public string Color { get; set; }
 
         public string Mode { get; set; }
         public string CareerType { get; set; }
         public string Category { get; set; }
+        public string SubCategory { get; set; }
         #endregion  
     }
 }

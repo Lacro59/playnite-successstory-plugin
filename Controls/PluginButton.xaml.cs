@@ -120,7 +120,16 @@ namespace SuccessStory.Controls
         #region Events
         private void PART_PluginButton_Click(object sender, RoutedEventArgs e)
         {
-            var ViewExtension = new SuccessStoryOneGameView(PluginDatabase.GameContext);
+            dynamic ViewExtension = null;
+            if (PluginDatabase.GameContext.Source.Name.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+            {
+                ViewExtension = new SuccessStoryOverwatchView(PluginDatabase.GameContext);
+            }
+            else
+            {
+                ViewExtension = new SuccessStoryOneGameView(PluginDatabase.GameContext);
+            }
+
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSuccessStoryAchievements"), ViewExtension);
             windowExtension.ShowDialog();
         }
