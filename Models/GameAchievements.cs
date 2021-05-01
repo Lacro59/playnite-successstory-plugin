@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SuccessStory.Clients;
 
 namespace SuccessStory.Models
 {
@@ -71,6 +72,8 @@ namespace SuccessStory.Models
         public int Unlocked { get; set; }
 
         public int Locked { get; set; }
+
+        public EstimateTimeToUnlock EstimateTime { get; set; }
 
         /// <summary>
         /// Percentage

@@ -31,6 +31,7 @@ using CommonPluginsShared.Controls;
 using SuccessStory.Controls;
 using AngleSharp.Parser.Html;
 using AngleSharp.Dom.Html;
+using static SuccessStory.Clients.TrueAchievements;
 
 namespace SuccessStory
 {
@@ -413,7 +414,10 @@ namespace SuccessStory
             {
                 MenuSection = resources.GetString("LOCSuccessStory"),
                 Description = "Test",
-                Action = (mainMenuItem) => { }
+                Action = (mainMenuItem) => 
+                {
+
+                }
             });
 #endif
             return gameMenuItems;
@@ -483,6 +487,31 @@ namespace SuccessStory
                     }
                 }
             );
+
+            // Tag menus
+            mainMenuItems.Add(
+                new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCCommonAddAllTags"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.AddTagAllGame();
+                    }
+                }
+            );
+            mainMenuItems.Add(
+                new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCCommonRemoveAllTags"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.RemoveTagAllGame();
+                    }
+                }
+            );
+
 
 #if DEBUG
             mainMenuItems.Add(new MainMenuItem

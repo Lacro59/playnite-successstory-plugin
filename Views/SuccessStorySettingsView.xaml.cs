@@ -511,7 +511,21 @@ namespace SuccessStory.Views
                 PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder = SelectedFolder;
             }
         }
+
+
+        #region Tag
+        private void ButtonAddTag_Click(object sender, RoutedEventArgs e)
+        {
+            PluginDatabase.AddTagAllGame();
+        }
+
+        private void ButtonRemoveTag_Click(object sender, RoutedEventArgs e)
+        {
+            PluginDatabase.RemoveTagAllGame();
+        }
+        #endregion
     }
+
 
     public class BooleanAndConverter : IMultiValueConverter
     {

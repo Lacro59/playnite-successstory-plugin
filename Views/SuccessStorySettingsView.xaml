@@ -376,19 +376,32 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableRaretyIndicator}">
+                            <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableRaretyIndicator}">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableRaretyIndicator}" />
                             </CheckBox>
 
-                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.EnableOneGameView}">
+                            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.EnableOneGameView}">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableOneGameView}" />
                             </CheckBox>
 
-                            <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding Settings.Auto100PercentCompleted}">
+                            <CheckBox Grid.Row="4" IsChecked="{Binding Settings.Auto100PercentCompleted}">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableAuto100PercentCompleted}" />
                             </CheckBox>
+
+                            <Grid Grid.Row="6" >
+                                <CheckBox Name="cbEnableTag" Grid.Row="4" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOSuccessStoryAddTagDescription}" />
+                                </CheckBox>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="{DynamicResource LOCAddTitle}" Margin="0,0,10,0" VerticalAlignment="Center" Click="ButtonAddTag_Click" />
+                                    <Button Content="{DynamicResource LOCRemoveTitle}" VerticalAlignment="Bottom" Click="ButtonRemoveTag_Click" Margin="0,0,0,1" />
+                                </StackPanel>
+                            </Grid>
                         </Grid>
 
 

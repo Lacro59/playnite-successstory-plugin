@@ -13,6 +13,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommonPluginsShared.Interfaces;
+using static SuccessStory.Clients.TrueAchievements;
+using System.Windows.Threading;
+using System.Windows;
+using System.Threading;
 
 namespace SuccessStory.Services
 {
@@ -112,7 +116,11 @@ namespace SuccessStory.Services
             Database = new SuccessStoryCollection(Paths.PluginDatabasePath);
             Database.SetGameInfo<Achievements>(PlayniteApi);
 
-            GetPluginTags();
+            Task.Run(() =>
+            {
+                Thread.Sleep(2000);
+                GetPluginTags();
+            });
 
             return true;
         }
@@ -190,6 +198,7 @@ namespace SuccessStory.Services
 
             List<Achievements> Achievements = new List<Achievements>();
 
+
             // Generate database only this source
             if (VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, GameSourceName, GameName))
             {
@@ -260,6 +269,47 @@ namespace SuccessStory.Services
             {
                 Common.LogDebug(true, $"VerifToAddOrShow({game.Name}, {GameSourceName}) - KO");
             }
+
+
+            // EstimateTimeToUnlock
+            if (gameAchievements.HaveAchivements)
+            {
+                try
+                {
+                    EstimateTimeToUnlock EstimateTimeSteam = new EstimateTimeToUnlock();
+                    EstimateTimeToUnlock EstimateTimeXbox = new EstimateTimeToUnlock();
+
+                    List<TrueAchievementSearch> ListGames = TrueAchievements.SearchGame(game, OriginData.Steam);
+                    if (ListGames.Count > 0)
+                    {
+                        EstimateTimeSteam = TrueAchievements.GetEstimateTimeToUnlock(ListGames[0].GameUrl);
+                    }
+
+                    ListGames = TrueAchievements.SearchGame(game, OriginData.Xbox);
+                    if (ListGames.Count > 0)
+                    {
+                        EstimateTimeXbox = TrueAchievements.GetEstimateTimeToUnlock(ListGames[0].GameUrl);
+                    }
+
+                    if (EstimateTimeSteam.DataCount >= EstimateTimeXbox.DataCount)
+                    {
+                        Common.LogDebug(true, $"Get EstimateTimeSteam for {game.Name}");
+                        gameAchievements.EstimateTime = EstimateTimeSteam;
+                    }
+                    else
+                    {
+                        Common.LogDebug(true, $"Get EstimateTimeXbox for {game.Name}");
+                        gameAchievements.EstimateTime = EstimateTimeXbox;
+                    }
+
+                    Update(gameAchievements);
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }
+
 
             return gameAchievements;
         }
@@ -985,6 +1035,204 @@ namespace SuccessStory.Services
                 Database.SetGameInfo<Achievements>(PlayniteApi, GameUpdated.NewData.Id);
             }
         }
+
+
+        protected override void GetPluginTags()
+        {
+            try
+            {
+                // Get tags in playnite database
+                PluginTags = new List<Tag>();
+                foreach (Tag tag in PlayniteApi.Database.Tags)
+                {
+                    if (tag.Name.IndexOf("[SS] ") > -1 && tag.Name.IndexOf("<!LOC") ==-1)
+                    {
+                        PluginTags.Add(tag);
+                    }
+                }
+
+                // Add missing tags
+                if (PluginTags.Count < 13)
+                {
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCPLaytimeLessThenAnHour")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCPLaytimeLessThenAnHour")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon1to5")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon1to5")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon5to10")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon5to10")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon10to20")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon10to20")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon20to30")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon20to30")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon30to40")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon30to40")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon40to50")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon40to50")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon50to60")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon50to60")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon60to70")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon60to70")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon70to80")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon70to80")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon80to90")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon80to90")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon90to100")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon90to100")}" });
+                    }
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon100plus")}") == null)
+                    {
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon100plus")}" });
+                    }
+
+                    foreach (Tag tag in PlayniteApi.Database.Tags)
+                    {
+                        if (tag.Name.IndexOf("[SS] ") > -1 && tag.Name.IndexOf("<!LOC") == -1)
+                        {
+                            PluginTags.Add(tag);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
+        }
+
+        public override void AddTag(Game game, bool noUpdate = false)
+        {
+            GameAchievements gameAchievements = Get(game, true);
+
+            if (gameAchievements.HaveAchivements)
+            {
+                try
+                {
+                    if (gameAchievements.EstimateTime == null)
+                    {
+                        return;
+                    }
+
+                    Guid? TagId = FindGoodPluginTags(gameAchievements.EstimateTime.EstimateTimeMax);
+
+                    if (TagId != null)
+                    {
+                        if (game.TagIds != null)
+                        {
+                            game.TagIds.Add((Guid)TagId);
+                        }
+                        else
+                        {
+                            game.TagIds = new List<Guid> { (Guid)TagId };
+                        }
+
+                        if (!noUpdate)
+                        {
+                            Application.Current.Dispatcher?.Invoke(() =>
+                            {
+                                PlayniteApi.Database.Games.Update(game);
+                                game.OnPropertyChanged();
+                            }, DispatcherPriority.Send);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, true);
+                    logger.Error($"Tag insert error with {game.Name}");
+                    PlayniteApi.Notifications.Add(new NotificationMessage(
+                        $"{PluginName}-Tag-Errors",
+                        $"{PluginName}\r\n" + resources.GetString("LOCCommonNotificationTagError"),
+                        NotificationType.Error
+                    ));
+                }
+            }
+        }
+
+        private Guid? FindGoodPluginTags(int EstimateTimeMax)
+        {
+            // Add tag
+            if (EstimateTimeMax != 0)
+            {
+                if (EstimateTimeMax <= 1)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCPLaytimeLessThenAnHour")}")).Id;
+                }
+                if (EstimateTimeMax <= 6)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon1to5")}")).Id;
+                }
+                if (EstimateTimeMax <= 10)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon5to10")}")).Id;
+                }
+                if (EstimateTimeMax <= 20)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon10to20")}")).Id;
+                }
+                if (EstimateTimeMax <= 30)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon20to30")}")).Id;
+                }
+                if (EstimateTimeMax <= 40)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon30to40")}")).Id;
+                }
+                if (EstimateTimeMax <= 50)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon40to50")}")).Id;
+                }
+                if (EstimateTimeMax <= 60)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon50to60")}")).Id;
+                }
+                if (EstimateTimeMax <= 70)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon60to70")}")).Id;
+                }
+                if (EstimateTimeMax <= 80)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon70to80")}")).Id;
+                }
+                if (EstimateTimeMax <= 90)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon80to90")}")).Id;
+                }
+                if (EstimateTimeMax <= 100)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon90to100")}")).Id;
+                }
+                if (EstimateTimeMax > 100)
+                {
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon100plus")}")).Id;
+                }
+            }
+
+            return null;
+        }
+
 
 
         public ProgressionAchievements Progession()

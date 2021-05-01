@@ -15,6 +15,8 @@ namespace SuccessStory
         #region Settings variables
         public bool MenuInExtensions { get; set; } = true;
 
+        public bool EnableTag { get; set; } = false;
+
 
         public bool Auto100PercentCompleted { get; set; } = false;
 

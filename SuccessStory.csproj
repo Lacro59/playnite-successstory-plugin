@@ -122,6 +122,7 @@
     <Compile Include="Clients\Rpcs3Achievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
     <Compile Include="Clients\SteamEmulators.cs" />
+    <Compile Include="Clients\TrueAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />
     <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
       <DependentUpon>AchievementImage.xaml</DependentUpon>
