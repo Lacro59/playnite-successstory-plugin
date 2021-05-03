@@ -29,6 +29,11 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net user is not authenticated</sys:String>
 
+    <!-- SuccessStoreGameSelection -->
+
+    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Achievements count</sys:String>
+    
+    
     <!-- SuccessStorySettingsView -->
 
     <sys:String x:Key="LOCSuccessStoryProgressBar">Processing, please wait...</sys:String>

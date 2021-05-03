@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\BattleNetAchievements.cs" />
+    <Compile Include="Clients\ExophaseAchievements.cs" />
     <Compile Include="Clients\GenericAchievements.cs" />
     <Compile Include="Clients\GogAchievements.cs" />
     <Compile Include="Clients\OriginAchievements.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
     <Compile Include="Models\GameAchievements.cs" />
+    <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.xaml.cs">
       <DependentUpon>ControlPickerGradient.xaml</DependentUpon>
@@ -199,6 +201,9 @@
     </Compile>
     <Compile Include="Views\Interface\SuccessStoryAchievementsCompactVertical.xaml.cs">
       <DependentUpon>SuccessStoryAchievementsCompactVertical.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SuccessStoreGameSelection.xaml.cs">
+      <DependentUpon>SuccessStoreGameSelection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SuccessStoryEditManual.xaml.cs">
       <DependentUpon>SuccessStoryEditManual.xaml</DependentUpon>
@@ -408,6 +413,10 @@
     <Page Include="Views\Interface\SuccessStoryAchievementsCompactVertical.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SuccessStoreGameSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SuccessStoryEditManual.xaml">
       <SubType>Designer</SubType>

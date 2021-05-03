@@ -27,6 +27,8 @@ namespace SuccessStory.Views
 
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
+        private ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+
         private string _PluginUserDataPath;
 
         public static bool WithoutMessage = false;
@@ -76,6 +78,23 @@ namespace SuccessStory.Views
                     cbDefaultSorting.Text = resources.GetString("LOCSuccessStorylvGamesProgression");
                     break;
             }
+
+
+            var task = Task.Run(() => CheckLogged())
+                .ContinueWith(antecedent =>
+                {
+                    this.Dispatcher.Invoke(new Action(() => 
+                    {
+                        if (antecedent.Result)
+                        {
+                            lIsAuth.Content = resources.GetString("LOCLoggedIn");
+                        }
+                        else
+                        {
+                            lIsAuth.Content = resources.GetString("LOCNotLoggedIn");
+                        }
+                    }));
+                });
         }
 
         private void SetTotal()
@@ -522,6 +541,36 @@ namespace SuccessStory.Views
         private void ButtonRemoveTag_Click(object sender, RoutedEventArgs e)
         {
             PluginDatabase.RemoveTagAllGame();
+        }
+        #endregion
+
+
+        #region Exophase
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            lIsAuth.Content = resources.GetString("LOCLoginChecking");
+            try
+            {
+                exophaseAchievements.Login();
+
+                if (exophaseAchievements.GetIsUserLoggedIn())
+                {
+                    lIsAuth.Content = resources.GetString("LOCLoggedIn");
+                }
+                else
+                {
+                    lIsAuth.Content = resources.GetString("LOCNotLoggedIn");
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Failed to authenticate user.");
+            }
+        }
+
+        private bool CheckLogged()
+        {
+            return exophaseAchievements.GetIsUserLoggedIn();
         }
         #endregion
     }

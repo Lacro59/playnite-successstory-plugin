@@ -17,6 +17,7 @@ using static SuccessStory.Clients.TrueAchievements;
 using System.Windows.Threading;
 using System.Windows;
 using System.Threading;
+using SuccessStory.Views;
 
 namespace SuccessStory.Services
 {
@@ -128,37 +129,33 @@ namespace SuccessStory.Services
 
         public void GetManual(Game game)
         {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCCommonProcessing")}",
-                false
-            );
-            globalProgressOptions.IsIndeterminate = true;
-
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            try
             {
-                try
-                {
-                    GameAchievements gameAchievements = GetDefault(game);
+                GameAchievements gameAchievements = GetDefault(game);
 
-                    SteamAchievements steamAPI = new SteamAchievements();
-                    steamAPI.SetLocal();
-                    gameAchievements = steamAPI.GetAchievements(game);
+                var ViewExtension = new SuccessStoreGameSelection(game);
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                windowExtension.ShowDialog();
+
+                if (ViewExtension.gameAchievements != null)
+                {
+                    gameAchievements = ViewExtension.gameAchievements;
                     gameAchievements.IsManual = true;
-
-                    AddOrUpdate(gameAchievements);
-
-                    Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
                 }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false);
-                    PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-error-manual",
-                        $"SuccessStory\r\n{ex.Message}",
-                        NotificationType.Error
-                    ));
-                }
-            }, globalProgressOptions);
+
+                AddOrUpdate(gameAchievements);
+
+                Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+                PlayniteApi.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-error-manual",
+                    $"SuccessStory\r\n{ex.Message}",
+                    NotificationType.Error
+                ));
+            }
         }
 
         public override GameAchievements Get(Guid Id, bool OnlyCache = false, bool Force = false)

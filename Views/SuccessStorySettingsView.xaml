@@ -482,7 +482,9 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="10" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="30" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
@@ -521,6 +523,17 @@
                     <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" IsChecked="{Binding Settings.EnableImageCache}" ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}">
                         <Label Content="{DynamicResource LOCSuccessStoryEnableImageCache}" />
                     </CheckBox>
+
+                    <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" >
+                        <Label Content="Exophase" />
+                        <Separator Margin="0,0,0,10" />
+                    
+                        <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top">
+                            <Button Name="btAuth" Content="{DynamicResource LOCCommonAuthenticateLabel}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    Click="Button_Click" />
+                            <Label Name="lIsAuth" Margin="20,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
                 </Grid>
             </TabItem>
 

@@ -30,7 +30,7 @@ namespace SuccessStory.Clients
             AchievementsDirectories.Add("%DOCUMENTS%\\SKIDROW");
         }
 
-        public GameAchievements GetAchievementsLocal(string GameName, string apiKey)
+        public GameAchievements GetAchievementsLocal(string GameName, string apiKey, int SteamId = 0)
         {
             List<Achievements> Achievements = new List<Achievements>();
             bool HaveAchivements = false;
@@ -39,7 +39,15 @@ namespace SuccessStory.Clients
             int Locked = 0;
 
             SteamApi steamApi = new SteamApi(PluginDatabase.Paths.PluginUserDataPath);
-            SteamId = steamApi.GetSteamId(GameName);
+
+            if (SteamId != 0)
+            {
+                this.SteamId = SteamId;
+            }
+            else
+            {
+                this.SteamId = steamApi.GetSteamId(GameName);
+            }            
 
             Achievements = Get(SteamId, apiKey);
             if (Achievements.Count > 0)
@@ -225,8 +233,7 @@ namespace SuccessStory.Clients
             #region Get details achievements
             // List details acheviements
             string lang = CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
-            string url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}",
-                apiKey, SteamId, lang);
+            string url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}", apiKey, SteamId, lang);
 
             string ResultWeb = string.Empty;
             try

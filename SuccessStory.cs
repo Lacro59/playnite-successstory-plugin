@@ -370,11 +370,8 @@ namespace SuccessStory
                         Description = resources.GetString("LOCAddTitle"),
                         Action = (mainMenuItem) =>
                         {
-                            var TaskIntegrationUI = Task.Run(() =>
-                            {
-                                PluginDatabase.Remove(GameMenu);
-                                PluginDatabase.GetManual(GameMenu);
-                            });
+                            PluginDatabase.Remove(GameMenu);
+                            PluginDatabase.GetManual(GameMenu);
                         }
                     });
                 }
