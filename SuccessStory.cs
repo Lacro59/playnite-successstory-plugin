@@ -167,8 +167,8 @@ namespace SuccessStory
                             FontSize = 22,
                             FontFamily = resources.GetResource("FontIcoFont") as FontFamily
                         },
-                        ToolTip = resources.GetString("LOCSuccessStoryViewGames"),
-                        Action = () =>
+                        Title = resources.GetString("LOCSuccessStoryViewGames"),
+                        Activated = () =>
                         {
                             var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath());
                             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
@@ -245,15 +245,14 @@ namespace SuccessStory
                     Text = "\ue820",
                     FontFamily = resources.GetResource("FontIcoFont") as FontFamily
                 };
-            }
+                Opened = () =>
+                {
+                    SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
+                    sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryAchievements"));
+                    sidebarItemControl.AddContent(new SuccessView(PluginDatabase.Plugin, PluginDatabase.PlayniteApi, PluginDatabase.Paths.PluginUserDataPath));
 
-            public override Control Opened()
-            {
-                SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
-                sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryAchievements"));
-                sidebarItemControl.AddContent(new SuccessView(PluginDatabase.Plugin, PluginDatabase.PlayniteApi, PluginDatabase.Paths.PluginUserDataPath));
-
-                return sidebarItemControl;
+                    return sidebarItemControl;
+                };
             }
         }
 
@@ -268,15 +267,14 @@ namespace SuccessStory
                     Text = "\ue910",
                     FontFamily = resources.GetResource("CommonFont") as FontFamily
                 };
-            }
+                Opened = () =>
+                {
+                    SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
+                    sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryRetroAchievements"));
+                    sidebarItemControl.AddContent(new SuccessView(PluginDatabase.Plugin, PluginDatabase.PlayniteApi, PluginDatabase.Paths.PluginUserDataPath, true));
 
-            public override Control Opened()
-            {
-                SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
-                sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryRetroAchievements"));
-                sidebarItemControl.AddContent(new SuccessView(PluginDatabase.Plugin, PluginDatabase.PlayniteApi, PluginDatabase.Paths.PluginUserDataPath, true));
-
-                return sidebarItemControl;
+                    return sidebarItemControl;
+                };
             }
         }
 
@@ -413,6 +411,11 @@ namespace SuccessStory
             gameMenuItems.Add(new GameMenuItem
             {
                 MenuSection = resources.GetString("LOCSuccessStory"),
+                Description = "-"
+            });
+            gameMenuItems.Add(new GameMenuItem
+            {
+                MenuSection = resources.GetString("LOCSuccessStory"),
                 Description = "Test",
                 Action = (mainMenuItem) => 
                 {
@@ -476,44 +479,49 @@ namespace SuccessStory
             }
 
             // Download missing data for all game in database
-            mainMenuItems.Add(
-                new MainMenuItem
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                Description = resources.GetString("LOCCommonDownloadPluginData"),
+                Action = (mainMenuItem) =>
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonDownloadPluginData"),
-                    Action = (mainMenuItem) =>
-                    {
-                        PluginDatabase.GetSelectData();
-                    }
+                    PluginDatabase.GetSelectData();
                 }
-            );
+            });
+
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                Description = "-"
+            });
 
             // Tag menus
-            mainMenuItems.Add(
-                new MainMenuItem
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                Description = resources.GetString("LOCCommonAddAllTags"),
+                Action = (mainMenuItem) =>
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonAddAllTags"),
-                    Action = (mainMenuItem) =>
-                    {
-                        PluginDatabase.AddTagAllGame();
-                    }
+                    PluginDatabase.AddTagAllGame();
                 }
-            );
-            mainMenuItems.Add(
-                new MainMenuItem
+            });
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                Description = resources.GetString("LOCCommonRemoveAllTags"),
+                Action = (mainMenuItem) =>
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonRemoveAllTags"),
-                    Action = (mainMenuItem) =>
-                    {
-                        PluginDatabase.RemoveTagAllGame();
-                    }
+                    PluginDatabase.RemoveTagAllGame();
                 }
-            );
+            });
 
 
 #if DEBUG
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                Description = "-"
+            });
             mainMenuItems.Add(new MainMenuItem
             {
                 MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
