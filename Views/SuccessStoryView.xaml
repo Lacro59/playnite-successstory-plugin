@@ -220,6 +220,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
+                                
                                 <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
                                     <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}"></GridViewColumnHeader>
                                 </GridViewColumn>

@@ -98,6 +98,7 @@ namespace SuccessStory.Clients
                         }
                     }
 
+                    HaveAchivements = true;
                     Total = AllAchievements.Count;
                     Locked = AllAchievements.Count;
                 }
