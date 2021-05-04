@@ -7,8 +7,8 @@
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
-             mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280" 
-             Background="{DynamicResource WindowBackgourndBrush}">
+             xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
+             mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -185,12 +185,13 @@
 
                 <!-- List games -->
                 <StackPanel Margin="0,0,0,10" Name="lvGamesStackPanel" Grid.Row="0">
-                    <ListView Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}" 
-                              SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" GridViewColumnHeader.Click="ListviewGames_onHeaderClick">
+                    <controlsShared:ListViewExtend x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}" 
+                                                   SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}" 
+                                                   SortingEnable="True">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="46" x:Name="lvGameIcon100Percent">
-                                    <GridViewColumnHeader Content="100%" Tag="noSort"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Content="100%" Tag="noSort" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent}" />
@@ -199,7 +200,7 @@
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="50" x:Name="lvGameIcon">
-                                    <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}" Tag="noSort"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}" Tag="noSort" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
@@ -208,8 +209,11 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
 
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding Name}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="3" />
+                                </GridViewColumn>
                                 <GridViewColumn Width="240" x:Name="lvGameName">
-                                    <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock>
@@ -220,16 +224,16 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                
+
                                 <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
-                                    <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}" />
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
-                                    <GridViewColumnHeader Name="lvSourceName">SourceName</GridViewColumnHeader>
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="6" />
                                 </GridViewColumn>
                                 <GridViewColumn Width="75" x:Name="lvGamesSource">
-                                    <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}" Tag="SourceName" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
@@ -239,22 +243,22 @@
                                 </GridViewColumn>
 
                                 <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProgressionValue}">
-                                    <GridViewColumnHeader Name="lvProgressionValue">Progression value</GridViewColumnHeader>
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="8" />
                                 </GridViewColumn>
                                 <GridViewColumn Width="105" x:Name="lvGameProgression">
-                                    <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSuccessStorylvGamesProgression}"></GridViewColumnHeader>
+                                    <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSuccessStorylvGamesProgression}" Tag="ProgressionValue" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <Grid>
                                                 <ProgressBar Minimum="0" Maximum="{Binding Total}" Height="28" Value="{Binding Unlocked}" VerticalAlignment="Center" />
-                                                <Label Content="{Binding TotalPercent}" HorizontalAlignment="Center"></Label>
+                                                <Label Content="{Binding TotalPercent}" HorizontalAlignment="Center" />
                                             </Grid>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>
-                    </ListView>
+                    </controlsShared:ListViewExtend>
                 </StackPanel>
             </Grid>
 

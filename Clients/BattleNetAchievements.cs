@@ -498,11 +498,18 @@ namespace SuccessStory.Clients
 
         private BattleNetApiStatus GetApiStatus()
         {
-            // This refreshes authentication cookie
-            WebViewOffscreen.NavigateAndWait("https://account.blizzard.com:443/oauth2/authorization/account-settings");
-            WebViewOffscreen.NavigateAndWait(apiStatusUrl);
-            var textStatus = WebViewOffscreen.GetPageText();
-            return Serialization.FromJson<BattleNetApiStatus>(textStatus);
+            try
+            {
+                // This refreshes authentication cookie
+                WebViewOffscreen.NavigateAndWait("https://account.blizzard.com:443/oauth2/authorization/account-settings");
+                WebViewOffscreen.NavigateAndWait(apiStatusUrl);
+                var textStatus = WebViewOffscreen.GetPageText();
+                return Serialization.FromJson<BattleNetApiStatus>(textStatus);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 

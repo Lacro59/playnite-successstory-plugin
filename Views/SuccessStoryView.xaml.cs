@@ -52,6 +52,8 @@ namespace SuccessStory
         private PluginChart pluginChart;
         private PluginList pluginList;
 
+        private string NameSorting { get; set; }
+
 
         public SuccessView(SuccessStory plugin, IPlayniteAPI PlayniteApi, string PluginUserDataPath, bool isRetroAchievements = false, Game GameSelected = null)
         {
@@ -65,6 +67,11 @@ namespace SuccessStory
             InitializeComponent();
 
 
+            ListviewGames.SortingDefaultDataName = PluginDatabase.PluginSettings.Settings.NameSorting;
+            ListviewGames.SortingSortDirection = (PluginDatabase.PluginSettings.Settings.IsAsc) ? ListSortDirection.Ascending : ListSortDirection.Descending;
+            ListviewGames.Sorting();
+
+
             PART_DataLoad.Visibility = Visibility.Visible;
             PART_Data.Visibility = Visibility.Hidden;
 
@@ -75,11 +82,6 @@ namespace SuccessStory
 
                 this.Dispatcher.BeginInvoke((Action)delegate
                 {
-                    // Block hidden column.
-                    lvProgressionValue.IsEnabled = false;
-                    lvSourceName.IsEnabled = false;
-
-
                     var ProgressionGlobal = PluginDatabase.Progession();
                     pbProgressionGlobalCount.Value = ProgressionGlobal.Unlocked;
                     pbProgressionGlobalCount.Maximum = ProgressionGlobal.Total;
@@ -353,7 +355,7 @@ namespace SuccessStory
                 Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     ListviewGames.ItemsSource = ListGames;
-                    Sorting();
+                    //ListviewGames.Sorting();
                 });
             }
             catch (Exception ex)
@@ -410,217 +412,6 @@ namespace SuccessStory
         }
 
 
-        #region Functions sorting ListviewGames.
-        private void Sorting()
-        {
-
-            PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
-
-            // Sorting
-            try
-            {
-                var columnBinding = _lastHeaderClicked.Column.DisplayMemberBinding as Binding;
-                var sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
-
-                // Specific sort with another column
-                if (_lastHeaderClicked.Name == "lvSourceIcon")
-                {
-                    columnBinding = lvSourceName.Column.DisplayMemberBinding as Binding;
-                    sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
-                }
-                if (_lastHeaderClicked.Name == "lvProgression")
-                {
-                    columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
-                    sortBy = columnBinding?.Path.Path ?? _lastHeaderClicked.Column.Header as string;
-                }
-                Sort(sortBy, _lastDirection);
-            }
-            // If first view
-            catch
-            {
-                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
-
-                switch (PluginDatabase.PluginSettings.Settings.NameSorting)
-                {
-                    case ("Name"):
-                        _lastHeaderClicked = lvName;
-                        if (PluginDatabase.PluginSettings.Settings.IsAsc)
-                        {
-                            _lastHeaderClicked.Content += " ▲";
-                        }
-                        else
-                        {
-                            _lastHeaderClicked.Content += " ▼";
-                        }
-                        break;
-                    case ("LastActivity"):
-                        _lastHeaderClicked = lvLastActivity;
-                        if (PluginDatabase.PluginSettings.Settings.IsAsc)
-                        {
-                            _lastHeaderClicked.Content += " ▲";
-                        }
-                        else
-                        {
-                            _lastHeaderClicked.Content += " ▼";
-                        }
-                        break;
-                    case ("SourceName"):
-                        _lastHeaderClicked = lvSourceIcon;
-                        if (PluginDatabase.PluginSettings.Settings.IsAsc)
-                        {
-                            lvSourceIcon.Content += " ▲";
-                        }
-                        else
-                        {
-                            lvSourceIcon.Content += " ▼";
-                        }
-                        break;
-                    case ("ProgressionValue"):
-                        _lastHeaderClicked = lvProgression;
-                        if (PluginDatabase.PluginSettings.Settings.IsAsc)
-                        {
-                            lvProgression.Content += " ▲";
-                        }
-                        else
-                        {
-                            lvProgression.Content += " ▼";
-                        }
-                        break;
-                }
-
-
-                if (PluginDatabase.PluginSettings.Settings.IsAsc)
-                {
-                    _lastDirection = ListSortDirection.Ascending;
-                }
-                else
-                {
-                    _lastDirection = ListSortDirection.Descending;
-                }
-
-
-                view.SortDescriptions.Add(new SortDescription(PluginDatabase.PluginSettings.Settings.NameSorting, _lastDirection));
-            }
-        }
-
-
-        private GridViewColumnHeader _lastHeaderClicked = null;
-
-        private ListSortDirection _lastDirection ;
-
-        private void ListviewGames_onHeaderClick(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                lvProgressionValue.IsEnabled = true;
-                lvSourceName.IsEnabled = true;
-
-                var headerClicked = e.OriginalSource as GridViewColumnHeader;
-                ListSortDirection direction;
-
-                // No sort
-                if (headerClicked.Tag is string && (string)headerClicked.Tag == "noSort")
-                {
-                    headerClicked = null;
-                }
-
-                if (headerClicked != null)
-                {
-                    if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
-                    {
-                        if (headerClicked != _lastHeaderClicked)
-                        {
-                            direction = ListSortDirection.Ascending;
-                        }
-                        else
-                        {
-                            if (_lastDirection == ListSortDirection.Ascending)
-                            {
-                                direction = ListSortDirection.Descending;
-                            }
-                            else
-                            {
-                                direction = ListSortDirection.Ascending;
-                            }
-                        }
-
-                        var columnBinding = headerClicked.Column.DisplayMemberBinding as Binding;
-                        var sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
-
-                        // Specific sort with another column
-                        if (headerClicked.Name == "lvSourceIcon")
-                        {
-                            columnBinding = lvSourceName.Column.DisplayMemberBinding as Binding;
-                            sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
-                        }
-                        if (headerClicked.Name == "lvProgression")
-                        {
-                            columnBinding = lvProgressionValue.Column.DisplayMemberBinding as Binding;
-                            sortBy = columnBinding?.Path.Path ?? headerClicked.Column.Header as string;
-                        }
-
-
-                        Sort(sortBy, direction);
-
-                        if (_lastHeaderClicked != null)
-                        {
-                            _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▲", string.Empty);
-                            _lastHeaderClicked.Content = ((string)_lastHeaderClicked.Content).Replace(" ▼", string.Empty);
-                        }
-
-                        if (direction == ListSortDirection.Ascending)
-                        {
-                            headerClicked.Content += " ▲";
-                        }
-                        else
-                        {
-                            headerClicked.Content += " ▼";
-                        }
-
-                        // Remove arrow from previously sorted header
-                        if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
-                        {
-                            _lastHeaderClicked.Column.HeaderTemplate = null;
-                        }
-
-                        _lastHeaderClicked = headerClicked;
-                        _lastDirection = direction;
-                    }
-                }
-
-                lvProgressionValue.IsEnabled = false;
-                lvSourceName.IsEnabled = false;
-            }
-            catch
-            {
-
-            }
-        }
-
-        private void Sort(string sortBy, ListSortDirection direction)
-        {
-            ICollectionView dataView = CollectionViewSource.GetDefaultView(ListviewGames.ItemsSource);
-
-            dataView.SortDescriptions.Clear();
-            SortDescription sd = new SortDescription(sortBy, direction);
-            dataView.SortDescriptions.Add(sd);
-
-            List<string> lists = new List<string>
-            {
-                "ProgressionValue", "SourceName", "GameIcon100Percent", "LastActivity"
-            };
-
-            if (lists.IndexOf(sortBy) > -1)
-            {
-                SortDescription sd2 = new SortDescription("Name", ListSortDirection.Ascending);
-                dataView.SortDescriptions.Add(sd2);
-            }
-
-            dataView.Refresh();
-        }
-        #endregion
-
-
         #region Filter
         private void Filter()
         {
@@ -640,7 +431,7 @@ namespace SuccessStory
 
                 ListviewGames.ItemsSource = ((List<ListViewGames>)ListviewGames.ItemsSource).Union(SourcesManual).ToList();
 
-                Sorting();
+                //ListviewGames.Sorting();
                 return;
             }
 
@@ -649,7 +440,7 @@ namespace SuccessStory
                 ListviewGames.ItemsSource = ListGames.FindAll(
                     x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1
                 );
-                Sorting();
+                //ListviewGames.Sorting();
                 return;
             }
 
@@ -666,12 +457,12 @@ namespace SuccessStory
 
                 ListviewGames.ItemsSource = ((List<ListViewGames>)ListviewGames.ItemsSource).Union(SourcesManual).ToList();
 
-                Sorting();
+                //ListviewGames.Sorting();
                 return;
             }
 
             ListviewGames.ItemsSource = ListGames;
-            Sorting();
+            //ListviewGames.Sorting();
         }
 
 
