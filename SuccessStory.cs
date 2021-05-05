@@ -111,6 +111,9 @@ namespace SuccessStory
                         {
                             ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, PluginDatabase.GameContext);
                         }
+
+                        ViewExtension.Width = 1280;
+                        ViewExtension.Height = 740;
                     }
                     Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                     windowExtension.ShowDialog();
@@ -171,6 +174,9 @@ namespace SuccessStory
                         Activated = () =>
                         {
                             var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath());
+                            ViewExtension.Width = 1280;
+                            ViewExtension.Height = 740;
+
                             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                             windowExtension.ShowDialog();
                             PluginDatabase.IsViewOpen = false;
@@ -335,6 +341,8 @@ namespace SuccessStory
                             else
                             {
                                 ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
+                                ViewExtension.Width = 1280;
+                                ViewExtension.Height = 740;
                             }
                             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                             windowExtension.ShowDialog();
@@ -449,6 +457,9 @@ namespace SuccessStory
                     {
                         PluginDatabase.IsViewOpen = true;
                         var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath());
+                        ViewExtension.Width = 1280;
+                        ViewExtension.Height = 740;
+
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                         windowExtension.ShowDialog();
                         PluginDatabase.IsViewOpen = false;
@@ -474,6 +485,9 @@ namespace SuccessStory
                         {
                             ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, PluginDatabase.GameContext);
                         }
+                        ViewExtension.Width = 1280;
+                        ViewExtension.Height = 740;
+
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                         windowExtension.ShowDialog();
                         PluginDatabase.IsViewOpen = false;

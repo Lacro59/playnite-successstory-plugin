@@ -355,7 +355,8 @@ namespace SuccessStory
                 Application.Current.Dispatcher.BeginInvoke((Action)delegate
                 {
                     ListviewGames.ItemsSource = ListGames;
-                    //ListviewGames.Sorting();
+                    PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+                    ListviewGames.Sorting();
                 });
             }
             catch (Exception ex)
@@ -431,7 +432,8 @@ namespace SuccessStory
 
                 ListviewGames.ItemsSource = ((List<ListViewGames>)ListviewGames.ItemsSource).Union(SourcesManual).ToList();
 
-                //ListviewGames.Sorting();
+                PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+                ListviewGames.Sorting();
                 return;
             }
 
@@ -440,7 +442,8 @@ namespace SuccessStory
                 ListviewGames.ItemsSource = ListGames.FindAll(
                     x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1
                 );
-                //ListviewGames.Sorting();
+                PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+                ListviewGames.Sorting();
                 return;
             }
 
@@ -457,12 +460,14 @@ namespace SuccessStory
 
                 ListviewGames.ItemsSource = ((List<ListViewGames>)ListviewGames.ItemsSource).Union(SourcesManual).ToList();
 
-                //ListviewGames.Sorting();
+                PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+                ListviewGames.Sorting();
                 return;
             }
 
             ListviewGames.ItemsSource = ListGames;
-            //ListviewGames.Sorting();
+            PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+            ListviewGames.Sorting();
         }
 
 

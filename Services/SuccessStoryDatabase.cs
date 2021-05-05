@@ -1274,7 +1274,7 @@ namespace SuccessStory.Services
         public ProgressionAchievements ProgessionLaunched()
         {
             ProgressionAchievements Result = new ProgressionAchievements();
-            int Total = 0;
+            int Total = 1;
             int Locked = 0;
             int Unlocked = 0;
 

@@ -69,8 +69,7 @@
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{DynamicResource LOCCommonTotalFound}" 
                                    VerticalAlignment="Center" />
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TotalFoundCount" 
-                                   VerticalAlignment="Center"
-                                   Text="1000" Width="40" TextAlignment="Right" />
+                                   VerticalAlignment="Center" Text="1000" Width="40" TextAlignment="Right" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -184,8 +183,8 @@
                 </Grid>
 
                 <!-- List games -->
-                <StackPanel Margin="0,0,0,10" Name="lvGamesStackPanel" Grid.Row="0">
-                    <controlsShared:ListViewExtend x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}" 
+                <Grid Margin="0,0,0,10" Name="lvGamesStackPanel" Grid.Row="0">
+                    <controlsShared:ListViewExtend x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}"
                                                    SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}" 
                                                    SortingEnable="True">
                         <ListView.View>
@@ -259,7 +258,7 @@
                             </GridView>
                         </ListView.View>
                     </controlsShared:ListViewExtend>
-                </StackPanel>
+                </Grid>
             </Grid>
 
             <!--Details achievements-->
