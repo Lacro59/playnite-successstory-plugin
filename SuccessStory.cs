@@ -341,6 +341,12 @@ namespace SuccessStory
                             PluginDatabase.IsViewOpen = false;
                         }
                     });
+
+                    gameMenuItems.Add(new GameMenuItem
+                    {
+                        MenuSection = resources.GetString("LOCSuccessStory"),
+                        Description = "-"
+                    });
                 }
 
                 if (!IsAddOrShowManual)
@@ -474,6 +480,12 @@ namespace SuccessStory
                     }
                 });
             }
+
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                Description = "-"
+            });
 
             // Download missing data for all game in database
             mainMenuItems.Add(new MainMenuItem

@@ -425,10 +425,10 @@
 
                             <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCSuccessStoryDefaultSorting}" />
                             <ComboBox Name="cbDefaultSorting" Grid.Column="2" Grid.Row="0" Height="30" IsEditable="True" IsReadOnly="True" SelectionChanged="cbDefaultSorting_SelectionChanged">
-                                <ComboBoxItem Content="{DynamicResource LOCGameNameTitle}" Tag="Name"></ComboBoxItem>
-                                <ComboBoxItem Content="{DynamicResource LOCLastPlayed}" Tag="LastActivity"></ComboBoxItem>
-                                <ComboBoxItem Content="{DynamicResource LOCSourceLabel}" Tag="SourceName"></ComboBoxItem>
-                                <ComboBoxItem Content="{DynamicResource LOCSuccessStorylvGamesProgression}" Tag="ProgressionValue"></ComboBoxItem>
+                                <ComboBoxItem Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
+                                <ComboBoxItem Content="{DynamicResource LOCLastPlayed}" Tag="LastActivity" />
+                                <ComboBoxItem Content="{DynamicResource LOCSourceLabel}" Tag="SourceName" />
+                                <ComboBoxItem Content="{DynamicResource LOCSuccessStorylvGamesProgression}" Tag="ProgressionValue" />
                             </ComboBox>
                             <ToggleButton Content="{DynamicResource LOCMenuSortAscending}" IsChecked="{Binding Settings.IsAsc}" Grid.Column="4" Grid.Row="0" Height="30"></ToggleButton>
 
