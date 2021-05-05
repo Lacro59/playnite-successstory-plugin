@@ -471,14 +471,8 @@ namespace SuccessStory
         }
 
 
-        /// <summary>
-        /// Function search game by name.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TextboxSearch_KeyUp(object sender, RoutedEventArgs e)
+        private void TextboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //GetListGame();
             Filter();
         }
 

@@ -8,6 +8,7 @@
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
+             xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280">
 
     <UserControl.Resources>
@@ -52,7 +53,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
-                    <TextBox Grid.Column="2" x:Name="TextboxSearch" TextWrapping="NoWrap" KeyUp="TextboxSearch_KeyUp" />
+                    <playnitecontrols:SearchBox Grid.Column="2" x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged" />
 
                     <Label Grid.Column="4" Content="{DynamicResource LOCSourceLabel}" FontSize="16" />
                     <ComboBox Grid.Column="6" Name="FilterSource" IsEditable="True" IsReadOnly="True">

@@ -160,6 +160,9 @@
     <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml.cs">
+      <DependentUpon>ComboBoxRemovable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.xaml.cs">
       <DependentUpon>ControlPickerGradient.xaml</DependentUpon>
     </Compile>
@@ -365,6 +368,10 @@
     <Page Include="Controls\PluginViewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.xaml">
       <Generator>MSBuild:Compile</Generator>
