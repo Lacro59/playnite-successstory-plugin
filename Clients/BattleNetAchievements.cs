@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace SuccessStory.Clients
@@ -160,14 +161,14 @@ namespace SuccessStory.Clients
                                 string ApiName = string.Empty;
                                 if (dataApi != null)
                                 {
-                                    ApiName = dataApi.InnerHtml;
+                                    ApiName = WebUtility.HtmlDecode(dataApi.InnerHtml);
                                 }
 
                                 bool IsUnlocked = SearchAchievements.QuerySelector("div.m-disabled") == null;
 
                                 string UrlImage = SearchAchievements.QuerySelector("img.media-card-fill").GetAttribute("src");
-                                string Name = SearchAchievements.QuerySelector("div.media-card-title").InnerHtml;
-                                string Description = SearchAchievements.QuerySelector("div.tooltip-tip p.h6").InnerHtml;
+                                string Name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.media-card-title").InnerHtml);
+                                string Description = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.tooltip-tip p.h6").InnerHtml);
 
                                 AllAchievements.Add(new Achievements
                                 {

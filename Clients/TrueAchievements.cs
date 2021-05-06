@@ -46,48 +46,56 @@ namespace SuccessStory.Clients
             {
                 string WebData = Web.DownloadStringData(Url).GetAwaiter().GetResult();
 
-
                 HtmlParser parser = new HtmlParser();
                 IHtmlDocument htmlDocument = parser.Parse(WebData);
+
+                if (WebData.IndexOf("There are no matching search results, please change your search terms") > -1)
+                {
+                    return ListSearchGames;
+                }
 
                 var SectionGames = htmlDocument.QuerySelector("#oSearchResults");
 
                 if (SectionGames == null)
                 {
+                    string GameUrl = htmlDocument.QuerySelector("link[rel=\"canonical\"]").GetAttribute("href");
+                    string GameImage = htmlDocument.QuerySelector("div.info img").GetAttribute("src");
+
                     ListSearchGames.Add(new TrueAchievementSearch
                     {
-                        GameUrl = htmlDocument.QuerySelector("link[rel=\"canonical\"]").GetAttribute("href"),
+                        GameUrl = GameUrl,
                         GameName = game.Name,
-                        GameImage = htmlDocument.QuerySelector("div.info img").GetAttribute("src")
+                        GameImage = GameImage
                     });
                 }
-
-
-                foreach (var SearchGame in SectionGames.QuerySelectorAll("tr"))
+                else
                 {
-                    try
+                    foreach (var SearchGame in SectionGames.QuerySelectorAll("tr"))
                     {
-                        var GameInfos = SectionGames.QuerySelectorAll("td");
-
-                        string GameUrl = UrlBase + GameInfos[0].QuerySelector("a").GetAttribute("href");
-                        string GameName = GameInfos[1].QuerySelector("a").InnerHtml;
-                        string GameImage = UrlBase + GameInfos[0].QuerySelector("a img").GetAttribute("src");
-
-                        string ItemType = GameInfos[2].InnerHtml;
-
-                        if (ItemType.ToLower() == "game")
+                        try
                         {
-                            ListSearchGames.Add(new TrueAchievementSearch
+                            var GameInfos = SectionGames.QuerySelectorAll("td");
+
+                            string GameUrl = UrlBase + GameInfos[0].QuerySelector("a").GetAttribute("href");
+                            string GameName = GameInfos[1].QuerySelector("a").InnerHtml;
+                            string GameImage = UrlBase + GameInfos[0].QuerySelector("a img").GetAttribute("src");
+
+                            string ItemType = GameInfos[2].InnerHtml;
+
+                            if (ItemType.ToLower() == "game")
                             {
-                                GameUrl = GameUrl,
-                                GameName = GameName,
-                                GameImage = GameImage
-                            });
+                                ListSearchGames.Add(new TrueAchievementSearch
+                                {
+                                    GameUrl = GameUrl,
+                                    GameName = GameName,
+                                    GameImage = GameImage
+                                });
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false);
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false);
+                        }
                     }
                 }
             }

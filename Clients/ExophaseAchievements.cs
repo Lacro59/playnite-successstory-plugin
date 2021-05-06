@@ -73,12 +73,16 @@ namespace SuccessStory.Clients
 
                 AllAchievements = new List<Achievements>();
                 var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement");
-                if (SectionAchievements == null)
+                if (SectionAchievements == null || SectionAchievements.Count() == 0)
                 {
                     SectionAchievements = htmlDocument.QuerySelectorAll("ul.trophy");
                 }
+                if (SectionAchievements == null || SectionAchievements.Count() == 0)
+                {
+                    SectionAchievements = htmlDocument.QuerySelectorAll("ul.challenge");
+                }
 
-                if (SectionAchievements == null)
+                if (SectionAchievements == null || SectionAchievements.Count() == 0)
                 {
                     logger.Warn($"Problem with {searchResult.Url}");
                     if (!IsTwo)
@@ -237,12 +241,16 @@ namespace SuccessStory.Clients
                     IHtmlDocument htmlDocument = parser.Parse(DataExophase);
 
                     var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement");
-                    if (SectionAchievements == null)
+                    if (SectionAchievements == null || SectionAchievements.Count() == 0)
                     {
                         SectionAchievements = htmlDocument.QuerySelectorAll("ul.trophy");
                     }
+                    if (SectionAchievements == null || SectionAchievements.Count() == 0)
+                    {
+                        SectionAchievements = htmlDocument.QuerySelectorAll("ul.challenge");
+                    }
 
-                    if (SectionAchievements == null)
+                    if (SectionAchievements == null || SectionAchievements.Count() == 0)
                     {
                         logger.Warn($"Problem with {searchResult.Url}");
                     }
@@ -386,10 +394,10 @@ namespace SuccessStory.Clients
 
             if (WebView.GetCurrentAddress().StartsWith(UrlExophaseLogin))
             {
-                logger.Warn("User is not connected");
+                logger.Warn("Exophase user is not connected");
                 return false;
             }
-            logger.Info("User is connected");
+            logger.Info("Exophase user is connected");
             return true;
         }
     }

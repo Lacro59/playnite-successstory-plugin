@@ -549,18 +549,26 @@ namespace SuccessStory.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             lIsAuth.Content = resources.GetString("LOCLoginChecking");
+
             try
             {
                 exophaseAchievements.Login();
 
-                if (exophaseAchievements.GetIsUserLoggedIn())
-                {
-                    lIsAuth.Content = resources.GetString("LOCLoggedIn");
-                }
-                else
-                {
-                    lIsAuth.Content = resources.GetString("LOCNotLoggedIn");
-                }
+                var task = Task.Run(() => CheckLogged())
+                    .ContinueWith(antecedent =>
+                    {
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            if (antecedent.Result)
+                            {
+                                lIsAuth.Content = resources.GetString("LOCLoggedIn");
+                            }
+                            else
+                            {
+                                lIsAuth.Content = resources.GetString("LOCNotLoggedIn");
+                            }
+                        }));
+                    });
             }
             catch (Exception ex)
             {

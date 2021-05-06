@@ -261,6 +261,16 @@ namespace SuccessStory.Models
             {
                 NameFromUrl = "ra_" + Name.Replace(" ", "");
             }
+            
+            if (url.IndexOf("exophase") > -1)
+            {
+                NameFromUrl = "exophase_" + Name.Replace(" ", "");
+            }
+            
+            if (url.IndexOf("overwatch") > -1)
+            {
+                NameFromUrl = "overwatch_" + Name.Replace(" ", "");
+            }
 
             if (!url.Contains("http"))
             {
