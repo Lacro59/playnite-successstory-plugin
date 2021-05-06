@@ -74,6 +74,12 @@ namespace SuccessStory.Clients
                 Result.Locked = AllAchievements.FindAll(x => x.DateUnlocked == default(DateTime)).Count;
                 Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
                 Result.Items = AllAchievements;
+
+                if (Result.HaveAchivements)
+                {
+                    ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                    exophaseAchievements.SetRarety(Result);
+                }
             }
             catch (Exception ex)
             {
@@ -115,6 +121,7 @@ namespace SuccessStory.Clients
                 var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
                 using (var client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
                     SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
                     var requestData = new ProfileRequest()
                     {
@@ -142,6 +149,7 @@ namespace SuccessStory.Clients
         {
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
                 client.DefaultRequestHeaders.Add("x-xbl-contract-version", "1");
 
                 //  Authenticate
@@ -183,6 +191,8 @@ namespace SuccessStory.Clients
             var refreshUrl = @"https://login.live.com/oauth20_token.srf?" + query.ToString();
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
+
                 var refreshResponse = await client.GetAsync(refreshUrl);
                 if (refreshResponse.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -202,6 +212,7 @@ namespace SuccessStory.Clients
             var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
                 SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
                 var requestData = new Dictionary<string, List<string>>
                 {
@@ -292,6 +303,7 @@ namespace SuccessStory.Clients
 
             using (var client = new HttpClient())
             {
+                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
                 SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
                 var response = client.GetAsync(url).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)

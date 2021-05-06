@@ -212,18 +212,17 @@ namespace SuccessStory.Controls
         {
             Color color = Brushes.Transparent.Color;
 
+            if ((float)value <= 10)
+            {
+                return Brushes.Gold.Color;
+            }
+            if ((float)value <= 30)
+            {
+                return Brushes.DarkGray.Color;
+            }
             if ((float)value > 30)
             {
                 return null;
-            }
-
-            if ((float)value <= 30)
-            {
-                color = Brushes.DarkGray.Color;
-            }
-            if ((float)value <= 10)
-            {
-                color = Brushes.Gold.Color;
             }
 
             Color newColor = new Color();

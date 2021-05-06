@@ -58,36 +58,42 @@ namespace SuccessStory.Services
             Task.Run(() =>
             {
                 SourceName = "GOG";
+                //VerifToAddOrShowGog = false;
                 VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
             });
 
             Task.Run(() =>
             {
                 SourceName = "Origin";
+                //VerifToAddOrShowOrigin = false;
                 VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
             });
 
             Task.Run(() =>
             {
                 SourceName = "Retroachievements";
+                //VerifToAddOrShowRetroAchievements = false;
                 VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
             });
 
             Task.Run(() =>
             {
                 SourceName = "Steam";
+                //VerifToAddOrShowSteam = false;
                 VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
             });
 
             Task.Run(() =>
             {
                 SourceName = "Xbox";
+                //VerifToAddOrShowXbox = false;
                 VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
             });
 
             Task.Run(() =>
             {
                 SourceName = "Rpcs3";
+                //VerifToAddOrShowRpcs3 = false;
                 VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
             });
 
@@ -95,18 +101,7 @@ namespace SuccessStory.Services
             {
                 SourceName = "Battle.net";
                 GameName = "Overwatch";
-                VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
-            });
-
-            Task.Run(() =>
-            {
-                SourceName = "Playnite";
-                VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
-            });
-
-            Task.Run(() =>
-            {
-                SourceName = "Hacked";
+                //VerifToAddOrShowOverwatch = false;
                 VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
             });
         }

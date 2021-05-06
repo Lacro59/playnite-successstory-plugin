@@ -138,7 +138,12 @@ namespace SuccessStory.Clients
                     WebViewOffscreen.NavigateAndWait(UrlOverwatchProfilLocalised + UrlProfil);
                     data = WebViewOffscreen.GetPageSource();
 
+                    WebViewOffscreen.NavigateAndWait(UrlOverwatchProfil);
+                    WebViewOffscreen.NavigateAndWait(UrlOverwatchProfil + "en-US" + UrlProfil);
+                    string dataEn = WebViewOffscreen.GetPageSource();
+
                     htmlDocument = parser.Parse(data);
+                    IHtmlDocument htmlDocumentEn = parser.Parse(dataEn);
 
                     var SectionAchievements = htmlDocument.QuerySelector("#achievements-section");
 
@@ -150,6 +155,14 @@ namespace SuccessStory.Clients
                         {
                             try
                             {
+                                string Id = SearchAchievements.QuerySelector("div.tooltip-handle").GetAttribute("data-tooltip");
+                                var dataApi = htmlDocumentEn.QuerySelector($"#{Id} h6.h5");
+                                string ApiName = string.Empty;
+                                if (dataApi != null)
+                                {
+                                    ApiName = dataApi.InnerHtml;
+                                }
+
                                 bool IsUnlocked = SearchAchievements.QuerySelector("div.m-disabled") == null;
 
                                 string UrlImage = SearchAchievements.QuerySelector("img.media-card-fill").GetAttribute("src");
@@ -158,6 +171,7 @@ namespace SuccessStory.Clients
 
                                 AllAchievements.Add(new Achievements
                                 {
+                                    ApiName = ApiName,
                                     Name = Name,
                                     Description = Description,
                                     UrlUnlocked = UrlImage,
@@ -206,6 +220,12 @@ namespace SuccessStory.Clients
             Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
             Result.Items = AllAchievements;
             Result.ItemsStats = AllStats;
+
+            if (Result.HaveAchivements)
+            {
+                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                exophaseAchievements.SetRarety(Result);
+            }
 
             return Result;
         }

@@ -287,7 +287,21 @@
 
                                 <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant"
                                        Visibility="{Binding IsUnlock, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                                       Source="{Binding Icon, IsAsync=True}"/>
+                                       Source="{Binding Icon, IsAsync=True}">
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding EnableRaretyIndicator}" Value="True">
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
                             </StackPanel>
 
                             <Grid Grid.Column="1" Margin="10,0,0,0">

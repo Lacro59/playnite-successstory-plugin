@@ -10,10 +10,26 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
+    public enum ExophasePlatform
+    {
+        Google_Play,
+        Steam,
+        PS3, PS4, PS5, PS_Vita,
+        Retro,
+        Xbox_One, Xbox_360, Xbox_Series, Windows_8, Windows_10, WP,
+        Stadia,
+        Origin,
+        Blizzard,
+        GOG,
+        Ubisoft,
+    }
+
+
     class ExophaseAchievements : GenericAchievements
     {
         private IWebView WebView;
@@ -56,10 +72,10 @@ namespace SuccessStory.Clients
                 IHtmlDocument htmlDocument = parser.Parse(DataExophase);
 
                 AllAchievements = new List<Achievements>();
-                var SectionAchievements = htmlDocument.QuerySelector("ul.achievement");
+                var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement");
                 if (SectionAchievements == null)
                 {
-                    SectionAchievements = htmlDocument.QuerySelector("ul.trophy");
+                    SectionAchievements = htmlDocument.QuerySelectorAll("ul.trophy");
                 }
 
                 if (SectionAchievements == null)
@@ -72,29 +88,32 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    foreach (var SearchAchievements in SectionAchievements.QuerySelectorAll("li"))
+                    foreach (var Section in SectionAchievements)
                     {
-                        try
+                        foreach (var SearchAchievements in Section.QuerySelectorAll("li"))
                         {
-                            float.TryParse(SearchAchievements.GetAttribute("data-average").Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
-
-                            string UrlUnlocked = SearchAchievements.QuerySelector("img").GetAttribute("src");
-                            string Name = SearchAchievements.QuerySelector("a").InnerHtml;
-                            string Description = SearchAchievements.QuerySelector("div.award-description p").InnerHtml;
-                            bool IsHidden = SearchAchievements.GetAttribute("class").IndexOf("secret") > -1;
-
-                            AllAchievements.Add(new Achievements
+                            try
                             {
-                                Name = Name,
-                                UrlUnlocked = UrlUnlocked,
-                                Description = Description,
-                                DateUnlocked = default(DateTime),
-                                Percent = Percent
-                            });
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, false);
+                                float.TryParse(SearchAchievements.GetAttribute("data-average").Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+
+                                string UrlUnlocked = SearchAchievements.QuerySelector("img").GetAttribute("src");
+                                string Name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
+                                string Description = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.award-description p").InnerHtml);
+                                bool IsHidden = SearchAchievements.GetAttribute("class").IndexOf("secret") > -1;
+
+                                AllAchievements.Add(new Achievements
+                                {
+                                    Name = Name,
+                                    UrlUnlocked = UrlUnlocked,
+                                    Description = Description,
+                                    DateUnlocked = default(DateTime),
+                                    Percent = Percent
+                                });
+                            }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false);
+                            }
                         }
                     }
 
@@ -190,6 +209,145 @@ namespace SuccessStory.Clients
             }
 
             return ListSearchGames;
+        }
+
+
+        public void SetRarety(GameAchievements gameAchievements)
+        {
+            List<SearchResult> SearchResults = SearchGame(gameAchievements.Name);
+
+            if (SearchResults.Count > 0)
+            {
+                // Find good game
+                string SourceName = PlayniteTools.GetSourceName(PluginDatabase.PlayniteApi, gameAchievements.Id);
+                SearchResult searchResult = SearchResults.Find(x => x.Name.ToLower() == gameAchievements.Name.ToLower() && IsSamePlatform(x.Platform, SourceName));
+
+                if (searchResult == null)
+                {
+                    logger.Warn($"No simalar find for {gameAchievements.Name} in SetRarety()");
+                    return;
+                }
+
+                try
+                {
+                    WebView.NavigateAndWait(searchResult.Url);
+                    string DataExophase = WebView.GetPageSource();
+
+                    HtmlParser parser = new HtmlParser();
+                    IHtmlDocument htmlDocument = parser.Parse(DataExophase);
+
+                    var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement");
+                    if (SectionAchievements == null)
+                    {
+                        SectionAchievements = htmlDocument.QuerySelectorAll("ul.trophy");
+                    }
+
+                    if (SectionAchievements == null)
+                    {
+                        logger.Warn($"Problem with {searchResult.Url}");
+                    }
+                    else
+                    {
+                        foreach (var Section in SectionAchievements)
+                        {
+                            foreach (var SearchAchievements in Section.QuerySelectorAll("li"))
+                            {
+                                try
+                                {
+                                    string Name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
+                                    float.TryParse(SearchAchievements.GetAttribute("data-average").Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+
+                                    var index = gameAchievements.Items.FindIndex(x => x.Name.ToLower() == Name.ToLower());
+                                    if (index == -1)
+                                    {
+                                        index = gameAchievements.Items.FindIndex(x => x.ApiName.ToLower() == Name.ToLower());
+                                    }
+
+                                    if (index > -1)
+                                    {
+                                        gameAchievements.Items[index].Percent = Percent;
+                                    }
+                                    else
+                                    {
+                                        logger.Warn($"No similar for {Name} in {searchResult.Url}");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Common.LogError(ex, false);
+                                }
+                            }
+                        }
+
+                        PluginDatabase.Update(gameAchievements);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }
+            else
+            {
+                logger.Warn($"No game find for {gameAchievements.Name} in SetRarety()");
+            }
+        }
+
+
+        private bool IsSamePlatform(string ExophasePlatformName, string PlaynitePlatformName)
+        {
+            int.TryParse(Regex.Replace(ExophasePlatformName, "[^0-9]", ""), out int ExophaseNumber);
+            int.TryParse(Regex.Replace(PlaynitePlatformName, "[^0-9]", ""), out int PlayniteNumber);
+
+
+            if (ExophasePlatformName.ToLower() == PlaynitePlatformName.ToLower())
+            {
+                return true;
+            }
+
+            if (PlaynitePlatformName.ToLower().IndexOf(ExophasePlatformName.ToLower()) > -1 && ExophasePlatformName.ToLower() == "ubisoft")
+            {
+                return true;
+            }
+            
+            if (PlaynitePlatformName.ToLower() == "retroachievements" && ExophasePlatformName.ToLower() == "retro")
+            {
+                return true;
+            }
+            
+            if (PlaynitePlatformName.ToLower().IndexOf("playstation") > -1 && ExophaseNumber == PlayniteNumber)
+            {
+                return true;
+            }
+
+            if (PlaynitePlatformName.ToLower().IndexOf("battle.net") > -1 && ExophasePlatformName.ToLower() == "blizzard")
+            {
+                return true;
+            }
+
+            if (PlaynitePlatformName.ToLower() == "xbox" && ExophasePlatformName.ToLower() == "windows 10")
+            {
+                return true;
+            }
+
+            if (PlaynitePlatformName.ToLower() == "xbox" && ExophasePlatformName.ToLower() == "windows 8")
+            {
+                return true;
+            }
+
+            if (PlaynitePlatformName.ToLower() == "xbox" && ExophasePlatformName.ToLower() == "xbox one")
+            {
+                return true;
+            }
+
+            if (PlaynitePlatformName.ToLower() == "xbox" && ExophasePlatformName.ToLower() == "xbox 360")
+            {
+                return true;
+            }
+
+
+            Common.LogDebug(true, $"No similar in IsSamePlatform({ExophasePlatformName}, {PlaynitePlatformName})");
+            return false;
         }
 
 
