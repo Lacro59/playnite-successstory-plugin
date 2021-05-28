@@ -45,5 +45,14 @@ namespace SuccessStory.Models
                 return PluginDatabase.GoToGame;
             }
         }
+
+        [JsonIgnore]
+        public bool GameExist
+        {
+            get
+            {
+                return PluginDatabase.PlayniteApi.Database.Games.Get(GameId) != null;
+            }
+        }
     }
 }

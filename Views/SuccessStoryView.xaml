@@ -9,12 +9,14 @@
              xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <commonpluginsshared:DefaultIconConverter x:Key="DefaultIconConverter" />
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid Margin="10">
@@ -216,11 +218,16 @@
                                     <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock>
-                                                <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
+                                            <StackPanel>
+                                                <TextBlock Visibility="{Binding GameExist, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
+                                                        <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                                <TextBlock Visibility="{Binding GameExist, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                                     <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
-                                                </Hyperlink>
-                                        </TextBlock>
+                                                </TextBlock>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
