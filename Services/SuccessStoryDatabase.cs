@@ -1037,7 +1037,7 @@ namespace SuccessStory.Services
                 PluginTags = new List<Tag>();
                 foreach (Tag tag in PlayniteApi.Database.Tags)
                 {
-                    if (tag.Name.IndexOf("[SS] ") > -1 && tag.Name.IndexOf("<!LOC") ==-1)
+                    if (tag.Name?.IndexOf("[SS] ") > -1 && tag.Name?.IndexOf("<!LOC") ==-1)
                     {
                         PluginTags.Add(tag);
                     }
