@@ -513,31 +513,34 @@ namespace SuccessStory
                 }
             });
 
-            mainMenuItems.Add(new MainMenuItem
+            if (PluginDatabase.PluginSettings.Settings.EnableTag)
             {
-                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                Description = "-"
-            });
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = "-"
+                });
 
-            // Tag menus
-            mainMenuItems.Add(new MainMenuItem
-            {
-                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                Description = resources.GetString("LOCCommonAddAllTags"),
-                Action = (mainMenuItem) =>
+                // Tag menus
+                mainMenuItems.Add(new MainMenuItem
                 {
-                    PluginDatabase.AddTagAllGame();
-                }
-            });
-            mainMenuItems.Add(new MainMenuItem
-            {
-                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                Description = resources.GetString("LOCCommonRemoveAllTags"),
-                Action = (mainMenuItem) =>
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCCommonAddAllTags"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.AddTagAllGame();
+                    }
+                });
+                mainMenuItems.Add(new MainMenuItem
                 {
-                    PluginDatabase.RemoveTagAllGame();
-                }
-            });
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCCommonRemoveAllTags"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.RemoveTagAllGame();
+                    }
+                });
+            }
 
 
 #if DEBUG
