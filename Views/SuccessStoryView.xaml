@@ -10,12 +10,13 @@
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <commonpluginsshared:DefaultIconConverter x:Key="DefaultIconConverter" />
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </UserControl.Resources>
 

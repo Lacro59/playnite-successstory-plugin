@@ -7,11 +7,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+        xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         mc:Ignorable="d" d:DesignHeight="40" d:DesignWidth="200">
 
     <controls:PluginUserControlExtend.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <commonpluginsshared:HeightToFontSizeConverter x:Key="HeightToFontSizeConverter" />
+        <convertersshared:HeightToFontSizeConverter x:Key="HeightToFontSizeConverter" />
     </controls:PluginUserControlExtend.Resources>
 
     <Grid Name="PART_GridContener">

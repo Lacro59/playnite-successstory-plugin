@@ -1,6 +1,7 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
+using CommonPluginsShared.Converters;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK.Models;
 using SuccessStory.Models;

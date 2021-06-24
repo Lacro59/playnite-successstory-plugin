@@ -7,14 +7,15 @@
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:controls="clr-namespace:SuccessStory.Controls"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d" d:DesignHeight="48" d:DesignWidth="48">
 
     <UserControl.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <controls:SetColorConverter x:Key="SetColorConverter" />
-        <commonpluginsshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
+        <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
     </UserControl.Resources>
 
     <Grid Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Height}" 

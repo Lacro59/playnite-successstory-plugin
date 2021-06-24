@@ -8,12 +8,13 @@
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
         xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+        xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         mc:Ignorable="d" d:DesignHeight="40" d:DesignWidth="150">
 
     <controls:PluginUserControlExtend.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
-        <commonpluginsshared:HeightToFontSizeConverter x:Key="HeightToFontSizeConverter" />
+        <convertersshared:HeightToFontSizeConverter x:Key="HeightToFontSizeConverter" />
     </controls:PluginUserControlExtend.Resources>
 
     <Button Name="PART_PluginButton" Click="PART_PluginButton_Click">

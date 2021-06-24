@@ -9,13 +9,14 @@
         xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
         xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
         xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
+        xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 
     <controls:PluginUserControlExtend.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:SetColorConverter x:Key="SetColorConverter" />
     </controls:PluginUserControlExtend.Resources>
 

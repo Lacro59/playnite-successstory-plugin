@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using System.Windows;
 using System.Threading;
 using SuccessStory.Views;
+using CommonPluginsShared.Converters;
 
 namespace SuccessStory.Services
 {
@@ -711,7 +712,7 @@ namespace SuccessStory.Services
         {
             if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
-                if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary", PlayniteApi.Paths.ConfigurationPath))
+                if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary"))
                 {
                     logger.Warn("Steam is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -742,7 +743,7 @@ namespace SuccessStory.Services
 
             if (settings.EnableGog && GameSourceName.ToLower() == "gog")
             {
-                if (PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", PlayniteApi.Paths.ConfigurationPath))
+                if (PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary"))
                 {
                     logger.Warn("GOG is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -779,7 +780,7 @@ namespace SuccessStory.Services
 
             if (settings.EnableOrigin && GameSourceName.ToLower() == "origin")
             {
-                if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary", PlayniteApi.Paths.ConfigurationPath))
+                if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary"))
                 {
                     logger.Warn("Origin is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -816,7 +817,7 @@ namespace SuccessStory.Services
 
             if (settings.EnableXbox && GameSourceName.ToLower() == "xbox")
             {
-                if (PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary", PlayniteApi.Paths.ConfigurationPath))
+                if (PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary"))
                 {
                     logger.Warn("Xbox is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -896,7 +897,7 @@ namespace SuccessStory.Services
 
             if (settings.EnableOverwatchAchievements && GameSourceName.ToLower() == "battle.net" && GameName.ToLower() == "overwatch")
             {
-                if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary", PlayniteApi.Paths.ConfigurationPath))
+                if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary"))
                 {
                     logger.Warn("Battle.net is enable then disabled");
                     PlayniteApi.Notifications.Add(new NotificationMessage(
@@ -975,21 +976,21 @@ namespace SuccessStory.Services
                     break;
 
                 case "gog":
-                    if (!PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary", PlayniteApi.Paths.ConfigurationPath) && PluginSettings.Settings.EnableGog && GogAPI == null)
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary") && PluginSettings.Settings.EnableGog && GogAPI == null)
                     {
                         GogAPI = new GogAchievements();
                     }
                     break;
 
                 case "origin":
-                    if (!PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary", PlayniteApi.Paths.ConfigurationPath) && OriginAPI == null)
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary") && OriginAPI == null)
                     {
                         OriginAPI = new OriginAchievements();
                     }
                     break;
 
                 case "Xbox":
-                    if (!PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary", PlayniteApi.Paths.ConfigurationPath) && XboxAPI == null)
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary") && XboxAPI == null)
                     {
                         XboxAPI = new XboxAchievements();
                     }

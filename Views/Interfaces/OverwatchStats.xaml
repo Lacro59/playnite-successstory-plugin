@@ -9,14 +9,15 @@
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:local1="clr-namespace:SuccessStory.Controls"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d" d:DesignWidth="1000">
 
     <UserControl.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <commonpluginsshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local1:SetColorConverter x:Key="SetColorConverter" />
-        <commonpluginsshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
+        <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
     </UserControl.Resources>
 
     <Grid Margin="10">

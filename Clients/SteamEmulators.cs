@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using CommonPluginsShared;
+using CommonPluginsStores;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Playnite.SDK;
@@ -38,7 +39,7 @@ namespace SuccessStory.Clients
             int Unlocked = 0;
             int Locked = 0;
 
-            SteamApi steamApi = new SteamApi(PluginDatabase.Paths.PluginUserDataPath);
+            SteamApi steamApi = new SteamApi();
 
             if (SteamId != 0)
             {

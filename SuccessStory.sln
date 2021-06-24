@@ -11,12 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonPluginsResources", "p
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonPluginsShared", "playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.shproj", "{27E5D35B-F3CE-4A3F-9705-4564674615A5}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonPluginsStores", "playnite-plugincommon\CommonPluginsStores\CommonPluginsStores.shproj", "{C066F255-3BFA-4862-A490-09D7933647D4}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems*{0d7dbc82-26af-49ad-8ed5-0e11aa56bce0}*SharedItemsImports = 13
 		playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.projitems*{27e5d35b-f3ce-4a3f-9705-4564674615a5}*SharedItemsImports = 13
 		playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems*{4fdf1e89-5bc3-4c72-8fda-0d580e7a5d5f}*SharedItemsImports = 4
 		playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.projitems*{4fdf1e89-5bc3-4c72-8fda-0d580e7a5d5f}*SharedItemsImports = 4
+		playnite-plugincommon\CommonPluginsStores\CommonPluginsStores.projitems*{4fdf1e89-5bc3-4c72-8fda-0d580e7a5d5f}*SharedItemsImports = 4
+		playnite-plugincommon\CommonPluginsStores\CommonPluginsStores.projitems*{c066f255-3bfa-4862-a490-09d7933647d4}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

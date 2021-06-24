@@ -17,6 +17,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using SuccessStory.Controls;
+using CommonPluginsShared.Converters;
 
 namespace SuccessStory.Views.Interface
 {
@@ -170,7 +171,7 @@ namespace SuccessStory.Views.Interface
         {
             if (sender != null)
             { 
-                IntegrationUI.SetControlSize((FrameworkElement)sender);
+                UI.SetControlSize((FrameworkElement)sender);
             }
 
             if (double.IsNaN(PART_ScCompactView.ActualHeight) || PART_ScCompactView.ActualHeight == 0)

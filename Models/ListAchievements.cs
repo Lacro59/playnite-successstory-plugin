@@ -1,4 +1,5 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Converters;
 using System;
 using System.Windows.Media.Imaging;
 
