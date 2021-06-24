@@ -673,7 +673,7 @@ namespace SuccessStory
                                     if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
                                     {
                                         Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name}" + "_Locked)");
-                                        Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.ImagesCachePath, "SuccessStory").GetAwaiter().GetResult();
+                                        Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
 
                                     if (ct.IsCancellationRequested)
@@ -685,7 +685,7 @@ namespace SuccessStory
                                     if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, "SuccessStory").IsNullOrEmpty())
                                     {
                                         Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
-                                        Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.ImagesCachePath, "SuccessStory").GetAwaiter().GetResult();
+                                        Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
 
                                     if (ct.IsCancellationRequested)

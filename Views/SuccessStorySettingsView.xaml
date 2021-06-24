@@ -525,7 +525,7 @@
                     </CheckBox>
 
                     <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" >
-                        <Label Content="Exophase" />
+                        <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />
                         <Separator Margin="0,0,0,10" />
                     
                         <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top">

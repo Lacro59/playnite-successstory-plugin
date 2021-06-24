@@ -38,6 +38,8 @@
 
     <sys:String x:Key="LOCSuccessStoryProgressBar">Processing, please wait...</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
+
     <sys:String x:Key="LOSuccessStoryAddTagDescription">Add a tag to games with the time to full unlock</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Enable Steam achievements</sys:String>

@@ -223,17 +223,10 @@ namespace SuccessStory.Clients
                     int AchievementsCount = 0;
                     if (!PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi & GetSteamConfig())
                     {
-                        try
+                        using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
                         {
-                            using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
-                            {
-                                KeyValue SchemaForGame = steamWebAPI.GetSchemaForGame(appid: gameId, l: LocalLang);
-                                AchievementsCount = SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "achievements").Children.Count;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, true);
+                            KeyValue SchemaForGame = steamWebAPI.GetSchemaForGame(appid: gameId, l: LocalLang);
+                            AchievementsCount = SchemaForGame.Children?.Find(x => x.Name == "availableGameStats")?.Children?.Find(x => x.Name == "achievements")?.Children?.Count ?? 0;
                         }
                     }
                     else

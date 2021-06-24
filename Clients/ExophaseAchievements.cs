@@ -384,6 +384,14 @@ namespace SuccessStory.Clients
                 }
             };
 
+            view.LoadingChanged += (s, e) =>
+            {
+                if (view.GetCurrentAddress().IndexOf("https://www.exophase.com/") > -1 && view.GetCurrentAddress().Length == 25)
+                {
+                    view.Navigate(UrlExophaseLogin);
+                }
+            };
+
             view.Navigate(UrlExophaseLogout);
             view.OpenDialog();
         }
