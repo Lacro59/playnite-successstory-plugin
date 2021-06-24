@@ -78,16 +78,18 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="10" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="10" />
                                     <RowDefinition Height="*" />
+                                    <RowDefinition Height="10" />
                                 </Grid.RowDefinitions>
 
-                                <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Source="{Binding UrlImage}" Stretch="UniformToFill" 
+                                <Image Grid.Row="0" Grid.RowSpan="5" Grid.Column="0" Source="{Binding UrlImage}" Stretch="UniformToFill" 
                                        Height="45" Width="120" />
-                                <Label Grid.Row="0" Grid.Column="2" Content="{Binding Name}" VerticalAlignment="Center" />
+                                <Label Grid.Row="1" Grid.Column="2" Content="{Binding Name}" VerticalAlignment="Center" />
 
-                                <Grid Grid.Row="2" Grid.Column="2">
+                                <Grid Grid.Row="3" Grid.Column="2"> 
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="10" />
@@ -98,12 +100,13 @@
 
                                     <Grid Grid.Column="0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="10" />
                                             <ColumnDefinition Width="auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Column="0" Content="{DynamicResource LOCSuccessStoryAchievementsCount}" VerticalAlignment="Center" />
-                                        <Label Grid.Column="1" Content="{Binding AchievementsCount}" VerticalAlignment="Center" />
+                                        <Label Grid.Column="0" Content="&#xe820;" FontFamily="{DynamicResource FontIcoFont}" VerticalAlignment="Center" />
+                                        <Label Grid.Column="2" Content="{Binding AchievementsCount}" VerticalAlignment="Center" />
                                     </Grid>
 
                                     <Border Grid.Column="2" Width="120" BorderThickness="0" CornerRadius="5">
