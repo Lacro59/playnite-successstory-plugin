@@ -81,5 +81,10 @@ namespace SuccessStory.Models
         public int Progression { get; set; }
 
         public bool IsManual { get; set; }
+
+
+
+        // only for RA
+        public int RAgameID { get; set; }
     }
 }

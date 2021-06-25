@@ -27,6 +27,8 @@ namespace SuccessStory.Clients
         private string User { get; set; }
         private string Key { get; set; }
 
+        public int gameID { get; set; } = 0;
+
 
         public RetroAchievements() : base()
         {
@@ -73,15 +75,17 @@ namespace SuccessStory.Clients
             }
 
             // Game Id
-            int gameID = 0;
-            if (ListMD5.Count > 0)
-            {
-                gameID = GetGameIdByHash(game, ListMD5);
-            }
-
             if (gameID == 0)
             {
-                gameID = GetGameIdByName(game, ra_Consoles);
+                if (ListMD5.Count > 0)
+                {
+                    gameID = GetGameIdByHash(game, ListMD5);
+                }
+
+                if (gameID == 0)
+                {
+                    gameID = GetGameIdByName(game, ra_Consoles);
+                }
             }
 
             // Get achievements

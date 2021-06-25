@@ -243,7 +243,15 @@ namespace SuccessStory.Services
                 if (GameSourceName.ToLower() == "retroachievements")
                 {
                     RetroAchievements retroAchievementsAPI = new RetroAchievements();
+
+                    if (!SuccessStory.IsFromMenu)
+                    {
+                        GameAchievements TEMPgameAchievements = Get(game, true);
+                        retroAchievementsAPI.gameID = TEMPgameAchievements.RAgameID;
+                    }
+
                     gameAchievements = retroAchievementsAPI.GetAchievements(game);
+                    gameAchievements.RAgameID = retroAchievementsAPI.gameID;
                 }
 
                 if (GameSourceName.ToLower() == "rpcs3")

@@ -35,6 +35,8 @@ namespace SuccessStory
 
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
+        public static bool IsFromMenu { get; set; } = false;
+
         private OldToNew oldToNew;
 
 
@@ -361,7 +363,9 @@ namespace SuccessStory
                         {
                             var TaskIntegrationUI = Task.Run(() =>
                             {
+                                IsFromMenu = true;
                                 PluginDatabase.Refresh(GameMenu.Id);
+                                IsFromMenu = false;
                             });
                         }
                     });
@@ -504,7 +508,9 @@ namespace SuccessStory
                 Description = resources.GetString("LOCCommonDownloadPluginData"),
                 Action = (mainMenuItem) =>
                 {
+                    IsFromMenu = true;
                     PluginDatabase.GetSelectData();
+                    IsFromMenu = false;
                 }
             });
 
