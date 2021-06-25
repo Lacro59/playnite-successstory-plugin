@@ -185,7 +185,7 @@ namespace SuccessStory.Clients
 
                         foreach (var obj in ResultMD5List.MD5List)
                         {
-                            ListMD5.Add(new RA_MD5List { Id = (int)obj.Value, MD5 = obj.Key });
+                            ListMD5.Add(new RA_MD5List { Id = (int)obj.Value, MD5 = obj.Name });
                         }
                     }
                 }
@@ -220,36 +220,24 @@ namespace SuccessStory.Clients
             string PlatformName = game.Platform.Name;
             int consoleID = 0;
 
-            var FindConsole = ra_Consoles.ListConsoles.Find(x => PlatformName.ToLower().Contains(x.Name.ToLower()));
+            if (PlatformName.ToLower() == "super nintendo")
+            {
+                PlatformName = "snes";
+            }
+            if (PlatformName.ToLower() == "nintendo")
+            {
+                PlatformName = "nes";
+            }
+            if (PlatformName.ToLower() == "sega genesis")
+            {
+                PlatformName = "mega drive";
+            }
+
+
+            var FindConsole = ra_Consoles.ListConsoles.Find(x => PlatformName.ToLower() == x.Name.ToLower());
             if (FindConsole != null)
             {
                 consoleID = FindConsole.ID;
-            }
-
-            if (consoleID == 0)
-            {
-                foreach (RA_Console ra_Console in ra_Consoles.ListConsoles)
-                {
-                    string NameConsole = ra_Console.Name.ToLower();
-                    if (NameConsole == "snes")
-                    {
-                        NameConsole = "super nintendo";
-                    }
-                    if (NameConsole == "nes")
-                    {
-                        NameConsole = "nintendo";
-                    }
-                    if (NameConsole == "mega drive")
-                    {
-                        NameConsole = "sega genesis";
-                    }
-
-                    if (PlatformName.ToLower().IndexOf(NameConsole) > -1)
-                    {
-                        consoleID = ra_Console.ID;
-                        break;
-                    }
-                }
             }
 
             // Search game id

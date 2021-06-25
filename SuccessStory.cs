@@ -323,7 +323,7 @@ namespace SuccessStory
                             PluginDatabase.IsViewOpen = true;
                             if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                             {
-                                if (PluginDatabase.GameContext.Source.Name.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+                                if (PluginDatabase.GameContext.Source?.Name?.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
                                 {
                                     ViewExtension = new SuccessStoryOverwatchView(GameMenu);
                                 }
