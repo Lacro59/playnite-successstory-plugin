@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using Playnite.SDK;
+﻿using Playnite.SDK;
+using Playnite.SDK.Data;
 using CommonPluginsShared;
 using SuccessStory.Models;
 using SuccessStory.Services;
@@ -149,7 +149,7 @@ namespace SuccessStory.Views.Interface
                     AchievementsList = AchievementsList.OrderBy(x => x.Name).ToList();
                 }
 
-                Common.LogDebug(true, $"SuccessStoryAchievementsCompact - ListAchievements({_withUnlocked}) - {JsonConvert.SerializeObject(ListAchievements)}");
+                Common.LogDebug(true, $"ListAchievements({_withUnlocked}) - {Serialization.ToJson(ListAchievements)}");
 
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
                 {

@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using Playnite.SDK;
+﻿using Playnite.SDK;
+using Playnite.SDK.Data;
 using CommonPluginsShared;
 using SuccessStory.Models;
 using System;
@@ -82,7 +82,7 @@ namespace SuccessStory.Services
 
                     Guid gameId = Guid.Parse(objectFile.Replace(PathActivityDB, "").Replace(".json", "").Replace("\\", ""));
 
-                    GameAchievementsOld objGameAchievements = JsonConvert.DeserializeObject<GameAchievementsOld>(File.ReadAllText(objectFile));
+                    GameAchievementsOld objGameAchievements = Serialization.FromJsonFile<GameAchievementsOld>(objectFile);
 
                     Items.TryAdd(gameId, objGameAchievements);
                 }
@@ -172,7 +172,7 @@ namespace SuccessStory.Services
         /// <summary>
         /// 
         /// </summary>
-        [JsonIgnore]
+        [DontSerialize]
         public bool Is100Percent
         {
             get

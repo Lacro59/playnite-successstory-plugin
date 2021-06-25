@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using Playnite.SDK;
+﻿using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
 using CommonPluginsPlaynite.PluginLibrary.Services.GogLibrary;
@@ -83,10 +83,10 @@ namespace SuccessStory.Clients
                 // Parse data
                 if (ResultWeb != string.Empty)
                 {
-                    JObject resultObj = JObject.Parse(ResultWeb);
+                    dynamic resultObj = Serialization.FromJson<dynamic>(ResultWeb);
                     try
                     {
-                        JArray resultItems = (JArray)resultObj["items"];
+                        dynamic resultItems = resultObj["items"];
                         if (resultItems.Count > 0)
                         {
                             HaveAchivements = true;

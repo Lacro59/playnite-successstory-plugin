@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using Playnite.SDK;
+﻿using Playnite.SDK;
 using CommonPluginsShared;
 using System;
 using System.Collections.Generic;
@@ -7,8 +6,8 @@ using System.Net;
 using System.Linq;
 using System.Text;
 using SuccessStory.Models;
-using Newtonsoft.Json;
 using Playnite.SDK.Models;
+using Playnite.SDK.Data;
 using System.IO;
 using SuccessStory.Services;
 using System.Security.Cryptography;
@@ -128,7 +127,7 @@ namespace SuccessStory.Clients
             string fileConsoles = PluginUserDataPath + "\\RA_Consoles.json";
             if (File.Exists(fileConsoles))
             {
-                resultObj = JsonConvert.DeserializeObject<RA_Consoles>(File.ReadAllText(fileConsoles));
+                resultObj = Serialization.FromJsonFile<RA_Consoles>(fileConsoles);
                 return resultObj;
             }
 
@@ -148,8 +147,8 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    resultObj.ListConsoles = JsonConvert.DeserializeObject<List<RA_Console>>(ResultWeb);
-                    File.WriteAllText(fileConsoles, JsonConvert.SerializeObject(resultObj));
+                    resultObj.ListConsoles = Serialization.FromJson<List<RA_Console>>(ResultWeb);
+                    Serialization.ToFile(resultObj, fileConsoles, Format.Json);
                 }
                 catch (Exception ex)
                 {
@@ -168,7 +167,7 @@ namespace SuccessStory.Clients
             string fileMD5List = PluginUserDataPath + "\\RA_MD5List.json";
             if (File.Exists(fileMD5List) && File.GetLastWriteTime(fileMD5List).AddDays(3) > DateTime.Now )
             {
-                ListMD5 = JsonConvert.DeserializeObject<List<RA_MD5List>>(File.ReadAllText(fileMD5List));
+                ListMD5 = Serialization.FromJsonFile<List<RA_MD5List>>(fileMD5List);
                 return ListMD5;
             }
 
@@ -182,7 +181,7 @@ namespace SuccessStory.Clients
                     string ResultWeb = Web.DownloadStringData(string.Format(BaseMD5List, ConsoleId)).GetAwaiter().GetResult();
                     if (!ResultWeb.Contains("\"MD5List\":[]"))
                     {
-                        RA_MD5ListResponse ResultMD5List = JsonConvert.DeserializeObject<RA_MD5ListResponse>(ResultWeb);
+                        RA_MD5ListResponse ResultMD5List = Serialization.FromJson<RA_MD5ListResponse>(ResultWeb);
 
                         foreach (var obj in ResultMD5List.MD5List)
                         {
@@ -201,7 +200,7 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    File.WriteAllText(fileMD5List, JsonConvert.SerializeObject(ListMD5));
+                    Serialization.ToFile(ListMD5, fileMD5List, Format.Json);
                 }
                 catch (Exception ex)
                 {
@@ -611,7 +610,7 @@ namespace SuccessStory.Clients
             string fileConsoles = PluginUserDataPath + "\\RA_Games_" + consoleID + ".json";
             if (File.Exists(fileConsoles))
             {
-                resultObj = JsonConvert.DeserializeObject<RA_Games>(File.ReadAllText(fileConsoles));
+                resultObj = Serialization.FromJsonFile<RA_Games>(fileConsoles);
                 return resultObj;
             }
 
@@ -627,8 +626,8 @@ namespace SuccessStory.Clients
 
             try
             {
-                resultObj.ListGames = JsonConvert.DeserializeObject<List<RA_Game>>(ResultWeb);
-                File.WriteAllText(fileConsoles, JsonConvert.SerializeObject(resultObj));
+                resultObj.ListGames = Serialization.FromJson<List<RA_Game>>(ResultWeb);
+                Serialization.ToFile(resultObj, fileConsoles, Format.Json);
             }
             catch (Exception ex)
             {
@@ -659,8 +658,7 @@ namespace SuccessStory.Clients
 
             try
             {
-                JObject resultObj = new JObject();
-                resultObj = JObject.Parse(ResultWeb);
+                dynamic resultObj = Serialization.FromJson<dynamic>(ResultWeb);
 
                 int NumDistinctPlayersCasual = (int)resultObj["NumDistinctPlayersCasual"];
 
@@ -729,7 +727,7 @@ namespace SuccessStory.Clients
     class RA_MD5ListResponse
     {
         public bool Success { get; set; }
-        public JObject MD5List { get; set; }
+        public dynamic MD5List { get; set; }
     }
     class RA_MD5List
     {

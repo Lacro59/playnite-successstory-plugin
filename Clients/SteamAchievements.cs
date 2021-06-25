@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using Playnite.SDK;
+﻿using Playnite.SDK;
+using Playnite.SDK.Data;
 using CommonPluginsShared;
 using SuccessStory.Models;
 using System;
@@ -12,7 +12,6 @@ using System.Linq;
 using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using Playnite.SDK.Models;
-using Newtonsoft.Json;
 using SteamKit2;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -284,7 +283,7 @@ namespace SuccessStory.Clients
             {
                 if (File.Exists(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"))
                 {
-                    JObject SteamConfig = JObject.Parse(File.ReadAllText(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"));
+                    dynamic SteamConfig = Serialization.FromJsonFile<dynamic>(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json");
                     SteamId = (string)SteamConfig["UserId"];
                     SteamApiKey = (string)SteamConfig["ApiKey"];
                     SteamUser = (string)SteamConfig["UserName"];

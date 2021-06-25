@@ -6,8 +6,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -50,7 +48,7 @@ namespace SuccessStory.Clients
             {
                 ListAchievements = GetXboxAchievements(game.GameId, game.Name).GetAwaiter().GetResult();
 
-                Common.LogDebug(true, $"XboxAchievements - " + JsonConvert.SerializeObject(ListAchievements));
+                Common.LogDebug(true, Serialization.ToJson(ListAchievements));
                 
                 foreach (XboxAchievement xboxAchievement in ListAchievements)
                 {
@@ -331,14 +329,14 @@ namespace SuccessStory.Clients
                 }
 
                 string cont = await response.Content.ReadAsStringAsync();
-                string contConvert = JsonConvert.SerializeObject(JObject.Parse(cont)["achievements"]);
+                string contConvert = Serialization.ToJson(Serialization.FromJson<dynamic>(cont)["achievements"]);
 
-                var ListAchievements = JsonConvert.DeserializeObject<List<XboxAchievement>>(contConvert);
+                var ListAchievements = Serialization.FromJson<List<XboxAchievement>>(contConvert);
                 if (titleId.IsNullOrEmpty())
                 {
                     ListAchievements = ListAchievements.Where(x => x.titleAssociations.First().name.ToLower() == name.ToLower()).ToList();
 
-                    Common.LogDebug(true, $"XboxAchievements - Not find with {pfn} for {name} - {ListAchievements.Count}");
+                    Common.LogDebug(true, $"Not find with {pfn} for {name} - {ListAchievements.Count}");
                 }                
                 else
                 {

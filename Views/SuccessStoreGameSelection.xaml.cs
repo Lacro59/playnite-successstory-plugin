@@ -1,6 +1,6 @@
 ﻿using CommonPluginsShared;
-using Newtonsoft.Json;
 using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Clients;
 using SuccessStory.Models;
@@ -133,7 +133,7 @@ namespace SuccessStory.Views
                         if (antecedent.Result != null)
                         {
                             lbSelectable.ItemsSource = antecedent.Result;
-                            Common.LogDebug(true, $"SearchElements({gameSearch}) - " + JsonConvert.SerializeObject(antecedent.Result));
+                            Common.LogDebug(true, $"SearchElements({gameSearch}) - " + Serialization.ToJson(antecedent.Result));
                         }
 
                         PART_DataLoadWishlist.Visibility = Visibility.Collapsed;

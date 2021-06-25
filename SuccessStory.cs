@@ -1,7 +1,4 @@
-﻿using LiveCharts;
-using LiveCharts.Wpf;
-using Newtonsoft.Json;
-using Playnite.SDK;
+﻿using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
@@ -29,9 +26,6 @@ using CommonPluginsShared.PlayniteExtended;
 using System.Windows.Media;
 using CommonPluginsShared.Controls;
 using SuccessStory.Controls;
-using AngleSharp.Parser.Html;
-using AngleSharp.Dom.Html;
-using static SuccessStory.Clients.TrueAchievements;
 
 namespace SuccessStory
 {

@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using Playnite.SDK.Data;
 using CommonPluginsShared;
 using SuccessStory.Services;
 using CommonPluginsShared.Converters;
@@ -27,7 +27,7 @@ namespace SuccessStory.Models
 
         public string Category { get; set; } = string.Empty;
 
-        [JsonIgnore]
+        [DontSerialize]
         public string CacheUnlocked {
             get
             {
@@ -48,7 +48,7 @@ namespace SuccessStory.Models
         /// <summary>
         /// Image for unlocked achievement
         /// </summary>
-        [JsonIgnore]
+        [DontSerialize]
         public string ImageUnlocked
         {
             get
@@ -68,7 +68,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public string CacheLocked
         {
             get
@@ -91,7 +91,7 @@ namespace SuccessStory.Models
         /// <summary>
         /// Image for locked achievement
         /// </summary>
-        [JsonIgnore]
+        [DontSerialize]
         public string ImageLocked
         {
             get
@@ -121,7 +121,7 @@ namespace SuccessStory.Models
         /// <summary>
         /// Get the icon according to the achievement state
         /// </summary>
-        [JsonIgnore]
+        [DontSerialize]
         public string Icon {
             get
             {
@@ -139,7 +139,7 @@ namespace SuccessStory.Models
         /// <summary>
         /// Indicates if there is no locked icon
         /// </summary>
-        [JsonIgnore]
+        [DontSerialize]
         public bool IsGray
         {
             get
@@ -153,7 +153,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public bool EnableRaretyIndicator
         {
             get
@@ -162,7 +162,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public string NameWithDateUnlock
         {
             get
@@ -179,7 +179,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public bool IsUnlock
         {
             get
@@ -188,7 +188,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public DateTime? DateWhenUnlocked
         {
             get
@@ -213,7 +213,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public string DateWhenUnlockedString
         {
             get

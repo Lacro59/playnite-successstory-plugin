@@ -1,6 +1,5 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Playnite.SDK;
+﻿using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
 using CommonPluginsPlaynite.PluginLibrary.OriginLibrary.Models;
@@ -67,9 +66,9 @@ namespace SuccessStory.Clients
 
                         var stringData = webClient.DownloadString(url);
 
-                        JObject AchievementsData = JObject.Parse(stringData);
+                        dynamic AchievementsData = Serialization.FromJson<dynamic>(stringData);
 
-                        foreach (var item in (JObject)AchievementsData["achievements"])
+                        foreach (var item in AchievementsData["achievements"])
                         {
                             var val = item.Value;
                             HaveAchivements = true;
@@ -151,7 +150,7 @@ namespace SuccessStory.Clients
             client.Headers.Add("Authorization", token.token_type + " " + token.access_token);
             var stringData = client.DownloadString(url);
 
-            JObject objectData = JObject.Parse(stringData);
+            dynamic objectData = Serialization.FromJson<dynamic>(stringData);
 
             return ((string)objectData["personas"]["personaUri"][0]).Replace("/pids/" + userId + "/personas/", string.Empty);
         }
@@ -178,7 +177,7 @@ namespace SuccessStory.Clients
             var url = string.Format(@"https://api2.origin.com/ecommerce2/public/supercat/{0}/{1}?country={2}", gameId, lang, langShort);
 
             string stringData = Web.DownloadStringData(url).GetAwaiter().GetResult();
-            return JsonConvert.DeserializeObject<GameStoreDataResponse>(stringData);
+            return Serialization.FromJson<GameStoreDataResponse>(stringData);
         }
     }
 

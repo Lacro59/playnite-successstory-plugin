@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using Playnite.SDK.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace SuccessStory.Models
         public double Value { get; set; }
         #endregion
 
-        [JsonIgnore]
+        [DontSerialize]
         public string NameShow
         {
             get
@@ -30,7 +30,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public double ValueShow
         {
             get

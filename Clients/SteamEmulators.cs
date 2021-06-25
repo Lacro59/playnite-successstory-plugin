@@ -7,10 +7,9 @@ using System.Net;
 using System.Text;
 using CommonPluginsShared;
 using CommonPluginsStores;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Playnite.SDK;
 using Playnite.SDK.Models;
+using Playnite.SDK.Data;
 using SuccessStory.Models;
 
 namespace SuccessStory.Clients
@@ -221,9 +220,8 @@ namespace SuccessStory.Clients
                 }
             }
 
-#if DEBUG
-            logger.Debug($"AchievementsLocal - {JsonConvert.SerializeObject(ReturnAchievements)}");
-#endif
+            Common.LogDebug(true, $"{Serialization.ToJson(ReturnAchievements)}");
+
             if (ReturnAchievements == new List<Achievements>())
             {
                 logger.Error($"AchievementsLocal - No data for {SteamId}. ");
@@ -262,12 +260,12 @@ namespace SuccessStory.Clients
 
             if (ResultWeb != string.Empty && ResultWeb.Length > 50)
             {
-                JObject resultObj = JObject.Parse(ResultWeb);
-                JArray resultItems = new JArray();
+                dynamic resultObj = Serialization.FromJson<dynamic>(ResultWeb);
+                dynamic resultItems = null;
 
                 try
                 {
-                    resultItems = (JArray)resultObj["game"]["availableGameStats"]["achievements"];
+                    resultItems = resultObj["game"]["availableGameStats"]["achievements"];
 
                     for (int i = 0; i < resultItems.Count; i++)
                     {
@@ -314,7 +312,7 @@ namespace SuccessStory.Clients
             }
             #endregion
 
-            Common.LogDebug(true, $"{JsonConvert.SerializeObject(ReturnAchievements)}");
+            Common.LogDebug(true, $"{Serialization.ToJson(ReturnAchievements)}");
             return ReturnAchievements;
         }
 

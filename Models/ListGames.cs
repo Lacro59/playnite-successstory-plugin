@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using Playnite.SDK;
+﻿using Playnite.SDK;
+using Playnite.SDK.Data;
 using SuccessStory.Services;
 using System;
 using System.Windows.Media.Imaging;
@@ -27,7 +27,7 @@ namespace SuccessStory.Models
         public int Unlocked { get; set; }
         public bool IsManual { get; set; }
 
-        [JsonIgnore]
+        [DontSerialize]
         public Guid GameId
         {
             get
@@ -37,7 +37,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public RelayCommand<Guid> GoToGame
         {
             get
@@ -46,7 +46,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public bool GameExist
         {
             get

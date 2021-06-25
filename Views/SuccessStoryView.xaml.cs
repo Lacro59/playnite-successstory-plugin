@@ -13,13 +13,13 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
 using SuccessStory.Models;
 using SuccessStory.Views.Interface;
 using System.Threading.Tasks;
 using SuccessStory.Services;
-using Newtonsoft.Json;
 using CommonPluginsControls.LiveChartsCommon;
 using SuccessStory.Controls;
 using System.Windows.Threading;
@@ -349,7 +349,7 @@ namespace SuccessStory
                         });
                     }
 
-                    Common.LogDebug(true, $"ListGames: {JsonConvert.SerializeObject(ListGames)}");
+                    Common.LogDebug(true, $"ListGames: {Serialization.ToJson(ListGames)}");
                 }
 
                 Application.Current.Dispatcher.BeginInvoke((Action)delegate

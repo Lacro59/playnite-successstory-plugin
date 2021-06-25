@@ -1,6 +1,6 @@
 ﻿using LiveCharts;
-using Newtonsoft.Json;
 using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
 using CommonPluginsShared.Collections;
@@ -141,7 +141,7 @@ namespace SuccessStory.Services
 
                 AddOrUpdate(gameAchievements);
 
-                Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {JsonConvert.SerializeObject(gameAchievements)}");
+                Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
             }
             catch (Exception ex)
             {
@@ -256,7 +256,7 @@ namespace SuccessStory.Services
                     gameAchievements = battleNetAchievements.GetAchievements(game);
                 }
 
-                Common.LogDebug(true, $"Achievements for {game.Name} - {GameSourceName} - {JsonConvert.SerializeObject(gameAchievements)}");
+                Common.LogDebug(true, $"Achievements for {game.Name} - {GameSourceName} - {Serialization.ToJson(gameAchievements)}");
             }
             else
             {

@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using CommonPluginsShared.Collections;
+﻿using CommonPluginsShared.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SuccessStory.Clients;
+using Playnite.SDK.Data;
 
 namespace SuccessStory.Models
 {
@@ -41,7 +41,7 @@ namespace SuccessStory.Models
             }
         }
 
-        [JsonIgnore]
+        [DontSerialize]
         public virtual bool HasDataStats
         {
             get
@@ -55,7 +55,7 @@ namespace SuccessStory.Models
 
         public bool IsEmulators { get; set; }
 
-        [JsonIgnore]
+        [DontSerialize]
         public bool Is100Percent
         {
             get
