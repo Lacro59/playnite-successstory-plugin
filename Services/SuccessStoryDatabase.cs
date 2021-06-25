@@ -19,6 +19,8 @@ using System.Windows;
 using System.Threading;
 using SuccessStory.Views;
 using CommonPluginsShared.Converters;
+using CommonPluginsControls.Controls;
+using System.Diagnostics;
 
 namespace SuccessStory.Services
 {
@@ -1226,6 +1228,81 @@ namespace SuccessStory.Services
             return null;
         }
 
+
+        public override void GetSelectData()
+        {
+            var View = new OptionsDownloadData(PlayniteApi);
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, PluginName + " - " + resources.GetString("LOCCommonSelectData"), View);
+            windowExtension.ShowDialog();
+
+            var PlayniteDb = View.GetFilteredGames();
+            bool OnlyMissing = View.GetOnlyMissing();
+
+            if (PlayniteDb == null)
+            {
+                return;
+            }
+
+
+            if (OnlyMissing)
+            {
+                PlayniteDb = PlayniteDb.FindAll(x => !Get(x.Id, true).HasData);
+            }
+            // Without manual
+            else
+            {
+                PlayniteDb = PlayniteDb.FindAll(x => !Get(x.Id, true).IsManual);
+            }
+
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {resources.GetString("LOCCommonGettingData")}",
+                true
+            );
+            globalProgressOptions.IsIndeterminate = false;
+
+            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                try
+                {
+                    Stopwatch stopWatch = new Stopwatch();
+                    stopWatch.Start();
+
+                    activateGlobalProgress.ProgressMaxValue = (double)PlayniteDb.Count();
+
+                    string CancelText = string.Empty;
+
+                    foreach (Game game in PlayniteDb)
+                    {
+                        if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                        {
+                            CancelText = " canceled";
+                            break;
+                        }
+
+                        Thread.Sleep(10);
+
+                        try
+                        {
+                            Get(game, false, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false);
+                        }
+
+                        activateGlobalProgress.CurrentProgressValue++;
+                    }
+
+                    stopWatch.Stop();
+                    TimeSpan ts = stopWatch.Elapsed;
+                    logger.Info($"Task GetSelectData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)PlayniteDb.Count()} items");
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }, globalProgressOptions);
+        }
 
 
         public ProgressionAchievements Progession()

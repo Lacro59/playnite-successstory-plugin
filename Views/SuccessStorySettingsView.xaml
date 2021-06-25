@@ -16,18 +16,6 @@
     </UserControl.Resources>
 
     <Grid Margin="20">
-        <Grid Name="DataLoad" Height="40" HorizontalAlignment="Center" Visibility="Hidden">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-            <ProgressBar Grid.Column="0" Name="pbDataLoad" Width="350" Height="40" />
-            <TextBlock Grid.Column="0" Name="tbDataLoad" Text="{DynamicResource LOCSuccessStoryProgressBar}"
-                       Style="{DynamicResource BaseTextBlockStyle}"
-                       HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <Button Grid.Column="1" Click="ButtonCancelTask_Click" Margin="10,0,0,0" Content="{DynamicResource LOCCancelLabel}" />
-        </Grid>
-
         <TabControl Name="tcSettings">
             <TabItem Header="{DynamicResource LOCSuccessStory}">
                 <ScrollViewer  Margin="0,10,0,0">
@@ -65,14 +53,14 @@
                             <Expander.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
@@ -80,8 +68,6 @@
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableSteam}"></Label>
                                     </CheckBox>
                                     <Label Grid.Column="2" Name="SteamLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                                    <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Steam" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
-                                    <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Steam" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
 
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
                                             Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-Steam" />
@@ -112,14 +98,14 @@
                             <Expander.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
@@ -127,8 +113,6 @@
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableGog}"></Label>
                                     </CheckBox>
                                     <Label Grid.Column="2" Name="GogLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                                    <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Gog" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
-                                    <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Gog" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
                                 </Grid>
                             </Expander.Header>
                         </Expander>
@@ -143,14 +127,14 @@
                             <Expander.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
@@ -158,8 +142,6 @@
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableOrigin}"></Label>
                                     </CheckBox>
                                     <Label Grid.Column="2" Name="OriginLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                                    <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Origin" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
-                                    <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Origin" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
                                 </Grid>
                             </Expander.Header>
                         </Expander>
@@ -174,14 +156,14 @@
                             <Expander.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
@@ -189,8 +171,6 @@
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableXbox}"></Label>
                                     </CheckBox>
                                     <Label Grid.Column="2" Name="XboxLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                                    <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Xbox" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
-                                    <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Xbox" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
                                 </Grid>
                             </Expander.Header>
                         </Expander>
@@ -206,14 +186,14 @@
                             <Expander.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
@@ -221,9 +201,7 @@
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableRetroAchievements}" />
                                     </CheckBox>
                                     <Label Grid.Column="2" Name="RetroAchievementsLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                                    <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_RetroAchievements" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
-                                    <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_RetroAchievements" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
-
+                                    
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
                                             Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-RetroAchievements" />
                                 </Grid>
@@ -273,14 +251,14 @@
                             <Expander.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
@@ -288,9 +266,7 @@
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableRpcs3Achievements}"></Label>
                                     </CheckBox>
                                     <Label Grid.Column="2" Name="Rpcs3Load" HorizontalAlignment="Center">xxx / xxx</Label>
-                                    <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Rpcs3" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
-                                    <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Rpcs3" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
-
+                                    
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
                                             Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-RPCS3" />
                                 </Grid>
@@ -359,14 +335,14 @@
                             <Expander.Header>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
@@ -374,8 +350,6 @@
                                         <Label Content="Enable Local"></Label>
                                     </CheckBox>
                                     <Label Grid.Column="2" Name="LocalLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                                    <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
-                                    <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
                                 </Grid>
                             </Expander.Header>
                         </Expander>
@@ -496,7 +470,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="{DynamicResource LOCSuccessStoryDatabase}">
+            <TabItem Header="{DynamicResource LOCCommonMisc}">
                 <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -505,43 +479,11 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="30" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="30" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-
-                    <GroupBox Grid.Column="0" Header="{DynamicResource LOCSuccessStoryGetData}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <Button Grid.Row="0" Content="{DynamicResource LOCSuccessStoryGetDataRecent}" FontSize="14" Click="Button_Click_Get_Recent" ToolTip="{DynamicResource LOCSuccessStoryGetDataRecentToolTip}"></Button>
-                            <Button Grid.Row="2" Content="{DynamicResource LOCSuccessStoryGetDataInstalled}" FontSize="14" Click="Button_Click_Get_Installed" ToolTip="{DynamicResource LOCSuccessStoryGetDataInstalledToolTip}"></Button>
-                            <Button Grid.Row="4" Content="{DynamicResource LOCSuccessStoryGetAllData}" FontSize="14" Click="Button_Click_Get_All" ToolTip="{DynamicResource LOCSuccessStoryGetAllDataToolTip}"></Button>
-                        </Grid>
-                    </GroupBox>
-
-                    <GroupBox Grid.Column="2" Header="{DynamicResource LOCSuccessStoryRefreshData}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="5" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-
-                            <Button Grid.Row="0" Content="{DynamicResource LOCSuccessStoryRefreshAllDataRecent}" FontSize="14" Click="Button_Click_All_Recent" ToolTip="{DynamicResource LOCSuccessStoryRefreshAllDataRecentToolTip}"></Button>
-                            <Button Grid.Row="2" Content="{DynamicResource LOCSuccessStoryRefreshDataInstalledRecent}" FontSize="14" Click="Button_Click_All_Installed" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataInstalledRecentToolTip}"></Button>
-                            <Button Grid.Row="4" Content="{DynamicResource LOCSuccessStoryRefreshAllData}" FontSize="14" Click="Button_Click_All" ToolTip="{DynamicResource LOCSuccessStoryRefreshAllDataToolTip}"></Button>
-                        </Grid>
-                    </GroupBox>
 
                     <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" IsChecked="{Binding Settings.EnableImageCache}" ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}">
                         <Label Content="{DynamicResource LOCSuccessStoryEnableImageCache}" />
