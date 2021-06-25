@@ -222,10 +222,13 @@ namespace SuccessStory.Clients
                     int AchievementsCount = 0;
                     if (!PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi & GetSteamConfig())
                     {
-                        using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
+                        if (gameId != 0)
                         {
-                            KeyValue SchemaForGame = steamWebAPI.GetSchemaForGame(appid: gameId, l: LocalLang);
-                            AchievementsCount = SchemaForGame.Children?.Find(x => x.Name == "availableGameStats")?.Children?.Find(x => x.Name == "achievements")?.Children?.Count ?? 0;
+                            using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApiKey))
+                            {
+                                KeyValue SchemaForGame = steamWebAPI.GetSchemaForGame(appid: gameId, l: LocalLang);
+                                AchievementsCount = SchemaForGame.Children?.Find(x => x.Name == "availableGameStats")?.Children?.Find(x => x.Name == "achievements")?.Children?.Count ?? 0;
+                            }
                         }
                     }
                     else
@@ -240,14 +243,17 @@ namespace SuccessStory.Clients
                         }
                     }
 
-                    ListSearchGames.Add(new SearchResult
+                    if (gameId != 0)
                     {
-                        Name = WebUtility.HtmlDecode(title),
-                        Url = url,
-                        UrlImage = img,
-                        AppId = gameId,
-                        AchievementsCount = AchievementsCount
-                    });
+                        ListSearchGames.Add(new SearchResult
+                        {
+                            Name = WebUtility.HtmlDecode(title),
+                            Url = url,
+                            UrlImage = img,
+                            AppId = gameId,
+                            AchievementsCount = AchievementsCount
+                        });
+                    }
 
                     index++;
                 }

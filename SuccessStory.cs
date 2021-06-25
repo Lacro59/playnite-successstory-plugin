@@ -351,7 +351,7 @@ namespace SuccessStory
                     });
                 }
 
-                if (!IsAddOrShowManual)
+                if (!IsAddOrShowManual && !gameAchievements.IsManual)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
@@ -368,7 +368,8 @@ namespace SuccessStory
                 }
             }
 
-            if (PluginSettings.Settings.EnableManual && IsAddOrShowManual)
+            //if (PluginSettings.Settings.EnableManual && IsAddOrShowManual)
+            if (PluginSettings.Settings.EnableManual)
             {
                 if (!gameAchievements.HasData)
                 {
@@ -383,7 +384,7 @@ namespace SuccessStory
                         }
                     });
                 }
-                else
+                else if (gameAchievements.IsManual)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
