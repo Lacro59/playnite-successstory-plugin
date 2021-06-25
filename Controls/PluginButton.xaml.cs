@@ -121,7 +121,7 @@ namespace SuccessStory.Controls
         private void PART_PluginButton_Click(object sender, RoutedEventArgs e)
         {
             dynamic ViewExtension = null;
-            if (PluginDatabase.GameContext.Source.Name.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+            if (PluginDatabase.GameContext.Source?.Name?.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
             {
                 ViewExtension = new SuccessStoryOverwatchView(PluginDatabase.GameContext);
             }

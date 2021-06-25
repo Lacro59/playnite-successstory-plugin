@@ -72,6 +72,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableSteam}" Name="PART_EnableSteam" VerticalAlignment="Center">
@@ -80,6 +82,9 @@
                                     <Label Grid.Column="2" Name="SteamLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                                     <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Steam" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
                                     <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Steam" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
+
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-Steam" />
                                 </Grid>
                             </Expander.Header>
 
@@ -114,6 +119,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding Settings.EnableGog}" VerticalAlignment="Center">
@@ -143,6 +150,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding Settings.EnableOrigin}" VerticalAlignment="Center">
@@ -172,6 +181,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnableXbox}" VerticalAlignment="Center">
@@ -202,6 +213,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding Settings.EnableRetroAchievements}" Name="PART_EnableRetroAchievements" VerticalAlignment="Center">
@@ -210,6 +223,9 @@
                                     <Label Grid.Column="2" Name="RetroAchievementsLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                                     <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_RetroAchievements" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
                                     <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_RetroAchievements" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
+
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-RetroAchievements" />
                                 </Grid>
                             </Expander.Header>
 
@@ -264,6 +280,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableRpcs3Achievements}" Name="PART_EnableRpcs3Achievements" VerticalAlignment="Center">
@@ -272,6 +290,9 @@
                                     <Label Grid.Column="2" Name="Rpcs3Load" HorizontalAlignment="Center">xxx / xxx</Label>
                                     <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="Button_Click_Get_Rpcs3" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}" />
                                     <Button Grid.Column="6" Content="{DynamicResource LOCSuccessStoryRefreshData}" Click="Button_Click_Rpcs3" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}" />
+
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-RPCS3" />
                                 </Grid>
                             </Expander.Header>
 
@@ -345,6 +366,8 @@
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="8" />
                                         <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableLocal}" VerticalAlignment="Center">

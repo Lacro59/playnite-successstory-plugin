@@ -531,6 +531,12 @@ namespace SuccessStory.Views
         }
 
 
+        private void Button_Click_Wiki(object sender, RoutedEventArgs e)
+        {
+            Process.Start((string)((FrameworkElement)sender).Tag);
+        }
+
+
         #region Tag
         private void ButtonAddTag_Click(object sender, RoutedEventArgs e)
         {

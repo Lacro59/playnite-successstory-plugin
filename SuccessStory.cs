@@ -86,7 +86,7 @@ namespace SuccessStory
                     dynamic ViewExtension = null;
                     if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                     {
-                        if (PluginDatabase.GameContext.Source.Name.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+                        if (PluginDatabase.GameContext.Source?.Name?.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
                         {
                             ViewExtension = new SuccessStoryOverwatchView(PluginDatabase.GameContext);
                         }
