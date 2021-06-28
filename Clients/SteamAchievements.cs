@@ -101,7 +101,7 @@ namespace SuccessStory.Clients
                 logger.Debug($"SuccessStory [Ignored] - Steam - GetAchievementsLocal()");
 #endif
 
-                SteamEmulators se = new SteamEmulators(_PlayniteApi, _PluginUserDataPath);
+                SteamEmulators se = new SteamEmulators(_PlayniteApi, _PluginUserDataPath, SuccessStory.PluginDatabase.PluginSettings.LocalPath);
                 var temp = se.GetAchievementsLocal(game.Name, SteamApiKey);
                 AppId = se.GetSteamId();
 

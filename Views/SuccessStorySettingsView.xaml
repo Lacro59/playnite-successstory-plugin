@@ -39,6 +39,8 @@
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="8" />
                                 <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="35" />
@@ -52,6 +54,7 @@
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="35" />
+                                <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
@@ -162,12 +165,59 @@
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableManualAchievements}"></Label>
                             </CheckBox>
 
+                            
                             <CheckBox Grid.Column="0" Grid.Row="11" IsChecked="{Binding EnableLocal}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center">
                                 <Label Content="Enable Local"></Label>
                             </CheckBox>
                             <Label Grid.Column="2" Grid.Row="11" x:Name="LocalLoad" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center">xxx / xxx</Label>
                             <Button Grid.Column="4" Grid.Row="11" Height="30" Content="" FontFamily="{DynamicResource CommonFont}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Get_Local" ToolTip="{DynamicResource LOCSuccessStoryGetMissingToolTip}"></Button>
                             <Button Grid.Column="6" Grid.Row="11" Height="30" Content="{DynamicResource LOCSuccessStoryRefreshData}" Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}" Click="Button_Click_Local" ToolTip="{DynamicResource LOCSuccessStoryRefreshDataToolTip}"></Button>
+
+                            <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddLocalFolder_Click" 
+                                    Name="ButtonAddLocalFolder" Grid.Column="8" Grid.Row="11" Height="30"
+                                    Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    VerticalAlignment="Center" />
+
+                            <ItemsControl Grid.Row="12" MinHeight="10" Margin="50,10,0,0" Grid.ColumnSpan="10"
+                                          Visibility="{Binding EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                          Name="PART_ItemsControl" AlternationCount="100">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="40,0,0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="8" />
+                                                <ColumnDefinition Width="auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <TextBox Text="{Binding FolderPath}" VerticalAlignment="Center" MinWidth="180" Grid.Column="0" />
+
+                                            <Grid Grid.Column="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="8" />
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectLocalFolder_Click" 
+                                                                Name="ButtonSelectLocalFolder"                                                                
+                                                                Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                VerticalAlignment="Center" Grid.Column="0" />
+
+                                                <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveLocalFolder_Click" 
+                                                                Name="ButtonRemoveLocalFolder"
+                                                                Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                VerticalAlignment="Center" Grid.Column="4" />
+                                            </Grid>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </Grid>
                     </DockPanel>
                 </ScrollViewer>

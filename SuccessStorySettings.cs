@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using SuccessStory.Services;
+using AchievementsLocal;
 
 namespace SuccessStory
 {
@@ -80,6 +81,8 @@ namespace SuccessStory
         public string RetroAchievementsKey { get; set; } = string.Empty;
 
         public bool EnableLocal { get; set; } = false;
+        public List<Folder> LocalPath { get; set; } = new List<Folder>();
+
         public bool EnableManual { get; set; } = false;
 
         public string NameSorting { get; set; } = "LastActivity";
@@ -179,6 +182,8 @@ namespace SuccessStory
                 RetroAchievementsKey = savedSettings.RetroAchievementsKey;
 
                 EnableLocal = savedSettings.EnableLocal;
+                LocalPath = savedSettings.LocalPath;
+
                 EnableManual = savedSettings.EnableManual;
 
                 NameSorting = savedSettings.NameSorting;
@@ -217,6 +222,8 @@ namespace SuccessStory
 
         public void EndEdit()
         {
+            this.LocalPath = SuccessStorySettingsView.LocalPath;
+
             // Code executed when user decides to confirm changes made since BeginEdit was called.
             // This method should save settings made to Option1 and Option2.
             plugin.SavePluginSettings(this);

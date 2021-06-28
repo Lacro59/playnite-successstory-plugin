@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using System.Diagnostics;
 using SuccessStory.Services;
+using AchievementsLocal;
 
 namespace SuccessStory.Views
 {
@@ -32,6 +33,10 @@ namespace SuccessStory.Views
         public static bool WithoutMessage = false;
         public static CancellationTokenSource tokenSource;
         private CancellationToken ct;
+
+
+        public static List<Folder> LocalPath = new List<Folder>();
+
 
         int SteamTotal;
         int SteamTotalAchievements;
@@ -76,6 +81,9 @@ namespace SuccessStory.Views
                     cbDefaultSorting.Text = resources.GetString("LOCSuccessStorylvGamesProgression");
                     break;
             }
+
+            LocalPath = PluginDatabase.PluginSettings.LocalPath.GetClone();
+            PART_ItemsControl.ItemsSource = LocalPath;
         }
 
         private void SetTotal()
@@ -565,6 +573,37 @@ namespace SuccessStory.Views
                 PART_Rpcs3Folder.Text = SelectedFolder;
                 PluginDatabase.PluginSettings.Rpcs3InstallationFolder = SelectedFolder;
             }
+        }
+
+
+
+        private void ButtonAddLocalFolder_Click(object sender, RoutedEventArgs e)
+        {
+            PART_ItemsControl.ItemsSource = null;
+            LocalPath.Add(new Folder { FolderPath = "" });
+            PART_ItemsControl.ItemsSource = LocalPath;
+        }
+
+        private void ButtonSelectLocalFolder_Click(object sender, RoutedEventArgs e)
+        {
+            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
+
+            string SelectedFolder = _PlayniteApi.Dialogs.SelectFolder();
+            if (!SelectedFolder.IsNullOrEmpty())
+            {
+                PART_ItemsControl.ItemsSource = null;
+                LocalPath[indexFolder].FolderPath = SelectedFolder;
+                PART_ItemsControl.ItemsSource = LocalPath;
+            }
+        }
+
+        private void ButtonRemoveLocalFolder_Click(object sender, RoutedEventArgs e)
+        {
+            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
+
+            PART_ItemsControl.ItemsSource = null;
+            LocalPath.RemoveAt(indexFolder);
+            PART_ItemsControl.ItemsSource = LocalPath;
         }
     }
 
