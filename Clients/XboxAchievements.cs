@@ -237,9 +237,9 @@ namespace SuccessStory.Clients
             }
         }
 
-        private async Task<List<XboxAchievement>> GetXboxAchievements(string pfn, string name)
+        private async Task<List<XboxAchievement>> GetXboxAchievements(string gameId, string name)
         {
-            Common.LogDebug(true, $"GetXboxAchievements() - name: {name} - pfn: {pfn}");
+            Common.LogDebug(true, $"GetXboxAchievements() - name: {name} - gameId: {gameId}");
 
             if (!File.Exists(xstsLoginTokesPath))
             {
@@ -280,11 +280,18 @@ namespace SuccessStory.Clients
             }
 
             string titleId = string.Empty;
-            if (!pfn.IsNullOrEmpty())
+            if (gameId?.StartsWith("CONSOLE_") == true)
             {
-                var libTitle = GetTitleInfo(pfn).Result;
+                var consoleGameIdParts = gameId.Split('_');
+                titleId = consoleGameIdParts[1];
 
-                Common.LogDebug(true, $"XboxAchievements - name: {name} - pfn: {pfn} - titleId: {titleId}");
+                Common.LogDebug(true, $"XboxAchievements - name: {name} - gameId: {gameId} - titleId: {titleId}");
+            }
+            else if (!gameId.IsNullOrEmpty())
+            {
+                var libTitle = GetTitleInfo(gameId).Result;
+
+                Common.LogDebug(true, $"XboxAchievements - name: {name} - gameId: {gameId} - titleId: {titleId}");
 
                 titleId = libTitle.titleId;
             }
@@ -336,11 +343,11 @@ namespace SuccessStory.Clients
                 {
                     ListAchievements = ListAchievements.Where(x => x.titleAssociations.First().name.ToLower() == name.ToLower()).ToList();
 
-                    Common.LogDebug(true, $"Not find with {pfn} for {name} - {ListAchievements.Count}");
+                    Common.LogDebug(true, $"Not find with {gameId} for {name} - {ListAchievements.Count}");
                 }                
                 else
                 {
-                    Common.LogDebug(true, $"Find with {titleId} & {pfn} for {name} - {ListAchievements.Count}");
+                    Common.LogDebug(true, $"Find with {titleId} & {gameId} for {name} - {ListAchievements.Count}");
                 }
 
                 return ListAchievements;
