@@ -115,12 +115,6 @@ namespace SuccessStory.Services
             Database = new SuccessStoryCollection(Paths.PluginDatabasePath);
             Database.SetGameInfo<Achievements>(PlayniteApi);
 
-            Task.Run(() =>
-            {
-                Thread.Sleep(2000);
-                GetPluginTags();
-            });
-
             return true;
         }
 
@@ -1127,6 +1121,7 @@ namespace SuccessStory.Services
 
         public override void AddTag(Game game, bool noUpdate = false)
         {
+            GetPluginTags();
             GameAchievements gameAchievements = Get(game, true);
 
             if (gameAchievements.HaveAchivements)
