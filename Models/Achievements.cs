@@ -239,7 +239,7 @@ namespace SuccessStory.Models
 
             if (url.IndexOf(".xboxlive.com") > -1)
             {
-                NameFromUrl = "xbox_" + Name.Replace(" ", "");
+                NameFromUrl = "xbox_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - 5);
             }
 
             if (url.IndexOf("steamcommunity") > -1)
