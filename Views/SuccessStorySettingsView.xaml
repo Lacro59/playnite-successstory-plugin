@@ -80,8 +80,18 @@
 				                            BorderBrush="{DynamicResource PopupBorderBrush}"
 				                            BorderThickness="{DynamicResource PopupBorderThickness}">
                                     <Grid>
-                                        <CheckBox IsChecked="{Binding Settings.EnableSteamWithoutWebApi}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="10" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        
+                                        <CheckBox Grid.Row="2" IsChecked="{Binding Settings.EnableSteamWithoutWebApi}">
                                             <Label Content="{DynamicResource LOCSuccessStorySteamNoApi}" />
+                                        </CheckBox>
+
+                                        <CheckBox Grid.Row="0" IsChecked="{Binding Settings.SteamIsPrivate}">
+                                            <Label Content="{DynamicResource LOCPrivateAccount}" />
                                         </CheckBox>
                                     </Grid>
                                 </Border>

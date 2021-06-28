@@ -33,6 +33,8 @@ namespace SuccessStory.Clients
         private readonly string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}/?tab=achievements";
         private readonly string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}/?tab=achievements";
 
+        private readonly string UrlAchievements = @"https://steamcommunity.com/stats/{0}/achievements/";
+
 
         public SteamAchievements() : base()
         {
@@ -62,9 +64,9 @@ namespace SuccessStory.Clients
 
                 int.TryParse(game.GameId, out AppId);
 
-                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
                 {
-                    AllAchievements = GetAchievementsInPublic(AppId);
+                    AllAchievements = GetAchievementsByWeb(AppId);
                 }
                 else
                 {
@@ -97,29 +99,40 @@ namespace SuccessStory.Clients
             {
                 Common.LogDebug(true, $"GetAchievementsLocal()");
 
-                SteamEmulators se = new SteamEmulators();
-                var temp = se.GetAchievementsLocal(game.Name, SteamApiKey);
-                AppId = se.GetSteamId();
-
-                if (temp.Items.Count > 0)
+                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
                 {
-                    Result.HaveAchivements = true;
-                    Result.Total = temp.Total;
-                    Result.Locked = temp.Locked;
-                    Result.Unlocked = temp.Unlocked;
-                    Result.Progression = temp.Progression;
+                    logger.Warn($"Option without API key is enbaled");
+                }
+                else if (SteamApiKey.IsNullOrEmpty())
+                {
+                    logger.Warn($"No Steam API key");
+                }
+                else
+                {
+                    SteamEmulators se = new SteamEmulators();
+                    var temp = se.GetAchievementsLocal(game.Name, SteamApiKey);
+                    AppId = se.GetSteamId();
 
-                    for (int i = 0; i < temp.Items.Count; i++)
+                    if (temp.Items.Count > 0)
                     {
-                        Result.Items.Add(new Achievements
+                        Result.HaveAchivements = true;
+                        Result.Total = temp.Total;
+                        Result.Locked = temp.Locked;
+                        Result.Unlocked = temp.Unlocked;
+                        Result.Progression = temp.Progression;
+
+                        for (int i = 0; i < temp.Items.Count; i++)
                         {
-                            Name = temp.Items[i].Name,
-                            ApiName = temp.Items[i].ApiName,
-                            Description = temp.Items[i].Description,
-                            UrlUnlocked = temp.Items[i].UrlUnlocked,
-                            UrlLocked = temp.Items[i].UrlLocked,
-                            DateUnlocked = temp.Items[i].DateUnlocked
-                        });
+                            Result.Items.Add(new Achievements
+                            {
+                                Name = temp.Items[i].Name,
+                                ApiName = temp.Items[i].ApiName,
+                                Description = temp.Items[i].Description,
+                                UrlUnlocked = temp.Items[i].UrlUnlocked,
+                                UrlLocked = temp.Items[i].UrlLocked,
+                                DateUnlocked = temp.Items[i].DateUnlocked
+                            });
+                        }
                     }
                 }
             }
@@ -127,7 +140,14 @@ namespace SuccessStory.Clients
 
             if (Result.Items.Count > 0)
             {
-                Result.Items = GetGlobalAchievementPercentagesForApp(AppId, Result.Items);
+                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
+                {
+                    Result.Items = GetGlobalAchievementPercentagesForAppByWeb(AppId, Result.Items);
+                }
+                else
+                {
+                    Result.Items = GetGlobalAchievementPercentagesForApp(AppId, Result.Items);
+                }                    
             }
 
             return Result;
@@ -152,28 +172,39 @@ namespace SuccessStory.Clients
             { 
                 Common.LogDebug(true, $"GetAchievementsLocal()");
 
-                SteamEmulators se = new SteamEmulators();
-                var temp = se.GetAchievementsLocal(game.Name, SteamApiKey, AppId);
-
-                if (temp.Items.Count > 0)
+                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
                 {
-                    Result.HaveAchivements = true;
-                    Result.Total = temp.Total;
-                    Result.Locked = temp.Locked;
-                    Result.Unlocked = temp.Unlocked;
-                    Result.Progression = temp.Progression;
+                    logger.Warn($"Option without API key is enbaled");
+                }
+                else if (SteamApiKey.IsNullOrEmpty())
+                {
+                    logger.Warn($"No Steam API key");
+                }
+                else
+                {
+                    SteamEmulators se = new SteamEmulators();
+                    var temp = se.GetAchievementsLocal(game.Name, SteamApiKey, AppId);
 
-                    for (int i = 0; i < temp.Items.Count; i++)
+                    if (temp.Items.Count > 0)
                     {
-                        Result.Items.Add(new Achievements
+                        Result.HaveAchivements = true;
+                        Result.Total = temp.Total;
+                        Result.Locked = temp.Locked;
+                        Result.Unlocked = temp.Unlocked;
+                        Result.Progression = temp.Progression;
+
+                        for (int i = 0; i < temp.Items.Count; i++)
                         {
-                            Name = temp.Items[i].Name,
-                            ApiName = temp.Items[i].ApiName,
-                            Description = temp.Items[i].Description,
-                            UrlUnlocked = temp.Items[i].UrlUnlocked,
-                            UrlLocked = temp.Items[i].UrlLocked,
-                            DateUnlocked = temp.Items[i].DateUnlocked
-                        });
+                            Result.Items.Add(new Achievements
+                            {
+                                Name = temp.Items[i].Name,
+                                ApiName = temp.Items[i].ApiName,
+                                Description = temp.Items[i].Description,
+                                UrlUnlocked = temp.Items[i].UrlUnlocked,
+                                UrlLocked = temp.Items[i].UrlLocked,
+                                DateUnlocked = temp.Items[i].DateUnlocked
+                            });
+                        }
                     }
                 }
             }
@@ -186,6 +217,169 @@ namespace SuccessStory.Clients
 
             return Result;
         }
+
+        private List<Achievements> GetAchievementsByWeb(int AppId, bool TryByName = false)
+        {
+            List<Achievements> achievements = new List<Achievements>();
+
+            string url = string.Empty;
+            string ResultWeb = string.Empty;
+            bool noData = true;
+
+            // Get data
+            if (HtmlDocument == null)
+            {
+                var cookieLang = new Cookie("Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+                var cookies = new List<Cookie>();
+                cookies.Add(cookieLang);
+
+                if (!TryByName)
+                {
+                    Common.LogDebug(true, $"GetAchievementsByWeb() for {SteamId} - {AppId}");
+
+                    url = string.Format(UrlProfilById, SteamId, AppId);
+                    try
+                    {
+                        if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
+                        {
+                            ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                        }
+                        else
+                        {
+                            using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                            {
+                                WebView.SetCookies(url, "https://steamcommunity.com", "Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language, "/", default(DateTime));
+                                WebView.NavigateAndWait(url);
+                                ResultWeb = WebView.GetPageSource();
+                            }
+                        }
+                    }
+                    catch (WebException ex)
+                    {
+                        Common.LogError(ex, false);
+                    }
+                }
+                else
+                {
+                    Common.LogDebug(true, $"GetAchievementsByWeb() for {SteamUser} - {AppId}");
+
+                    url = string.Format(UrlProfilByName, SteamUser, AppId);
+                    try
+                    {
+                        if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
+                        {
+                            ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                        }
+                        else
+                        {
+                            using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                            {
+                                WebView.SetCookies(url, "https://steamcommunity.com", "Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language, "/", default(DateTime));
+                                WebView.NavigateAndWait(url);
+                                ResultWeb = WebView.GetPageSource();
+                            }
+                        }
+                    }
+                    catch (WebException ex)
+                    {
+                        Common.LogError(ex, false);
+                    }
+                }
+
+                if (!ResultWeb.IsNullOrEmpty())
+                {
+                    HtmlParser parser = new HtmlParser();
+                    HtmlDocument = parser.Parse(ResultWeb);
+
+                    if (HtmlDocument.QuerySelectorAll("div.achieveRow").Length != 0)
+                    {
+                        noData = false;
+                    }
+                }
+
+                if (!TryByName && noData)
+                {
+                    HtmlDocument = null;
+                    return GetAchievementsByWeb(AppId, TryByName = true);
+                }
+                else if (noData)
+                {
+                    return achievements;
+                }
+            }
+
+
+            // Find the achievement description
+            if (HtmlDocument != null)
+            {
+                foreach (var achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
+                {
+                    try
+                    {
+                        string UrlUnlocked = achieveRow.QuerySelector(".achieveImgHolder img").GetAttribute("src");
+
+                        DateTime DateUnlocked = default(DateTime);
+                        string TempDate = string.Empty;
+                        if (achieveRow.QuerySelector(".achieveUnlockTime") != null)
+                        {
+                            TempDate = achieveRow.QuerySelector(".achieveUnlockTime").InnerHtml.Trim();
+                            TempDate = TempDate.ToLower().Replace("unlocked", string.Empty).Replace("@ ", string.Empty).Replace("<br>", string.Empty).Trim();
+                            try
+                            {
+                                DateUnlocked = DateTime.ParseExact(TempDate, "d MMM h:mmtt", CultureInfo.InvariantCulture);
+                            }
+                            catch
+                            {
+                            }
+                            try
+                            {
+                                DateUnlocked = DateTime.ParseExact(TempDate, "d MMM, yyyy h:mmtt", CultureInfo.InvariantCulture);
+                            }
+                            catch
+                            {
+                            }
+                        }
+
+                        string Name = string.Empty;
+                        if (achieveRow.QuerySelector("h3") != null)
+                        {
+                            Name = achieveRow.QuerySelector("h3").InnerHtml.Trim();
+                        }
+
+                        string Description = string.Empty;
+                        if (achieveRow.QuerySelector("h5") != null)
+                        {
+                            Description = achieveRow.QuerySelector("h5").InnerHtml;
+                            if (Description.Contains("steamdb_achievement_spoiler"))
+                            {
+                                Description = achieveRow.QuerySelector("h5 span").InnerHtml.Trim();
+                            }
+
+                            Description = WebUtility.HtmlDecode(Description);
+                        }
+
+                        achievements.Add(new Achievements
+                        {
+                            Name = Name,
+                            ApiName = string.Empty,
+                            Description = Description,
+                            UrlUnlocked = UrlUnlocked,
+                            UrlLocked = string.Empty,
+                            DateUnlocked = DateUnlocked,
+                            IsHidden = false,
+                            Percent = 100
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false);
+                    }
+                }
+            }
+
+            return achievements;
+        }
+
 
         public List<SearchResult> SearchGame(string Name)
         {
@@ -283,6 +477,7 @@ namespace SuccessStory.Clients
             IsLocal = true;
         }
 
+
         private bool GetSteamConfig()
         {
             try
@@ -361,6 +556,7 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, false, "Error on VerifSteamUser()");
             }
         }
+
 
         public bool CheckIsPublic(int AppId)
         {
@@ -861,143 +1057,6 @@ namespace SuccessStory.Clients
             return string.Empty;
         }
 
-        private List<Achievements> GetAchievementsInPublic(int AppId, bool TryByName = false)
-        {
-            List<Achievements> achievements = new List<Achievements>();
-
-            string url = string.Empty;
-            string ResultWeb = string.Empty;
-            bool noData = true;
-
-            // Get data
-            if (HtmlDocument == null)
-            {
-                var cookieLang = new Cookie("Steam_Language", "en_US");
-                var cookies = new List<Cookie>();
-                cookies.Add(cookieLang);
-
-                if (!TryByName)
-                {
-                    Common.LogDebug(true, $"GetAchievementsInPublic() for {SteamId} - {AppId}");
-
-                    url = string.Format(UrlProfilById, SteamId, AppId);
-                    try
-                    {
-                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
-                    }
-                    catch (WebException ex)
-                    {
-                        Common.LogError(ex, false);
-                    }
-                }
-                else
-                {
-                    Common.LogDebug(true, $"GetAchievementsInPublic() for {SteamUser} - {AppId}");
-
-                    url = string.Format(UrlProfilByName, SteamUser, AppId);
-                    try
-                    {
-                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
-                    }
-                    catch (WebException ex)
-                    {
-                        Common.LogError(ex, false);
-                    }
-                }
-
-                if (!ResultWeb.IsNullOrEmpty())
-                {
-                    HtmlParser parser = new HtmlParser();
-                    HtmlDocument = parser.Parse(ResultWeb);
-
-                    if (HtmlDocument.QuerySelectorAll("div.achieveRow").Length != 0)
-                    {
-                        noData = false;
-                    }
-                }
-
-                if (!TryByName && noData)
-                {
-                    HtmlDocument = null;
-                    return GetAchievementsInPublic(AppId, TryByName = true);
-                }
-                else if (noData)
-                {
-                    return achievements;
-                }
-            }
-
-
-            // Find the achievement description
-            if (HtmlDocument != null)
-            {
-                foreach (var achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
-                {
-                    try
-                    {
-                        string UrlUnlocked = achieveRow.QuerySelector(".achieveImgHolder img").GetAttribute("src");
-
-                        DateTime DateUnlocked = default(DateTime);
-                        string TempDate = string.Empty;
-                        if (achieveRow.QuerySelector(".achieveUnlockTime") != null)
-                        {
-                            TempDate = achieveRow.QuerySelector(".achieveUnlockTime").InnerHtml.Trim();
-                            TempDate = TempDate.ToLower().Replace("unlocked", string.Empty).Replace("@ ", string.Empty).Replace("<br>", string.Empty).Trim();
-                            try
-                            {
-                                DateUnlocked = DateTime.ParseExact(TempDate, "d MMM h:mmtt", CultureInfo.InvariantCulture);
-                            }
-                            catch
-                            {
-                            }
-                            try
-                            {
-                                DateUnlocked = DateTime.ParseExact(TempDate, "d MMM, yyyy h:mmtt", CultureInfo.InvariantCulture);
-                            }
-                            catch
-                            {
-                            }
-                        }
-
-                        string Name = string.Empty;
-                        if (achieveRow.QuerySelector("h3") != null)
-                        {
-                            Name = achieveRow.QuerySelector("h3").InnerHtml.Trim();
-                        }
-
-                        string Description = string.Empty;
-                        if (achieveRow.QuerySelector("h5") != null)
-                        {
-                            Description = achieveRow.QuerySelector("h5").InnerHtml;
-                            if (Description.Contains("steamdb_achievement_spoiler"))
-                            {
-                                Description = achieveRow.QuerySelector("h5 span").InnerHtml.Trim();
-                            }
-
-                            Description = WebUtility.HtmlDecode(Description);
-                        }
-
-                        achievements.Add(new Achievements
-                        {
-                            Name = Name,
-                            ApiName = string.Empty,
-                            Description = Description,
-                            UrlUnlocked = UrlUnlocked,
-                            UrlLocked = string.Empty,
-                            DateUnlocked = DateUnlocked,
-                            IsHidden = false,
-                            Percent = 100
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false);
-                    }
-                }
-            }
-
-            return achievements;
-        }
 
         private List<Achievements> GetGlobalAchievementPercentagesForApp(int AppId, List<Achievements> AllAchievements)
         {
@@ -1029,6 +1088,106 @@ namespace SuccessStory.Clients
             catch (Exception ex)
             {
                 Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+            }
+
+            return AllAchievements;
+        }
+
+        private List<Achievements> GetGlobalAchievementPercentagesForAppByWeb(int AppId, List<Achievements> AllAchievements)
+        {
+            string url = string.Empty;
+            string ResultWeb = string.Empty;
+            bool noData = true;
+            HtmlDocument = null;
+
+            // Get data
+            if (HtmlDocument == null)
+            {
+                var cookieLang = new Cookie("Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+                var cookies = new List<Cookie>();
+                cookies.Add(cookieLang);
+
+                Common.LogDebug(true, $"GetGlobalAchievementPercentagesForAppByWeb() for {SteamId} - {AppId}");
+
+                url = string.Format(UrlAchievements, AppId);
+                try
+                {
+                    if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
+                    {
+                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                    }
+                    else
+                    {
+                        using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                        {
+                            WebView.SetCookies(url, "https://steamcommunity.com", "Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language, "/", default(DateTime));
+                            WebView.NavigateAndWait(url);
+                            ResultWeb = WebView.GetPageSource();
+                        }
+                    }
+                }
+                catch (WebException ex)
+                {
+                    Common.LogError(ex, false);
+                }
+
+                if (!ResultWeb.IsNullOrEmpty())
+                {
+                    HtmlParser parser = new HtmlParser();
+                    HtmlDocument = parser.Parse(ResultWeb);
+
+                    if (HtmlDocument.QuerySelectorAll("div.achieveRow").Length != 0)
+                    {
+                        noData = false;
+                    }
+                }
+
+                if (noData)
+                {
+                    return AllAchievements;
+                }
+            }
+
+
+            // Find the achievement description
+            if (HtmlDocument != null)
+            {
+                foreach (var achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
+                {
+                    try
+                    {
+                        string Name = string.Empty;
+                        if (achieveRow.QuerySelector("h3") != null)
+                        {
+                            Name = achieveRow.QuerySelector("h3").InnerHtml.Trim();
+                        }
+
+                        //string Description = string.Empty;
+                        //if (achieveRow.QuerySelector("h5") != null)
+                        //{
+                        //    Description = achieveRow.QuerySelector("h5").InnerHtml;
+                        //    if (Description.Contains("steamdb_achievement_spoiler"))
+                        //    {
+                        //        Description = achieveRow.QuerySelector("h5 span").InnerHtml.Trim();
+                        //    }
+                        //
+                        //    Description = WebUtility.HtmlDecode(Description);
+                        //}
+
+                        float Percent = 0;
+                        if (achieveRow.QuerySelector(".achievePercent") != null)
+                        {
+                            Percent = float.Parse(achieveRow.QuerySelector(".achievePercent").InnerHtml.Replace("%", string.Empty).Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+                        }
+
+
+                        AllAchievements.Find(x => x.Name == Name).Percent = Percent;
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false);
+                    }
+                }
             }
 
             return AllAchievements;

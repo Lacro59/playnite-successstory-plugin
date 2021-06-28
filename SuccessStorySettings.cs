@@ -183,6 +183,7 @@ namespace SuccessStory
         public bool EnableOverwatchAchievements { get; set; } = false;
 
         public bool EnableSteamWithoutWebApi { get; set; } = false;
+        public bool SteamIsPrivate { get; set; } = false;
 
         public string Rpcs3InstallationFolder { get; set; } = string.Empty;
 
