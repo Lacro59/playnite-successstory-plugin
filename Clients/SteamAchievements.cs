@@ -25,6 +25,7 @@ namespace SuccessStory.Clients
     {
         private IHtmlDocument HtmlDocument { get; set; } = null;
         private bool IsLocal { get; set; } = false;
+        private bool IsManual { get; set; } = false;
 
         private string SteamId { get; set; } = string.Empty;
         private string SteamApiKey { get; set; } = string.Empty;
@@ -109,8 +110,8 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    SteamEmulators se = new SteamEmulators();
-                    var temp = se.GetAchievementsLocal(game.Name, SteamApiKey);
+                    SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
+                    var temp = se.GetAchievementsLocal(game.Name, SteamApiKey, 0, IsManual);
                     AppId = se.GetSteamId();
 
                     if (temp.Items.Count > 0)
@@ -140,7 +141,7 @@ namespace SuccessStory.Clients
 
             if (Result.Items.Count > 0)
             {
-                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
+                if (!IsLocal && (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate))
                 {
                     Result.Items = GetGlobalAchievementPercentagesForAppByWeb(AppId, Result.Items);
                 }
@@ -182,8 +183,8 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    SteamEmulators se = new SteamEmulators();
-                    var temp = se.GetAchievementsLocal(game.Name, SteamApiKey, AppId);
+                    SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
+                    var temp = se.GetAchievementsLocal(game.Name, SteamApiKey, AppId, IsManual);
 
                     if (temp.Items.Count > 0)
                     {
@@ -475,6 +476,11 @@ namespace SuccessStory.Clients
         public void SetLocal()
         {
             IsLocal = true;
+        }
+
+        public void SetManual()
+        {
+            IsManual = true;
         }
 
 

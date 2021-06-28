@@ -74,6 +74,7 @@ namespace SuccessStory.Views
             if ((bool)rbSteam.IsChecked)
             {
                 steamAchievements.SetLocal();
+                steamAchievements.SetManual();
                 gameAchievements = steamAchievements.GetAchievements(game, searchResult.AppId);
             }
 

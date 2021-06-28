@@ -6,6 +6,7 @@ using SuccessStory.Services;
 using SuccessStory.Models;
 using Playnite.SDK.Data;
 using SuccessStory.Views;
+using CommonPluginsShared.Models;
 
 namespace SuccessStory
 {
@@ -194,6 +195,8 @@ namespace SuccessStory
         public string RetroAchievementsKey { get; set; } = string.Empty;
 
         public bool EnableLocal { get; set; } = false;
+        public List<Folder> LocalPath { get; set; } = new List<Folder>();
+
         public bool EnableManual { get; set; } = false;
 
         public string NameSorting { get; set; } = "LastActivity";
@@ -346,6 +349,8 @@ namespace SuccessStory
         // This method should save settings made to Option1 and Option2.
         public void EndEdit()
         {
+            Settings.LocalPath = SuccessStorySettingsView.LocalPath;
+
             Plugin.SavePluginSettings(Settings);
             SuccessStory.PluginDatabase.PluginSettings = this;
             this.OnPropertyChanged();

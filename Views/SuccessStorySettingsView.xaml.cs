@@ -14,6 +14,7 @@ using System.Windows.Data;
 using System.Windows.Threading;
 using System.Diagnostics;
 using SuccessStory.Services;
+using CommonPluginsShared.Models;
 
 namespace SuccessStory.Views
 {
@@ -27,6 +28,8 @@ namespace SuccessStory.Views
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
         private ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+
+        public static List<Folder> LocalPath = new List<Folder>();
 
         private string _PluginUserDataPath;
 
@@ -92,6 +95,10 @@ namespace SuccessStory.Views
                         }
                     }));
                 });
+
+
+            LocalPath = PluginDatabase.PluginSettings.Settings.LocalPath.GetClone();
+            PART_ItemsControl.ItemsSource = LocalPath;
         }
 
         private void SetTotal()
@@ -257,6 +264,38 @@ namespace SuccessStory.Views
         private bool CheckLogged()
         {
             return exophaseAchievements.GetIsUserLoggedIn();
+        }
+        #endregion
+
+
+        #region Local
+        private void ButtonAddLocalFolder_Click(object sender, RoutedEventArgs e)
+        {
+            PART_ItemsControl.ItemsSource = null;
+            LocalPath.Add(new Folder { FolderPath = "" });
+            PART_ItemsControl.ItemsSource = LocalPath;
+        }
+
+        private void ButtonSelectLocalFolder_Click(object sender, RoutedEventArgs e)
+        {
+            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
+
+            string SelectedFolder = _PlayniteApi.Dialogs.SelectFolder();
+            if (!SelectedFolder.IsNullOrEmpty())
+            {
+                PART_ItemsControl.ItemsSource = null;
+                LocalPath[indexFolder].FolderPath = SelectedFolder;
+                PART_ItemsControl.ItemsSource = LocalPath;
+            }
+        }
+
+        private void ButtonRemoveLocalFolder_Click(object sender, RoutedEventArgs e)
+        {
+            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
+
+            PART_ItemsControl.ItemsSource = null;
+            LocalPath.RemoveAt(indexFolder);
+            PART_ItemsControl.ItemsSource = LocalPath;
         }
         #endregion
     }

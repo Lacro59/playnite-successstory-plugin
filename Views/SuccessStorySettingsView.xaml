@@ -334,7 +334,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="16" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True"
+                        <Expander Grid.Row="16"
                                   Visibility="{Binding Settings.EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -360,8 +360,59 @@
                                         <Label Content="Enable Local"></Label>
                                     </CheckBox>
                                     <Label Grid.Column="2" Name="LocalLoad" HorizontalAlignment="Center">xxx / xxx</Label>
+                                    <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddLocalFolder_Click" 
+                                            Name="ButtonAddLocalFolder" Grid.Column="8"
+                                            Visibility="{Binding ElementName=PART_BoderLocal, Path=Visibility}"
+                                            VerticalAlignment="Center" />
                                 </Grid>
                             </Expander.Header>
+
+                            <Expander.Content>
+                                <Border Margin="5" Padding="10" Name="PART_BoderLocal"
+				                        BorderBrush="{DynamicResource PopupBorderBrush}"
+				                        BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <Grid>
+                                        <ItemsControl MinHeight="10" Name="PART_ItemsControl" AlternationCount="100">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="40,0,0,5">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="8" />
+                                                            <ColumnDefinition Width="auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="auto" />
+                                                        </Grid.RowDefinitions>
+
+                                                        <TextBox Text="{Binding FolderPath}" VerticalAlignment="Center" MinWidth="180" Grid.Column="0" />
+
+                                                        <Grid Grid.Column="2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition Width="8" />
+                                                                <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="auto" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectLocalFolder_Click" 
+                                                                    Name="ButtonSelectLocalFolder"                                                                
+                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                    VerticalAlignment="Center" Grid.Column="0" />
+
+                                                            <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveLocalFolder_Click" 
+                                                                    Name="ButtonRemoveLocalFolder"
+                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                    VerticalAlignment="Center" Grid.Column="4" />
+                                                        </Grid>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </Border>
+                            </Expander.Content>
                         </Expander>
                     </Grid>
                 </ScrollViewer>
