@@ -230,10 +230,10 @@ namespace SuccessStory.Clients
             }
         }
 
-        private async Task<List<XboxAchievement>> GetXboxAchievements(string pfn, string name)
+        private async Task<List<XboxAchievement>> GetXboxAchievements(string gameId, string name)
         {
 //#if DEBUG
-            logger.Debug($"SuccessStory [Ignored] - GetXboxAchievements() - name: {name} - pfn: {pfn}");
+            logger.Debug($"SuccessStory [Ignored] - GetXboxAchievements() - name: {name} - pfn: {gameId}");
 //#endif
 
             if (!File.Exists(xstsLoginTokesPath))
@@ -275,13 +275,21 @@ namespace SuccessStory.Clients
             }
 
             string titleId = string.Empty;
-            if (!pfn.IsNullOrEmpty())
+            if (gameId?.StartsWith("CONSOLE_") == true)
             {
-                var libTitle = GetTitleInfo(pfn).Result;
-//#if DEBUG
-                logger.Debug($"SuccessStory [Ignored] - XboxAchievements - name: {name} - pfn: {pfn} - titleId: {titleId}");
-//#endif
+                var consoleGameIdParts = gameId.Split('_');
+                titleId = consoleGameIdParts[1];
+#if DEBUG
+                logger.Debug($"SuccessStory [Ignored] - XboxAchievements - name: {name} - gameId: {gameId} - titleId: {titleId}");
+#endif
+            }
+            else if (!gameId.IsNullOrEmpty())
+            {
+                var libTitle = GetTitleInfo(gameId).Result;
                 titleId = libTitle.titleId;
+//#if DEBUG
+                logger.Debug($"SuccessStory [Ignored] - XboxAchievements - name: {name} - pfn: {gameId} - titleId: {titleId}");
+//#endif
             }
 
             var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
@@ -330,13 +338,13 @@ namespace SuccessStory.Clients
                 {
                     ListAchievements = ListAchievements.Where(x => x.titleAssociations.First().name.ToLower() == name.ToLower()).ToList();
 #if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - XboxAchievements - Not find with {pfn} for {name} - {ListAchievements.Count}");
+                    logger.Debug($"SuccessStory [Ignored] - XboxAchievements - Not find with {gameId} for {name} - {ListAchievements.Count}");
 #endif
                 }                
                 else
                 {
 #if DEBUG
-                    logger.Debug($"SuccessStory [Ignored] - XboxAchievements - Find with {titleId} & {pfn} for {name} - {ListAchievements.Count}");
+                    logger.Debug($"SuccessStory [Ignored] - XboxAchievements - Find with {titleId} & {gameId} for {name} - {ListAchievements.Count}");
 #endif
                 }
 
