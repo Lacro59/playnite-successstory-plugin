@@ -31,10 +31,10 @@ namespace SuccessStory.Clients
         private string SteamApiKey { get; set; } = string.Empty;
         private string SteamUser { get; set; } = string.Empty;
 
-        private readonly string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}/?tab=achievements";
-        private readonly string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}/?tab=achievements";
+        private readonly string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}?tab=achievements&l={2}";
+        private readonly string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}?tab=achievements&l={2}";
 
-        private readonly string UrlAchievements = @"https://steamcommunity.com/stats/{0}/achievements/";
+        private readonly string UrlAchievements = @"https://steamcommunity.com/stats/{0}/achievements/?l={1}";
 
 
         public SteamAchievements() : base()
@@ -230,26 +230,21 @@ namespace SuccessStory.Clients
             // Get data
             if (HtmlDocument == null)
             {
-                var cookieLang = new Cookie("Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language);
-                var cookies = new List<Cookie>();
-                cookies.Add(cookieLang);
-
                 if (!TryByName)
                 {
                     Common.LogDebug(true, $"GetAchievementsByWeb() for {SteamId} - {AppId}");
 
-                    url = string.Format(UrlProfilById, SteamId, AppId);
+                    url = string.Format(UrlProfilById, SteamId, AppId, LocalLang);
                     try
                     {
                         if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
                         {
-                            ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                            ResultWeb = Web.DownloadStringDataKeepParam(url).GetAwaiter().GetResult();
                         }
                         else
                         {
                             using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
                             {
-                                WebView.SetCookies(url, "https://steamcommunity.com", "Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language, "/", default(DateTime));
                                 WebView.NavigateAndWait(url);
                                 ResultWeb = WebView.GetPageSource();
                             }
@@ -264,18 +259,17 @@ namespace SuccessStory.Clients
                 {
                     Common.LogDebug(true, $"GetAchievementsByWeb() for {SteamUser} - {AppId}");
 
-                    url = string.Format(UrlProfilByName, SteamUser, AppId);
+                    url = string.Format(UrlProfilByName, SteamUser, AppId, LocalLang);
                     try
                     {
                         if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
                         {
-                            ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                            ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
                         }
                         else
                         {
                             using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
                             {
-                                WebView.SetCookies(url, "https://steamcommunity.com", "Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language, "/", default(DateTime));
                                 WebView.NavigateAndWait(url);
                                 ResultWeb = WebView.GetPageSource();
                             }
@@ -323,21 +317,128 @@ namespace SuccessStory.Clients
                         string TempDate = string.Empty;
                         if (achieveRow.QuerySelector(".achieveUnlockTime") != null)
                         {
-                            TempDate = achieveRow.QuerySelector(".achieveUnlockTime").InnerHtml.Trim();
-                            TempDate = TempDate.ToLower().Replace("unlocked", string.Empty).Replace("@ ", string.Empty).Replace("<br>", string.Empty).Trim();
-                            try
+                            TempDate = achieveRow.QuerySelector(".achieveUnlockTime").InnerHtml.Trim().ToLower();
+                            TempDate = TempDate.ToLower()
+                                .Replace("unlocked", string.Empty)
+                                .Replace("sbloccato in data", string.Empty).Replace(" ore ", " ")
+                                .Replace("débloqué le", string.Empty).Replace(" à ", " ")
+                                .Replace("odemčeno", string.Empty)
+                                .Replace("дата получения:", string.Empty).Replace(" в ", " ")
+                                .Replace("alcançada em", string.Empty).Replace(" às ", " ")
+                                .Replace("feloldva:", string.Empty)
+                                .Replace("здобуто", string.Empty)
+                                .Replace("解锁", string.Empty)
+                                .Replace("解鎖於", string.Empty)
+                                .Replace("odblokowano:", string.Empty)
+                                .Replace("låst opp", string.Empty).Replace(" kl. ", " ")
+                                .Replace("アンロックした日", string.Empty)
+                                .Replace("se desbloqueó el", string.Empty).Replace(" a las ", " ")
+                                .Replace("uhr freigeschaltet", string.Empty).Replace(" am ", " ").Replace(" um ", " ")
+                                .Replace("@ ", string.Empty).Replace("<br>", string.Empty).Trim();
+
+                            TempDate = Regex.Replace(TempDate, @"(\d)h(\d)", "$1:$2");
+
+                            var ci = new CultureInfo(CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language));
+
+                            if (DateUnlocked == default(DateTime))
                             {
-                                DateUnlocked = DateTime.ParseExact(TempDate, "d MMM h:mmtt", CultureInfo.InvariantCulture);
+                                DateTime.TryParseExact(TempDate, "d MMM h:mmtt", new CultureInfo("en_US"), DateTimeStyles.None, out DateUnlocked);
                             }
-                            catch
+                            if (DateUnlocked == default(DateTime))
                             {
+                                DateTime.TryParseExact(TempDate, "d MMM, yyyy h:mmtt", new CultureInfo("en_US"), DateTimeStyles.None, out DateUnlocked);
                             }
-                            try
+
+
+                            if (DateUnlocked == default(DateTime))
                             {
-                                DateUnlocked = DateTime.ParseExact(TempDate, "d MMM, yyyy h:mmtt", CultureInfo.InvariantCulture);
+                                DateTime.TryParseExact(TempDate, "d MMM h:mmtt", ci, DateTimeStyles.None, out DateUnlocked);
                             }
-                            catch
+                            if (DateUnlocked == default(DateTime))
                             {
+                                DateTime.TryParseExact(TempDate, "d MMM, yyyy h:mmtt", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d. MMM. yyyy v H.mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d. MMMM yyyy H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d. MMM. yyyy H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d MMM yyyy H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "yyyy. MMM d., H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d MMM yyyy, H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "yyyy年M月d日 H時mm分", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d. MMMM yyyy H.mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d MMMM yyyy o H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d/MMM/yyyy H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d MMM. yyyy H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "d MMM yyyy о H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "yyyy年M月d日tth:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                DateTime.TryParseExact(TempDate, "yyyy 年 M 月 d 日 tt h:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                ci.DateTimeFormat.AbbreviatedMonthNames = ci.DateTimeFormat.AbbreviatedMonthNames.Select(x => x.Replace(".", string.Empty)).ToArray();
+                                DateTime.TryParseExact(TempDate, "d MMM yyyy H:mm", ci, DateTimeStyles.None, out DateUnlocked);
+                            }
+
+
+                            if (DateUnlocked == default(DateTime))
+                            {
+                                logger.Warn($"DateUnlocked no parsed for {TempDate}");
                             }
                         }
 
@@ -564,6 +665,7 @@ namespace SuccessStory.Clients
         }
 
 
+        // TODO Not used
         public bool CheckIsPublic(int AppId)
         {
             GetSteamConfig();
@@ -977,18 +1079,26 @@ namespace SuccessStory.Clients
             // Get data
             if (HtmlDocument == null)
             {
-                var cookieLang = new Cookie("Steam_Language", LocalLang);
-                var cookies = new List<Cookie>();
-                cookies.Add(cookieLang);
-
                 if (!TryByName)
                 {
                     Common.LogDebug(true, $"FindHiddenDescription() for {SteamId} - {AppId}");
 
-                    url = string.Format(UrlProfilById, SteamId, AppId);
+                    url = string.Format(UrlProfilById, SteamId, AppId, LocalLang);
                     try
                     {
-                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                        if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
+                        {
+                            ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                        }
+                        else
+                        {
+                            using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                            {
+                                WebView.NavigateAndWait(url);
+                                ResultWeb = WebView.GetPageSource();
+                            }
+                        }
+
                     }
                     catch (WebException ex)
                     {
@@ -999,10 +1109,21 @@ namespace SuccessStory.Clients
                 {
                     Common.LogDebug(true, $"FindHiddenDescription() for {SteamUser} - {AppId}");
 
-                    url = string.Format(UrlProfilByName, SteamUser, AppId);
+                    url = string.Format(UrlProfilByName, SteamUser, AppId, LocalLang);
                     try
                     {
-                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
+                        if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
+                        {
+                            ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                        }
+                        else
+                        {
+                            using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                            {
+                                WebView.NavigateAndWait(url);
+                                ResultWeb = WebView.GetPageSource();
+                            }
+                        }
                     }
                     catch (WebException ex)
                     {
@@ -1109,28 +1230,12 @@ namespace SuccessStory.Clients
             // Get data
             if (HtmlDocument == null)
             {
-                var cookieLang = new Cookie("Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language);
-                var cookies = new List<Cookie>();
-                cookies.Add(cookieLang);
-
                 Common.LogDebug(true, $"GetGlobalAchievementPercentagesForAppByWeb() for {SteamId} - {AppId}");
 
-                url = string.Format(UrlAchievements, AppId);
+                url = string.Format(UrlAchievements, AppId, LocalLang);
                 try
                 {
-                    if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
-                    {
-                        ResultWeb = HttpDownloader.DownloadString(url, cookies, Encoding.UTF8);
-                    }
-                    else
-                    {
-                        using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
-                        {
-                            WebView.SetCookies(url, "https://steamcommunity.com", "Steam_Language", PluginDatabase.PlayniteApi.ApplicationSettings.Language, "/", default(DateTime));
-                            WebView.NavigateAndWait(url);
-                            ResultWeb = WebView.GetPageSource();
-                        }
-                    }
+                    ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
                 }
                 catch (WebException ex)
                 {
