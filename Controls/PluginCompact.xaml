@@ -38,9 +38,9 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Margin="5,0,5,0"
-                                Height="{Binding Height}" Width="{Binding Height}" VerticalAlignment="Top">
+                    <StackPanel Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Top">
                         <Image Stretch="UniformToFill" Source="{Binding LastestAchievement.Icon, IsAsync=True}"
+                               Height="{Binding Height}" Width="{Binding Height}"
                                RenderOptions.BitmapScalingMode="Fant">
                             <Image.Style>
                                 <Style TargetType="{x:Type Image}">

@@ -429,8 +429,7 @@ namespace SuccessStory
                 Description = "Test",
                 Action = (mainMenuItem) => 
                 {
-                    ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                    exophaseAchievements.SetRarety(PluginDatabase.Get(GameMenu));
+
                 }
             });
 #endif

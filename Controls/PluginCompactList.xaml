@@ -56,10 +56,11 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Height="{Binding ElementName=PART_GridContener, Path=Tag}"
-                          Width="{Binding ElementName=PART_GridContener, Path=Tag}">
+                    <Grid>
                         <StackPanel ToolTip="{Binding NameWithDateUnlock}" Margin="2">
-                            <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant">
+                            <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant" 
+                                   Width="{Binding ElementName=PART_GridContener, Path=Tag}"
+                                   Height="{Binding ElementName=PART_GridContener, Path=Tag}">
                                 <Image.Style>
                                     <Style TargetType="{x:Type Image}">
                                         <Style.Triggers>
