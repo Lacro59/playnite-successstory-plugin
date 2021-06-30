@@ -20,7 +20,7 @@ namespace SuccessStory
 
         public bool Auto100PercentCompleted { get; set; } = false;
 
-        public bool EnableImageCache { get; set; } = false;
+        public bool EnableImageCache { get; set; } = true;
         public bool IgnoreSettings { get; set; } = false;
 
         public bool EnableIntegrationInDescription { get; set; } = false;
