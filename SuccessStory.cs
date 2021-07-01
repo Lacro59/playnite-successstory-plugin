@@ -124,15 +124,16 @@ namespace SuccessStory
 
         private void WindowBase_LoadedEvent(object sender, System.EventArgs e)
         {
-            string WinIdProperty = String.Empty;
+            string WinIdProperty = string.Empty;
             try
             {
                 WinIdProperty = ((Window)sender).GetValue(AutomationProperties.AutomationIdProperty).ToString();
 
-                if (WinIdProperty == "WindowSettings")
+                if (WinIdProperty == "WindowSettings" || WinIdProperty == "WindowLibraryIntegrations")
                 {
                     Common.LogDebug(true, $"Reset VerifToAdd");
 
+                    SuccessStoryDatabase.VerifToAddOrShowPsn = null;
                     SuccessStoryDatabase.VerifToAddOrShowGog = null;
                     SuccessStoryDatabase.VerifToAddOrShowOrigin = null;
                     SuccessStoryDatabase.VerifToAddOrShowRetroAchievements = null;

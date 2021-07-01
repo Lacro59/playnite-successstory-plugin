@@ -28,6 +28,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                             
                             <RowDefinition Height="30" />
                             <RowDefinition Height="auto" />
@@ -185,8 +187,37 @@
                             </Expander.Header>
                         </Expander>
 
+                        <Expander Grid.Row="8" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnablePsn}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnablePSN}"></Label>
+                                    </CheckBox>
+                                    <Label Grid.Column="2" Name="PSNLoad" HorizontalAlignment="Center">xxx / xxx</Label>
+                                </Grid>
+                            </Expander.Header>
+                        </Expander>
+
                         
-                        <Expander Grid.Row="8">
+                        <Expander Grid.Row="10">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -251,7 +282,7 @@
                             </Expander.Content>
                         </Expander>
 
-                        <Expander Grid.Row="10">
+                        <Expander Grid.Row="12">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -305,7 +336,7 @@
                         </Expander>
 
                         
-                        <Expander Grid.Row="12" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                        <Expander Grid.Row="14" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -320,7 +351,7 @@
                         </Expander>
 
                         
-                        <Expander Grid.Row="14" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                        <Expander Grid.Row="16" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -334,7 +365,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="16"
+                        <Expander Grid.Row="18"
                                   Visibility="{Binding Settings.EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">

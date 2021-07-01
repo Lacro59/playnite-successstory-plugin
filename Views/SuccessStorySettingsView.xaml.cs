@@ -49,6 +49,8 @@ namespace SuccessStory.Views
         int RetroAchievementsTotalAchievements;
         int Rpcs3Total;
         int Rpcs3TotalAchievements;
+        int PsnTotal;
+        int PsnTotalAchievements;
 
         int LocalTotal;
         int LocalTotalAchievements;
@@ -115,6 +117,8 @@ namespace SuccessStory.Views
             RetroAchievementsTotalAchievements = 0;
             Rpcs3Total = 0;
             Rpcs3TotalAchievements = 0;
+            PsnTotal = 0;
+            PsnTotalAchievements = 0;
 
             LocalTotal = 0;
             LocalTotalAchievements = 0;
@@ -169,6 +173,13 @@ namespace SuccessStory.Views
                                 Rpcs3TotalAchievements += 1;
                             }
                             break;
+                        case "playstation":
+                            PsnTotal += 1;
+                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                PsnTotalAchievements += 1;
+                            }
+                            break;
                         case "playnite":
                             LocalTotal += 1;
                             if (PluginDatabase.VerifAchievementsLoad(game.Id))
@@ -191,6 +202,7 @@ namespace SuccessStory.Views
             RetroAchievementsLoad.Content = RetroAchievementsTotalAchievements + "/" + RetroAchievementsTotal;
             LocalLoad.Content = LocalTotalAchievements + "/" + LocalTotal;
             Rpcs3Load.Content = Rpcs3TotalAchievements + "/" + Rpcs3Total;
+            PSNLoad.Content = PsnTotalAchievements + "/" + PsnTotal;
         }
 
 

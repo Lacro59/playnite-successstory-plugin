@@ -201,6 +201,11 @@ namespace SuccessStory
                                 icon = TransformIcon.Get("Rpcs3") + " ";
                                 FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Rpcs3", SourceNameShort = "Rpcs3", IsCheck = false });
                             }
+                            if (PluginDatabase.PluginSettings.Settings.EnablePsn)
+                            {
+                                icon = TransformIcon.Get("Playstation") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playstation", SourceNameShort = "Playstation", IsCheck = false });
+                            }
                             if (PluginDatabase.PluginSettings.Settings.EnableManual)
                             {
                                 icon = TransformIcon.Get("Manual Achievements") + " ";
@@ -247,6 +252,11 @@ namespace SuccessStory
                         {
                             icon = TransformIcon.Get("RPCS3") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RPCS3", SourceNameShort = "Rpcs3", IsCheck = false });
+                        }
+                        if (PluginDatabase.PluginSettings.Settings.EnablePsn)
+                        {
+                            icon = TransformIcon.Get("Playstation") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playstation", SourceNameShort = "Playstation", IsCheck = false });
                         }
                         if (PluginDatabase.PluginSettings.Settings.EnableManual)
                         {

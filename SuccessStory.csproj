@@ -119,6 +119,7 @@
     <Compile Include="Clients\GenericAchievements.cs" />
     <Compile Include="Clients\GogAchievements.cs" />
     <Compile Include="Clients\OriginAchievements.cs" />
+    <Compile Include="Clients\PSNAchievements.cs" />
     <Compile Include="Clients\RetroAchievements.cs" />
     <Compile Include="Clients\Rpcs3Achievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
@@ -471,7 +472,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\hidden_trophy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="playnite-plugincommon\CommonPluginsResources\CommonPluginsResources.csproj">
       <Project>{4effe926-9c64-4750-a399-f344710edc09}</Project>

@@ -57,9 +57,13 @@ namespace SuccessStory.Models
             get
             {
                 string TempUrlUnlocked = UrlUnlocked;
-                if (TempUrlUnlocked.IndexOf("rpcs3") > -1)
+                if (TempUrlUnlocked?.IndexOf("rpcs3") > -1)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, UrlUnlocked); ;
+                }
+                if (TempUrlUnlocked?.IndexOf("hidden_trophy") > -1)
+                {
+                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
                 }
 
                 string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
@@ -110,12 +114,7 @@ namespace SuccessStory.Models
                 }
                 else
                 {
-                    string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
-                    if (pathImageUnlocked.IsNullOrEmpty() && !File.Exists(pathImageUnlocked))
-                    {
-                        pathImageUnlocked = UrlUnlocked;
-                    }
-                    return pathImageUnlocked;
+                    return ImageUnlocked;
                 }
             }
         }
@@ -236,6 +235,11 @@ namespace SuccessStory.Models
         {
             string NameFromUrl = string.Empty;
             List<string> urlSplited = url.Split('/').ToList();
+
+            if (url.IndexOf(".playstation.") > -1)
+            {
+                NameFromUrl = "playstation_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - 4).Replace(".png", string.Empty);
+            }
 
             if (url.IndexOf(".xboxlive.com") > -1)
             {

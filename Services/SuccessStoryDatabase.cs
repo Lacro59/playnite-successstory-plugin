@@ -31,7 +31,9 @@ namespace SuccessStory.Services
         private GogAchievements GogAPI { get; set; }
         private OriginAchievements OriginAPI { get; set; }
         private XboxAchievements XboxAPI { get; set; }
+        private PSNAchievements PsnAPI { get; set; }
 
+        public static bool? VerifToAddOrShowPsn = null;
         public static bool? VerifToAddOrShowGog = null;
         public static bool? VerifToAddOrShowOrigin = null;
         public static bool? VerifToAddOrShowRetroAchievements = null;
@@ -105,6 +107,13 @@ namespace SuccessStory.Services
                 SourceName = "Battle.net";
                 GameName = "Overwatch";
                 //VerifToAddOrShowOverwatch = false;
+                VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
+            });
+
+            Task.Run(() =>
+            {
+                SourceName = "Playstation";
+                //VerifToAddOrShowPsn = false;
                 VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
             });
         }
@@ -225,6 +234,15 @@ namespace SuccessStory.Services
                         XboxAPI = new XboxAchievements();
                     }
                     gameAchievements = XboxAPI.GetAchievements(game);
+                }
+
+                if (GameSourceName.ToLower() == "playstation")
+                {
+                    if (PsnAPI == null)
+                    {
+                        PsnAPI = new PSNAchievements();
+                    }
+                    gameAchievements = PsnAPI.GetAchievements(game);
                 }
 
                 if (GameSourceName.ToLower() == "playnite" || GameSourceName.ToLower() == "hacked")
@@ -446,6 +464,10 @@ namespace SuccessStory.Services
                     {
                         tempSourcesLabels.Add("Xbox");
                     }
+                    if (PluginSettings.Settings.EnablePsn)
+                    {
+                        tempSourcesLabels.Add("Playstation");
+                    }
                     if (PluginSettings.Settings.EnableLocal)
                     {
                         tempSourcesLabels.Add("Playnite");
@@ -489,6 +511,10 @@ namespace SuccessStory.Services
                 if (PluginSettings.Settings.EnableXbox)
                 {
                     tempSourcesLabels.Add("Xbox");
+                }
+                if (PluginSettings.Settings.EnablePsn)
+                {
+                    tempSourcesLabels.Add("Playstation");
                 }
                 if (PluginSettings.Settings.EnableRetroAchievements)
                 {
@@ -714,6 +740,43 @@ namespace SuccessStory.Services
         /// <returns></returns>
         public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI PlayniteApi, SuccessStorySettings settings, string PluginUserDataPath, string GameSourceName, string GameName)
         {
+            if (settings.EnablePsn && GameSourceName.ToLower() == "playstation")
+            {
+                if (PlayniteTools.IsDisabledPlaynitePlugins("PSNLibrary"))
+                {
+                    logger.Warn("PSN is enable then disabled");
+                    PlayniteApi.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-Psn-disabled",
+                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnDisabled")}",
+                        NotificationType.Error,
+                        () => plugin.OpenSettingsView()
+                    ));
+                    return false;
+                }
+                else
+                {
+                    PSNAchievements pSNAchievements = new PSNAchievements();
+
+                    if (VerifToAddOrShowPsn == null)
+                    {
+                        VerifToAddOrShowPsn = pSNAchievements.IsConnected();
+                    }
+
+                    if (!(bool)VerifToAddOrShowPsn)
+                    {
+                        logger.Warn("PSN user is not authenticate");
+                        PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-PSN-NoAuthenticated",
+                            $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate")}",
+                            NotificationType.Error,
+                            () => plugin.OpenSettingsView()
+                        ));
+                        return false;
+                    }
+                }
+                return true;
+            }
+            
             if (settings.EnableSteam && GameSourceName.ToLower() == "steam")
             {
                 if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary"))
@@ -958,6 +1021,7 @@ namespace SuccessStory.Services
                     GameSourceName.ToLower().IndexOf("hacked") == -1 &&
                     GameSourceName.ToLower().IndexOf("retroachievements") == -1 &&
                     GameSourceName.ToLower().IndexOf("rpcs3") == -1 &&
+                    GameSourceName.ToLower().IndexOf("playstation") == -1 &&
                     GameSourceName.ToLower().IndexOf("battle.net") == -1
                 );
             }
@@ -993,10 +1057,17 @@ namespace SuccessStory.Services
                     }
                     break;
 
-                case "Xbox":
+                case "xbox":
                     if (!PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary") && XboxAPI == null)
                     {
                         XboxAPI = new XboxAchievements();
+                    }
+                    break;
+
+                case "playstation":
+                    if (!PlayniteTools.IsDisabledPlaynitePlugins("PSNLibrary") && PsnAPI == null)
+                    {
+                        PsnAPI = new PSNAchievements();
                     }
                     break;
 
