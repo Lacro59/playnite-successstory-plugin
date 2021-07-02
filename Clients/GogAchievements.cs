@@ -60,7 +60,7 @@ namespace SuccessStory.Clients
                 try
                 {
                     string urlLang = string.Format(@"https://www.gog.com/user/changeLanguage/{0}", lang.ToLower());
-                    ResultWeb = DonwloadStringData(urlLang, url, accessToken).GetAwaiter().GetResult();
+                    ResultWeb = Web.DownloadStringData(url, accessToken, urlLang).GetAwaiter().GetResult();
                 }
                 catch (WebException ex)
                 {
@@ -151,28 +151,6 @@ namespace SuccessStory.Clients
         public override bool IsConnected()
         {
             return gogAPI.GetIsUserLoggedIn();
-        }
-
-
-        /// <summary>
-        /// Get achievements after change language.
-        /// </summary>
-        /// <param name="UrlChangeLang"></param>
-        /// <param name="UrlAchievements"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        private async Task<string> DonwloadStringData(string UrlChangeLang, string UrlAchievements, string token)
-        {
-            using (var client = new HttpClient())
-            {
-                string resultLang = await client.GetStringAsync(UrlChangeLang).ConfigureAwait(false);
-
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
-                string result = await client.GetStringAsync(UrlAchievements).ConfigureAwait(false);
-
-                return result;
-            }
         }
     }
 }

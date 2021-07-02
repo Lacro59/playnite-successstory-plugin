@@ -311,7 +311,7 @@ namespace SuccessStory.Clients
                 {
                     try
                     {
-                        string UrlUnlocked = achieveRow.QuerySelector(".achieveImgHolder img").GetAttribute("src");
+                        string UrlUnlocked = achieveRow.QuerySelector(".achieveImgHolder img")?.GetAttribute("src");
 
                         DateTime DateUnlocked = default(DateTime);
                         string TempDate = string.Empty;

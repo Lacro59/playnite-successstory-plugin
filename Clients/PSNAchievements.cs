@@ -1,5 +1,6 @@
 ﻿using CommonPlayniteShared.PluginLibrary.PSNLibrary;
 using CommonPluginsShared;
+using CommonPluginsStores;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -44,7 +45,7 @@ namespace SuccessStory.Clients
                 string Lang = CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
                 string GameId = game.GameId.Split('#')[2];
                 string Url = string.Format(UrlAchievements, GameId, Lang);
-                string WebResult = DonwloadStringData(Url, GetPsnToken()).GetAwaiter().GetResult();
+                string WebResult = Web.DownloadStringData(Url, GetPsnToken()).GetAwaiter().GetResult();
 
                 Trophies trophies = Serialization.FromJson<Trophies>(WebResult);
                 foreach(Trophie trophie in trophies.trophies)
@@ -127,45 +128,5 @@ namespace SuccessStory.Clients
         {
             return !GetPsnToken().IsNullOrEmpty();
         }
-
-
-
-        private async Task<string> DonwloadStringData(string UrlAchievements, string token)
-        {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
-                string result = await client.GetStringAsync(UrlAchievements).ConfigureAwait(false);
-
-                return result;
-            }
-        }
-    }
-
-
-    public class Trophies
-    {
-        public List<Trophie> trophies { get; set; }
-    }
-
-    public class Trophie
-    {
-        public int trophyId { get; set; }
-        public bool trophyHidden { get; set; }
-        public string trophyType { get; set; }
-        public string trophyName { get; set; }
-        public string trophyDetail { get; set; }
-        public string trophyIconUrl { get; set; }
-        public int trophyRare { get; set; }
-        public string trophyEarnedRate { get; set; }
-        public FromUser fromUser { get; set; }
-    }
-
-    public class FromUser
-    {
-        public string onlineId { get; set; }
-        public bool earned { get; set; }
-        public DateTime earnedDate { get; set; }
     }
 }

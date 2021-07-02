@@ -766,7 +766,7 @@ namespace SuccessStory.Services
                     {
                         logger.Warn("PSN user is not authenticate");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
-                            "SuccessStory-PSN-NoAuthenticated",
+                            "SuccessStory-PSN-NoAuthenticate",
                             $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate")}",
                             NotificationType.Error,
                             () => plugin.OpenSettingsView()
