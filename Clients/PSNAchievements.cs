@@ -107,7 +107,7 @@ namespace SuccessStory.Clients
                 else
                 {
                     PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-PSN-NoAuthenticate",
+                        "SuccessStory-Psn-NoAuthenticate",
                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate")}",
                         NotificationType.Error
                     ));

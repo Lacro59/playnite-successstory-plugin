@@ -766,7 +766,7 @@ namespace SuccessStory.Services
                     {
                         logger.Warn("PSN user is not authenticate");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
-                            "SuccessStory-PSN-NoAuthenticate",
+                            "SuccessStory-Psn-NoAuthenticate",
                             $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate")}",
                             NotificationType.Error,
                             () => plugin.OpenSettingsView()
@@ -799,6 +799,17 @@ namespace SuccessStory.Services
                         PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Steam-NoConfig",
                             $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig")}",
+                            NotificationType.Error,
+                            () => plugin.OpenSettingsView()
+                        ));
+                        return false;
+                    }
+                    if (!settings.SteamIsPrivate && !steamAchievements.CheckIsPublic())
+                    {
+                        logger.Warn("Bad Steam configuration");
+                        PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-Steam-NoConfig",
+                            $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                             NotificationType.Error,
                             () => plugin.OpenSettingsView()
                         ));
