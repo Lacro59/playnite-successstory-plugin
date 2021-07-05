@@ -662,14 +662,14 @@ namespace SuccessStory
 #endif
                     foreach (Game game in PlayniteApi.Database.Games)
                     {
-                        try
+                        Models.GameAchievements successStories = PluginDatabase.GetOnlyCache(game.Id);
+                        if (successStories != null && successStories.HaveAchivements)
                         {
-                            Models.GameAchievements successStories = PluginDatabase.GetOnlyCache(game.Id);
-                            if (successStories != null && successStories.HaveAchivements)
-                            {
-                                Common.LogDebug(true, $"TaskCacheImage - {game.Name} - {successStories.Items.Count}");
+                            Common.LogDebug(true, $"TaskCacheImage - {game.Name} - {successStories.Items.Count}");
 
-                                foreach (var achievement in successStories.Items)
+                            foreach (var achievement in successStories.Items)
+                            {
+                                try
                                 {
                                     if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
                                     {
@@ -695,11 +695,11 @@ namespace SuccessStory
                                         break;
                                     }
                                 }
+                                catch (Exception ex)
+                                {
+                                    Common.LogError(ex, true, $"Error on TaskCacheImage");
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, true, $"Error on TaskCacheImage");
                         }
                     }
 

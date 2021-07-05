@@ -82,20 +82,24 @@ namespace SuccessStory.Clients
                     AllAchievements = GetPlayerAchievements(AppId);
                     AllStats = GetUsersStats(AppId);
                 }
-
+                
                 if (AllAchievements.Count > 0)
                 {
-                    var DataCompleted = GetSchemaForGame(AppId, AllAchievements, AllStats);
-                    AllAchievements = DataCompleted.Item1;
-                    AllStats = DataCompleted.Item2;
+                    bool IsOK = Web.DownloadFileImageTest(AllAchievements[0].UrlLocked).GetAwaiter().GetResult();
+                    if (IsOK)
+                    {
+                        var DataCompleted = GetSchemaForGame(AppId, AllAchievements, AllStats);
+                        AllAchievements = DataCompleted.Item1;
+                        AllStats = DataCompleted.Item2;
 
-                    Result.HaveAchivements = true;
-                    Result.Total = AllAchievements.Count;
-                    Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
-                    Result.Locked = Result.Total - Result.Unlocked;
-                    Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
-                    Result.Items = AllAchievements;
-                    Result.ItemsStats = AllStats;
+                        Result.HaveAchivements = true;
+                        Result.Total = AllAchievements.Count;
+                        Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
+                        Result.Locked = Result.Total - Result.Unlocked;
+                        Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
+                        Result.Items = AllAchievements;
+                        Result.ItemsStats = AllStats;
+                    }
                 }
             }
             else
@@ -303,11 +307,11 @@ namespace SuccessStory.Clients
                             SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
                             Achievements.Add(new Achievements
                             {
-                                Name = steamAchievementData.Name,
-                                ApiName = steamAchievementData.RawName,
-                                Description = steamAchievementData.Desc,
-                                UrlUnlocked = steamAchievementData.IconClosed,
-                                UrlLocked = steamAchievementData.IconClosed,
+                                Name = WebUtility.HtmlDecode(steamAchievementData.Name.Trim()),
+                                ApiName = steamAchievementData.RawName.Trim(),
+                                Description = WebUtility.HtmlDecode(steamAchievementData.Desc.Trim()),
+                                UrlUnlocked = steamAchievementData.IconClosed.Trim(),
+                                UrlLocked = steamAchievementData.IconClosed.Trim(),
                                 DateUnlocked = default(DateTime),
                                 IsHidden = steamAchievementData.Hidden,
                                 Percent = 100
@@ -318,23 +322,23 @@ namespace SuccessStory.Clients
                         foreach (dynamic dd in ClosedData)
                         {
                             string stringData = Serialization.ToJson(dd.Value);
-                            SteamAchievementData steamHidden = Serialization.FromJson<SteamAchievementData>(stringData);
+                            SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
                             Achievements.Add(new Achievements
                             {
-                                Name = steamHidden.Name,
-                                ApiName = steamHidden.RawName,
-                                Description = steamHidden.Desc,
-                                UrlUnlocked = steamHidden.IconClosed,
-                                UrlLocked = steamHidden.IconClosed,
-                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(steamHidden.UnlockTime),
-                                IsHidden = steamHidden.Hidden,
+                                Name = WebUtility.HtmlDecode(steamAchievementData.Name.Trim()),
+                                ApiName = steamAchievementData.RawName.Trim(),
+                                Description = WebUtility.HtmlDecode(steamAchievementData.Desc.Trim()),
+                                UrlUnlocked = steamAchievementData.IconClosed.Trim(),
+                                UrlLocked = steamAchievementData.IconClosed.Trim(),
+                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(steamAchievementData.UnlockTime),
+                                IsHidden = steamAchievementData.Hidden,
                                 Percent = 100
                             });
                         }
                     }
                     else
                     {
-                        Common.LogDebug(true, $"No hidden data");
+                        Common.LogDebug(true, $"No achievement data on {Url}");
                     }
                 }
             }
@@ -789,15 +793,15 @@ namespace SuccessStory.Clients
 
                     try
                     {
-                        foreach (KeyValue AchievementsData in SchemaForGame.Children.Find(x => x.Name == "availableGameStats").Children.Find(x => x.Name == "achievements").Children)
+                        foreach (KeyValue AchievementsData in SchemaForGame.Children?.Find(x => x.Name == "availableGameStats").Children?.Find(x => x.Name == "achievements").Children)
                         {
-                            AllAchievements.Find(x => x.ApiName == AchievementsData.Name).IsHidden = AchievementsData.Children.Find(x => x.Name == "hidden").Value == "1";
-                            AllAchievements.Find(x => x.ApiName == AchievementsData.Name).UrlUnlocked = AchievementsData.Children.Find(x => x.Name == "icon").Value;
-                            AllAchievements.Find(x => x.ApiName == AchievementsData.Name).UrlLocked = AchievementsData.Children.Find(x => x.Name == "icongray").Value;
+                            AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).IsHidden = AchievementsData.Children?.Find(x => x.Name == "hidden").Value == "1";
+                            AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).UrlUnlocked = AchievementsData.Children?.Find(x => x.Name == "icon").Value;
+                            AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).UrlLocked = AchievementsData.Children?.Find(x => x.Name == "icongray").Value;
 
-                            if (AllAchievements.Find(x => x.ApiName == AchievementsData.Name).IsHidden)
+                            if (AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).IsHidden)
                             {
-                                AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Description = FindHiddenDescription(AppId, AllAchievements.Find(x => x.ApiName == AchievementsData.Name).Name);
+                                AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).Description = FindHiddenDescription(AppId, AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).Name);
                             }
                         }
                     }
@@ -838,12 +842,12 @@ namespace SuccessStory.Clients
                             }
                             else
                             {
-                                logger.Warn($"No Steam stats for {AppId}");
+                                logger.Info($"No Steam stats for {AppId}");
                             }
                         }
                         else
                         {
-                            logger.Warn($"No Steam stats for {AppId}");
+                            logger.Info($"No Steam stats for {AppId}");
                         }
                     }
                     catch (Exception ex)
@@ -1048,20 +1052,8 @@ namespace SuccessStory.Clients
                         string Name = string.Empty;
                         if (achieveRow.QuerySelector("h3") != null)
                         {
-                            Name = achieveRow.QuerySelector("h3").InnerHtml.Trim();
+                            Name = WebUtility.HtmlDecode(achieveRow.QuerySelector("h3").InnerHtml.Trim());
                         }
-
-                        //string Description = string.Empty;
-                        //if (achieveRow.QuerySelector("h5") != null)
-                        //{
-                        //    Description = achieveRow.QuerySelector("h5").InnerHtml;
-                        //    if (Description.Contains("steamdb_achievement_spoiler"))
-                        //    {
-                        //        Description = achieveRow.QuerySelector("h5 span").InnerHtml.Trim();
-                        //    }
-                        //
-                        //    Description = WebUtility.HtmlDecode(Description);
-                        //}
 
                         float Percent = 0;
                         if (achieveRow.QuerySelector(".achievePercent") != null)
@@ -1069,8 +1061,7 @@ namespace SuccessStory.Clients
                             Percent = float.Parse(achieveRow.QuerySelector(".achievePercent").InnerHtml.Replace("%", string.Empty).Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
                         }
 
-
-                        AllAchievements.Find(x => x.Name == Name).Percent = Percent;
+                        AllAchievements.Find(x => x.Name.ToLower() == Name.ToLower()).Percent = Percent;
                     }
                     catch (Exception ex)
                     {
