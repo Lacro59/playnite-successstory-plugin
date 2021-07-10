@@ -235,22 +235,25 @@ namespace SuccessStory.Clients
                             break;
 
                         default:
-                            if (!DirAchivements.ToLower().Contains("steamemu"))
+                            if (ReturnAchievements.Count == 0)
                             {
-                                ReturnAchievements = GetSteamEmu(DirAchivements + $"\\{SteamId}\\SteamEmu");
-                            }
-                            else
-                            {
-                                var DataPath = DirAchivements.Split('\\').ToList();
-                                int index = DataPath.FindIndex(x => x.ToLower() == "steamemu");
-                                string GameName = DataPath[index - 1];
-
-                                SteamApi steamApi = new SteamApi();
-                                int TempSteamId = steamApi.GetSteamId(GameName);
-
-                                if (TempSteamId == SteamId)
+                                if (!DirAchivements.ToLower().Contains("steamemu"))
                                 {
-                                    ReturnAchievements = GetSteamEmu(DirAchivements);
+                                    ReturnAchievements = GetSteamEmu(DirAchivements + $"\\{SteamId}\\SteamEmu");
+                                }
+                                else
+                                {
+                                    var DataPath = DirAchivements.Split('\\').ToList();
+                                    int index = DataPath.FindIndex(x => x.ToLower() == "steamemu");
+                                    string GameName = DataPath[index - 1];
+
+                                    SteamApi steamApi = new SteamApi();
+                                    int TempSteamId = steamApi.GetSteamId(GameName);
+
+                                    if (TempSteamId == SteamId)
+                                    {
+                                        ReturnAchievements = GetSteamEmu(DirAchivements);
+                                    }
                                 }
                             }
                             break;

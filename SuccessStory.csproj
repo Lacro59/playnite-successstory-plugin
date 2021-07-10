@@ -73,7 +73,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Playnite.SDK">
-      <HintPath>..\..\JosefNemec\Playnite\source\Playnite.DesktopApp\bin\x86\Release\Playnite.SDK.dll</HintPath>
+      <HintPath>..\..\..\Playnite_dev\Playnite.SDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -500,6 +500,9 @@
     <None Include="Resources\Overwatch\Endorsement_5.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems" Label="Shared" />
   <Import Project="playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.projitems" Label="Shared" />
