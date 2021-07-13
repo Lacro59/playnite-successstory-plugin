@@ -1116,6 +1116,7 @@ namespace SuccessStory.Services
         }
 
 
+        #region Tag system
         protected override void GetPluginTags()
         {
             try
@@ -1311,6 +1312,25 @@ namespace SuccessStory.Services
             }
 
             return null;
+        }
+        #endregion
+
+
+        public void SetIgnored(GameAchievements gameAchievements)
+        {
+            if (!gameAchievements.IsIgnored)
+            {
+                Remove(gameAchievements.Id);
+                var pluginData = Get(gameAchievements.Id, true);
+                pluginData.IsIgnored = true;
+                AddOrUpdate(pluginData);
+            }
+            else
+            {
+                gameAchievements.IsIgnored = false;
+                AddOrUpdate(gameAchievements);
+                Refresh(gameAchievements.Id);
+            }
         }
 
 

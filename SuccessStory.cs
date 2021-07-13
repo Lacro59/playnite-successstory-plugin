@@ -311,108 +311,136 @@ namespace SuccessStory
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
 
-            if (VerifToAddOrShow || IsAddOrShowManual)
+            if (!gameAchievements.IsIgnored)
             {
-                if (!PluginSettings.Settings.EnableOneGameView || (PluginSettings.Settings.EnableOneGameView && gameAchievements.HasData))
+                if (VerifToAddOrShow || IsAddOrShowManual)
                 {
-                    // Show list achievements for the selected game
-                    gameMenuItems.Add(new GameMenuItem
+                    if (!PluginSettings.Settings.EnableOneGameView || (PluginSettings.Settings.EnableOneGameView && gameAchievements.HasData))
                     {
-                        MenuSection = resources.GetString("LOCSuccessStory"),
-                        Description = resources.GetString("LOCSuccessStoryViewGame"),
-                        Action = (gameMenuItem) =>
+                        // Show list achievements for the selected game
+                        gameMenuItems.Add(new GameMenuItem
                         {
-                            dynamic ViewExtension = null;
-                            PluginDatabase.IsViewOpen = true;
-                            if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
+                            MenuSection = resources.GetString("LOCSuccessStory"),
+                            Description = resources.GetString("LOCSuccessStoryViewGame"),
+                            Action = (gameMenuItem) =>
                             {
-                                if (PluginDatabase.GameContext.Source?.Name?.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+                                dynamic ViewExtension = null;
+                                PluginDatabase.IsViewOpen = true;
+                                if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                                 {
-                                    ViewExtension = new SuccessStoryOverwatchView(GameMenu);
+                                    if (PluginDatabase.GameContext.Source?.Name?.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+                                    {
+                                        ViewExtension = new SuccessStoryOverwatchView(GameMenu);
+                                    }
+                                    else
+                                    {
+                                        ViewExtension = new SuccessStoryOneGameView(GameMenu);
+                                    }
                                 }
                                 else
                                 {
-                                    ViewExtension = new SuccessStoryOneGameView(GameMenu);
+                                    ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
+                                    ViewExtension.Width = 1280;
+                                    ViewExtension.Height = 740;
                                 }
+                                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                                windowExtension.ShowDialog();
+                                PluginDatabase.IsViewOpen = false;
                             }
-                            else
+                        });
+
+                        gameMenuItems.Add(new GameMenuItem
+                        {
+                            MenuSection = resources.GetString("LOCSuccessStory"),
+                            Description = "-"
+                        });
+                    }
+
+                    if (!IsAddOrShowManual && !gameAchievements.IsManual)
+                    {
+                        gameMenuItems.Add(new GameMenuItem
+                        {
+                            MenuSection = resources.GetString("LOCSuccessStory"),
+                            Description = resources.GetString("LOCCommonRefreshGameData"),
+                            Action = (gameMenuItem) =>
                             {
-                                ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
-                                ViewExtension.Width = 1280;
-                                ViewExtension.Height = 740;
+                                var TaskIntegrationUI = Task.Run(() =>
+                                {
+                                    IsFromMenu = true;
+                                    PluginDatabase.Refresh(GameMenu.Id);
+                                    IsFromMenu = false;
+                                });
                             }
-                            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
-                            windowExtension.ShowDialog();
-                            PluginDatabase.IsViewOpen = false;
-                        }
-                    });
+                        });
 
-                    gameMenuItems.Add(new GameMenuItem
-                    {
-                        MenuSection = resources.GetString("LOCSuccessStory"),
-                        Description = "-"
-                    });
-                }
-
-                if (!IsAddOrShowManual && !gameAchievements.IsManual)
-                {
-                    gameMenuItems.Add(new GameMenuItem
-                    {
-                        MenuSection = resources.GetString("LOCSuccessStory"),
-                        Description = resources.GetString("LOCCommonRefreshGameData"),
-                        Action = (gameMenuItem) =>
+                        gameMenuItems.Add(new GameMenuItem
                         {
-                            var TaskIntegrationUI = Task.Run(() =>
+                            MenuSection = resources.GetString("LOCSuccessStory"),
+                            Description = resources.GetString("LOCSuccessStoryIgnored"),
+                            Action = (mainMenuItem) =>
                             {
-                                IsFromMenu = true;
-                                PluginDatabase.Refresh(GameMenu.Id);
-                                IsFromMenu = false;
-                            });
-                        }
-                    });
+                                PluginDatabase.SetIgnored(gameAchievements);
+                            }
+                        });
+                    }
                 }
-            }
 
-            //if (PluginSettings.Settings.EnableManual && IsAddOrShowManual)
-            if (PluginSettings.Settings.EnableManual)
-            {
-                if (!gameAchievements.HasData)
+                //if (PluginSettings.Settings.EnableManual && IsAddOrShowManual)
+                if (PluginSettings.Settings.EnableManual)
                 {
-                    gameMenuItems.Add(new GameMenuItem
+                    if (!gameAchievements.HasData)
                     {
-                        MenuSection = resources.GetString("LOCSuccessStory"),
-                        Description = resources.GetString("LOCAddTitle"),
-                        Action = (mainMenuItem) =>
+                        gameMenuItems.Add(new GameMenuItem
                         {
-                            PluginDatabase.Remove(GameMenu);
-                            PluginDatabase.GetManual(GameMenu);
-                        }
-                    });
-                }
-                else if (gameAchievements.IsManual)
-                {
-                    gameMenuItems.Add(new GameMenuItem
-                    {
-                        MenuSection = resources.GetString("LOCSuccessStory"),
-                        Description = resources.GetString("LOCEditGame"),
-                        Action = (mainMenuItem) =>
-                        {
-                            var ViewExtension = new SuccessStoryEditManual(GameMenu);
-                            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
-                            windowExtension.ShowDialog();
-                        }
-                    });
-
-                    gameMenuItems.Add(new GameMenuItem
-                    {
-                        MenuSection = resources.GetString("LOCSuccessStory"),
-                        Description = resources.GetString("LOCRemoveTitle"),
-                        Action = (gameMenuItem) =>
-                        {
-                            var TaskIntegrationUI = Task.Run(() =>
+                            MenuSection = resources.GetString("LOCSuccessStory"),
+                            Description = resources.GetString("LOCAddTitle"),
+                            Action = (mainMenuItem) =>
                             {
                                 PluginDatabase.Remove(GameMenu);
-                            });
+                                PluginDatabase.GetManual(GameMenu);
+                            }
+                        });
+                    }
+                    else if (gameAchievements.IsManual)
+                    {
+                        gameMenuItems.Add(new GameMenuItem
+                        {
+                            MenuSection = resources.GetString("LOCSuccessStory"),
+                            Description = resources.GetString("LOCEditGame"),
+                            Action = (mainMenuItem) =>
+                            {
+                                var ViewExtension = new SuccessStoryEditManual(GameMenu);
+                                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                                windowExtension.ShowDialog();
+                            }
+                        });
+
+                        gameMenuItems.Add(new GameMenuItem
+                        {
+                            MenuSection = resources.GetString("LOCSuccessStory"),
+                            Description = resources.GetString("LOCRemoveTitle"),
+                            Action = (gameMenuItem) =>
+                            {
+                                var TaskIntegrationUI = Task.Run(() =>
+                                {
+                                    PluginDatabase.Remove(GameMenu);
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+            else
+            {
+                if (VerifToAddOrShow || IsAddOrShowManual)
+                {
+                    gameMenuItems.Add(new GameMenuItem
+                    {
+                        MenuSection = resources.GetString("LOCSuccessStory"),
+                        Description = resources.GetString("LOCSuccessStoryNotIgnored"),
+                        Action = (mainMenuItem) =>
+                        {
+                            PluginDatabase.SetIgnored(gameAchievements);
                         }
                     });
                 }

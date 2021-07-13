@@ -31,6 +31,8 @@ namespace SuccessStory.Views
 
         public static List<Folder> LocalPath = new List<Folder>();
 
+        private List<GameAchievements> IgnoredGames;
+
         private string _PluginUserDataPath;
 
         public static bool WithoutMessage = false;
@@ -101,6 +103,12 @@ namespace SuccessStory.Views
 
             LocalPath = PluginDatabase.PluginSettings.Settings.LocalPath.GetClone();
             PART_ItemsControl.ItemsSource = LocalPath;
+
+
+            // Set ignored game
+            IgnoredGames = PluginDatabase.Database.Where(x => x.IsIgnored).ToList().GetClone();
+            IgnoredGames.Sort((x, y) => x.Name.CompareTo(y.Name));
+            PART_IgnoredGames.ItemsSource = IgnoredGames;
         }
 
         private void SetTotal()
@@ -310,6 +318,18 @@ namespace SuccessStory.Views
             PART_ItemsControl.ItemsSource = LocalPath;
         }
         #endregion
+
+
+        private void Button_Click_Remove(object sender, RoutedEventArgs e)
+        {
+            int index = int.Parse(((Button)sender).Tag.ToString());
+            GameAchievements gameAchievements = IgnoredGames[index];
+            PluginDatabase.SetIgnored(gameAchievements);
+            IgnoredGames.RemoveAt(index);
+
+            PART_IgnoredGames.ItemsSource = null;
+            PART_IgnoredGames.ItemsSource = IgnoredGames;
+        }
     }
 
 

@@ -7,12 +7,15 @@
              xmlns:AttachedProperties="clr-namespace:CommonPluginsShared.Controls"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:NegateConverter x:Key="NegateConverter" />
         <local:BooleanAndConverter x:Key="booleanAndConverter" />
+        <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
+        <convertersshared:IndexConverter x:Key="IndexConverter"/>
     </UserControl.Resources>
 
     <Grid Margin="20">
@@ -1025,6 +1028,38 @@
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource LOCSuccessStoryIgnoredGames}">
+                <ListBox Name="PART_IgnoredGames">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
+                                       Grid.Column="0"
+                                       Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" />
+                                <TextBlock Text="{Binding Name}" Grid.Column="2" VerticalAlignment="Center" />
+                                <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
+                                       Grid.Column="4"
+                                       HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="30" />
+
+                                <Button Grid.Column="6" Content="" FontFamily="{DynamicResource CommonFont}" 
+                                        Click="Button_Click_Remove" HorizontalAlignment="Right"
+                                        Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </TabItem>
         </TabControl>
     </Grid>
