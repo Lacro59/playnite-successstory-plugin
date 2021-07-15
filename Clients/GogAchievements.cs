@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CommonPluginsShared.Models;
 
 namespace SuccessStory.Clients
 {
@@ -45,17 +46,22 @@ namespace SuccessStory.Clients
             Result.Items = AllAchievements;
 
             string ResultWeb = string.Empty;
+            string url = string.Empty;
+            string userName = string.Empty;
+            string userId = string.Empty;
 
             // Only if user is logged. 
             if (gogAPI.GetIsUserLoggedIn())
             {
                 string accessToken = gogAPI.GetAccountInfo().accessToken;
 
-                string userId = gogAPI.GetAccountInfo().userId;
+                var AccountInfo = gogAPI.GetAccountInfo();
+                userId = AccountInfo.userId;
+                userName = AccountInfo.username;
                 string lang = CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
 
                 // Achievements
-                string url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements", ClientId, userId);
+                url = string.Format(@"https://gameplay.gog.com/clients/{0}/users/{1}/achievements", ClientId, userId);
 
                 try
                 {
@@ -138,6 +144,16 @@ namespace SuccessStory.Clients
             Result.Locked = Locked;
             Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
             Result.Items = AllAchievements;
+
+            if (Result.HaveAchivements)
+            {
+                Result.SourcesLink = new SourceLink
+                {
+                    GameName = GameName,
+                    Name = "GOG",
+                    Url = $"https://www.gog.com/u/{userName}/game/{ClientId}?sort=user_unlock_date&sort_user_id={userId}"
+                };
+            }
 
             return Result;
         }

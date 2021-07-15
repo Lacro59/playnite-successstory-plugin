@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SuccessStory.Clients;
 using Playnite.SDK.Data;
 using CommonPluginsShared;
+using CommonPluginsShared.Models;
 
 namespace SuccessStory.Models
 {
@@ -115,6 +116,9 @@ namespace SuccessStory.Models
         /// Indicate if the game is ignored.
         /// </summary>
         public bool IsIgnored { get; set; }
+
+
+        public SourceLink SourcesLink { get; set; }
 
 
         // only for RA

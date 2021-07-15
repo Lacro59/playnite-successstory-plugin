@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
+using CommonPluginsShared.Models;
 
 namespace SuccessStory.Clients
 {
@@ -42,6 +43,8 @@ namespace SuccessStory.Clients
             GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
             Result.Items = AllAchievements;
 
+            string url = string.Empty;
+
             // Only if user is logged. 
             if (originAPI.GetIsUserLoggedIn())
             {
@@ -54,7 +57,7 @@ namespace SuccessStory.Clients
 
                 string lang = CodeLang.GetOriginLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
                 // Achievements (default return in english)
-                var url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",
+                url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",
                     personasId, origineGameId, lang);
 
                 using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
@@ -120,6 +123,18 @@ namespace SuccessStory.Clients
             Result.Locked = Locked;
             Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
             Result.Items = AllAchievements;
+
+            if (Result.HaveAchivements)
+            {
+                string LangUrl = CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+
+                Result.SourcesLink = new SourceLink
+                {
+                    GameName = GameName,
+                    Name = "Origin",
+                    Url = $"https://www.origin.com/fra/{LangUrl}/game-library/ogd/{game.GameId}/achievements"
+                };
+            }
 
             return Result;
         }

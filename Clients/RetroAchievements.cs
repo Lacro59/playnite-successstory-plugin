@@ -13,6 +13,7 @@ using SuccessStory.Services;
 using System.Security.Cryptography;
 using System.IO.Compression;
 using System.Threading.Tasks;
+using CommonPluginsShared.Models;
 
 namespace SuccessStory.Clients
 {
@@ -28,6 +29,10 @@ namespace SuccessStory.Clients
         private string Key { get; set; }
 
         public int gameID { get; set; } = 0;
+
+
+        private string GameNameAchievements = string.Empty;
+        private string UrlAchievements = string.Empty;
 
 
         public RetroAchievements() : base()
@@ -92,6 +97,7 @@ namespace SuccessStory.Clients
             if (gameID != 0)
             {
                 AllAchievements = GetGameInfoAndUserProgress(gameID);
+                Result.RAgameID = gameID;
             }
             else
             {
@@ -105,6 +111,15 @@ namespace SuccessStory.Clients
             Result.Locked = Result.Total - Result.Unlocked;
             Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
 
+            if (Result.HaveAchivements)
+            {
+                Result.SourcesLink = new SourceLink
+                {
+                    GameName = GameNameAchievements,
+                    Name = "RetroAchievements",
+                    Url = $"https://retroachievements.org/game/{Result.RAgameID}"
+                };
+            }
 
             return Result;
         }
@@ -651,16 +666,16 @@ namespace SuccessStory.Clients
             List<Achievements> Achievements = new List<Achievements>();
 
             string Target = "API_GetGameInfoAndUserProgress.php";
-            string url = string.Format(BaseUrl + Target + @"?z={0}&y={1}&u={0}&g={2}", User, Key, gameID);
+            UrlAchievements = string.Format(BaseUrl + Target + @"?z={0}&y={1}&u={0}&g={2}", User, Key, gameID);
 
             string ResultWeb = string.Empty;
             try
             {
-                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
+                ResultWeb = Web.DownloadStringData(UrlAchievements).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, $"Failed to load from {url}");
+                Common.LogError(ex, false, $"Failed to load from {UrlAchievements}");
                 return Achievements;
             }
 
@@ -668,6 +683,7 @@ namespace SuccessStory.Clients
             {
                 dynamic resultObj = Serialization.FromJson<dynamic>(ResultWeb);
 
+                GameNameAchievements = (string)resultObj["Title"];
                 int NumDistinctPlayersCasual = (int)resultObj["NumDistinctPlayersCasual"];
 
                 if (resultObj["Achievements"] != null)

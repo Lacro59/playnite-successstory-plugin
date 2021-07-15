@@ -75,8 +75,6 @@ namespace SuccessStory.Clients
                     Percent = 10;
                 }
 
-
-
                 Result.Items.Add(new Achievements
                 {
                     ApiName = string.Empty,

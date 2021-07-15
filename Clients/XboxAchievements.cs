@@ -13,6 +13,7 @@ using CommonPluginsShared;
 using CommonPluginsPlaynite.Common;
 using CommonPluginsPlaynite.PluginLibrary.XboxLibrary.Models;
 using SuccessStory.Models;
+using CommonPluginsShared.Models;
 
 namespace SuccessStory.Clients
 {
@@ -25,6 +26,8 @@ namespace SuccessStory.Clients
 
         private bool HasTestLogged = false;
         private bool loggedIn = false;
+
+        private string titleId = string.Empty;
 
 
         public XboxAchievements() : base()
@@ -77,6 +80,13 @@ namespace SuccessStory.Clients
                 {
                     ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                     exophaseAchievements.SetRarety(Result);
+
+                    Result.SourcesLink = new SourceLink
+                    {
+                        GameName = game.Name,
+                        Name = "Xbox",
+                        Url = $"https://account.xbox.com/fr-fr/GameInfoHub?titleid={titleId}&selectedTab=achievementsTab&activetab=main:mainTab2"
+                    };
                 }
             }
             catch (Exception ex)
@@ -279,7 +289,7 @@ namespace SuccessStory.Clients
                 }
             }
 
-            string titleId = string.Empty;
+            titleId = string.Empty;
             if (gameId?.StartsWith("CONSOLE_") == true)
             {
                 var consoleGameIdParts = gameId.Split('_');

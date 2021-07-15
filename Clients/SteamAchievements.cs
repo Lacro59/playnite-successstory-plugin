@@ -20,6 +20,7 @@ using SuccessStory.Services;
 using System.Text.RegularExpressions;
 using AngleSharp.Dom;
 using CommonPluginsStores;
+using CommonPluginsShared.Models;
 
 namespace SuccessStory.Clients
 {
@@ -82,7 +83,7 @@ namespace SuccessStory.Clients
                     AllAchievements = GetPlayerAchievements(AppId);
                     AllStats = GetUsersStats(AppId);
                 }
-                
+
                 if (AllAchievements.Count > 0)
                 {
                     bool IsOK = Web.DownloadFileImageTest(AllAchievements[0].UrlLocked).GetAwaiter().GetResult();
@@ -99,6 +100,18 @@ namespace SuccessStory.Clients
                         Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
                         Result.Items = AllAchievements;
                         Result.ItemsStats = AllStats;
+
+                        if (Result.HaveAchivements)
+                        {
+                            SteamApi steamApi = new SteamApi();
+
+                            Result.SourcesLink = new SourceLink
+                            {
+                                GameName = steamApi.GetGameName(AppId),
+                                Name = "Steam",
+                                Url = string.Format(UrlProfilById, SteamId, AppId, LocalLang)
+                            };
+                        }
                     }
                 }
             }
@@ -139,6 +152,18 @@ namespace SuccessStory.Clients
                                 UrlLocked = temp.Items[i].UrlLocked,
                                 DateUnlocked = temp.Items[i].DateUnlocked
                             });
+                        }
+
+                        if (Result.HaveAchivements)
+                        {
+                            SteamApi steamApi = new SteamApi();
+
+                            Result.SourcesLink = new SourceLink
+                            {
+                                GameName = steamApi.GetGameName(AppId),
+                                Name = "Steam",
+                                Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
+                            };
                         }
                     }
                 }

@@ -44,9 +44,32 @@
                        FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
             </StackPanel>
 
-            <Grid Name="PART_ScUserStats_Contener">
-                <controls:PluginUserStats Height="{Binding ElementName=PART_ScUserStats_Contener, Path=ActualHeight}"
-                                          IgnoreSettings="True" GameContext="{Binding GameContext}" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                
+                <Grid Name="PART_ScUserStats_Contener" Grid.Row="0">
+                    <controls:PluginUserStats Height="{Binding ElementName=PART_ScUserStats_Contener, Path=ActualHeight}"
+                                              IgnoreSettings="True" GameContext="{Binding GameContext}" />
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="{DynamicResource LOCSourceLabel}" Grid.Column="0" FontSize="8" />
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" FontSize="8">
+                        <Hyperlink Name="PART_SourceLink" Click="PART_SourceLink_Click">
+                            <TextBlock Name="PART_SourceLabel" FontSize="8" />
+                        </Hyperlink>
+                    </TextBlock>
+                </Grid>
             </Grid>
         </DockPanel>
     </Grid>

@@ -6,6 +6,7 @@ using SuccessStory.Services;
 using SuccessStory.Views.Interface;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,10 +37,31 @@ namespace SuccessStory.Views
         {
             InitializeComponent();
 
+
+            GameAchievements gameAchievements = PluginDatabase.Get(PluginDatabase.GameContext, true);
+            if (gameAchievements.SourcesLink != null)
+            {
+                PART_SourceLabel.Text = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
+                PART_SourceLink.Tag = gameAchievements.SourcesLink.Url;
+            }
+
+
             this.DataContext = new
             {
                 GameContext
             };
+        }
+
+
+        private void PART_SourceLink_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (((Hyperlink)sender).Tag is string)
+            {
+                if (!((string)((Hyperlink)sender).Tag).IsNullOrEmpty())
+                {
+                    Process.Start((string)((Hyperlink)sender).Tag);
+                }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CommonPlayniteShared.PluginLibrary.PSNLibrary;
 using CommonPluginsShared;
+using CommonPluginsShared.Models;
 using CommonPluginsStores;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -40,11 +41,12 @@ namespace SuccessStory.Clients
 
             GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
 
+            string Url = string.Empty;
             try
             {
                 string Lang = CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
                 string GameId = game.GameId.Split('#')[2];
-                string Url = string.Format(UrlAchievements, GameId, Lang);
+                Url = string.Format(UrlAchievements, GameId, Lang);
                 string WebResult = Web.DownloadStringData(Url, GetPsnToken()).GetAwaiter().GetResult();
 
                 Trophies trophies = Serialization.FromJson<Trophies>(WebResult);
@@ -88,6 +90,16 @@ namespace SuccessStory.Clients
             Result.Locked = Locked;
             Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
             Result.Items = AllAchievements;
+
+            if (Result.HaveAchivements)
+            {
+                Result.SourcesLink = new SourceLink
+                {
+                    GameName = GameName,
+                    Name = "PSN",
+                    Url = Url
+                };
+            }
 
             return Result;
         }

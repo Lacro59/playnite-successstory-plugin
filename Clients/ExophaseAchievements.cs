@@ -1,6 +1,7 @@
 ﻿using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using CommonPluginsShared;
+using CommonPluginsShared.Models;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
@@ -140,6 +141,16 @@ namespace SuccessStory.Clients
             Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
             Result.Items = AllAchievements;
 
+            if (Result.HaveAchivements)
+            {
+                Result.SourcesLink = new SourceLink
+                {
+                    GameName = searchResult.Name,
+                    Name = "Exophase",
+                    Url = searchResult.Url
+                };
+            }
+            
             return Result;
         }
 

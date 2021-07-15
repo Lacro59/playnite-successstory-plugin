@@ -2,6 +2,7 @@
 using AngleSharp.Parser.Html;
 using CommonPlayniteShared.PluginLibrary.BattleNetLibrary.Models;
 using CommonPluginsShared;
+using CommonPluginsShared.Models;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -120,6 +121,7 @@ namespace SuccessStory.Clients
             Result.Items = AllAchievements;
 
 
+            string UrlProfil = string.Empty;
             if (IsConnected())
             {
                 WebViewOffscreen.NavigateAndWait(UrlOverwatchProfilLocalised);
@@ -128,7 +130,6 @@ namespace SuccessStory.Clients
                 HtmlParser parser = new HtmlParser();
                 IHtmlDocument htmlDocument = parser.Parse(data);
 
-                string UrlProfil = string.Empty;
                 foreach (var SearchElement in htmlDocument.QuerySelectorAll("a.ow-SiteNavLogin-profile"))
                 {
                     UrlProfil = SearchElement.GetAttribute("href");
@@ -226,6 +227,14 @@ namespace SuccessStory.Clients
             {
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 exophaseAchievements.SetRarety(Result);
+
+
+                Result.SourcesLink = new SourceLink
+                {
+                    GameName = "Overwatch",
+                    Name = "Battle.Net",
+                    Url = UrlOverwatchProfilLocalised + UrlProfil
+                };
             }
 
             return Result;
