@@ -236,6 +236,10 @@ namespace SuccessStory.Clients
             {
                 PlatformName = "mega drive";
             }
+            if (PlatformName.ToLower().Contains("sony playstation"))
+            {
+                PlatformName = PlatformName.ToLower().Replace("sony playstation", "playstation");
+            }
 
 
             var FindConsole = ra_Consoles.ListConsoles.Find(x => PlatformName.ToLower() == x.Name.ToLower());
@@ -250,6 +254,7 @@ namespace SuccessStory.Clients
             {
                 RA_Games ra_Games = GetGameList(consoleID, PluginDatabase.Paths.PluginUserDataPath);
                 ra_Games.ListGames.Sort((x, y) => (y.Title).CompareTo(x.Title));
+
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
                 {
                     string Title = ra_Game.Title.Trim().ToLower();
@@ -286,6 +291,17 @@ namespace SuccessStory.Clients
                                 break;
                             }
                         }
+                    }
+
+
+                    string TitleNormalized = PlayniteTools.NormalizeGameName(Title);
+                    string GameNameNormalized = PlayniteTools.NormalizeGameName(GameName);
+
+                    if (GameNameNormalized.Trim().ToLower() == TitleNormalized.Trim() && gameID == 0)
+                    {
+                        logger.Info($"Find for {GameNameNormalized.Trim().ToLower()} / {TitleNormalized.Trim()} with {PlatformName} in {consoleID}");
+                        gameID = ra_Game.ID;
+                        break;
                     }
                 }
             }
@@ -563,7 +579,7 @@ namespace SuccessStory.Clients
         {
             ZipFileManafeRemove();
 
-            string extractPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "tempZip");
+            string extractPath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "tempZip");
             ZipFile.ExtractToDirectory(FilePath, extractPath);
 
             string FilePathReturn = string.Empty;
