@@ -41,6 +41,8 @@
                             <RowDefinition Height="30" />
                             
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                             <RowDefinition Height="30" />
                             
                             <RowDefinition Height="auto" />
@@ -353,8 +355,22 @@
                             </Expander.Header>
                         </Expander>
 
-                        
                         <Expander Grid.Row="16" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableSc2Achievements}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCSuccessStoryEnableSc2Achievements}"></Label>
+                                </CheckBox>
+                            </Expander.Header>
+                        </Expander>
+
+
+                        <Expander Grid.Row="18" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -368,7 +384,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="18"
+                        <Expander Grid.Row="20"
                                   Visibility="{Binding Settings.EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">

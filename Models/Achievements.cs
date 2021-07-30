@@ -29,6 +29,7 @@ namespace SuccessStory.Models
         public float Percent { get; set; } = 100;
 
         public string Category { get; set; } = string.Empty;
+        public string ParentCategory { get; set; } = string.Empty;
 
         [DontSerialize]
         public string CacheUnlocked {
@@ -278,6 +279,11 @@ namespace SuccessStory.Models
             if (url.IndexOf("overwatch") > -1)
             {
                 NameFromUrl = "overwatch_" + Name.Replace(" ", "");
+            }
+            
+            if (url.IndexOf("starcraft2") > -1)
+            {
+                NameFromUrl = "starcraft2_" + Name.Replace(" ", "");
             }
 
             if (!url.Contains("http"))

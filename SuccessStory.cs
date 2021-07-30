@@ -140,6 +140,7 @@ namespace SuccessStory
                     SuccessStoryDatabase.VerifToAddOrShowSteam = null;
                     SuccessStoryDatabase.VerifToAddOrShowXbox = null;
                     SuccessStoryDatabase.VerifToAddOrShowOverwatch = null;
+                    SuccessStoryDatabase.VerifToAddOrShowSc2 = null;
                     SuccessStoryDatabase.VerifToAddOrShowRpcs3 = null;
                 }
             }

@@ -41,6 +41,7 @@ namespace SuccessStory.Services
         public static bool? VerifToAddOrShowXbox = null;
         public static bool? VerifToAddOrShowRpcs3 = null;
         public static bool? VerifToAddOrShowOverwatch = null;
+        public static bool? VerifToAddOrShowSc2 = null;
 
         private bool _isRetroachievements { get; set; }
 
@@ -107,6 +108,14 @@ namespace SuccessStory.Services
                 SourceName = "Battle.net";
                 GameName = "Overwatch";
                 //VerifToAddOrShowOverwatch = false;
+                VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
+            });
+
+            Task.Run(() =>
+            {
+                SourceName = "Battle.net";
+                GameName = "StarCraft II";
+                //VerifToAddOrShowSc2 = false;
                 VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
             });
 
@@ -1000,6 +1009,47 @@ namespace SuccessStory.Services
                     Common.LogDebug(true, $"VerifToAddOrShowOverwatch: {VerifToAddOrShowOverwatch}");
 
                     if (!(bool)VerifToAddOrShowOverwatch)
+                    {
+                        logger.Warn("Battle.net user is not authenticated");
+                        PlayniteApi.Notifications.Add(new NotificationMessage(
+                            "SuccessStory-BattleNet-NoAuthenticate",
+                            $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate")}",
+                            NotificationType.Error,
+                            () => plugin.OpenSettingsView()
+                        ));
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            if (settings.EnableSc2Achievements && GameSourceName.ToLower() == "battle.net" && (GameName.ToLower() == "starcraft 2" || GameName.ToLower() == "starcraft ii"))
+            {
+                if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary"))
+                {
+                    logger.Warn("Battle.net is enable then disabled");
+                    PlayniteApi.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-BattleNet-disabled",
+                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetDisabled")}",
+                        NotificationType.Error,
+                        () => plugin.OpenSettingsView()
+                    ));
+                    return false;
+                }
+                else
+                {
+                    BattleNetAchievements battleNetAchievements = new BattleNetAchievements();
+
+                    Common.LogDebug(true, $"VerifToAddOrShowSc2: {VerifToAddOrShowSc2}");
+
+                    if (VerifToAddOrShowSc2 == null)
+                    {
+                        VerifToAddOrShowSc2 = battleNetAchievements.IsConnected();
+                    }
+
+                    Common.LogDebug(true, $"VerifToAddOrShowSc2: {VerifToAddOrShowSc2}");
+
+                    if (!(bool)VerifToAddOrShowSc2)
                     {
                         logger.Warn("Battle.net user is not authenticated");
                         PlayniteApi.Notifications.Add(new NotificationMessage(
