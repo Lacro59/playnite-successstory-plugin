@@ -5,7 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views"
              xmlns:controls="clr-namespace:SuccessStory.Controls"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              mc:Ignorable="d" Height="700" Width="1080">
+    
+    <UserControl.Resources>
+        <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
+    </UserControl.Resources>
     
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
@@ -47,7 +52,6 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="10" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 
@@ -56,7 +60,8 @@
                                               IgnoreSettings="True" GameContext="{Binding GameContext}" />
                 </Grid>
 
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="2" Margin="0,10,0,0"
+                      Visibility="{Binding ElementName=PART_SourceLabel, Path=Text, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="10" />
@@ -66,7 +71,7 @@
                     <Label Content="{DynamicResource LOCSourceLabel}" Grid.Column="0" FontSize="8" />
                     <TextBlock Grid.Column="2" VerticalAlignment="Center" FontSize="8">
                         <Hyperlink Name="PART_SourceLink" Click="PART_SourceLink_Click">
-                            <TextBlock Name="PART_SourceLabel" FontSize="8" />
+                            <TextBlock Name="PART_SourceLabel" FontSize="8" Text="a test source" />
                         </Hyperlink>
                     </TextBlock>
                 </Grid>
