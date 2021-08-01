@@ -158,7 +158,7 @@ namespace SuccessStory
         public double IntegrationUserStatsHeight { get; set; } = 120;
 
 
-        public bool _EnableIntegrationList { get; set; } = false;
+        private bool _EnableIntegrationList { get; set; } = false;
         public bool EnableIntegrationList
         {
             get => _EnableIntegrationList;
@@ -217,8 +217,8 @@ namespace SuccessStory
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
         #region Variables exposed
-        [DontSerialize]
         private bool _HasData { get; set; } = false;
+        [DontSerialize]
         public bool HasData
         {
             get => _HasData;
@@ -229,8 +229,8 @@ namespace SuccessStory
             }
         }
 
-        [DontSerialize]
         private bool _Is100Percent { get; set; } = false;
+        [DontSerialize]
         public bool Is100Percent
         {
             get => _Is100Percent;
@@ -241,8 +241,8 @@ namespace SuccessStory
             }
         }
 
-        [DontSerialize]
         private int _Unlocked { get; set; } = 0;
+        [DontSerialize]
         public int Unlocked
         {
             get => _Unlocked;
@@ -253,8 +253,8 @@ namespace SuccessStory
             }
         }
 
-        [DontSerialize]
         private int _Locked { get; set; } = 0;
+        [DontSerialize]
         public int Locked
         {
             get => _Locked;
@@ -265,8 +265,8 @@ namespace SuccessStory
             }
         }
 
-        [DontSerialize]
         private int _Total { get; set; } = 0;
+        [DontSerialize]
         public int Total
         {
             get => _Total;
@@ -277,8 +277,8 @@ namespace SuccessStory
             }
         }
 
-        [DontSerialize]
         private List<Achievements> _ListAchievements { get; set; } = new List<Achievements>();
+        [DontSerialize]
         public List<Achievements> ListAchievements
         {
             get => _ListAchievements;
