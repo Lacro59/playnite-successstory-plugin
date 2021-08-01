@@ -430,6 +430,22 @@ namespace SuccessStory
                         });
                     }
                 }
+
+                if ((SourceName == "Playnite" || SourceName == "Hacked") && gameAchievements.HasData)
+                {
+                    gameMenuItems.Add(new GameMenuItem
+                    {
+                        MenuSection = resources.GetString("LOCSuccessStory"),
+                        Description = resources.GetString("LOCCommonDeleteGameData"),
+                        Action = (gameMenuItem) =>
+                        {
+                            var TaskIntegrationUI = Task.Run(() =>
+                            {
+                                PluginDatabase.Remove(GameMenu.Id);
+                            });
+                        }
+                    });
+                }
             }
             else
             {
