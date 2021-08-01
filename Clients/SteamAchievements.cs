@@ -48,6 +48,8 @@ namespace SuccessStory.Clients
 
         public override GameAchievements GetAchievements(Game game)
         {
+            bool GetByWeb = false;
+
             int AppId = 0;
             List<Achievements> AllAchievements = new List<Achievements>();
             List<GameStats> AllStats = new List<GameStats>();
@@ -71,6 +73,7 @@ namespace SuccessStory.Clients
                 if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
                 {
                     AllAchievements = GetAchievementsByWeb(AppId);
+                    GetByWeb = true;
                 }
                 else
                 {
@@ -86,7 +89,7 @@ namespace SuccessStory.Clients
 
                 if (AllAchievements.Count > 0)
                 {
-                    bool IsOK = Web.DownloadFileImageTest(AllAchievements[0].UrlLocked).GetAwaiter().GetResult();
+                    bool IsOK = GetByWeb ? GetByWeb : Web.DownloadFileImageTest(AllAchievements[0].UrlLocked).GetAwaiter().GetResult();
                     if (IsOK)
                     {
                         var DataCompleted = GetSchemaForGame(AppId, AllAchievements, AllStats);
@@ -100,7 +103,7 @@ namespace SuccessStory.Clients
                         Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
                         Result.Items = AllAchievements;
                         Result.ItemsStats = AllStats;
-
+                        
                         if (Result.HaveAchivements)
                         {
                             SteamApi steamApi = new SteamApi();

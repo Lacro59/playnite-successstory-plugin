@@ -60,7 +60,8 @@
                         <StackPanel ToolTip="{Binding NameWithDateUnlock}" Margin="2">
                             <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant" 
                                    Width="{Binding ElementName=PART_GridContener, Path=Tag}"
-                                   Height="{Binding ElementName=PART_GridContener, Path=Tag}">
+                                   Height="{Binding ElementName=PART_GridContener, Path=Tag}"
+                                   ImageFailed="Image_ImageFailed">
                                 <Image.Style>
                                     <Style TargetType="{x:Type Image}">
                                         <Style.Triggers>
