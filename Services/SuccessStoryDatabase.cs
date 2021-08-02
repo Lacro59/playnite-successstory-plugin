@@ -563,6 +563,7 @@ namespace SuccessStory.Services
                 }
             }
 
+            tempSourcesLabels = tempSourcesLabels.Distinct().ToList();
             tempSourcesLabels.Sort((x, y) => x.CompareTo(y));
 
             string[] GraphicsAchievementsLabels = new string[tempSourcesLabels.Count];
