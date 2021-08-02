@@ -1192,7 +1192,7 @@ namespace SuccessStory.Services
                 // Add missing tags
                 if (PluginTags.Count < 13)
                 {
-                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCPLaytimeLessThenAnHour")}") == null)
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon0to5")}") == null)
                     {
                         PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCPLaytimeLessThenAnHour")}" });
                     }
