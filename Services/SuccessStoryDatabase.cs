@@ -1195,7 +1195,7 @@ namespace SuccessStory.Services
                 {
                     if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon0to5")}") == null)
                     {
-                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCPLaytimeLessThenAnHour")}" });
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon0to5")}" });
                     }
                     if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon1to5")}") == null)
                     {
