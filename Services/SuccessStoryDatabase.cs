@@ -155,6 +155,8 @@ namespace SuccessStory.Services
 
                 AddOrUpdate(gameAchievements);
 
+                SetEstimateTimeToUnlock(game, gameAchievements);
+
                 Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
             }
             catch (Exception ex)
@@ -187,7 +189,6 @@ namespace SuccessStory.Services
             
             return gameAchievements;
         }
-
 
         /// <summary>
         /// Generate database achivements for the game if achievement exist and game not exist in database.
@@ -295,7 +296,15 @@ namespace SuccessStory.Services
             }
 
 
-            // EstimateTimeToUnlock
+            SetEstimateTimeToUnlock(game, gameAchievements);
+
+
+            return gameAchievements;
+        }
+
+
+        private GameAchievements SetEstimateTimeToUnlock(Game game, GameAchievements gameAchievements)
+        {
             if (gameAchievements.HaveAchivements)
             {
                 try
@@ -333,7 +342,6 @@ namespace SuccessStory.Services
                     Common.LogError(ex, false);
                 }
             }
-
 
             return gameAchievements;
         }

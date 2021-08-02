@@ -431,7 +431,7 @@ namespace SuccessStory
                     }
                 }
 
-                if ((SourceName == "Playnite" || SourceName == "Hacked") && gameAchievements.HasData)
+                if ((SourceName == "Playnite" || SourceName == "Hacked") && gameAchievements.HasData && !gameAchievements.IsManual)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
