@@ -44,6 +44,11 @@ namespace SuccessStory.Views
                 PART_SourceLabel.Text = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
                 PART_SourceLink.Tag = gameAchievements.SourcesLink.Url;
             }
+            else
+            {
+                PART_SourceLabel.Text = string.Empty;
+                PART_SourceLabel.Tag = string.Empty;
+            }
 
 
             this.DataContext = new
