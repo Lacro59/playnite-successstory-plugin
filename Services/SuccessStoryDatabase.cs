@@ -183,8 +183,11 @@ namespace SuccessStory.Services
             else if (gameAchievements == null)
             {
                 Game game = PlayniteApi.Database.Games.Get(Id);
-                gameAchievements = GetDefault(game);
-                Add(gameAchievements);
+                if (game != null)
+                {
+                    gameAchievements = GetDefault(game);
+                    Add(gameAchievements);
+                }
             }
             
             return gameAchievements;
@@ -1156,6 +1159,11 @@ namespace SuccessStory.Services
         public override void SetThemesResources(Game game)
         {
             GameAchievements gameAchievements = Get(game, true);
+
+            if (gameAchievements == null)
+            {
+                return;
+            }
 
             PluginSettings.Settings.HasData = gameAchievements.HasData;
 
