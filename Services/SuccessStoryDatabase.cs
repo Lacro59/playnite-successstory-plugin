@@ -556,10 +556,13 @@ namespace SuccessStory.Services
                         var ListSources = db.Select(x => x.Value.SourceId).Distinct();
                         foreach (var Source in ListSources)
                         {
-                            var gameSource = PlayniteApi.Database.Sources.Get(Source);
-                            if (gameSource != null)
+                            if (Source != default(Guid))
                             {
-                                tempSourcesLabels.Add(gameSource.Name);
+                                var gameSource = PlayniteApi.Database.Sources.Get(Source);
+                                if (gameSource != null)
+                                {
+                                    tempSourcesLabels.Add(gameSource.Name);
+                                }
                             }
                         }
                     }
