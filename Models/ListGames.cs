@@ -27,6 +27,10 @@ namespace SuccessStory.Models
         public int Unlocked { get; set; }
         public bool IsManual { get; set; }
 
+        public AchRaretyStats Common { get; set; }
+        public AchRaretyStats NoCommon { get; set; }
+        public AchRaretyStats Rare { get; set; }
+
         [DontSerialize]
         public Guid GameId
         {

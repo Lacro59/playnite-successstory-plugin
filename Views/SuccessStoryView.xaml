@@ -264,6 +264,40 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
+
+                                <GridViewColumn Width="170" x:Name="lvGameRaretyCount">
+                                    <GridViewColumnHeader Content="{DynamicResource LOCSuccessStoryRarety}" Tag="noSort" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="10" />
+
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="10" />
+                                                    
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Grid.Column="0" Content="&#127942;" Margin="0,0,5,0" />
+                                                <Label Grid.Column="2" Content="{Binding Common.UnLocked}" HorizontalAlignment="Right" />
+
+                                                <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="DarkGray" />
+                                                <Label Grid.Column="6" Content="{Binding NoCommon.UnLocked}" HorizontalAlignment="Right" />
+
+                                                <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="Gold" />
+                                                <Label Grid.Column="10" Content="{Binding Rare.UnLocked}" HorizontalAlignment="Right" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </controlsShared:ListViewExtend>

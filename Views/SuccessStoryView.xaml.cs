@@ -355,7 +355,11 @@ namespace SuccessStory
                             Total = successStories.Total,
                             TotalPercent = successStories.Progression + "%",
                             Unlocked = successStories.Unlocked,
-                            IsManual = successStories.IsManual
+                            IsManual = successStories.IsManual,
+
+                            Common = successStories.Common,
+                            NoCommon = successStories.NoCommon,
+                            Rare = successStories.Rare
                         });
                     }
 

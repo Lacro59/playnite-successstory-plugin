@@ -154,6 +154,9 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Achievements Progression of launched games</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Information</sys:String>
 
+
+    <sys:String x:Key="LOCSuccessStoryRarety">Rarety</sys:String>
+
     <!-- ListViewGames -->
 
     <sys:String x:Key="LOCSuccessStorylvGamesProgression">Progression</sys:String>
