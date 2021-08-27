@@ -51,6 +51,18 @@ namespace SuccessStory.Views
             }
 
 
+            if (gameAchievements.HasData)
+            {
+                var AchCommon = gameAchievements.Common;
+                var AchNoCommon = gameAchievements.NoCommon;
+                var AchRare = gameAchievements.Rare;
+
+                PART_AchCommon.Content = AchCommon.UnLocked + " / " + AchCommon.Total;
+                PART_AchNoCommon.Content = AchNoCommon.UnLocked + " / " + AchNoCommon.Total;
+                PART_AchRare.Content = AchRare.UnLocked + " / " + AchRare.Total;
+            }
+
+
             this.DataContext = new
             {
                 GameContext

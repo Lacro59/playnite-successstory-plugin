@@ -121,6 +121,54 @@ namespace SuccessStory.Models
         public SourceLink SourcesLink { get; set; }
 
 
+        // Commun, Non Commun, Rare, Épique
+        [DontSerialize]
+        public AchRaretyStats Common {
+            get
+            {
+                AchRaretyStats achRaretyStats = new AchRaretyStats
+                {
+                    Total = Items.Where(x => x.Percent > 30).Count(),
+                    UnLocked = Items.Where(x => x.Percent > 30 && x.IsUnlock).Count()
+                };
+                achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
+
+                return achRaretyStats;
+            }
+        }
+
+        [DontSerialize]
+        public AchRaretyStats NoCommon
+        {
+            get
+            {
+                AchRaretyStats achRaretyStats = new AchRaretyStats
+                {
+                    Total = Items.Where(x => x.Percent <= 30 && x.Percent > 10).Count(),
+                    UnLocked = Items.Where(x => x.Percent <= 30 && x.Percent > 10 && x.IsUnlock).Count()
+                };
+                achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
+
+                return achRaretyStats;
+            }
+        }
+
+        [DontSerialize]
+        public AchRaretyStats Rare
+        {
+            get
+            {
+                AchRaretyStats achRaretyStats = new AchRaretyStats
+                {
+                    Total = Items.Where(x => x.Percent <= 10).Count(),
+                    UnLocked = Items.Where(x => x.Percent <= 10 && x.IsUnlock).Count()
+                };
+                achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
+
+                return achRaretyStats;
+            }
+        }
+
         // only for RA
         public int RAgameID { get; set; }
     }

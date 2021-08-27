@@ -154,6 +154,7 @@
       <DependentUpon>PluginViewItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Achievements.cs" />
+    <Compile Include="Models\AchRaretyStats.cs" />
     <Compile Include="Models\BattleNetSc2Ach.cs" />
     <Compile Include="Models\BattleNetSc2Profil.cs" />
     <Compile Include="Models\GameStats.cs" />
