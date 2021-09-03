@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/Common.xaml" />
                 <!--Playnite Default localization-->
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/LocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/ExtensionsLocSource.xaml" />
                 <!--Default Controls-->
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/DefaultControls/Border.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/DefaultControls/TextBlock.xaml" />
