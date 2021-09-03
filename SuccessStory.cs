@@ -301,6 +301,7 @@ namespace SuccessStory
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
             Game GameMenu = args.Games.First();
+            List<Guid> Ids = args.Games.Select(x => x.Id).ToList();
             string SourceName = PlayniteTools.GetSourceName(PlayniteApi, GameMenu);
             string GameName = GameMenu.Name;
             bool IsAddOrShowManual = SuccessStoryDatabase.IsAddOrShowManual(GameMenu, SourceName);
@@ -362,12 +363,16 @@ namespace SuccessStory
                             Description = resources.GetString("LOCCommonRefreshGameData"),
                             Action = (gameMenuItem) =>
                             {
-                                var TaskIntegrationUI = Task.Run(() =>
+                                IsFromMenu = true;
+
+                                if (Ids.Count == 1)
                                 {
-                                    IsFromMenu = true;
                                     PluginDatabase.Refresh(GameMenu.Id);
-                                    IsFromMenu = false;
-                                });
+                                }
+                                else
+                                {
+                                    PluginDatabase.Refresh(Ids);
+                                }
                             }
                         });
 

@@ -1186,6 +1186,47 @@ namespace SuccessStory.Services
         }
 
 
+        public override void Refresh(List<Guid> Ids)
+        {
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {resources.GetString("LOCCommonProcessing")}",
+                false
+            );
+            globalProgressOptions.IsIndeterminate = true;
+
+            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                foreach (Guid Id in Ids)
+                {
+                    Game game = PlayniteApi.Database.Games.Get(Id);
+                    string SourceName = PlayniteTools.GetSourceName(PlayniteApi, game);
+                    string GameName = game.Name;
+                    bool IsAddOrShowManual = SuccessStoryDatabase.IsAddOrShowManual(game, SourceName);
+                    bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, Paths.PluginUserDataPath, SourceName, GameName);
+                    GameAchievements gameAchievements = Get(game, true);
+
+                    if (!gameAchievements.IsIgnored)
+                    {
+                        if (VerifToAddOrShow || IsAddOrShowManual)
+                        {
+                            if (!IsAddOrShowManual && !gameAchievements.IsManual)
+                            {
+                                var loadedItem = Get(Id, true);
+                                var webItem = GetWeb(Id);
+
+                                if (webItem != null && !ReferenceEquals(loadedItem, webItem))
+                                {
+                                    Update(webItem);
+                                }
+                            }
+                        }
+                    }
+                }
+            }, globalProgressOptions);
+        }
+
+
+
         #region Tag system
         protected override void GetPluginTags()
         {
