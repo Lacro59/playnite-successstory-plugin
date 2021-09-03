@@ -15,6 +15,7 @@ using System.Windows.Threading;
 using System.Diagnostics;
 using SuccessStory.Services;
 using CommonPluginsShared.Models;
+using Playnite.SDK.Data;
 
 namespace SuccessStory.Views
 {
@@ -101,12 +102,12 @@ namespace SuccessStory.Views
                 });
 
 
-            LocalPath = PluginDatabase.PluginSettings.Settings.LocalPath.GetClone();
+            LocalPath = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.LocalPath);
             PART_ItemsControl.ItemsSource = LocalPath;
 
 
             // Set ignored game
-            IgnoredGames = PluginDatabase.Database.Where(x => x.IsIgnored).ToList().GetClone();
+            IgnoredGames = Serialization.GetClone(PluginDatabase.Database.Where(x => x.IsIgnored).ToList());
             IgnoredGames.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_IgnoredGames.ItemsSource = IgnoredGames;
         }

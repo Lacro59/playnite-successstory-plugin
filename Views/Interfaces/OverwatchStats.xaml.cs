@@ -1,5 +1,6 @@
 ﻿using CommonPluginsShared;
 using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
@@ -100,11 +101,11 @@ namespace SuccessStory.Views.Interfaces
                 switch (DataMode)
                 {
                     case OverWatchMode.QuickPlay:
-                        gameStats = gameAchievements.ItemsStats.Where(x => x.Mode != null && x.Mode.ToLower() == "quickplay").ToList().GetClone();
+                        gameStats = Serialization.GetClone(gameAchievements.ItemsStats.Where(x => x.Mode != null && x.Mode.ToLower() == "quickplay").ToList());
                         break;
 
                     case OverWatchMode.CompetitivePlay:
-                        gameStats = gameAchievements.ItemsStats.Where(x => x.Mode != null && x.Mode.ToLower() == "competitive").ToList().GetClone();
+                        gameStats = Serialization.GetClone(gameAchievements.ItemsStats.Where(x => x.Mode != null && x.Mode.ToLower() == "competitive").ToList());
                         break;
                 }
 
@@ -148,12 +149,12 @@ namespace SuccessStory.Views.Interfaces
 
 
                 // Top hero
-                gameStatsTopHero = gameStats.Where(x => x.Category == "TopHero").GetClone().ToList();
+                gameStatsTopHero = Serialization.GetClone(gameStats.Where(x => x.Category == "TopHero")).ToList();
                 List<string> ComboBoxTopHero = gameStatsTopHero.Select(x => x.CareerType).Distinct().ToList();
 
 
                 // Career stats
-                gameStatsCareer = gameStats.Where(x => x.Category == "CarrerStats").GetClone().ToList();
+                gameStatsCareer = Serialization.GetClone(gameStats.Where(x => x.Category == "CarrerStats")).ToList();
                 List<string> ComboBoxCareer = gameStatsCareer.Select(x => x.CareerType).Distinct().ToList();
 
 
@@ -184,7 +185,7 @@ namespace SuccessStory.Views.Interfaces
 
         private void PART_TopHeroCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<GameStats> StatsTopHero = gameStatsTopHero.Where(x => x.CareerType == (string)PART_TopHeroCategory.SelectedItem).GetClone().ToList();
+            List<GameStats> StatsTopHero = Serialization.GetClone(gameStatsTopHero.Where(x => x.CareerType == (string)PART_TopHeroCategory.SelectedItem)).ToList();
             List<TopHero> TopHeroCategoryData = new List<TopHero>();
 
             double HeroMaxValue = 0;
@@ -215,13 +216,13 @@ namespace SuccessStory.Views.Interfaces
 
         private void PART_CareerCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<GameStats> StatsCareer = gameStatsCareer.Where(x => x.CareerType == (string)PART_CareerCategory.SelectedItem).GetClone().ToList();
+            List<GameStats> StatsCareer = Serialization.GetClone(gameStatsCareer.Where(x => x.CareerType == (string)PART_CareerCategory.SelectedItem)).ToList();
             List<string> ComboBoxCareer = StatsCareer.Select(x => x.SubCategory).Distinct().ToList();
             List<List<Career>> Careerdata = new List<List<Career>>();
 
             foreach (var SubCategory in ComboBoxCareer)
             {
-                List<GameStats> CareerCategoryData = StatsCareer.Where(x => x.SubCategory == SubCategory).GetClone().ToList();
+                List<GameStats> CareerCategoryData = Serialization.GetClone(StatsCareer.Where(x => x.SubCategory == SubCategory)).ToList();
                 List<Career> Careers = new List<Career>();
                 foreach (var element in CareerCategoryData)
                 {

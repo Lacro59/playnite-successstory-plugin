@@ -1,5 +1,6 @@
 ﻿using CommonPluginsShared;
 using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
@@ -45,7 +46,7 @@ namespace SuccessStory.Views
 
         private void LoadData(Game GameSelected)
         {
-            ListAchievements = gameAchievements.Items.GetClone();
+            ListAchievements = Serialization.GetClone(gameAchievements.Items);
             ListAchievements = ListAchievements.OrderByDescending(x => x.Name).ToList();
             lbAchievements.ItemsSource = ListAchievements;
         }

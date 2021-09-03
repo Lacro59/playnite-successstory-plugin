@@ -154,36 +154,33 @@ namespace SuccessStory
 
         #region Theme integration
         // Button on top panel
-        public override List<TopPanelItem> GetTopPanelItems()
+        public override IEnumerable<TopPanelItem> GetTopPanelItems()
         {
             if (PluginSettings.Settings.EnableIntegrationButtonHeader)
             {
-                return new List<TopPanelItem>
+                yield return new TopPanelItem()
                 {
-                    new TopPanelItem()
+                    Icon = new TextBlock
                     {
-                        Icon = new TextBlock
-                        {
-                            Text = "\ue820",
-                            FontSize = 22,
-                            FontFamily = resources.GetResource("FontIcoFont") as FontFamily
-                        },
-                        Title = resources.GetString("LOCSuccessStoryViewGames"),
-                        Activated = () =>
-                        {
-                            var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath());
-                            ViewExtension.Width = 1280;
-                            ViewExtension.Height = 740;
+                        Text = "\ue820",
+                        FontSize = 22,
+                        FontFamily = resources.GetResource("FontIcoFont") as FontFamily
+                    },
+                    Title = resources.GetString("LOCSuccessStoryViewGames"),
+                    Activated = () =>
+                    {
+                        var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath());
+                        ViewExtension.Width = 1280;
+                        ViewExtension.Height = 740;
 
-                            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
-                            windowExtension.ShowDialog();
-                            PluginDatabase.IsViewOpen = false;
-                        }
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                        windowExtension.ShowDialog();
+                        PluginDatabase.IsViewOpen = false;
                     }
                 };
             }
 
-            return null;
+            yield break;
         }
 
         // List custom controls
@@ -282,7 +279,7 @@ namespace SuccessStory
             }
         }
 
-        public override List<SidebarItem> GetSidebarItems()
+        public override IEnumerable<SidebarItem> GetSidebarItems()
         {
             var items = new List<SidebarItem>
             {
@@ -301,7 +298,7 @@ namespace SuccessStory
 
         #region Menus
         // To add new game menu items override GetGameMenuItems
-        public override List<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
+        public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
             Game GameMenu = args.Games.First();
             string SourceName = PlayniteTools.GetSourceName(PlayniteApi, GameMenu);
@@ -483,7 +480,7 @@ namespace SuccessStory
         }
 
         // To add new main menu items override GetMainMenuItems
-        public override List<MainMenuItem> GetMainMenuItems(GetMainMenuItemsArgs args)
+        public override IEnumerable<MainMenuItem> GetMainMenuItems(GetMainMenuItemsArgs args)
         {
             string MenuInExtensions = string.Empty;
             if (PluginSettings.Settings.MenuInExtensions)
@@ -612,7 +609,7 @@ namespace SuccessStory
 
 
         #region Game event
-        public override void OnGameSelected(GameSelectionEventArgs args)
+        public override void OnGameSelected(OnGameSelectedEventArgs args)
         {
             // Old database
             if (oldToNew.IsOld)
@@ -622,7 +619,7 @@ namespace SuccessStory
 
             try
             {
-                if (args.NewValue != null && args.NewValue.Count == 1)
+                if (args.NewValue?.Count == 1)
                 {
                     PluginDatabase.GameContext = args.NewValue[0];
                     PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
@@ -635,62 +632,62 @@ namespace SuccessStory
         }
 
         // Add code to be executed when game is finished installing.
-        public override void OnGameInstalled(Game game)
+        public override void OnGameInstalled(OnGameInstalledEventArgs args)
+        {
+
+        }
+
+        // Add code to be executed when game is uninstalled.
+        public override void OnGameUninstalled(OnGameUninstalledEventArgs args)
+        {
+
+        }
+
+        // Add code to be executed when game is preparing to be started.
+        public override void OnGameStarting(OnGameStartingEventArgs args)
         {
 
         }
 
         // Add code to be executed when game is started running.
-        public override void OnGameStarted(Game game)
+        public override void OnGameStarted(OnGameStartedEventArgs args)
         {
 
         }
 
         // Add code to be executed when game is preparing to be started.
-        public override void OnGameStarting(Game game)
-        {
-
-        }
-
-        // Add code to be executed when game is preparing to be started.
-        public override void OnGameStopped(Game game, long elapsedSeconds)
+        public override void OnGameStopped(OnGameStoppedEventArgs args)
         {
             // Refresh Achievements database for game played.
             var TaskGameStopped = Task.Run(() =>
             {
-                PluginDatabase.Refresh(game.Id);
+                PluginDatabase.Refresh(args.Game.Id);
 
                 // Set to Beaten
                 if (PluginSettings.Settings.Auto100PercentCompleted)
                 {
-                    GameAchievements gameAchievements = PluginDatabase.Get(game, true);
+                    GameAchievements gameAchievements = PluginDatabase.Get(args.Game, true);
 
                     if (gameAchievements.Is100Percent)
                     {
-                        game.CompletionStatus = CompletionStatus.Beaten;
-                        PlayniteApi.Database.Games.Update(game);
+                        args.Game.CompletionStatusId = PlayniteApi.Database.CompletionStatuses.Where(x => x.Name == "Beaten").FirstOrDefault().Id;
+                        PlayniteApi.Database.Games.Update(args.Game);
                     }
                 }
 
                 // refresh themes resources
-                if (game.Id == PluginDatabase.GameContext.Id)
+                if (args.Game.Id == PluginDatabase.GameContext.Id)
                 {
                     PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
                 }
             });
-        }
-
-        // Add code to be executed when game is uninstalled.
-        public override void OnGameUninstalled(Game game)
-        {
-
         }
         #endregion  
 
 
         #region Application event
         // Add code to be executed when Playnite is initialized.
-        public override void OnApplicationStarted()
+        public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
             // Cache images
             if (PluginSettings.Settings.EnableImageCache)
@@ -758,7 +755,7 @@ namespace SuccessStory
         }
 
         // Add code to be executed when Playnite is shutting down.
-        public override void OnApplicationStopped()
+        public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
         {
             tokenSource.Cancel();
         }
@@ -766,7 +763,7 @@ namespace SuccessStory
 
 
         // Add code to be executed when library is updated.
-        public override void OnLibraryUpdated()
+        public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args)
         {
 
         }

@@ -4,6 +4,7 @@ using CommonPluginsShared.Controls;
 using CommonPluginsShared.Converters;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK.Models;
+using Playnite.SDK.Data;
 using SuccessStory.Models;
 using SuccessStory.Services;
 using SuccessStory.Views.Interface;
@@ -140,7 +141,7 @@ namespace SuccessStory.Controls
                 })).Wait();
 
                 GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-                List<Achievements> ListAchievements = gameAchievements.Items.GetClone();
+                List<Achievements> ListAchievements = Serialization.GetClone(gameAchievements.Items);
 
                 // Select data
                 if (IsUnlocked)

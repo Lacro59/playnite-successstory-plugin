@@ -2,6 +2,7 @@
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
@@ -129,7 +130,7 @@ namespace SuccessStory.Controls
 
                 GameAchievements gameAchievements = (GameAchievements)PluginGameData;
 
-                List<Achievements> ListAchievements = gameAchievements.Items.GetClone();
+                List<Achievements> ListAchievements = Serialization.GetClone(gameAchievements.Items);
                 ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
                 ControlDataContext.ItemsSource = ListAchievements.ToObservable();
 

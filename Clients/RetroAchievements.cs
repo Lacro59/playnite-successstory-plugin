@@ -167,7 +167,7 @@ namespace SuccessStory.Clients
                 try
                 {
                     resultObj.ListConsoles = Serialization.FromJson<List<RA_Console>>(ResultWeb);
-                    Serialization.ToFile(resultObj, fileConsoles, Format.Json);
+                    File.WriteAllText(fileConsoles, Serialization.ToJson(resultObj), Encoding.UTF8);
                 }
                 catch (Exception ex)
                 {
@@ -219,7 +219,7 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    Serialization.ToFile(ListMD5, fileMD5List, Format.Json);
+                    File.WriteAllText(fileMD5List, Serialization.ToJson(ListMD5), Encoding.UTF8);
                 }
                 catch (Exception ex)
                 {
@@ -236,7 +236,7 @@ namespace SuccessStory.Clients
             string GameName = game.Name;
 
             // Search id console for the game
-            string PlatformName = game.Platform.Name;
+            string PlatformName = game.Platforms.FirstOrDefault().Name;
             int consoleID = 0;
 
             if (PlatformName.ToLower() == "super nintendo")
@@ -338,7 +338,7 @@ namespace SuccessStory.Clients
             int GameId = 0;
             string HashMD5 = string.Empty;
             RA_MD5List rA_MD5List = null;
-            string FilePath = PluginDatabase.PlayniteApi.Database.GetFullFilePath(game.GameImagePath);
+            string FilePath = PluginDatabase.PlayniteApi.ExpandGameVariables(game, game.Roms.FirstOrDefault().Path);
 
             if (!File.Exists(FilePath))
             {
@@ -419,7 +419,7 @@ namespace SuccessStory.Clients
                 logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
             }
 
-            HashMD5 = GetHash(game.GameImagePath, PlatformType.Arcade);
+            HashMD5 = GetHash(FilePath, PlatformType.Arcade);
             rA_MD5List = rA_MD5Lists.Find(x => x.MD5.ToLower() == HashMD5.ToLower());
             if (rA_MD5List != null)
             {
@@ -650,7 +650,7 @@ namespace SuccessStory.Clients
             try
             {
                 resultObj.ListGames = Serialization.FromJson<List<RA_Game>>(ResultWeb);
-                Serialization.ToFile(resultObj, fileConsoles, Format.Json);
+                File.WriteAllText(fileConsoles, Serialization.ToJson(resultObj), Encoding.UTF8);
             }
             catch (Exception ex)
             {
