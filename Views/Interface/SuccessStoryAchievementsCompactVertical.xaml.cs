@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using System.Windows.Documents;
 
 namespace SuccessStory.Views.Interface
 {
@@ -201,17 +202,27 @@ namespace SuccessStory.Views.Interface
                     {
                         if (i < nbRow - 1)
                         {
+                            TextBlock tooltip = new TextBlock();
+                            tooltip.Inlines.Add(new Run(AchievementsList[i].Name)
+                            {
+                                FontWeight = FontWeights.Bold
+                            });
+                            tooltip.Inlines.Add(new LineBreak());
+                            tooltip.Inlines.Add(new Run(AchievementsList[i].Description));
+
                             Image gridImage = new Image();
                             gridImage.Stretch = Stretch.UniformToFill;
                             gridImage.Width = 48;
                             gridImage.Height = 48;
-                            gridImage.ToolTip = AchievementsList[i].Name;
+                            gridImage.ToolTip = tooltip;
                             gridImage.SetValue(Grid.RowProperty, i);
 
                             if (_withUnlocked)
                             {
                                 var converter = new LocalDateTimeConverter();
-                                gridImage.ToolTip = AchievementsList[i].NameWithDateUnlock;
+
+                                var nameRun = (Run) tooltip.Inlines.FirstInline;
+                                nameRun.Text = AchievementsList[i].NameWithDateUnlock;
                             }
 
                             if (AchievementsList[i].IsGray)
