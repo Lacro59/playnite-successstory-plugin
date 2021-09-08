@@ -9,6 +9,9 @@ using CommonPluginsShared.Converters;
 using System.Net;
 using CommonPluginsPlaynite.Common;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
+using System.Windows;
+using System.Windows.Documents;
 
 namespace SuccessStory.Models
 {
@@ -179,6 +182,26 @@ namespace SuccessStory.Models
                 }
 
                 return NameWithDateUnlock;
+            }
+        }
+
+        [DontSerialize]
+        public TextBlock AchToolTipCompactList
+        {
+            get
+            {
+                TextBlock tooltip = new TextBlock();
+                tooltip.Inlines.Add(new Run(NameWithDateUnlock)
+                {
+                    FontWeight = FontWeights.Bold
+                });
+                if (PluginDatabase.PluginSettings.Settings.IntegrationCompactShowDescription)
+                {
+                    tooltip.Inlines.Add(new LineBreak());
+                    tooltip.Inlines.Add(new Run(Description));
+                }
+
+                return tooltip;
             }
         }
 

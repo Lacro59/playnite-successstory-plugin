@@ -830,6 +830,10 @@
                                                 <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactHeight}" 
                                                                              Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
+
+                                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.IntegrationCompactShowDescription}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryDescriptionInToolTip}" />
+                                            </CheckBox>
                                         </Grid>
                                     </Border>
                                 </Expander.Content>
@@ -858,6 +862,11 @@
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="10" />
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
 
                                             <Grid Grid.Column="0">
                                                 <Grid.ColumnDefinitions>
@@ -869,7 +878,13 @@
                                                 <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactPartialHeight}" 
                                                                              Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
-                                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.IntegrationCompactPartialDisplayLastest}">
+
+                                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.IntegrationCompactPartialShowDescription}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryDescriptionInToolTip}" />
+                                            </CheckBox>
+                                            
+                                            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
+                                                      IsChecked="{Binding Settings.IntegrationCompactPartialDisplayLastest}">
                                                 <Label Content="{DynamicResource LOCSuccessStoryIntegrationCompactPartialDisplayLastest}" />
                                             </CheckBox>
                                         </Grid>
@@ -911,6 +926,10 @@
                                                 <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactPartialHeight}" 
                                                                              Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
+
+                                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.IntegrationCompactPartialShowDescription}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryDescriptionInToolTip}" />
+                                            </CheckBox>
                                         </Grid>
                                     </Border>
                                 </Expander.Content>

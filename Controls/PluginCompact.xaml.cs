@@ -244,18 +244,23 @@ namespace SuccessStory.Controls
                     {
                         if (i < nbGrid - 1)
                         {
+                            TextBlock tooltip = new TextBlock();
+                            tooltip.Inlines.Add(new Run(AchievementsList[i].NameWithDateUnlock)
+                            {
+                                FontWeight = FontWeights.Bold
+                            });
+                            if (PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialShowDescription)
+                            {
+                                tooltip.Inlines.Add(new LineBreak());
+                                tooltip.Inlines.Add(new Run(AchievementsList[i].Description));
+                            }
+
                             Image gridImage = new Image();
                             gridImage.Stretch = Stretch.UniformToFill;
                             gridImage.Width = ControlDataContext.Height;
                             gridImage.Height = ControlDataContext.Height;
-                            gridImage.ToolTip = AchievementsList[i].Name;
+                            gridImage.ToolTip = tooltip;
                             gridImage.SetValue(Grid.ColumnProperty, i);
-
-                            if (IsUnlocked)
-                            {
-                                var converter = new LocalDateTimeConverter();
-                                gridImage.ToolTip = AchievementsList[i].NameWithDateUnlock;
-                            }
 
                             if (AchievementsList[i].IsGray)
                             {

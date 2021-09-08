@@ -99,6 +99,7 @@ namespace SuccessStory
         }
 
         public double IntegrationCompactHeight { get; set; } = 48;
+        public bool IntegrationCompactShowDescription { get; set; } = true;
 
 
         private bool _EnableIntegrationCompactLocked { get; set; } = false;
@@ -125,8 +126,9 @@ namespace SuccessStory
 
         public double IntegrationCompactPartialHeight { get; set; } = 48;
         public bool IntegrationCompactPartialDisplayLastest { get; set; } = true;
+        public bool IntegrationCompactPartialShowDescription { get; set; } = true;
 
-         
+
         private bool _EnableIntegrationChart { get; set; } = false;
         public bool EnableIntegrationChart
         {
