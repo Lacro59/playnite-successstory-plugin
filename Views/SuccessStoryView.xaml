@@ -30,7 +30,7 @@
 
         <Grid Name="PART_Data">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="700" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
