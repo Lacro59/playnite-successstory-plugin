@@ -1,120 +1,172 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
+    <sys:String x:Key="LOCSuccessStoryProgress">Прогрес</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEarned">Отримано</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryManualAchievements">Manual Achievements</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
+    
     <!-- MainView -->
 
     <sys:String x:Key="LOCSuccessStory">SuccessStory</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievements">Achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievements">Досягнення</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryViewGames">View the games achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryViewGame">View the game achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGames">Переглянути ігрові досягнення</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGame">Переглянути досягнення в грі</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profile is not public</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam has not been correctly configured in settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements has not been correctly configured in settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">Rpcs3 has not been correctly configured in settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnored">Ignored the game</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Профіль Steam не є публічним</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam неправильно налаштовано в налаштуваннях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Користувач GOG не авторизований</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Користувач Origin не авторизований</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Користувач Xbox не авторизований</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements неправильно налаштовано в налаштуваннях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 неправильно налаштовано в налаштуваннях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II user is not authenticated</sys:String>
+
+    <!-- SuccessStoreGameSelection -->
+
+    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Achievements count</sys:String>
+    
+    
     <!-- SuccessStorySettingsView -->
 
-    <sys:String x:Key="LOCSuccessStoryProgressBar">Processing, please wait...</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressBar">Обробка, зачекайте будь ласка...</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnableSteam">Enable Steam achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableGog">Enable GOG achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable Origin achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableXbox">Enable Xbox achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Enable RetroAchievements achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Enable Rpcs3 achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnoredGames">Ignored games</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
+
+    <sys:String x:Key="LOSuccessStoryAddTagDescription">Add a tag to games with the time to full unlock</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSteam">Увімкнути досягнення Steam</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGog">Увімкнути досягнення GOG</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Увімкнути досягнення Origin</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableXbox">Увімкнути досягнення Xbox</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Увімкнути досягнення RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Увімкнути досягнення RPCS3</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Enable manual achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Enable Overwatch achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Enable StarCraft II achievements</sys:String>
+
+    <sys:String x:Key="LOCSuccessStorySteamNoApi">Вимкнути використання API (використовувати, коли у вас немає ключа API)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Домашня тека користувача</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Show separate view for RetroAchievements</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryDatabase">База даних</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetData">Завантажити дані досягнень</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshData">Refresh data</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissing">Завантажити відсутні дані</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecent">Нещодавні ігри з відсутніми даними</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Нещодавні ігри</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllData">Всі ігри</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllData">Всі ігри з відсутніми даними</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Встановлені ігри з відсутніми даними</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Встановлені ігри</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">Progression with a progress bar</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Home user folder</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Display achievements chart</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Display achievements list</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompact">Display the achievements list compact</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Display the achievements progress bar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Display the summary of unlocked achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">Display the summary of locked achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">Display user game stats</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Show separate view for RetroAchievements achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Параметри графіка</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Кількість днів для відображення на графіку</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">Показувати мітки на горизонтальній осі</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">Показувати мітки на вертикальній осі</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Параметри смуги прогресу</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Показувати підпис смуги прогресу</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">Показувати відсоток прогресу</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">Параметри списку досягнень</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDatabase">Database</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetData">Download achievements data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshData">Reset achievements data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetMissing">Download missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetDataRecent">Recent games with missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Recent games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllData">All games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetAllData">All games with missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Installed games with missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Installed games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCompactListOptions">Achievements list compact options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Summary achievements options</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Show chart</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Show achievements list</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Show achievements progress bar</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Show summary of unlocked achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">Show summary of locked achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">Show user game stats</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">Show the lastest achievement unlocked</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Chart options</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Number of days to display on chart</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">Show labels on horizontal axis</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">Show labels on vertical axis</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Show achievements progress label</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">Show progress percentage</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">Achievements list options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewsSettings">Вигляд розширення</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Показувати індикатор рідкості на досягненнях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the achievements of the game selected from the game menu</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Automatically set the game to &quot;Beaten&quot; when all achievements are unlocked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGames">Список ігор</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Типове впорядкування списку ігор</sys:String>
+    <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Графік з усіма досягненнями</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryViewsSettings">Extension view</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarety indicator on achievement</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the selected game with plugin actions</sys:String>
-    <sys:String x:Key="LOCSuccessStoryListGames">List games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Default game list sorting</sys:String>
-    <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Chart with all achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGamesFields">Поля гри для відображення:</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Іконка 100% досягнень</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryListGamesFields">Game fields to be displayed:</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Icon 100% achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Показати досягнення в прихованих іграх</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Показати графік досягнень по місяцях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Показати графік досягнень по днях</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Show achievements of hidden games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Show chart of achievements by month</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Show chart of achievements by day</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">База досягнень обраного була скинута.</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">Achievements database of selection has been reset.</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">Завантаження відсутні ігрові досягнення.</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Скидання та завантаження досягнень для всіх ігор з цього джерела. (Використовуйте, якщо виникли проблеми з досягненнями)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">Downloads missing games achievements.</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Resets and downloads achievements for all games from this source. (Use if there is any problem with achievements)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Завантаження досягнень для ігор, які були імпортовані за останній місяць, з відсутніми даними про досягнення. (Використовувати, якщо перше число відрізняється від загальної кількості)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Завантаження досягнень для встановлених ігор з відсутніми даними про досягнення. (Використовувати, якщо перше число відрізняється від загальної кількості)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Завантаження досягнень для встановлених ігор з відсутніми даними про досягнення. (Використовувати, якщо перше число відрізняється від загальної кількості)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Downloads achievements for games that were imported in the last month with missing achievements data. (Use if the first number count is different to the total count)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Downloads achievements for installed games with missing achievements data. (Use if the first number count is different to the total count)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Downloads achievements for installed games with missing achievements data. (Use if the first number count is different to the total count)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Скидання та завантаження досягнень ігор, які були імпортовані за останній місяць. (Використовуйте, якщо виникли проблеми з досягненнями)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Скидання та завантаження досягнень встановлених ігор. (Використовуйте, якщо виникли проблеми з досягненнями)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Скидання та завантаження досягнень всіх ігор. (Використовуйте, якщо виникли проблеми з досягненнями)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Resets and downloads achievements of games that were imported in the last month. (Use if there is any problem with achievements)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Resets and downloads achievements of installed games. (Use if there is any problem with achievements)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Resets and downloads achievements of all games. (Use if there is any problem with achievements)</sys:String>
-
-    <sys:String x:Key="LOCSuccessStoryEnableImageCache">Enable caching achievements images (experimental) *</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Experimental non-blocking process which can increase memory usage a bit when caching only.
-Especially useful for Xbox achievements  with their larges images which are reduced when caching.</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableImageCache">Enable caching achievements images *</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Non-blocking process which can increase memory usage a bit when caching only.
+Especially useful for Xbox achievements with their larges images which are reduced when caching.</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
-    <sys:String x:Key="LOCSuccessStoryUserStats">User statistiques</sys:String>
-    
+    <sys:String x:Key="LOCSuccessStoryUserStats">Статистика користувача</sys:String>
+
     <!-- SuccessStoryView -->
 
     <!-- UI -->
 
-    <sys:String x:Key="LOCSuccessStoryFilterSource">Filter by source</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Global achievements progression</sys:String>
-    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Achievements Progression of launched games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGameInformation">Information</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterSource">Фільтрувати за джерелом</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Глобальний прогрес досягнень</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Прогрес досягнень запущених ігор</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameInformation">Інформація</sys:String>
 
     <!-- ListViewGames -->
 
-    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Progression</sys:String>
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Прогрес</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">All achievements unlocked by month</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">All achievements unlocked by day</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Achievements unlocked by month</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Achievements unlocked by source</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Achievements unlocked by day</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">Всі досягнення розблоковані по місяцях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">Всі досягнення розблоковані по днях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Досягнення розблоковані по місяцях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Досягнення розблоковані по джерелах</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Досягнення розблоковані по днях</sys:String>
+
+    <!-- ListViewGames -->
+
+    <sys:String x:Key="LOCSsOverwatchQuickPlay">Quick Play</sys:String>
+    <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Competitive Play</sys:String>
+
+    <sys:String x:Key="LOCSsOverwatchGamesWon">{0} games won</sys:String>
+    
+    <sys:String x:Key="LOCSsOverwatchTopHero">Top Hero</sys:String>
+    <sys:String x:Key="LOCSsOverwatchCareerStats">Career Stats</sys:String>
 
 </ResourceDictionary>
