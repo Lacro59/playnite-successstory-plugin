@@ -349,9 +349,26 @@
                             </Expander.Style>
 
                             <Expander.Header>
-                                <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableOverwatchAchievements}" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOCSuccessStoryEnableOverwatchAchievements}"></Label>
-                                </CheckBox>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableOverwatchAchievements}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableOverwatchAchievements}" />
+                                    </CheckBox>
+
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-Battle.net" />
+                                </Grid>
                             </Expander.Header>
                         </Expander>
 
@@ -363,9 +380,26 @@
                             </Expander.Style>
 
                             <Expander.Header>
-                                <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableSc2Achievements}" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOCSuccessStoryEnableSc2Achievements}"></Label>
-                                </CheckBox>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableSc2Achievements}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableSc2Achievements}"></Label>
+                                    </CheckBox>
+
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-Battle.net" />
+                                </Grid>
                             </Expander.Header>
                         </Expander>
 
