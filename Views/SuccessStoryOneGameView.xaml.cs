@@ -57,9 +57,13 @@ namespace SuccessStory.Views
                 var AchNoCommon = gameAchievements.NoCommon;
                 var AchRare = gameAchievements.Rare;
 
-                PART_AchCommon.Content = AchCommon.UnLocked + " / " + AchCommon.Total;
-                PART_AchNoCommon.Content = AchNoCommon.UnLocked + " / " + AchNoCommon.Total;
-                PART_AchRare.Content = AchRare.UnLocked + " / " + AchRare.Total;
+                PART_AchCommon.Content = AchCommon.UnLocked;
+                PART_AchNoCommon.Content = AchNoCommon.UnLocked;
+                PART_AchRare.Content = AchRare.UnLocked;
+
+                PART_AchCommonTotal.Content = AchCommon.Total;
+                PART_AchNoCommonTotal.Content = AchNoCommon.Total;
+                PART_AchRareTotal.Content = AchRare.Total;
             }
 
 
