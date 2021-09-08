@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>27e5d35b-f3ce-4a3f-9705-4564674615a5</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>CommonPluginsShared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\DatePickerCalendar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CodeLang.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\PluginDataBaseGame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\PluginDataBaseGameBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\PluginDataBaseGameDetails.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\PluginDatabaseObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\PluginItemCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\AttachedProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ListBoxExtend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ListViewExtend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PluginUserControlExtendBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PluginUserControlExtend.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\SidebarItemControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\CompareValueConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\DefaultIconConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\GetImageConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\GetMediaTypeConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\HeightToFontSizeConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ImageConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ImageToGrayConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\IndexConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\InvertedBoolenConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ListMoreOneBoolConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\LocalDateConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\LocalDateTimeConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\LocalDateYMConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\LocalTimeConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\StringRemoveConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\StringToBooleanConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\TwoBooleanToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\VisibilityZeroConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CumulsErrors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ImageTools.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Folder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SourceLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlayniteUiHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IDataContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IPluginDatabase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Localization.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LocalSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PluginPaths.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TraceInfos.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlayniteExtended\PluginExtended.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlayniteTools.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TaskHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TransformIcon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Web.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Resources\font.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

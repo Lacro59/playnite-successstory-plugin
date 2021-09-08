@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>27e5d35b-f3ce-4a3f-9705-4564674615a5</ProjectGuid>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.Common.Default.props" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.Common.props" />
+  <PropertyGroup />
+  <ItemGroup>
+    <Compile Include="CodeLang.cs" />
+    <Compile Include="Collections\PluginDataBaseGame.cs" />
+    <Compile Include="Collections\PluginDataBaseGameBase.cs" />
+    <Compile Include="Collections\PluginDataBaseGameDetails.cs" />
+    <Compile Include="Collections\PluginDatabaseObject.cs" />
+    <Compile Include="Collections\PluginItemCollection.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="CumulsErrors.cs" />
+    <Compile Include="ImageTools.cs" />
+    <Compile Include="Localization.cs" />
+    <Compile Include="Models\TraceInfos.cs" />
+    <Compile Include="PlayniteTools.cs" />
+    <Compile Include="TaskHelper.cs" />
+    <Compile Include="Tools.cs" />
+    <Compile Include="TransformIcon.cs" />
+    <Compile Include="Web.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\font.ttf" />
+  </ItemGroup>
+  <Import Project="CommonPluginsShared.projitems" Label="Shared" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\CodeSharing\Microsoft.CodeSharing.CSharp.targets" />
+</Project>

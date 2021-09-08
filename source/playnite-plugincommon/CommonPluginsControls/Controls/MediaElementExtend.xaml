@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="CommonPluginsControls.Controls.MediaElementExtend"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+              xmlns:local="clr-namespace:CommonPluginsControls.Controls"
+              xmlns:pbeh="clr-namespace:CommonPlayniteShared.Behaviors"
+              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid Unloaded="Grid_Unloaded">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <MediaElement Name="PART_Video" MouseLeftButtonDown="PART_Video_MouseLeftButtonDown"
+                      Source="{Binding Source, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                      LoadedBehavior="{Binding LoadedBehavior, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                      ScrubbingEnabled="True" Stretch="Uniform" 
+                      MediaOpened="PART_Video_MediaOpened" pbeh:MediaElementBehaviors.Repeat="True" />
+
+        <StackPanel Name="PART_Controls" 
+                    Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Bottom">
+            <!-- Play button. -->
+            <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec74;" Click="OnMouseDownPlayMedia" Margin="5" />
+
+            <!-- Pause button. -->
+            <Button FontFamily="{DynamicResource FontIcoFont}" Content="&#xec72;" Click="OnMouseDownPauseMedia" Margin="5" />
+
+            <!-- Seek to slider. Ths slider allows you to jump to different parts of the media playback. -->
+            <Slider Name="timelineSlider" Margin="50,5,5,5" Width="350" VerticalAlignment="Center"
+                    Thumb.DragStarted="TimelineSlider_DragStarted" Thumb.DragCompleted="TimelineSlider_DragCompleted" />
+            <Label Name="lblStatus" Content="00:00:00 / 00:00:00" Margin="5" VerticalAlignment="Center" />
+
+            <!-- Volume slider. This slider allows a Volume range between 0 and 1. -->
+            <Label FontFamily="{DynamicResource FontIcoFont}" Content="&#xec94;" FontSize="24"  VerticalAlignment="Center" Margin="50,5,5,5" />
+            <Slider Name="volumeSlider" VerticalAlignment="Center" ValueChanged="ChangeMediaVolume" 
+                    Minimum="0" Maximum="1" Value="0.5" Width="70" Margin="5" />
+
+        </StackPanel>
+    </Grid>
+</UserControl>

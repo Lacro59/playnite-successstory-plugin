@@ -1,0 +1,166 @@
+﻿<?xml version="1.0"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="LOCCommonSelectFilters">Choisir les filtres</sys:String>
+    <sys:String x:Key="LOCCommonRecentlyAdded">Ajoutés récemment</sys:String>
+    <sys:String x:Key="LOCCommonOnlyMissing">Télécharger uniquement manquant</sys:String>
+    
+    <sys:String x:Key="LOCCommonTotal">Total</sys:String>
+
+
+    <sys:String x:Key="LOCCommon0to5">0 to 5 hours</sys:String>
+    <sys:String x:Key="LOCCommon1to5">1 à 5 heures</sys:String>
+    <sys:String x:Key="LOCCommon5to10">5 à 10 heures</sys:String>
+    <sys:String x:Key="LOCCommon10to20">10 à 20 heures</sys:String>
+    <sys:String x:Key="LOCCommon20to30">20 à 30 heures</sys:String>
+    <sys:String x:Key="LOCCommon30to40">30 à 40 heures</sys:String>
+    <sys:String x:Key="LOCCommon40to50">40 à 50 heures</sys:String>
+    <sys:String x:Key="LOCCommon50to60">50 à 60 heures</sys:String>
+    <sys:String x:Key="LOCCommon60to70">60 à 70 heures</sys:String>
+    <sys:String x:Key="LOCCommon70to80">70 à 80 heures</sys:String>
+    <sys:String x:Key="LOCCommon80to90">80 à 90 heures</sys:String>
+    <sys:String x:Key="LOCCommon90to100">90 à 100 heures</sys:String>
+    <sys:String x:Key="LOCCommon100plus">100 hours and more</sys:String>
+
+    <sys:String x:Key="LOCCommonDefaultSorting">Tri par défaut de la liste des jeux</sys:String>
+
+
+    <!-- login -->
+
+    <sys:String x:Key="LOCCommonAuthenticateLabel">Connexion</sys:String>
+    <sys:String x:Key="LOCCommonNotLoggedIn">Authentification requise</sys:String>
+    <sys:String x:Key="LOCCommonLoggedIn">Utilisateur connecté</sys:String>
+    <sys:String x:Key="LOCCommonAccountName">Nom du compte</sys:String>
+    <sys:String x:Key="LOCCommonLoginChecking">Vérification du statut d'authentification…</sys:String>
+
+    <!-- CommonMenus -->
+
+    <sys:String x:Key="LOCCommonTotalFound">Total trouvé</sys:String>
+
+    <!-- CommonSettingsView -->
+
+    <sys:String x:Key="LOCCommonMenuInExtensions">Afficher le menu du plugin dans le sous-menu des extensions *</sys:String>
+    <sys:String x:Key="LOCCommonIconStore">Afficher l'icône du magasin</sys:String>
+
+    <sys:String x:Key="LOCCommonIntegrationFullScreen">Plein écran</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationFullScreenEnable">Activer l'intégration en plein écran</sys:String>
+
+    <sys:String x:Key="LOCCommonIntegration">Apparence</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationInCustomTheme">Intégration dans les thèmes personnalisés (si intégré)</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButtonHeader">Afficher le bouton du plugin dans la barre de titre de la fenêtre *</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButton">Afficher le bouton du plugin dans les détails du jeu</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationInDescription">Afficher les informations du plugin dans les détails du jeu</sys:String>
+
+    <sys:String x:Key="LOCCommonIntegrationSelectElements">Composants disponibles</sys:String>
+
+    <sys:String x:Key="LOCCommonIntegrationButtonOptions">Options du bouton</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButtonOnlyIcon">Afficher uniquement l'icône</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButtonDetails">Bouton avec des détails</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButtonIsToggle">Avec un bouton bascule</sys:String>
+
+    <sys:String x:Key="LOCCommonIntegrationViewItemOptions">Personnaliser éléments</sys:String>
+    
+    <sys:String x:Key="LOCCommonIntegrationListOptions">Options de la liste</sys:String>
+
+    <sys:String x:Key="LOCCommonIntegrationChartOptions">Options du graphique</sys:String>
+    
+    <sys:String x:Key="LOCGameActivityIntegrationDescriptionOptions">Options pour l'intégration dans la description</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationShowTitle">Afficher le titre</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationTopGameDetails">Afficher au-dessus de la description</sys:String>
+
+    <sys:String x:Key="LOCCommonAddTagAuto">Ajout automatique de l'étiquette avec l'ajout de données</sys:String>
+    
+    <sys:String x:Key="LOCCommonDatabase">Base de données</sys:String>
+
+    <sys:String x:Key="LOCCommonControlsAvailable">Éléments disponibles pour les thèmes pris en charge</sys:String>
+    <sys:String x:Key="LOCCommonControlsPluginButtonShow">Affiche le bouton du plugin</sys:String>
+    <sys:String x:Key="LOCCommonControlsPluginButtonShowInContextMenu">Afficher les données dans le menu contextuel</sys:String>
+    <sys:String x:Key="LOCCommonControlsPluginViewItemShow">Afficher les données dans la liste des jeux</sys:String>
+
+    <sys:String x:Key="LOCCommonControlsVisibleNoData">Afficher lorsqu'il n'y a pas de données</sys:String>
+
+    <!-- CommonMenus -->
+
+    <sys:String x:Key="LOCCommonRefreshGameData">Rafraichir les données</sys:String>
+    <sys:String x:Key="LOCCommonRefreshAllData">Actualiser les données</sys:String>
+    <sys:String x:Key="LOCCommonDeleteGameData">Supprimer les données</sys:String>
+
+    <sys:String x:Key="LOCCommonSelectGames">Sélectionner des jeux</sys:String>
+    <sys:String x:Key="LOCCommonAddAllTags">Ajouter une étiquette à tous les jeux</sys:String>
+    <sys:String x:Key="LOCCommonAddTPlugin">Ajouter une étiquette du plugin...</sys:String>
+    <sys:String x:Key="LOCCommonSelectData">Télécharger les données pour les jeux sélectionnés</sys:String>
+    <sys:String x:Key="LOCCommonDownloadPluginData">Télécharger les données du plugin...</sys:String>
+    <sys:String x:Key="LOCCommonGetAllDatas">Télécharger les données pour tous les jeux</sys:String>
+    <sys:String x:Key="LOCCommonDeletePluginData">Supprimer les données du plugin</sys:String>
+    <sys:String x:Key="LOCCommonClearAllDatas">Supprimer les données de tous les jeux</sys:String>
+    <sys:String x:Key="LOCCommonRemoveAllTags">Supprimer les étiquettes du plugin</sys:String>
+
+    <!-- CommonGlobalProgress -->
+
+    <sys:String x:Key="LOCCommonGettingData">Téléchargement des données...</sys:String>
+    <sys:String x:Key="LOCCommonGettingAllDatas">Téléchargement des données...</sys:String>
+    <sys:String x:Key="LOCCommonAddingAllTag">Ajouter des étiquettes...</sys:String>
+    <sys:String x:Key="LOCCommonRemovingAllTag">Suppression des étiquettes...</sys:String>
+    <sys:String x:Key="LOCCommonClearingAllTag">Nettoyage de la base de données...</sys:String>
+    <sys:String x:Key="LOCCommonProcessing">Traitement en cours, veuillez patienter...</sys:String>
+
+    <!-- CommonNotifications -->
+
+    <sys:String x:Key="LOCCommonDataRemove">Les données du plugin ont été supprimées.</sys:String>
+    <sys:String x:Key="LOCCommonDataErrorRemove">Erreur lors de la suppression des données du plugin. Veuillez réessayer.</sys:String>
+
+    <sys:String x:Key="LOCCommonNotificationTagError" xml:space="preserve">Erreur lors de l'ajout du tag.
+Veuillez effacer toutes les étiquettes du menu du plugin.</sys:String>
+
+
+
+    <sys:String x:Key="LOCCommonDimensions">Dimensions</sys:String>
+    <sys:String x:Key="LOCCommonStyles">Styles</sys:String>
+    <sys:String x:Key="LOCCommonTypes">Types</sys:String>
+    <sys:String x:Key="LOCCommonSortByDate">Trier par date</sys:String>
+    <sys:String x:Key="LOCCommonSortByScore">Trier par note</sys:String>
+
+
+    <sys:String x:Key="LOCCommonMisc">Misc</sys:String>
+
+
+    <sys:String x:Key="LOCGameVariablesTooltip" xml:space="preserve">Special variables can be used to add a dynamic string:
+{InstallDir} - Game installation directory
+{InstallDirName} - Installation folder name
+{ImagePath} - Game ISO/ROM path if set
+{ImageName} - Game ISO/ROM file name
+{ImageNameNoExt} - Game ISO/ROM file name without extension
+{PlayniteDir} - Playnite installation directory
+{Name} - Game name
+       
+Cloud variables can be used to add a dynamic string:        
+{DropboxFolder}
+       
+Steam variables can be used to add a dynamic string:        
+{SteamId} - Steam user Id
+{SteamInstallDir} - Steam installation directory
+{SteamScreenshotsDir} - Steam screenshots directory
+       
+Ubisoft Connect variables can be used to add a dynamic string:        
+{UbisoftInstallDir} - Ubisoft installation directory
+{UbisoftScreenshotsDir} - Ubisoft screenshots directory
+            
+Windows variables can be used to add a dynamic string:        
+{WinDir}
+{AllUsersProfile}
+{AppData}
+{HomePath}
+{UserName}
+{ComputerName}
+{UserProfile}
+{HomeDrive}
+{SystemDrive}
+{SystemRoot}
+{Public}
+{CommonProgramW6432}
+{CommonProgramFiles}
+{ProgramFiles}
+{CommonProgramFiles(x86)}
+{ProgramFiles(x86)</sys:String>
+
+</ResourceDictionary>

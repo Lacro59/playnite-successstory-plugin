@@ -1,0 +1,160 @@
+﻿<UserControl x:Class="CommonPluginsControls.Controls.ControlPickerGradient"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:controls="clr-namespace:akr.WPF.Controls;assembly=akr.WPF.Controls.ColorPicker"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             mc:Ignorable="d" Height="400" Width="450">
+
+    <UserControl.Resources>
+        <converters:InvertedBoolenConverter x:Key="InvertedBoolenConverter" />
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    
+    <DockPanel>
+        <Grid>
+        <controls:ColorPicker Name="PART_AkrColorPicker" DockPanel.Dock="Left" Background="Transparent" Margin="0,0,20,0"
+                              SelectedColorChanged="PART_AkrColorPicker_SelectedColorChanged" IsVisibleChanged="PART_AkrColorPicker_IsVisibleChanged" />
+
+            <!--StackPanel Height="45" Width="200" 
+                        Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=Background}"
+                        Visibility="{Binding ElementName=PART_tbGradient, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                        VerticalAlignment="Top" HorizontalAlignment="Right">
+            </StackPanel-->
+        </Grid>
+
+        
+        <Grid DockPanel.Dock="Right" Name="PART_GradientSelector">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="1">
+                <Rectangle Name="PART_ColorSimple" Width="106" Height="106">
+                    <Rectangle.Fill>
+                        <SolidColorBrush x:Name="PART_SolidColorBrush" Changed="PART_SolidColorBrush_Changed"
+                                         Color="{Binding ElementName=PART_AkrColorPicker, Path=SelectedColor}" 
+                                         Opacity="{Binding ElementName=PART_SliderOpacity, Path=Value}" />
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="PART_ColorPickerGradient" Width="106" Height="106" 
+                           Loaded="PART_ColorPickerGradient_Loaded">
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                            <GradientStop Offset="0" Color="{Binding ElementName=PART_Border_Color0, Path=Background.Color}" />
+                            <GradientStop Offset="1" Color="{Binding ElementName=PART_Border_Color1, Path=Background.Color}" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Canvas Width="106" Height="106" Name="PART_GradientDetailsLinearGrid">
+                    <Line x:Name="PART_GradientDetailsLinearLine" Stroke="SlateGray" StrokeThickness="2" 
+                          X1="0" 
+                          X2="100" 
+                          Y1="0" 
+                          Y2="100" />
+                    <Thumb Name="PART_GradientDetailsLinearTopThumb" Width="10" Height="10" Canvas.Left="0" Canvas.Top="0" DragDelta="PART_GradientDetailsLinearTopThumb_DragDelta">
+                        <Thumb.Style>
+                            <Style TargetType="{x:Type Thumb}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Thumb}">
+                                            <Border BorderBrush="Black" BorderThickness="1" Background="SlateGray" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Thumb.Style>
+                    </Thumb>
+                    <Thumb Name="PART_GradientDetailsLinearBottomThumb" Width="10" Height="10" Canvas.Left="96" Canvas.Top="96" DragDelta="PART_GradientDetailsLinearBottomThumb_DragDelta">
+                        <Thumb.Style>
+                            <Style TargetType="{x:Type Thumb}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type Thumb}">
+                                            <Border BorderBrush="Black" BorderThickness="1" Background="SlateGray" />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Thumb.Style>
+                    </Thumb>
+                </Canvas>
+            </Grid>
+
+            <StackPanel Grid.Row="3" Name="PART_ButtonSetColorGradient">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button Name="PART_Button_Color0" Content="Set color" Margin="0,0,10,0" Width="76" Click="PART_Button_Color0_Click" />
+                    <Border Name="PART_Border_Color0" CornerRadius="5" Width="76" Height="24" BorderThickness="0" 
+                            Background="Green" HorizontalAlignment="Right" />
+                </StackPanel>
+
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="Offset" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <Slider Grid.Column="1" Name="PART_SlidderOffset0" VerticalAlignment="Center" Margin="0,0,10,0"
+                            Minimum="0" Maximum="1" Value="0.1" SmallChange="0.1" ValueChanged="PART_SlidderOffset0_ValueChanged" />
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding ElementName=PART_SlidderOffset0, Path=Value}" TextAlignment="Center" />
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button Name="PART_Button_Color1" Content="Set color" Margin="0,0,10,0" Width="76" Click="PART_Button_Color1_Click" />
+                    <Border Name="PART_Border_Color1" CornerRadius="5" Width="76" Height="24" BorderThickness="0" 
+                            Background="Yellow" HorizontalAlignment="Right" />
+                </StackPanel>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="Offset" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <Slider Grid.Column="1" Name="PART_SlidderOffset1" VerticalAlignment="Center" Margin="0,0,10,0" 
+                            Minimum="0" Maximum="1" Value="0.1" SmallChange="0.1" ValueChanged="PART_SlidderOffset1_ValueChanged" />
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding ElementName=PART_SlidderOffset1, Path=Value}" TextAlignment="Center" />
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Grid.Row="5" Visibility="Collapsed">
+                <Label Name="test0" />
+                <Label Name="test1" />
+            </StackPanel>
+            
+            <StackPanel Grid.Row="6">
+                <ToggleButton Name="PART_tbGradient" Content="Use gradient color" Margin="10,0" Checked="PART_tbGradient_Checked" Unchecked="PART_tbGradient_Unchecked" />
+            </StackPanel>
+
+            <Grid Grid.Row="8" 
+                  IsEnabled="{Binding ElementName=PART_tbGradient, Path=IsChecked, Converter={StaticResource InvertedBoolenConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                
+                <Label Content="Opacity" Grid.Column="0" />
+                <Slider Grid.Column="1" Name="PART_SliderOpacity" VerticalAlignment="Center" Margin="10,0,10,0" 
+                            Minimum="0" Maximum="1" Value="1" SmallChange="0.1" ValueChanged="PART_SliderOpacity_ValueChanged" />
+                <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding ElementName=PART_SliderOpacity, Path=Value}" TextAlignment="Center" />
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>

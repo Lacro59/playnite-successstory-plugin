@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1300
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonPluginsControls", "CommonPluginsControls\CommonPluginsControls.csproj", "{9ACFA07B-718C-4546-AC27-A9FCE42F61F7}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonPluginsShared", "CommonPluginsShared\CommonPluginsShared.shproj", "{27E5D35B-F3CE-4A3F-9705-4564674615A5}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonPlayniteShared", "CommonPlayniteShared\CommonPlayniteShared.shproj", "{0D7DBC82-26AF-49AD-8ED5-0E11AA56BCE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonPluginsResources", "CommonPluginsResources\CommonPluginsResources.csproj", "{4EFFE926-9C64-4750-A399-F344710EDC09}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonPluginsStores", "CommonPluginsStores\CommonPluginsStores.shproj", "{C066F255-3BFA-4862-A490-09D7933647D4}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		CommonPlayniteShared\CommonPlayniteShared.projitems*{0d7dbc82-26af-49ad-8ed5-0e11aa56bce0}*SharedItemsImports = 13
+		CommonPluginsShared\CommonPluginsShared.projitems*{27e5d35b-f3ce-4a3f-9705-4564674615a5}*SharedItemsImports = 13
+		CommonPluginsStores\CommonPluginsStores.projitems*{c066f255-3bfa-4862-a490-09d7933647d4}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9ACFA07B-718C-4546-AC27-A9FCE42F61F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ACFA07B-718C-4546-AC27-A9FCE42F61F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ACFA07B-718C-4546-AC27-A9FCE42F61F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ACFA07B-718C-4546-AC27-A9FCE42F61F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EFFE926-9C64-4750-A399-F344710EDC09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EFFE926-9C64-4750-A399-F344710EDC09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EFFE926-9C64-4750-A399-F344710EDC09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EFFE926-9C64-4750-A399-F344710EDC09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0C400818-D2AC-4EBB-A544-0BB6B173DDD3}
+	EndGlobalSection
+EndGlobal

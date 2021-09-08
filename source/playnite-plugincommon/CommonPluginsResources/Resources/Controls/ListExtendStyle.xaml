@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="ListExtendStyleLabel" TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Path=IsSelected}"
+                         Value="True">
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Path=Foreground}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ListExtendStyleTextBlock" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Path=IsSelected}"
+                         Value="True">
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}, Path=Foreground}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

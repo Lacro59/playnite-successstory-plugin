@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1321
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CommonPluginsShared", "CommonPluginsShared.shproj", "{27E5D35B-F3CE-4A3F-9705-4564674615A5}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		CommonPluginsShared.projitems*{27e5d35b-f3ce-4a3f-9705-4564674615a5}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F3146C4F-75B6-4E77-BE2C-6414380B6B6B}
+	EndGlobalSection
+EndGlobal

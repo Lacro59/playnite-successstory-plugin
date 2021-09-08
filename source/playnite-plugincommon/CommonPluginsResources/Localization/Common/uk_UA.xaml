@@ -1,0 +1,60 @@
+﻿<?xml version="1.0"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- CommonMenus -->
+
+    <sys:String x:Key="LOCCommonTotalFound">Total found</sys:String>
+
+    <!-- CommonSettingsView -->
+    
+    <sys:String x:Key="LOCCommonMenuInExtensions">Plugin main menus in extensions menu *</sys:String>
+    <sys:String x:Key="LOCCommonIconStore">Show icon store</sys:String>
+
+    <sys:String x:Key="LOCCommonIntegrationFullScreen">Full screen</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationFullScreenEnable">Enable full screen integration</sys:String>
+    
+    <sys:String x:Key="LOCCommonIntegration">Appearance</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationInCustomTheme">Enable custom theme integration (Only if integrated in custom theme)</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButtonHeader">Add plugin button to Playnite window</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButton">Show plugin button in game details</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationInDescription">Show plugin information in game details</sys:String>
+
+    <sys:String x:Key="LOCCommonIntegrationSelectElements">Details view components</sys:String>
+
+    <sys:String x:Key="LOCCommonIntegrationButtonOptions">Button options</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButtonOnlyIcon">Only show a icon</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButtonDetails">Button with details</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationButtonIsToggle">With a toggle button</sys:String>
+
+    <sys:String x:Key="LOCGameActivityIntegrationDescriptionOptions">Description integration options</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationShowTitle">Show title</sys:String>
+    <sys:String x:Key="LOCCommonIntegrationTopGameDetails">Show above game description</sys:String>
+    
+    <sys:String x:Key="LOCCommonDatabase">Database</sys:String>
+
+    <!-- CommonMenus -->
+
+    <sys:String x:Key="LOCCommonRefreshGameData">Refresh data</sys:String>
+    <sys:String x:Key="LOCCommonDeleteGameData">Delete data</sys:String>
+    
+    <sys:String x:Key="LOCCommonAddAllTags">Add tag for all games</sys:String>
+    <sys:String x:Key="LOCCommonGetAllDatas">Download data for all games</sys:String>
+    <sys:String x:Key="LOCCommonClearAllDatas">Delete data for all games</sys:String>
+    <sys:String x:Key="LOCCommonRemoveAllTags">Remove tag for all games</sys:String>
+
+    <!-- CommonGlobalProgress -->
+
+    <sys:String x:Key="LOCCommonGettingAllDatas">Downloading data for all games</sys:String>
+    <sys:String x:Key="LOCCommonAddingAllTag">Adding tag for all games</sys:String>
+    <sys:String x:Key="LOCCommonRemovingAllTag">Removing tag for all games</sys:String>
+    <sys:String x:Key="LOCCommonClearingAllTag">Clearing database</sys:String>
+
+    <!-- CommonNotifications -->
+
+    <sys:String x:Key="LOCCommonDataRemove">Plugin data is removed.</sys:String>
+    <sys:String x:Key="LOCCommonDataErrorRemove">Cannot remove plugin data. Please try again.</sys:String>
+    
+    <sys:String x:Key="LOCCommonNotificationTagError" xml:space="preserve">Error adding tag.
+Please clear all tags in the plugin menu.</sys:String>
+
+</ResourceDictionary>

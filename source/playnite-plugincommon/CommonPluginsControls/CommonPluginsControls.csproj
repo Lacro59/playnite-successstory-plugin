@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9ACFA07B-718C-4546-AC27-A9FCE42F61F7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CommonPluginsControls</RootNamespace>
+    <AssemblyName>CommonPluginsControls</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="akr.WPF.Controls.ColorPicker, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\akr.WPF.Controls.ColorPicker.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+      <Aliases>global</Aliases>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+      <Aliases>global</Aliases>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Playnite.SDK, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PlayniteSDK.5.5.0\lib\net462\Playnite.SDK.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\ComboBoxRemovable.xaml.cs">
+      <DependentUpon>ComboBoxRemovable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ControlPickerGradient.xaml.cs">
+      <DependentUpon>ControlPickerGradient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ProgressBarExtend.xaml.cs">
+      <DependentUpon>ProgressBarExtend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SliderWithPointer.xaml.cs">
+      <DependentUpon>SliderWithPointer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextBlockTrimmed.xaml.cs">
+      <DependentUpon>TextBlockTrimmed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextBlockWithIcon.xaml.cs">
+      <DependentUpon>TextBlockWithIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MediaElementExtend.xaml.cs">
+      <DependentUpon>MediaElementExtend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LiveChartsCommon\CustomerForSingle.cs" />
+    <Compile Include="LiveChartsCommon\CustomerForTime.cs" />
+    <Compile Include="LiveChartsCommon\CustomerToolTipForMultipleSingle.xaml.cs">
+      <DependentUpon>CustomerToolTipForMultipleSingle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LiveChartsCommon\CustomerToolTipForMultipleTime.xaml.cs">
+      <DependentUpon>CustomerTooltipForMultipleTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LiveChartsCommon\CustomerToolTipForSingle.xaml.cs">
+      <DependentUpon>CustomerTooltipForSingle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LiveChartsCommon\CustomerToolTipForTime.xaml.cs">
+      <DependentUpon>CustomerToolTipForTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PlayniteControls\NullableIntBox.xaml.cs">
+      <DependentUpon>NullableIntBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PlayniteControls\NumericBox.xaml.cs">
+      <DependentUpon>NumericBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PlayniteControls\SearchBox.xaml.cs">
+      <DependentUpon>SearchBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\OptionsDownloadData.xaml.cs">
+      <DependentUpon>OptionsDownloadData.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Page Include="Controls\ComboBoxRemovable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ControlPickerGradient.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ProgressBarExtend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SliderWithPointer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TextBlockTrimmed.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TextBlockWithIcon.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\MediaElementExtend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LiveChartsCommon\CustomerToolTipForMultipleSingle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LiveChartsCommon\CustomerTooltipForMultipleTime.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LiveChartsCommon\CustomerTooltipForSingle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LiveChartsCommon\CustomerToolTipForTime.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PlayniteControls\NullableIntBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlayniteControls\NumericBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlayniteControls\SearchBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\OptionsDownloadData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

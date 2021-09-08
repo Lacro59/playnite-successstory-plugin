@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="CommonPluginsControls.Controls.OptionsDownloadData"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CommonPluginsControls.Controls"
+             mc:Ignorable="d" Height="220" Width="600">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <Label Content="{DynamicResource LOCFilters}" FontSize="18" />
+            <Separator Margin="0,0,0,10" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <RadioButton Name="PART_AllGames" Grid.Column="0" Grid.Row="0" IsChecked="True" GroupName="RadioFilters">
+                <Label Content="{DynamicResource LOCQuickFilterAllGames}" />
+            </RadioButton>
+            <RadioButton Name="PART_GamesRecentlyPlayed" Grid.Column="1" Grid.Row="0" GroupName="RadioFilters">
+                <Label Content="{DynamicResource LOCQuickFilterRecentlyPlayed}" />
+            </RadioButton>
+            <RadioButton Name="PART_GamesRecentlyAdded" Grid.Column="2" Grid.Row="0" GroupName="RadioFilters">
+                <Label Content="{DynamicResource LOCCommonRecentlyAdded}" />
+            </RadioButton>
+
+            <RadioButton Name="PART_GamesInstalled" Grid.Column="0" Grid.Row="2" GroupName="RadioFilters">
+                <Label Content="{DynamicResource LOCGameIsGameInstalledTitle}" />
+            </RadioButton>
+            <RadioButton Name="PART_GamesNotInstalled" Grid.Column="1" Grid.Row="2" GroupName="RadioFilters">
+                <Label Content="{DynamicResource LOCGameIsUnInstalledTitle}" />
+            </RadioButton>
+            <RadioButton Name="PART_GamesFavorite" Grid.Column="2" Grid.Row="2" GroupName="RadioFilters">
+                <Label Content="{DynamicResource LOCQuickFilterFavorites}" />
+            </RadioButton>
+
+            <CheckBox Grid.Row="4" Grid.ColumnSpan="3" HorizontalAlignment="Right"
+                      IsChecked="True" VerticalAlignment="Bottom"
+                      Name="PART_OnlyMissing"
+                      Content="{DynamicResource LOCCommonOnlyMissing}" />
+        </Grid>
+
+        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource NormalBorderBrush}"
+                    Margin="0,10,0,0" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2">
+            <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="False" Margin="0,5">
+                <Button TabIndex="1" Name="PART_BtClose" Content="{DynamicResource LOCCloseLabel}" 
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource BottomButton}" Click="PART_BtClose_Click" />
+
+                <Button TabIndex="0" Name="PART_BtDownload" Content="{DynamicResource LOCDownloadLabel}" 
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource BottomButton}" Click="PART_BtDownload_Click" />
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>
