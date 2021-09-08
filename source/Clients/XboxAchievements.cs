@@ -14,6 +14,8 @@ using CommonPluginsPlaynite.Common;
 using CommonPluginsPlaynite.PluginLibrary.XboxLibrary.Models;
 using SuccessStory.Models;
 using CommonPluginsShared.Models;
+using System.Security.Principal;
+using CommonPlayniteShared.Common;
 
 namespace SuccessStory.Clients
 {
@@ -97,156 +99,6 @@ namespace SuccessStory.Clients
             return Result;
         }
 
-
-        public override bool IsConfigured()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsConnected()
-        {
-            return GetIsUserLoggedIn().GetAwaiter().GetResult();
-        }
-
-
-        private void SetAuthenticationHeaders(System.Net.Http.Headers.HttpRequestHeaders headers, AuthorizationData auth)
-        {
-            headers.Add("x-xbl-contract-version", "2");
-            headers.Add("Authorization", $"XBL3.0 x={auth.DisplayClaims.xui[0].uhs};{auth.Token}");
-            headers.Add("Accept-Language", LocalLang);
-        }
-
-        private async Task<bool> GetIsUserLoggedIn()
-        {
-            try
-            {
-                if (!File.Exists(xstsLoginTokesPath))
-                {
-                    logger.Warn("Xbox GetIsUserLoggedIn() - User is not authenticated - File not exist");
-                    return false;
-                }
-
-                var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
-                using (var client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
-                    SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
-                    var requestData = new ProfileRequest()
-                    {
-                        settings = new List<string> { "GameDisplayName" },
-                        userIds = new List<ulong> { ulong.Parse(tokens.DisplayClaims.xui[0].xid) }
-                    };
-                    
-                    var response = await client.PostAsync(
-                        @"https://profile.xboxlive.com/users/batch/profile/settings",
-                        new StringContent(Playnite.SDK.Data.Serialization.ToJson(requestData), Encoding.UTF8, "application/json"));
-
-                    Common.LogDebug(true, $"Xbox GetIsUserLoggedIn() - {response.StatusCode}");
-
-                    return response.StatusCode == System.Net.HttpStatusCode.OK;
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Failed to check Xbox user loging status");
-                return false;
-            }
-        }
-
-        private async Task Authenticate(string accessToken)
-        {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
-                client.DefaultRequestHeaders.Add("x-xbl-contract-version", "1");
-
-                //  Authenticate
-                var authRequestData = new AthenticationRequest();
-                authRequestData.Properties.RpsTicket = accessToken;
-                var authPostContent = Playnite.SDK.Data.Serialization.ToJson(authRequestData, true);
-
-                var authResponse = await client.PostAsync(
-                    @"https://user.auth.xboxlive.com/user/authenticate",
-                    new StringContent(authPostContent, Encoding.UTF8, "application/json"));
-                var authResponseContent = await authResponse.Content.ReadAsStringAsync();
-                var authTokens = Playnite.SDK.Data.Serialization.FromJson<AuthorizationData>(authResponseContent);
-
-                // Authorize
-                var atrzRequrestData = new AuhtorizationRequest();
-                atrzRequrestData.Properties.UserTokens = new List<string> { authTokens.Token };
-                var atrzPostContent = Playnite.SDK.Data.Serialization.ToJson(atrzRequrestData, true);
-
-                var atrzResponse = await client.PostAsync(
-                    @"https://xsts.auth.xboxlive.com/xsts/authorize",
-                    new StringContent(atrzPostContent, Encoding.UTF8, "application/json"));
-                var atrzResponseContent = await atrzResponse.Content.ReadAsStringAsync();
-                var atrzTokens = Playnite.SDK.Data.Serialization.FromJson<AuthorizationData>(atrzResponseContent);
-
-                FileSystem.WriteStringToFile(xstsLoginTokesPath, atrzResponseContent);
-            }
-        }
-
-        private async Task RefreshTokens()
-        {
-            var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthenticationData>(liveTokensPath);
-
-            var query = HttpUtility.ParseQueryString(string.Empty);
-            query.Add("grant_type", "refresh_token");
-            query.Add("client_id", "0000000048093EE3");
-            query.Add("scope", "service::user.auth.xboxlive.com::MBI_SSL");
-            query.Add("refresh_token", tokens.RefreshToken);
-
-            var refreshUrl = @"https://login.live.com/oauth20_token.srf?" + query.ToString();
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
-
-                var refreshResponse = await client.GetAsync(refreshUrl);
-                if (refreshResponse.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    var responseContent = await refreshResponse.Content.ReadAsStringAsync();
-                    var response = Playnite.SDK.Data.Serialization.FromJson<RefreshTokenResponse>(responseContent);
-                    tokens.AccessToken = response.access_token;
-                    tokens.RefreshToken = response.refresh_token;
-                    FileSystem.WriteStringToFile(liveTokensPath, Playnite.SDK.Data.Serialization.ToJson(tokens));
-                    await Authenticate(tokens.AccessToken);
-                }
-            }
-        }
-
-
-        private async Task<TitleHistoryResponse.Title> GetTitleInfo(string pfn)
-        {
-            var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
-                SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
-                var requestData = new Dictionary<string, List<string>>
-                {
-                    { "pfns", new List<string> { pfn } },
-                    { "windowsPhoneProductIds", new List<string>() },
-                };
-
-                var response = await client.PostAsync(
-                           @"https://titlehub.xboxlive.com/titles/batch/decoration/detail",
-                           new StringContent(Playnite.SDK.Data.Serialization.ToJson(requestData), Encoding.UTF8, "application/json"));
-
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    throw new Exception("Title info not available.");
-                }
-                else if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    throw new Exception("User is not authenticated.");
-                }
-
-                var cont = await response.Content.ReadAsStringAsync();
-                var titleHistory = Playnite.SDK.Data.Serialization.FromJson<TitleHistoryResponse>(cont);
-                return titleHistory.titles.First();
-            }
-        }
-
         private async Task<List<XboxAchievement>> GetXboxAchievements(string gameId, string name)
         {
             Common.LogDebug(true, $"GetXboxAchievements() - name: {name} - gameId: {gameId}");
@@ -306,7 +158,12 @@ namespace SuccessStory.Clients
                 titleId = libTitle.titleId;
             }
 
-            var tokens = Playnite.SDK.Data.Serialization.FromJsonFile<AuthorizationData>(xstsLoginTokesPath);
+            var tokens = Serialization.FromJson<AuthorizationData>(
+                        Encryption.DecryptFromFile(
+                            xstsLoginTokesPath,
+                            Encoding.UTF8,
+                            WindowsIdentity.GetCurrent().User.Value));
+
             string url = string.Format(urlAchievements + $"?titleId={titleId}&maxItems=1000", tokens.DisplayClaims.xui[0].xid);
             if (titleId.IsNullOrEmpty())
             {
@@ -354,7 +211,7 @@ namespace SuccessStory.Clients
                     ListAchievements = ListAchievements.Where(x => x.titleAssociations.First().name.ToLower() == name.ToLower()).ToList();
 
                     Common.LogDebug(true, $"Not find with {gameId} for {name} - {ListAchievements.Count}");
-                }                
+                }
                 else
                 {
                     Common.LogDebug(true, $"Find with {titleId} & {gameId} for {name} - {ListAchievements.Count}");
@@ -363,6 +220,205 @@ namespace SuccessStory.Clients
                 return ListAchievements;
             }
         }
+
+
+        public override bool IsConfigured()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsConnected()
+        {
+            return GetIsUserLoggedIn().GetAwaiter().GetResult();
+        }
+
+
+        private void SetAuthenticationHeaders(System.Net.Http.Headers.HttpRequestHeaders headers, AuthorizationData auth)
+        {
+            headers.Add("x-xbl-contract-version", "2");
+            headers.Add("Authorization", $"XBL3.0 x={auth.DisplayClaims.xui[0].uhs};{auth.Token}");
+            headers.Add("Accept-Language", LocalLang);
+        }
+
+        AuthorizationData GetSavedXstsTokens()
+        {
+            try
+            {
+                return Serialization.FromJson<AuthorizationData>(
+                    Encryption.DecryptFromFile(
+                        xstsLoginTokesPath,
+                        Encoding.UTF8,
+                        WindowsIdentity.GetCurrent().User.Value));
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Failed to load saved tokens.");
+                return null;
+            }
+        }
+
+        public async Task<bool> GetIsUserLoggedIn()
+        {
+            try
+            {
+                if (!File.Exists(xstsLoginTokesPath))
+                {
+                    return false;
+                }
+
+                AuthorizationData tokens;
+                try
+                {
+                    tokens = Serialization.FromJson<AuthorizationData>(
+                        Encryption.DecryptFromFile(
+                            xstsLoginTokesPath,
+                            Encoding.UTF8,
+                            WindowsIdentity.GetCurrent().User.Value));
+                }
+                catch (Exception e)
+                {
+                    logger.Error(e, "Failed to load saved tokens.");
+                    return false;
+                }
+
+                using (var client = new HttpClient())
+                {
+                    SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
+                    var requestData = new ProfileRequest()
+                    {
+                        settings = new List<string> { "GameDisplayName" },
+                        userIds = new List<ulong> { ulong.Parse(tokens.DisplayClaims.xui[0].xid) }
+                    };
+
+                    var response = await client.PostAsync(
+                        @"https://profile.xboxlive.com/users/batch/profile/settings",
+                        new StringContent(Serialization.ToJson(requestData), Encoding.UTF8, "application/json"));
+                    return response.StatusCode == System.Net.HttpStatusCode.OK;
+                }
+            }
+            catch (Exception e) //when (!Debugger.IsAttached)
+            {
+                logger.Error(e, "Failed to check Xbox user loging status.");
+                return false;
+            }
+        }
+
+        private async Task Authenticate(string accessToken)
+        {
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("x-xbl-contract-version", "1");
+
+                //  Authenticate
+                var authRequestData = new AthenticationRequest();
+                authRequestData.Properties.RpsTicket = accessToken;
+                var authPostContent = Serialization.ToJson(authRequestData, true);
+
+                var authResponse = await client.PostAsync(
+                    @"https://user.auth.xboxlive.com/user/authenticate",
+                    new StringContent(authPostContent, Encoding.UTF8, "application/json"));
+                var authResponseContent = await authResponse.Content.ReadAsStringAsync();
+                var authTokens = Serialization.FromJson<AuthorizationData>(authResponseContent);
+
+                // Authorize
+                var atrzRequrestData = new AuhtorizationRequest();
+                atrzRequrestData.Properties.UserTokens = new List<string> { authTokens.Token };
+                var atrzPostContent = Serialization.ToJson(atrzRequrestData, true);
+
+                var atrzResponse = await client.PostAsync(
+                    @"https://xsts.auth.xboxlive.com/xsts/authorize",
+                    new StringContent(atrzPostContent, Encoding.UTF8, "application/json"));
+                var atrzResponseContent = await atrzResponse.Content.ReadAsStringAsync();
+                var atrzTokens = Serialization.FromJson<AuthorizationData>(atrzResponseContent);
+
+                Encryption.EncryptToFile(
+                    xstsLoginTokesPath,
+                    atrzResponseContent,
+                    Encoding.UTF8,
+                    WindowsIdentity.GetCurrent().User.Value);
+            }
+        }
+
+        internal async Task RefreshTokens()
+        {
+            logger.Debug("Refreshing xbox tokens.");
+            AuthenticationData tokens = null;
+            try
+            {
+                tokens = Serialization.FromJson<AuthenticationData>(
+                    Encryption.DecryptFromFile(
+                        liveTokensPath,
+                        Encoding.UTF8,
+                        WindowsIdentity.GetCurrent().User.Value));
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Failed to load saved tokens.");
+                return;
+            }
+
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query.Add("grant_type", "refresh_token");
+            query.Add("client_id", "0000000048093EE3");
+            query.Add("scope", "service::user.auth.xboxlive.com::MBI_SSL");
+            query.Add("refresh_token", tokens.RefreshToken);
+
+            var refreshUrl = @"https://login.live.com/oauth20_token.srf?" + query.ToString();
+            using (var client = new HttpClient())
+            {
+                var refreshResponse = await client.GetAsync(refreshUrl);
+                if (refreshResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var responseContent = await refreshResponse.Content.ReadAsStringAsync();
+                    var response = Serialization.FromJson<RefreshTokenResponse>(responseContent);
+                    tokens.AccessToken = response.access_token;
+                    tokens.RefreshToken = response.refresh_token;
+                    Encryption.EncryptToFile(
+                        liveTokensPath,
+                        Serialization.ToJson(tokens),
+                        Encoding.UTF8,
+                        WindowsIdentity.GetCurrent().User.Value);
+                    await Authenticate(tokens.AccessToken);
+                }
+            }
+        }
+
+        public async Task<TitleHistoryResponse.Title> GetTitleInfo(string pfn)
+        {
+            var tokens = GetSavedXstsTokens();
+            if (tokens == null)
+            {
+                throw new Exception("User is not authenticated.");
+            }
+
+            using (var client = new HttpClient())
+            {
+                SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
+                var requestData = new Dictionary<string, List<string>>
+                {
+                    { "pfns", new List<string> { pfn } },
+                    { "windowsPhoneProductIds", new List<string>() },
+                };
+
+                var response = await client.PostAsync(
+                           @"https://titlehub.xboxlive.com/titles/batch/decoration/detail",
+                           new StringContent(Serialization.ToJson(requestData), Encoding.UTF8, "application/json"));
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    throw new Exception("Title info not available.");
+                }
+                else if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    throw new Exception("User is not authenticated.");
+                }
+
+                var cont = await response.Content.ReadAsStringAsync();
+                var titleHistory = Serialization.FromJson<TitleHistoryResponse>(cont);
+                return titleHistory.titles.First();
+            }
+        }
+
     }
 
     public class XboxAchievement
