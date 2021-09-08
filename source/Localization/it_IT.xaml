@@ -53,6 +53,8 @@
 
     <sys:String x:Key="LOSuccessStoryAddTagDescription">Aggiungi un'etichetta ai giochi con il tempo di sblocco completo</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Show description in tooltip</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Abilita obiettivi di Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Abilita obiettivi di GOG</sys:String>
@@ -138,7 +140,12 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryAchStats">Achievements statistics</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Statistiche utente</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -148,6 +155,9 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGlobalProgression">Progressione degli obiettivi globali</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Progressione degli Obiettivi dei giochi lanciati</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Informazioni</sys:String>
+
+
+    <sys:String x:Key="LOCSuccessStoryRarety">Rarety</sys:String>
 
     <!-- ListViewGames -->
 
@@ -159,7 +169,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Obiettivi sbloccati dalla sorgente</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Obiettivi sbloccati per giorno</sys:String>
 
-    <!-- ListViewGames -->
+    <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Riproduzione Rapida</sys:String>
     <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Gioco Competitivo</sys:String>
