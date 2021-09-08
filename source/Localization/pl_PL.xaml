@@ -40,7 +40,7 @@
 
     <!-- SuccessStoreGameSelection -->
 
-    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Liczba osiągnięć</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Liczba osiągnię</sys:String>
     
     
     <!-- SuccessStorySettingsView -->
@@ -52,6 +52,8 @@
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
 
     <sys:String x:Key="LOSuccessStoryAddTagDescription">Dodaj tag do gier z czasem do pełnego odblokowania</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Show description in tooltip</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Włącz osiągnięcia Steam</sys:String>
@@ -82,12 +84,12 @@
 
     <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">Postęp w pasku postępu</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Wyświetl wykres osiągnięć</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Wyświetl listę osiągnięć</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompact">Wyświetl kompaktową listę osiągnięć</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Pokaż pasek postępu osiągnięć</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Wyświetl podsumowanie odblokowanych osiągnięć</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">Wyświetl podsumowanie zablokowanych osiągnięć</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Wyświetl wykres osiągnię</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Wyświetl listę osiągnię</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompact">Wyświetl kompaktową listę osiągnię</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Pokaż pasek postępu osiągnię</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Wyświetl podsumowanie odblokowanych osiągnię</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">Wyświetl podsumowanie zablokowanych osiągnię</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">Wyświetl statystyki gry użytkownika</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Opcje wykresu</sys:String>
@@ -95,12 +97,12 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">Pokaż etykiety na osi poziomej</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">Pokaż etykiety na osi pionowej</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Opcje paska postępu</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Pokaż etykietę postępu osiągnięć</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Pokaż etykietę postępu osiągnię</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">Pokaż procent postępu</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">Opcje listy osiągnięć</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">Opcje listy osiągnię</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryAchievementsCompactListOptions">Opcje kompaktowej listy osiągnięć</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Opcje podsumowania osiągnięć</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCompactListOptions">Opcje kompaktowej listy osiągnię</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Opcje podsumowania osiągnię</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">Pokaż najnowsze odblokowane osiągnięcie</sys:String>
 
@@ -113,7 +115,7 @@
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Wykres ze wszystkimi osiągnięciami</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Pola do wyświetlenia:</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Ikona 100% osiągnięć</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Ikona 100% osiągnię</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Pokaż osiągnięcia ukrytych gier</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Pokaż wykres osiągnięć według miesiąca</sys:String>
@@ -138,16 +140,24 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryAchStats">Achievements statistics</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Statystyki użytkownika</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
 
     <!-- SuccessStoryView -->
 
     <!-- UI -->
 
     <sys:String x:Key="LOCSuccessStoryFilterSource">Filtruj wg źródła</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Globalny postęp osiągnięć</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Globalny postęp osiągnię</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Postęp w osiągnięciach uruchomionych gier</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Informacja</sys:String>
+
+
+    <sys:String x:Key="LOCSuccessStoryRarety">Rarety</sys:String>
 
     <!-- ListViewGames -->
 
@@ -159,7 +169,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Odblokowane osiągnięcia wg źródła</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Odblokowane osiągnięcia według dnia</sys:String>
 
-    <!-- ListViewGames -->
+    <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Szybka gra</sys:String>
     <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Rywalizacja</sys:String>
