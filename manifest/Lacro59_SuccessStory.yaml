@@ -1,0 +1,10 @@
+AddonId: playnite-checklocalizations-plugin
+Packages:
+  - Version: 2.0
+    RequiredApiVersion: 6.0.0
+    ReleaseDate: 2021-09-05
+    PackageUrl: https://github.com/Lacro59/playnite-checklocalizations-plugin/releases/download/v2.0/playnite-checklocalizations-plugin_2_0.pext
+    Changelog:
+      - Playnite 9 beta version (not compatible with Playnite 8)
+      - Custom UI Elements for custom theme integration (see wiki on GitHub)
+      - Fixed many bugs

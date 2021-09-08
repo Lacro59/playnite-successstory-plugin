@@ -1,0 +1,121 @@
+﻿<?xml version="1.0"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- MainView -->
+
+    <sys:String x:Key="LOCSuccessStory">SuccessStory</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievements">Succès</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryViewGames">Voir les succès des jeux</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGame">Voir les succès du jeu</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Profil Steam n'est pas public</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam n'a pas été correctement configuré dans les paramètres</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Utilisateur GOG n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Utilisateur Origin n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox non authentifié</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements n'a pas été correctement configuré dans les paramètres</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 n'a pas été correctement configuré dans les paramètres</sys:String>
+
+    <!-- SuccessStorySettingsView -->
+
+    <sys:String x:Key="LOCSuccessStoryProgressBar">Traitement en cours, veuillez patienter...</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryEnableSteam">Activer les succès Steam</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGog">Activer les succès GOG</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Activer les succès Origin</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableXbox">Activer les succès Xbox</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Activer les succès RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Activer les succès RPCS3</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Dossier de l'utilisateur</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Afficher une vue séparée pour les succès RetroAchievements</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryDatabase">Base de données</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetData">Télécharger les succès</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshData">Réinitialiser les données</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissing">Télécharger les données manquantes</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecent">Jeux récents avec données manquantes</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Jeux récents</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllData">Tous les jeux</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllData">Tous les jeux avec des données manquantes</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Jeux installés avec données manquantes</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Jeux installés</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Afficher le graphique</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Afficher la liste des succès</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Afficher la barre de progression</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Afficher le résumé des succès débloqués</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">Afficher le résumé des succès verrouillés</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">Afficher les statistiques de jeu utilisateur</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Options du graphique</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Nombre de jours à afficher sur le graphique</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">Afficher les libellés sur l'axe horizontal</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">Afficher les libellés sur l'axe vertical</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Options de la barre de progression</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Afficher le libellé de la progression de progression</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">Afficher le pourcentage</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">Options de la liste des succès</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryViewsSettings">Vue de l'extension</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Afficher l'indicateur de rareté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Afficher uniquement le jeu sélectionné dans le menu des jeux</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGames">Liste de jeux</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Tri par défaut de la liste des jeux</sys:String>
+    <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Graphique avec tous les succès</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryListGamesFields">Sélectionner les éléments à afficher :</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Icône succès à 100%</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Montrer les succès des jeux cachés</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Afficher le graphique des succès par mois</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Afficher le graphique des succès par jour</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">Télécharge les succès manquants.</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Mise à zéro et téléchargement des succès du magasin.
+(A utiliser s'il y a des problèmes avec les succès)</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Télécharger les réalisations pour les jeux qui ont été importés au cours du mois dernier avec des données manquantes. (Utiliser si le nombre de premiers nombres est différent du nombre total)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Télécharger les succès pour les jeux installés avec des données manquantes. (Utiliser si le nombre de premier nombre est différent du nombre total de jeux)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Télécharger les succès pour les jeux installés avec des données manquantes. (Utiliser si le nombre de premier nombre est différent du nombre total de jeux)</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Réinitialise et télécharge les succès des jeux qui ont été importés au cours du mois dernier. (À utiliser s'il y a un problème avec les réalisations)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Réinitialise et télécharge les succès des jeux installés. (Utiliser s'il y a un problème avec les réalisations)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Réinitialise et télécharge les réalisations de tous les jeux. (Utiliser s'il y a un problème avec les accomplissements)</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryEnableImageCache">Activer la mise en cache des images des succès (expérimental) *</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Processus expérimental non bloquant, qui peut augmenter l'utilisation de la mémoire un peu lors de la mise en cache seulement.
+Particulièrement utile pour les réalisations Xbox avec leurs grandes images qui sont réduites lors de la mise en cache.</sys:String>
+
+    <!-- SuccessStoryOneGameView -->
+
+    <sys:String x:Key="LOCSuccessStoryUserStats">Statistiques utilisateur</sys:String>
+    
+    <!-- SuccessStoryView -->
+
+    <!-- UI -->
+
+    <sys:String x:Key="LOCSuccessStoryFilterSource">Filtrer par source</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Progression global des succès</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Progression des succès des jeux lancés</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameInformation">Informations</sys:String>
+
+    <!-- ListViewGames -->
+
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Progression</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">Tous les succès obtenus par mois</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">Tous les succès obtenus par jour</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Succès obtenus par mois</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Succès obtenus par sources</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Succès obtenus par jour</sys:String>
+
+</ResourceDictionary>

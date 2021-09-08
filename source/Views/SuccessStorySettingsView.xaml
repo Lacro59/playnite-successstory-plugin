@@ -1,0 +1,1135 @@
+﻿<UserControl x:Class="SuccessStory.Views.SuccessStorySettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SuccessStory.Views"
+             xmlns:AttachedProperties="clr-namespace:CommonPluginsShared.Controls"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:NegateConverter x:Key="NegateConverter" />
+        <local:BooleanAndConverter x:Key="booleanAndConverter" />
+        <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
+        <convertersshared:IndexConverter x:Key="IndexConverter"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <TabControl Name="tcSettings">
+            <TabItem Header="{DynamicResource LOCSuccessStory}">
+                <ScrollViewer  Margin="0,10,0,0">
+                    <Grid Name="SuccessStorySettings">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="30" />
+                            
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="30" />
+                            
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <Expander Grid.Row="0">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableSteam}" Name="PART_EnableSteam" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableSteam}"></Label>
+                                    </CheckBox>
+                                    <Label Grid.Column="2" Name="SteamLoad" HorizontalAlignment="Center">xxx / xxx</Label>
+
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-Steam" />
+                                </Grid>
+                            </Expander.Header>
+
+                            <Expander.Content>
+                                <Border IsEnabled="{Binding ElementName=PART_EnableSteam, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="10" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        
+                                        <CheckBox Grid.Row="2" IsChecked="{Binding Settings.EnableSteamWithoutWebApi}">
+                                            <Label Content="{DynamicResource LOCSuccessStorySteamNoApi}" />
+                                        </CheckBox>
+
+                                        <CheckBox Grid.Row="0" IsChecked="{Binding Settings.SteamIsPrivate}">
+                                            <Label Content="{DynamicResource LOCPrivateAccount}" />
+                                        </CheckBox>
+                                    </Grid>
+                                </Border>
+                            </Expander.Content>
+                        </Expander>
+
+                        <Expander Grid.Row="2" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding Settings.EnableGog}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableGog}"></Label>
+                                    </CheckBox>
+                                    <Label Grid.Column="2" Name="GogLoad" HorizontalAlignment="Center">xxx / xxx</Label>
+                                </Grid>
+                            </Expander.Header>
+                        </Expander>
+
+                        <Expander Grid.Row="4" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding Settings.EnableOrigin}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableOrigin}"></Label>
+                                    </CheckBox>
+                                    <Label Grid.Column="2" Name="OriginLoad" HorizontalAlignment="Center">xxx / xxx</Label>
+                                </Grid>
+                            </Expander.Header>
+                        </Expander>
+
+                        <Expander Grid.Row="6" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnableXbox}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableXbox}"></Label>
+                                    </CheckBox>
+                                    <Label Grid.Column="2" Name="XboxLoad" HorizontalAlignment="Center">xxx / xxx</Label>
+                                </Grid>
+                            </Expander.Header>
+                        </Expander>
+
+                        <Expander Grid.Row="8" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnablePsn}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnablePSN}"></Label>
+                                    </CheckBox>
+                                    <Label Grid.Column="2" Name="PSNLoad" HorizontalAlignment="Center">xxx / xxx</Label>
+                                </Grid>
+                            </Expander.Header>
+                        </Expander>
+
+                        
+                        <Expander Grid.Row="10">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding Settings.EnableRetroAchievements}" Name="PART_EnableRetroAchievements" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableRetroAchievements}" />
+                                    </CheckBox>
+                                    <Label Grid.Column="2" Name="RetroAchievementsLoad" HorizontalAlignment="Center">xxx / xxx</Label>
+                                    
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-RetroAchievements" />
+                                </Grid>
+                            </Expander.Header>
+
+                            <Expander.Content>
+                                <Border IsEnabled="{Binding ElementName=PART_EnableRetroAchievements, Path=IsChecked}"
+				                        Margin="5" Padding="10"
+				                        BorderBrush="{DynamicResource PopupBorderBrush}"
+				                        BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="5" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="5" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="10" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="7" IsChecked="{Binding Settings.EnableRetroAchievementsView}">
+                                            <Label Content="{DynamicResource LOCSuccessStoryEnableRetroAchievementsView}"></Label>
+                                        </CheckBox>
+
+                                        <Label Grid.Column="0" Grid.Row="2" Content="{DynamicResource LOCCommonAccountName}" />
+                                        <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding Settings.RetroAchievementsUser}" />
+                                        <Label Grid.Column="4" Grid.Row="2" Content="{DynamicResource LOCAPIKey}" />
+                                        <TextBox Grid.Column="6" Grid.Row="2" Text="{Binding Settings.RetroAchievementsKey}" />
+                                    </Grid>
+                                </Border>
+                            </Expander.Content>
+                        </Expander>
+
+                        <Expander Grid.Row="12">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableRpcs3Achievements}" Name="PART_EnableRpcs3Achievements" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableRpcs3Achievements}"></Label>
+                                    </CheckBox>
+                                    <Label Grid.Column="2" Name="Rpcs3Load" HorizontalAlignment="Center">xxx / xxx</Label>
+                                    
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-RPCS3" />
+                                </Grid>
+                            </Expander.Header>
+
+                            <Expander.Content>
+                                <Border IsEnabled="{Binding ElementName=PART_EnableRpcs3Achievements, Path=IsChecked}"
+				                        Margin="5" Padding="10"
+				                        BorderBrush="{DynamicResource PopupBorderBrush}"
+				                        BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Grid.Column="0" Content="{DynamicResource LOCSuccessStoryEnableRpcs3HomeFolder}" />
+                                        <TextBox Name="PART_Rpcs3Folder" Grid.Column="2" Text="{Binding Settings.Rpcs3InstallationFolder}" />
+                                        <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" Grid.ColumnSpan="2" />
+                                    </Grid>
+                                </Border>
+                            </Expander.Content>
+                        </Expander>
+
+                        
+                        <Expander Grid.Row="14" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableOverwatchAchievements}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableOverwatchAchievements}" />
+                                    </CheckBox>
+
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-Battle.net" />
+                                </Grid>
+                            </Expander.Header>
+                        </Expander>
+
+                        <Expander Grid.Row="16" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableSc2Achievements}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableSc2Achievements}"></Label>
+                                    </CheckBox>
+
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-Battle.net" />
+                                </Grid>
+                            </Expander.Header>
+                        </Expander>
+
+
+                        <Expander Grid.Row="18" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableManual}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCSuccessStoryEnableManualAchievements}"></Label>
+                                </CheckBox>
+                            </Expander.Header>
+                        </Expander>
+
+                        <Expander Grid.Row="20"
+                                  Visibility="{Binding Settings.EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableLocal}" VerticalAlignment="Center">
+                                        <Label Content="Enable Local"></Label>
+                                    </CheckBox>
+                                    <Label Grid.Column="2" Name="LocalLoad" HorizontalAlignment="Center">xxx / xxx</Label>
+                                    <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddLocalFolder_Click" 
+                                            Name="ButtonAddLocalFolder" Grid.Column="8"
+                                            Visibility="{Binding ElementName=PART_BoderLocal, Path=Visibility}"
+                                            VerticalAlignment="Center" />
+                                </Grid>
+                            </Expander.Header>
+
+                            <Expander.Content>
+                                <Border Margin="5" Padding="10" Name="PART_BoderLocal"
+				                        BorderBrush="{DynamicResource PopupBorderBrush}"
+				                        BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <Grid>
+                                        <ItemsControl MinHeight="10" Name="PART_ItemsControl" AlternationCount="100">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="40,0,0,5">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="8" />
+                                                            <ColumnDefinition Width="auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="auto" />
+                                                        </Grid.RowDefinitions>
+
+                                                        <TextBox Text="{Binding FolderPath}" VerticalAlignment="Center" MinWidth="180" Grid.Column="0" />
+
+                                                        <Grid Grid.Column="2">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition Width="8" />
+                                                                <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="auto" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectLocalFolder_Click" 
+                                                                    Name="ButtonSelectLocalFolder"                                                                
+                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                    VerticalAlignment="Center" Grid.Column="0" />
+
+                                                            <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveLocalFolder_Click" 
+                                                                    Name="ButtonRemoveLocalFolder"
+                                                                    Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                    VerticalAlignment="Center" Grid.Column="4" />
+                                                        </Grid>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </Border>
+                            </Expander.Content>
+                        </Expander>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource LOCSuccessStoryViewsSettings}">
+                <ScrollViewer  Margin="0,10,0,0">
+                    <StackPanel>
+                        <Label Content="{DynamicResource LOCGeneralLabel}" />
+                        <Separator Margin="0,0,0,10" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableRaretyIndicator}">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableRaretyIndicator}" />
+                            </CheckBox>
+
+                            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.EnableOneGameView}">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableOneGameView}" />
+                            </CheckBox>
+
+                            <CheckBox Grid.Row="4" IsChecked="{Binding Settings.Auto100PercentCompleted}">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableAuto100PercentCompleted}" />
+                            </CheckBox>
+
+                            <Grid Grid.Row="6" >
+                                <CheckBox Name="cbEnableTag" Grid.Row="4" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOSuccessStoryAddTagDescription}" />
+                                </CheckBox>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="{DynamicResource LOCAddTitle}" Margin="0,0,10,0" VerticalAlignment="Center" Click="ButtonAddTag_Click" />
+                                    <Button Content="{DynamicResource LOCRemoveTitle}" VerticalAlignment="Bottom" Click="ButtonRemoveTag_Click" Margin="0,0,0,1" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+
+
+                        <Label Content="{DynamicResource LOCSuccessStoryListGames}" Margin="0,30,0,0" />
+                        <Separator Margin="0,0,0,10" />
+
+                        <Grid DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Column="0" Grid.Row="0" Content="{DynamicResource LOCSuccessStoryDefaultSorting}" />
+                            <ComboBox Name="cbDefaultSorting" Grid.Column="2" Grid.Row="0" Height="30" IsEditable="True" IsReadOnly="True" SelectionChanged="cbDefaultSorting_SelectionChanged">
+                                <ComboBoxItem Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
+                                <ComboBoxItem Content="{DynamicResource LOCLastPlayed}" Tag="LastActivity" />
+                                <ComboBoxItem Content="{DynamicResource LOCSourceLabel}" Tag="SourceName" />
+                                <ComboBoxItem Content="{DynamicResource LOCSuccessStorylvGamesProgression}" Tag="ProgressionValue" />
+                            </ComboBox>
+                            <ToggleButton Content="{DynamicResource LOCMenuSortAscending}" IsChecked="{Binding Settings.IsAsc}" Grid.Column="4" Grid.Row="0" Height="30"></ToggleButton>
+
+                            <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" IsChecked="{Binding Settings.IncludeHiddenGames}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryIncludeHiddenGames}"></Label>
+                            </CheckBox>
+
+                            <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Content="{DynamicResource LOCSuccessStoryListGamesFields}" />
+                            <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="5" Margin="30,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+
+                                <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.lvGamesIcon100Percent}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCSuccessStoryGamesIcon100Percent}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="0" IsChecked="{Binding Settings.lvGamesIcon}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCGameIconTitle}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.lvGamesName}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCGameNameTitle}" />
+                                </CheckBox>
+
+                                <CheckBox Grid.Column="0" Grid.Row="1" IsChecked="{Binding Settings.lvGamesLastSession}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCGameLastActivityTitle}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="1" Grid.Row="1" IsChecked="{Binding Settings.lvGamesSource}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCSourceLabel}" />
+                                </CheckBox>
+                                <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding Settings.lvGamesProgression}" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCSuccessStorylvGamesProgression}" />
+                                </CheckBox>
+                            </Grid>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource LOCCommonMisc}">
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" IsChecked="{Binding Settings.EnableImageCache}" ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}">
+                        <Label Content="{DynamicResource LOCSuccessStoryEnableImageCache}" />
+                    </CheckBox>
+
+                    <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" >
+                        <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />
+                        <Separator Margin="0,0,0,10" />
+                    
+                        <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top">
+                            <Button Name="btAuth" Content="{DynamicResource LOCCommonAuthenticateLabel}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    Click="Button_Click" />
+                            <Label Name="lIsAuth" Margin="20,0,0,0" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource LOCCommonIntegration}">
+                <ScrollViewer>
+                    <StackPanel Margin="0,10,0,0">
+                        <Label Content="{DynamicResource LOCCommonControlsAvailable}" />
+                        <Separator Margin="0,0,0,10" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Expander Grid.Row="0" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationButtonHeader}">
+                                        <Label Content="{DynamicResource LOCCommonIntegrationButtonHeader}" />
+                                    </CheckBox>
+                                </Expander.Header>
+                            </Expander>
+
+                            <Expander Grid.Row="2">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox  IsChecked="{Binding Settings.EnableIntegrationButton}" Name="PART_IntegrationButton">
+                                        <Label Content="{DynamicResource LOCCommonControlsPluginButtonShow}" />
+                                    </CheckBox>
+                                </Expander.Header>
+
+                                <Expander.Content>
+                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationButton, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <CheckBox Grid.Column="0" Grid.Row="0"  IsChecked="{Binding Settings.EnableIntegrationButtonDetails}">
+                                                <Label Content="{DynamicResource LOCCommonIntegrationButtonDetails}" />
+                                            </CheckBox>
+                                        </Grid>
+                                    </Border>
+                                </Expander.Content>
+                            </Expander>
+
+                            <Expander Grid.Row="4">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationViewItem}" Name="PART_IntegrationViewItem">
+                                        <Label Content="{DynamicResource LOCCommonControlsPluginViewItemShow}" />
+                                    </CheckBox>
+                                </Expander.Header>
+
+                                <Expander.Content>
+                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationViewItem, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="10" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.IntegrationViewItemWithProgressBar}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryIntegrationViewItemWithProgressBar}" />
+                                            </CheckBox>
+                                        </Grid>
+                                    </Border>
+                                </Expander.Content>
+                            </Expander>
+
+                            <Expander Grid.Row="6">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationProgressBar}" Name="PART_IntegrationProgressBar">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowProgressBar}" />
+                                    </CheckBox>
+                                </Expander.Header>
+
+                                <Expander.Content>
+                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationProgressBar, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableIntegrationProgressBarIndicator}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryIntegrationProgressBarShowIndicator}" />
+                                            </CheckBox>
+                                            <CheckBox Grid.Column="1" IsChecked="{Binding Settings.EnableIntegrationProgressBarPercent}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryIntegrationProgressBarShowPercent}" />
+                                            </CheckBox>
+                                        </Grid>
+                                    </Border>
+                                </Expander.Content>
+                            </Expander>
+
+                            <Expander Grid.Row="8">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompact}" Name="PART_IntegrationCompactList">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompact}" />
+                                    </CheckBox>
+                                </Expander.Header>
+
+                                <Expander.Content>
+                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationCompactList, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactHeight}" 
+                                                                             Width="40" Grid.Column="1" TextAlignment="Center" />
+                                            </Grid>
+
+                                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.IntegrationCompactShowDescription}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryDescriptionInToolTip}" />
+                                            </CheckBox>
+                                        </Grid>
+                                    </Border>
+                                </Expander.Content>
+                            </Expander>
+
+                            <Expander Grid.Row="10">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompactLocked}" Name="PART_IntegrationCompactUnlocked">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked}" />
+                                    </CheckBox>
+                                </Expander.Header>
+
+                                <Expander.Content>
+                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationCompactUnlocked, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="10" />
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactPartialHeight}" 
+                                                                             Width="40" Grid.Column="1" TextAlignment="Center" />
+                                            </Grid>
+
+                                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.IntegrationCompactPartialShowDescription}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryDescriptionInToolTip}" />
+                                            </CheckBox>
+                                            
+                                            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
+                                                      IsChecked="{Binding Settings.IntegrationCompactPartialDisplayLastest}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryIntegrationCompactPartialDisplayLastest}" />
+                                            </CheckBox>
+                                        </Grid>
+                                    </Border>
+                                </Expander.Content>
+                            </Expander>
+
+                            <Expander Grid.Row="12">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompactUnlocked}" Name="PART_IntegrationCompactLocked">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactLocked}" />
+                                    </CheckBox>
+                                </Expander.Header>
+
+                                <Expander.Content>
+                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationCompactLocked, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactPartialHeight}" 
+                                                                             Width="40" Grid.Column="1" TextAlignment="Center" />
+                                            </Grid>
+
+                                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.IntegrationCompactPartialShowDescription}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryDescriptionInToolTip}" />
+                                            </CheckBox>
+                                        </Grid>
+                                    </Border>
+                                </Expander.Content>
+                            </Expander>
+
+                            <Expander Grid.Row="14">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationChart}" Name="PART_IntegrationChart">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowGraphic}" />
+                                    </CheckBox>
+                                </Expander.Header>
+
+                                <Expander.Content>
+                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationChart, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="10" />
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="10" />
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Grid.Column="0" Grid.Row="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationChartHeight}" 
+                                                                     Width="40" Grid.Column="1" TextAlignment="Center" />
+                                            </Grid>
+
+                                            <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.EnableIntegrationAxisChart}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicShowLabels}" />
+                                            </CheckBox>
+                                            <CheckBox Grid.Column="1" Grid.Row="2" IsChecked="{Binding Settings.EnableIntegrationOrdinatesChart}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates}" />
+                                            </CheckBox>
+
+                                            <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="15" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Content="{DynamicResource LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa}" Grid.Column="0" />
+                                                <Slider Minimum="3" Maximum="30" Value="{Binding Settings.IntegrationChartCountAbscissa}" 
+                                                        IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
+                                                        ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
+                                                        Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sCountAbscissa" />
+                                                <Label Grid.Column="2" Content="{Binding ElementName=sCountAbscissa, Path=Value}" HorizontalAlignment="Center" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </Expander.Content>
+                            </Expander>
+
+                            <Expander Grid.Row="16">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationUserStats}" Name="PART_IntegrationUserStats">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowUserStats}" />
+                                    </CheckBox>
+                                </Expander.Header>
+
+                                <Expander.Content>
+                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationUserStats, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationUserStatsHeight}" 
+                                                                 Width="40" Grid.Column="1" TextAlignment="Center" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </Expander.Content>
+                            </Expander>
+
+                            <Expander Grid.Row="18">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                    </Style>
+                                </Expander.Style>
+
+                                <Expander.Header>
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationList}" Name="PART_IntegrationAchievements">
+                                        <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievements}" />
+                                    </CheckBox>
+                                </Expander.Header>
+
+                                <Expander.Content>
+                                    <Border IsEnabled="{Binding ElementName=PART_IntegrationAchievements, Path=IsChecked}"
+				                            Margin="5" Padding="10"
+				                            BorderBrush="{DynamicResource PopupBorderBrush}"
+				                            BorderThickness="{DynamicResource PopupBorderThickness}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
+                                                <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationListHeight}" 
+                                                                             Width="40" Grid.Column="1" TextAlignment="Center" />
+                                            </Grid>
+
+                                            <Grid Grid.Column="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="15" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Content="{DynamicResource LOCColumns}" Grid.Column="0" />
+                                                <Slider Minimum="1" Maximum="5" Value="{Binding Settings.IntegrationListColCount}" 
+                                                        IsSnapToTickEnabled="True" TickFrequency="1" AutoToolTipPlacement="TopLeft"
+                                                        ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Value}"
+                                                        Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sColCount" />
+                                                <Label Grid.Column="2" Content="{Binding ElementName=sColCount, Path=Value}" HorizontalAlignment="Center" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </Expander.Content>
+                            </Expander>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{DynamicResource LOCSuccessStoryIgnoredGames}">
+                <ListBox Name="PART_IgnoredGames">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
+                                       Grid.Column="0"
+                                       Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" />
+                                <TextBlock Text="{Binding Name}" Grid.Column="2" VerticalAlignment="Center" />
+                                <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
+                                       Grid.Column="4"
+                                       HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="30" />
+
+                                <Button Grid.Column="6" Content="" FontFamily="{DynamicResource CommonFont}" 
+                                        Click="Button_Click_Remove" HorizontalAlignment="Right"
+                                        Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

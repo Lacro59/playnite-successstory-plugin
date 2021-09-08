@@ -1,0 +1,187 @@
+﻿<UserControl x:Class="SuccessStory.Views.SuccessStoryEditManual"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuccessStory.Views"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"             
+             xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
+             xmlns:controls="clr-namespace:SuccessStory.Controls"
+             xmlns:Commonplaynitecontrols="clr-namespace:CommonPluginsPlaynite.Controls"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+             mc:Ignorable="d" Height="700" Width="800">
+
+    <UserControl.Resources>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <controls:SetColorConverter x:Key="SetColorConverter" />
+        <convertersshared:IndexConverter x:Key="IndexConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="10" Name="PART_GridContener">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Content="{DynamicResource LOCSearchLabel}" Grid.Column="0" />
+            <playnitecontrols:SearchBox Grid.Column="2" x:Name="SearchElement" TextChanged="SearchElement_TextChanged" />
+        </Grid>
+
+        <Grid Name="PART_LbContener" Grid.Row="2">
+            <ListBox x:Name="lbAchievements" 
+                     Height="{Binding ElementName=PART_LbContener, Path=ActualHeight}" 
+                     Width="{Binding ElementName=PART_LbContener, Path=ActualWidth}" 
+                     Loaded="LbAchievements_Loaded" Grid.Row="2"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Commonplaynitecontrols:VirtualizingGridPanel Columns="{Binding ColDefinied}" Rows="{Binding RowDefinied}" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5" Height="65">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="58" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Name="PART_ImgUnlock" Grid.Column="0" 
+                                        Visibility="{Binding ElementName=PART_CbUnlock, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
+                                            Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Image Stretch="UniformToFill" Source="{Binding ImageUnlocked}"
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Image.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding ImageUnlocked, IsAsync=True}" />
+                                        </Image.OpacityMask>
+                                        <Image.Effect>
+                                            <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
+                                        </Image.Effect>
+                                    </Image>
+                                </StackPanel>
+
+                                <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
+                                            Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                    <Image Stretch="UniformToFill" Source="{Binding ImageUnlocked, IsAsync=True}"
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+                                    <Image Stretch="UniformToFill" Source="{Binding ImageUnlocked, IsAsync=True}"
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Image.Effect>
+                                            <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
+                                        </Image.Effect>
+                                    </Image>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Name="PART_ImgLock" Grid.Column="0" 
+                                        Visibility="{Binding ElementName=PART_CbUnlock, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
+                                            Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Image Stretch="UniformToFill"
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                        <Image.Source>
+                                            <FormatConvertedBitmap Source="{Binding ImageLocked}" DestinationFormat="Gray32Float" />
+                                        </Image.Source>
+                                        <Image.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding ImageLocked, IsAsync=True}" />
+                                        </Image.OpacityMask>
+                                    </Image>
+                                    <Image Stretch="UniformToFill" 
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Image.Source>
+                                            <FormatConvertedBitmap Source="{Binding ImageLocked}" DestinationFormat="Gray32Float" />
+                                        </Image.Source>
+                                        <Image.OpacityMask>
+                                            <ImageBrush ImageSource="{Binding ImageLocked, IsAsync=True}" />
+                                        </Image.OpacityMask>
+                                        <Image.Effect>
+                                            <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
+                                        </Image.Effect>
+                                    </Image>
+                                </StackPanel>
+
+                                <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
+                                            Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                    <Image Stretch="UniformToFill" Source="{Binding ImageLocked, IsAsync=True}"
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+                                    <Image Stretch="UniformToFill" Source="{Binding ImageLocked, IsAsync=True}" 
+                                           Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Image.Effect>
+                                            <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
+                                        </Image.Effect>
+                                    </Image>
+                                </StackPanel>
+                            </StackPanel>
+
+
+                            <Grid Grid.Column="1" Margin="10,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="130" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"
+                                           MouseEnter="TextBlock_MouseEnter">
+                                        <TextBlock.ToolTip>
+                                            <ToolTip Content="{Binding Name}"></ToolTip>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                </Grid>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0"
+                                       Text="{Binding Description}" VerticalAlignment="Top"
+                                       TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}" />
+
+
+                                <CheckBox Grid.Column="2" Grid.Row="0" Name="PART_CbUnlock"
+                                          Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"
+                                          IsChecked="{Binding IsUnlock, Mode=OneTime}" Click="PART_CbUnlock_Click">
+                                    <Label Content="Is unlocked" />
+                                </CheckBox>
+                                <DatePicker Grid.Column="2" Grid.Row="1" VerticalAlignment="Top" Margin="0,10,0,0"
+                                            SelectedDate="{Binding DateWhenUnlocked}" Width="130" Name="PART_DtUnlock"
+                                            SelectedDateChanged="DatePicker_SelectedDateChanged" />
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Border Grid.Row="4" BorderThickness="0,1,0,0" BorderBrush="{StaticResource NormalBorderBrush}">
+            <DockPanel KeyboardNavigation.TabNavigation="Local" LastChildFill="False" Margin="5">
+                <Button TabIndex="2" Name="ButtonCancel" Content="{DynamicResource LOCCancelLabel}" DockPanel.Dock="Right" IsCancel="True"
+                        Style="{StaticResource BottomButton}" Click="ButtonCancel_Click"/>
+                <Button TabIndex="1" Name="ButtonOK" Content="{DynamicResource LOCSaveLabel}" DockPanel.Dock="Right" IsDefault="True"
+                        Style="{StaticResource BottomButton}" Click="ButtonOK_Click"/>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

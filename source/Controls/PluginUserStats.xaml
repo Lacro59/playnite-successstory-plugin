@@ -1,0 +1,34 @@
+﻿<controls:PluginUserControlExtend
+        xmlns:controls="clr-namespace:CommonPluginsShared.Controls" 
+        x:Class="SuccessStory.Controls.PluginUserStats"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:SuccessStory.Controls"
+        mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="200"
+        MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
+        Height="{Binding Height}"
+        MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
+
+    <Grid Name="PART_GridContener">
+        <ListBox Grid.IsSharedSizeScope="True" ItemsSource="{Binding ItemsSource}"
+                 Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
+                 Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="auto" SharedSizeGroup="A" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding NameShow}" />
+                        <TextBlock Grid.Column="2" Text="{Binding ValueShow}" TextAlignment="Right" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</controls:PluginUserControlExtend>

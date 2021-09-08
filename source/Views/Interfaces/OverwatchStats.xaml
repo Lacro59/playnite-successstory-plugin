@@ -1,0 +1,343 @@
+﻿<UserControl x:Class="SuccessStory.Views.Interfaces.OverwatchStats"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuccessStory.Views.Interfaces"
+             xmlns:controls="clr-namespace:CommonPluginsShared.Controls"
+             xmlns:playnitecontrols="clr-namespace:CommonPluginsPlaynite.Controls"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+             xmlns:local1="clr-namespace:SuccessStory.Controls"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+             mc:Ignorable="d" d:DesignWidth="1000">
+
+    <UserControl.Resources>
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <local1:SetColorConverter x:Key="SetColorConverter" />
+        <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Player info -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Image Grid.Column="0" Grid.Row="0" 
+                   Source="{Binding Player.Portrait, FallbackValue='https://d15f34w2p8l1cc.cloudfront.net/overwatch/17042e76e79bafa3d5fb93207ccf4799722d5ea93ec3588107ee2f8d598db4fe.png'}" 
+                   Stretch="Uniform" Height="60" Width="60" />
+            <Label Grid.Column="2" Grid.Row="0" 
+                   Content="{Binding Player.Name, FallbackValue='Generic Name'}" FontSize="50" />
+            <Grid Grid.Column="4" Grid.Row="0" Grid.RowSpan="3">
+                <Image Source="{Binding Player.LevelFrame, FallbackValue='https://d15f34w2p8l1cc.cloudfront.net/overwatch/4d63c2aadf536e87c84bdb7157c7b688cffb286e17a5362d2fa5c5281f4fc2a2.png'}" 
+                       Stretch="Uniform" Height="120" Width="120" Margin="1,-19,0,0" VerticalAlignment="Top" />
+                <Grid Height="80" Width="60" VerticalAlignment="Top">
+                    <Label Content="{Binding Player.Level, FallbackValue='30'}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+                <Image Source="{Binding Player.LevelRank, FallbackValue='https://d15f34w2p8l1cc.cloudfront.net/overwatch/8de2fe5d938256a5725abe4b3655ee5e9067b7a1f4d5ff637d974eb9c2e4a1ea.png'}" 
+                       Stretch="Uniform" Height="60" Width="120" Margin="1,0,0,0" VerticalAlignment="Bottom" />
+            </Grid>
+            <Grid Grid.Column="5" Grid.Row="0" Grid.RowSpan="3">
+                <Image Source="{Binding Player.EndorsementFrame, FallbackValue='D:\\Github\\Lacro59\\playnite-successstory-plugin\\Resources\\Overwatch\\Endorsement_4.png'}" 
+                       Stretch="Uniform" Height="80" Width="80" Margin="3,0,0,0" VerticalAlignment="Top" />
+                <Grid Height="80" Width="60" VerticalAlignment="Top">
+                    <Label Content="{Binding Player.Endorsement, FallbackValue='4'}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+            </Grid>
+
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="6"
+                   Content="{Binding Player.GamesWon, FallbackValue='xx games won'}" FontSize="24" Foreground="Gray" />
+        </Grid>
+
+        <!-- Top hero -->
+        <StackPanel Grid.Row="2">
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="250" />
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Column="0" Content="{DynamicResource LOCSsOverwatchTopHero}" FontSize="24" />
+
+                <Grid Grid.Column="1">
+                    <ComboBox Name="PART_TopHeroCategory" SelectionChanged="PART_TopHeroCategory_SelectionChanged" ItemsSource="{Binding ComboBoxTopHero}" />
+                </Grid>
+            </Grid>
+            <Separator Margin="0,0,0,10" />
+            
+            <Grid Name="PART_GridTopHero">
+                <ListBox Name="PART_ListBoxTopHero" Height="174" Width="{Binding ElementName=PART_GridTopHero, Path=ActualWidth}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Grid>
+                                            <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                  Margin="3,0,0,0" />
+                                            </Border>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="Selector.IsSelected" Value="True">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextBrushDark}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,5" Height="40">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="{Binding HeroImage, FallbackValue='https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000007A.png'}" 
+                                       Grid.Column="0" Stretch="Uniform" Height="40" Width="40" Margin="1,1,0,0" />
+                                <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="2" Background="Transparent" CornerRadius="5" />
+
+                                <Grid Grid.Column="2" Name="PART_GridValue">
+                                    <ProgressBar Value="{Binding HeroValue, FallbackValue=50}" Maximum="{Binding HeroMaxValue}" 
+                                                 Foreground="{Binding HeroColor, FallbackValue='#ee4bb5'}" Background="{DynamicResource NormalBrushDark}"
+                                                 Width="{Binding ElementName=PART_GridValue, Path=ActualWidth}" />
+
+                                    <Label Content="{Binding HeroName, FallbackValue='D.VA'}" VerticalAlignment="Center" 
+                                           Margin="10,0,0,0" FontSize="20">
+                                        <Label.Effect>
+                                            <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
+                                        </Label.Effect>
+                                    </Label>
+                                    <Label Content="{Binding HeroValueString, FallbackValue='220'}" VerticalAlignment="Center" HorizontalAlignment="Right" 
+                                           Margin="0,0,10,0" FontSize="20">
+                                        <Label.Effect>
+                                            <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
+                                        </Label.Effect>
+                                    </Label>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </StackPanel>
+
+        <!-- Career stats -->
+        <StackPanel Grid.Row="4">
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="250" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Content="{DynamicResource LOCSsOverwatchCareerStats}" FontSize="24" />
+
+                <Grid Grid.Column="1">
+                    <ComboBox Name="PART_CareerCategory" SelectionChanged="PART_CareerCategory_SelectionChanged" ItemsSource="{Binding ComboBoxCareer}" />
+                </Grid>
+            </Grid>
+            <Separator Margin="0,0,0,10" />
+
+            <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="PART_CareerStatsData" Height="210">
+                <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource {x:Type ListBox}}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBox}">
+                                <ScrollViewer Focusable="False"
+                                              HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                              VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+                                              CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}">
+                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                    Margin="{TemplateBinding Padding}"/>
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Grid>
+                                        <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                              Margin="3,0,0,0" />
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="Selector.IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrushDark}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <playnitecontrols:VirtualizingGridPanel Columns="2" Rows="1" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <local:OverwatchCareerStats CareerStats="{Binding}" Height="195" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <!-- Achievements -->
+        <StackPanel Grid.Row="6">
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="250" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Content="{DynamicResource LOCSuccessStoryAchievements}" FontSize="24" />
+
+                <Grid Grid.Column="1">
+                    <ComboBox Name="PART_ComboBoxAchievements" SelectionChanged="PART_ComboBoxAchievements_SelectionChanged" ItemsSource="{Binding ComboBoxAchievements}" />
+                </Grid>
+            </Grid>
+            <Separator Margin="0,0,0,10" />
+
+            <controls:ListBoxExtend x:Name="PART_AchievementsData"
+                                BubblingScrollEvents="True" Style="{StaticResource {x:Type ListBox}}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                Height="185">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Grid>
+                                        <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                              Margin="3,0,0,0" />
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="Selector.IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrushDark}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <playnitecontrols:VirtualizingGridPanel Columns="2" Rows="2" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5" Height="65">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="58" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Height="58" Width="58" VerticalAlignment="Top" Margin="0,5,0,0">
+                                <Rectangle Fill="{DynamicResource GlyphBrush}" Height="58" Width="58"
+                                           Visibility="{Binding IsUnlock, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Rectangle.OpacityMask>
+                                        <ImageBrush ImageSource="{Binding Icon, IsAsync=True}" />
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+
+                                <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant"
+                                       Visibility="{Binding IsUnlock, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                                       Source="{Binding Icon, IsAsync=True}">
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding EnableRaretyIndicator}" Value="True">
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </StackPanel>
+
+                            <Grid Grid.Column="1" Margin="10,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="130" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"
+                                           MouseEnter="TextBlock_MouseEnter">
+                                        <TextBlock.ToolTip>
+                                            <ToolTip Content="{Binding Name}"></ToolTip>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+                                    <TextBlock Grid.Column="1" TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
+                                           Text="{Binding DateWhenUnlocked, Converter={StaticResource LocalDateTimeConverter}}" />
+                                </Grid>
+
+                                <TextBlock Grid.Row="1" Text="{Binding Description}" VerticalAlignment="Top"
+                                       TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}" />
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </controls:ListBoxExtend>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,330 @@
+﻿<UserControl x:Class="SuccessStory.SuccessView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuccessStory"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+             xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
+             xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
+             xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+             mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
+        <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid Name="PART_DataLoad">
+            <ProgressBar IsIndeterminate="True" Width="350" Height="40" />
+            <TextBlock Text="{DynamicResource LOCLoadingLabel}"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+
+        <Grid Name="PART_Data">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Filter options -->
+            <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" 
+                    BorderThickness="{DynamicResource PopupBorderThickness}" BorderBrush="{DynamicResource NormalBorderBrush}" 
+                    Margin="0,0,0,10">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="6" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="6" />
+                        <ColumnDefinition Width="275" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
+                    <playnitecontrols:SearchBox Grid.Column="2" x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged" />
+
+                    <Label Grid.Column="4" Content="{DynamicResource LOCSourceLabel}" FontSize="16" />
+                    <ComboBox Grid.Column="6" Name="FilterSource" IsEditable="True" IsReadOnly="True">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Tag="{Binding SourceNameShort}"
+                                          Content="{Binding SourceName}" IsChecked="{Binding isCheck}" FontFamily="{DynamicResource CommonFont}">
+                                </CheckBox>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <StackPanel HorizontalAlignment="Right" Grid.Column="7" Orientation="Horizontal">
+                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{DynamicResource LOCCommonTotalFound}" 
+                                   VerticalAlignment="Center" />
+                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TotalFoundCount" 
+                                   VerticalAlignment="Center" Text="1000" Width="40" TextAlignment="Right" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- List games with achievements -->
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                
+                <!-- Global progression -->
+                <Grid Height="70" Margin="0,10,0,0" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="354" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0" x:Name="lProgressionGlobal" Content="{DynamicResource LOCSuccessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" />
+                    <Grid Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Width="354">
+                        <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" />
+                        <Label x:Name="labelProgressionGlobalCount" HorizontalAlignment="Center">
+                        </Label>
+                    </Grid>
+
+                    <Label Grid.Column="0" Grid.Row="2" x:Name="lProgressionLaunched" Content="{DynamicResource LOCSuccessStoryProgressionLaunched}" HorizontalAlignment="Left" FontSize="16" />
+                    <Grid Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" Width="354">
+                        <ProgressBar x:Name="pbProgressionLaunchedCount" Minimum="0" Maximum="100" />
+                        <Label x:Name="labelProgressionLaunchedCount" HorizontalAlignment="Center">
+                        </Label>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Graphic all achievements by sources -->
+                    <DockPanel Grid.Column="0" Name="PART_GraphicBySource">
+                        <StackPanel DockPanel.Dock="Top">
+                            <Label Content="{DynamicResource LOCSuccessStoryGraphicTitleSources}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                        </StackPanel>
+
+                        <StackPanel Name="SuccessStory_Achievements_Graphics_Sources" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
+                            <lvc:CartesianChart Name="StatsGraphicAchievementsSources" Height="168" LegendLocation="Bottom" FontFamily="{DynamicResource CommonFont}">
+                                <lvc:CartesianChart.ChartLegend>
+                                    <lvc:DefaultLegend Height="2" Visibility="Hidden" />
+                                </lvc:CartesianChart.ChartLegend>
+
+                                <lvc:CartesianChart.DataTooltip>
+                                    <livechartscommon:CustomerToolTipForSingle />
+                                </lvc:CartesianChart.DataTooltip>
+
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Name="StatsGraphicAchievementsSourcesX" ShowLabels="True" FontFamily="{DynamicResource CommonFont}" FontSize="16">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator Step="1" />
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Name="StatsGraphicAchievementsSourcesY" ShowLabels="True">
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Graphic all unlocked achievements -->
+                    <DockPanel Grid.Column="2" Name="PART_GraphicAllUnlocked">
+                        <StackPanel DockPanel.Dock="Top">
+                            <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSuccessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
+                        </StackPanel>
+
+                        <StackPanel Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168">
+                            <lvc:CartesianChart Name="AchievementsMonth" Height="168" LegendLocation="Bottom" FontFamily="{DynamicResource CommonFont}">
+                                <lvc:CartesianChart.ChartLegend>
+                                    <lvc:DefaultLegend Height="2" Visibility="Hidden" />
+                                </lvc:CartesianChart.ChartLegend>
+
+                                <lvc:CartesianChart.DataTooltip>
+                                    <livechartscommon:CustomerToolTipForSingle />
+                                </lvc:CartesianChart.DataTooltip>
+
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Name="AchievementsMonthX" ShowLabels="True" FontFamily="{DynamicResource CommonFont}">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator Step="1" />
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Name="AchievementsMonthY" ShowLabels="True">
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                        </StackPanel>
+                    </DockPanel>
+                </Grid>
+
+                <!-- List games -->
+                <Grid Margin="0,0,0,10" Name="lvGamesStackPanel" Grid.Row="0">
+                    <controlsShared:ListViewExtend x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}"
+                                                   SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}" 
+                                                   SortingEnable="True">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="46" x:Name="lvGameIcon100Percent">
+                                    <GridViewColumnHeader Content="100%" Tag="noSort" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="50" x:Name="lvGameIcon">
+                                    <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}" Tag="noSort" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
+                                                   Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding Name}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="3" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="240" x:Name="lvGameName">
+                                    <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Visibility="{Binding GameExist, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
+                                                        <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                                <TextBlock Visibility="{Binding GameExist, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                                    <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
+                                    <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}" />
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="6" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="75" x:Name="lvGamesSource">
+                                    <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}" Tag="SourceName" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
+                                                   HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="30" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProgressionValue}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="8" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="105" x:Name="lvGameProgression">
+                                    <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSuccessStorylvGamesProgression}" Tag="ProgressionValue" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <ProgressBar Minimum="0" Maximum="{Binding Total}" Height="28" Value="{Binding Unlocked}" VerticalAlignment="Center" />
+                                                <Label Content="{Binding TotalPercent}" HorizontalAlignment="Center" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="170" x:Name="lvGameRaretyCount">
+                                    <GridViewColumnHeader Content="{DynamicResource LOCSuccessStoryRarety}" Tag="noSort" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="10" />
+
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="10" />
+                                                    
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Grid.Column="0" Content="&#127942;" Margin="0,0,5,0" />
+                                                <Label Grid.Column="2" Content="{Binding Common.UnLocked}" HorizontalAlignment="Right" />
+
+                                                <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="DarkGray" />
+                                                <Label Grid.Column="6" Content="{Binding NoCommon.UnLocked}" HorizontalAlignment="Right" />
+
+                                                <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="Gold" />
+                                                <Label Grid.Column="10" Content="{Binding Rare.UnLocked}" HorizontalAlignment="Right" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </controlsShared:ListViewExtend>
+                </Grid>
+            </Grid>
+
+            <!--Details achievements-->
+            <Grid Grid.Column="3" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <DockPanel Grid.Row="0">
+                    <StackPanel DockPanel.Dock="Top">
+                        <Label Name="GraphicTitle" Content="{DynamicResource LOCSuccessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
+                    </StackPanel>
+
+                    <StackPanel x:Name="SuccessStory_Achievements_Graphics_Game" DockPanel.Dock="Bottom" Height="168" />
+                </DockPanel>
+
+                <Border Margin="0,10,0,0" Name="listAchievementBorder" Grid.Row="1"
+                        BorderBrush="{DynamicResource NormalBorderBrush}" 
+                        BorderThickness="{DynamicResource ControlBorderThickness}">
+                    <Grid Name="SuccessStory_Achievements_List" />
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

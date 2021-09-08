@@ -1,0 +1,44 @@
+﻿<controls:PluginUserControlExtend
+        xmlns:controls="clr-namespace:CommonPluginsShared.Controls" 
+        x:Class="SuccessStory.Controls.PluginProgressBar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:SuccessStory.Controls"
+        xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+        xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+        mc:Ignorable="d" d:DesignHeight="40" d:DesignWidth="200">
+
+    <controls:PluginUserControlExtend.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <convertersshared:HeightToFontSizeConverter x:Key="HeightToFontSizeConverter" />
+    </controls:PluginUserControlExtend.Resources>
+
+    <Grid Name="PART_GridContener">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Column="0" Content="{Binding LabelContent, FallbackValue='15/22'}" 
+               HorizontalAlignment="Center" Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
+               FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}"
+               Margin="0,0,10,0"
+               Visibility="{Binding IntegrationShowProgressBarIndicator, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <ProgressBar Grid.Column="1"
+                     Maximum="{Binding Maximum, Mode=OneWay, FallbackValue='100'}" 
+                     Value="{Binding Value, Mode=OneWay, FallbackValue='30'}"
+                     Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}" />
+        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center"
+                    Visibility="{Binding IntegrationShowProgressBarPercent, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Label Content="{Binding Percent, Mode=OneWay, FallbackValue='30'}" 
+                   Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
+                   FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}" />
+            <Label HorizontalAlignment="Center" Content="%"
+                   Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
+                   FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}" />
+        </StackPanel>
+    </Grid>
+</controls:PluginUserControlExtend>

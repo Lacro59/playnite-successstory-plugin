@@ -1,0 +1,146 @@
+﻿<UserControl x:Class="SuccessStory.Views.SuccessStoryOneGameView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuccessStory.Views"
+             xmlns:controls="clr-namespace:SuccessStory.Controls"
+             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             mc:Ignorable="d" Height="700" Width="1080">
+    
+    <UserControl.Resources>
+        <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
+    </UserControl.Resources>
+    
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="400" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0">
+                <Label Content="{DynamicResource LOCSuccessStoryGraphicTitleDay}" FontSize="16" HorizontalAlignment="Center" />
+            </StackPanel>
+
+            <controls:PluginChart Grid.Row="2" IgnoreSettings="True" AxisLimit="16" GameContext="{Binding GameContext}" />
+        </Grid>
+
+        <Grid Name="PART_Achievements_List_Contener" Grid.Column="0" Grid.Row="2">
+            <controls:PluginList IgnoreSettings="True" ForceOneCol="True" GameContext="{Binding GameContext}"
+                                 Height="{Binding ElementName=PART_Achievements_List_Contener, Path=ActualHeight}" />
+        </Grid>
+
+        <Grid Grid.Column="2" Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Content="{DynamicResource LOCSuccessStoryAchStats}" FontSize="16" HorizontalAlignment="Center" />
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0"  Orientation="Horizontal">
+                        <Label Content="&#127942;" Margin="0,0,5,0" />
+                        <Label Content="{DynamicResource LOCSuccessStoryCommon}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="2"  Orientation="Horizontal">
+                        <Label Content="&#127942;" Margin="0,0,5,0" Foreground="DarkGray" />
+                        <Label Content="{DynamicResource LOCSuccessStoryNoCommon}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="4"  Orientation="Horizontal">
+                        <Label Content="&#127942;" Margin="0,0,5,0" Foreground="Gold" />
+                        <Label Content="{DynamicResource LOCSuccessStoryRare}" />
+                    </StackPanel>
+
+                    <Grid Grid.Column="2" Grid.RowSpan="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="auto" SharedSizeGroup="RaretyTotal" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Column="0" Grid.Row="0" Name="PART_AchCommon" Content="xxxx" HorizontalAlignment="Right" />
+                        <Label Grid.Column="0" Grid.Row="2" Name="PART_AchNoCommon" Content="xxxx" HorizontalAlignment="Right" />
+                        <Label Grid.Column="0" Grid.Row="4" Name="PART_AchRare" Content="xxxx" HorizontalAlignment="Right" />
+                        
+                        <Label Grid.Column="1" Grid.Row="0" Content="/" HorizontalAlignment="Center" />
+                        <Label Grid.Column="1" Grid.Row="2" Content="/" HorizontalAlignment="Center" />
+                        <Label Grid.Column="1" Grid.Row="4" Content="/" HorizontalAlignment="Center" />
+                        
+                        <Label Grid.Column="2" Grid.Row="0" Name="PART_AchCommonTotal" Content="xxxx" HorizontalAlignment="Right" />
+                        <Label Grid.Column="2" Grid.Row="2" Name="PART_AchNoCommonTotal" Content="xx" HorizontalAlignment="Right" />
+                        <Label Grid.Column="2" Grid.Row="4" Name="PART_AchRareTotal" Content="xxxx" HorizontalAlignment="Right" />
+                    </Grid>
+                </Grid>
+            </Grid>
+            
+            <Label Grid.Row="2" Content="{DynamicResource LOCSuccessStoryUserStats}" FontSize="16" HorizontalAlignment="Center" />
+
+            <Grid Name="PART_ScUserStats_Contener" Grid.Row="4">
+                <controls:PluginUserStats Height="{Binding ElementName=PART_ScUserStats_Contener, Path=ActualHeight}"
+                                            IgnoreSettings="True" GameContext="{Binding GameContext}" />
+            </Grid>
+
+            <Grid Grid.Row="6" Margin="0,10,0,0"
+                  Visibility="{Binding ElementName=PART_SourceLabel, Path=Text, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="{DynamicResource LOCSourceLabel}" Grid.Column="0" FontSize="8" />
+                <TextBlock Grid.Column="2" VerticalAlignment="Center" FontSize="8">
+                        <Hyperlink Name="PART_SourceLink" Click="PART_SourceLink_Click">
+                            <TextBlock Name="PART_SourceLabel" FontSize="8" Text="a test source" />
+                        </Hyperlink>
+                    </TextBlock>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
