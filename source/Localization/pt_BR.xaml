@@ -53,6 +53,8 @@
 
     <sys:String x:Key="LOSuccessStoryAddTagDescription">Add a tag to games with the time to full unlock</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Show description in tooltip</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Habilitar conquistas da PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar conquistas Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar conquistas GOG</sys:String>
@@ -138,7 +140,12 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryAchStats">Achievements statistics</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Estatísticas do usuário</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -148,6 +155,9 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
     <sys:String x:Key="LOCSuccessStoryGlobalProgression">Progresso global das conquistas</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Progresso de conquistas dos jogos iniciados</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Informações</sys:String>
+
+
+    <sys:String x:Key="LOCSuccessStoryRarety">Rarety</sys:String>
 
     <!-- ListViewGames -->
 
@@ -159,7 +169,7 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Conquistas desbloqueadas por fonte</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Conquistas desbloqueadas por dia</sys:String>
 
-    <!-- ListViewGames -->
+    <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Jogo rápido</sys:String>
     <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Jogo competitivo</sys:String>
