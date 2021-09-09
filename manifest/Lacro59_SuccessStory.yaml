@@ -8,9 +8,9 @@ Packages:
       - Playnite 9 beta version (not compatible with Playnite 8)
       - Custom UI Elements for custom theme integration (see wiki on GitHub)
       - Fixed many bugs
-	  - Added a source selector for manual achievements
-	  - Added PSN achievements
-	  - Added Overwatch achievements
-	  - Added basic Starcraft II achievements
-	  - UI tweaks
-	  - Added estimate time to unlock all achievements
+      - Added a source selector for manual achievements
+      - Added PSN achievements
+      - Added Overwatch achievements
+      - Added basic Starcraft II achievements
+      - UI tweaks
+      - Added estimate time to unlock all achievements
