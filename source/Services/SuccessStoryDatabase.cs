@@ -755,6 +755,42 @@ namespace SuccessStory.Services
             return new AchievementsGraphicsDataCount { Labels = GraphicsAchievementsLabels, Series = SourceAchievementsSeries };
         }
 
+        public static bool GameCouldHaveAchievements(SuccessStorySettings settings, string GameSourceName, string GameName)
+        {
+            switch (GameSourceName.ToLower())
+            {
+                case "playstation":
+                    return settings.EnablePsn;
+                case "steam":
+                    return settings.EnableSteam;
+                case "gog":
+                    return settings.EnableGog;
+                case "origin":
+                    return settings.EnableOrigin;
+                case "xbox":
+                    return settings.EnableXbox;
+                case "playnite":
+                case "hacked":
+                    return settings.EnableLocal;
+                case "retroachievements":
+                    return settings.EnableRetroAchievements;
+                case "rpcs3":
+                    return settings.EnableRpcs3Achievements;
+                case "battle.net":
+                    switch (GameName.ToLower())
+                    {
+                        case "overwatch":
+                            return settings.EnableOverwatchAchievements;
+                        case "starcraft 2":
+                        case "starcraft ii":
+                            return settings.EnableSc2Achievements;
+                    }
+                    break;
+            }
+
+            return false;
+        }
+
 
         /// <summary>
         /// 
