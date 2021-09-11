@@ -103,7 +103,7 @@ namespace SuccessStory.Clients
                         Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
                         Result.Items = AllAchievements;
                         Result.ItemsStats = AllStats;
-                        
+
                         if (Result.HaveAchivements)
                         {
                             SteamApi steamApi = new SteamApi();
@@ -196,7 +196,7 @@ namespace SuccessStory.Clients
                     {
                         Common.LogError(ex, false);
                     }
-                }                    
+                }
             }
 
             return Result;
@@ -218,7 +218,7 @@ namespace SuccessStory.Clients
 
 
             if (IsLocal)
-            { 
+            {
                 Common.LogDebug(true, $"GetAchievementsLocal()");
 
                 if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
@@ -565,49 +565,28 @@ namespace SuccessStory.Clients
         {
             GetSteamConfig();
 
+            string ProfileById = $"https://steamcommunity.com/profiles/{SteamId}/";
+            string ProfileByName = $"https://steamcommunity.com/id/{SteamUser}";
 
-            string ProfilById = @"https://steamcommunity.com/profiles/{0}/";
-            string ProfilByName = @"https://steamcommunity.com/id/{0}";
+            return IsProfilePublic(ProfileById) || IsProfilePublic(ProfileByName);
+        }
 
-            ProfilById = string.Format(ProfilById, SteamId);
-            ProfilByName = string.Format(ProfilByName, SteamUser);
-
-            string ResultWeb = string.Empty;
-            HtmlParser parser = new HtmlParser();
-            IHtmlDocument HtmlDoc = null;
-
+        private static bool IsProfilePublic(string profilePageUrl)
+        {
             try
             {
-                ResultWeb = HttpDownloader.DownloadString(ProfilById);
-                HtmlDoc = parser.Parse(ResultWeb);
-                if (HtmlDoc.QuerySelectorAll("div.achieveRow")?.Length > 0)
-                {
-                    return true;
-                }
+                string ResultWeb = HttpDownloader.DownloadString(profilePageUrl);
+                IHtmlDocument HtmlDoc = new HtmlParser().Parse(ResultWeb);
+
+                //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
+                var gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
+                return gamesPageLink != null;
             }
             catch (WebException ex)
             {
                 Common.LogError(ex, false);
                 return false;
             }
-
-            try
-            {
-                ResultWeb = HttpDownloader.DownloadString(ProfilByName);
-                HtmlDoc = parser.Parse(ResultWeb);
-                if (HtmlDoc.QuerySelectorAll("div.achieveRow").Length > 0)
-                {
-                    return true;
-                }
-            }
-            catch (WebException ex)
-            {
-                Common.LogError(ex, false);
-                return false;
-            }
-
-
-            return false;
         }
 
 
@@ -951,7 +930,7 @@ namespace SuccessStory.Clients
                         noData = false;
                     }
                 }
-                
+
                 if (!TryByName && noData)
                 {
                     HtmlDocument = null;
@@ -968,7 +947,8 @@ namespace SuccessStory.Clients
             {
                 foreach (var achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
                 {
-                    try { 
+                    try
+                    {
                         if (achieveRow.QuerySelector("h3").InnerHtml.Trim().ToLower() == DisplayName.Trim().ToLower())
                         {
                             string TempDescription = achieveRow.QuerySelector("h5").InnerHtml;
