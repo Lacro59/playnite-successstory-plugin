@@ -305,14 +305,14 @@ namespace SuccessStory
             string SourceName = PlayniteTools.GetSourceName(PlayniteApi, GameMenu);
             string GameName = GameMenu.Name;
             bool IsAddOrShowManual = SuccessStoryDatabase.IsAddOrShowManual(GameMenu, SourceName);
-            bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, this.GetPluginUserDataPath(), SourceName, GameName);
+            bool GameCouldHaveAchievements = SuccessStoryDatabase.GameCouldHaveAchievements(PluginSettings.Settings, SourceName, GameName);
             GameAchievements gameAchievements = PluginDatabase.Get(GameMenu, true);
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
 
             if (!gameAchievements.IsIgnored)
             {
-                if (VerifToAddOrShow || IsAddOrShowManual)
+                if (GameCouldHaveAchievements || IsAddOrShowManual)
                 {
                     if (!PluginSettings.Settings.EnableOneGameView || (PluginSettings.Settings.EnableOneGameView && gameAchievements.HasData))
                     {
@@ -451,7 +451,7 @@ namespace SuccessStory
             }
             else
             {
-                if (VerifToAddOrShow || IsAddOrShowManual)
+                if (GameCouldHaveAchievements || IsAddOrShowManual)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
