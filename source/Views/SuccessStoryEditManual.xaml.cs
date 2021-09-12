@@ -119,7 +119,6 @@ namespace SuccessStory.Views
             {                
                 CheckBox checkBox = sender as CheckBox;
                 int index = int.Parse(checkBox.Tag.ToString());
-
                 if ((bool)checkBox.IsChecked)
                 {
                     if (((Achievements)lbAchievements.Items[index]).DateWhenUnlocked == null)
