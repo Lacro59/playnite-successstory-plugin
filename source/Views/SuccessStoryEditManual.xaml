@@ -47,6 +47,12 @@
                      Loaded="LbAchievements_Loaded" Grid.Row="2"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
 
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="0,5" Height="65">
@@ -122,7 +128,6 @@
                                     </Image>
                                 </StackPanel>
                             </StackPanel>
-
 
                             <Grid Grid.Column="1" Margin="10,0,0,0">
                                 <Grid.ColumnDefinitions>

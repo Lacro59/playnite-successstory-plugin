@@ -6,6 +6,7 @@ using SuccessStory.Models;
 using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace SuccessStory.Views
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         private GameAchievements gameAchievements;
 
-        private List<Achievements> ListAchievements = new List<Achievements>();
+        private ObservableCollection<Achievements> ListAchievements = new ObservableCollection<Achievements>();
 
 
         public SuccessStoryEditManual(Game game)
@@ -46,8 +47,8 @@ namespace SuccessStory.Views
 
         private void LoadData(Game GameSelected)
         {
-            ListAchievements = Serialization.GetClone(gameAchievements.Items);
-            ListAchievements = ListAchievements.OrderByDescending(x => x.Name).ToList();
+            ListAchievements = Serialization.GetClone(gameAchievements.Items).ToObservable();
+            ListAchievements = ListAchievements.OrderBy(x => x.Name).ToObservable();
             lbAchievements.ItemsSource = ListAchievements;
         }
 
@@ -147,7 +148,7 @@ namespace SuccessStory.Views
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
-            gameAchievements.Items = (List<Achievements>)lbAchievements.ItemsSource;
+            gameAchievements.Items = ((ObservableCollection<Achievements>)lbAchievements.ItemsSource).ToList();
 
             gameAchievements.Unlocked = gameAchievements.Items.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
             gameAchievements.Locked = gameAchievements.Total - gameAchievements.Unlocked;
@@ -161,13 +162,14 @@ namespace SuccessStory.Views
 
         private void SearchElement_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (SearchElement.Text.IsNullOrEmpty())
+            ((ObservableCollection<Achievements>)lbAchievements.ItemsSource)
+                .ForEach(x => x.IsVisible = true);
+
+            if (!SearchElement.Text.IsNullOrEmpty())
             {
-                lbAchievements.ItemsSource = ListAchievements;
-            }
-            else
-            {
-                lbAchievements.ItemsSource = ListAchievements.FindAll(x => x.Name.ToLower().Contains(SearchElement.Text.ToLower()));
+                ((ObservableCollection<Achievements>)lbAchievements.ItemsSource)
+                    .Where(x => !x.Name.Contains(SearchElement.Text, StringComparison.OrdinalIgnoreCase))
+                    .ForEach(x => x.IsVisible = false);
             }
         }
     }

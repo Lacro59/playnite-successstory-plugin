@@ -214,6 +214,18 @@ namespace SuccessStory.Models
             }
         }
 
+        private bool isVisible = true;
+        [DontSerialize]
+        public bool IsVisible
+        {
+            get => isVisible;
+            set
+            {
+                isVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
         [DontSerialize]
         public DateTime? DateWhenUnlocked
         {
