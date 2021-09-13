@@ -140,7 +140,7 @@ namespace SuccessStory
             {
                 WinIdProperty = ((Window)sender).GetValue(AutomationProperties.AutomationIdProperty).ToString();
 
-                if (WinIdProperty == "WindowSettings" || WinIdProperty == "WindowLibraryIntegrations")
+                if (WinIdProperty == "WindowSettings" ||WinIdProperty == "WindowExtensions" || WinIdProperty == "WindowLibraryIntegrations")
                 {
                     Common.LogDebug(true, $"Reset VerifToAdd");
 
