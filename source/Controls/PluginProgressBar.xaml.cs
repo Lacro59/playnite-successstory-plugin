@@ -81,6 +81,16 @@ namespace SuccessStory.Controls
         }
 
 
+        private void PluginUserControlExtend_Loaded(object sender, RoutedEventArgs e)
+        {
+            ContentControl elParent = UI.FindParent<ContentControl>((FrameworkElement)sender);
+            if (elParent != null && (double.IsNaN(elParent.Height) || elParent.Height == 0))
+            {
+                elParent.Height = 40;
+            }
+        }
+
+
         public override void SetDefaultDataContext()
         {
             bool IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBar;

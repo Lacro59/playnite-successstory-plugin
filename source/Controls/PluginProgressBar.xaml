@@ -8,7 +8,8 @@
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-        mc:Ignorable="d" d:DesignHeight="40" d:DesignWidth="200">
+        mc:Ignorable="d" d:DesignHeight="40" d:DesignWidth="200"
+        Loaded="PluginUserControlExtend_Loaded">
 
     <controls:PluginUserControlExtend.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
