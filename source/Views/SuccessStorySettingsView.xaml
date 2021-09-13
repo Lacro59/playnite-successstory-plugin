@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:SuccessStory.Views"
              xmlns:AttachedProperties="clr-namespace:CommonPluginsShared.Controls"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:pcmd="clr-namespace:CommonPluginsShared"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d">
@@ -683,7 +684,9 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationButtonHeader}">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationButtonHeader}"
+                                              Command="{x:Static pcmd:Commands.RestartRequired}" 
+                                              CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
                                         <Label Content="{DynamicResource LOCCommonIntegrationButtonHeader}" />
                                     </CheckBox>
                                 </Expander.Header>
