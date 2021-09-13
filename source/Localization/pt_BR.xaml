@@ -51,9 +51,9 @@
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (apenas para ter conquistas localizadas)</sys:String>
 
-    <sys:String x:Key="LOSuccessStoryAddTagDescription">Add a tag to games with the time to full unlock</sys:String>
+    <sys:String x:Key="LOSuccessStoryAddTagDescription">Adicione uma tag aos jogos com tempo para desbloquear completamente</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Show description in tooltip</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Mostrar descrições em dicas</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Habilitar conquistas da PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar conquistas Steam</sys:String>
@@ -140,12 +140,12 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
 
     <!-- SuccessStoryOneGameView -->
 
-    <sys:String x:Key="LOCSuccessStoryAchStats">Achievements statistics</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchStats">Estatísticas de conquistas</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Estatísticas do usuário</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
+    <sys:String x:Key="LOCSuccessStoryCommon">Comum</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">Não-Comum</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare">Raro</sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -157,7 +157,7 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
     <sys:String x:Key="LOCSuccessStoryGameInformation">Informações</sys:String>
 
 
-    <sys:String x:Key="LOCSuccessStoryRarety">Rarety</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarety">Raros</sys:String>
 
     <!-- ListViewGames -->
 
