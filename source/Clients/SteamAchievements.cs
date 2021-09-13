@@ -89,10 +89,11 @@ namespace SuccessStory.Clients
 
                 if (AllAchievements.Count > 0)
                 {
+                    var DataCompleted = GetSchemaForGame(AppId, AllAchievements, AllStats);
+
                     bool IsOK = GetByWeb ? GetByWeb : Web.DownloadFileImageTest(AllAchievements[0].UrlLocked).GetAwaiter().GetResult();
                     if (IsOK)
-                    {
-                        var DataCompleted = GetSchemaForGame(AppId, AllAchievements, AllStats);
+                    {                        
                         AllAchievements = DataCompleted.Item1;
                         AllStats = DataCompleted.Item2;
 
