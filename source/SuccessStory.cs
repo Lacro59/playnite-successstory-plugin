@@ -710,19 +710,35 @@ namespace SuccessStory
             // Refresh Achievements database for game played.
             var TaskGameStopped = Task.Run(() =>
             {
-                PluginDatabase.Refresh(args.Game.Id);
+                string SourceName = PlayniteTools.GetSourceName(PlayniteApi, args.Game);
+                string GameName = args.Game.Name;
+                bool IsAddOrShowManual = SuccessStoryDatabase.IsAddOrShowManual(args.Game, SourceName);
+                bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, PluginDatabase.Paths.PluginUserDataPath, SourceName, GameName);
+                GameAchievements gameAchievements = PluginDatabase.Get(args.Game, true);
 
-                // Set to Beaten
-                if (PluginSettings.Settings.Auto100PercentCompleted)
+                if (!gameAchievements.IsIgnored)
                 {
-                    GameAchievements gameAchievements = PluginDatabase.Get(args.Game, true);
-
-                    if (gameAchievements.Is100Percent)
+                    if (VerifToAddOrShow || IsAddOrShowManual)
                     {
-                        args.Game.CompletionStatusId = PlayniteApi.Database.CompletionStatuses.Where(x => x.Name == "Beaten").FirstOrDefault().Id;
-                        PlayniteApi.Database.Games.Update(args.Game);
+                        if (!IsAddOrShowManual && !gameAchievements.IsManual)
+                        {
+                            PluginDatabase.RefreshNoLoader(args.Game.Id);
+
+                            // Set to Beaten
+                            if (PluginSettings.Settings.Auto100PercentCompleted)
+                            {
+                                gameAchievements = PluginDatabase.Get(args.Game, true);
+
+                                if (gameAchievements.Is100Percent)
+                                {
+                                    args.Game.CompletionStatusId = PlayniteApi.Database.CompletionStatuses.Where(x => x.Name == "Beaten").FirstOrDefault().Id;
+                                    PlayniteApi.Database.Games.Update(args.Game);
+                                }
+                            }
+                        }
                     }
                 }
+
 
                 // refresh themes resources
                 if (args.Game.Id == PluginDatabase.GameContext.Id)

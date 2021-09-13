@@ -1247,13 +1247,7 @@ namespace SuccessStory.Services
                         {
                             if (!IsAddOrShowManual && !gameAchievements.IsManual)
                             {
-                                var loadedItem = Get(Id, true);
-                                var webItem = GetWeb(Id);
-
-                                if (webItem != null && !ReferenceEquals(loadedItem, webItem))
-                                {
-                                    Update(webItem);
-                                }
+                                RefreshNoLoader(Id);
                             }
                         }
                     }
