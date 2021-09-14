@@ -227,15 +227,38 @@ namespace SuccessStory.Clients
         }
 
 
-        public void SetRarety(GameAchievements gameAchievements)
+        public void SetRarety(GameAchievements gameAchievements, bool IsRefresh = false)
         {
-            List<SearchResult> SearchResults = SearchGame(gameAchievements.Name);
+            List<SearchResult> SearchResults = new List<SearchResult>();
+            if (!IsRefresh)
+            {
+                SearchResults = SearchGame(gameAchievements.Name);
+            }
+            else
+            {
+                SearchResults = new List<SearchResult>
+                {
+                    new SearchResult
+                    {
+                        Url = gameAchievements.SourcesLink.Url
+                    }
+                };
+            }
 
             if (SearchResults.Count > 0)
             {
                 // Find good game
                 string SourceName = PlayniteTools.GetSourceName(PluginDatabase.PlayniteApi, gameAchievements.Id);
-                SearchResult searchResult = SearchResults.Find(x => x.Name.ToLower() == gameAchievements.Name.ToLower() && IsSamePlatform(x.Platform, SourceName));
+                SearchResult searchResult;
+
+                if (!IsRefresh)
+                {
+                    searchResult = SearchResults.Find(x => x.Name.ToLower() == gameAchievements.Name.ToLower() && IsSamePlatform(x.Platform, SourceName));
+                }
+                else
+                {
+                    searchResult = SearchResults.Find(x => x.Url == gameAchievements.SourcesLink.Url);
+                }
 
                 if (searchResult == null)
                 {

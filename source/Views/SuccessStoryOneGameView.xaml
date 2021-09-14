@@ -136,10 +136,10 @@
 
                 <Label Content="{DynamicResource LOCSourceLabel}" Grid.Column="0" FontSize="8" />
                 <TextBlock Grid.Column="2" VerticalAlignment="Center" FontSize="8">
-                        <Hyperlink Name="PART_SourceLink" Click="PART_SourceLink_Click">
-                            <TextBlock Name="PART_SourceLabel" FontSize="8" Text="a test source" />
-                        </Hyperlink>
-                    </TextBlock>
+                    <Hyperlink Name="PART_SourceLink" Click="PART_SourceLink_Click">
+                        <TextBlock Name="PART_SourceLabel" FontSize="8" Text="a test source" />
+                    </Hyperlink>
+                </TextBlock>
             </Grid>
         </Grid>
     </Grid>

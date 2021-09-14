@@ -26,6 +26,7 @@ using CommonPluginsShared.PlayniteExtended;
 using System.Windows.Media;
 using CommonPluginsShared.Controls;
 using SuccessStory.Controls;
+using CommonPluginsShared.Models;
 
 namespace SuccessStory
 {
@@ -605,6 +606,26 @@ namespace SuccessStory
                 }
             });
 
+            if (PluginDatabase.PluginSettings.Settings.EnableManual)
+            {
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = "-"
+                });
+
+                // Refresh rarety data for manual achievements
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCSsRefreshRaretyManual"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.RefreshRarety();
+                    }
+                });
+            }
+
             if (PluginDatabase.PluginSettings.Settings.EnableTag)
             {
                 mainMenuItems.Add(new MainMenuItem
@@ -665,6 +686,61 @@ namespace SuccessStory
             {
                 oldToNew.ConvertDB(PlayniteApi);
             }
+
+            // Sourcelink null?
+            var sourceLinkNull = PluginDatabase.Database.Select(x => x).Where(x => x.SourcesLink == null && x.IsManual && x.HaveAchivements);
+            if (sourceLinkNull.Count() > 0)
+            {
+                GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                    "SuccessStory - Database migration",
+                    false
+                );
+                globalProgressOptions.IsIndeterminate = true;
+
+                PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                {
+                    CommonPluginsStores.SteamApi steamApi = new CommonPluginsStores.SteamApi();
+
+                    foreach (GameAchievements gameAchievements in sourceLinkNull)
+                    {
+                        try
+                        {
+                            Game game = PlayniteApi.Database.Games.Get(gameAchievements.Id);
+                            string SourceName = PlayniteTools.GetSourceName(PlayniteApi, game);
+
+                            if (gameAchievements.IsManual)
+                            {                                
+                                int AppId = steamApi.GetSteamId(gameAchievements.Name);
+
+                                if (AppId != 0)
+                                {
+                                    gameAchievements.SourcesLink = new SourceLink
+                                    {
+                                        GameName = steamApi.GetGameName(AppId),
+                                        Name = "Steam",
+                                        Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
+                                    };
+                                }
+                                else
+                                {
+                                    gameAchievements.SourcesLink = null;
+                                }
+                            }
+                            else
+                            {
+                                // TODO Refresh by user ?
+                            }
+
+                            PluginDatabase.AddOrUpdate(gameAchievements);
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false);
+                        }
+                    }
+                }, globalProgressOptions);
+            }
+
 
             try
             {

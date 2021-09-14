@@ -7,6 +7,8 @@
     <sys:String x:Key="LOCSuccessStoryManualAchievements">Manual Achievements</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
+
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarety for manual achievements</sys:String>
     
     <!-- MainView -->
 

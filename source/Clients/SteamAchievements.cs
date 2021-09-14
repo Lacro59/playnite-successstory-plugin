@@ -482,7 +482,7 @@ namespace SuccessStory.Clients
         }
 
 
-        private bool GetSteamConfig()
+        public bool GetSteamConfig()
         {
             try
             {
@@ -976,7 +976,7 @@ namespace SuccessStory.Clients
         }
 
 
-        private List<Achievements> GetGlobalAchievementPercentagesForApp(int AppId, List<Achievements> AllAchievements)
+        public List<Achievements> GetGlobalAchievementPercentagesForApp(int AppId, List<Achievements> AllAchievements)
         {
             if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
             {
@@ -996,16 +996,25 @@ namespace SuccessStory.Clients
                     KeyValue GlobalAchievementPercentagesForApp = steamWebAPI.GetGlobalAchievementPercentagesForApp(gameid: AppId);
                     foreach (KeyValue AchievementPercentagesData in GlobalAchievementPercentagesForApp["achievements"]["achievement"].Children)
                     {
-                        string ApiName = AchievementPercentagesData.Children.Find(x => x.Name == "name").Value;
-                        float Percent = float.Parse(AchievementPercentagesData.Children.Find(x => x.Name == "percent").Value.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+                        string ApiName = AchievementPercentagesData.Children.Find(x => x.Name == "name")?.Value;
+                        float.TryParse(AchievementPercentagesData.Children.Find(x => x.Name == "percent")?.Value?.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out float Percent);
 
-                        AllAchievements.Find(x => x.ApiName == ApiName).Percent = Percent;
+                        Common.LogDebug(false, $"{AppId} - ApiName: {ApiName} - Percent: {Percent}");
+
+                        if (AllAchievements.Find(x => x.ApiName == ApiName) != null)
+                        {
+                            AllAchievements.Find(x => x.ApiName == ApiName).Percent = Percent;
+                        }
+                        else
+                        {
+                            logger.Warn($"not find for {AppId} - ApiName: {ApiName} - Percent: {Percent}");
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})");
+                Common.LogError(ex, false, $"Error on GetGlobalAchievementPercentagesForApp({SteamId}, {AppId}, {LocalLang})");
             }
 
             return AllAchievements;
