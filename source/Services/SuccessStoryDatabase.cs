@@ -1285,7 +1285,7 @@ namespace SuccessStory.Services
                         CancelText = " canceled";
                         break;
                     }
-
+                    
                     string SourceName = gameAchievements.SourcesLink?.Name?.ToLower();
                     switch (SourceName)
                     {
@@ -1318,6 +1318,47 @@ namespace SuccessStory.Services
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
                 logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
+            }, globalProgressOptions);
+        }
+
+        public void RefreshEstimateTime()
+        {
+            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                $"{PluginName} - {resources.GetString("LOCCommonProcessing")}",
+                true
+            );
+            globalProgressOptions.IsIndeterminate = false;
+
+            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            {
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                var db = Database.Where(x => x.IsManual && x.HaveAchivements);
+                activateGlobalProgress.ProgressMaxValue = (double)db.Count();
+                string CancelText = string.Empty;
+
+                var exophaseAchievements = new ExophaseAchievements();
+                var steamAchievements = new SteamAchievements();
+                bool SteamConfig = steamAchievements.GetSteamConfig();
+
+                foreach (GameAchievements gameAchievements in db)
+                {
+                    if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                    {
+                        CancelText = " canceled";
+                        break;
+                    }
+
+                    Game game = PlayniteApi.Database.Games.Get(gameAchievements.Id);
+                    SetEstimateTimeToUnlock(game, gameAchievements);
+                    AddOrUpdate(gameAchievements);
+                    activateGlobalProgress.CurrentProgressValue++;
+                }
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
             }, globalProgressOptions);
         }
 

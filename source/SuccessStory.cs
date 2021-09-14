@@ -624,6 +624,17 @@ namespace SuccessStory
                         PluginDatabase.RefreshRarety();
                     }
                 });
+
+                // Refresh estimate time data for manual achievements
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCSsRefreshEstimateTimeManual"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.RefreshEstimateTime();
+                    }
+                });
             }
 
             if (PluginDatabase.PluginSettings.Settings.EnableTag)
