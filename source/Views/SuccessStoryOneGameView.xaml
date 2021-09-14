@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:SuccessStory.Views"
              xmlns:controls="clr-namespace:SuccessStory.Controls"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
-             mc:Ignorable="d" Height="700" Width="1080">
-    
+             mc:Ignorable="d" Height="700" Width="1100">
+
     <UserControl.Resources>
         <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
     </UserControl.Resources>
-    
+
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -19,23 +19,56 @@
             <ColumnDefinition Width="400" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="20" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" DockPanel.Dock="Top">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="10" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            
-            <StackPanel Grid.Row="0">
-                <Label Content="{DynamicResource LOCSuccessStoryGraphicTitleDay}" FontSize="16" HorizontalAlignment="Center" />
-            </StackPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <controls:PluginChart Grid.Row="2" IgnoreSettings="True" AxisLimit="16" GameContext="{Binding GameContext}" />
+            <Image Name="PART_ImageCover" Height="250" StretchDirection="Both" Stretch="Uniform"
+                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                   Grid.Column="0" RenderOptions.BitmapScalingMode="Fant" />
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Column="0" Grid.Row="0">
+                    <TextBlock Text="{Binding GameContext.Name, FallbackValue='Game Name'}"
+                               FontSize="{DynamicResource FontSizeLargest}" TextWrapping="Wrap"
+                               Foreground="{DynamicResource TextBrush}" />
+
+                    <StackPanel Name="PART_TimeToUnlockContener" Margin="0,5,0,0"
+                                HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Bottom">
+                        <TextBlock Text="{DynamicResource LOCSsTimeToUnlock}" 
+                                   Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+                    
+                        <TextBlock Name="PART_TimeToUnlock" Margin="20,0,0,0" Text="xx:xx:xx"
+                                   Foreground="{DynamicResource TextBrush}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="77*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <controls:PluginChart Grid.Row="0" IgnoreSettings="True" AxisLimit="16" GameContext="{Binding GameContext}" LabelsRotation="160" Grid.ColumnSpan="2" />
+                </Grid>
+            </Grid>
         </Grid>
 
         <Grid Name="PART_Achievements_List_Contener" Grid.Column="0" Grid.Row="2">
@@ -107,18 +140,18 @@
                         <Label Grid.Column="0" Grid.Row="0" Name="PART_AchCommon" Content="xxxx" HorizontalAlignment="Right" />
                         <Label Grid.Column="0" Grid.Row="2" Name="PART_AchNoCommon" Content="xxxx" HorizontalAlignment="Right" />
                         <Label Grid.Column="0" Grid.Row="4" Name="PART_AchRare" Content="xxxx" HorizontalAlignment="Right" />
-                        
+
                         <Label Grid.Column="1" Grid.Row="0" Content="/" HorizontalAlignment="Center" />
                         <Label Grid.Column="1" Grid.Row="2" Content="/" HorizontalAlignment="Center" />
                         <Label Grid.Column="1" Grid.Row="4" Content="/" HorizontalAlignment="Center" />
-                        
+
                         <Label Grid.Column="2" Grid.Row="0" Name="PART_AchCommonTotal" Content="xxxx" HorizontalAlignment="Right" />
                         <Label Grid.Column="2" Grid.Row="2" Name="PART_AchNoCommonTotal" Content="xx" HorizontalAlignment="Right" />
                         <Label Grid.Column="2" Grid.Row="4" Name="PART_AchRareTotal" Content="xxxx" HorizontalAlignment="Right" />
                     </Grid>
                 </Grid>
             </Grid>
-            
+
             <Label Grid.Row="2" Content="{DynamicResource LOCSuccessStoryUserStats}" FontSize="16" HorizontalAlignment="Center" />
 
             <Grid Name="PART_ScUserStats_Contener" Grid.Row="4">

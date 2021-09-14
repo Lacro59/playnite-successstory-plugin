@@ -7,6 +7,7 @@ using SuccessStory.Views.Interface;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,12 @@ namespace SuccessStory.Views
         {
             InitializeComponent();
 
+            // Cover
+            if (!GameContext.CoverImage.IsNullOrEmpty())
+            {
+                string CoverImage = PluginDatabase.PlayniteApi.Database.GetFullFilePath(GameContext.CoverImage);
+                PART_ImageCover.Source = BitmapExtensions.BitmapFromFile(CoverImage);
+            }
 
             GameAchievements gameAchievements = PluginDatabase.Get(PluginDatabase.GameContext, true);
             if (gameAchievements.SourcesLink != null)
@@ -57,6 +64,15 @@ namespace SuccessStory.Views
                 var AchNoCommon = gameAchievements.NoCommon;
                 var AchRare = gameAchievements.Rare;
 
+                if (gameAchievements.EstimateTime == null || gameAchievements.EstimateTime.EstimateTimeMin == 0)
+                {
+                    PART_TimeToUnlockContener.Visibility = Visibility.Collapsed;
+                }
+                else
+                { 
+                    PART_TimeToUnlock.Text = gameAchievements.EstimateTime.EstimateTime;
+                }
+
                 PART_AchCommon.Content = AchCommon.UnLocked;
                 PART_AchNoCommon.Content = AchNoCommon.UnLocked;
                 PART_AchRare.Content = AchRare.UnLocked;
@@ -65,7 +81,6 @@ namespace SuccessStory.Views
                 PART_AchNoCommonTotal.Content = AchNoCommon.Total;
                 PART_AchRareTotal.Content = AchRare.Total;
             }
-
 
             this.DataContext = new
             {

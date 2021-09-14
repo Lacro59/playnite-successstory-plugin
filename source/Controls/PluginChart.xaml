@@ -28,7 +28,7 @@
             </lvc:CartesianChart.DataTooltip>
 
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis ShowLabels="{Binding EnableAxisLabel}" Labels="{Binding Labels}">
+                <lvc:Axis ShowLabels="{Binding EnableAxisLabel}" Labels="{Binding Labels}" LabelsRotation="{Binding LabelsRotation}">
                     <lvc:Axis.Separator>
                         <lvc:Separator Step="1" />
                     </lvc:Axis.Separator>

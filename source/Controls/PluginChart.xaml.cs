@@ -74,6 +74,19 @@ namespace SuccessStory.Controls
             new FrameworkPropertyMetadata(true, ControlsPropertyChangedCallback));
 
 
+        public int LabelsRotation
+        {
+            get { return (int)GetValue(LabelsRotationProperty); }
+            set { SetValue(LabelsRotationProperty, value); }
+        }
+
+        public static readonly DependencyProperty LabelsRotationProperty = DependencyProperty.Register(
+            nameof(LabelsRotation),
+            typeof(int),
+            typeof(PluginChart),
+            new FrameworkPropertyMetadata(0, ControlsPropertyChangedCallback));
+
+
         public static readonly DependencyProperty AxisLimitProperty;
         public int AxisLimit { get; set; } = 0;
         #endregion
@@ -136,7 +149,9 @@ namespace SuccessStory.Controls
                 CountAbscissa = CountAbscissa,
 
                 Series = null,
-                Labels = null
+                Labels = null,
+
+                LabelsRotation = LabelsRotation
             };
         }
 
@@ -187,5 +202,7 @@ namespace SuccessStory.Controls
 
         public SeriesCollection Series { get; set; }
         public IList<string> Labels { get; set; }
+
+        public int LabelsRotation { get; set; }
     }
 }

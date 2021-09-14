@@ -105,6 +105,8 @@ namespace SuccessStory
                         {
                             ViewExtension = new SuccessStoryOneGameView(PluginDatabase.GameContext);
                         }
+
+                        windowOptions.ShowMaximizeButton = false;
                     }
                     else
                     {
