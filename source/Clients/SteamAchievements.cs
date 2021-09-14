@@ -255,6 +255,14 @@ namespace SuccessStory.Clients
                                 DateUnlocked = temp.Items[i].DateUnlocked
                             });
                         }
+
+                        SteamApi steamApi = new SteamApi();
+                        Result.SourcesLink = new SourceLink
+                        {
+                            GameName = steamApi.GetGameName(AppId),
+                            Name = "Steam",
+                            Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
+                        };
                     }
                 }
             }
