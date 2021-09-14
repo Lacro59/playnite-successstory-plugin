@@ -7,6 +7,9 @@
     <sys:String x:Key="LOCSuccessStoryManualAchievements">Ręczne osiągnięcia</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
+
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarety for manual achievements</sys:String>
+    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Refresh estimate time for manual achievements</sys:String>
     
     <!-- MainView -->
 
@@ -142,7 +145,9 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <sys:String x:Key="LOCSuccessStoryAchStats">Achievements statistics</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Statystyki użytkownika</sys:String>
-    
+
+    <sys:String x:Key="LOCSsTimeToUnlock">Time to full unlock</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
