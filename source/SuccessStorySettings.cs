@@ -279,6 +279,30 @@ namespace SuccessStory
             }
         }
 
+        private int _Percent { get; set; } = 0;
+        [DontSerialize]
+        public int Percent
+        {
+            get => _Percent;
+            set
+            {
+                _Percent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _EstimateTimeToUnlock { get; set; } = string.Empty;
+        [DontSerialize]
+        public string EstimateTimeToUnlock
+        {
+            get => _EstimateTimeToUnlock;
+            set
+            {
+                _EstimateTimeToUnlock = value;
+                OnPropertyChanged();
+            }
+        }
+
         private List<Achievements> _ListAchievements { get; set; } = new List<Achievements>();
         [DontSerialize]
         public List<Achievements> ListAchievements

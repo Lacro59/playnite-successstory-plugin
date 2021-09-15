@@ -1211,6 +1211,8 @@ namespace SuccessStory.Services
             PluginSettings.Settings.Unlocked = gameAchievements.Unlocked;
             PluginSettings.Settings.Locked = gameAchievements.Locked;
             PluginSettings.Settings.Total = gameAchievements.Total;
+            PluginSettings.Settings.Percent = gameAchievements.Progression;
+            PluginSettings.Settings.EstimateTimeToUnlock = gameAchievements.EstimateTime.EstimateTime;
             PluginSettings.Settings.ListAchievements = gameAchievements.Items;
         }
 
