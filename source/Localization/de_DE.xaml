@@ -146,7 +146,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryAchStats">Achievements statistics</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Benutzerstatistik</sys:String>
 
-    <sys:String x:Key="LOCSsTimeToUnlock">Time to full unlock</sys:String>
+    <sys:String x:Key="LOCSsTimeToUnlock">Zeit bis zum vollständigen Entsperren</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
