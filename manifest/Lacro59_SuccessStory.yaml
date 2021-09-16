@@ -14,3 +14,14 @@ Packages:
       - Added basic Starcraft II achievements
       - UI tweaks
       - Added estimate time to unlock all achievements
+  - Version: 2.1
+    RequiredApiVersion: 6.0.0
+    ReleaseDate: 2021-09-16
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.1/playnite-successstory-plugin_2_1.pext
+    Changelog:
+      - Playnite 9 beta version (not compatible with Playnite 8)
+	  - Added new variables for custom theme (see wiki)
+	  - Added new menu options for manual achievements
+	  - UI tweaks
+	  - Fixed many bugs
+      - Improve performances
