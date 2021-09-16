@@ -20,8 +20,8 @@ Packages:
     PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.1/playnite-successstory-plugin_2_1.pext
     Changelog:
       - Playnite 9 beta version (not compatible with Playnite 8)
-	  - Added new variables for custom theme (see wiki)
-	  - Added new menu options for manual achievements
-	  - UI tweaks
-	  - Fixed many bugs
+      - Added new variables for custom theme (see wiki)
+      - Added new menu options for manual achievements
+      - UI tweaks
+      - Fixed many bugs
       - Improve performances
