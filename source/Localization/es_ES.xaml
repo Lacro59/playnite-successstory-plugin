@@ -6,7 +6,10 @@
 
     <sys:String x:Key="LOCSuccessStoryManualAchievements">Logros Manuales</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Trofeo oculto</sys:String>
+
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Actualizar rareza para logros manuales</sys:String>
+    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Actualizar el tiempo estimado de los logros manuales</sys:String>
     
     <!-- MainView -->
 
@@ -17,16 +20,16 @@
     <sys:String x:Key="LOCSuccessStoryViewGames">Ver los logros de juegos</sys:String>
     <sys:String x:Key="LOCSuccessStoryViewGame">Ver los logros del juego</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnored">Ignored the game</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnored">Ignorado el juego</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotIgnored">No se ha ignorado el juego</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">El perfil de Steam no es público</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam está activado en SuccessStory pero la extensión de la biblioteca ha sido deshabilitada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam no se ha configurado correctamente en la configuración</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG está activado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">El usuario de GOG no está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN está habilitado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">El usuario de PSN no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin está habilitado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">El usuario de Origin no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox está activado en SuccessStory pero la extensión de la biblioteca ha sido deshabilitada en Playnite</sys:String>
@@ -35,8 +38,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 no se ha configurado correctamente en la configuración</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net está habilitado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">El usuario de Battle.net no está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">El usuario de Overwatch de Battle.net no está autenticado</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">El usuario de Battle.net StarCraft II no está autenticado</sys:String>
 
     <!-- SuccessStoreGameSelection -->
 
@@ -47,13 +50,15 @@
 
     <sys:String x:Key="LOCSuccessStoryProgressBar">Procesando, Por Favor Espere...</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnoredGames">Ignored games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnoredGames">Juegos ignorados</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (sólo para tener logros localizados)</sys:String>
 
     <sys:String x:Key="LOSuccessStoryAddTagDescription">Añadir una etiqueta a los juegos con el tiempo para desbloquear completamente</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Mostrar descripción en globo de ayuda</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryEnablePSN">Habilitar logros de PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar logros de Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar logros de GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOrigin">Habilitar los logros de Origin</sys:String>
@@ -62,16 +67,16 @@
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Habilitar logros de RPCS3</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Habilitar logros manuales</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Habilitar Logros de Overwatch</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Enable StarCraft II achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Habilitar logros de StarCraft II</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Desactivar el uso de la API (Usar cuando no tienes una clave API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Carpeta de usuario</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Show separate view for RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Mostrar vista separada para los logros de RetroAchievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryDatabase">Base de datos</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Descargar datos de logros</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshData">Refresh data</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshData">Actualizar datos</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Descargar datos faltantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Juegos recientes con datos faltantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Juegos recientes</sys:String>
@@ -132,13 +137,20 @@
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Restablece y descarga los logros de los juegos instalados. (Usar si hay algún problema con los logros)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Restablece y descarga los logros de todos los juegos. (Usar si hay algún problema con los logros)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnableImageCache">Enable caching achievements images *</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Non-blocking process which can increase memory usage a bit when caching only.
-Especially useful for Xbox achievements with their larges images which are reduced when caching.</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableImageCache">Habilitar cach'e de imágenes de logros</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Proceso de no bloqueo que puede aumentar el uso de la memoria un poco cuando solo almacena en caché.
+Especialmente útil para los logros de Xbox con sus imágenes grandes que se reducen cuando el almacenan en caché.</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryAchStats">Estadísticas de Logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Estadísticas de usuario</sys:String>
+
+    <sys:String x:Key="LOCSsTimeToUnlock">Tiempo para desbloquear completamente</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryCommon">Común</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">No común</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare">Raro</sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -148,6 +160,9 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGlobalProgression">Progresión global de logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Progresión de logros de Juegos lanzados</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Información</sys:String>
+
+
+    <sys:String x:Key="LOCSuccessStoryRarety">Rareza</sys:String>
 
     <!-- ListViewGames -->
 
@@ -159,7 +174,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Logros desbloqueados por fuente</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Logros desbloqueados por día</sys:String>
 
-    <!-- ListViewGames -->
+    <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Partida rápida</sys:String>
     <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Juego competitivo</sys:String>
