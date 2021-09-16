@@ -35,7 +35,7 @@ namespace SuccessStory
         public bool EnableIntegrationButtonHeader { get; set; } = false;
 
 
-        private bool _EnableIntegrationViewItem { get; set; } = false;
+        private bool _EnableIntegrationViewItem { get; set; } = true;
         public bool EnableIntegrationViewItem
         {
             get => _EnableIntegrationViewItem;
@@ -49,7 +49,7 @@ namespace SuccessStory
         public bool IntegrationViewItemWithProgressBar { get; set; } = false;
 
 
-        private bool _EnableIntegrationButton { get; set; } = false;
+        private bool _EnableIntegrationButton { get; set; } = true;
         public bool EnableIntegrationButton
         {
             get => _EnableIntegrationButton;
@@ -72,7 +72,7 @@ namespace SuccessStory
         }
 
 
-        private bool _EnableIntegrationProgressBar { get; set; } = false;
+        private bool _EnableIntegrationProgressBar { get; set; } = true;
         public bool EnableIntegrationProgressBar
         {
             get => _EnableIntegrationProgressBar;
@@ -87,7 +87,7 @@ namespace SuccessStory
         public bool EnableIntegrationProgressBarPercent { get; set; } = false;
 
 
-        private bool _EnableIntegrationCompact { get; set; } = false;
+        private bool _EnableIntegrationCompact { get; set; } = true;
         public bool EnableIntegrationCompact
         {
             get => _EnableIntegrationCompact;
@@ -102,7 +102,7 @@ namespace SuccessStory
         public bool IntegrationCompactShowDescription { get; set; } = true;
 
 
-        private bool _EnableIntegrationCompactLocked { get; set; } = false;
+        private bool _EnableIntegrationCompactLocked { get; set; } = true;
         public bool EnableIntegrationCompactLocked
         {
             get => _EnableIntegrationCompactLocked;
@@ -113,7 +113,7 @@ namespace SuccessStory
             }
         }
 
-        private bool _EnableIntegrationCompactUnlocked { get; set; } = false;
+        private bool _EnableIntegrationCompactUnlocked { get; set; } = true;
         public bool EnableIntegrationCompactUnlocked
         {
             get => _EnableIntegrationCompactUnlocked;
@@ -129,7 +129,7 @@ namespace SuccessStory
         public bool IntegrationCompactPartialShowDescription { get; set; } = true;
 
 
-        private bool _EnableIntegrationChart { get; set; } = false;
+        private bool _EnableIntegrationChart { get; set; } = true;
         public bool EnableIntegrationChart
         {
             get => _EnableIntegrationChart;
@@ -146,7 +146,7 @@ namespace SuccessStory
         public int IntegrationChartCountAbscissa { get; set; } = 11;
 
 
-        private bool _EnableIntegrationUserStats { get; set; } = false;
+        private bool _EnableIntegrationUserStats { get; set; } = true;
         public bool EnableIntegrationUserStats
         {
             get => _EnableIntegrationUserStats;
@@ -160,7 +160,7 @@ namespace SuccessStory
         public double IntegrationUserStatsHeight { get; set; } = 120;
 
 
-        private bool _EnableIntegrationList { get; set; } = false;
+        private bool _EnableIntegrationList { get; set; } = true;
         public bool EnableIntegrationList
         {
             get => _EnableIntegrationList;
