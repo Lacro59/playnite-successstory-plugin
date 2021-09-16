@@ -631,7 +631,9 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
-                    <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" IsChecked="{Binding Settings.EnableImageCache}" ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}">
+                    <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" IsChecked="{Binding Settings.EnableImageCache}" ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}"
+                              Command="{x:Static pcmd:Commands.RestartRequired}" 
+                              CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
                         <Label Content="{DynamicResource LOCSuccessStoryEnableImageCache}" />
                     </CheckBox>
 
