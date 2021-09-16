@@ -1205,6 +1205,12 @@ namespace SuccessStory.Services
                 return;
             }
 
+            string EstimateTimeToUnlock = string.Empty;
+            if ((bool)!gameAchievements.EstimateTime?.EstimateTime.IsNullOrEmpty())
+            {
+                EstimateTimeToUnlock = gameAchievements.EstimateTime.EstimateTime;
+            }
+
             PluginSettings.Settings.HasData = gameAchievements.HasData;
 
             PluginSettings.Settings.Is100Percent = gameAchievements.Is100Percent;
@@ -1212,7 +1218,7 @@ namespace SuccessStory.Services
             PluginSettings.Settings.Locked = gameAchievements.Locked;
             PluginSettings.Settings.Total = gameAchievements.Total;
             PluginSettings.Settings.Percent = gameAchievements.Progression;
-            PluginSettings.Settings.EstimateTimeToUnlock = gameAchievements.EstimateTime.EstimateTime;
+            PluginSettings.Settings.EstimateTimeToUnlock = EstimateTimeToUnlock;
             PluginSettings.Settings.ListAchievements = gameAchievements.Items;
         }
 
