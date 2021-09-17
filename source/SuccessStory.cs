@@ -319,8 +319,10 @@ namespace SuccessStory
         {
             Game GameMenu = args.Games.First();
             List<Guid> Ids = args.Games.Select(x => x.Id).ToList();
+
+            // TODO: for multiple games, either check if any of them could have achievements, or just assume so
             var achievementSource = SuccessStoryDatabase.GetAchievementSource(PluginSettings.Settings, GameMenu);
-            bool GameCouldHaveAchievements = SuccessStoryDatabase.GameCouldHaveAchievements(PluginSettings.Settings, GameMenu);
+            bool GameCouldHaveAchievements = achievementSource != SuccessStoryDatabase.AchievementSource.None;
             GameAchievements gameAchievements = PluginDatabase.Get(GameMenu, true);
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
@@ -332,6 +334,7 @@ namespace SuccessStory
                     if (!PluginSettings.Settings.EnableOneGameView || (PluginSettings.Settings.EnableOneGameView && gameAchievements.HasData))
                     {
                         // Show list achievements for the selected game
+                        // TODO: disable when selecting multiple games?
                         gameMenuItems.Add(new GameMenuItem
                         {
                             MenuSection = resources.GetString("LOCSuccessStory"),
@@ -420,7 +423,6 @@ namespace SuccessStory
                     }
                 }
 
-                //if (PluginSettings.Settings.EnableManual && IsAddOrShowManual)
                 if (PluginSettings.Settings.EnableManual)
                 {
                     if (!gameAchievements.HasData)

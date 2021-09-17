@@ -154,9 +154,6 @@ namespace SuccessStory.Services
             Game game = PlayniteApi.Database.Games.Get(Id);
             GameAchievements gameAchievements = GetDefault(game);
 
-            Guid GameId = game.Id;
-            Guid GameSourceId = game.SourceId;
-            //string GameSourceName = PlayniteTools.GetSourceName(PlayniteApi, game);
             var achievementSource = GetAchievementSource(PluginSettings.Settings, game);
 
             // Generate database only this source
@@ -646,11 +643,6 @@ namespace SuccessStory.Services
             }
 
             return new AchievementsGraphicsDataCount { Labels = GraphicsAchievementsLabels, Series = SourceAchievementsSeries };
-        }
-
-        public static bool GameCouldHaveAchievements(SuccessStorySettings settings, Game game)
-        {
-            return GetAchievementSource(settings, game) != AchievementSource.None;
         }
 
         public enum AchievementSource
