@@ -7,6 +7,9 @@
     <sys:String x:Key="LOCSuccessStoryManualAchievements">Manual Achievements</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
+
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarety for manual achievements</sys:String>
+    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Refresh estimate time for manual achievements</sys:String>
     
     <!-- MainView -->
 
@@ -52,6 +55,8 @@
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
 
     <sys:String x:Key="LOSuccessStoryAddTagDescription">Add a tag to games with the time to full unlock</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Show description in tooltip</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Steam Erfolge aktivieren</sys:String>
@@ -138,7 +143,14 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryAchStats">Achievements statistics</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Benutzerstatistik</sys:String>
+
+    <sys:String x:Key="LOCSsTimeToUnlock">Zeit bis zum vollständigen Entsperren</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -148,6 +160,9 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGlobalProgression">Globalen Fortschrittsbalken der Erfolge anzeigen</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Erfolgsfortschritt begonnener Spiele</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Information</sys:String>
+
+
+    <sys:String x:Key="LOCSuccessStoryRarety">Rarety</sys:String>
 
     <!-- ListViewGames -->
 
@@ -159,7 +174,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Zeige entsperrte Erfolge, sortiert nach Quelle</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Zeige entsperrte Erfolge, sortiert nach Tag</sys:String>
 
-    <!-- ListViewGames -->
+    <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Quick Play</sys:String>
     <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Competitive Play</sys:String>
