@@ -14,6 +14,7 @@ using System.Security.Cryptography;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using CommonPluginsShared.Models;
+using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
@@ -127,7 +128,7 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
-            return (User != string.Empty && Key != string.Empty);
+            return User != string.Empty && Key != string.Empty;
         }
 
         public override bool IsConnected()
@@ -712,6 +713,27 @@ namespace SuccessStory.Clients
             }
 
             return Achievements;
+        }
+
+        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+        {
+            if (!IsConfigured())
+            {
+                logger.Warn("Bad RetroAchievements configuration");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-RetroAchievements-NoConfig",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+            return true;
+        }
+
+        public override bool EnabledInSettings(SuccessStorySettings settings)
+        {
+            return settings.EnableRetroAchievements;
         }
     }
 

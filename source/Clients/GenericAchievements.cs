@@ -34,5 +34,22 @@ namespace SuccessStory.Clients
         public abstract bool IsConnected();
 
         public abstract bool IsConfigured();
+
+        /// <summary>
+        /// Override to validate service-specific config and display error messages to the user
+        /// </summary>
+        /// <param name="playniteAPI"></param>
+        /// <param name="plugin"></param>
+        /// <returns>false when there are errors, true if everything's good</returns>
+        public abstract bool ValidateConfiguration(IPlayniteAPI playniteAPI, Playnite.SDK.Plugins.Plugin plugin, SuccessStorySettings settings);
+
+        protected bool? CachedConfigurationValidationResult { get; set; }
+
+        public abstract bool EnabledInSettings(SuccessStorySettings settings);
+
+        public virtual void ResetCachedConfigurationValidationResult()
+        {
+            CachedConfigurationValidationResult = null;
+        }
     }
 }

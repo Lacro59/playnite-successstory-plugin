@@ -12,6 +12,7 @@ using Playnite.SDK.Models;
 using Playnite.SDK.Data;
 using SuccessStory.Models;
 using CommonPluginsShared.Models;
+using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
@@ -446,6 +447,16 @@ namespace SuccessStory.Clients
         public override bool IsConfigured()
         {
             throw new NotImplementedException();
+        }
+
+        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool EnabledInSettings(SuccessStorySettings settings)
+        {
+            return true; //not sure about this one
         }
     }
 }

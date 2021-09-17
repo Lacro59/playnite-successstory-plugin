@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CommonPluginsShared.Models;
+using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
@@ -167,6 +168,45 @@ namespace SuccessStory.Clients
         public override bool IsConnected()
         {
             return gogAPI.GetIsUserLoggedIn();
+        }
+
+        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+        {
+            if (PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary"))
+            {
+                logger.Warn("GOG is enable then disabled");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-GOG-disabled",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsGogDisabled")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+            else
+            {
+                if (CachedConfigurationValidationResult == null)
+                {
+                    CachedConfigurationValidationResult = IsConnected();
+                }
+
+                if (!(bool)CachedConfigurationValidationResult)
+                {
+                    logger.Warn("Gog user is not authenticate");
+                    playniteAPI.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-Gog-NoAuthenticated",
+                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate")}",
+                        NotificationType.Error,
+                        () => plugin.OpenSettingsView()
+                    ));
+                    return false;
+                }
+            }
+            return true;
+        }
+        public override bool EnabledInSettings(SuccessStorySettings settings)
+        {
+            return settings.EnableGog;
         }
     }
 }

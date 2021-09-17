@@ -21,6 +21,8 @@ using System.Text.RegularExpressions;
 using AngleSharp.Dom;
 using CommonPluginsStores;
 using CommonPluginsShared.Models;
+using Playnite.SDK.Plugins;
+using PlayniteTools = CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -93,7 +95,7 @@ namespace SuccessStory.Clients
 
                     bool IsOK = GetByWeb ? GetByWeb : Web.DownloadFileImageTest(AllAchievements[0].UrlLocked).GetAwaiter().GetResult();
                     if (IsOK)
-                    {                        
+                    {
                         AllAchievements = DataCompleted.Item1;
                         AllStats = DataCompleted.Item2;
 
@@ -1097,6 +1099,61 @@ namespace SuccessStory.Clients
             }
 
             return AllAchievements;
+        }
+
+        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+        {
+            if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary"))
+            {
+                logger.Warn("Steam is enable then disabled");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-Steam-disabled",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamDisabled")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+
+            SteamAchievements steamAchievements = new SteamAchievements();
+            if (!steamAchievements.IsConfigured())
+            {
+                logger.Warn("Bad Steam configuration");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-Steam-NoConfig",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+            if (!settings.SteamIsPrivate && !steamAchievements.CheckIsPublic())
+            {
+                logger.Warn("Bad Steam configuration");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-Steam-NoConfig",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+            return true;
+        }
+
+        public override bool EnabledInSettings(SuccessStorySettings settings)
+        {
+            if (IsLocal)
+                return settings.EnableLocal;
+            else
+                return settings.EnableSteam;
+        }
+
+        public static SteamAchievements GetLocalSteamAchievementsProvider()
+        {
+            var provider = new SteamAchievements();
+            provider.SetLocal();
+            return provider;
         }
     }
 }

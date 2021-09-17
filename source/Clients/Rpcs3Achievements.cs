@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
@@ -204,6 +205,27 @@ namespace SuccessStory.Clients
             }
 
             return Path.Combine("rpcs3", NameFolder, TrophyFile);
+        }
+
+        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+        {
+            if (!IsConfigured())
+            {
+                logger.Warn("Bad RPCS3 configuration");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-Rpcs3-NoConfig",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+            return true;
+        }
+
+        public override bool EnabledInSettings(SuccessStorySettings settings)
+        {
+            return settings.EnableRpcs3Achievements;
         }
     }
 }
