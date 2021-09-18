@@ -724,13 +724,14 @@ namespace SuccessStory.Clients
                             foreach (KeyValue AchievementsData in PlayerAchievementsData.Children)
                             {
                                 int.TryParse(AchievementsData.Children.Find(x => x.Name == "unlocktime").Value, out int unlocktime);
+                                bool achieved = int.Parse(AchievementsData.Children.Find(x => x.Name == "achieved").Value) == 1;
 
                                 AllAchievements.Add(new Achievements
                                 {
                                     ApiName = AchievementsData.Children.Find(x => x.Name == "apiname").Value,
                                     Name = AchievementsData.Children.Find(x => x.Name == "name").Value,
                                     Description = AchievementsData.Children.Find(x => x.Name == "description").Value,
-                                    DateUnlocked = (unlocktime == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unlocktime)
+                                    DateUnlocked = achieved ? new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unlocktime) : default(DateTime)
                                 });
                             }
                         }
