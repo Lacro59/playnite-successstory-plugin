@@ -35,12 +35,14 @@ namespace SuccessStory.Models
         public string ParentCategory { get; set; } = string.Empty;
 
         [DontSerialize]
-        public string CacheUnlocked {
+        public string CacheUnlocked
+        {
             get
             {
                 string ImageFileName = string.Empty;
 
-                if (!UrlUnlocked.IsNullOrEmpty()) {
+                if (!UrlUnlocked.IsNullOrEmpty())
+                {
                     int maxLenght = (Name.Replace(" ", "").Length >= 10) ? 10 : Name.Replace(" ", "").Length;
 
                     ImageFileName = GetNameFromUrl(UrlUnlocked);
@@ -128,17 +130,11 @@ namespace SuccessStory.Models
         /// Get the icon according to the achievement state
         /// </summary>
         [DontSerialize]
-        public string Icon {
+        public string Icon
+        {
             get
             {
-                if (DateUnlocked == default(DateTime) || DateUnlocked == null)
-                {
-                    return ImageLocked;
-                }
-                else
-                {
-                    return ImageUnlocked;
-                }
+                return IsUnlock ? ImageUnlocked : ImageLocked;
             }
         }
 
@@ -283,7 +279,7 @@ namespace SuccessStory.Models
             }
 
             if (url.IndexOf("steamcommunity") > -1)
-            {                
+            {
                 NameFromUrl = "steam_" + ApiName;
                 if (urlSplited.Count >= 8)
                 {
@@ -300,22 +296,22 @@ namespace SuccessStory.Models
             {
                 NameFromUrl = "ea_" + Name.Replace(" ", "");
             }
-            
+
             if (url.IndexOf("retroachievements") > -1)
             {
                 NameFromUrl = "ra_" + Name.Replace(" ", "");
             }
-            
+
             if (url.IndexOf("exophase") > -1)
             {
                 NameFromUrl = "exophase_" + Name.Replace(" ", "");
             }
-            
+
             if (url.IndexOf("overwatch") > -1)
             {
                 NameFromUrl = "overwatch_" + Name.Replace(" ", "");
             }
-            
+
             if (url.IndexOf("starcraft2") > -1)
             {
                 NameFromUrl = "starcraft2_" + Name.Replace(" ", "");
