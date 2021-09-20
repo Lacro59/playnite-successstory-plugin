@@ -22,16 +22,14 @@ namespace SuccessStory.Clients
 {
     class XboxAchievements : GenericAchievements
     {
-        private readonly string urlAchievements = @"https://achievements.xboxlive.com/users/xuid({0})/achievements";
+        private static readonly string AchievementsBaseUrl = @"https://achievements.xboxlive.com/users/xuid({0})/achievements";
+        private static readonly string TitleAchievementsBaseUrl = @"https://achievements.xboxlive.com/users/xuid({0})/titleachievements";
 
         private readonly string liveTokensPath;
         private readonly string xstsLoginTokesPath;
 
         private bool HasTestLogged = false;
         private bool loggedIn = false;
-
-        private string titleId = string.Empty;
-
 
         public XboxAchievements() : base()
         {
@@ -47,29 +45,11 @@ namespace SuccessStory.Clients
             List<Achievements> AllAchievements = new List<Achievements>();
             GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
             Result.Items = AllAchievements;
-
-
-            List<XboxAchievement> ListAchievements = new List<XboxAchievement>();
             try
             {
-                ListAchievements = GetXboxAchievements(game.GameId, game.Name).GetAwaiter().GetResult();
+                var authData = GetTokenForRequest().GetAwaiter().GetResult();
 
-                Common.LogDebug(true, Serialization.ToJson(ListAchievements));
-
-                foreach (XboxAchievement xboxAchievement in ListAchievements)
-                {
-                    AllAchievements.Add(new Achievements
-                    {
-                        ApiName = string.Empty,
-                        Name = xboxAchievement.name,
-                        Description = (xboxAchievement.progression.timeUnlocked == default(DateTime)) ? xboxAchievement.lockedDescription : xboxAchievement.description,
-                        IsHidden = xboxAchievement.isSecret,
-                        Percent = 100,
-                        DateUnlocked = xboxAchievement.progression.timeUnlocked,
-                        UrlLocked = string.Empty,
-                        UrlUnlocked = xboxAchievement.mediaAssets[0].url
-                    });
-                }
+                AllAchievements = GetXboxAchievements(game, authData).GetAwaiter().GetResult();
 
                 Result.Name = game.Name;
                 Result.HaveAchivements = AllAchievements.HasItems();
@@ -88,7 +68,7 @@ namespace SuccessStory.Clients
                     {
                         GameName = game.Name,
                         Name = "Xbox",
-                        Url = $"https://account.xbox.com/fr-fr/GameInfoHub?titleid={titleId}&selectedTab=achievementsTab&activetab=main:mainTab2"
+                        Url = $"https://account.xbox.com/en-US/GameInfoHub?titleid={GetTitleId(game)}&selectedTab=achievementsTab&activetab=main:mainTab2"
                     };
                 }
             }
@@ -100,10 +80,29 @@ namespace SuccessStory.Clients
             return Result;
         }
 
-        private async Task<List<XboxAchievement>> GetXboxAchievements(string gameId, string name)
+        private string GetTitleId(Game game)
         {
-            Common.LogDebug(true, $"GetXboxAchievements() - name: {name} - gameId: {gameId}");
+            string titleId = string.Empty;
+            if (game.GameId?.StartsWith("CONSOLE_") == true)
+            {
+                var consoleGameIdParts = game.GameId.Split('_');
+                titleId = consoleGameIdParts[1];
 
+                Common.LogDebug(true, $"XboxAchievements - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
+            }
+            else if (!game.GameId.IsNullOrEmpty())
+            {
+                var libTitle = GetTitleInfo(game.GameId).Result;
+
+                Common.LogDebug(true, $"XboxAchievements - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
+
+                titleId = libTitle.titleId;
+            }
+            return titleId;
+        }
+
+        private async Task<AuthorizationData> GetTokenForRequest()
+        {
             if (!File.Exists(xstsLoginTokesPath))
             {
                 logger.Warn("XboxAchievements - User is not authenticated - File not exist");
@@ -113,7 +112,7 @@ namespace SuccessStory.Clients
                     NotificationType.Error
                 ));
 
-                return new List<XboxAchievement>();
+                return null;
             }
             else
             {
@@ -121,7 +120,7 @@ namespace SuccessStory.Clients
                 {
                     loggedIn = await GetIsUserLoggedIn();
 
-                    if (!(bool)loggedIn && File.Exists(liveTokensPath))
+                    if (!loggedIn && File.Exists(liveTokensPath))
                     {
                         await RefreshTokens();
                         loggedIn = await GetIsUserLoggedIn();
@@ -138,25 +137,8 @@ namespace SuccessStory.Clients
                         NotificationType.Error
                     ));
 
-                    return new List<XboxAchievement>();
+                    return null;
                 }
-            }
-
-            titleId = string.Empty;
-            if (gameId?.StartsWith("CONSOLE_") == true)
-            {
-                var consoleGameIdParts = gameId.Split('_');
-                titleId = consoleGameIdParts[1];
-
-                Common.LogDebug(true, $"XboxAchievements - name: {name} - gameId: {gameId} - titleId: {titleId}");
-            }
-            else if (!gameId.IsNullOrEmpty())
-            {
-                var libTitle = GetTitleInfo(gameId).Result;
-
-                Common.LogDebug(true, $"XboxAchievements - name: {name} - gameId: {gameId} - titleId: {titleId}");
-
-                titleId = libTitle.titleId;
             }
 
             var tokens = Serialization.FromJson<AuthorizationData>(
@@ -165,19 +147,17 @@ namespace SuccessStory.Clients
                             Encoding.UTF8,
                             WindowsIdentity.GetCurrent().User.Value));
 
-            string url = string.Format(urlAchievements + $"?titleId={titleId}&maxItems=1000", tokens.DisplayClaims.xui[0].xid);
-            if (titleId.IsNullOrEmpty())
-            {
-                url = string.Format(urlAchievements + $"?maxItems=10000", tokens.DisplayClaims.xui[0].xid);
-                logger.Warn($"XboxAchievements - Bad request");
-            }
+            return tokens;
+        }
 
+        private async Task<TContent> GetSerializedContentFromUrl<TContent>(string url, AuthorizationData authData, string contractVersion) where TContent : class
+        {
             Common.LogDebug(true, $"XboxAchievements - url: {url}");
 
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
-                SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
+                SetAuthenticationHeaders(client.DefaultRequestHeaders, authData, contractVersion);
                 var response = client.GetAsync(url).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -200,28 +180,138 @@ namespace SuccessStory.Clients
                         ));
                     }
 
-                    return new List<XboxAchievement>();
+                    return null;
                 }
 
                 string cont = await response.Content.ReadAsStringAsync();
-                string contConvert = Serialization.ToJson(Serialization.FromJson<dynamic>(cont)["achievements"]);
+                Common.LogDebug(true, cont);
 
-                var ListAchievements = Serialization.FromJson<List<XboxAchievement>>(contConvert);
-                if (titleId.IsNullOrEmpty())
-                {
-                    ListAchievements = ListAchievements.Where(x => x.titleAssociations.First().name.ToLower() == name.ToLower()).ToList();
-
-                    Common.LogDebug(true, $"Not find with {gameId} for {name} - {ListAchievements.Count}");
-                }
-                else
-                {
-                    Common.LogDebug(true, $"Find with {titleId} & {gameId} for {name} - {ListAchievements.Count}");
-                }
-
-                return ListAchievements;
+                return Serialization.FromJson<TContent>(cont);
             }
         }
 
+        private async Task<List<Achievements>> GetXboxAchievements(Game game, AuthorizationData authorizationData)
+        {
+            var getAchievementMethods = new List<Func<Game, AuthorizationData, Task<List<Achievements>>>> {
+                GetXboxOneAchievements,
+                GetXbox360Achievements
+            };
+
+            if (game.Platforms.Any(p => p.Name.Contains("360")))
+                getAchievementMethods.Reverse();
+
+            foreach (var getAchievementsMethod in getAchievementMethods)
+            {
+                var result = await getAchievementsMethod.Invoke(game, authorizationData);
+                if (result != null && result.Any())
+                    return result;
+            }
+            return null;
+        }
+
+        private async Task<List<Achievements>> GetXboxOneAchievements(Game game, AuthorizationData authorizationData)
+        {
+            if (authorizationData is null)
+                throw new ArgumentNullException(nameof(authorizationData));
+
+            string xuid = authorizationData.DisplayClaims.xui[0].xid;
+
+            Common.LogDebug(true, $"GetXboxAchievements() - name: {game.Name} - gameId: {game.GameId}");
+
+            string titleId = GetTitleId(game);
+
+            string url = string.Format(AchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
+            if (titleId.IsNullOrEmpty())
+            {
+                url = string.Format(AchievementsBaseUrl, xuid) + "?maxItems=10000";
+                logger.Warn($"XboxAchievements - Bad request");
+            }
+
+            var response = await GetSerializedContentFromUrl<XboxOneAchievementResponse>(url, authorizationData, "2");
+
+            List<XboxOneAchievement> relevantAchievements;
+            if (titleId.IsNullOrEmpty())
+            {
+                relevantAchievements = response.achievements.Where(x => x.titleAssociations.First().name.ToLower() == game.Name.ToLower()).ToList();
+                Common.LogDebug(true, $"Not find with {game.GameId} for {game.Name} - {relevantAchievements.Count}");
+            }
+            else
+            {
+                relevantAchievements = response.achievements;
+                Common.LogDebug(true, $"Find with {titleId} & {game.GameId} for {game.Name} - {relevantAchievements.Count}");
+            }
+            var achievements = relevantAchievements.Select(ConvertToAchievement).ToList();
+
+            return achievements;
+        }
+
+        private async Task<List<Achievements>> GetXbox360Achievements(Game game, AuthorizationData authorizationData)
+        {
+            if (authorizationData is null)
+                throw new ArgumentNullException(nameof(authorizationData));
+
+            string xuid = authorizationData.DisplayClaims.xui[0].xid;
+
+            Common.LogDebug(true, $"GetXbox360Achievements() - name: {game.Name} - gameId: {game.GameId}");
+
+            string titleId = GetTitleId(game);
+
+            if (titleId.IsNullOrEmpty())
+            {
+                Common.LogDebug(true, $"Couldn't find title ID for game name: {game.Name} - gameId: {game.GameId}");
+                return new List<Achievements>();
+            }
+
+            string unlockedAchievementsUrl = string.Format(AchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
+            string lockedAchievementsUrl = string.Format(TitleAchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
+            var getUnlockedAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(unlockedAchievementsUrl, authorizationData, "1");
+            var getAllAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(lockedAchievementsUrl, authorizationData, "1");
+            await Task.WhenAll(getUnlockedAchievementsTask, getAllAchievementsTask);
+
+            var filteredXbox360Achievements = getUnlockedAchievementsTask.Result.achievements.ToDictionary(x => x.id);
+            foreach (var ach in getAllAchievementsTask.Result.achievements)
+            {
+                if (filteredXbox360Achievements.ContainsKey(ach.id))
+                    continue;
+
+                filteredXbox360Achievements.Add(ach.id, ach);
+            }
+
+            var achievements = filteredXbox360Achievements.Values.Select(ConvertToAchievement).ToList();
+
+            return achievements;
+        }
+
+        private static Achievements ConvertToAchievement(XboxOneAchievement xboxAchievement)
+        {
+            return new Achievements
+            {
+                ApiName = string.Empty,
+                Name = xboxAchievement.name,
+                Description = (xboxAchievement.progression.timeUnlocked == default(DateTime)) ? xboxAchievement.lockedDescription : xboxAchievement.description,
+                IsHidden = xboxAchievement.isSecret,
+                Percent = 100,
+                DateUnlocked = xboxAchievement.progression.timeUnlocked,
+                UrlLocked = string.Empty,
+                UrlUnlocked = xboxAchievement.mediaAssets[0].url
+            };
+        }
+        private static Achievements ConvertToAchievement(Xbox360Achievement xboxAchievement)
+        {
+            bool unlocked = xboxAchievement.unlocked || xboxAchievement.unlockedOnline;
+
+            return new Achievements
+            {
+                ApiName = string.Empty,
+                Name = xboxAchievement.name,
+                Description = unlocked ? xboxAchievement.lockedDescription : xboxAchievement.description,
+                IsHidden = xboxAchievement.isSecret,
+                Percent = 100,
+                DateUnlocked = unlocked ? xboxAchievement.timeUnlocked : (DateTime?)null,
+                UrlLocked = string.Empty,
+                UrlUnlocked = string.Empty,
+            };
+        }
 
         public override bool IsConfigured()
         {
@@ -233,10 +323,15 @@ namespace SuccessStory.Clients
             return GetIsUserLoggedIn().GetAwaiter().GetResult();
         }
 
-
-        private void SetAuthenticationHeaders(System.Net.Http.Headers.HttpRequestHeaders headers, AuthorizationData auth)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="auth"></param>
+        /// <param name="contractVersion">1 for Xbox 360 era API, 2 for Xbox One or Series X/S</param>
+        private void SetAuthenticationHeaders(System.Net.Http.Headers.HttpRequestHeaders headers, AuthorizationData auth, string contractVersion)
         {
-            headers.Add("x-xbl-contract-version", "2");
+            headers.Add("x-xbl-contract-version", contractVersion);
             headers.Add("Authorization", $"XBL3.0 x={auth.DisplayClaims.xui[0].uhs};{auth.Token}");
             headers.Add("Accept-Language", LocalLang);
         }
@@ -284,7 +379,7 @@ namespace SuccessStory.Clients
 
                 using (var client = new HttpClient())
                 {
-                    SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
+                    SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens, "2");
                     var requestData = new ProfileRequest()
                     {
                         settings = new List<string> { "GameDisplayName" },
@@ -394,7 +489,7 @@ namespace SuccessStory.Clients
 
             using (var client = new HttpClient())
             {
-                SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens);
+                SetAuthenticationHeaders(client.DefaultRequestHeaders, tokens, "2");
                 var requestData = new Dictionary<string, List<string>>
                 {
                     { "pfns", new List<string> { pfn } },
@@ -463,7 +558,14 @@ namespace SuccessStory.Clients
         }
     }
 
-    public class XboxAchievement
+    public class PagingInfo
+    {
+        public string continuationToken { get; set; }
+        public int totalRecords { get; set; }
+    }
+
+    #region Xbox One models
+    public class XboxOneAchievement
     {
         public string id { get; set; }
         public string serviceConfigId { get; set; }
@@ -509,4 +611,41 @@ namespace SuccessStory.Clients
         public string type { get; set; }
         public string url { get; set; }
     }
+
+    public class XboxOneAchievementResponse
+    {
+        public List<XboxOneAchievement> achievements { get; set; }
+        public PagingInfo pagingInfo { get; set; }
+    }
+    #endregion Xbox One models
+
+    #region Xbox 360 models
+    public class Xbox360Achievement
+    {
+        public int id { get; set; }
+        public int titleId { get; set; }
+        public string name { get; set; }
+        public int sequence { get; set; }
+        public int flags { get; set; }
+        public bool unlockedOnline { get; set; }
+        public bool unlocked { get; set; }
+        public bool isSecret { get; set; }
+        public int platform { get; set; }
+        public int gamerscore { get; set; }
+        public int imageId { get; set; }
+        public string description { get; set; }
+        public string lockedDescription { get; set; }
+        public int type { get; set; }
+        public bool isRevoked { get; set; }
+        public DateTime timeUnlocked { get; set; }
+    }
+
+
+    public class Xbox360AchievementResponse
+    {
+        public List<Xbox360Achievement> achievements { get; set; }
+        public PagingInfo pagingInfo { get; set; }
+        public DateTime version { get; set; }
+    }
+    #endregion Xbox 360 models
 }
