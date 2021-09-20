@@ -4,6 +4,7 @@ using CommonPluginsShared;
 using CommonPluginsShared.Models;
 using Playnite.SDK;
 using Playnite.SDK.Models;
+using Playnite.SDK.Plugins;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -400,7 +401,7 @@ namespace SuccessStory.Clients
 
         public override bool IsConnected()
         {
-            throw new NotImplementedException();
+            return GetIsUserLoggedIn();
         }
 
 
@@ -412,7 +413,8 @@ namespace SuccessStory.Clients
 
             view.LoadingChanged += (s, e) =>
             {
-                if (view.GetCurrentAddress().IndexOf("https://www.exophase.com/account/") > -1 && view.GetCurrentAddress().IndexOf(UrlExophaseLogout) == -1)
+                string address = view.GetCurrentAddress();
+                if (address.Contains("https://www.exophase.com/account/") && !address.Contains(UrlExophaseLogout))
                 {
                     view.Close();
                 }
@@ -420,7 +422,7 @@ namespace SuccessStory.Clients
 
             view.LoadingChanged += (s, e) =>
             {
-                if (view.GetCurrentAddress().IndexOf("https://www.exophase.com/") > -1 && view.GetCurrentAddress().Length == 25)
+                if (view.GetCurrentAddress() == "https://www.exophase.com/")
                 {
                     view.Navigate(UrlExophaseLogin);
                 }
@@ -441,6 +443,16 @@ namespace SuccessStory.Clients
             }
             logger.Info("Exophase user is connected");
             return true;
+        }
+
+        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool EnabledInSettings(SuccessStorySettings settings)
+        {
+            return true; //not sure about this one
         }
     }
 }

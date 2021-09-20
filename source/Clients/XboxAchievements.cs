@@ -16,6 +16,7 @@ using SuccessStory.Models;
 using CommonPluginsShared.Models;
 using System.Security.Principal;
 using CommonPlayniteShared.Common;
+using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
@@ -54,7 +55,7 @@ namespace SuccessStory.Clients
                 ListAchievements = GetXboxAchievements(game.GameId, game.Name).GetAwaiter().GetResult();
 
                 Common.LogDebug(true, Serialization.ToJson(ListAchievements));
-                
+
                 foreach (XboxAchievement xboxAchievement in ListAchievements)
                 {
                     AllAchievements.Add(new Achievements
@@ -419,6 +420,47 @@ namespace SuccessStory.Clients
             }
         }
 
+        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+        {
+            if (PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary"))
+            {
+                logger.Warn("Xbox is enable then disabled");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-Xbox-disabled",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxDisabled")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+
+            Common.LogDebug(true, $"VerifToAddOrShowXbox: {CachedConfigurationValidationResult}");
+
+            if (CachedConfigurationValidationResult == null)
+            {
+                CachedConfigurationValidationResult = IsConnected();
+            }
+
+            Common.LogDebug(true, $"VerifToAddOrShowXbox: {CachedConfigurationValidationResult}");
+
+            if (!(bool)CachedConfigurationValidationResult)
+            {
+                logger.Warn("Xbox user is not authenticated");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-Xbox-NoAuthenticate",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+            return true;
+
+        }
+        public override bool EnabledInSettings(SuccessStorySettings settings)
+        {
+            return settings.EnableXbox;
+        }
     }
 
     public class XboxAchievement
@@ -450,7 +492,7 @@ namespace SuccessStory.Clients
         public List<Requirements> requirements { get; set; }
         public DateTime timeUnlocked { get; set; }
     }
-    
+
     public class Requirements
     {
         public string id { get; set; }

@@ -147,15 +147,10 @@ namespace SuccessStory
                 {
                     Common.LogDebug(true, $"Reset VerifToAdd");
 
-                    SuccessStoryDatabase.VerifToAddOrShowPsn = null;
-                    SuccessStoryDatabase.VerifToAddOrShowGog = null;
-                    SuccessStoryDatabase.VerifToAddOrShowOrigin = null;
-                    SuccessStoryDatabase.VerifToAddOrShowRetroAchievements = null;
-                    SuccessStoryDatabase.VerifToAddOrShowSteam = null;
-                    SuccessStoryDatabase.VerifToAddOrShowXbox = null;
-                    SuccessStoryDatabase.VerifToAddOrShowOverwatch = null;
-                    SuccessStoryDatabase.VerifToAddOrShowSc2 = null;
-                    SuccessStoryDatabase.VerifToAddOrShowRpcs3 = null;
+                    foreach (var achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
+                    {
+                        achievementProvider.ResetCachedConfigurationValidationResult();
+                    }
                 }
             }
             catch (Exception ex)
@@ -324,21 +319,22 @@ namespace SuccessStory
         {
             Game GameMenu = args.Games.First();
             List<Guid> Ids = args.Games.Select(x => x.Id).ToList();
-            string SourceName = PlayniteTools.GetSourceName(PlayniteApi, GameMenu);
-            string GameName = GameMenu.Name;
-            bool IsAddOrShowManual = SuccessStoryDatabase.IsAddOrShowManual(GameMenu, SourceName);
-            bool GameCouldHaveAchievements = SuccessStoryDatabase.GameCouldHaveAchievements(PluginSettings.Settings, SourceName, GameName);
+
+            // TODO: for multiple games, either check if any of them could have achievements, or just assume so
+            var achievementSource = SuccessStoryDatabase.GetAchievementSource(PluginSettings.Settings, GameMenu);
+            bool GameCouldHaveAchievements = achievementSource != SuccessStoryDatabase.AchievementSource.None;
             GameAchievements gameAchievements = PluginDatabase.Get(GameMenu, true);
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
 
             if (!gameAchievements.IsIgnored)
             {
-                if (GameCouldHaveAchievements || IsAddOrShowManual)
+                if (GameCouldHaveAchievements)
                 {
                     if (!PluginSettings.Settings.EnableOneGameView || (PluginSettings.Settings.EnableOneGameView && gameAchievements.HasData))
                     {
                         // Show list achievements for the selected game
+                        // TODO: disable when selecting multiple games?
                         gameMenuItems.Add(new GameMenuItem
                         {
                             MenuSection = resources.GetString("LOCSuccessStory"),
@@ -394,7 +390,7 @@ namespace SuccessStory
                         });
                     }
 
-                    if (!IsAddOrShowManual && !gameAchievements.IsManual)
+                    if (!gameAchievements.IsManual)
                     {
                         gameMenuItems.Add(new GameMenuItem
                         {
@@ -427,7 +423,6 @@ namespace SuccessStory
                     }
                 }
 
-                //if (PluginSettings.Settings.EnableManual && IsAddOrShowManual)
                 if (PluginSettings.Settings.EnableManual)
                 {
                     if (!gameAchievements.HasData)
@@ -472,7 +467,7 @@ namespace SuccessStory
                     }
                 }
 
-                if ((SourceName == "Playnite" || SourceName == "Hacked") && gameAchievements.HasData && !gameAchievements.IsManual)
+                if (achievementSource == SuccessStoryDatabase.AchievementSource.Local && gameAchievements.HasData && !gameAchievements.IsManual)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
@@ -490,7 +485,7 @@ namespace SuccessStory
             }
             else
             {
-                if (GameCouldHaveAchievements || IsAddOrShowManual)
+                if (GameCouldHaveAchievements)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
@@ -801,15 +796,14 @@ namespace SuccessStory
             {
                 string SourceName = PlayniteTools.GetSourceName(PlayniteApi, args.Game);
                 string GameName = args.Game.Name;
-                bool IsAddOrShowManual = SuccessStoryDatabase.IsAddOrShowManual(args.Game, SourceName);
-                bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, PluginDatabase.Paths.PluginUserDataPath, SourceName, GameName);
+                bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, args.Game);
                 GameAchievements gameAchievements = PluginDatabase.Get(args.Game, true);
 
                 if (!gameAchievements.IsIgnored)
                 {
-                    if (VerifToAddOrShow || IsAddOrShowManual)
+                    if (VerifToAddOrShow)
                     {
-                        if (!IsAddOrShowManual && !gameAchievements.IsManual)
+                        if (!gameAchievements.IsManual)
                         {
                             PluginDatabase.RefreshNoLoader(args.Game.Id);
 

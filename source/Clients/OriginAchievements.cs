@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Text;
 using CommonPluginsShared.Models;
+using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
@@ -193,6 +194,47 @@ namespace SuccessStory.Clients
 
             string stringData = Web.DownloadStringData(url).GetAwaiter().GetResult();
             return Serialization.FromJson<GameStoreDataResponse>(stringData);
+        }
+
+        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+        {
+            if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary"))
+            {
+                logger.Warn("Origin is enable then disabled");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-Origin-disabled",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsOriginDisabled")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+            else
+            {
+                OriginAchievements originAchievements = new OriginAchievements();
+
+                if (CachedConfigurationValidationResult == null)
+                {
+                    CachedConfigurationValidationResult = originAchievements.IsConnected();
+                }
+
+                if (!(bool)CachedConfigurationValidationResult)
+                {
+                    logger.Warn("Origin user is not authenticated");
+                    playniteAPI.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-Origin-NoAuthenticate",
+                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate")}",
+                        NotificationType.Error,
+                        () => plugin.OpenSettingsView()
+                    ));
+                    return false;
+                }
+            }
+            return true;
+        }
+        public override bool EnabledInSettings(SuccessStorySettings settings)
+        {
+            return settings.EnableOrigin;
         }
     }
 

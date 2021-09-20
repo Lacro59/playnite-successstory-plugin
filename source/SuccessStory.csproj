@@ -114,9 +114,11 @@
     <Compile Include="Clients\GenericAchievements.cs" />
     <Compile Include="Clients\GogAchievements.cs" />
     <Compile Include="Clients\OriginAchievements.cs" />
+    <Compile Include="Clients\OverwatchAchievements.cs" />
     <Compile Include="Clients\PSNAchievements.cs" />
     <Compile Include="Clients\RetroAchievements.cs" />
     <Compile Include="Clients\Rpcs3Achievements.cs" />
+    <Compile Include="Clients\Starcraft2Achievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
     <Compile Include="Clients\SteamEmulators.cs" />
     <Compile Include="Clients\TrueAchievements.cs" />

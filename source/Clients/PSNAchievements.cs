@@ -5,6 +5,7 @@ using CommonPluginsStores;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
+using Playnite.SDK.Plugins;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using PlayniteTools = CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -139,6 +141,48 @@ namespace SuccessStory.Clients
         public override bool IsConfigured()
         {
             return !GetPsnToken().IsNullOrEmpty();
+        }
+
+        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+        {
+            if (PlayniteTools.IsDisabledPlaynitePlugins("PSNLibrary"))
+            {
+                logger.Warn("PSN is enable then disabled");
+                playniteAPI.Notifications.Add(new NotificationMessage(
+                    "SuccessStory-Psn-disabled",
+                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnDisabled")}",
+                    NotificationType.Error,
+                    () => plugin.OpenSettingsView()
+                ));
+                return false;
+            }
+            else
+            {
+                PSNAchievements pSNAchievements = new PSNAchievements();
+
+                if (CachedConfigurationValidationResult == null)
+                {
+                    CachedConfigurationValidationResult = pSNAchievements.IsConnected();
+                }
+
+                if (!(bool)CachedConfigurationValidationResult)
+                {
+                    logger.Warn("PSN user is not authenticate");
+                    playniteAPI.Notifications.Add(new NotificationMessage(
+                        "SuccessStory-Psn-NoAuthenticate",
+                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate")}",
+                        NotificationType.Error,
+                        () => plugin.OpenSettingsView()
+                    ));
+                    return false;
+                }
+            }
+            return true;
+
+        }
+        public override bool EnabledInSettings(SuccessStorySettings settings)
+        {
+            return settings.EnablePsn;
         }
     }
 }
