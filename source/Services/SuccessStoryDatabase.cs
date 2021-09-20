@@ -793,7 +793,7 @@ namespace SuccessStory.Services
         {
             GameAchievements gameAchievements = Get(game, true);
 
-            if (gameAchievements == null)
+            if (gameAchievements == null || !gameAchievements.HasData)
             {
                 PluginSettings.Settings.HasData = false;
 
