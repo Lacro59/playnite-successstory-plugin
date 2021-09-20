@@ -101,7 +101,7 @@ namespace SuccessStory.Clients
 
                         Result.HaveAchivements = true;
                         Result.Total = AllAchievements.Count;
-                        Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
+                        Result.Unlocked = AllAchievements.FindAll(x => x.IsUnlock).Count;
                         Result.Locked = Result.Total - Result.Unlocked;
                         Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
                         Result.Items = AllAchievements;
@@ -724,13 +724,14 @@ namespace SuccessStory.Clients
                             foreach (KeyValue AchievementsData in PlayerAchievementsData.Children)
                             {
                                 int.TryParse(AchievementsData.Children.Find(x => x.Name == "unlocktime").Value, out int unlocktime);
+                                bool achieved = int.Parse(AchievementsData.Children.Find(x => x.Name == "achieved").Value) == 1;
 
                                 AllAchievements.Add(new Achievements
                                 {
                                     ApiName = AchievementsData.Children.Find(x => x.Name == "apiname").Value,
                                     Name = AchievementsData.Children.Find(x => x.Name == "name").Value,
                                     Description = AchievementsData.Children.Find(x => x.Name == "description").Value,
-                                    DateUnlocked = (unlocktime == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unlocktime)
+                                    DateUnlocked = achieved ? new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unlocktime) : default(DateTime)
                                 });
                             }
                         }

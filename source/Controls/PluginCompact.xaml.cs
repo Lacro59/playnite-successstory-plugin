@@ -146,11 +146,11 @@ namespace SuccessStory.Controls
                 // Select data
                 if (IsUnlocked)
                 {
-                    ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked != default(DateTime));
+                    ListAchievements = ListAchievements.FindAll(x => x.IsUnlock);
                 }
                 else
                 {
-                    ListAchievements = ListAchievements.FindAll(x => x.DateUnlocked == default(DateTime));
+                    ListAchievements = ListAchievements.FindAll(x => !x.IsUnlock);
                 }
 
                 ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();

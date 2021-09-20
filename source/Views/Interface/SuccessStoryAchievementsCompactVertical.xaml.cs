@@ -96,7 +96,12 @@ namespace SuccessStory.Views.Interface
                     string urlImg = string.Empty;
                     try
                     {
-                        if (ListAchievements[i].DateUnlocked == default(DateTime) || ListAchievements[i].DateUnlocked == null)
+                        if (ListAchievements[i].IsUnlock)
+                        {
+                            urlImg = ListAchievements[i].ImageUnlocked;
+                            dateUnlock = ListAchievements[i].DateUnlocked;
+                        }
+                        else
                         {
                             if (ListAchievements[i].UrlLocked == string.Empty || ListAchievements[i].UrlLocked == ListAchievements[i].UrlUnlocked)
                             {
@@ -107,11 +112,6 @@ namespace SuccessStory.Views.Interface
                             {
                                 urlImg = ListAchievements[i].ImageLocked;
                             }
-                        }
-                        else
-                        {
-                            urlImg = ListAchievements[i].ImageUnlocked;
-                            dateUnlock = ListAchievements[i].DateUnlocked;
                         }
                     }
                     catch (Exception ex)
