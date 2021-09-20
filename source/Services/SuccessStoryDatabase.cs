@@ -795,6 +795,16 @@ namespace SuccessStory.Services
 
             if (gameAchievements == null)
             {
+                PluginSettings.Settings.HasData = false;
+
+                PluginSettings.Settings.Is100Percent = false;
+                PluginSettings.Settings.Unlocked = 0;
+                PluginSettings.Settings.Locked = 0;
+                PluginSettings.Settings.Total = 0;
+                PluginSettings.Settings.Percent = 0;
+                PluginSettings.Settings.EstimateTimeToUnlock = string.Empty;
+                PluginSettings.Settings.ListAchievements = new List<Achievements>();
+
                 return;
             }
 
