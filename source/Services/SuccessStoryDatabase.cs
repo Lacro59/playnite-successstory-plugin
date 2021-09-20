@@ -995,9 +995,9 @@ namespace SuccessStory.Services
                 // Add missing tags
                 if (PluginTags.Count < 13)
                 {
-                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon0to5")}") == null)
+                    if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon0to1")}") == null)
                     {
-                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon0to5")}" });
+                        PlayniteApi.Database.Tags.Add(new Tag { Name = $"[SS] {resources.GetString("LOCCommon0to1")}" });
                     }
                     if (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon1to5")}") == null)
                     {
@@ -1120,7 +1120,7 @@ namespace SuccessStory.Services
             {
                 if (EstimateTimeMax <= 1)
                 {
-                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCPLaytimeLessThenAnHour")}")).Id;
+                    return (PluginTags.Find(x => x.Name == $"[SS] {resources.GetString("LOCCommon0to5")}")).Id;
                 }
                 if (EstimateTimeMax <= 6)
                 {
