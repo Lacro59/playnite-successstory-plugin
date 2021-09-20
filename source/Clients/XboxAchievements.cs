@@ -197,7 +197,7 @@ namespace SuccessStory.Clients
                 GetXbox360Achievements
             };
 
-            if (game.Platforms.Any(p => p.Name.Contains("360")))
+            if (game.Platforms.Any(p => p.SpecificationId == "xbox360"))
                 getAchievementMethods.Reverse();
 
             foreach (var getAchievementsMethod in getAchievementMethods)
@@ -268,16 +268,16 @@ namespace SuccessStory.Clients
             var getAllAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(lockedAchievementsUrl, authorizationData, "1");
             await Task.WhenAll(getUnlockedAchievementsTask, getAllAchievementsTask);
 
-            var filteredXbox360Achievements = getUnlockedAchievementsTask.Result.achievements.ToDictionary(x => x.id);
-            foreach (var ach in getAllAchievementsTask.Result.achievements)
+            Dictionary<int, Xbox360Achievement> mergedAchievements = getUnlockedAchievementsTask.Result.achievements.ToDictionary(x => x.id);
+            foreach (Xbox360Achievement a in getAllAchievementsTask.Result.achievements)
             {
-                if (filteredXbox360Achievements.ContainsKey(ach.id))
+                if (mergedAchievements.ContainsKey(a.id))
                     continue;
 
-                filteredXbox360Achievements.Add(ach.id, ach);
+                mergedAchievements.Add(a.id, a);
             }
 
-            var achievements = filteredXbox360Achievements.Values.Select(ConvertToAchievement).ToList();
+            var achievements = mergedAchievements.Values.Select(ConvertToAchievement).ToList();
 
             return achievements;
         }
@@ -293,9 +293,10 @@ namespace SuccessStory.Clients
                 Percent = 100,
                 DateUnlocked = xboxAchievement.progression.timeUnlocked,
                 UrlLocked = string.Empty,
-                UrlUnlocked = xboxAchievement.mediaAssets[0].url
+                UrlUnlocked = xboxAchievement.mediaAssets[0].url,
             };
         }
+
         private static Achievements ConvertToAchievement(Xbox360Achievement xboxAchievement)
         {
             bool unlocked = xboxAchievement.unlocked || xboxAchievement.unlockedOnline;
@@ -307,9 +308,10 @@ namespace SuccessStory.Clients
                 Description = unlocked ? xboxAchievement.lockedDescription : xboxAchievement.description,
                 IsHidden = xboxAchievement.isSecret,
                 Percent = 100,
-                DateUnlocked = unlocked ? xboxAchievement.timeUnlocked : (DateTime?)null,
+                DateUnlocked = unlocked ? xboxAchievement.timeUnlocked : default(DateTime),
                 UrlLocked = string.Empty,
-                UrlUnlocked = string.Empty,
+                UrlUnlocked = $"https://image-ssl.xboxlive.com/global/t.{xboxAchievement.titleId:x}/ach/0/{xboxAchievement.imageId:x}",
+                
             };
         }
 
@@ -625,7 +627,7 @@ namespace SuccessStory.Clients
         public int id { get; set; }
         public int titleId { get; set; }
         public string name { get; set; }
-        public int sequence { get; set; }
+        public long sequence { get; set; }
         public int flags { get; set; }
         public bool unlockedOnline { get; set; }
         public bool unlocked { get; set; }
@@ -639,7 +641,6 @@ namespace SuccessStory.Clients
         public bool isRevoked { get; set; }
         public DateTime timeUnlocked { get; set; }
     }
-
 
     public class Xbox360AchievementResponse
     {

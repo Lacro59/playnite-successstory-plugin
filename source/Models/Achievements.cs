@@ -151,7 +151,7 @@ namespace SuccessStory.Models
                     return false;
                 }
 
-                return (UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
+                return UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked;
             }
         }
 
