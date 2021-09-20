@@ -74,7 +74,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, "Failed to Xbox profile achievements");
+                Common.LogError(ex, false, "Failed to get Xbox achievements");
             }
 
             return Result;
@@ -209,6 +209,12 @@ namespace SuccessStory.Clients
             return null;
         }
 
+        /// <summary>
+        /// Gets achievements for games that have come out on or since the Xbox One. This includes recent PC releases and Xbox Series X/S games.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="authorizationData"></param>
+        /// <returns></returns>
         private async Task<List<Achievements>> GetXboxOneAchievements(Game game, AuthorizationData authorizationData)
         {
             if (authorizationData is null)
@@ -245,6 +251,12 @@ namespace SuccessStory.Clients
             return achievements;
         }
 
+        /// <summary>
+        /// Gets achievements for Xbox 360 and Games for Windows Live
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="authorizationData"></param>
+        /// <returns></returns>
         private async Task<List<Achievements>> GetXbox360Achievements(Game game, AuthorizationData authorizationData)
         {
             if (authorizationData is null)
@@ -262,10 +274,14 @@ namespace SuccessStory.Clients
                 return new List<Achievements>();
             }
 
+            // gets the player-unlocked achievements
             string unlockedAchievementsUrl = string.Format(AchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
-            string lockedAchievementsUrl = string.Format(TitleAchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
             var getUnlockedAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(unlockedAchievementsUrl, authorizationData, "1");
-            var getAllAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(lockedAchievementsUrl, authorizationData, "1");
+
+            // gets all of the game's achievements, but they're all marked as locked
+            string allAchievementsUrl = string.Format(TitleAchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
+            var getAllAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(allAchievementsUrl, authorizationData, "1");
+
             await Task.WhenAll(getUnlockedAchievementsTask, getAllAchievementsTask);
 
             Dictionary<int, Xbox360Achievement> mergedAchievements = getUnlockedAchievementsTask.Result.achievements.ToDictionary(x => x.id);
