@@ -642,7 +642,17 @@ namespace SuccessStory
                     Description = "-"
                 });
 
-                // Tag menus
+                // Add tag for selected game in database if data exists
+                mainMenuItems.Add(new MainMenuItem
+                {
+                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    Description = resources.GetString("LOCCommonAddTPlugin"),
+                    Action = (mainMenuItem) =>
+                    {
+                        PluginDatabase.AddTagSelectData();
+                    }
+                });
+                // Add tag for all games
                 mainMenuItems.Add(new MainMenuItem
                 {
                     MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
@@ -652,6 +662,7 @@ namespace SuccessStory
                         PluginDatabase.AddTagAllGame();
                     }
                 });
+                // Remove tag for all game in database
                 mainMenuItems.Add(new MainMenuItem
                 {
                     MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
