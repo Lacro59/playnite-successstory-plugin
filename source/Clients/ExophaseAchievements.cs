@@ -254,7 +254,8 @@ namespace SuccessStory.Clients
 
                 if (!IsRefresh)
                 {
-                    searchResult = SearchResults.Find(x => x.Name.ToLower() == gameAchievements.Name.ToLower() && IsSamePlatform(x.Platform, SourceName));
+                    string normalizedGameName = gameAchievements.Name.NormalizeTitleForComparison();
+                    searchResult = SearchResults.Find(x => x.Name.NormalizeTitleForComparison().Equals(normalizedGameName, StringComparison.InvariantCultureIgnoreCase) && IsSamePlatform(x.Platform, SourceName));
                 }
                 else
                 {
@@ -275,15 +276,7 @@ namespace SuccessStory.Clients
                     HtmlParser parser = new HtmlParser();
                     IHtmlDocument htmlDocument = parser.Parse(DataExophase);
 
-                    var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement");
-                    if (SectionAchievements == null || SectionAchievements.Count() == 0)
-                    {
-                        SectionAchievements = htmlDocument.QuerySelectorAll("ul.trophy");
-                    }
-                    if (SectionAchievements == null || SectionAchievements.Count() == 0)
-                    {
-                        SectionAchievements = htmlDocument.QuerySelectorAll("ul.challenge");
-                    }
+                    var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
 
                     if (SectionAchievements == null || SectionAchievements.Count() == 0)
                     {
@@ -297,13 +290,13 @@ namespace SuccessStory.Clients
                             {
                                 try
                                 {
-                                    string Name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
-                                    float.TryParse(SearchAchievements.GetAttribute("data-average").Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+                                    string Name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml).TrimWhitespace();
+                                    float.TryParse(SearchAchievements.GetAttribute("data-average").Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out float Percent);
 
-                                    var index = gameAchievements.Items.FindIndex(x => x.Name.ToLower() == Name.ToLower());
+                                    var index = gameAchievements.Items.FindIndex(x => x.Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase));
                                     if (index == -1)
                                     {
-                                        index = gameAchievements.Items.FindIndex(x => x.ApiName.ToLower() == Name.ToLower());
+                                        index = gameAchievements.Items.FindIndex(x => x.ApiName.Equals(Name, StringComparison.InvariantCultureIgnoreCase));
                                     }
 
                                     if (index > -1)
