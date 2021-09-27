@@ -12,9 +12,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
@@ -53,7 +51,7 @@ namespace SuccessStory.Clients
             throw new NotImplementedException();
         }
 
-        public GameAchievements GetAchievements(Game game, SearchResult searchResult, bool IsTwo = false)
+        public GameAchievements GetAchievements(Game game, SearchResult searchResult, bool IsRetry = false)
         {
             List<Achievements> AllAchievements = new List<Achievements>();
             string GameName = game.Name;
@@ -75,20 +73,12 @@ namespace SuccessStory.Clients
                 IHtmlDocument htmlDocument = parser.Parse(DataExophase);
 
                 AllAchievements = new List<Achievements>();
-                var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement");
-                if (SectionAchievements == null || SectionAchievements.Count() == 0)
-                {
-                    SectionAchievements = htmlDocument.QuerySelectorAll("ul.trophy");
-                }
-                if (SectionAchievements == null || SectionAchievements.Count() == 0)
-                {
-                    SectionAchievements = htmlDocument.QuerySelectorAll("ul.challenge");
-                }
+                var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
 
                 if (SectionAchievements == null || SectionAchievements.Count() == 0)
                 {
                     logger.Warn($"Problem with {searchResult.Url}");
-                    if (!IsTwo)
+                    if (!IsRetry)
                     {
                         return GetAchievements(game, searchResult, true);
                     }
@@ -152,7 +142,7 @@ namespace SuccessStory.Clients
                     Url = searchResult.Url
                 };
             }
-            
+
             return Result;
         }
 
@@ -166,7 +156,7 @@ namespace SuccessStory.Clients
                 string UrlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
 
                 string StringJsonResult = Web.DownloadStringData(UrlSearch).GetAwaiter().GetResult();
-                ExophaseScheachResult exophaseScheachResult = Serialization.FromJson<ExophaseScheachResult>(StringJsonResult);
+                ExophaseSearchResult exophaseScheachResult = Serialization.FromJson<ExophaseSearchResult>(StringJsonResult);
 
                 var ListExophase = exophaseScheachResult?.games?.list;
                 if (ListExophase != null)
@@ -208,86 +198,85 @@ namespace SuccessStory.Clients
                 };
             }
 
-            if (SearchResults.Count > 0)
+            if (SearchResults.Count == 0)
             {
-                // Find good game
-                string SourceName = PlayniteTools.GetSourceName(PluginDatabase.PlayniteApi, gameAchievements.Id);
-                SearchResult searchResult;
+                logger.Warn($"No game found for {gameAchievements.Name} in SetRarety()");
+                return;
+            }
 
-                if (!IsRefresh)
-                {
-                    string normalizedGameName = gameAchievements.Name.NormalizeTitleForComparison();
-                    searchResult = SearchResults.Find(x => x.Name.NormalizeTitleForComparison().Equals(normalizedGameName, StringComparison.InvariantCultureIgnoreCase) && IsSamePlatform(x.Platform, SourceName));
-                }
-                else
-                {
-                    searchResult = SearchResults.Find(x => x.Url == gameAchievements.SourcesLink.Url);
-                }
+            // Find good game
+            string SourceName = PlayniteTools.GetSourceName(PluginDatabase.PlayniteApi, gameAchievements.Id);
+            SearchResult searchResult;
 
-                if (searchResult == null)
-                {
-                    logger.Warn($"No simalar find for {gameAchievements.Name} in SetRarety()");
-                    return;
-                }
-
-                try
-                {
-                    WebView.NavigateAndWait(searchResult.Url);
-                    string DataExophase = WebView.GetPageSource();
-
-                    HtmlParser parser = new HtmlParser();
-                    IHtmlDocument htmlDocument = parser.Parse(DataExophase);
-
-                    var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
-
-                    if (SectionAchievements == null || SectionAchievements.Count() == 0)
-                    {
-                        logger.Warn($"Problem with {searchResult.Url}");
-                    }
-                    else
-                    {
-                        foreach (var Section in SectionAchievements)
-                        {
-                            foreach (var SearchAchievements in Section.QuerySelectorAll("li"))
-                            {
-                                try
-                                {
-                                    string Name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml).TrimWhitespace();
-                                    float.TryParse(SearchAchievements.GetAttribute("data-average").Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out float Percent);
-
-                                    var index = gameAchievements.Items.FindIndex(x => x.Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase));
-                                    if (index == -1)
-                                    {
-                                        index = gameAchievements.Items.FindIndex(x => x.ApiName.Equals(Name, StringComparison.InvariantCultureIgnoreCase));
-                                    }
-
-                                    if (index > -1)
-                                    {
-                                        gameAchievements.Items[index].Percent = Percent;
-                                    }
-                                    else
-                                    {
-                                        logger.Warn($"No similar for {Name} in {searchResult.Url}");
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    Common.LogError(ex, false);
-                                }
-                            }
-                        }
-
-                        PluginDatabase.Update(gameAchievements);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false);
-                }
+            if (!IsRefresh)
+            {
+                string normalizedGameName = gameAchievements.Name.NormalizeTitleForComparison();
+                searchResult = SearchResults.Find(x => x.Name.NormalizeTitleForComparison().Equals(normalizedGameName, StringComparison.InvariantCultureIgnoreCase) && IsSamePlatform(x.Platform, SourceName));
             }
             else
             {
-                logger.Warn($"No game find for {gameAchievements.Name} in SetRarety()");
+                searchResult = SearchResults.Find(x => x.Url == gameAchievements.SourcesLink.Url);
+            }
+
+            if (searchResult == null)
+            {
+                logger.Warn($"No matching game found for {gameAchievements.Name} in SetRarety()");
+                return;
+            }
+
+            try
+            {
+                WebView.NavigateAndWait(searchResult.Url);
+                string DataExophase = WebView.GetPageSource();
+
+                HtmlParser parser = new HtmlParser();
+                IHtmlDocument htmlDocument = parser.Parse(DataExophase);
+
+                var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
+
+                if (SectionAchievements == null || SectionAchievements.Count() == 0)
+                {
+                    logger.Warn($"No achievements list found in {searchResult.Url}");
+                    return;
+                }
+
+                foreach (var Section in SectionAchievements)
+                {
+                    foreach (var SearchAchievements in Section.QuerySelectorAll("li"))
+                    {
+                        try
+                        {
+                            string achievementName = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml).TrimWhitespace();
+                            float.TryParse(SearchAchievements.GetAttribute("data-average")
+                                .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+
+                            var achievement = gameAchievements.Items.Find(x => x.Name.Equals(achievementName, StringComparison.InvariantCultureIgnoreCase));
+                            if (achievement == null)
+                            {
+                                achievement = gameAchievements.Items.Find(x => x.ApiName.Equals(achievementName, StringComparison.InvariantCultureIgnoreCase));
+                            }
+
+                            if (achievement != null)
+                            {
+                                achievement.Percent = Percent;
+                            }
+                            else
+                            {
+                                logger.Warn($"No matching achievements found for {achievementName} in {searchResult.Url}");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false);
+                        }
+                    }
+                }
+                PluginDatabase.Update(gameAchievements);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
             }
         }
 
@@ -307,12 +296,12 @@ namespace SuccessStory.Clients
             {
                 return true;
             }
-            
+
             if (PlaynitePlatformName.ToLower() == "retroachievements" && ExophasePlatformName.ToLower() == "retro")
             {
                 return true;
             }
-            
+
             if (PlaynitePlatformName.ToLower().IndexOf("playstation") > -1 && ExophaseNumber == PlayniteNumber)
             {
                 return true;
