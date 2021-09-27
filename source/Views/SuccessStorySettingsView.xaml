@@ -9,7 +9,9 @@
              xmlns:pcmd="clr-namespace:CommonPluginsShared"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-             mc:Ignorable="d">
+             xmlns:SuccessStory="clr-namespace:SuccessStory"
+             mc:Ignorable="d" d:DesignWidth="650"
+             d:DataContext="{d:DesignInstance SuccessStory:SuccessStorySettingsViewModel}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -977,6 +979,10 @@
                                                 <RowDefinition Height="auto" />
                                                 <RowDefinition Height="10" />
                                                 <RowDefinition Height="auto" />
+                                                <RowDefinition Height="10" />
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="10" />
+                                                <RowDefinition Height="auto" />
                                             </Grid.RowDefinitions>
 
                                             <Grid Grid.Column="0" Grid.Row="0">
@@ -1010,6 +1016,17 @@
                                                         Grid.Column="1" VerticalAlignment="Center" Margin="20,0,5,0" Name="sCountAbscissa" />
                                                 <Label Grid.Column="2" Content="{Binding ElementName=sCountAbscissa, Path=Value}" HorizontalAlignment="Center" />
                                             </Grid>
+
+                                            <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding Settings.EnableIntegrationChartHideOptions}">
+                                                <Label Content="{DynamicResource LOCCommonChartHideOptions}" />
+                                            </CheckBox>
+
+                                            <CheckBox Grid.Column="0" Grid.Row="8" IsChecked="{Binding Settings.EnableIntegrationChartAllPerdiod}">
+                                                <Label Content="{DynamicResource LOCCommonChartAllPeriod}" />
+                                            </CheckBox>
+                                            <CheckBox Grid.Column="2" Grid.Row="8" IsChecked="{Binding Settings.EnableIntegrationChartCutPeriod}">
+                                                <Label Content="{DynamicResource LOCCommonChartCutPeriod}" />
+                                            </CheckBox>
                                         </Grid>
                                     </Border>
                                 </Expander.Content>

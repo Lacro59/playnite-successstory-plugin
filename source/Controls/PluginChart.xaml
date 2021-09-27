@@ -8,13 +8,15 @@
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="150"
+    xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+    mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="150"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding ChartHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 
     <controls:PluginUserControlExtend.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </controls:PluginUserControlExtend.Resources>
 
     <Grid Name="PART_GridContener">
@@ -23,7 +25,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid>
+        <Grid Visibility="{Binding HideChartOptions, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />

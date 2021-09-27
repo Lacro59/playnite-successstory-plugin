@@ -149,6 +149,7 @@ namespace SuccessStory.Controls
                 EnableOrdinatesLabel = EnableOrdinatesLabel,
                 CountAbscissa = CountAbscissa,
 
+                HideChartOptions = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartHideOptions,
                 AllPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartAllPerdiod,
                 CutPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartCutPeriod,
 
@@ -252,6 +253,7 @@ namespace SuccessStory.Controls
         public bool EnableOrdinatesLabel { get; set; }
         public int CountAbscissa { get; set; }
 
+        public bool HideChartOptions { get; set; }
         public bool AllPeriod { get; set; }
         public bool CutPeriod { get; set; }
 
