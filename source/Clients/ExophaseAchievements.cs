@@ -166,7 +166,7 @@ namespace SuccessStory.Clients
                         Url = x.endpoint_awards,
                         Name = x.title,
                         UrlImage = x.images.o,
-                        Platform = x.platforms.FirstOrDefault()?.name,
+                        Platforms = x.platforms.Select(p => p.name).ToList(),
                         AchievementsCount = x.total_awards
                     }).ToList();
                 }
@@ -179,54 +179,44 @@ namespace SuccessStory.Clients
             return ListSearchGames;
         }
 
-
-        public void SetRarety(GameAchievements gameAchievements, bool IsRefresh = false)
+        private string GetAchievementsPageUrl(GameAchievements gameAchievements, Services.SuccessStoryDatabase.AchievementSource source)
         {
-            List<SearchResult> SearchResults = new List<SearchResult>();
-            if (!IsRefresh)
+            string sourceLinkName = gameAchievements.SourcesLink?.Name;
+            if (sourceLinkName == "Exophase")
+                return gameAchievements.SourcesLink.Url;
+
+            var searchResults = SearchGame(gameAchievements.Name);
+            if (searchResults.Count == 0)
             {
-                SearchResults = SearchGame(gameAchievements.Name);
-            }
-            else
-            {
-                SearchResults = new List<SearchResult>
-                {
-                    new SearchResult
-                    {
-                        Url = gameAchievements.SourcesLink.Url
-                    }
-                };
+                logger.Warn($"No game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
+                return null;
             }
 
-            if (SearchResults.Count == 0)
-            {
-                logger.Warn($"No game found for {gameAchievements.Name} in SetRarety()");
-                return;
-            }
-
-            // Find good game
-            string SourceName = PlayniteTools.GetSourceName(PluginDatabase.PlayniteApi, gameAchievements.Id);
-            SearchResult searchResult;
-
-            if (!IsRefresh)
-            {
-                string normalizedGameName = gameAchievements.Name.NormalizeTitleForComparison();
-                searchResult = SearchResults.Find(x => x.Name.NormalizeTitleForComparison().Equals(normalizedGameName, StringComparison.InvariantCultureIgnoreCase) && IsSamePlatform(x.Platform, SourceName));
-            }
-            else
-            {
-                searchResult = SearchResults.Find(x => x.Url == gameAchievements.SourcesLink.Url);
-            }
+            string normalizedGameName = gameAchievements.Name.NormalizeTitleForComparison();
+            var searchResult = searchResults.Find(x =>
+                                    x.Name.NormalizeTitleForComparison().Equals(normalizedGameName, StringComparison.InvariantCultureIgnoreCase)
+                                    && PlatformAndProviderMatch(x, gameAchievements, source));
 
             if (searchResult == null)
-            {
-                logger.Warn($"No matching game found for {gameAchievements.Name} in SetRarety()");
+                logger.Warn($"No matching game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
+
+            return searchResult?.Url;
+        }
+
+        /// <summary>
+        /// Set achievement rarity via Exophase web scraping
+        /// </summary>
+        /// <param name="gameAchievements"></param>
+        /// <param name="source"></param>
+        public void SetRarety(GameAchievements gameAchievements, Services.SuccessStoryDatabase.AchievementSource source)
+        {
+            string achievementsUrl = GetAchievementsPageUrl(gameAchievements, source);
+            if (achievementsUrl == null)
                 return;
-            }
 
             try
             {
-                WebView.NavigateAndWait(searchResult.Url);
+                WebView.NavigateAndWait(achievementsUrl);
                 string DataExophase = WebView.GetPageSource();
 
                 HtmlParser parser = new HtmlParser();
@@ -236,7 +226,7 @@ namespace SuccessStory.Clients
 
                 if (SectionAchievements == null || SectionAchievements.Count() == 0)
                 {
-                    logger.Warn($"No achievements list found in {searchResult.Url}");
+                    logger.Warn($"No achievements list found in {achievementsUrl}");
                     return;
                 }
 
@@ -263,7 +253,7 @@ namespace SuccessStory.Clients
                             }
                             else
                             {
-                                logger.Warn($"No matching achievements found for {achievementName} in {searchResult.Url}");
+                                logger.Warn($"No matching achievements found for {achievementName} in {achievementsUrl}");
                             }
                         }
                         catch (Exception ex)
@@ -280,63 +270,60 @@ namespace SuccessStory.Clients
             }
         }
 
-
-        private bool IsSamePlatform(string ExophasePlatformName, string PlaynitePlatformName)
+        private static bool PlatformAndProviderMatch(SearchResult exophaseGame, GameAchievements playniteGame, Services.SuccessStoryDatabase.AchievementSource achievementSource)
         {
-            int.TryParse(Regex.Replace(ExophasePlatformName, "[^0-9]", ""), out int ExophaseNumber);
-            int.TryParse(Regex.Replace(PlaynitePlatformName, "[^0-9]", ""), out int PlayniteNumber);
-
-
-            if (ExophasePlatformName.ToLower() == PlaynitePlatformName.ToLower())
+            switch (achievementSource)
             {
-                return true;
+                //PC: match service
+                case Services.SuccessStoryDatabase.AchievementSource.Steam:
+                    return exophaseGame.Platforms.Contains("Steam", StringComparer.InvariantCultureIgnoreCase);
+                case Services.SuccessStoryDatabase.AchievementSource.GOG:
+                    return exophaseGame.Platforms.Contains("GOG", StringComparer.InvariantCultureIgnoreCase);
+                case Services.SuccessStoryDatabase.AchievementSource.Origin:
+                    return exophaseGame.Platforms.Contains("Origin", StringComparer.InvariantCultureIgnoreCase);
+                case Services.SuccessStoryDatabase.AchievementSource.RetroAchievements:
+                    return exophaseGame.Platforms.Contains("Retro", StringComparer.InvariantCultureIgnoreCase);
+                case Services.SuccessStoryDatabase.AchievementSource.Overwatch:
+                case Services.SuccessStoryDatabase.AchievementSource.Starcraft2:
+                    return exophaseGame.Platforms.Contains("Blizzard", StringComparer.InvariantCultureIgnoreCase);
+
+                //Console: match platform
+                case Services.SuccessStoryDatabase.AchievementSource.Playstation:
+                case Services.SuccessStoryDatabase.AchievementSource.Xbox:
+                case Services.SuccessStoryDatabase.AchievementSource.RPCS3:
+                    return PlatformsMatch(exophaseGame, playniteGame);
+
+                case Services.SuccessStoryDatabase.AchievementSource.None:
+                case Services.SuccessStoryDatabase.AchievementSource.Local:
+                default:
+                    return false;
             }
-
-            if (PlaynitePlatformName.ToLower().IndexOf(ExophasePlatformName.ToLower()) > -1 && ExophasePlatformName.ToLower() == "ubisoft")
-            {
-                return true;
-            }
-
-            if (PlaynitePlatformName.ToLower() == "retroachievements" && ExophasePlatformName.ToLower() == "retro")
-            {
-                return true;
-            }
-
-            if (PlaynitePlatformName.ToLower().IndexOf("playstation") > -1 && ExophaseNumber == PlayniteNumber)
-            {
-                return true;
-            }
-
-            if (PlaynitePlatformName.ToLower().IndexOf("battle.net") > -1 && ExophasePlatformName.ToLower() == "blizzard")
-            {
-                return true;
-            }
-
-            if (PlaynitePlatformName.ToLower() == "xbox" && ExophasePlatformName.ToLower() == "windows 10")
-            {
-                return true;
-            }
-
-            if (PlaynitePlatformName.ToLower() == "xbox" && ExophasePlatformName.ToLower() == "windows 8")
-            {
-                return true;
-            }
-
-            if (PlaynitePlatformName.ToLower() == "xbox" && ExophasePlatformName.ToLower() == "xbox one")
-            {
-                return true;
-            }
-
-            if (PlaynitePlatformName.ToLower() == "xbox" && ExophasePlatformName.ToLower() == "xbox 360")
-            {
-                return true;
-            }
-
-
-            Common.LogDebug(true, $"No similar in IsSamePlatform({ExophasePlatformName}, {PlaynitePlatformName})");
-            return false;
         }
 
+        private static Dictionary<string, string[]> PlaynitePlatformSpecificationIdToExophasePlatformName = new Dictionary<string, string[]>
+        {
+            { "xbox360", new[]{"Xbox 360"} },
+            { "xbox_one", new[]{"Xbox One"} },
+            { "xbox_series", new[]{"Xbox Series"} },
+            { "pc_windows", new []{"Windows 8", "Windows 10", "Windows 11" /* future proofing */, "GFWL"} },
+            { "sony_playstation3", new[]{"PS3"} },
+            { "sony_playstation4", new[]{"PS4"} },
+            { "sony_playstation5", new[]{"PS5"} },
+            { "sony_vita", new[]{"PS Vita"} },
+        };
+
+        private static bool PlatformsMatch(SearchResult exophaseGame, GameAchievements playniteGame)
+        {
+            foreach (var playnitePlatform in playniteGame.Platforms)
+            {
+                if (!PlaynitePlatformSpecificationIdToExophasePlatformName.TryGetValue(playnitePlatform.SpecificationId, out string[] exophasePlatformNames))
+                    continue; //there are no natural matches between default Playnite platform name and Exophase platform name, so give up if it's not in the dictionary
+
+                if (exophaseGame.Platforms.IntersectsExactlyWith(exophasePlatformNames))
+                    return true;
+            }
+            return false;
+        }
 
         public override bool IsConfigured()
         {
