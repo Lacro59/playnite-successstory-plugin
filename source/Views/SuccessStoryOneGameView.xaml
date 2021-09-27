@@ -39,7 +39,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="10" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="200" />
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Column="0" Grid.Row="0">
@@ -57,17 +57,9 @@
                     </StackPanel>
                 </StackPanel>
 
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="77*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <controls:PluginChart Grid.Row="0" IgnoreSettings="True" AxisLimit="16" GameContext="{Binding GameContext}" LabelsRotation="160" Grid.ColumnSpan="2" />
-                </Grid>
+                <controls:PluginChart IgnoreSettings="True" AxisLimit="16" GameContext="{Binding GameContext}" 
+                                      Grid.Row="2"
+                                      LabelsRotation="160" Grid.ColumnSpan="2" />
             </Grid>
         </Grid>
 
