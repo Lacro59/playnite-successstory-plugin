@@ -871,6 +871,8 @@
                                                 <RowDefinition Height="auto" />
                                                 <RowDefinition Height="10" />
                                                 <RowDefinition Height="auto" />
+                                                <RowDefinition Height="10" />
+                                                <RowDefinition Height="auto" />
                                             </Grid.RowDefinitions>
 
                                             <Grid Grid.Column="0">
@@ -887,10 +889,16 @@
                                             <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding Settings.IntegrationCompactPartialShowDescription}">
                                                 <Label Content="{DynamicResource LOCSuccessStoryDescriptionInToolTip}" />
                                             </CheckBox>
-                                            
-                                            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
+
+                                            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Name="PART_DisplayLastest"
                                                       IsChecked="{Binding Settings.IntegrationCompactPartialDisplayLastest}">
                                                 <Label Content="{DynamicResource LOCSuccessStoryIntegrationCompactPartialDisplayLastest}" />
+                                            </CheckBox>
+                                            
+                                            <CheckBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4"
+                                                      IsEnabled="{Binding ElementName=PART_DisplayLastest, Path=IsChecked}"
+                                                      IsChecked="{Binding Settings.IntegrationCompactPartialDisplayLastestOneLine}">
+                                                <Label Content="{DynamicResource LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine}" />
                                             </CheckBox>
                                         </Grid>
                                     </Border>

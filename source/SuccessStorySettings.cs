@@ -126,6 +126,7 @@ namespace SuccessStory
 
         public double IntegrationCompactPartialHeight { get; set; } = 48;
         public bool IntegrationCompactPartialDisplayLastest { get; set; } = true;
+        public bool IntegrationCompactPartialDisplayLastestOneLine { get; set; } = false;
         public bool IntegrationCompactPartialShowDescription { get; set; } = true;
 
 
