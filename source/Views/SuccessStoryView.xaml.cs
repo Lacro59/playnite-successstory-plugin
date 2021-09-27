@@ -417,7 +417,8 @@ namespace SuccessStory
                     {
                         IgnoreSettings = true,
                         Height = SuccessStory_Achievements_Graphics_Game.Height,
-                        AxisLimit = 8
+                        AxisLimit = 8,
+                        LabelsRotation = 160
                     };
                     SuccessStory_Achievements_Graphics_Game.Children.Add(pluginChart);
                 }

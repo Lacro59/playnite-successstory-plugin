@@ -182,7 +182,7 @@ namespace SuccessStory.Controls
 
                     if (DateMin != null && DateMax != null)
                     {
-                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, ((int)((DateTime)DateMax - (DateTime)DateMin).TotalDays), CutPeriod);
+                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, ((int)((DateTime)DateMax - (DateTime)DateMin).TotalDays) + 1, CutPeriod);
                     }
                     else
                     {
@@ -206,6 +206,9 @@ namespace SuccessStory.Controls
 
                     ControlDataContext.Series = StatsGraphicAchievementsSeries;
                     ControlDataContext.Labels = StatsGraphicsAchievementsLabels;
+
+
+                    ControlDataContext.EnableAxisLabel = !(StatsGraphicsAchievementsLabels.Count() > 16 && ControlDataContext.AllPeriod);
 
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;

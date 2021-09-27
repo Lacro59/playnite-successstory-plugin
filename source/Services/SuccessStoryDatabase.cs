@@ -650,6 +650,7 @@ namespace SuccessStory.Services
                                     }
                                     else
                                     {
+                                        GraphicsAchievementsLabels[i] = string.Empty;
                                         PrevIsNaN = true;
                                     }
                                 }

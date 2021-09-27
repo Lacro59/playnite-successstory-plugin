@@ -19,7 +19,7 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
     </controls:PluginUserControlExtend.Resources>
 
-    <Grid Name="PART_GridContener">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -42,32 +42,59 @@
                           Click="ToggleButtonAllPeriod_Click" />
 
         </Grid>
-        
-        <lvc:CartesianChart LegendLocation="Bottom"  Grid.Row="1"
+
+        <Grid Name="PART_GridContener" Grid.Row="1">
+            <lvc:CartesianChart LegendLocation="Bottom" 
                             Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
                             Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
                             Series="{Binding Series}"
                             DisableAnimations="{Binding DisableAnimations}">
-            <lvc:CartesianChart.ChartLegend>
-                <lvc:DefaultLegend Height="2" Visibility="Hidden" />
-            </lvc:CartesianChart.ChartLegend>
+                <lvc:CartesianChart.ChartLegend>
+                    <lvc:DefaultLegend Height="2" Visibility="Hidden" />
+                </lvc:CartesianChart.ChartLegend>
 
-            <lvc:CartesianChart.DataTooltip>
-                <livechartscommon:CustomerToolTipForSingle />
-            </lvc:CartesianChart.DataTooltip>
+                <lvc:CartesianChart.DataTooltip>
+                    <livechartscommon:CustomerToolTipForSingle />
+                </lvc:CartesianChart.DataTooltip>
 
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis ShowLabels="{Binding EnableAxisLabel}" Labels="{Binding Labels}" LabelsRotation="{Binding LabelsRotation}">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="1" />
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis ShowLabels="{Binding EnableOrdinatesLabel}">
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis ShowLabels="{Binding EnableAxisLabel}" Labels="{Binding Labels}" LabelsRotation="{Binding LabelsRotation}">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator Step="1">
+                                <lvc:Separator.Style>
+                                    <Style TargetType="lvc:Separator">
+                                        <Setter Property="StrokeThickness" Value="1"></Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EnableAxisLabel}" Value="False">
+                                                <Setter Property="StrokeThickness" Value="0" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </lvc:Separator.Style>
+                            </lvc:Separator>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis ShowLabels="{Binding EnableOrdinatesLabel}">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator>
+                                <lvc:Separator.Style>
+                                    <Style TargetType="lvc:Separator">
+                                        <Setter Property="StrokeThickness" Value="1"></Setter>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EnableOrdinatesLabel}" Value="False">
+                                                <Setter Property="StrokeThickness" Value="0" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </lvc:Separator.Style>
+                            </lvc:Separator>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart>
+        </Grid>
     </Grid>
 </controls:PluginUserControlExtend>
