@@ -812,6 +812,8 @@ namespace SuccessStory
                 bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, args.Game);
                 GameAchievements gameAchievements = PluginDatabase.Get(args.Game, true);
 
+                IsFromMenu = false;
+
                 if (!gameAchievements.IsIgnored)
                 {
                     if (VerifToAddOrShow)
