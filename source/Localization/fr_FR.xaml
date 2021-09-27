@@ -108,6 +108,7 @@
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Options des résumés de succès</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">Montrer le dernier succès débloqu</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Montrer le dernier succès sur une ligne</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vue de l'extension</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Afficher l'indicateur de rareté sur les succès</sys:String>
