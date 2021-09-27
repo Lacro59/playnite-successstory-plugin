@@ -12,7 +12,11 @@
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding ChartHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
-    
+
+    <controls:PluginUserControlExtend.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </controls:PluginUserControlExtend.Resources>
+
     <Grid Name="PART_GridContener">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -23,9 +27,16 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <ToggleButton Grid.Column="1" Content="{DynamicResource LOCAll}" IsChecked="{Binding AllPeriod}"
+            <ToggleButton Grid.Column="1" Content="{DynamicResource LOCCommonCut}" IsChecked="{Binding CutPeriod}"
+                          Visibility="{Binding ElementName=PART_AllPeriod, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                          Click="ToggleButtonCut_Click" />
+            
+            <ToggleButton Grid.Column="3" Content="{DynamicResource LOCAll}" IsChecked="{Binding AllPeriod, FallbackValue=True}"
+                          Name="PART_AllPeriod"
                           Click="ToggleButtonAllPeriod_Click" />
 
         </Grid>

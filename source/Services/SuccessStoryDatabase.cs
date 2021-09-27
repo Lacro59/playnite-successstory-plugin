@@ -544,7 +544,7 @@ namespace SuccessStory.Services
         /// </summary>
         /// <param name="GameID"></param>
         /// <returns></returns>
-        public AchievementsGraphicsDataCount GetCountByDay(Guid? GameID = null, int limit = 11)
+        public AchievementsGraphicsDataCount GetCountByDay(Guid? GameID = null, int limit = 11, bool CutPeriod = false)
         {
             string[] GraphicsAchievementsLabels = new string[limit + 1];
             ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
@@ -608,10 +608,13 @@ namespace SuccessStory.Services
                         for (int i = limit; i >= 0; i--)
                         {
                             GraphicsAchievementsLabels[(limit - i)] = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null);
+
+                            double DataValue = CutPeriod ? double.NaN : 0;
+
                             SourceAchievementsSeries.Add(new CustomerForSingle
                             {
                                 Name = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null),
-                                Values = 0
+                                Values = DataValue
                             });
                         }
 
@@ -622,7 +625,38 @@ namespace SuccessStory.Services
 
                             if (index >= 0 && index < (limit + 1))
                             {
+                                if (double.IsNaN(SourceAchievementsSeries[index].Values))
+                                {
+                                    SourceAchievementsSeries[index].Values = 0;
+                                }
                                 SourceAchievementsSeries[index].Values += 1;
+                            }
+                        }
+
+                        if (CutPeriod)
+                        {
+                            bool PrevIsNaN = false;
+
+                            for (int i = (SourceAchievementsSeries.Count - 1); i > -1; i--)
+                            {
+                                if (double.IsNaN(SourceAchievementsSeries[i].Values))
+                                {
+                                    if (PrevIsNaN)
+                                    {
+                                        SourceAchievementsSeries.RemoveAt(i);
+                                        var temp = GraphicsAchievementsLabels.ToList();
+                                        temp.RemoveAt(i);
+                                        GraphicsAchievementsLabels = temp.ToArray();
+                                    }
+                                    else
+                                    {
+                                        PrevIsNaN = true;
+                                    }
+                                }
+                                else
+                                {
+                                    PrevIsNaN = false;
+                                }
                             }
                         }
                     }

@@ -150,6 +150,7 @@ namespace SuccessStory.Controls
                 CountAbscissa = CountAbscissa,
 
                 AllPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartAllPerdiod,
+                CutPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartCutPeriod,
 
                 Series = null,
                 Labels = null,
@@ -172,23 +173,24 @@ namespace SuccessStory.Controls
                 GameAchievements gameAchievements = (GameAchievements)PluginGameData;
 
                 AchievementsGraphicsDataCount GraphicsData = null;
+                bool CutPeriod = ControlDataContext.AllPeriod ? ControlDataContext.CutPeriod : false;
                 if (ControlDataContext.AllPeriod)
-                {
+                {                   
                     var DateMin = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Min();
                     var DateMax = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Max();
 
                     if (DateMin != null && DateMax != null)
                     {
-                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, ((int)((DateTime)DateMax - (DateTime)DateMin).TotalDays));
+                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, ((int)((DateTime)DateMax - (DateTime)DateMin).TotalDays), CutPeriod);
                     }
                     else
                     {
-                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1));
+                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
                     }
                 }
                 else
                 {
-                    GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1));
+                    GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
                 }
 
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
@@ -206,6 +208,12 @@ namespace SuccessStory.Controls
 
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;
+
+                    // TODO With OneGameView the GameContext pass at null
+                    if (this.GameContext == null)
+                    {
+                        this.GameContext = newContext;
+                    }
                 }));
 
                 return true;
@@ -222,6 +230,17 @@ namespace SuccessStory.Controls
                 SetData(GameContext, gameAchievements);
             }
         }
+
+
+        private void ToggleButtonCut_Click(object sender, RoutedEventArgs e)
+        {
+            if (GameContext != null)
+            {
+                ControlDataContext.CutPeriod = (bool)((ToggleButton)sender).IsChecked;
+                GameAchievements gameAchievements = PluginDatabase.Get(GameContext.Id, true);
+                SetData(GameContext, gameAchievements);
+            }
+        }
     }
 
 
@@ -234,6 +253,7 @@ namespace SuccessStory.Controls
         public int CountAbscissa { get; set; }
 
         public bool AllPeriod { get; set; }
+        public bool CutPeriod { get; set; }
 
         public SeriesCollection Series { get; set; }
         public IList<string> Labels { get; set; }
