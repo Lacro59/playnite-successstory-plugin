@@ -14,7 +14,23 @@
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
     
     <Grid Name="PART_GridContener">
-        <lvc:CartesianChart LegendLocation="Bottom" 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <ToggleButton Grid.Column="1" Content="{DynamicResource LOCAll}" IsChecked="{Binding AllPeriod}"
+                          Click="ToggleButtonAllPeriod_Click" />
+
+        </Grid>
+        
+        <lvc:CartesianChart LegendLocation="Bottom"  Grid.Row="1"
                             Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
                             Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
                             Series="{Binding Series}"

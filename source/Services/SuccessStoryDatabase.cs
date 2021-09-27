@@ -603,29 +603,20 @@ namespace SuccessStory.Services
                     if (Achievements != null && Achievements.Count > 0)
                     {
                         Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
-                        DateTime TempDateTime = DateTime.Now;
-
-                        // Find last achievement date unlock
-                        if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd") != "0001-01-01" && ((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd") != "1982-12-15")
-                        {
-                            TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
-                        }
+                        DateTime TempDateTime = Achievements.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Max()?.ToLocalTime() ?? DateTime.Now;
 
                         for (int i = limit; i >= 0; i--)
                         {
-                            //GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd");
                             GraphicsAchievementsLabels[(limit - i)] = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null);
                             SourceAchievementsSeries.Add(new CustomerForSingle
                             {
-                                //Name = TempDateTime.AddDays(-i).ToString("yyyy-MM-dd"),
-                                Name = (string)localDateConverter.Convert((TempDateTime.AddDays(-i)), null, null, null),
+                                Name = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null),
                                 Values = 0
                             });
                         }
 
                         for (int i = 0; i < Achievements.Count; i++)
                         {
-                            //string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
                             string tempDate = (string)localDateConverter.Convert(((DateTime)Achievements[i].DateUnlocked).ToLocalTime(), null, null, null);
                             int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
