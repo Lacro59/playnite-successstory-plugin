@@ -69,7 +69,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Playnite.SDK, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\PlayniteSDK.6.0.0-preview4\lib\net462\Playnite.SDK.dll</HintPath>
+      <HintPath>packages\PlayniteSDK.6.0.0\lib\net462\Playnite.SDK.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -154,6 +155,7 @@
     <Compile Include="Models\AchRaretyStats.cs" />
     <Compile Include="Models\BattleNetSc2Ach.cs" />
     <Compile Include="Models\BattleNetSc2Profil.cs" />
+    <Compile Include="Models\ExophaseScheachResult.cs" />
     <Compile Include="Models\GameStats.cs" />
     <Compile Include="Models\ListAchievements.cs" />
     <Compile Include="Models\ListGames.cs" />

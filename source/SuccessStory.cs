@@ -125,7 +125,10 @@ namespace SuccessStory
 
  
                     Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
-                    windowExtension.ResizeMode = ResizeMode.CanResize;
+                    if (windowOptions.ShowMaximizeButton)
+                    {
+                        windowExtension.ResizeMode = ResizeMode.CanResize;
+                    }
                     windowExtension.ShowDialog();
                     PluginDatabase.IsViewOpen = false;
                 }
@@ -361,6 +364,8 @@ namespace SuccessStory
                                     {
                                         ViewExtension = new SuccessStoryOneGameView(GameMenu);
                                     }
+
+                                    windowOptions.ShowMaximizeButton = false;
                                 }
                                 else
                                 {
@@ -370,14 +375,11 @@ namespace SuccessStory
                                     ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
                                 }
 
-                                var windowCreationOptions = new WindowCreationOptions
-                                {
-                                    ShowMinimizeButton = false,
-                                    ShowMaximizeButton = true,
-                                    ShowCloseButton = true
-                                };
                                 Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
-                                windowExtension.ResizeMode = ResizeMode.CanResize;
+                                if (windowOptions.ShowMaximizeButton)
+                                {
+                                    windowExtension.ResizeMode = ResizeMode.CanResize;
+                                }
                                 windowExtension.ShowDialog();
                                 PluginDatabase.IsViewOpen = false;
                             }
@@ -809,6 +811,8 @@ namespace SuccessStory
                 string GameName = args.Game.Name;
                 bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, args.Game);
                 GameAchievements gameAchievements = PluginDatabase.Get(args.Game, true);
+
+                IsFromMenu = false;
 
                 if (!gameAchievements.IsIgnored)
                 {

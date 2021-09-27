@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -148,6 +149,10 @@ namespace SuccessStory.Controls
                 EnableOrdinatesLabel = EnableOrdinatesLabel,
                 CountAbscissa = CountAbscissa,
 
+                HideChartOptions = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartHideOptions,
+                AllPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartAllPerdiod,
+                CutPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartCutPeriod,
+
                 Series = null,
                 Labels = null,
 
@@ -167,7 +172,27 @@ namespace SuccessStory.Controls
                 })).Wait();
 
                 GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-                AchievementsGraphicsDataCount GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1));
+
+                AchievementsGraphicsDataCount GraphicsData = null;
+                bool CutPeriod = ControlDataContext.AllPeriod ? ControlDataContext.CutPeriod : false;
+                if (ControlDataContext.AllPeriod)
+                {                   
+                    var DateMin = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Min();
+                    var DateMax = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Max();
+
+                    if (DateMin != null && DateMax != null)
+                    {
+                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, ((int)((DateTime)DateMax - (DateTime)DateMin).TotalDays) + 1, CutPeriod);
+                    }
+                    else
+                    {
+                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
+                    }
+                }
+                else
+                {
+                    GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
+                }
 
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
@@ -182,12 +207,43 @@ namespace SuccessStory.Controls
                     ControlDataContext.Series = StatsGraphicAchievementsSeries;
                     ControlDataContext.Labels = StatsGraphicsAchievementsLabels;
 
+
+                    ControlDataContext.EnableAxisLabel = !(StatsGraphicsAchievementsLabels.Count() > 16 && ControlDataContext.AllPeriod);
+
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;
+
+                    // TODO With OneGameView the GameContext pass at null
+                    if (this.GameContext == null)
+                    {
+                        this.GameContext = newContext;
+                    }
                 }));
 
                 return true;
             });
+        }
+
+
+        private void ToggleButtonAllPeriod_Click(object sender, RoutedEventArgs e)
+        {
+            if (GameContext != null)
+            {
+                ControlDataContext.AllPeriod = (bool)((ToggleButton)sender).IsChecked;
+                GameAchievements gameAchievements = PluginDatabase.Get(GameContext.Id, true);
+                SetData(GameContext, gameAchievements);
+            }
+        }
+
+
+        private void ToggleButtonCut_Click(object sender, RoutedEventArgs e)
+        {
+            if (GameContext != null)
+            {
+                ControlDataContext.CutPeriod = (bool)((ToggleButton)sender).IsChecked;
+                GameAchievements gameAchievements = PluginDatabase.Get(GameContext.Id, true);
+                SetData(GameContext, gameAchievements);
+            }
         }
     }
 
@@ -199,6 +255,10 @@ namespace SuccessStory.Controls
         public bool EnableAxisLabel { get; set; }
         public bool EnableOrdinatesLabel { get; set; }
         public int CountAbscissa { get; set; }
+
+        public bool HideChartOptions { get; set; }
+        public bool AllPeriod { get; set; }
+        public bool CutPeriod { get; set; }
 
         public SeriesCollection Series { get; set; }
         public IList<string> Labels { get; set; }

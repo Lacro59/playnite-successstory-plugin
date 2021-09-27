@@ -18,6 +18,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:SetColorConverter x:Key="SetColorConverter" />
+        <convertersshared:TwoBooleanToVisibilityConverter x:Key="TwoBooleanToVisibilityConverter" />
     </controls:PluginUserControlExtend.Resources>
 
     <Grid>
@@ -25,14 +26,19 @@
                 Background="Transparent" Padding="5"
                 BorderBrush="{DynamicResource NormalBorderBrush}">
 
-            <Grid MinHeight="{Binding Height}">
+            <Grid MinHeight="{Binding Height}" Name="PART_GridAchContener">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <Grid Visibility="{Binding DisplayLastest, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid Name="PART_DisplayLastest" Grid.Row="0" Grid.Column="1" 
+                      Visibility="{Binding DisplayLastest, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
@@ -98,11 +104,10 @@
                     </Grid>
                 </Grid>
 
-                <StackPanel Grid.Row="1" Height="10"
-                            Visibility="{Binding DisplayLastest, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <StackPanel Grid.Row="1" Height="10" Name="PART_LineSeparator" />
                 
-                <Grid Name="PART_ScCompactView" Loaded="PART_ScCompactView_IsLoaded" Margin="0,5,0,0" 
-                      Grid.Row="2" SizeChanged="PART_ScCompactView_SizeChanged" />
+                <Grid Name="PART_ScCompactView" Loaded="PART_ScCompactView_IsLoaded"
+                      Grid.Row="2" Grid.Column="1" SizeChanged="PART_ScCompactView_SizeChanged" />
             </Grid>
         </Border>
     </Grid>

@@ -3,6 +3,7 @@ using AngleSharp.Parser.Html;
 using CommonPluginsShared;
 using CommonPluginsShared.Models;
 using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 using SuccessStory.Models;
@@ -36,7 +37,7 @@ namespace SuccessStory.Clients
     {
         private IWebView WebView;
 
-        private const string UrlExophaseSearch = @"https://www.exophase.com/games/?q={0}";
+        private const string UrlExophaseSearch = @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
         private const string UrlExophaseLogin = @"https://www.exophase.com/login/";
         private const string UrlExophaseLogout = @"https://www.exophase.com/logout/";
 
@@ -158,70 +159,31 @@ namespace SuccessStory.Clients
 
         public List<SearchResult> SearchGame(string Name, bool IsTwo = false)
         {
-            string UrlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
-
-            WebView.NavigateAndWait(UrlSearch);
-            string DataExophaseSearch = WebView.GetPageSource();
-
-            HtmlParser parser = new HtmlParser();
-            IHtmlDocument htmlDocument = parser.Parse(DataExophaseSearch);
-
             List<SearchResult> ListSearchGames = new List<SearchResult>();
-            var SectionGames = htmlDocument.QuerySelector("ul.list-unordered-base");
-            if (SectionGames == null)
+
+            try
             {
-                Common.LogDebug(true, $"Error on SectionGames({Name}) for Exophase search");
-                if (!IsTwo)
+                string UrlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
+
+                string StringJsonResult = Web.DownloadStringData(UrlSearch).GetAwaiter().GetResult();
+                ExophaseScheachResult exophaseScheachResult = Serialization.FromJson<ExophaseScheachResult>(StringJsonResult);
+
+                var ListExophase = exophaseScheachResult?.games?.list;
+                if (ListExophase != null)
                 {
-                    return SearchGame(Name, true);
-                }
-                else
-                {
-                    return ListSearchGames;
-                }
-            }
-
-            var SectionLi = SectionGames.QuerySelectorAll("li");
-            if (SectionLi == null)
-            {
-                Common.LogDebug(true, $"Error on SectionGames({Name}) for Exophase search");
-                if (!IsTwo)
-                {
-                    return SearchGame(Name, true);
-                }
-                else
-                {
-                    return ListSearchGames;
-                }
-            }
-
-            foreach (var SearchGame in SectionGames.QuerySelectorAll("li"))
-            {
-                try
-                {
-                    var aElement = SearchGame.QuerySelectorAll("a");
-
-                    string GameUrl = aElement[1].GetAttribute("href");
-                    string GameName = aElement[1].InnerHtml;
-
-                    string GameImage = SearchGame.QuerySelector("img").GetAttribute("src");
-                    string GamePlatform = SearchGame.QuerySelector("div.platforms span").InnerHtml;
-
-                    int.TryParse(SearchGame.QuerySelector("div.col-4 span span").InnerHtml, out int AchievementsCount);
-
-                    ListSearchGames.Add(new SearchResult
+                    ListSearchGames = ListExophase.Select(x => new SearchResult
                     {
-                        Url = GameUrl,
-                        Name = GameName,
-                        UrlImage = GameImage,
-                        Platform = GamePlatform,
-                        AchievementsCount = AchievementsCount
-                    });
+                        Url = x.endpoint_awards,
+                        Name = x.title,
+                        UrlImage = x.images.o,
+                        Platform = x.platforms.FirstOrDefault()?.name,
+                        AchievementsCount = x.total_awards
+                    }).ToList();
                 }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false);
-                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
             }
 
             return ListSearchGames;

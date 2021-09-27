@@ -126,6 +126,7 @@ namespace SuccessStory
 
         public double IntegrationCompactPartialHeight { get; set; } = 48;
         public bool IntegrationCompactPartialDisplayLastest { get; set; } = true;
+        public bool IntegrationCompactPartialDisplayLastestOneLine { get; set; } = false;
         public bool IntegrationCompactPartialShowDescription { get; set; } = true;
 
 
@@ -144,6 +145,9 @@ namespace SuccessStory
         public bool EnableIntegrationAxisChart { get; set; } = true;
         public bool EnableIntegrationOrdinatesChart { get; set; } = false;
         public int IntegrationChartCountAbscissa { get; set; } = 11;
+        public bool EnableIntegrationChartHideOptions { get; set; } = false;
+        public bool EnableIntegrationChartAllPerdiod { get; set; } = true;
+        public bool EnableIntegrationChartCutPeriod { get; set; } = false;
 
 
         private bool _EnableIntegrationUserStats { get; set; } = true;

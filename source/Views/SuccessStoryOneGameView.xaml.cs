@@ -45,7 +45,7 @@ namespace SuccessStory.Views
                 PART_ImageCover.Source = BitmapExtensions.BitmapFromFile(CoverImage);
             }
 
-            GameAchievements gameAchievements = PluginDatabase.Get(PluginDatabase.GameContext, true);
+            GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
             if (gameAchievements.SourcesLink != null)
             {
                 PART_SourceLabel.Text = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
@@ -81,6 +81,7 @@ namespace SuccessStory.Views
                 PART_AchNoCommonTotal.Content = AchNoCommon.Total;
                 PART_AchRareTotal.Content = AchRare.Total;
             }
+
 
             this.DataContext = new
             {

@@ -316,7 +316,7 @@
                         <Label Name="GraphicTitle" Content="{DynamicResource LOCSuccessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
                     </StackPanel>
 
-                    <StackPanel x:Name="SuccessStory_Achievements_Graphics_Game" DockPanel.Dock="Bottom" Height="168" />
+                    <StackPanel x:Name="SuccessStory_Achievements_Graphics_Game" DockPanel.Dock="Bottom" Height="250" />
                 </DockPanel>
 
                 <Border Margin="0,10,0,0" Name="listAchievementBorder" Grid.Row="1"

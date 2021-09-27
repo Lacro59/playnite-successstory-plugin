@@ -128,6 +128,9 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
+            User = PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
+            Key = PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
+
             return User != string.Empty && Key != string.Empty;
         }
 
@@ -274,7 +277,7 @@ namespace SuccessStory.Clients
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
                 {
                     string Title = ra_Game.Title.Trim().ToLower();
-                    if (GameName.Trim().ToLower() == Title && gameID == 0)
+                    if (PlayniteTools.NormalizeGameName(GameName.Trim().ToLower()) == PlayniteTools.NormalizeGameName(Title) && gameID == 0)
                     {
                         logger.Info($"Find for {GameName.Trim().ToLower()} / {Title} with {PlatformName} in {consoleID}");
                         gameID = ra_Game.ID;

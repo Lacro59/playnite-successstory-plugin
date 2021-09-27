@@ -112,6 +112,7 @@ namespace SuccessStory.Controls
             {
                 IsActivated = IsActivated,
                 DisplayLastest = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastest,
+                OneLine = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastestOneLine,
                 Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialHeight,
 
                 ItemsSource = new ObservableCollection<Achievements>(),
@@ -162,6 +163,7 @@ namespace SuccessStory.Controls
                 }
 
                 ControlDataContext.ItemsSource = ListAchievements.ToObservable();
+
 
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
@@ -223,6 +225,28 @@ namespace SuccessStory.Controls
             {
                 return;
             }
+
+
+            if (ControlDataContext.OneLine)
+            {
+                Grid.SetColumn(PART_DisplayLastest, 0);
+                Grid.SetRow(PART_DisplayLastest, 2);
+            }
+            else
+            {
+                Grid.SetColumn(PART_DisplayLastest, 1);
+                Grid.SetRow(PART_DisplayLastest, 0);
+            }
+
+            if (ControlDataContext.DisplayLastest && !ControlDataContext.OneLine)
+            {
+                PART_LineSeparator.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PART_LineSeparator.Visibility = Visibility.Collapsed;
+            }
+
 
             var AchievementsList = ControlDataContext.ItemsSource;
 
@@ -345,6 +369,7 @@ namespace SuccessStory.Controls
     {
         public bool IsActivated { get; set; }
         public bool DisplayLastest { get; set; }
+        public bool OneLine { get; set; }
         public double Height { get; set; }
 
         public ObservableCollection<Achievements> ItemsSource { get; set; }
