@@ -954,7 +954,7 @@ namespace SuccessStory.Services
                             }
                             break;
                         case "exophase":
-                            exophaseAchievements.SetRarety(gameAchievements, true);
+                            exophaseAchievements.SetRarety(gameAchievements, AchievementSource.Local);
                             break;
                         default:
                             logger.Warn($"No sourcesLink for {gameAchievements.Name}");

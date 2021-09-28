@@ -276,15 +276,18 @@ namespace SuccessStory.Clients
 
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
                 {
-                    string Title = ra_Game.Title.Trim().ToLower();
-                    if (PlayniteTools.NormalizeGameName(GameName.Trim().ToLower()) == PlayniteTools.NormalizeGameName(Title) && gameID == 0)
+                    string retroArchTitle = ra_Game.Title;
+                    //TODO: Decide if editions should be removed here
+                    string normalizedRetroArchTitle = PlayniteTools.NormalizeGameName(retroArchTitle, true);
+                    string normalizedPlayniteTitle = PlayniteTools.NormalizeGameName(GameName, true);
+                    if (normalizedPlayniteTitle == normalizedRetroArchTitle && gameID == 0)
                     {
-                        logger.Info($"Find for {GameName.Trim().ToLower()} / {Title} with {PlatformName} in {consoleID}");
+                        logger.Info($"Find for {GameName.Trim().ToLower()} / {retroArchTitle} with {PlatformName} in {consoleID}");
                         gameID = ra_Game.ID;
                         break;
                     }
 
-                    string[] TitleSplits = Title.Split('|');
+                    string[] TitleSplits = retroArchTitle.Split('|');
                     if (TitleSplits.Length > 1)
                     {
                         foreach (string TitleSplit in TitleSplits)
@@ -298,7 +301,7 @@ namespace SuccessStory.Clients
                         }
                     }
 
-                    TitleSplits = Title.Split('-');
+                    TitleSplits = retroArchTitle.Split('-');
                     if (TitleSplits.Length > 1)
                     {
                         foreach (string TitleSplit in TitleSplits)
@@ -312,13 +315,9 @@ namespace SuccessStory.Clients
                         }
                     }
 
-
-                    string TitleNormalized = PlayniteTools.NormalizeGameName(Title);
-                    string GameNameNormalized = PlayniteTools.NormalizeGameName(GameName);
-
-                    if (GameNameNormalized.Trim().ToLower() == TitleNormalized.Trim() && gameID == 0)
+                    if (normalizedPlayniteTitle == normalizedRetroArchTitle && gameID == 0)
                     {
-                        logger.Info($"Find for {GameNameNormalized.Trim().ToLower()} / {TitleNormalized.Trim()} with {PlatformName} in {consoleID}");
+                        logger.Info($"Find for {normalizedPlayniteTitle} / {normalizedRetroArchTitle} with {PlatformName} in {consoleID}");
                         gameID = ra_Game.ID;
                         break;
                     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SuccessStory.Models
 {
-    public class ExophaseScheachResult
+    public class ExophaseSearchResult
     {
         public bool success { get; set; }
         public Games games { get; set; }

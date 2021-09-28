@@ -189,7 +189,7 @@ namespace SuccessStory.Clients
             if (Result.HaveAchivements)
             {
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                exophaseAchievements.SetRarety(Result);
+                exophaseAchievements.SetRarety(Result, Services.SuccessStoryDatabase.AchievementSource.Starcraft2);
 
 
                 Result.SourcesLink = new SourceLink

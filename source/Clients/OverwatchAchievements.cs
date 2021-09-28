@@ -195,8 +195,7 @@ namespace SuccessStory.Clients
             if (Result.HaveAchivements)
             {
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                exophaseAchievements.SetRarety(Result);
-
+                exophaseAchievements.SetRarety(Result, Services.SuccessStoryDatabase.AchievementSource.Overwatch);
 
                 Result.SourcesLink = new SourceLink
                 {
