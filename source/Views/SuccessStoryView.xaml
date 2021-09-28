@@ -11,7 +11,9 @@
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-             mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280">
+             xmlns:Controls="clr-namespace:SuccessStory.Controls"
+             mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280"
+             d:DataContext="{d:DesignInstance Type=local:SuccessViewData}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -59,7 +61,7 @@
                     <playnitecontrols:SearchBox Grid.Column="2" x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged" />
 
                     <Label Grid.Column="4" Content="{DynamicResource LOCSourceLabel}" FontSize="16" />
-                    <ComboBox Grid.Column="6" Name="FilterSource" IsEditable="True" IsReadOnly="True">
+                    <ComboBox Grid.Column="6" Name="FilterSource" ItemsSource="{Binding FilterSourceItems}" IsEditable="True" IsReadOnly="True">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Tag="{Binding SourceNameShort}"
@@ -73,7 +75,8 @@
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{DynamicResource LOCCommonTotalFound}" 
                                    VerticalAlignment="Center" />
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TotalFoundCount" 
-                                   VerticalAlignment="Center" Text="1000" Width="40" TextAlignment="Right" />
+                                   Text="{Binding ListGames.Count}"
+                                   VerticalAlignment="Center" Width="40" TextAlignment="Right" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -101,16 +104,14 @@
 
                     <Label Grid.Column="0" Grid.Row="0" x:Name="lProgressionGlobal" Content="{DynamicResource LOCSuccessStoryGlobalProgression}" HorizontalAlignment="Left" FontSize="16" />
                     <Grid Grid.Column="2" Grid.Row="0">
-                        <ProgressBar x:Name="pbProgressionGlobalCount" Minimum="0" Maximum="100" />
-                        <Label x:Name="labelProgressionGlobalCount" HorizontalAlignment="Center">
-                        </Label>
+                        <ProgressBar Minimum="0" Value="{Binding ProgressionGlobalCountValue}" Maximum="{Binding ProgressionGlobalCountMax}" />
+                        <Label Content="{Binding ProgressionGlobal}" HorizontalAlignment="Center" />
                     </Grid>
 
                     <Label Grid.Column="0" Grid.Row="2" x:Name="lProgressionLaunched" Content="{DynamicResource LOCSuccessStoryProgressionLaunched}" HorizontalAlignment="Left" FontSize="16" />
                     <Grid Grid.Column="2" Grid.Row="2">
-                        <ProgressBar x:Name="pbProgressionLaunchedCount" Minimum="0" Maximum="100" />
-                        <Label x:Name="labelProgressionLaunchedCount" HorizontalAlignment="Center">
-                        </Label>
+                        <ProgressBar Minimum="0" Value="{Binding ProgressionLaunchedCountValue}" Maximum="{Binding ProgressionLaunchedCountMax}"  />
+                        <Label Content="{Binding ProgressionLaunched}" HorizontalAlignment="Center" />
                     </Grid>
                 </Grid>
 
@@ -190,7 +191,7 @@
                 <Grid Margin="0,0,0,10" Name="lvGamesStackPanel" Grid.Row="0">
                     <controlsShared:ListViewExtend x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}"
                                                    SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}" 
-                                                   SortingEnable="True">
+                                                   SortingEnable="True" ItemsSource="{Binding ListGames}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Width="46" x:Name="lvGameIcon100Percent">
@@ -316,14 +317,30 @@
                         <Label Name="GraphicTitle" Content="{DynamicResource LOCSuccessStoryGraphicTitle}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10" />
                     </StackPanel>
 
-                    <StackPanel x:Name="SuccessStory_Achievements_Graphics_Game" DockPanel.Dock="Bottom" Height="250" />
+                    <StackPanel x:Name="PART_PluginChartContener" DockPanel.Dock="Bottom" Height="250">
+                        <StackPanel.Style>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding GameContext}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        
+                        <Controls:PluginChart Height="{Binding ElementName=PART_PluginChartContener, Path=ActualHeight}"
+                                              GameContext="{Binding ElementName=PART_PluginListContener, Path=Tag}" 
+                                              IgnoreSettings="True" AxisLimit="8" LabelsRotation="160" />
+                    </StackPanel>
                 </DockPanel>
 
-                <Border Margin="0,10,0,0" Name="listAchievementBorder" Grid.Row="1"
-                        BorderBrush="{DynamicResource NormalBorderBrush}" 
-                        BorderThickness="{DynamicResource ControlBorderThickness}">
-                    <Grid Name="SuccessStory_Achievements_List" />
-                </Border>
+                <Grid Name="PART_PluginListContener" Margin="0,10,0,0" Grid.Row="1"
+                      Tag="{Binding GameContext}">
+                    <Controls:PluginList GameContext="{Binding ElementName=PART_PluginListContener, Path=Tag}" 
+                                         IgnoreSettings="True" ForceOneCol="True"
+                                         Height="{Binding ElementName=PART_PluginListContener, Path=ActualHeight}" />
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

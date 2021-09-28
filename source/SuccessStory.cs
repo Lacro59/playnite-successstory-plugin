@@ -3,16 +3,12 @@ using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 using CommonPluginsShared;
-using SuccessStory.Clients;
 using SuccessStory.Models;
 using SuccessStory.Views;
-using SuccessStory.Views.Interface;
 using System;
 using System.Linq;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,12 +17,12 @@ using CommonPluginsPlaynite;
 using System.Diagnostics;
 using SuccessStory.Services;
 using System.Windows.Automation;
-using System.Windows.Threading;
 using CommonPluginsShared.PlayniteExtended;
 using System.Windows.Media;
 using CommonPluginsShared.Controls;
 using SuccessStory.Controls;
 using CommonPluginsShared.Models;
+using CommonPluginsPlaynite.Common;
 
 namespace SuccessStory
 {
@@ -115,11 +111,11 @@ namespace SuccessStory
 
                         if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, PluginDatabase.GameContext))
                         {
-                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), true, PluginDatabase.GameContext);
+                            ViewExtension = new SuccessView(true, PluginDatabase.GameContext);
                         }
                         else
                         {
-                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, PluginDatabase.GameContext);
+                            ViewExtension = new SuccessView(false, PluginDatabase.GameContext);
                         }
                     }
 
@@ -181,7 +177,7 @@ namespace SuccessStory
                     Title = resources.GetString("LOCSuccessStoryViewGames"),
                     Activated = () =>
                     {
-                        var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath());
+                        var ViewExtension = new SuccessView();
 
                         var windowOptions = new WindowOptions
                         {
@@ -270,7 +266,7 @@ namespace SuccessStory
                 {
                     SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
                     sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryAchievements"));
-                    sidebarItemControl.AddContent(new SuccessView(PluginDatabase.Plugin, PluginDatabase.PlayniteApi, PluginDatabase.Paths.PluginUserDataPath));
+                    sidebarItemControl.AddContent(new SuccessView());
 
                     return sidebarItemControl;
                 };
@@ -292,7 +288,7 @@ namespace SuccessStory
                 {
                     SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
                     sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryRetroAchievements"));
-                    sidebarItemControl.AddContent(new SuccessView(PluginDatabase.Plugin, PluginDatabase.PlayniteApi, PluginDatabase.Paths.PluginUserDataPath, true));
+                    sidebarItemControl.AddContent(new SuccessView(true));
 
                     return sidebarItemControl;
                 };
@@ -372,7 +368,7 @@ namespace SuccessStory
                                     windowOptions.Width = 1280;
                                     windowOptions.Height = 740;
 
-                                    ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, GameMenu);
+                                    ViewExtension = new SuccessView(false, GameMenu);
                                 }
 
                                 Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
@@ -539,7 +535,7 @@ namespace SuccessStory
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.IsViewOpen = true;
-                        var ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath());
+                        var ViewExtension = new SuccessView();
 
                         var windowOptions = new WindowOptions
                         {
@@ -570,11 +566,11 @@ namespace SuccessStory
                         SuccessView ViewExtension = null;
                         if (PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, PluginDatabase.GameContext))
                         {
-                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), true, PluginDatabase.GameContext);
+                            ViewExtension = new SuccessView(true, PluginDatabase.GameContext);
                         }
                         else
                         {
-                            ViewExtension = new SuccessView(this, PlayniteApi, this.GetPluginUserDataPath(), false, PluginDatabase.GameContext);
+                            ViewExtension = new SuccessView(false, PluginDatabase.GameContext);
                         }
                         ViewExtension.Width = 1280;
                         ViewExtension.Height = 740;
@@ -702,15 +698,15 @@ namespace SuccessStory
         #region Game event
         public override void OnGameSelected(OnGameSelectedEventArgs args)
         {
-            // Old database
+            // TODO Old database
             if (oldToNew.IsOld)
             {
                 oldToNew.ConvertDB(PlayniteApi);
             }
 
-            // Sourcelink null?
-            var sourceLinkNull = PluginDatabase.Database.Select(x => x).Where(x => x.SourcesLink == null && x.IsManual && x.HaveAchivements);
-            if (sourceLinkNull.Count() > 0)
+            // TODO Sourcelink
+            var sourceLinkNull = PluginDatabase.Database?.Select(x => x).Where(x => x.SourcesLink == null && x.IsManual && x.HaveAchivements);
+            if (sourceLinkNull?.Count() > 0)
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
                     "SuccessStory - Database migration",
@@ -762,6 +758,28 @@ namespace SuccessStory
                 }, globalProgressOptions);
             }
 
+            // TODO Moving cache
+            if (Directory.Exists(Path.Combine(PlaynitePaths.ImagesCachePath, "successstory")))
+            {
+                GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                    "SuccessStory - Folder migration",
+                    false
+                );
+                globalProgressOptions.IsIndeterminate = true;
+
+                PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                {
+                    try
+                    {
+                        FileSystem.DeleteDirectory(PluginDatabase.Paths.PluginCachePath);
+                        Directory.Move(Path.Combine(PlaynitePaths.ImagesCachePath, "successstory"), PluginDatabase.Paths.PluginCachePath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false);
+                    }
+                }, globalProgressOptions);
+            }
 
             try
             {

@@ -24,6 +24,7 @@ using CommonPluginsControls.LiveChartsCommon;
 using SuccessStory.Controls;
 using System.Windows.Threading;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace SuccessStory
 {
@@ -35,182 +36,88 @@ namespace SuccessStory
         private static readonly ILogger logger = LogManager.GetLogger();
         private static IResourceProvider resources = new ResourceProvider();
 
-        // Variables api.
-        private IPlayniteAPI _PlayniteApi;
-        private IGameDatabaseAPI _PlayniteApiDatabase;
-        private IPlaynitePathsAPI _PlayniteApiPaths;
-
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private SuccessViewData successViewData = new SuccessViewData();
 
-        private readonly string _PluginUserDataPath;
-        private SuccessStory _plugin { get; set; }
-        
-        private List<ListSource> FilterSourceItems = new List<ListSource>();
-        private List<ListViewGames> ListGames = new List<ListViewGames>();
+        private ObservableCollection<ListSource> FilterSourceItems = new ObservableCollection<ListSource>();
+        private ObservableCollection<ListViewGames> ListGames = new ObservableCollection<ListViewGames>();
         private List<string> SearchSources = new List<string>();
 
-        private PluginChart pluginChart;
-        private PluginList pluginList;
-
         private string NameSorting { get; set; }
+        
 
-
-        public SuccessView(SuccessStory plugin, IPlayniteAPI PlayniteApi, string PluginUserDataPath, bool isRetroAchievements = false, Game GameSelected = null)
+        public SuccessView(bool isRetroAchievements = false, Game GameSelected = null)
         {
-            _plugin = plugin;
-            _PlayniteApi = PlayniteApi;
-            _PlayniteApiDatabase = PlayniteApi.Database;
-            _PlayniteApiPaths = PlayniteApi.Paths;
-            _PluginUserDataPath = PluginUserDataPath;
-
-
             InitializeComponent();
+            DataContext = successViewData;
 
 
+            // sorting options
             ListviewGames.SortingDefaultDataName = PluginDatabase.PluginSettings.Settings.NameSorting;
             ListviewGames.SortingSortDirection = (PluginDatabase.PluginSettings.Settings.IsAsc) ? ListSortDirection.Ascending : ListSortDirection.Descending;
             ListviewGames.Sorting();
+
+            // lvGames options
+            if (!PluginDatabase.PluginSettings.Settings.lvGamesIcon100Percent)
+            {
+                lvGameIcon100Percent.Width = 0;
+            }
+            if (!PluginDatabase.PluginSettings.Settings.lvGamesIcon)
+            {
+                lvGameIcon.Width = 0;
+            }
+            if (!PluginDatabase.PluginSettings.Settings.lvGamesName)
+            {
+                lvGameName.Width = 0;
+            }
+            if (!PluginDatabase.PluginSettings.Settings.lvGamesLastSession)
+            {
+                lvGameLastActivity.Width = 0;
+            }
+            if (!PluginDatabase.PluginSettings.Settings.lvGamesSource)
+            {
+                lvGamesSource.Width = 0;
+            }
+            if (!PluginDatabase.PluginSettings.Settings.lvGamesProgression)
+            {
+                lvGameProgression.Width = 0;
+            }
 
 
             PART_DataLoad.Visibility = Visibility.Visible;
             PART_Data.Visibility = Visibility.Hidden;
 
-            var TaskView = Task.Run(() =>
+
+            ProgressionAchievements ProgressionGlobal = null;
+            ProgressionAchievements ProgressionLaunched = null;
+
+            AchievementsGraphicsDataCount GraphicsData = null;
+            string[] StatsGraphicsAchievementsLabels = null;
+            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection(); 
+
+
+            Task.Run(() =>
             {
                 GetListGame();
                 SetGraphicsAchievementsSources();
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                ProgressionGlobal = PluginDatabase.Progession();
+                ProgressionLaunched = PluginDatabase.ProgessionLaunched();
+
+                GraphicsData = PluginDatabase.GetCountByMonth(null, 4);
+                StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+
+
+                string icon = string.Empty;
+
+                if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
                 {
-                    var ProgressionGlobal = PluginDatabase.Progession();
-                    pbProgressionGlobalCount.Value = ProgressionGlobal.Unlocked;
-                    pbProgressionGlobalCount.Maximum = ProgressionGlobal.Total;
-                    labelProgressionGlobalCount.Content = ProgressionGlobal.Progression + "%";
-
-                    var ProgressionLaunched = PluginDatabase.ProgessionLaunched();
-                    pbProgressionLaunchedCount.Value = ProgressionLaunched.Unlocked;
-                    pbProgressionLaunchedCount.Maximum = ProgressionLaunched.Total;
-                    labelProgressionLaunchedCount.Content = ProgressionLaunched.Progression + "%";
-
-
-                    GraphicTitle.Content = string.Empty;
-
-
-                    // lvGames options
-                    if (!PluginDatabase.PluginSettings.Settings.lvGamesIcon100Percent)
+                    if (isRetroAchievements)
                     {
-                        lvGameIcon100Percent.Width = 0;
-                    }
-                    if (!PluginDatabase.PluginSettings.Settings.lvGamesIcon)
-                    {
-                        lvGameIcon.Width = 0;
-                    }
-                    if (!PluginDatabase.PluginSettings.Settings.lvGamesName)
-                    {
-                        lvGameName.Width = 0;
-                    }
-                    if (!PluginDatabase.PluginSettings.Settings.lvGamesLastSession)
-                    {
-                        lvGameLastActivity.Width = 0;
-                    }
-                    if (!PluginDatabase.PluginSettings.Settings.lvGamesSource)
-                    {
-                        lvGamesSource.Width = 0;
-                    }
-                    if (!PluginDatabase.PluginSettings.Settings.lvGamesProgression)
-                    {
-                        lvGameProgression.Width = 0;
-                    }
-
-                    GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
-                    AchievementsGraphicsDataCount GraphicsData = PluginDatabase.GetCountByMonth(null, 4);
-
-                    string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
-                    SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-                    StatsGraphicAchievementsSeries.Add(new LineSeries
-                    {
-                        Title = string.Empty,
-                        Values = GraphicsData.Series
-                    });
-
-                    AchievementsMonth.Series = StatsGraphicAchievementsSeries;
-                    AchievementsMonthX.Labels = StatsGraphicsAchievementsLabels;
-
-
-                    // Set game selected
-                    if (GameSelected != null)
-                    {
-                        for (int i = 0; i < ListviewGames.Items.Count; i++)
+                        if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
                         {
-                            if (((ListViewGames)ListviewGames.Items[i]).Name == GameSelected.Name)
-                            {
-                                ListviewGames.SelectedIndex = i;
-                            }
-                        }
-                    }
-                    ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
-
-                    string icon = string.Empty;
-
-                    if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
-                    {
-                        if (isRetroAchievements)
-                        {
-                            PART_GraphicBySource.Visibility = Visibility.Collapsed;
-                            Grid.SetColumn(PART_GraphicAllUnlocked, 0);
-                            Grid.SetColumnSpan(PART_GraphicAllUnlocked, 3);
-
-                            if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
-                            {
-                                icon = TransformIcon.Get("RetroAchievements") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
-                            }
-                        }
-                        else
-                        {
-                            if (PluginDatabase.PluginSettings.Settings.EnableLocal)
-                            {
-                                icon = TransformIcon.Get("Playnite") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playnite", SourceNameShort = "Playnite", IsCheck = false });
-
-                                icon = TransformIcon.Get("Hacked") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Hacked", SourceNameShort = "Hacked", IsCheck = false });
-                            }
-                            if (PluginDatabase.PluginSettings.Settings.EnableSteam)
-                            {
-                                icon = TransformIcon.Get("Steam") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Steam", SourceNameShort = "Steam", IsCheck = false });
-                            }
-                            if (PluginDatabase.PluginSettings.Settings.EnableGog)
-                            {
-                                icon = TransformIcon.Get("GOG") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "GOG", SourceNameShort = "GOG", IsCheck = false });
-                            }
-                            if (PluginDatabase.PluginSettings.Settings.EnableOrigin)
-                            {
-                                icon = TransformIcon.Get("Origin") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Origin", SourceNameShort = "Origin", IsCheck = false });
-                            }
-                            if (PluginDatabase.PluginSettings.Settings.EnableXbox)
-                            {
-                                icon = TransformIcon.Get("Xbox") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Xbox", SourceNameShort = "Xbox", IsCheck = false });
-                            }
-                            if (PluginDatabase.PluginSettings.Settings.EnableRpcs3Achievements)
-                            {
-                                icon = TransformIcon.Get("Rpcs3") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Rpcs3", SourceNameShort = "Rpcs3", IsCheck = false });
-                            }
-                            if (PluginDatabase.PluginSettings.Settings.EnablePsn)
-                            {
-                                icon = TransformIcon.Get("Playstation") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playstation", SourceNameShort = "Playstation", IsCheck = false });
-                            }
-                            if (PluginDatabase.PluginSettings.Settings.EnableManual)
-                            {
-                                icon = TransformIcon.Get("Manual Achievements") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
-                            }
+                            icon = TransformIcon.Get("RetroAchievements") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
                         }
                     }
                     else
@@ -243,15 +150,10 @@ namespace SuccessStory
                             icon = TransformIcon.Get("Xbox") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Xbox", SourceNameShort = "Xbox", IsCheck = false });
                         }
-                        if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
-                        {
-                            icon = TransformIcon.Get("RetroAchievements") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
-                        }
                         if (PluginDatabase.PluginSettings.Settings.EnableRpcs3Achievements)
                         {
-                            icon = TransformIcon.Get("RPCS3") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RPCS3", SourceNameShort = "Rpcs3", IsCheck = false });
+                            icon = TransformIcon.Get("Rpcs3") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Rpcs3", SourceNameShort = "Rpcs3", IsCheck = false });
                         }
                         if (PluginDatabase.PluginSettings.Settings.EnablePsn)
                         {
@@ -264,16 +166,110 @@ namespace SuccessStory
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
                         }
                     }
+                }
+                else
+                {
+                    if (PluginDatabase.PluginSettings.Settings.EnableLocal)
+                    {
+                        icon = TransformIcon.Get("Playnite") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playnite", SourceNameShort = "Playnite", IsCheck = false });
 
-                    FilterSource.ItemsSource = FilterSourceItems;
+                        icon = TransformIcon.Get("Hacked") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Hacked", SourceNameShort = "Hacked", IsCheck = false });
+                    }
+                    if (PluginDatabase.PluginSettings.Settings.EnableSteam)
+                    {
+                        icon = TransformIcon.Get("Steam") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Steam", SourceNameShort = "Steam", IsCheck = false });
+                    }
+                    if (PluginDatabase.PluginSettings.Settings.EnableGog)
+                    {
+                        icon = TransformIcon.Get("GOG") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "GOG", SourceNameShort = "GOG", IsCheck = false });
+                    }
+                    if (PluginDatabase.PluginSettings.Settings.EnableOrigin)
+                    {
+                        icon = TransformIcon.Get("Origin") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Origin", SourceNameShort = "Origin", IsCheck = false });
+                    }
+                    if (PluginDatabase.PluginSettings.Settings.EnableXbox)
+                    {
+                        icon = TransformIcon.Get("Xbox") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Xbox", SourceNameShort = "Xbox", IsCheck = false });
+                    }
+                    if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
+                    {
+                        icon = TransformIcon.Get("RetroAchievements") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
+                    }
+                    if (PluginDatabase.PluginSettings.Settings.EnableRpcs3Achievements)
+                    {
+                        icon = TransformIcon.Get("RPCS3") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RPCS3", SourceNameShort = "Rpcs3", IsCheck = false });
+                    }
+                    if (PluginDatabase.PluginSettings.Settings.EnablePsn)
+                    {
+                        icon = TransformIcon.Get("Playstation") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playstation", SourceNameShort = "Playstation", IsCheck = false });
+                    }
+                    if (PluginDatabase.PluginSettings.Settings.EnableManual)
+                    {
+                        icon = TransformIcon.Get("Manual Achievements") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
+                    }
+                }
+            })
+            .ContinueWith(antecedent =>
+            {
+                this.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                {
+                    GraphicTitle.Content = string.Empty;
+                    GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
+
+                    successViewData.FilterSourceItems = FilterSourceItems;
+
+                    successViewData.ListGames = ListGames;
+                    successViewData.TotalFoundCount = ListGames.Count;
+                    ListviewGames.Sorting();
 
 
-                    // Set Binding data
-                    DataContext = this;
+                    if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements && isRetroAchievements)
+                    {
+                        PART_GraphicBySource.Visibility = Visibility.Collapsed;
+                        Grid.SetColumn(PART_GraphicAllUnlocked, 0);
+                        Grid.SetColumnSpan(PART_GraphicAllUnlocked, 3);
+                    }
+
+
+                    successViewData.ProgressionGlobalCountValue = ProgressionGlobal.Unlocked;
+                    successViewData.ProgressionGlobalCountMax = ProgressionGlobal.Total;
+                    successViewData.ProgressionGlobal = ProgressionGlobal.Progression + "%";
+
+                    successViewData.ProgressionLaunchedCountValue = ProgressionLaunched.Unlocked;
+                    successViewData.ProgressionLaunchedCountMax = ProgressionLaunched.Total;
+                    successViewData.ProgressionLaunched = ProgressionLaunched.Progression + "%";
+
+
+                    StatsGraphicAchievementsSeries.Add(new LineSeries
+                    {
+                        Title = string.Empty,
+                        Values = GraphicsData.Series
+                    });
+                    AchievementsMonth.Series = StatsGraphicAchievementsSeries;
+                    AchievementsMonthX.Labels = StatsGraphicsAchievementsLabels;
+
+
+                    // Set game selected
+                    if (GameSelected != null)
+                    {
+                        ListviewGames.SelectedIndex = ListGames.IndexOf(ListGames.Where(x => x.Name == GameSelected.Name).FirstOrDefault());
+                    }
+                    ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
+
 
                     PART_DataLoad.Visibility = Visibility.Hidden;
                     PART_Data.Visibility = Visibility.Visible;
-                });
+                }));
             });
         }
 
@@ -285,8 +281,8 @@ namespace SuccessStory
             {
                 //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
                 var customerVmMapper = Mappers.Xy<CustomerForSingle>()
-                .X((value, index) => index)
-                .Y(value => value.Values);
+                    .X((value, index) => index)
+                    .Y(value => value.Values);
 
                 //lets save the mapper globally
                 Charting.For<CustomerForSingle>(customerVmMapper);
@@ -308,70 +304,30 @@ namespace SuccessStory
         /// </summary>
         public void GetListGame()
         {
-            string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
             try
             {
-                if (ListGames.Count == 0)
-                {
-                    var dataGameAchievements = PluginDatabase.Database.Where(x => x.HaveAchivements && x.IsDeleted == false);
-                    foreach (GameAchievements item in dataGameAchievements)
-                    {
-                        string SourceName = PlayniteTools.GetSourceName(_PlayniteApi, item.Id);
+                string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                        string GameId = item.Id.ToString();
-                        string GameName = item.Name;
-                        string GameIcon = string.Empty;
-                        string Icon100 = string.Empty;
-                        DateTime? GameLastActivity = null;
+                ListGames = PluginDatabase.Database.Where(x => x.HaveAchivements && !x.IsDeleted)
+                                .Select(x => new ListViewGames
+                                {
+                                    Icon100Percent = x.Is100Percent ? Path.Combine(pluginFolder, "Resources\\badge.png") : string.Empty,
+                                    Id = x.Id.ToString(),
+                                    Name = x.Name,
+                                    Icon = !x.Icon.IsNullOrEmpty() ? PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon) : string.Empty,
+                                    LastActivity = x.LastActivity?.ToLocalTime(),
+                                    SourceName = PlayniteTools.GetSourceName(PluginDatabase.PlayniteApi, x.Id),
+                                    SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(PluginDatabase.PlayniteApi, x.Id)),
+                                    ProgressionValue = x.Progression,
+                                    Total = x.Total,
+                                    TotalPercent = x.Progression + "%",
+                                    Unlocked = x.Unlocked,
+                                    IsManual = x.IsManual,
 
-                        GameAchievements successStories = PluginDatabase.Get(item.Id);
-
-                        if (item.LastActivity != null)
-                        {
-                            GameLastActivity = ((DateTime)item.LastActivity).ToLocalTime();
-                        }
-
-                        if (!item.Icon.IsNullOrEmpty())
-                        {
-                            GameIcon = _PlayniteApiDatabase.GetFullFilePath(item.Icon);
-                        }
-                            
-                        if (successStories.Is100Percent)
-                        {
-                            Icon100 = Path.Combine(pluginFolder, "Resources\\badge.png");
-                        }
-
-                        ListGames.Add(new ListViewGames()
-                        {
-                            Icon100Percent = Icon100,
-                            Id = GameId,
-                            Name = GameName,
-                            Icon = GameIcon,
-                            LastActivity = GameLastActivity,
-                            SourceName = SourceName,
-                            SourceIcon = TransformIcon.Get(SourceName),
-                            ProgressionValue = successStories.Progression,
-                            Total = successStories.Total,
-                            TotalPercent = successStories.Progression + "%",
-                            Unlocked = successStories.Unlocked,
-                            IsManual = successStories.IsManual,
-
-                            Common = successStories.Common,
-                            NoCommon = successStories.NoCommon,
-                            Rare = successStories.Rare
-                        });
-                    }
-
-                    Common.LogDebug(true, $"ListGames: {Serialization.ToJson(ListGames)}");
-                }
-
-                Application.Current.Dispatcher.BeginInvoke((Action)delegate
-                {
-                    ListviewGames.ItemsSource = ListGames;
-                    PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
-                    ListviewGames.Sorting();
-                });
+                                    Common = x.Common,
+                                    NoCommon = x.NoCommon,
+                                    Rare = x.Rare
+                                }).ToObservable();
             }
             catch (Exception ex)
             {
@@ -390,40 +346,10 @@ namespace SuccessStory
 
             if (GameSelected != null)
             {
-                listAchievementBorder.BorderThickness = new Thickness(0);
-
-                Guid GameId = Guid.Parse(GameSelected.Id);
-
-
-                if (pluginList == null)
-                {
-                    pluginList = new PluginList
-                    {
-                        IgnoreSettings = true,
-                        ForceOneCol = true,
-                        Height = SuccessStory_Achievements_List.ActualHeight,
-                    };
-                    SuccessStory_Achievements_List.Children.Add(pluginList);
-                }
-
-                pluginList.GameContext = PluginDatabase.PlayniteApi.Database.Games.Get(GameId);
-
-
                 GraphicTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitleDay");
 
-                if (pluginChart == null)
-                {
-                    pluginChart = new PluginChart
-                    {
-                        IgnoreSettings = true,
-                        Height = SuccessStory_Achievements_Graphics_Game.Height,
-                        AxisLimit = 8,
-                        LabelsRotation = 160
-                    };
-                    SuccessStory_Achievements_Graphics_Game.Children.Add(pluginChart);
-                }
-
-                pluginChart.GameContext = PluginDatabase.PlayniteApi.Database.Games.Get(GameId);
+                Guid GameId = Guid.Parse(GameSelected.Id);
+                successViewData.GameContext = PluginDatabase.PlayniteApi.Database.Games.Get(GameId);
             }
         }
 
@@ -431,57 +357,44 @@ namespace SuccessStory
         #region Filter
         private void Filter()
         {
-            List<ListViewGames> SourcesManual = new List<ListViewGames>();
+            ObservableCollection<ListViewGames> SourcesManual = new ObservableCollection<ListViewGames>();
+            if (SearchSources.Contains(resources.GetString("LOCSuccessStoryManualAchievements")))
+            {
+                SourcesManual = ListGames.Where(x => x.IsManual).ToObservable();
+            }
+
 
             // Filter
             if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
             {
-                if (SearchSources.IndexOf(resources.GetString("LOCSuccessStoryManualAchievements")) > -1)
-                {
-                    SourcesManual = ListGames.FindAll(x => x.IsManual);
-                }
-
-                ListviewGames.ItemsSource = ListGames.FindAll(
-                    x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1 && SearchSources.Contains(x.SourceName)
-                );
-
-                ListviewGames.ItemsSource = ((List<ListViewGames>)ListviewGames.ItemsSource).Union(SourcesManual).ToList();
-
-                PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+                successViewData.ListGames = ListGames.Where(x => x.Name.Contains(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase) && SearchSources.Contains(x.SourceName))
+                                                    .Union(SourcesManual).Distinct().ToObservable();
+                successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
+
                 return;
             }
 
             if (!TextboxSearch.Text.IsNullOrEmpty())
             {
-                ListviewGames.ItemsSource = ListGames.FindAll(
-                    x => x.Name.ToLower().IndexOf(TextboxSearch.Text) > -1
-                );
-                PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+                successViewData.ListGames = ListGames.Where(x => x.Name.Contains(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase)).ToObservable();
+                successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
+
                 return;
             }
 
             if (SearchSources.Count != 0)
             {
-                if (SearchSources.IndexOf(resources.GetString("LOCSuccessStoryManualAchievements")) > -1)
-                {
-                    SourcesManual = ListGames.FindAll(x => x.IsManual);
-                }
-
-                ListviewGames.ItemsSource = ListGames.FindAll(
-                    x => SearchSources.Contains(x.SourceName)
-                );
-
-                ListviewGames.ItemsSource = ((List<ListViewGames>)ListviewGames.ItemsSource).Union(SourcesManual).ToList();
-
-                PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+                successViewData.ListGames = ListGames.Where(x => SearchSources.Contains(x.SourceName)).Union(SourcesManual).Distinct().ToObservable();
+                successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
+
                 return;
             }
 
-            ListviewGames.ItemsSource = ListGames;
-            PART_TotalFoundCount.Text = ((List<ListViewGames>)ListviewGames.ItemsSource).Count.ToString();
+            successViewData.ListGames = ListGames;
+            successViewData.TotalFoundCount = successViewData.ListGames.Count;
             ListviewGames.Sorting();
         }
 
@@ -520,6 +433,120 @@ namespace SuccessStory
             Filter();
         }
         #endregion
+    }
+
+
+    public class SuccessViewData : ObservableObject
+    {
+        private ObservableCollection<ListViewGames> _ListGames = new ObservableCollection<ListViewGames>();
+        public ObservableCollection<ListViewGames> ListGames
+        {
+            get => _ListGames;
+            set
+            {
+                _ListGames = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<ListSource> _FilterSourceItems = new ObservableCollection<ListSource>();
+        public ObservableCollection<ListSource> FilterSourceItems
+        {
+            get => _FilterSourceItems;
+            set
+            {
+                _FilterSourceItems = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _TotalFoundCount = 100;
+        public int TotalFoundCount
+        {
+            get => _TotalFoundCount;
+            set
+            {
+                _TotalFoundCount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _ProgressionGlobalCountValue = 20;
+        public int ProgressionGlobalCountValue
+        {
+            get => _ProgressionGlobalCountValue;
+            set
+            {
+                _ProgressionGlobalCountValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _ProgressionGlobalCountMax= 100;
+        public int ProgressionGlobalCountMax
+        {
+            get => _ProgressionGlobalCountMax;
+            set
+            {
+                _ProgressionGlobalCountMax = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _ProgressionGlobal = "20%";
+        public string ProgressionGlobal
+        {
+            get => _ProgressionGlobal;
+            set
+            {
+                _ProgressionGlobal = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _ProgressionLaunchedCountValue = 40;
+        public int ProgressionLaunchedCountValue
+        {
+            get => _ProgressionLaunchedCountValue;
+            set
+            {
+                _ProgressionLaunchedCountValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _ProgressionLaunchedCountMax = 100;
+        public int ProgressionLaunchedCountMax
+        {
+            get => _ProgressionLaunchedCountMax;
+            set
+            {
+                _ProgressionLaunchedCountMax = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _ProgressionLaunched = "40%";
+        public string ProgressionLaunched
+        {
+            get => _ProgressionLaunched;
+            set
+            {
+                _ProgressionLaunched = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Game _GameContext;
+        public Game GameContext
+        {
+            get => _GameContext;
+            set
+            {
+                _GameContext = value;
+                OnPropertyChanged();
+            }
+        }
     }
 
 
