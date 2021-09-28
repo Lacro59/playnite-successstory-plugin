@@ -11,8 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using CommonPluginsShared.Extensions;
 using System.Net;
-using System.Text.RegularExpressions;
 
 namespace SuccessStory.Clients
 {
@@ -192,10 +192,8 @@ namespace SuccessStory.Clients
                 return null;
             }
 
-            string normalizedGameName = gameAchievements.Name.NormalizeTitleForComparison();
-            var searchResult = searchResults.Find(x =>
-                                    x.Name.NormalizeTitleForComparison().Equals(normalizedGameName, StringComparison.InvariantCultureIgnoreCase)
-                                    && PlatformAndProviderMatch(x, gameAchievements, source));
+            string normalizedGameName = PlayniteTools.NormalizeGameName(gameAchievements.Name);
+            var searchResult = searchResults.Find(x => PlayniteTools.NormalizeGameName(x.Name) == normalizedGameName && PlatformAndProviderMatch(x, gameAchievements, source));
 
             if (searchResult == null)
                 logger.Warn($"No matching game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
@@ -236,7 +234,7 @@ namespace SuccessStory.Clients
                     {
                         try
                         {
-                            string achievementName = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml).TrimWhitespace();
+                            string achievementName = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml).Trim();
                             float.TryParse(SearchAchievements.GetAttribute("data-average")
                                 .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
                                 .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out float Percent);

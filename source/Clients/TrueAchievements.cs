@@ -27,17 +27,18 @@ namespace SuccessStory.Clients
         public static List<TrueAchievementSearch> SearchGame(Game game, OriginData originData)
         {
             List<TrueAchievementSearch> ListSearchGames = new List<TrueAchievementSearch>();
-
-            string Url = string.Empty;
-            string UrlBase = string.Empty;
+            string Url;
+            string UrlBase;
             if (originData == OriginData.Steam)
             {
-                Url = string.Format(SteamUrlSearch, WebUtility.UrlEncode(PlayniteTools.NormalizeGameName(game.Name)));
+                //TODO: Decide if editions should be removed here
+                Url = string.Format(SteamUrlSearch, WebUtility.UrlEncode(PlayniteTools.NormalizeGameName(game.Name, true)));
                 UrlBase = @"https://truesteamachievements.com";
             }
             else
             {
-                Url = string.Format(XboxUrlSearch, WebUtility.UrlEncode(PlayniteTools.NormalizeGameName(game.Name)));
+                //TODO: Decide if editions should be removed here
+                Url = string.Format(XboxUrlSearch, WebUtility.UrlEncode(PlayniteTools.NormalizeGameName(game.Name, true)));
                 UrlBase = @"https://www.trueachievements.com";
             }
 
