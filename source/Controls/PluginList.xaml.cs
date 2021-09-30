@@ -108,9 +108,10 @@ namespace SuccessStory.Controls
             {
                 IsActivated = IsActivated,
                 Height = Height,
+
+                ItemSize = new Size(300, 65),
                 ColDefinied = ColDefinied,
 
-                RowDefinied = 1,
                 ItemsSource = new ObservableCollection<Achievements>()
             };
 
@@ -182,13 +183,13 @@ namespace SuccessStory.Controls
         }
 
         private void LbAchievements_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            int RowDefinied = (int)lbAchievements.ActualHeight / 70;
-            RowDefinied = (RowDefinied == 0) ? 1 : RowDefinied;
-            
+        {           
             if (ControlDataContext != null)
             {
-                ControlDataContext.RowDefinied = RowDefinied;
+                double Width = lbAchievements.ActualWidth / ControlDataContext.ColDefinied;
+                Width = Width > 10 ? Width : 11;
+
+                ControlDataContext.ItemSize = new Size(Width - 10, 65);
                 this.DataContext = null;
                 this.DataContext = ControlDataContext;
             }
@@ -207,9 +208,10 @@ namespace SuccessStory.Controls
     {
         public bool IsActivated { get; set; }
         public double Height { get; set; }
+
+        public Size ItemSize { get; set; }
         public int ColDefinied { get; set; }
 
-        public int RowDefinied { get; set; }
         public ObservableCollection<Achievements> ItemsSource { get; set; }
     }
 

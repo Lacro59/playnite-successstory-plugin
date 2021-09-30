@@ -854,7 +854,7 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompactLocked}" Name="PART_IntegrationCompactUnlocked">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompactUnlocked}" Name="PART_IntegrationCompactUnlocked">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked}" />
                                     </CheckBox>
                                 </Expander.Header>
@@ -915,7 +915,7 @@
                                 </Expander.Style>
 
                                 <Expander.Header>
-                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompactUnlocked}" Name="PART_IntegrationCompactLocked">
+                                    <CheckBox IsChecked="{Binding Settings.EnableIntegrationCompactLocked}" Name="PART_IntegrationCompactLocked">
                                         <Label Content="{DynamicResource LOCSuccessStoryIntegrationShowAchievementsCompactLocked}" />
                                     </CheckBox>
                                 </Expander.Header>

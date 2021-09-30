@@ -88,7 +88,7 @@ namespace SuccessStory.Controls
             ControlDataContext = new PluginCompactListDataContext
             {
                 IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompact,
-                Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight + 12,
+                Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight + 28,
 
                 PictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight,
                 ItemsSource = new ObservableCollection<Achievements>()
@@ -107,10 +107,10 @@ namespace SuccessStory.Controls
                 })).Wait();
                 
                 GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-
-                List<Achievements> ListAchievements = Serialization.GetClone(gameAchievements.Items);
-                ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
-                ControlDataContext.ItemsSource = ListAchievements.ToObservable();
+                ControlDataContext.ItemsSource = gameAchievements.Items.OrderByDescending(x => x.DateUnlocked)
+                                                        .ThenBy(x => x.IsUnlock)
+                                                        .ThenBy(x => x.Name)
+                                                        .ToObservable();
 
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
@@ -120,16 +120,6 @@ namespace SuccessStory.Controls
 
                 return true;
             });
-        }
-
-
-        private void VirtualizingStackPanel_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (e.Delta > 0)
-                ((VirtualizingStackPanel)sender).LineLeft();
-            else
-                ((VirtualizingStackPanel)sender).LineRight();
-            e.Handled = true;
         }
 
 

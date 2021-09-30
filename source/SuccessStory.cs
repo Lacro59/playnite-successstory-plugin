@@ -23,6 +23,7 @@ using CommonPluginsShared.Controls;
 using SuccessStory.Controls;
 using CommonPluginsShared.Models;
 using CommonPluginsPlaynite.Common;
+using System.Reflection;
 
 namespace SuccessStory
 {
@@ -39,6 +40,21 @@ namespace SuccessStory
 
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
+            // Manual dll load
+            try
+            {
+                string PluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string PathDLL = Path.Combine(PluginPath, "VirtualizingWrapPanel.dll");
+                if (File.Exists(PathDLL))
+                {
+                    var DLL = Assembly.LoadFile(PathDLL);
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
+
             PluginDatabase.InitializeClient(this);
 
             // Old database

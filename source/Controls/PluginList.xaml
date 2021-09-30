@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
         xmlns:playnitecontrols="clr-namespace:CommonPluginsPlaynite.Controls"
-        xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
+        xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="150"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
@@ -55,13 +55,13 @@
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <playnitecontrols:VirtualizingGridPanel Columns="{Binding ColDefinied}" Rows="{Binding RowDefinied}" />
+                    <wpftk:VirtualizingWrapPanel Orientation="Vertical" ItemSize="{Binding ItemSize}" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="0,5" Height="65">
+                    <Grid Margin="0,5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="58" />
                             <ColumnDefinition Width="*" />
