@@ -817,6 +817,12 @@ namespace SuccessStory.Services
 
         public override void SetThemesResources(Game game)
         {
+            if (game == null)
+            {
+                logger.Warn("game null in SetThemesResources()");
+                return;
+            }
+
             GameAchievements gameAchievements = Get(game, true);
 
             if (gameAchievements == null || !gameAchievements.HasData)
