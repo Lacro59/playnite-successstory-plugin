@@ -1130,7 +1130,7 @@
             </TabItem>
 
             <TabItem Header="{DynamicResource LOCSuccessStoryIgnoredGames}">
-                <ListBox Name="PART_IgnoredGames">
+                <ListBox Name="PART_IgnoredGames" Margin="0,10,0,0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,2">
