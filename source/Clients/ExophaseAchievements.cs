@@ -171,6 +171,12 @@ namespace SuccessStory.Clients
                 string UrlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
 
                 string StringJsonResult = Web.DownloadStringData(UrlSearch).GetAwaiter().GetResult();
+                if (StringJsonResult == "{\"success\":true,\"games\":false}")
+                {
+                    logger.Warn($"no Exophase result for {Name}");
+                    return ListSearchGames;
+                }
+
                 ExophaseSearchResult exophaseScheachResult = Serialization.FromJson<ExophaseSearchResult>(StringJsonResult);
 
                 var ListExophase = exophaseScheachResult?.games?.list;
