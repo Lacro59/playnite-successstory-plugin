@@ -154,6 +154,17 @@ namespace SuccessStory.Controls
                     ListAchievements = ListAchievements.FindAll(x => !x.IsUnlock);
                 }
 
+
+                if (ListAchievements.Count == 0)
+                {
+                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                    {
+                        MustDisplay = false;
+                    }));
+                    return true;
+                }
+
+
                 ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
 
                 if (IsUnlocked && ListAchievements.Count > 0)
