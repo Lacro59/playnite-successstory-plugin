@@ -7,8 +7,6 @@ using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using CommonPluginsShared.Models;
 using Playnite.SDK.Plugins;
 
@@ -17,13 +15,46 @@ namespace SuccessStory.Clients
     //https://gogapidocs.readthedocs.io/en/latest/
     class GogAchievements : GenericAchievements
     {
-        private GogAccountClient gogAPI;
+        protected static GogAccountClient _gogAPI;
+        internal static GogAccountClient gogAPI
+        {
+            get
+            {
+                if (_gogAPI == null)
+                {
+                    _gogAPI = new GogAccountClient(WebViewOffscreen);
+                }
+                return _gogAPI;
+            }
+
+            set
+            {
+                _gogAPI = value;
+            }
+        }
+
+        protected static IWebView _WebViewOffscreen;
+        internal static IWebView WebViewOffscreen
+        {
+            get
+            {
+                if (_WebViewOffscreen == null)
+                {
+                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
+                }
+                return _WebViewOffscreen;
+            }
+
+            set
+            {
+                _WebViewOffscreen = value;
+            }
+        }
 
 
         public GogAchievements() : base()
         {
-            var view = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
-            gogAPI = new GogAccountClient(view);
+
         }
 
 

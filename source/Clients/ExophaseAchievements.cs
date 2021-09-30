@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using CommonPluginsShared.Extensions;
 using System.Net;
 
 namespace SuccessStory.Clients
@@ -33,7 +32,23 @@ namespace SuccessStory.Clients
 
     class ExophaseAchievements : GenericAchievements
     {
-        private IWebView WebView;
+        protected static IWebView _WebViewOffscreen;
+        internal static IWebView WebViewOffscreen
+        {
+            get
+            {
+                if (_WebViewOffscreen == null)
+                {
+                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
+                }
+                return _WebViewOffscreen;
+            }
+
+            set
+            {
+                _WebViewOffscreen = value;
+            }
+        }
 
         private const string UrlExophaseSearch = @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
         private const string UrlExophaseLogin = @"https://www.exophase.com/login/";
@@ -42,7 +57,7 @@ namespace SuccessStory.Clients
 
         public ExophaseAchievements() : base()
         {
-            WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
+
         }
 
 
@@ -66,8 +81,8 @@ namespace SuccessStory.Clients
 
             try
             {
-                WebView.NavigateAndWait(searchResult.Url);
-                string DataExophase = WebView.GetPageSource();
+                WebViewOffscreen.NavigateAndWait(searchResult.Url);
+                string DataExophase = WebViewOffscreen.GetPageSource();
 
                 HtmlParser parser = new HtmlParser();
                 IHtmlDocument htmlDocument = parser.Parse(DataExophase);
@@ -214,8 +229,8 @@ namespace SuccessStory.Clients
 
             try
             {
-                WebView.NavigateAndWait(achievementsUrl);
-                string DataExophase = WebView.GetPageSource();
+                WebViewOffscreen.NavigateAndWait(achievementsUrl);
+                string DataExophase = WebViewOffscreen.GetPageSource();
 
                 HtmlParser parser = new HtmlParser();
                 IHtmlDocument htmlDocument = parser.Parse(DataExophase);
@@ -323,6 +338,7 @@ namespace SuccessStory.Clients
             return false;
         }
 
+
         public override bool IsConfigured()
         {
             throw new NotImplementedException();
@@ -363,9 +379,9 @@ namespace SuccessStory.Clients
 
         public bool GetIsUserLoggedIn()
         {
-            WebView.NavigateAndWait(UrlExophaseLogin);
+            WebViewOffscreen.NavigateAndWait(UrlExophaseLogin);
 
-            if (WebView.GetCurrentAddress().StartsWith(UrlExophaseLogin))
+            if (WebViewOffscreen.GetCurrentAddress().StartsWith(UrlExophaseLogin))
             {
                 logger.Warn("Exophase user is not connected");
                 return false;
@@ -373,6 +389,7 @@ namespace SuccessStory.Clients
             logger.Info("Exophase user is connected");
             return true;
         }
+
 
         public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
         {

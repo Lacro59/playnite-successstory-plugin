@@ -11,7 +11,7 @@ namespace SuccessStory.Clients
         internal static readonly ILogger logger = LogManager.GetLogger();
         internal static readonly IResourceProvider resources = new ResourceProvider();
 
-        internal SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        internal static SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
         internal string LocalLang { get; set; } = string.Empty;
 

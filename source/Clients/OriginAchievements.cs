@@ -7,7 +7,6 @@ using CommonPluginsPlaynite.PluginLibrary.OriginLibrary.Services;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Text;
 using CommonPluginsShared.Models;
@@ -17,12 +16,46 @@ namespace SuccessStory.Clients
 {
     class OriginAchievements : GenericAchievements
     {
-        OriginAccountClient originAPI;
+        protected static OriginAccountClient _originAPI;
+        internal static OriginAccountClient originAPI
+        {
+            get
+            {
+                if (_originAPI == null)
+                {
+                    _originAPI = new OriginAccountClient(WebViewOffscreen);
+                }
+                return _originAPI;
+            }
+
+            set
+            {
+                _originAPI = value;
+            }
+        }
+
+        protected static IWebView _WebViewOffscreen;
+        internal static IWebView WebViewOffscreen
+        {
+            get
+            {
+                if (_WebViewOffscreen == null)
+                {
+                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
+                }
+                return _WebViewOffscreen;
+            }
+
+            set
+            {
+                _WebViewOffscreen = value;
+            }
+        }
+
 
         public OriginAchievements() : base()
         {
-            var view = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
-            originAPI = new OriginAccountClient(view);
+
         }
 
 
@@ -196,6 +229,7 @@ namespace SuccessStory.Clients
             return Serialization.FromJson<GameStoreDataResponse>(stringData);
         }
 
+
         public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
         {
             if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary"))
@@ -232,6 +266,7 @@ namespace SuccessStory.Clients
             }
             return true;
         }
+
         public override bool EnabledInSettings(SuccessStorySettings settings)
         {
             return settings.EnableOrigin;

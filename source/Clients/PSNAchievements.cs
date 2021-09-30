@@ -21,14 +21,12 @@ namespace SuccessStory.Clients
 {
     class PSNAchievements : GenericAchievements
     {
-        private IWebView WebViewOffscreen;
-
         private const string UrlAchievements = @"https://us-tpy.np.community.playstation.net/trophy/v1/trophyTitles/{0}/trophyGroups/all/trophies?fields=@default,trophyRare,trophyEarnedRate&npLanguage={1}&sortKey=trophyId&iconSize=m";
 
 
         public PSNAchievements() : base()
         {
-            WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
+
         }
 
 
@@ -180,6 +178,7 @@ namespace SuccessStory.Clients
             return true;
 
         }
+
         public override bool EnabledInSettings(SuccessStorySettings settings)
         {
             return settings.EnablePsn;
