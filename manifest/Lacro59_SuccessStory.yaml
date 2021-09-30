@@ -34,4 +34,4 @@ Packages:
       - UI tweaks
       - Fixed many bugs
       - Improve performances and code optimizations (thanks to Jeshibu)
-	  - Added tag with time to full unlock
+      - Added tag with time to full unlock
