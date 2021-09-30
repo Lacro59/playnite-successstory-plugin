@@ -108,6 +108,7 @@
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Sintesi delle opzioni degli obiettivi</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">Mostra l'ultimo obiettivo sbloccato</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Mostra l'ultimo risultato su una riga</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Visualizzazione estensione</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Mostra l'indicatore di rarità sui risultati</sys:String>

@@ -108,6 +108,7 @@
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Opções do resumo de conquistas</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">Exibir a conquista mais recente desbloqueada</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Mostrar a última conquista em uma linha</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Exibição de extensão</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Exibir indicador de raridade sobre conquistas</sys:String>
