@@ -35,3 +35,4 @@ Packages:
       - Fixed many bugs
       - Improve performances and code optimizations (thanks to Jeshibu)
       - Added tag with time to full unlock
+      - Xbox360 achievements support (thanks to Jeshibu)
