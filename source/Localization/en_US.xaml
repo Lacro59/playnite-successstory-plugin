@@ -108,6 +108,7 @@
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Summary achievements options</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">Show the lastest achievement unlocked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Show the last achievement on its own line</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Extension view</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarity indicator on achievements</sys:String>
