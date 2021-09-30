@@ -25,3 +25,13 @@ Packages:
       - UI tweaks
       - Fixed many bugs
       - Improve performances
+  - Version: 2.2
+    RequiredApiVersion: 6.0.0
+    ReleaseDate: 2021-09-30
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.1/playnite-successstory-plugin_2_1.pext
+    Changelog:
+      - Playnite 9 beta version (not compatible with Playnite 8)
+      - UI tweaks
+      - Fixed many bugs
+      - Improve performances and code optimizations (thanks to Jeshibu)
+	  - Added tag with time to full unlock
