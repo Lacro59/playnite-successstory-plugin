@@ -721,7 +721,8 @@ namespace SuccessStory
             }
 
             // TODO Sourcelink
-            var sourceLinkNull = PluginDatabase.Database?.Select(x => x).Where(x => x.SourcesLink == null && x.IsManual && x.HaveAchivements);
+            var sourceLinkNull = PluginDatabase.Database?.Select(x => x)
+                                    .Where(x => x.SourcesLink == null && x.IsManual && x.HaveAchivements && PlayniteApi.Database.Games.Get(x.Id) != null);
             if (sourceLinkNull?.Count() > 0)
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(

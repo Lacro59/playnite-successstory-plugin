@@ -146,7 +146,7 @@ namespace SuccessStory
         public bool EnableIntegrationOrdinatesChart { get; set; } = false;
         public int IntegrationChartCountAbscissa { get; set; } = 11;
         public bool EnableIntegrationChartHideOptions { get; set; } = false;
-        public bool EnableIntegrationChartAllPerdiod { get; set; } = true;
+        public bool EnableIntegrationChartAllPerdiod { get; set; } = false;
         public bool EnableIntegrationChartCutPeriod { get; set; } = false;
 
 
