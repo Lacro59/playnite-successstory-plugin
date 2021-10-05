@@ -20,6 +20,7 @@ using CommonPluginsShared.Converters;
 using CommonPluginsControls.Controls;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Services
 {
@@ -686,31 +687,13 @@ namespace SuccessStory.Services
             Starcraft2
         }
 
-        private enum ExternalPlugin
-        {
-            None,
-            BattleNetLibrary,
-            GogLibrary,
-            OriginLibrary,
-            PSNLibrary,
-            SteamLibrary,
-            XboxLibrary,
-        }
-
-        private static readonly Dictionary<Guid, ExternalPlugin> PluginsById = new Dictionary<Guid, ExternalPlugin>
-        {
-            { new Guid("e3c26a3d-d695-4cb7-a769-5ff7612c7edd"), ExternalPlugin.BattleNetLibrary },
-            { new Guid("aebe8b7c-6dc3-4a66-af31-e7375c6b5e9e"), ExternalPlugin.GogLibrary },
-            { new Guid("85dd7072-2f20-4e76-a007-41035e390724"), ExternalPlugin.OriginLibrary },
-            { new Guid("e4ac81cb-1b1a-4ec9-8639-9a9633989a71"), ExternalPlugin.PSNLibrary },
-            { new Guid("cb91dfc9-b977-43bf-8e70-55f46e410fab"), ExternalPlugin.SteamLibrary },
-            { new Guid("7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287"), ExternalPlugin.XboxLibrary },
-        };
-
         private static AchievementSource GetAchievementSourceFromLibraryPlugin(SuccessStorySettings settings, Game game)
         {
-            if (!PluginsById.TryGetValue(game.PluginId, out ExternalPlugin pluginType))
+            ExternalPlugin pluginType = PlayniteTools.GetPluginType(game.PluginId);
+            if (pluginType == ExternalPlugin.None)
+            {
                 return AchievementSource.None;
+            }
 
             switch (pluginType)
             {
