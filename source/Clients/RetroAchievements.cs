@@ -53,7 +53,6 @@ namespace SuccessStory.Clients
 
         public override GameAchievements GetAchievements(Game game)
         {
-            string GameName = game.Name;
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
 
@@ -646,7 +645,7 @@ namespace SuccessStory.Clients
 
         private void ZipFileManafeRemove()
         {
-            string extractPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "tempZip");
+            string extractPath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "tempZip");
             if (Directory.Exists(extractPath))
             {
                 Directory.Delete(extractPath, true);

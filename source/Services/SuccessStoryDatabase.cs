@@ -173,6 +173,10 @@ namespace SuccessStory.Services
                     GameAchievements TEMPgameAchievements = Get(game, true);
                     ((RetroAchievements)achievementProvider).GameId = TEMPgameAchievements.RAgameID;
                 }
+                else if (retroAchievementsProvider != null)
+                {
+                    ((RetroAchievements)achievementProvider).GameId = 0;
+                }
 
                 gameAchievements = achievementProvider.GetAchievements(game);
 
