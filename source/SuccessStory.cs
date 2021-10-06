@@ -918,7 +918,6 @@ namespace SuccessStory
 
                                     if (ct.IsCancellationRequested)
                                     {
-                                        logger.Info($"TaskCacheImage - IsCancellationRequested");
                                         break;
                                     }
 
@@ -930,7 +929,6 @@ namespace SuccessStory
 
                                     if (ct.IsCancellationRequested)
                                     {
-                                        logger.Info($"TaskCacheImage - IsCancellationRequested");
                                         break;
                                     }
                                 }
@@ -939,6 +937,12 @@ namespace SuccessStory
                                     Common.LogError(ex, true, $"Error on TaskCacheImage");
                                 }
                             }
+                        }
+
+                        if (ct.IsCancellationRequested)
+                        {
+                            logger.Info($"TaskCacheImage - IsCancellationRequested");
+                            break;
                         }
                     }
 
