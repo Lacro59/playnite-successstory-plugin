@@ -557,11 +557,9 @@ namespace SuccessStory.Services
             {
                 for (int i = limit; i >= 0; i--)
                 {
-                    //GraphicsAchievementsLabels[(limit - i)] = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd");
                     GraphicsAchievementsLabels[(limit - i)] = (string)localDateConverter.Convert(DateTime.Now.AddDays(-i), null, null, null);
                     SourceAchievementsSeries.Add(new CustomerForSingle
                     {
-                        //Name = DateTime.Now.AddDays(-i).ToString("yyyy-MM-dd"),
                         Name = (string)localDateConverter.Convert(DateTime.Now.AddDays(-i), null, null, null),
                         Values = 0
                     });
@@ -575,9 +573,8 @@ namespace SuccessStory.Services
                         List<Achievements> temp = item.Value.Items;
                         foreach (Achievements itemAchievements in temp)
                         {
-                            if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
+                            if (itemAchievements.DateWhenUnlocked != null)
                             {
-                                //string tempDate = ((DateTime)itemAchievements.DateUnlocked).ToLocalTime().ToString("yyyy-MM-dd");
                                 string tempDate = (string)localDateConverter.Convert(((DateTime)itemAchievements.DateUnlocked).ToLocalTime(), null, null, null);
                                 int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
 
@@ -604,7 +601,7 @@ namespace SuccessStory.Services
                     if (Achievements != null && Achievements.Count > 0)
                     {
                         Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
-                        DateTime TempDateTime = Achievements.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Max()?.ToLocalTime() ?? DateTime.Now;
+                        DateTime TempDateTime = Achievements.Where(x => x.IsUnlock).Select(x => x.DateWhenUnlocked).Max()?.ToLocalTime() ?? DateTime.Now;
 
                         for (int i = limit; i >= 0; i--)
                         {
@@ -621,16 +618,19 @@ namespace SuccessStory.Services
 
                         for (int i = 0; i < Achievements.Count; i++)
                         {
-                            string tempDate = (string)localDateConverter.Convert(((DateTime)Achievements[i].DateUnlocked).ToLocalTime(), null, null, null);
-                            int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
-
-                            if (index >= 0 && index < (limit + 1))
+                            if (Achievements[i].DateWhenUnlocked != null)
                             {
-                                if (double.IsNaN(SourceAchievementsSeries[index].Values))
+                                string tempDate = (string)localDateConverter.Convert(((DateTime)Achievements[i].DateUnlocked).ToLocalTime(), null, null, null);
+                                int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
+
+                                if (index >= 0 && index < (limit + 1))
                                 {
-                                    SourceAchievementsSeries[index].Values = 0;
+                                    if (double.IsNaN(SourceAchievementsSeries[index].Values))
+                                    {
+                                        SourceAchievementsSeries[index].Values = 0;
+                                    }
+                                    SourceAchievementsSeries[index].Values += 1;
                                 }
-                                SourceAchievementsSeries[index].Values += 1;
                             }
                         }
 
