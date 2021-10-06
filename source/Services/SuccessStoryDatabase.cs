@@ -388,6 +388,10 @@ namespace SuccessStory.Services
                     {
                         tempSourcesLabels.Add("RPCS3");
                     }
+                    if (PluginSettings.Settings.EnableSc2Achievements || PluginSettings.Settings.EnableOverwatchAchievements)
+                    {
+                        tempSourcesLabels.Add("Battle.net");
+                    }
                     if (PluginSettings.Settings.EnableManual)
                     {
                         if (db != null && db.Count() > 0)
@@ -434,6 +438,10 @@ namespace SuccessStory.Services
                 if (PluginSettings.Settings.EnableRpcs3Achievements)
                 {
                     tempSourcesLabels.Add("RPCS3");
+                }
+                if (PluginSettings.Settings.EnableSc2Achievements || PluginSettings.Settings.EnableOverwatchAchievements)
+                {
+                    tempSourcesLabels.Add("Battle.net");
                 }
                 if (PluginSettings.Settings.EnableLocal)
                 {
@@ -487,7 +495,7 @@ namespace SuccessStory.Services
                     {
                         for (int i = 0; i < tempDataUnlocked.Count; i++)
                         {
-                            if (tempDataUnlocked[i].source == SourceName)
+                            if (tempDataUnlocked[i].source.Contains(SourceName, StringComparison.InvariantCultureIgnoreCase))
                             {
                                 tempDataTotal[i].value += 1;
                                 if (achievements.DateUnlocked != default(DateTime))

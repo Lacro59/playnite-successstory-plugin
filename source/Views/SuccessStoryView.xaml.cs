@@ -6,22 +6,16 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using Playnite.SDK;
-using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
 using SuccessStory.Models;
-using SuccessStory.Views.Interface;
 using System.Threading.Tasks;
 using SuccessStory.Services;
 using CommonPluginsControls.LiveChartsCommon;
-using SuccessStory.Controls;
 using System.Windows.Threading;
 using System.Threading;
 using System.Collections.ObjectModel;
@@ -165,6 +159,11 @@ namespace SuccessStory
                             icon = TransformIcon.Get("Manual Achievements") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
                         }
+                        if (PluginDatabase.PluginSettings.Settings.EnableManual)
+                        {
+                            icon = TransformIcon.Get("Battle.net") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Battle.net", SourceNameShort = "Battle.net", IsCheck = false });
+                        }
                     }
                 }
                 else
@@ -217,6 +216,11 @@ namespace SuccessStory
                         icon = TransformIcon.Get("Manual Achievements") + " ";
                         FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
                     }
+                    if (PluginDatabase.PluginSettings.Settings.EnableManual)
+                    {
+                        icon = TransformIcon.Get("Battle.net") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Battle.net", SourceNameShort = "Battle.net", IsCheck = false });
+                    }
                 }
             })
             .ContinueWith(antecedent =>
@@ -226,6 +230,7 @@ namespace SuccessStory
                     GraphicTitle.Content = string.Empty;
                     GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
 
+                    FilterSourceItems = FilterSourceItems.OrderBy(x => x.SourceName).ToObservable();
                     successViewData.FilterSourceItems = FilterSourceItems;
 
                     successViewData.ListGames = ListGames;
@@ -367,7 +372,7 @@ namespace SuccessStory
             // Filter
             if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
             {
-                successViewData.ListGames = ListGames.Where(x => x.Name.Contains(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase) && SearchSources.Contains(x.SourceName))
+                successViewData.ListGames = ListGames.Where(x => x.Name.Contains(TextboxSearch.Text, StringComparison.InvariantCultureIgnoreCase) && SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase))
                                                     .Union(SourcesManual).Distinct().ToObservable();
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
@@ -377,7 +382,7 @@ namespace SuccessStory
 
             if (!TextboxSearch.Text.IsNullOrEmpty())
             {
-                successViewData.ListGames = ListGames.Where(x => x.Name.Contains(TextboxSearch.Text, StringComparison.OrdinalIgnoreCase)).ToObservable();
+                successViewData.ListGames = ListGames.Where(x => x.Name.Contains(TextboxSearch.Text, StringComparison.InvariantCultureIgnoreCase)).ToObservable();
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
 
@@ -386,7 +391,7 @@ namespace SuccessStory
 
             if (SearchSources.Count != 0)
             {
-                successViewData.ListGames = ListGames.Where(x => SearchSources.Contains(x.SourceName)).Union(SourcesManual).Distinct().ToObservable();
+                successViewData.ListGames = ListGames.Where(x => SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase)).Union(SourcesManual).Distinct().ToObservable();
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
 
