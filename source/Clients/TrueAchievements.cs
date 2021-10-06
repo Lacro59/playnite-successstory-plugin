@@ -1,6 +1,7 @@
 ﻿using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using CommonPluginsShared;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace SuccessStory.Clients
 {
     class TrueAchievements
     {
+        internal static readonly ILogger logger = LogManager.GetLogger();
+
         public static string XboxUrlSearch = @"https://www.trueachievements.com/searchresults.aspx?search={0}";
         public static string SteamUrlSearch = @"https://truesteamachievements.com/searchresults.aspx?search={0}";
 
@@ -50,6 +53,11 @@ namespace SuccessStory.Clients
             try
             {
                 string WebData = Web.DownloadStringData(Url).GetAwaiter().GetResult();
+                if (WebData.IsNullOrEmpty())
+                {
+                    logger.Warn($"No data from {Url}");
+                    return ListSearchGames;
+                }
 
                 HtmlParser parser = new HtmlParser();
                 IHtmlDocument htmlDocument = parser.Parse(WebData);
@@ -127,6 +135,12 @@ namespace SuccessStory.Clients
             try
             {
                 string WebData = Web.DownloadStringData(UrlTrueAchievement).GetAwaiter().GetResult();
+                if (WebData.IsNullOrEmpty())
+                {
+                    logger.Warn($"No data from {UrlTrueAchievement}");
+                    return EstimateTimeToUnlock;
+                }
+
 
                 HtmlParser parser = new HtmlParser();
                 IHtmlDocument htmlDocument = parser.Parse(WebData);
