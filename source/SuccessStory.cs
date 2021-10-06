@@ -739,6 +739,11 @@ namespace SuccessStory
                         try
                         {
                             Game game = PlayniteApi.Database.Games.Get(gameAchievements.Id);
+                            if (game == null)
+                            {
+                                break;
+                            }
+
                             string SourceName = PlayniteTools.GetSourceName(PlayniteApi, game);
 
                             if (gameAchievements.IsManual)
