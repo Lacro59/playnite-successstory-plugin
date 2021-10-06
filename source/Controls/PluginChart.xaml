@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <ToggleButton Grid.Column="1" Content="{DynamicResource LOCCommonCut}" IsChecked="{Binding CutPeriod}"
+            <ToggleButton Grid.Column="1" Content="{DynamicResource LOCCommonCut}" IsChecked="{Binding CutPeriod}" IsEnabled="{Binding CutEnabled}"
                           Visibility="{Binding ElementName=PART_AllPeriod, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
                           Click="ToggleButtonCut_Click" />
             
@@ -77,7 +77,7 @@
                 </lvc:CartesianChart.AxisX>
 
                 <lvc:CartesianChart.AxisY>
-                    <lvc:Axis ShowLabels="{Binding EnableOrdinatesLabel}">
+                    <lvc:Axis ShowLabels="{Binding EnableOrdinatesLabel}" MinValue="-1" LabelFormatter="{Binding Formatter}">
                         <lvc:Axis.Separator>
                             <lvc:Separator>
                                 <lvc:Separator.Style>

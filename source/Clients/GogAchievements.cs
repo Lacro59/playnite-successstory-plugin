@@ -235,9 +235,9 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
-            string AccessToken = AccountInfo.accessToken;
-            string UserId = AccountInfo.userId;
-            string UserName = AccountInfo.username;
+            string AccessToken = AccountInfo?.accessToken;
+            string UserId = AccountInfo?.userId;
+            string UserName = AccountInfo?.username;
 
             return !AccessToken.IsNullOrEmpty() && !UserId.IsNullOrEmpty() && !UserName.IsNullOrEmpty();
         }

@@ -16,15 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace SuccessStory.Controls
@@ -152,6 +144,7 @@ namespace SuccessStory.Controls
                 HideChartOptions = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartHideOptions,
                 AllPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartAllPerdiod,
                 CutPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartCutPeriod,
+                CutEnabled = true,
 
                 Series = null,
                 Labels = null,
@@ -182,7 +175,15 @@ namespace SuccessStory.Controls
 
                     if (DateMin != null && DateMax != null)
                     {
-                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, ((int)((DateTime)DateMax - (DateTime)DateMin).TotalDays) + 1, CutPeriod);
+                        int limit = ((int)((DateTime)DateMax - (DateTime)DateMin).TotalDays) + 1;
+                        if (limit > 30)
+                        {
+                            CutPeriod = true;
+                            ControlDataContext.CutPeriod = true;
+                            ControlDataContext.CutEnabled = false;
+                        }
+
+                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, limit, CutPeriod);
                     }
                     else
                     {
@@ -197,18 +198,24 @@ namespace SuccessStory.Controls
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
-                    SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-                    StatsGraphicAchievementsSeries.Add(new LineSeries
+                    SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection
                     {
-                        Title = string.Empty,
-                        Values = GraphicsData.Series
-                    });
+                        new LineSeries
+                        {
+                            Title = string.Empty,
+                            Values = GraphicsData.Series
+                        }
+                    };
+
+
+                    ControlDataContext.Formatter = value => (value < 0) ? string.Empty : value.ToString();
 
                     ControlDataContext.Series = StatsGraphicAchievementsSeries;
                     ControlDataContext.Labels = StatsGraphicsAchievementsLabels;
 
 
                     ControlDataContext.EnableAxisLabel = !(StatsGraphicsAchievementsLabels.Count() > 16 && ControlDataContext.AllPeriod);
+
 
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;
@@ -235,7 +242,6 @@ namespace SuccessStory.Controls
             }
         }
 
-
         private void ToggleButtonCut_Click(object sender, RoutedEventArgs e)
         {
             if (GameContext != null)
@@ -259,10 +265,13 @@ namespace SuccessStory.Controls
         public bool HideChartOptions { get; set; }
         public bool AllPeriod { get; set; }
         public bool CutPeriod { get; set; }
+        public bool CutEnabled { get; set; }
 
         public SeriesCollection Series { get; set; }
         public IList<string> Labels { get; set; }
 
         public int LabelsRotation { get; set; }
+
+        public Func<double, string> Formatter { get; set; }
     }
 }

@@ -179,7 +179,7 @@
                                 </lvc:CartesianChart.AxisX>
                                 
                                 <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis Name="AchievementsMonthY" ShowLabels="True">
+                                    <lvc:Axis Name="AchievementsMonthY" ShowLabels="True" MinValue="0">
                                     </lvc:Axis>
                                 </lvc:CartesianChart.AxisY>
                             </lvc:CartesianChart>
