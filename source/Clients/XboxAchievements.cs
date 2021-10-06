@@ -144,10 +144,9 @@ namespace SuccessStory.Clients
             else if (!game.GameId.IsNullOrEmpty())
             {
                 var libTitle = GetTitleInfo(game.GameId).Result;
+                titleId = libTitle.titleId;
 
                 Common.LogDebug(true, $"XboxAchievements - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
-
-                titleId = libTitle.titleId;
             }
             return titleId;
         }
@@ -208,10 +207,17 @@ namespace SuccessStory.Clients
 
             foreach (var getAchievementsMethod in getAchievementMethods)
             {
-                var result = await getAchievementsMethod.Invoke(game, authorizationData);
-                if (result != null && result.Any())
+                try
+                { 
+                    var result = await getAchievementsMethod.Invoke(game, authorizationData);
+                    if (result != null && result.Any())
+                    {
+                        return result;
+                    }
+                }
+                catch (Exception ex)
                 {
-                    return result;
+                    Common.LogError(ex, false);
                 }
             }
 
@@ -232,7 +238,7 @@ namespace SuccessStory.Clients
             string xuid = authorizationData.DisplayClaims.xui[0].xid;
 
             Common.LogDebug(true, $"GetXboxAchievements() - name: {game.Name} - gameId: {game.GameId}");
-
+            
             string titleId = GetTitleId(game);
 
             string url = string.Format(AchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";

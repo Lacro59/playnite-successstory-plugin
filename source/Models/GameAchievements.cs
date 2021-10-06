@@ -50,7 +50,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                return ItemsStats.Count > 0;
+                return (bool)(ItemsStats?.Count > 0);
             }
         }
 
@@ -62,7 +62,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                return Items.Count > 0;
+                return (bool)(Items?.Count > 0);
             }
         }
 

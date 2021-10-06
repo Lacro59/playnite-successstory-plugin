@@ -336,7 +336,7 @@ namespace SuccessStory.Clients
                             }
                             else
                             {
-                                logger.Warn($"No matching achievements found for {achievementName} in {achievementsUrl}");
+                                logger.Warn($"No matching achievements found for {gameAchievements.Name} - {achievementName} in {achievementsUrl}");
                             }
                         }
                         catch (Exception ex)
