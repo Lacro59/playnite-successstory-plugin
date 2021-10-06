@@ -1,21 +1,18 @@
-﻿using Playnite.SDK;
-using Playnite.SDK.Models;
+﻿using Playnite.SDK.Models;
 using CommonPluginsShared;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
     class Rpcs3Achievements : GenericAchievements
     {
-        public Rpcs3Achievements() : base()
+        public Rpcs3Achievements() : base("RPCS3")
         {
 
         }
@@ -23,108 +20,135 @@ namespace SuccessStory.Clients
 
         public override GameAchievements GetAchievements(Game game)
         {
-            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
-            Result.Items = new List<Achievements>();
-            Result.HaveAchivements = true;
-
-            string TrophyDirectory = FindTrophyGameFolder(game);
-            string TrophyFile = "TROPUSR.DAT";
-            string TrophyFileDetails = "TROPCONF.SFM";
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
+            List<Achievements> AllAchievements = new List<Achievements>();
 
 
-            // Directory control
-            if (TrophyDirectory.IsNullOrEmpty())
+            if (IsConfigured())
             {
-                logger.Warn($"No Trophy directoy found for {game.Name}");
-                return Result;
-            }
-            if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFile)))
-            {
-                logger.Warn($"File {TrophyFile} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFile)}");
-                return Result;
-            }
-            if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFileDetails)))
-            {
-                logger.Warn($"File {TrophyFileDetails} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFileDetails)}");
-                return Result;
-            }
+                string TrophyDirectory = FindTrophyGameFolder(game);
+                string TrophyFile = "TROPUSR.DAT";
+                string TrophyFileDetails = "TROPCONF.SFM";
 
 
-            int TrophyCount = 0;
-            List<string> TrophyHexData = new List<string>();
-
-
-            // Trophies details
-            XDocument TrophyDetailsXml = XDocument.Load(Path.Combine(TrophyDirectory, TrophyFileDetails));
-
-            foreach (XElement TrophyXml in TrophyDetailsXml.Descendants("trophy"))
-            {
-                Console.WriteLine(TrophyXml);
-
-                int.TryParse(TrophyXml.Attribute("id").Value, out int TrophyDetailsId);
-                string TrophyType = TrophyXml.Attribute("ttype").Value;
-                string Name = TrophyXml.Element("name").Value;
-                string Description = TrophyXml.Element("detail").Value;
-
-                int Percent = 100;
-                if (TrophyType.ToLower() == "s")
+                // Directory control
+                if (TrophyDirectory.IsNullOrEmpty())
                 {
-                    Percent = 30;
+                    logger.Warn($"No Trophy directoy found for {game.Name}");
+                    return gameAchievements;
                 }
-                if (TrophyType.ToLower() == "g")
+                if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFile)))
                 {
-                    Percent = 10;
+                    logger.Warn($"File {TrophyFile} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFile)}");
+                    return gameAchievements;
+                }
+                if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFileDetails)))
+                {
+                    logger.Warn($"File {TrophyFileDetails} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFileDetails)}");
+                    return gameAchievements;
                 }
 
-                Result.Items.Add(new Achievements
+
+                int TrophyCount = 0;
+                List<string> TrophyHexData = new List<string>();
+
+
+                // Trophies details
+                XDocument TrophyDetailsXml = XDocument.Load(Path.Combine(TrophyDirectory, TrophyFileDetails));
+
+                foreach (XElement TrophyXml in TrophyDetailsXml.Descendants("trophy"))
                 {
-                    ApiName = string.Empty,
-                    Name = Name,
-                    Description = Description,
-                    UrlUnlocked = CopyTrophyFile(TrophyDirectory, "TROP" + TrophyDetailsId.ToString("000") + ".png"),
-                    UrlLocked = string.Empty,
-                    DateUnlocked = default(DateTime),
-                    Percent = Percent
-                });
+                    Console.WriteLine(TrophyXml);
+
+                    int.TryParse(TrophyXml.Attribute("id").Value, out int TrophyDetailsId);
+                    string TrophyType = TrophyXml.Attribute("ttype").Value;
+                    string Name = TrophyXml.Element("name").Value;
+                    string Description = TrophyXml.Element("detail").Value;
+
+                    int Percent = 100;
+                    if (TrophyType.ToLower() == "s")
+                    {
+                        Percent = 30;
+                    }
+                    if (TrophyType.ToLower() == "g")
+                    {
+                        Percent = 10;
+                    }
+
+                    AllAchievements.Add(new Achievements
+                    {
+                        ApiName = string.Empty,
+                        Name = Name,
+                        Description = Description,
+                        UrlUnlocked = CopyTrophyFile(TrophyDirectory, "TROP" + TrophyDetailsId.ToString("000") + ".png"),
+                        UrlLocked = string.Empty,
+                        DateUnlocked = default(DateTime),
+                        Percent = Percent
+                    });
+                }
+
+
+                TrophyCount = AllAchievements.Count;
+
+
+                // Trophies data
+                byte[] TrophyByte = File.ReadAllBytes(Path.Combine(TrophyDirectory, TrophyFile));
+                string hex = Tools.ToHex(TrophyByte);
+
+                List<string> splitHex = hex.Split(new[] { "0000000600000060000000" }, StringSplitOptions.None).ToList();
+                for (int i = (splitHex.Count - 1); i >= (splitHex.Count - TrophyCount); i--)
+                {
+                    TrophyHexData.Add(splitHex[i]);
+                }
+                TrophyHexData.Reverse();
+
+                foreach (string HexData in TrophyHexData)
+                {
+                    string stringHexId = HexData.Substring(0, 2);
+                    int Id = (int)Int64.Parse(stringHexId, System.Globalization.NumberStyles.HexNumber);
+
+                    string Unlocked = HexData.Substring(18, 8);
+                    bool IsUnlocked = (Unlocked == "00000001");
+
+                    // No unlock time
+                    if (IsUnlocked)
+                    {
+                        AllAchievements[Id].DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                    }
+                }
+            }
+            else
+            {
+                ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
             }
 
 
-            TrophyCount = Result.Items.Count;
+            gameAchievements.Items = AllAchievements;
 
 
-            // Trophies data
-            byte[] TrophyByte = File.ReadAllBytes(Path.Combine(TrophyDirectory, TrophyFile));
-            string hex = Tools.ToHex(TrophyByte);
+            return gameAchievements;
+        }
 
-            List<string> splitHex = hex.Split(new[] { "0000000600000060000000" }, StringSplitOptions.None).ToList();
-            for (int i = (splitHex.Count - 1); i >= (splitHex.Count - TrophyCount); i--)
+
+        #region Configuration
+        public override bool ValidateConfiguration()
+        {
+            if (CachedConfigurationValidationResult == null)
             {
-                //TrophyHexData.Add(splitHex[i].Substring(0, 192));
-                TrophyHexData.Add(splitHex[i]);
-            }
-            TrophyHexData.Reverse();
+                CachedConfigurationValidationResult = IsConfigured();
 
-            foreach (string HexData in TrophyHexData)
-            {
-                string stringHexId = HexData.Substring(0, 2);
-                int Id = (int)Int64.Parse(stringHexId, System.Globalization.NumberStyles.HexNumber);
-
-                string Unlocked = HexData.Substring(18, 8);
-                bool IsUnlocked = (Unlocked == "00000001");
-
-                // No unlock time
-                if (IsUnlocked)
+                if (!(bool)CachedConfigurationValidationResult)
                 {
-                    Result.Items[Id].DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
                 }
             }
 
-            Result.Total = Result.Items.Count;
-            Result.Unlocked = Result.Items.FindAll(x => x.DateUnlocked != default(DateTime)).Count();
-            Result.Locked = Result.Items.FindAll(x => x.DateUnlocked == default(DateTime)).Count();
-            Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
+            if (!(bool)CachedConfigurationValidationResult)
+            {
+                ShowNotificationPluginErrorMessage();
+            }
 
-            return Result;
+            return (bool)CachedConfigurationValidationResult;
         }
 
 
@@ -132,23 +156,27 @@ namespace SuccessStory.Clients
         {
             if (PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder.IsNullOrEmpty())
             {
+                logger.Warn("No RPCS3 configured folder");
                 return false;
             }
 
             if (!Directory.Exists(Path.Combine(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder, "trophy")))
             {
+                logger.Warn($"No RPCS3 trophy folder in {PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder}");
                 return false;
             }
             
             return true;
         }
 
-        public override bool IsConnected()
+        public override bool EnabledInSettings()
         {
-            throw new NotImplementedException();
+            return PluginDatabase.PluginSettings.Settings.EnableRpcs3Achievements;
         }
+        #endregion
 
 
+        #region RPCS3
         private string FindTrophyGameFolder(Game game)
         {
             string TrophyGameFolder = string.Empty;
@@ -199,33 +227,13 @@ namespace SuccessStory.Clients
             {
                 File.Copy(Path.Combine(TrophyDirectory, TrophyFile), Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder, TrophyFile));
             }
-            catch
+            catch (Exception ex)
             {
-
+                Common.LogError(ex, false);
             }
 
             return Path.Combine("rpcs3", NameFolder, TrophyFile);
         }
-
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
-        {
-            if (!IsConfigured())
-            {
-                logger.Warn("Bad RPCS3 configuration");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-Rpcs3-NoConfig",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-            return true;
-        }
-
-        public override bool EnabledInSettings(SuccessStorySettings settings)
-        {
-            return settings.EnableRpcs3Achievements;
-        }
+        #endregion
     }
 }

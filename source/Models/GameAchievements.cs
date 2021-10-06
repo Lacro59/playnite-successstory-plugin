@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SuccessStory.Clients;
 using Playnite.SDK.Data;
 using CommonPluginsShared;
@@ -44,6 +42,9 @@ namespace SuccessStory.Models
         }
 
 
+        /// <summary>
+        /// Indicate if the game has stats data.
+        /// </summary>
         [DontSerialize]
         public virtual bool HasDataStats
         {
@@ -56,7 +57,14 @@ namespace SuccessStory.Models
         /// <summary>
         /// Indicate if the game has achievements.
         /// </summary>
-        public bool HaveAchivements { get; set; }
+        [DontSerialize]
+        public bool HasAchivements
+        {
+            get
+            {
+                return Items.Count > 0;
+            }
+        }
 
         /// <summary>
         /// Indicate if the game is a rom.
@@ -85,17 +93,38 @@ namespace SuccessStory.Models
         /// <summary>
         /// Total achievements for the game.
         /// </summary>
-        public int Total { get; set; }
+        [DontSerialize]
+        public int Total
+        {
+            get
+            {
+                return Items.Count();
+            }
+        }
 
         /// <summary>
         /// Total unlocked achievements for the game.
         /// </summary>
-        public int Unlocked { get; set; }
+        [DontSerialize]
+        public int Unlocked
+        {
+            get
+            {
+                return Items.FindAll(x => x.IsUnlock).Count;
+            }
+        }
 
         /// <summary>
         /// Total locked achievements for the game.
         /// </summary>
-        public int Locked { get; set; }
+        [DontSerialize]
+        public int Locked
+        {
+            get
+            {
+                return Items.FindAll(x => !x.IsUnlock).Count;
+            }
+        }
 
         /// <summary>
         /// Estimate time to unlock all achievements.
@@ -105,7 +134,14 @@ namespace SuccessStory.Models
         /// <summary>
         /// Percentage
         /// </summary>
-        public int Progression { get; set; }
+        [DontSerialize]
+        public int Progression
+        {
+            get
+            {
+                return (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
+            }
+        }
 
         /// <summary>
         /// Indicate if the achievements have added manualy.
@@ -168,6 +204,7 @@ namespace SuccessStory.Models
                 return achRaretyStats;
             }
         }
+
 
         // only for RA
         public int RAgameID { get; set; }

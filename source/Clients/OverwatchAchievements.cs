@@ -1,10 +1,10 @@
 ﻿using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using CommonPluginsShared;
+using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Models;
 using Playnite.SDK;
 using Playnite.SDK.Models;
-using Playnite.SDK.Plugins;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -58,23 +58,18 @@ namespace SuccessStory.Clients
             new ColorElement { Name = "ow-zenyatta-color", Color = "#e1c931" }
         };
 
-        public OverwatchAchievements() : base()
+
+        public OverwatchAchievements() : base("Overwatch", CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
-            string Lang = CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
-            UrlOverwatchProfilLocalised = UrlOverwatchProfil + Lang;
+            UrlOverwatchProfilLocalised = UrlOverwatchProfil + LocalLang;
         }
+
 
         public override GameAchievements GetAchievements(Game game)
         {
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
             List<GameStats> AllStats = new List<GameStats>();
-            string GameName = game.Name;
-            int Total = 0;
-            int Unlocked = 0;
-            int Locked = 0;
-
-            GameAchievements Result = PluginDatabase.GetDefault(game);
-            Result.Items = AllAchievements;
 
 
             string UrlProfil = string.Empty;
@@ -137,16 +132,6 @@ namespace SuccessStory.Clients
 
                                     Category = Category
                                 });
-
-                                Total++;
-                                if (IsUnlocked)
-                                {
-                                    Unlocked++;
-                                }
-                                else
-                                {
-                                    Locked++;
-                                }
                             }
                             catch (Exception ex)
                             {
@@ -166,48 +151,106 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    logger.Error($"No Overwath profil connected");
-                    PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-BattleNet-NoAuthenticateOverwatch",
-                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch")}",
-                        NotificationType.Error,
-                        () =>
-                        {
-                            using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(400, 600))
-                            {
-                                WebView.Navigate(UrlOverwatchLogin);
-                                WebView.OpenDialog();
-                            }
-                        }
-                    ));
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch"));
                 }
             }
-
-            Result.Name = GameName;
-            Result.HaveAchivements = Total > 0;
-            Result.Total = Total;
-            Result.Unlocked = Unlocked;
-            Result.Locked = Locked;
-            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
-            Result.Items = AllAchievements;
-            Result.ItemsStats = AllStats;
-
-            if (Result.HaveAchivements)
+            else
             {
-                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                exophaseAchievements.SetRarety(Result, Services.SuccessStoryDatabase.AchievementSource.Overwatch);
+                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"));
+            }
 
-                Result.SourcesLink = new SourceLink
+
+            gameAchievements.Items = AllAchievements;
+            gameAchievements.ItemsStats = AllStats;
+
+
+            // Set source link
+            if (gameAchievements.HasAchivements)
+            { 
+                gameAchievements.SourcesLink = new SourceLink
                 {
                     GameName = "Overwatch",
-                    Name = "Battle.Net",
+                    Name = "Battle.net",
                     Url = UrlOverwatchProfilLocalised + UrlProfil
                 };
             }
 
-            return Result;
+            // Set rarety from Exophase
+            if (gameAchievements.HasAchivements)
+            {
+                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Overwatch);
+            }
+
+
+            return gameAchievements;
         }
 
+
+        #region Configuration
+        public override bool ValidateConfiguration()
+        {
+            if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary"))
+            {
+                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsBattleNetDisabled"));
+                return false;
+            }
+
+            if (CachedConfigurationValidationResult == null)
+            {
+                CachedConfigurationValidationResult = IsConnected();
+
+                if (!(bool)CachedConfigurationValidationResult)
+                {
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"));
+                }
+            }
+
+            if (!(bool)CachedConfigurationValidationResult)
+            {
+                ShowNotificationPluginErrorMessage();
+            }
+
+            return (bool)CachedConfigurationValidationResult;
+        }
+
+
+        public override bool IsConnected()
+        {
+            if (CachedIsConnectedResult == null)
+            {
+                var ApiStatus = GetApiStatus();
+                if (ApiStatus == null)
+                {
+                    CachedIsConnectedResult = false;
+                }
+
+                // TODO Force auth in game profile
+                if (ApiStatus != null && ApiStatus.authenticated)
+                {
+                    Task.Run(() =>
+                    {
+                        using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                        {
+                            WebView.Navigate(UrlOverwatchProfil);
+                        }
+                    });
+                }
+
+                CachedIsConnectedResult = ApiStatus == null ? false : ApiStatus.authenticated;
+            }
+
+            return (bool)CachedIsConnectedResult;
+        }
+
+        public override bool EnabledInSettings()
+        {
+            return PluginDatabase.PluginSettings.Settings.EnableOverwatchAchievements;
+        }
+        #endregion
+
+
+        #region Battle.net - Overwatch
         private List<GameStats> GetUsersStats(IHtmlDocument htmlDocument)
         {
             List<GameStats> AllStats = new List<GameStats>();
@@ -254,21 +297,6 @@ namespace SuccessStory.Clients
                 Name = "PlayerEndorsement",
                 Value = double.Parse(htmlDocument.QuerySelector(".EndorsementIcon-tooltip .u-center").InnerHtml)
             });
-            //AllStats.Add(new GameStats
-            //{
-            //    Name = "PlayerEndorsementFrame",
-            //    ImageUrl = htmlDocument.QuerySelector("").GetAttribute("style")
-            //        .Replace("background-image:url(", string.Empty).Replace(")", string.Empty).Trim()
-            //});
-            //AllStats.Add(new GameStats
-            //{
-            //    Name = "PlayerEndorsementRank",
-            //    ImageUrl = htmlDocument.QuerySelector("").GetAttribute("style")
-            //        .Replace("background-image:url(", string.Empty).Replace(")", string.Empty).Trim()
-            //});
-
-
-            //var CareerStatsSection = htmlDocument.QuerySelectorAll("#competitive .career-section")[1];
 
 
             AllStats = ParseDateMode(htmlDocument, AllStats, "QuickPlay");
@@ -347,7 +375,6 @@ namespace SuccessStory.Clients
         {
             foreach (var element in DataPogress.QuerySelectorAll(".ProgressBar"))
             {
-
                 try
                 {
                     string Name = element.QuerySelector(".ProgressBar-title").InnerHtml;
@@ -450,70 +477,39 @@ namespace SuccessStory.Clients
 
             return AllStats;
         }
+        #endregion
 
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
+
+        #region Errors
+        public override void ShowNotificationPluginNoAuthenticate(string Message)
         {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary"))
-            {
-                logger.Warn("Battle.net is enable then disabled");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-BattleNet-disabled",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetDisabled")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
+            LastErrorId = $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noauthenticate";
+            LastErrorMessage = Message;
+            logger.Warn($"{ClientName} user is not authenticated");
 
-            Common.LogDebug(true, $"VerifToAddOrShowOverwatch: {CachedConfigurationValidationResult}");
-
-            if (CachedConfigurationValidationResult == null)
-            {
-                CachedConfigurationValidationResult = IsConnected();
-            }
-
-            Common.LogDebug(true, $"VerifToAddOrShowOverwatch: {CachedConfigurationValidationResult}");
-
-            if (!CachedConfigurationValidationResult.Value)
-            {
-                logger.Warn("Battle.net user is not authenticated");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-BattleNet-NoAuthenticate",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-            return true;
-        }
-
-        public override bool IsConnected()
-        {
-            var ApiStatus = base.GetApiStatus();
-
-            if (ApiStatus == null)
-            {
-                return false;
-            }
-
-            if (ApiStatus.authenticated)
-            {
-                Task.Run(() =>
+            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-disabled",
+                $"SuccessStory\r\n{Message}",
+                NotificationType.Error,
+                () =>
                 {
-                    using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                    using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(400, 600))
                     {
-                        WebView.Navigate(UrlOverwatchProfil);
+                        WebView.Navigate(UrlOverwatchLogin);
+                        WebView.OpenDialog();
+
+                        ResetCachedConfigurationValidationResult();
                     }
-                });
-            }
-
-            return ApiStatus.authenticated;
+                }
+            ));
         }
+        #endregion
+    }
 
-        public override bool EnabledInSettings(SuccessStorySettings settings)
-        {
-            return settings.EnableOverwatchAchievements;
-        }
+
+    public class ColorElement
+    {
+        public string Name { get; set; }
+        public string Color { get; set; }
     }
 }

@@ -68,7 +68,7 @@
             <!--Game selection-->
             <Grid Grid.Column="2" Grid.Row="0" Name="PART_GridListSearch">
                 <ListBox Name="lbSelectable" SelectionChanged="LbSelectable_SelectionChanged" Height="{Binding ElementName=PART_GridListSearch, Path=ActualHeight}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,5">
@@ -170,8 +170,8 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </Border.Style>
-                                        
-                                        <Label Name="PART_Label" Content="{Binding Platform, FallbackValue='Platform'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                                        <Label Name="PART_Label" Content="{Binding PlatformsFirst, FallbackValue='Platform'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                     </Border>
 
                                     <Button Grid.Column="4" Tag="{Binding Url}" Click="Button_ClickWeb" Content="&#xe971;" FontFamily="{DynamicResource CommonFont}" />

@@ -119,13 +119,8 @@ namespace SuccessStory.Services
                         if (PlayniteApi.Database.Games.Get(item.Key) != null)
                         {
                             GameAchievements gameAchievements = SuccessStory.PluginDatabase.Get(item.Key, true);
-
-                            gameAchievements.HaveAchivements = item.Value.HaveAchivements;
+                            
                             gameAchievements.IsEmulators = item.Value.IsEmulators;
-                            gameAchievements.Total = item.Value.Total;
-                            gameAchievements.Unlocked = item.Value.Unlocked;
-                            gameAchievements.Locked = item.Value.Locked;
-                            gameAchievements.Progression = item.Value.Progression;
                             gameAchievements.Items = item.Value.Achievements;
 
                             Thread.Sleep(10);

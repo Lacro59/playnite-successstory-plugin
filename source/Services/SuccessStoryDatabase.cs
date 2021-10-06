@@ -30,8 +30,6 @@ namespace SuccessStory.Services
 
         private bool _isRetroachievements { get; set; }
 
-        public static CumulErrors ListErrors = new CumulErrors();
-
         private static Dictionary<AchievementSource, GenericAchievements> _achievementProviders;
         private static readonly object _achievementProvidersLock = new object();
         internal static Dictionary<AchievementSource, GenericAchievements> AchievementProviders
@@ -72,11 +70,16 @@ namespace SuccessStory.Services
 
             foreach (var achievementProvider in AchievementProviders.Values)
             {
-                Task.Run(() =>
+                if (achievementProvider.EnabledInSettings())
                 {
-                    if (achievementProvider.EnabledInSettings(PluginSettings.Settings))
-                        achievementProvider.ValidateConfiguration(PlayniteApi, Plugin, PluginSettings.Settings);
-                });
+                    Task.Run(() => 
+                    {
+                        // Wait extension database are loaded
+                        System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
+
+                        achievementProvider.ValidateConfiguration();
+                    });
+                }
             }
         }
 
@@ -160,10 +163,7 @@ namespace SuccessStory.Services
             // Generate database only this source
             if (VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, game))
             {
-                Common.LogDebug(true, $"VerifToAddOrShow({game.Name}, {achievementSource}) - OK");
-
                 var achievementProvider = AchievementProviders[achievementSource];
-
                 var retroAchievementsProvider = achievementProvider as RetroAchievements;
 
                 if (retroAchievementsProvider != null && !SuccessStory.IsFromMenu)
@@ -171,14 +171,14 @@ namespace SuccessStory.Services
                     // use a chached RetroAchievements game ID to skip retrieving that if possible
                     // TODO: store this with the game somehow so we don't need to get this from the achievements object
                     GameAchievements TEMPgameAchievements = Get(game, true);
-                    ((RetroAchievements)achievementProvider).gameID = TEMPgameAchievements.RAgameID;
+                    ((RetroAchievements)achievementProvider).GameId = TEMPgameAchievements.RAgameID;
                 }
 
                 gameAchievements = achievementProvider.GetAchievements(game);
 
                 if (retroAchievementsProvider != null)
                 {
-                    gameAchievements.RAgameID = retroAchievementsProvider.gameID;
+                    gameAchievements.RAgameID = retroAchievementsProvider.GameId;
                 }
 
                 Common.LogDebug(true, $"Achievements for {game.Name} - {achievementSource} - {Serialization.ToJson(gameAchievements)}");
@@ -198,7 +198,7 @@ namespace SuccessStory.Services
 
         private GameAchievements SetEstimateTimeToUnlock(Game game, GameAchievements gameAchievements)
         {
-            if (gameAchievements.HaveAchivements)
+            if (gameAchievements.HasAchivements)
             {
                 try
                 {
@@ -267,7 +267,7 @@ namespace SuccessStory.Services
 
                 try
                 {
-                    var db = Database.Items.Where(x => x.Value.HaveAchivements && !x.Value.IsDeleted).ToList();
+                    var db = Database.Items.Where(x => x.Value.HasAchivements && !x.Value.IsDeleted).ToList();
                     foreach (var item in db)
                     {
                         List<Achievements> temp = item.Value.Items;
@@ -476,7 +476,7 @@ namespace SuccessStory.Services
             }
 
 
-            db = Database.Items.Where(x => x.Value.HaveAchivements && !x.Value.IsDeleted).ToList();
+            db = Database.Items.Where(x => x.Value.HasAchivements && !x.Value.IsDeleted).ToList();
             foreach (var item in db)
             {
                 try
@@ -569,7 +569,7 @@ namespace SuccessStory.Services
 
                 try
                 {
-                    var db = Database.Items.Where(x => x.Value.HaveAchivements && !x.Value.IsDeleted).ToList();
+                    var db = Database.Items.Where(x => x.Value.HasAchivements && !x.Value.IsDeleted).ToList();
                     foreach (var item in db)
                     {
                         List<Achievements> temp = item.Value.Items;
@@ -762,11 +762,15 @@ namespace SuccessStory.Services
         {
             var source = GetAchievementSourceFromLibraryPlugin(settings, game);
             if (source != AchievementSource.None)
+            {
                 return source;
+            }
 
             source = GetAchievementSourceFromEmulator(settings, game);
             if (source != AchievementSource.None)
+            {
                 return source;
+            }
 
             //any game can still get local achievements when that's enabled
             return settings.EnableLocal ? AchievementSource.Local : AchievementSource.None;
@@ -784,10 +788,14 @@ namespace SuccessStory.Services
         {
             var achievementSource = GetAchievementSource(settings, game);
             if (!AchievementProviders.TryGetValue(achievementSource, out var achievementProvider))
+            {
                 return false;
+            }
 
-            if (achievementProvider.EnabledInSettings(settings))
-                return achievementProvider.ValidateConfiguration(playniteApi, plugin, settings);
+            if (achievementProvider.EnabledInSettings())
+            {
+                return achievementProvider.ValidateConfiguration();
+            }
 
             Common.LogDebug(true, $"VerifToAddOrShow() find no action for {achievementSource}");
             return false;
@@ -909,13 +917,13 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                var db = Database.Where(x => x.IsManual && x.HaveAchivements);
+                var db = Database.Where(x => x.IsManual && x.HasAchivements);
                 activateGlobalProgress.ProgressMaxValue = (double)db.Count();
                 string CancelText = string.Empty;
 
                 var exophaseAchievements = new ExophaseAchievements();
                 var steamAchievements = new SteamAchievements();
-                bool SteamConfig = steamAchievements.GetSteamConfig();
+                bool SteamConfig = steamAchievements.IsConfigured();
 
                 foreach (GameAchievements gameAchievements in db)
                 {
@@ -973,13 +981,13 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                var db = Database.Where(x => x.IsManual && x.HaveAchivements);
+                var db = Database.Where(x => x.IsManual && x.HasAchivements);
                 activateGlobalProgress.ProgressMaxValue = (double)db.Count();
                 string CancelText = string.Empty;
 
                 var exophaseAchievements = new ExophaseAchievements();
                 var steamAchievements = new SteamAchievements();
-                bool SteamConfig = steamAchievements.GetSteamConfig();
+                bool SteamConfig = steamAchievements.IsConfigured();
 
                 foreach (GameAchievements gameAchievements in db)
                 {
@@ -1008,7 +1016,7 @@ namespace SuccessStory.Services
             GetPluginTags();
             GameAchievements gameAchievements = Get(game, true);
 
-            if (gameAchievements.HaveAchivements)
+            if (gameAchievements.HasAchivements)
             {
                 try
                 {
@@ -1220,7 +1228,7 @@ namespace SuccessStory.Services
 
             try
             {
-                var db = Database.Items.Where(x => x.Value.HaveAchivements).ToList();
+                var db = Database.Items.Where(x => x.Value.HasAchivements).ToList();
                 foreach (var item in db)
                 {
                     var GameAchievements = item.Value;
@@ -1259,7 +1267,7 @@ namespace SuccessStory.Services
 
             try
             {
-                var db = Database.Items.Where(x => x.Value.Playtime > 0 && x.Value.HaveAchivements).ToList();
+                var db = Database.Items.Where(x => x.Value.Playtime > 0 && x.Value.HasAchivements).ToList();
                 foreach (var item in db)
                 {
                     var GameAchievements = item.Value;

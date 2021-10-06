@@ -22,6 +22,12 @@ namespace SuccessStory.Clients
         }
 
 
+        /// <summary>
+        /// Search list game on truesteamachievements or trueachievements.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="originData"></param>
+        /// <returns></returns>
         public static List<TrueAchievementSearch> SearchGame(Game game, OriginData originData)
         {
             List<TrueAchievementSearch> ListSearchGames = new List<TrueAchievementSearch>();
@@ -108,19 +114,22 @@ namespace SuccessStory.Clients
             return ListSearchGames;
         }
 
+
+        /// <summary>
+        /// Get the estimate time from game url on truesteamachievements or trueachievements.
+        /// </summary>
+        /// <param name="UrlTrueAchievement"></param>
+        /// <returns></returns>
         public static EstimateTimeToUnlock GetEstimateTimeToUnlock(string UrlTrueAchievement)
         {
             EstimateTimeToUnlock EstimateTimeToUnlock = new EstimateTimeToUnlock();
-
 
             try
             {
                 string WebData = Web.DownloadStringData(UrlTrueAchievement).GetAwaiter().GetResult();
 
-
                 HtmlParser parser = new HtmlParser();
                 IHtmlDocument htmlDocument = parser.Parse(WebData);
-
 
                 int NumberDataCount = 0;
                 foreach (var SearchElement in htmlDocument.QuerySelectorAll("div.game div.l1 div"))
@@ -150,7 +159,7 @@ namespace SuccessStory.Clients
                         {
                             if (index == 0)
                             {
-                                int.TryParse(item, out EstimateTimeMin);
+                                int.TryParse(item.Replace("+", string.Empty), out EstimateTimeMin);
                             }
                             else
                             {
@@ -175,7 +184,6 @@ namespace SuccessStory.Clients
             {
                 Common.LogError(ex, false);
             }
-
 
             return EstimateTimeToUnlock;
         }

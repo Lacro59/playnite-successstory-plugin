@@ -284,7 +284,7 @@ namespace SuccessStory.Views
 
         private bool CheckLogged()
         {
-            return exophaseAchievements.GetIsUserLoggedIn();
+            return exophaseAchievements.IsConnected();
         }
         #endregion
 

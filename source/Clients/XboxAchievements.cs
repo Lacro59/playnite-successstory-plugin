@@ -15,7 +15,6 @@ using SuccessStory.Models;
 using CommonPluginsShared.Models;
 using System.Security.Principal;
 using CommonPlayniteShared.Common;
-using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
@@ -27,13 +26,9 @@ namespace SuccessStory.Clients
         private readonly string liveTokensPath;
         private readonly string xstsLoginTokesPath;
 
-        private bool HasTestLogged = false;
-        private bool loggedIn = false;
 
-        public XboxAchievements() : base()
+        public XboxAchievements() : base("Xbox", CodeLang.GetXboxLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
-            LocalLang = CodeLang.GetXboxLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
-
             liveTokensPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath + "\\..\\7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287", "login.json");
             xstsLoginTokesPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath + "\\..\\7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287", "xsts.json");
         }
@@ -41,43 +36,100 @@ namespace SuccessStory.Clients
 
         public override GameAchievements GetAchievements(Game game)
         {
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
-            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
-            Result.Items = AllAchievements;
+
+
             try
             {
-                var authData = GetTokenForRequest().GetAwaiter().GetResult();
+                var authData = GetSavedXstsTokens();
+                if (authData == null)
+                {
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"));
+                    return gameAchievements;
+                }
 
                 AllAchievements = GetXboxAchievements(game, authData).GetAwaiter().GetResult();
-
-                Result.Name = game.Name;
-                Result.HaveAchivements = AllAchievements.HasItems();
-                Result.Total = AllAchievements.Count;
-                Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != default(DateTime)).Count;
-                Result.Locked = AllAchievements.FindAll(x => x.DateUnlocked == default(DateTime)).Count;
-                Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
-                Result.Items = AllAchievements;
-
-                if (Result.HaveAchivements)
-                {
-                    ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                    exophaseAchievements.SetRarety(Result, Services.SuccessStoryDatabase.AchievementSource.Xbox);
-
-                    Result.SourcesLink = new SourceLink
-                    {
-                        GameName = game.Name,
-                        Name = "Xbox",
-                        Url = $"https://account.xbox.com/en-US/GameInfoHub?titleid={GetTitleId(game)}&selectedTab=achievementsTab&activetab=main:mainTab2"
-                    };
-                }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, "Failed to get Xbox achievements");
+                ShowNotificationPluginError(ex);
             }
 
-            return Result;
+            
+            gameAchievements.Items = AllAchievements;
+
+
+            // Set source link
+            if (gameAchievements.HasAchivements)
+            {
+                gameAchievements.SourcesLink = new SourceLink
+                {
+                    GameName = game.Name,
+                    Name = "Xbox",
+                    Url = $"https://account.xbox.com/en-US/GameInfoHub?titleid={GetTitleId(game)}&selectedTab=achievementsTab&activetab=main:mainTab2"
+                };
+            }
+
+            // Set rarety from Exophase
+            if (gameAchievements.HasAchivements)
+            {
+                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Xbox);
+            }
+
+
+            return gameAchievements;
         }
+
+
+        #region Configuration
+        public override bool ValidateConfiguration()
+        {
+            if (PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary"))
+            {
+                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsXboxDisabled"));
+                return false;
+            }
+            else
+            {
+                if (CachedConfigurationValidationResult == null)
+                {
+                    CachedConfigurationValidationResult = IsConnected();
+
+                    if (!(bool)CachedConfigurationValidationResult)
+                    {
+                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"));
+                    }
+
+                    if (!(bool)CachedConfigurationValidationResult)
+                    {
+                        ShowNotificationPluginErrorMessage();
+                    }
+                }
+
+                return (bool)CachedConfigurationValidationResult;
+            }
+        }
+
+
+        public override bool IsConnected()
+        {
+            if (CachedIsConnectedResult == null)
+            {
+                CachedIsConnectedResult = GetIsUserLoggedIn().GetAwaiter().GetResult();
+            }
+
+            return (bool)CachedIsConnectedResult;
+        }
+
+        public override bool EnabledInSettings()
+        {
+            return PluginDatabase.PluginSettings.Settings.EnableXbox;
+        }
+        #endregion
+
+
 
         private string GetTitleId(Game game)
         {
@@ -98,55 +150,6 @@ namespace SuccessStory.Clients
                 titleId = libTitle.titleId;
             }
             return titleId;
-        }
-
-        private async Task<AuthorizationData> GetTokenForRequest()
-        {
-            if (!File.Exists(xstsLoginTokesPath))
-            {
-                logger.Warn("XboxAchievements - User is not authenticated - File not exist");
-                PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-Xbox-notAuthenticate",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
-                    NotificationType.Error
-                ));
-
-                return null;
-            }
-            else
-            {
-                if (!HasTestLogged)
-                {
-                    loggedIn = await GetIsUserLoggedIn();
-
-                    if (!loggedIn && File.Exists(liveTokensPath))
-                    {
-                        await RefreshTokens();
-                        loggedIn = await GetIsUserLoggedIn();
-                    }
-                    HasTestLogged = true;
-                }
-
-                if (!loggedIn)
-                {
-                    logger.Warn("XboxAchievements - User is not authenticated");
-                    PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-Xbox-notAuthenticate",
-                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
-                        NotificationType.Error
-                    ));
-
-                    return null;
-                }
-            }
-
-            var tokens = Serialization.FromJson<AuthorizationData>(
-                        Encryption.DecryptFromFile(
-                            xstsLoginTokesPath,
-                            Encoding.UTF8,
-                            WindowsIdentity.GetCurrent().User.Value));
-
-            return tokens;
         }
 
         private async Task<TContent> GetSerializedContentFromUrl<TContent>(string url, AuthorizationData authData, string contractVersion) where TContent : class
@@ -189,22 +192,29 @@ namespace SuccessStory.Clients
             }
         }
 
+
         private async Task<List<Achievements>> GetXboxAchievements(Game game, AuthorizationData authorizationData)
         {
-            var getAchievementMethods = new List<Func<Game, AuthorizationData, Task<List<Achievements>>>> {
+            var getAchievementMethods = new List<Func<Game, AuthorizationData, Task<List<Achievements>>>>
+            {
                 GetXboxOneAchievements,
                 GetXbox360Achievements
             };
 
             if (game.Platforms.Any(p => p.SpecificationId == "xbox360"))
+            {
                 getAchievementMethods.Reverse();
+            }
 
             foreach (var getAchievementsMethod in getAchievementMethods)
             {
                 var result = await getAchievementsMethod.Invoke(game, authorizationData);
                 if (result != null && result.Any())
+                {
                     return result;
+                }
             }
+
             return null;
         }
 
@@ -297,6 +307,7 @@ namespace SuccessStory.Clients
             return achievements;
         }
 
+
         private static Achievements ConvertToAchievement(XboxOneAchievement xboxAchievement)
         {
             return new Achievements
@@ -330,15 +341,6 @@ namespace SuccessStory.Clients
             };
         }
 
-        public override bool IsConfigured()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsConnected()
-        {
-            return GetIsUserLoggedIn().GetAwaiter().GetResult();
-        }
 
         /// <summary>
         /// 
@@ -369,6 +371,7 @@ namespace SuccessStory.Clients
                 return null;
             }
         }
+
 
         public async Task<bool> GetIsUserLoggedIn()
         {
@@ -496,6 +499,7 @@ namespace SuccessStory.Clients
             }
         }
 
+
         public async Task<TitleHistoryResponse.Title> GetTitleInfo(string pfn)
         {
             var tokens = GetSavedXstsTokens();
@@ -532,48 +536,8 @@ namespace SuccessStory.Clients
             }
         }
 
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
-        {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary"))
-            {
-                logger.Warn("Xbox is enable then disabled");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-Xbox-disabled",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxDisabled")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-
-            Common.LogDebug(true, $"VerifToAddOrShowXbox: {CachedConfigurationValidationResult}");
-
-            if (CachedConfigurationValidationResult == null)
-            {
-                CachedConfigurationValidationResult = IsConnected();
-            }
-
-            Common.LogDebug(true, $"VerifToAddOrShowXbox: {CachedConfigurationValidationResult}");
-
-            if (!(bool)CachedConfigurationValidationResult)
-            {
-                logger.Warn("Xbox user is not authenticated");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-Xbox-NoAuthenticate",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-            return true;
-
-        }
-        public override bool EnabledInSettings(SuccessStorySettings settings)
-        {
-            return settings.EnableXbox;
-        }
     }
+
 
     public class PagingInfo
     {

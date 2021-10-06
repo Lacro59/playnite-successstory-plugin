@@ -149,11 +149,6 @@ namespace SuccessStory.Views
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
             gameAchievements.Items = ((ObservableCollection<Achievements>)lbAchievements.ItemsSource).ToList();
-
-            gameAchievements.Unlocked = gameAchievements.Items.FindAll(x => x.DateUnlocked != null && x.DateUnlocked != default(DateTime)).Count;
-            gameAchievements.Locked = gameAchievements.Total - gameAchievements.Unlocked;
-            gameAchievements.Progression = (gameAchievements.Total != 0) ? (int)Math.Ceiling((double)(gameAchievements.Unlocked * 100 / gameAchievements.Total)) : 0;
-
             PluginDatabase.Update(gameAchievements);
 
             ((Window)this.Parent).Close();

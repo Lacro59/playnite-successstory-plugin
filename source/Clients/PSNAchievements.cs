@@ -11,11 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using PlayniteTools = CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -24,7 +19,7 @@ namespace SuccessStory.Clients
         private const string UrlAchievements = @"https://us-tpy.np.community.playstation.net/trophy/v1/trophyTitles/{0}/trophyGroups/all/trophies?fields=@default,trophyRare,trophyEarnedRate&npLanguage={1}&sortKey=trophyId&iconSize=m";
 
 
-        public PSNAchievements() : base()
+        public PSNAchievements() : base("PSN")
         {
 
         }
@@ -32,68 +27,69 @@ namespace SuccessStory.Clients
 
         public override GameAchievements GetAchievements(Game game)
         {
-            List<Achievements> AllAchievements = new List<Achievements>();
             string GameName = game.Name;
-            bool HaveAchivements = false;
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
+            List<Achievements> AllAchievements = new List<Achievements>();
             int Total = 0;
             int Unlocked = 0;
             int Locked = 0;
 
-            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
-
             string Url = string.Empty;
-            try
+
+
+            if (IsConnected())
             {
-                string Lang = CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
-                string GameId = game.GameId.Split('#')[2];
-                Url = string.Format(UrlAchievements, GameId, Lang);
-                string WebResult = Web.DownloadStringData(Url, GetPsnToken()).GetAwaiter().GetResult();
-
-                Trophies trophies = Serialization.FromJson<Trophies>(WebResult);
-                foreach(Trophie trophie in trophies.trophies)
+                try
                 {
-                    HaveAchivements = true;
-                    float.TryParse(trophie.trophyEarnedRate.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+                    string Lang = CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+                    string GameId = game.GameId.Split('#')[2];
+                    Url = string.Format(UrlAchievements, GameId, Lang);
+                    string WebResult = Web.DownloadStringData(Url, GetPsnToken()).GetAwaiter().GetResult();
 
-                    AllAchievements.Add(new Achievements
+                    Trophies trophies = Serialization.FromJson<Trophies>(WebResult);
+                    foreach (Trophie trophie in trophies.trophies)
                     {
-                        Name = (trophie.trophyName.IsNullOrEmpty()) ? resources.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
-                        Description = trophie.trophyDetail,
-                        UrlUnlocked = (trophie.trophyIconUrl.IsNullOrEmpty()) ? "hidden_trophy.png" : trophie.trophyIconUrl,
-                        DateUnlocked = (trophie.fromUser.earnedDate == null) ? default(DateTime) : trophie.fromUser.earnedDate,
-                        Percent = Percent
-                    });
+                        float.TryParse(trophie.trophyEarnedRate.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
 
-                    Total++;
+                        AllAchievements.Add(new Achievements
+                        {
+                            Name = (trophie.trophyName.IsNullOrEmpty()) ? resources.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
+                            Description = trophie.trophyDetail,
+                            UrlUnlocked = (trophie.trophyIconUrl.IsNullOrEmpty()) ? "hidden_trophy.png" : trophie.trophyIconUrl,
+                            DateUnlocked = (trophie.fromUser.earnedDate == null) ? default(DateTime) : trophie.fromUser.earnedDate,
+                            Percent = Percent
+                        });
 
-                    if (trophie.fromUser.earned)
-                    {
-                        Unlocked++;
-                    }
-                    else
-                    {
-                        Locked++;
+                        Total++;
+
+                        if (trophie.fromUser.earned)
+                        {
+                            Unlocked++;
+                        }
+                        else
+                        {
+                            Locked++;
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Common.LogError(ex, false);
+                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"));
             }
 
 
-            Result.Items = AllAchievements;
-            Result.Name = GameName;
-            Result.HaveAchivements = HaveAchivements;
-            Result.Total = Total;
-            Result.Unlocked = Unlocked;
-            Result.Locked = Locked;
-            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
-            Result.Items = AllAchievements;
+            gameAchievements.Items = AllAchievements;
 
-            if (Result.HaveAchivements)
+
+            // Set source link
+            if (gameAchievements.HasAchivements)
             {
-                Result.SourcesLink = new SourceLink
+                gameAchievements.SourcesLink = new SourceLink
                 {
                     GameName = GameName,
                     Name = "PSN",
@@ -101,16 +97,66 @@ namespace SuccessStory.Clients
                 };
             }
 
-            return Result;
+
+            return gameAchievements;
         }
 
 
+        #region Configuration
+        public override bool ValidateConfiguration()
+        {
+            if (CommonPluginsShared.PlayniteTools.IsDisabledPlaynitePlugins("PSNLibrary"))
+            {
+                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsPsnDisabled"));
+                return false;
+            }
+            else
+            {
+                if (CachedConfigurationValidationResult == null)
+                {
+                    CachedConfigurationValidationResult = IsConnected();
+
+                    if (!(bool)CachedConfigurationValidationResult)
+                    {
+                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"));
+                    }
+                }
+
+                if (!(bool)CachedConfigurationValidationResult)
+                {
+                    ShowNotificationPluginErrorMessage();
+                }
+
+                return (bool)CachedConfigurationValidationResult;
+            }
+        }
+
+
+        public override bool IsConnected()
+        {
+            if (CachedIsConnectedResult == null)
+            {
+                CachedIsConnectedResult = !GetPsnToken().IsNullOrEmpty();
+            }
+
+            return (bool)CachedIsConnectedResult;
+        }
+
+        public override bool EnabledInSettings()
+        {
+            return PluginDatabase.PluginSettings.Settings.EnablePsn;
+        }
+        #endregion
+
+
+        #region PSN
         public string GetPsnToken()
         {
             string PSNDataPath = PluginDatabase.Paths.PluginUserDataPath + "\\..\\e4ac81cb-1b1a-4ec9-8639-9a9633989a71";
 
             if (Directory.Exists(PSNDataPath))
             {
+                // TODO Edit this when is fixed in Playnite
                 PSNAccountClient pSNAccountClient = new PSNAccountClient(PluginDatabase.PlayniteApi, PSNDataPath);
                 if (pSNAccountClient.GetIsUserLoggedIn().GetAwaiter().GetResult())
                 {
@@ -118,70 +164,12 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-Psn-NoAuthenticate",
-                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate")}",
-                        NotificationType.Error
-                    ));
-                    logger.Warn("PSN user is not authenticate");
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"));
                 }
             }
 
             return null;
         }
-
-
-        public override bool IsConnected()
-        {
-            return !GetPsnToken().IsNullOrEmpty();
-        }
-
-        public override bool IsConfigured()
-        {
-            return !GetPsnToken().IsNullOrEmpty();
-        }
-
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
-        {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("PSNLibrary"))
-            {
-                logger.Warn("PSN is enable then disabled");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-Psn-disabled",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnDisabled")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-            else
-            {
-                PSNAchievements pSNAchievements = new PSNAchievements();
-
-                if (CachedConfigurationValidationResult == null)
-                {
-                    CachedConfigurationValidationResult = pSNAchievements.IsConnected();
-                }
-
-                if (!(bool)CachedConfigurationValidationResult)
-                {
-                    logger.Warn("PSN user is not authenticate");
-                    playniteAPI.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-Psn-NoAuthenticate",
-                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate")}",
-                        NotificationType.Error,
-                        () => plugin.OpenSettingsView()
-                    ));
-                    return false;
-                }
-            }
-            return true;
-
-        }
-
-        public override bool EnabledInSettings(SuccessStorySettings settings)
-        {
-            return settings.EnablePsn;
-        }
+        #endregion
     }
 }

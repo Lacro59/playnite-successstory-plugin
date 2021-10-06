@@ -10,27 +10,26 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using CommonPluginsShared.Models;
-using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
     class OriginAchievements : GenericAchievements
     {
-        protected static OriginAccountClient _originAPI;
-        internal static OriginAccountClient originAPI
+        protected static OriginAccountClient _OriginAPI;
+        internal static OriginAccountClient OriginAPI
         {
             get
             {
-                if (_originAPI == null)
+                if (_OriginAPI == null)
                 {
-                    _originAPI = new OriginAccountClient(WebViewOffscreen);
+                    _OriginAPI = new OriginAccountClient(WebViewOffscreen);
                 }
-                return _originAPI;
+                return _OriginAPI;
             }
 
             set
             {
-                _originAPI = value;
+                _OriginAPI = value;
             }
         }
 
@@ -52,47 +51,35 @@ namespace SuccessStory.Clients
             }
         }
 
+        private const string UrlPersonas = @"https://gateway.ea.com/proxy/identity/pids/{0}/personas?namespaceName=cem_ea_id";
+        private const string UrlGameStoreData = @"https://api2.origin.com/ecommerce2/public/supercat/{0}/{1}?country={2}";
+        private const string UrlAchievements = @"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true";
 
-        public OriginAchievements() : base()
+
+        public OriginAchievements() : base(
+            "Origin", 
+            CodeLang.GetOriginLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language),
+            CodeLang.GetOriginLangCountry(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
 
         }
 
 
-        /// <summary>
-        /// Get all achievements for a Origin game.
-        /// </summary>
-        /// <param name="PlayniteApi"></param>
-        /// <param name="Id"></param>
-        /// <returns></returns>
         public override GameAchievements GetAchievements(Game game)
         {
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
-            string GameName = game.Name;
-            bool HaveAchivements = false;
-            int Total = 0;
-            int Unlocked = 0;
-            int Locked = 0;
 
-            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
-            Result.Items = AllAchievements;
 
-            string url = string.Empty;
-
-            // Only if user is logged. 
-            if (originAPI.GetIsUserLoggedIn())
+            if (IsConnected())
             {
                 // Get informations from Origin plugin.
-                string accessToken = originAPI.GetAccessToken().access_token;
-                string personasId = GetPersonas(originAPI.GetAccessToken());
-                string origineGameId = GetOrigineGameAchievementId(PluginDatabase.PlayniteApi, game.Id);
+                string accessToken = OriginAPI.GetAccessToken().access_token;
+                string personasId = GetPersonas(OriginAPI.GetAccessToken());
+                string origineGameId = GetOrigineGameAchievementId(game.Id);
 
-                Common.LogDebug(true, $"Origin token: {accessToken}");
-
-                string lang = CodeLang.GetOriginLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
                 // Achievements (default return in english)
-                url = string.Format(@"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true",
-                    personasId, origineGameId, lang);
+                string Url = string.Format(UrlAchievements, personasId, origineGameId, LocalLang);
 
                 using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
                 {
@@ -101,15 +88,11 @@ namespace SuccessStory.Clients
                         webClient.Headers.Add("X-AuthToken", accessToken);
                         webClient.Headers.Add("accept", "application/vnd.origin.v3+json; x-cache/force-write");
 
-                        var stringData = webClient.DownloadString(url);
-
-                        dynamic AchievementsData = Serialization.FromJson<dynamic>(stringData);
+                        string DownloadString = webClient.DownloadString(Url);
+                        dynamic AchievementsData = Serialization.FromJson<dynamic>(DownloadString);
 
                         foreach (var item in AchievementsData["achievements"])
                         {
-                            var val = item.Value;
-                            HaveAchivements = true;
-
                             AllAchievements.Add(new Achievements
                             {
                                 Name = (string)item.Value["name"],
@@ -119,16 +102,6 @@ namespace SuccessStory.Clients
                                 DateUnlocked = ((string)item.Value["state"]["a_st"] == "ACTIVE") ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)item.Value["u"]),
                                 Percent = (float)item.Value["achievedPercentage"]
                             });
-
-                            Total += 1;
-                            if ((string)item.Value["state"]["a_st"] == "ACTIVE")
-                            {
-                                Locked += 1;
-                            }
-                            else
-                            {
-                                Unlocked += 1;
-                            }
                         }
                     }
                     catch (WebException ex)
@@ -141,60 +114,100 @@ namespace SuccessStory.Clients
                                 case HttpStatusCode.NotFound: // HTTP 404
                                     break;
                                 default:
-                                    Common.LogError(ex, false, $"Failed to load from {url}. ");
+                                    ShowNotificationPluginWebError(ex, Url);
                                     break;
                             }
-                            return Result;
+
+                            return gameAchievements;
                         }
                     }
                 }
             }
+            else
+            {
+                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"));
+            }
 
-            Result.Name = GameName;
-            Result.HaveAchivements = HaveAchivements;
-            Result.Total = Total;
-            Result.Unlocked = Unlocked;
-            Result.Locked = Locked;
-            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
-            Result.Items = AllAchievements;
 
-            if (Result.HaveAchivements)
+            gameAchievements.Items = AllAchievements;
+
+
+            // Set source link
+            if (gameAchievements.HasAchivements)
             {
                 string LangUrl = CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
 
-                Result.SourcesLink = new SourceLink
+                gameAchievements.SourcesLink = new SourceLink
                 {
-                    GameName = GameName,
+                    GameName = gameAchievements.Name,
                     Name = "Origin",
                     Url = $"https://www.origin.com/fra/{LangUrl}/game-library/ogd/{game.GameId}/achievements"
                 };
             }
 
-            return Result;
+
+            return gameAchievements;
         }
 
 
-        public override bool IsConfigured()
+        #region Configuration
+        public override bool ValidateConfiguration()
         {
-            throw new NotImplementedException();
+            if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary"))
+            {
+                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsOriginDisabled"));
+                return false;
+            }
+            else
+            {
+                if (CachedConfigurationValidationResult == null)
+                {
+                    CachedConfigurationValidationResult = IsConnected();
+
+                    if (!(bool)CachedConfigurationValidationResult)
+                    {
+                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"));
+                    }
+                }
+
+                if (!(bool)CachedConfigurationValidationResult)
+                {
+                    ShowNotificationPluginErrorMessage();
+                }
+
+                return (bool)CachedConfigurationValidationResult;
+            }
         }
+
 
         public override bool IsConnected()
         {
-            return originAPI.GetIsUserLoggedIn();
+            if (CachedIsConnectedResult == null)
+            {
+                CachedIsConnectedResult = OriginAPI.GetIsUserLoggedIn();
+            }
+            
+            return (bool)CachedIsConnectedResult;
         }
 
+        public override bool EnabledInSettings()
+        {
+            return PluginDatabase.PluginSettings.Settings.EnableOrigin;
+        }
+        #endregion
 
+
+        #region Origin
         /// <summary>
         /// Get usersId for achievement database.
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        internal string GetPersonas(AuthTokenResponse token)
+        private string GetPersonas(AuthTokenResponse token)
         {
             var client = new WebClient { Encoding = Encoding.UTF8 };
-            var userId = originAPI.GetAccountInfo(originAPI.GetAccessToken()).pid.pidId;
-            var url = string.Format(@"https://gateway.ea.com/proxy/identity/pids/{0}/personas?namespaceName=cem_ea_id", userId);
+            var userId = OriginAPI.GetAccountInfo(OriginAPI.GetAccessToken()).pid.pidId;
+            var url = string.Format(UrlPersonas, userId);
 
             client.Headers.Add("Authorization", token.token_type + " " + token.access_token);
             var stringData = client.DownloadString(url);
@@ -210,73 +223,28 @@ namespace SuccessStory.Clients
         /// <param name="PlayniteApi"></param>
         /// <param name="Id"></param>
         /// <returns></returns>
-        internal string GetOrigineGameAchievementId(IPlayniteAPI PlayniteApi, Guid Id)
+        private string GetOrigineGameAchievementId(Guid Id)
         {
-            string GameId = PlayniteApi.Database.Games.Get(Id).GameId;
-            GameStoreDataResponse StoreDetails = GetGameStoreData(GameId, PlayniteApi);
-
+            string GameId = PluginDatabase.PlayniteApi.Database.Games.Get(Id).GameId;
+            GameStoreDataResponse StoreDetails = GetGameStoreData(GameId);
             return StoreDetails.platforms[0].achievementSetOverride;
         }
 
-        internal static GameStoreDataResponse GetGameStoreData(string gameId, IPlayniteAPI PlayniteApi)
+        /// <summary>
+        /// Get game data from Origin.
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
+        private GameStoreDataResponse GetGameStoreData(string gameId)
         {
-            string lang = CodeLang.GetOriginLang(PlayniteApi.ApplicationSettings.Language);
-            string langShort = CodeLang.GetOriginLangCountry(PlayniteApi.ApplicationSettings.Language);
-
-            var url = string.Format(@"https://api2.origin.com/ecommerce2/public/supercat/{0}/{1}?country={2}", gameId, lang, langShort);
-
+            string url = string.Format(UrlGameStoreData, gameId, LocalLang, LocalLangShort);
             string stringData = Web.DownloadStringData(url).GetAwaiter().GetResult();
             return Serialization.FromJson<GameStoreDataResponse>(stringData);
         }
-
-
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
-        {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary"))
-            {
-                logger.Warn("Origin is enable then disabled");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-Origin-disabled",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsOriginDisabled")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-            else
-            {
-                OriginAchievements originAchievements = new OriginAchievements();
-
-                if (CachedConfigurationValidationResult == null)
-                {
-                    CachedConfigurationValidationResult = originAchievements.IsConnected();
-                }
-
-                if (!(bool)CachedConfigurationValidationResult)
-                {
-                    logger.Warn("Origin user is not authenticated");
-                    playniteAPI.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-Origin-NoAuthenticate",
-                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate")}",
-                        NotificationType.Error,
-                        () => plugin.OpenSettingsView()
-                    ));
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public override bool EnabledInSettings(SuccessStorySettings settings)
-        {
-            return settings.EnableOrigin;
-        }
+        #endregion
     }
 
 
-    /// <summary>
-    /// Add achievementSetOverride from original class.
-    /// </summary>
     public class GameStoreDataResponse
     {
         public class I18n

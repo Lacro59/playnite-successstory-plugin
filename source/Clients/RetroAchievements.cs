@@ -1,5 +1,4 @@
-﻿using Playnite.SDK;
-using CommonPluginsShared;
+﻿using CommonPluginsShared;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -9,34 +8,43 @@ using SuccessStory.Models;
 using Playnite.SDK.Models;
 using Playnite.SDK.Data;
 using System.IO;
-using SuccessStory.Services;
 using System.Security.Cryptography;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using CommonPluginsShared.Models;
-using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
+    public enum PlatformType
+    {
+        All,
+        SNES,
+        Sega_CD_Saturn,
+        NES,
+        Famicom,
+        Arcade
+    }
+
+
     class RetroAchievements : GenericAchievements
     {
-        private readonly string BaseUrl = "https://retroachievements.org/API/";
-        private readonly string BaseUrlUnlocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
-        private readonly string BaseUrlLocked = "https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
+        private const string BaseUrl = @"https://retroachievements.org/API/";
+        private const string BaseUrlUnlocked = @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
+        private const string BaseUrlLocked = @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
 
-        private readonly string BaseMD5List = "http://retroachievements.org/dorequest.php?r=hashlibrary&c={0}";
+        private const string BaseMD5List = @"http://retroachievements.org/dorequest.php?r=hashlibrary&c={0}";
 
         private string User { get; set; }
         private string Key { get; set; }
 
-        public int gameID { get; set; } = 0;
+        public int GameId { get; set; } = 0;
 
 
         private string GameNameAchievements = string.Empty;
         private string UrlAchievements = string.Empty;
 
 
-        public RetroAchievements() : base()
+        public RetroAchievements() : base("RetroAchievements")
         {
             User = PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
             Key = PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
@@ -45,86 +53,104 @@ namespace SuccessStory.Clients
 
         public override GameAchievements GetAchievements(Game game)
         {
-            List<Achievements> AllAchievements = new List<Achievements>();
             string GameName = game.Name;
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
+            List<Achievements> AllAchievements = new List<Achievements>();
 
-            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
-            Result.Items = AllAchievements;
 
-            if (User == string.Empty || Key == string.Empty)
+            if (IsConfigured())
             {
-                logger.Error($"No RetroAchievement configuration.");
-                SuccessStoryDatabase.ListErrors.Add($"Error on RetroAchievement: no RetroAchievement configuration in settings menu of plugin.");
-                return null;
-            }
+                // Load list console
+                RA_Consoles ra_Consoles = GetConsoleIDs();
+                if (ra_Consoles != null && ra_Consoles != new RA_Consoles())
+                {
+                    ra_Consoles.ListConsoles.Sort((x, y) => (y.Name).CompareTo(x.Name));
+                }
+                else
+                {
+                    logger.Warn($"No ra_Consoles find");
+                }
 
-            // Load list console
-            RA_Consoles ra_Consoles = GetConsoleIDs(PluginDatabase.Paths.PluginUserDataPath);
-            if (ra_Consoles != null && ra_Consoles != new RA_Consoles())
-            {
-                ra_Consoles.ListConsoles.Sort((x, y) => (y.Name).CompareTo(x.Name));
+                // List MD5
+                List<RA_MD5List> ListMD5 = new List<RA_MD5List>();
+                try
+                {
+                    ListMD5 = GetMD5List(ra_Consoles);
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+
+                // Game Id
+                if (GameId == 0)
+                {
+                    if (ListMD5.Count > 0)
+                    {
+                        GameId = GetGameIdByHash(game, ListMD5);
+                    }
+
+                    if (GameId == 0)
+                    {
+                        GameId = GetGameIdByName(game, ra_Consoles);
+                    }
+                }
+
+                // Get achievements
+                if (GameId != 0)
+                {
+                    AllAchievements = GetGameInfoAndUserProgress(GameId);
+                    gameAchievements.RAgameID = GameId;
+                }
+                else
+                {
+                    return gameAchievements;
+                }
             }
             else
             {
-                logger.Warn($"No ra_Consoles find");
+                ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"));
             }
 
-            // List MD5
-            List<RA_MD5List> ListMD5 = new List<RA_MD5List>();
-            try
-            {
-                ListMD5 = GetMD5List(PluginDatabase.Paths.PluginUserDataPath, ra_Consoles);
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false);
-            }
 
-            // Game Id
-            if (gameID == 0)
-            {
-                if (ListMD5.Count > 0)
-                {
-                    gameID = GetGameIdByHash(game, ListMD5);
-                }
+            gameAchievements.Items = AllAchievements;
 
-                if (gameID == 0)
-                {
-                    gameID = GetGameIdByName(game, ra_Consoles);
-                }
-            }
 
-            // Get achievements
-            if (gameID != 0)
+            // Set source link
+            if (gameAchievements.HasAchivements)
             {
-                AllAchievements = GetGameInfoAndUserProgress(gameID);
-                Result.RAgameID = gameID;
-            }
-            else
-            {
-                return Result;
-            }
-
-            Result.HaveAchivements = (AllAchievements.Count > 0);
-            Result.Items = AllAchievements;
-            Result.Total = AllAchievements.Count;
-            Result.Unlocked = AllAchievements.FindAll(x => x.DateUnlocked != default(DateTime)).Count;
-            Result.Locked = Result.Total - Result.Unlocked;
-            Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
-
-            if (Result.HaveAchivements)
-            {
-                Result.SourcesLink = new SourceLink
+                gameAchievements.SourcesLink = new SourceLink
                 {
                     GameName = GameNameAchievements,
                     Name = "RetroAchievements",
-                    Url = $"https://retroachievements.org/game/{Result.RAgameID}"
+                    Url = $"https://retroachievements.org/game/{gameAchievements.RAgameID}"
                 };
             }
 
-            return Result;
+            return gameAchievements;
         }
 
+
+        #region Configuration
+        public override bool ValidateConfiguration()
+        {
+            if (CachedConfigurationValidationResult == null)
+            {
+                CachedConfigurationValidationResult = IsConfigured();
+
+                if (!(bool)CachedConfigurationValidationResult)
+                {
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"));
+                }
+            }
+
+            if (!(bool)CachedConfigurationValidationResult)
+            {
+                ShowNotificationPluginErrorMessage();
+            }
+
+            return (bool)CachedConfigurationValidationResult;
+        }
 
         public override bool IsConfigured()
         {
@@ -134,20 +160,22 @@ namespace SuccessStory.Clients
             return User != string.Empty && Key != string.Empty;
         }
 
-        public override bool IsConnected()
+        public override bool EnabledInSettings()
         {
-            throw new NotImplementedException();
+            return PluginDatabase.PluginSettings.Settings.EnableRetroAchievements;
         }
+        #endregion
 
 
-        private RA_Consoles GetConsoleIDs(string PluginUserDataPath)
+        #region RetroAchievements
+        private RA_Consoles GetConsoleIDs()
         {
             string Target = "API_GetConsoleIDs.php";
-            string url = string.Format(BaseUrl + Target + @"?z={0}&y={1}", User, Key);
+            string Url = string.Format(BaseUrl + Target + @"?z={0}&y={1}", User, Key);
 
             RA_Consoles resultObj = new RA_Consoles();
 
-            string fileConsoles = PluginUserDataPath + "\\RA_Consoles.json";
+            string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Consoles.json";
             if (File.Exists(fileConsoles))
             {
                 resultObj = Serialization.FromJsonFile<RA_Consoles>(fileConsoles);
@@ -158,11 +186,11 @@ namespace SuccessStory.Clients
 
             try
             {
-                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
+                ResultWeb = Web.DownloadStringData(Url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, $"Failed to load from {url}");
+                Common.LogError(ex, false, $"Failed to load from {Url}");
             }
 
 
@@ -182,12 +210,12 @@ namespace SuccessStory.Clients
             return resultObj;
         }
 
-        private List<RA_MD5List> GetMD5List(string PluginUserDataPath, RA_Consoles rA_Consoles) 
+        private List<RA_MD5List> GetMD5List(RA_Consoles rA_Consoles) 
         {
             List<RA_MD5List> ListMD5 = new List<RA_MD5List>();
 
             // Cache
-            string fileMD5List = PluginUserDataPath + "\\RA_MD5List.json";
+            string fileMD5List = PluginDatabase.Paths.PluginUserDataPath + "\\RA_MD5List.json";
             if (File.Exists(fileMD5List) && File.GetLastWriteTime(fileMD5List).AddDays(3) > DateTime.Now )
             {
                 ListMD5 = Serialization.FromJsonFile<List<RA_MD5List>>(fileMD5List);
@@ -271,7 +299,7 @@ namespace SuccessStory.Clients
             int gameID = 0;
             if (consoleID != 0)
             {
-                RA_Games ra_Games = GetGameList(consoleID, PluginDatabase.Paths.PluginUserDataPath);
+                RA_Games ra_Games = GetGameList(consoleID);
                 ra_Games.ListGames.Sort((x, y) => (y.Title).CompareTo(x.Title));
 
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
@@ -626,14 +654,14 @@ namespace SuccessStory.Clients
         }
 
 
-        private RA_Games GetGameList(int consoleID, string PluginUserDataPath)
+        private RA_Games GetGameList(int consoleID)
         {
             string Target = "API_GetGameList.php";
             string url = string.Format(BaseUrl + Target + @"?z={0}&y={1}&i={2}", User, Key, consoleID);
 
             RA_Games resultObj = new RA_Games();
 
-            string fileConsoles = PluginUserDataPath + "\\RA_Games_" + consoleID + ".json";
+            string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Games_" + consoleID + ".json";
             if (File.Exists(fileConsoles))
             {
                 resultObj = Serialization.FromJsonFile<RA_Games>(fileConsoles);
@@ -716,54 +744,27 @@ namespace SuccessStory.Clients
 
             return Achievements;
         }
-
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
-        {
-            if (!IsConfigured())
-            {
-                logger.Warn("Bad RetroAchievements configuration");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-RetroAchievements-NoConfig",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-            return true;
-        }
-
-        public override bool EnabledInSettings(SuccessStorySettings settings)
-        {
-            return settings.EnableRetroAchievements;
-        }
+        #endregion
     }
 
-    enum PlatformType
-    {
-        All,
-        SNES,
-        Sega_CD_Saturn,
-        NES,
-        Famicom,
-        Arcade
-    }
 
-    class RA_Consoles
+    public class RA_Consoles
     {
         public List<RA_Console> ListConsoles { get; set; }
     }
-    class RA_Console
+
+    public class RA_Console
     {
         public int ID { get; set; }
         public string Name { get; set; }
     }
 
-    class RA_Games
+    public class RA_Games
     {
         public List<RA_Game> ListGames { get; set; }
     }
-    class RA_Game
+
+    public class RA_Game
     {
         public int ID { get; set; }
         public string Title { get; set; }
@@ -772,12 +773,13 @@ namespace SuccessStory.Clients
         public string ConsoleName { get; set; }
     }
 
-    class RA_MD5ListResponse
+    public class RA_MD5ListResponse
     {
         public bool Success { get; set; }
         public dynamic MD5List { get; set; }
     }
-    class RA_MD5List
+
+    public class RA_MD5List
     {
         public string MD5 { get; set; }
         public int Id { get; set; }

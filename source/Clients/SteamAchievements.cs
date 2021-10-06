@@ -15,17 +15,34 @@ using Playnite.SDK.Models;
 using SteamKit2;
 using System.Globalization;
 using CommonPluginsPlaynite.Common.Web;
-using SuccessStory.Services;
 using System.Text.RegularExpressions;
 using CommonPluginsStores;
 using CommonPluginsShared.Models;
-using Playnite.SDK.Plugins;
 using PlayniteTools = CommonPluginsShared.PlayniteTools;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Clients
 {
     class SteamAchievements : GenericAchievements
     {
+        protected static SteamApi _steamApi;
+        internal static SteamApi steamApi
+        {
+            get
+            {
+                if (_steamApi == null)
+                {
+                    _steamApi = new SteamApi();
+                }
+                return _steamApi;
+            }
+
+            set
+            {
+                _steamApi = value;
+            }
+        }
+
         protected static IWebView _WebViewOffscreen;
         internal static IWebView WebViewOffscreen
         {
@@ -45,6 +62,7 @@ namespace SuccessStory.Clients
         }
 
         private IHtmlDocument HtmlDocument { get; set; } = null;
+
         private bool IsLocal { get; set; } = false;
         private bool IsManual { get; set; } = false;
 
@@ -52,40 +70,39 @@ namespace SuccessStory.Clients
         private string SteamApiKey { get; set; } = string.Empty;
         private string SteamUser { get; set; } = string.Empty;
 
-        private readonly string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}?tab=achievements&l={2}";
-        private readonly string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}?tab=achievements&l={2}";
+        private const string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}?tab=achievements&l={2}";
+        private const string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}?tab=achievements&l={2}";
 
-        private readonly string UrlAchievements = @"https://steamcommunity.com/stats/{0}/achievements/?l={1}";
+        private const string UrlAchievements = @"https://steamcommunity.com/stats/{0}/achievements/?l={1}";
+
+        private const string UrlSearch = @"https://store.steampowered.com/search/?term={0}";
 
 
-        public SteamAchievements() : base()
+        public SteamAchievements() : base("Steam", CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
-            LocalLang = CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+
         }
 
 
         public override GameAchievements GetAchievements(Game game)
         {
-            bool GetByWeb = false;
-
-            int AppId = 0;
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
             List<GameStats> AllStats = new List<GameStats>();
-            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
-            Result.Items = AllAchievements;
+
+            bool GetByWeb = false;
+            int AppId = 0;
 
 
             // Get Steam configuration if exist.
-            if (!GetSteamConfig())
+            if (!IsConfigured())
             {
-                return Result;
+                return gameAchievements;
             }
 
 
             if (!IsLocal)
             {
-                Common.LogDebug(true, $"GetAchievements()");
-
                 int.TryParse(game.GameId, out AppId);
 
                 if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
@@ -115,19 +132,15 @@ namespace SuccessStory.Clients
                         AllAchievements = DataCompleted.Item1;
                         AllStats = DataCompleted.Item2;
 
-                        Result.HaveAchivements = true;
-                        Result.Total = AllAchievements.Count;
-                        Result.Unlocked = AllAchievements.FindAll(x => x.IsUnlock).Count;
-                        Result.Locked = Result.Total - Result.Unlocked;
-                        Result.Progression = (Result.Total != 0) ? (int)Math.Ceiling((double)(Result.Unlocked * 100 / Result.Total)) : 0;
-                        Result.Items = AllAchievements;
-                        Result.ItemsStats = AllStats;
 
-                        if (Result.HaveAchivements)
+                        gameAchievements.Items = AllAchievements;
+                        gameAchievements.ItemsStats = AllStats;
+
+
+                        // Set source link
+                        if (gameAchievements.HasAchivements)
                         {
-                            SteamApi steamApi = new SteamApi();
-
-                            Result.SourcesLink = new SourceLink
+                            gameAchievements.SourcesLink = new SourceLink
                             {
                                 GameName = steamApi.GetGameName(AppId),
                                 Name = "Steam",
@@ -152,20 +165,14 @@ namespace SuccessStory.Clients
                 else
                 {
                     SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
-                    var temp = se.GetAchievementsLocal(game.Name, SteamApiKey, 0, IsManual);
+                    var temp = se.GetAchievementsLocal(game, SteamApiKey, 0, IsManual);
                     AppId = se.GetSteamId();
 
                     if (temp.Items.Count > 0)
                     {
-                        Result.HaveAchivements = true;
-                        Result.Total = temp.Total;
-                        Result.Locked = temp.Locked;
-                        Result.Unlocked = temp.Unlocked;
-                        Result.Progression = temp.Progression;
-
                         for (int i = 0; i < temp.Items.Count; i++)
                         {
-                            Result.Items.Add(new Achievements
+                            AllAchievements.Add(new Achievements
                             {
                                 Name = temp.Items[i].Name,
                                 ApiName = temp.Items[i].ApiName,
@@ -176,11 +183,14 @@ namespace SuccessStory.Clients
                             });
                         }
 
-                        if (Result.HaveAchivements)
-                        {
-                            SteamApi steamApi = new SteamApi();
 
-                            Result.SourcesLink = new SourceLink
+                        gameAchievements.Items = AllAchievements;
+
+
+                        // Set source link
+                        if (gameAchievements.HasAchivements)
+                        {
+                            gameAchievements.SourcesLink = new SourceLink
                             {
                                 GameName = steamApi.GetGameName(AppId),
                                 Name = "Steam",
@@ -192,13 +202,14 @@ namespace SuccessStory.Clients
             }
 
 
-            if (Result.Items.Count > 0)
+            // Set rarety
+            if (gameAchievements.HasAchivements)
             {
                 if (!IsLocal && (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate))
                 {
                     try
                     {
-                        Result.Items = GetGlobalAchievementPercentagesForAppByWeb(AppId, Result.Items);
+                        gameAchievements.Items = GetGlobalAchievementPercentagesForAppByWeb(AppId, gameAchievements.Items);
                     }
                     catch (Exception ex)
                     {
@@ -209,7 +220,7 @@ namespace SuccessStory.Clients
                 {
                     try
                     {
-                        Result.Items = GetGlobalAchievementPercentagesForApp(AppId, Result.Items);
+                        gameAchievements.Items = GetGlobalAchievementPercentagesForApp(AppId, gameAchievements.Items);
                     }
                     catch (Exception ex)
                     {
@@ -218,21 +229,19 @@ namespace SuccessStory.Clients
                 }
             }
 
-            return Result;
+            return gameAchievements;
         }
 
         public GameAchievements GetAchievements(Game game, int AppId)
         {
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
-            List<GameStats> AllStats = new List<GameStats>();
-            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
-            Result.Items = AllAchievements;
 
 
             // Get Steam configuration if exist.
-            if (!GetSteamConfig())
+            if (!IsConfigured())
             {
-                return Result;
+                return gameAchievements;
             }
 
 
@@ -251,19 +260,13 @@ namespace SuccessStory.Clients
                 else
                 {
                     SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
-                    var temp = se.GetAchievementsLocal(game.Name, SteamApiKey, AppId, IsManual);
+                    var temp = se.GetAchievementsLocal(game, SteamApiKey, AppId, IsManual);
 
                     if (temp.Items.Count > 0)
                     {
-                        Result.HaveAchivements = true;
-                        Result.Total = temp.Total;
-                        Result.Locked = temp.Locked;
-                        Result.Unlocked = temp.Unlocked;
-                        Result.Progression = temp.Progression;
-
                         for (int i = 0; i < temp.Items.Count; i++)
                         {
-                            Result.Items.Add(new Achievements
+                            AllAchievements.Add(new Achievements
                             {
                                 Name = temp.Items[i].Name,
                                 ApiName = temp.Items[i].ApiName,
@@ -274,8 +277,12 @@ namespace SuccessStory.Clients
                             });
                         }
 
-                        SteamApi steamApi = new SteamApi();
-                        Result.SourcesLink = new SourceLink
+
+                        gameAchievements.Items = AllAchievements;
+
+
+                        // Set source link
+                        gameAchievements.SourcesLink = new SourceLink
                         {
                             GameName = steamApi.GetGameName(AppId),
                             Name = "Steam",
@@ -286,18 +293,17 @@ namespace SuccessStory.Clients
             }
 
 
-            if (Result.Items.Count > 0)
+            if (gameAchievements.Items.Count > 0)
             {
-                Result.Items = GetGlobalAchievementPercentagesForApp(AppId, Result.Items);
+                gameAchievements.Items = GetGlobalAchievementPercentagesForApp(AppId, gameAchievements.Items);
             }
 
-            return Result;
+            return gameAchievements;
         }
+
 
         private List<Achievements> GetAchievementsByWeb(int AppId)
         {
-            Common.LogDebug(true, $"GetAchievementsByWeb() for {SteamId} - {AppId}");
-
             List<Achievements> achievements = new List<Achievements>();
             string url = string.Empty;
 
@@ -316,8 +322,6 @@ namespace SuccessStory.Clients
 
         private List<Achievements> GetAchievementsByWeb(List<Achievements> Achievements, string Url)
         {
-            Common.LogDebug(true, $"GetAchievementsHiddenByWeb()");
-
             string ResultWeb = string.Empty;
 
             try
@@ -403,13 +407,143 @@ namespace SuccessStory.Clients
         }
 
 
+        #region Configuration
+        // TODO Rewrite
+        public override bool ValidateConfiguration()
+        {
+            if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary"))
+            {
+                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsSteamDisabled"));
+                return false;
+            }
+            else
+            {
+                if (CachedConfigurationValidationResult == null)
+                {
+                    if (!IsConfigured())
+                    {
+                        ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig"));
+                        CachedConfigurationValidationResult = false;
+                    }
+
+                    if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !CheckIsPublic())
+                    {
+                        ShowNotificationPluginNoPublic(resources.GetString("LOCSuccessStoryNotificationsSteamPrivate"));
+                        CachedConfigurationValidationResult = false;
+                    }
+
+                    if (PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !IsConnected())
+                    {
+                        ShowNotificationPluginNoPublic(resources.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"));
+                        CachedConfigurationValidationResult = false;
+                    }
+
+
+                    
+                    if (CachedConfigurationValidationResult == null)
+                    {
+                        CachedConfigurationValidationResult = true;
+                    }
+
+                    if (!(bool)CachedConfigurationValidationResult)
+                    {
+                        ShowNotificationPluginErrorMessage();
+                    }
+                }
+
+                return (bool)CachedConfigurationValidationResult;
+            }
+        }
+
+        public override bool IsConnected()
+        {
+            if (IsConfigured())
+            {
+                string ProfileById = $"https://steamcommunity.com/profiles/{SteamId}";
+                string ProfileByName = $"https://steamcommunity.com/id/{SteamUser}";
+
+                return IsProfileConnected(ProfileById) || IsProfileConnected(ProfileByName);
+            }
+
+            return false;
+        }
+
+        public override bool IsConfigured()
+        {
+            try
+            {
+                if (File.Exists(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"))
+                {
+                    dynamic SteamConfig = Serialization.FromJsonFile<dynamic>(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json");
+                    SteamId = (string)SteamConfig["UserId"];
+                    SteamApiKey = (string)SteamConfig["ApiKey"];
+                    SteamUser = (string)SteamConfig["UserName"];
+                }
+                else
+                {
+                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowNotificationPluginError(ex);
+                return false;
+            }
+
+
+            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            {
+                if (SteamUser.IsNullOrEmpty())
+                {
+                    ShowNotificationPluginNoConfiguration(resources.GetString("Error on SteamAchievements: no Steam user in settings menu for Steam Library."));
+                    return false;
+                }
+            }
+            else
+            {
+                if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty())
+                {
+                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public override bool EnabledInSettings()
+        {
+            if (IsLocal)
+            {
+                return PluginDatabase.PluginSettings.Settings.EnableLocal;
+            }
+            else
+            {
+                return PluginDatabase.PluginSettings.Settings.EnableSteam;
+            }
+        }
+        #endregion
+
+
+        public void SetLocal()
+        {
+            IsLocal = true;
+        }
+
+        public void SetManual()
+        {
+            IsManual = true;
+        }
+
+
+        #region Steam
         public List<SearchResult> SearchGame(string Name)
         {
             List<SearchResult> ListSearchGames = new List<SearchResult>();
 
             try
             {
-                string UrlSearch = @"https://store.steampowered.com/search/?term={0}";
                 var DataSteamSearch = Web.DownloadStringData(string.Format(UrlSearch, WebUtility.UrlEncode(Name))).GetAwaiter().GetResult();
 
                 HtmlParser parser = new HtmlParser();
@@ -432,11 +566,10 @@ namespace SuccessStory.Clients
                         continue;
                     }
 
-                    int gameId = 0;
-                    int.TryParse(gameElem.GetAttribute("data-ds-appid"), out gameId);
+                    int.TryParse(gameElem.GetAttribute("data-ds-appid"), out int gameId);
 
                     int AchievementsCount = 0;
-                    if (!PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi & GetSteamConfig())
+                    if (!PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi & IsConfigured())
                     {
                         if (gameId != 0)
                         {
@@ -483,74 +616,6 @@ namespace SuccessStory.Clients
         }
 
 
-        public override bool IsConfigured()
-        {
-            return GetSteamConfig();
-        }
-
-        public override bool IsConnected()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public void SetLocal()
-        {
-            IsLocal = true;
-        }
-
-        public void SetManual()
-        {
-            IsManual = true;
-        }
-
-
-        public bool GetSteamConfig()
-        {
-            try
-            {
-                if (File.Exists(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"))
-                {
-                    dynamic SteamConfig = Serialization.FromJsonFile<dynamic>(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json");
-                    SteamId = (string)SteamConfig["UserId"];
-                    SteamApiKey = (string)SteamConfig["ApiKey"];
-                    SteamUser = (string)SteamConfig["UserName"];
-                }
-                else
-                {
-                    logger.Error($"No Steam configuration find");
-                    SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, "Error on GetSteamConfig");
-            }
-
-
-            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
-            {
-                if (SteamUser.IsNullOrEmpty())
-                {
-                    logger.Error($"No Steam user configuration");
-                    SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam user in settings menu for Steam Library.");
-                    return false;
-                }
-            }
-            else
-            {
-                if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty())
-                {
-                    logger.Error($"No Steam configuration");
-                    SuccessStoryDatabase.ListErrors.Add($"Error on SteamAchievements: no Steam configuration and/or API key in settings menu for Steam Library.");
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         private void VerifSteamUser()
         {
             if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
@@ -587,12 +652,15 @@ namespace SuccessStory.Clients
 
         public bool CheckIsPublic()
         {
-            GetSteamConfig();
+            if (IsConfigured())
+            {
+                string ProfileById = $"https://steamcommunity.com/profiles/{SteamId}";
+                string ProfileByName = $"https://steamcommunity.com/id/{SteamUser}";
 
-            string ProfileById = $"https://steamcommunity.com/profiles/{SteamId}/";
-            string ProfileByName = $"https://steamcommunity.com/id/{SteamUser}";
+                return IsProfilePublic(ProfileById) || IsProfilePublic(ProfileByName);
+            }
 
-            return IsProfilePublic(ProfileById) || IsProfilePublic(ProfileByName);
+            return false;
         }
 
         private static bool IsProfilePublic(string profilePageUrl)
@@ -601,6 +669,24 @@ namespace SuccessStory.Clients
             {
                 string ResultWeb = HttpDownloader.DownloadString(profilePageUrl);
                 IHtmlDocument HtmlDoc = new HtmlParser().Parse(ResultWeb);
+
+                //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
+                var gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
+                return gamesPageLink != null;
+            }
+            catch (WebException ex)
+            {
+                Common.LogError(ex, false);
+                return false;
+            }
+        }
+
+        private static bool IsProfileConnected(string profilePageUrl)
+        {
+            try
+            {
+                WebViewOffscreen.NavigateAndWait(profilePageUrl);
+                IHtmlDocument HtmlDoc = new HtmlParser().Parse(WebViewOffscreen.GetPageSource());
 
                 //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
                 var gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
@@ -1109,59 +1195,28 @@ namespace SuccessStory.Clients
             return AllAchievements;
         }
 
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
-        {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary"))
-            {
-                logger.Warn("Steam is enable then disabled");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-Steam-disabled",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamDisabled")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-
-            SteamAchievements steamAchievements = new SteamAchievements();
-            if (!steamAchievements.IsConfigured())
-            {
-                logger.Warn("Bad Steam configuration");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-Steam-NoConfig",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-            if (!settings.SteamIsPrivate && !steamAchievements.CheckIsPublic())
-            {
-                logger.Warn("Bad Steam configuration");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-Steam-NoConfig",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
-                return false;
-            }
-            return true;
-        }
-
-        public override bool EnabledInSettings(SuccessStorySettings settings)
-        {
-            if (IsLocal)
-                return settings.EnableLocal;
-            else
-                return settings.EnableSteam;
-        }
-
+        
         public static SteamAchievements GetLocalSteamAchievementsProvider()
         {
             var provider = new SteamAchievements();
             provider.SetLocal();
             return provider;
         }
+        #endregion
+
+
+        #region Errors
+        public virtual void ShowNotificationPluginNoPublic(string Message)
+        {
+            logger.Warn($"{ClientName} user is not public");
+
+            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-nopublic",
+                $"SuccessStory\r\n{Message}",
+                NotificationType.Error,
+                () => PluginDatabase.Plugin.OpenSettingsView()
+            ));
+        }
+        #endregion
     }
 }

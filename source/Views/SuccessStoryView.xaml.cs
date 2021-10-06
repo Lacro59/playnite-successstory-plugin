@@ -308,7 +308,7 @@ namespace SuccessStory
             {
                 string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-                ListGames = PluginDatabase.Database.Where(x => x.HaveAchivements && !x.IsDeleted)
+                ListGames = PluginDatabase.Database.Where(x => x.HasAchivements && !x.IsDeleted)
                                 .Select(x => new ListViewGames
                                 {
                                     Icon100Percent = x.Is100Percent ? Path.Combine(pluginFolder, "Resources\\badge.png") : string.Empty,

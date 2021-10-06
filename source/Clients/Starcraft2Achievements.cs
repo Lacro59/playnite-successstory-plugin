@@ -1,11 +1,11 @@
 ﻿using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using CommonPluginsShared;
+using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Models;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
-using Playnite.SDK.Plugins;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -17,52 +17,24 @@ namespace SuccessStory.Clients
     internal class Starcraft2Achievements : BattleNetAchievements
     {
         private string UserSc2Id = string.Empty;
-        private string UrlStarCraft2 = @"https://starcraft2.com/";
-        private string UrlStarCraft2Login = @"login";
-        private string UrlStarCraft2ProfilInfo = @"https://starcraft2.com/fr-fr/api/sc2/profile/2/1/{0}?locale={1}";
-        private string UrlStarCraft2AchInfo = @"https://starcraft2.com/fr-fr/api/sc2/static/profile/2?locale={0}";
+
+        private const string UrlStarCraft2 = @"https://starcraft2.com/";
+        private const string UrlStarCraft2Login = @"https://starcraft2.com/login";
+        private const string UrlStarCraft2ProfilInfo = @"https://starcraft2.com/fr-fr/api/sc2/profile/2/1/{0}?locale={1}";
+        private const string UrlStarCraft2AchInfo = @"https://starcraft2.com/fr-fr/api/sc2/static/profile/2?locale={0}";
 
 
-        public Starcraft2Achievements() : base()
+        public Starcraft2Achievements() : base("Starcraft 2", PluginDatabase.PlayniteApi.ApplicationSettings.Language)
         {
-            UrlStarCraft2Login = UrlStarCraft2 + UrlStarCraft2Login;
+
         }
 
-
-        public override bool IsConnected()
-        {
-            var ApiStatus = base.GetApiStatus();
-
-            if (ApiStatus == null)
-            {
-                return false;
-            }
-
-            if (ApiStatus.authenticated)
-            {
-                Task.Run(() =>
-                {
-                    using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
-                    {
-                        WebView.Navigate(UrlStarCraft2);
-                    }
-                });
-            }
-
-            return ApiStatus.authenticated;
-        }
 
         public override GameAchievements GetAchievements(Game game)
         {
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
             List<GameStats> AllStats = new List<GameStats>();
-            string GameName = game.Name;
-            int Total = 0;
-            int Unlocked = 0;
-            int Locked = 0;
-
-            GameAchievements Result = PluginDatabase.GetDefault(game);
-            Result.Items = AllAchievements;
 
 
             string UrlProfil = string.Empty;
@@ -81,12 +53,10 @@ namespace SuccessStory.Clients
 
                 if (!UrlProfil.IsNullOrEmpty())
                 {
-                    string Lang = PluginDatabase.PlayniteApi.ApplicationSettings.Language;
-
                     UserSc2Id = UrlProfil.Split('/').Last();
 
-                    UrlStarCraft2ProfilInfo = string.Format(UrlStarCraft2ProfilInfo, UserSc2Id, Lang);
-                    UrlStarCraft2AchInfo = string.Format(UrlStarCraft2AchInfo, Lang);
+                    string UrlStarCraft2ProfilInfo = string.Format(Starcraft2Achievements.UrlStarCraft2ProfilInfo, UserSc2Id, LocalLang);
+                    string UrlStarCraft2AchInfo = string.Format(Starcraft2Achievements.UrlStarCraft2AchInfo, LocalLang);
 
                     WebViewOffscreen.NavigateAndWait(UrlStarCraft2ProfilInfo);
                     data = WebViewOffscreen.GetPageText();
@@ -131,122 +101,137 @@ namespace SuccessStory.Clients
                                 ParentCategory = ParentCategory,
                                 Category = Category
                             });
-
-                            Total++;
-                            if (ElpasedTime > 0)
-                            {
-                                Unlocked++;
-                            }
-                            else
-                            {
-                                Locked++;
-                            }
                         }
                         catch (Exception ex)
                         {
                             Common.LogError(ex, false);
                         }
                     }
-
-
-                    //try
-                    //{
-                    //    AllStats = GetUsersStats(game, htmlDocument);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    Common.LogError(ex, false, $"Error on GetUsersStats({game.Name})");
-                    //}
                 }
                 else
                 {
-                    logger.Error($"No StarCraft II profil connected");
-                    PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                         "SuccessStory-BattleNet-NoAuthenticateSc2",
-                         $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2")}",
-                         NotificationType.Error,
-                         () =>
-                         {
-                             using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(400, 600))
-                             {
-                                 WebView.Navigate(UrlStarCraft2Login);
-                                 WebView.OpenDialog();
-                             }
-                         }
-                     ));
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2"));
                 }
             }
-
-            Result.Name = GameName;
-            Result.HaveAchivements = Total > 0;
-            Result.Total = Total;
-            Result.Unlocked = Unlocked;
-            Result.Locked = Locked;
-            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
-            Result.Items = AllAchievements;
-            Result.ItemsStats = AllStats;
-
-            if (Result.HaveAchivements)
+            else
             {
-                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                exophaseAchievements.SetRarety(Result, Services.SuccessStoryDatabase.AchievementSource.Starcraft2);
+                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"));
+            }
+
+            gameAchievements.Items = AllAchievements;
+            gameAchievements.ItemsStats = AllStats;
 
 
-                Result.SourcesLink = new SourceLink
+            // Set source link
+            if (gameAchievements.HasAchivements)
+            {
+                gameAchievements.SourcesLink = new SourceLink
                 {
                     GameName = "StarCraft II",
-                    Name = "Battle.Net",
+                    Name = "Battle.net",
                     Url = UrlProfil
                 };
             }
 
-            return Result;
+
+            // Set rarety from Exophase
+            if (gameAchievements.HasAchivements)
+            {
+                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Starcraft2);
+            }
+
+
+            return gameAchievements;
         }
 
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
-        {
-            if (!settings.EnableSc2Achievements)
-                return true;
 
+        #region Configuration
+        public override bool ValidateConfiguration()
+        {
             if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary"))
             {
-                logger.Warn("Battle.net is enable then disabled");
-                playniteAPI.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-BattleNet-disabled",
-                    $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetDisabled")}",
-                    NotificationType.Error,
-                    () => plugin.OpenSettingsView()
-                ));
+                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsBattleNetDisabled"));
                 return false;
             }
-            else
+
+            if (CachedConfigurationValidationResult == null)
             {
-                Common.LogDebug(true, $"VerifToAddOrShowSc2: {CachedConfigurationValidationResult}");
-
-                if (CachedConfigurationValidationResult == null)
-                {
-                    CachedConfigurationValidationResult = IsConnected();
-                }
-
-                Common.LogDebug(true, $"VerifToAddOrShowSc2: {CachedConfigurationValidationResult}");
+                CachedConfigurationValidationResult = IsConnected();
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    logger.Warn("Battle.net user is not authenticated");
-                    playniteAPI.Notifications.Add(new NotificationMessage(
-                        "SuccessStory-BattleNet-NoAuthenticate",
-                        $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate")}",
-                        NotificationType.Error,
-                        () => plugin.OpenSettingsView()
-                    ));
-                    return false;
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"));
                 }
             }
-            return true;
+
+            if (!(bool)CachedConfigurationValidationResult)
+            {
+                ShowNotificationPluginErrorMessage();
+            }
+
+            return (bool)CachedConfigurationValidationResult;
         }
-        public override bool EnabledInSettings(SuccessStorySettings settings)
+
+
+        public override bool IsConnected()
         {
-            return settings.EnableSc2Achievements;
+            if (CachedIsConnectedResult == null)
+            {
+                var ApiStatus = GetApiStatus();
+                if (ApiStatus == null)
+                {
+                    CachedIsConnectedResult = false;
+                }
+
+                // TODO Force auth in game profile
+                if (ApiStatus != null && ApiStatus.authenticated)
+                {
+                    Task.Run(() =>
+                    {
+                        using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                        {
+                            WebView.Navigate(UrlStarCraft2);
+                        }
+                    });
+                }
+
+                CachedIsConnectedResult = ApiStatus == null ? false : ApiStatus.authenticated;
+            }
+
+            return (bool)CachedIsConnectedResult;
         }
+
+        public override bool EnabledInSettings()
+        {
+            return PluginDatabase.PluginSettings.Settings.EnableSc2Achievements;
+        }
+        #endregion
+
+
+        #region Errors
+        public override void ShowNotificationPluginNoAuthenticate(string Message)
+        {
+            LastErrorId = $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noauthenticate";
+            LastErrorMessage = Message;
+            logger.Warn($"{ClientName} user is not authenticated");
+
+            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-disabled",
+                $"SuccessStory\r\n{Message}",
+                NotificationType.Error,
+                () =>
+                {
+                    using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(400, 600))
+                    {
+                        WebView.Navigate(UrlStarCraft2Login);
+                        WebView.OpenDialog();
+
+                        ResetCachedConfigurationValidationResult();
+                    }
+                }
+            ));
+        }
+        #endregion
     }
 }

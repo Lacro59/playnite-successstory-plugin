@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuccessStory.Models
 {
@@ -15,5 +12,13 @@ namespace SuccessStory.Models
         public int AchievementsCount { get; set; }
 
         public int AppId { get; set; }
+
+        public string PlatformsFirst
+        {
+            get
+            {
+                return Platforms?.FirstOrDefault();
+            }
+        }
     }
 }

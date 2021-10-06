@@ -18,11 +18,29 @@ namespace SuccessStory.Clients
 {
     class SteamEmulators : GenericAchievements
     {
+        protected static SteamApi _steamApi;
+        internal static SteamApi steamApi
+        {
+            get
+            {
+                if (_steamApi == null)
+                {
+                    _steamApi = new SteamApi();
+                }
+                return _steamApi;
+            }
+
+            set
+            {
+                _steamApi = value;
+            }
+        }
+
         private List<string> AchievementsDirectories = new List<string>();
         private int SteamId { get; set; } = 0;
 
 
-        public SteamEmulators(List<Folder> LocalFolders) : base()
+        public SteamEmulators(List<Folder> LocalFolders) : base("SteamEmulators")
         {
             AchievementsDirectories.Add("%PUBLIC%\\Documents\\Steam\\CODEX");
             AchievementsDirectories.Add("%appdata%\\Steam\\CODEX");
@@ -37,15 +55,48 @@ namespace SuccessStory.Clients
             }
         }
 
-        public GameAchievements GetAchievementsLocal(string GameName, string apiKey, int SteamId = 0, bool IsManual = false)
-        {
-            List<Achievements> Achievements = new List<Achievements>();
-            bool HaveAchivements = false;
-            int Total = 0;
-            int Unlocked = 0;
-            int Locked = 0;
 
-            SteamApi steamApi = new SteamApi();
+
+        public override GameAchievements GetAchievements(Game game)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        #region Configuration
+        public override bool ValidateConfiguration()
+        {
+            // The authentification is only for localised achievement
+            return true;
+        }
+
+        public override bool EnabledInSettings()
+        {
+            // No necessary activation
+            return true;
+        }
+        #endregion
+
+
+        public int GetSteamId()
+        {
+            return SteamId;
+        }
+
+
+        #region SteamEmulator
+        public static byte[] StringToByteArray(string hex)
+        {
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
+        }
+
+        public GameAchievements GetAchievementsLocal(Game game, string apiKey, int SteamId = 0, bool IsManual = false)
+        {
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
+            List<Achievements> AllAchievements = new List<Achievements>();
 
             if (SteamId != 0)
             {
@@ -53,41 +104,15 @@ namespace SuccessStory.Clients
             }
             else
             {
-                this.SteamId = steamApi.GetSteamId(GameName);
+                this.SteamId = steamApi.GetSteamId(game.Name);
             }
 
-            Achievements = Get(this.SteamId, apiKey, IsManual);
-            if (Achievements.Count > 0)
-            {
-                HaveAchivements = true;
 
-                for (int i = 0; i < Achievements.Count; i++)
-                {
-                    if (Achievements[i].DateUnlocked == default(DateTime))
-                    {
-                        Locked += 1;
-                    }
-                    else
-                    {
-                        Unlocked += 1;
-                    }
-                }
+            AllAchievements = Get(this.SteamId, apiKey, IsManual);
+            gameAchievements.Items = AllAchievements;
 
-                Total = Achievements.Count;
-            }
 
-            GameAchievements Result = new GameAchievements
-            {
-                Name = GameName,
-                HaveAchivements = HaveAchivements,
-                Total = Total,
-                Unlocked = Unlocked,
-                Locked = Locked,
-                Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0,
-                Items = Achievements
-            };
-
-            return Result;
+            return gameAchievements;
         }
 
         private List<Achievements> Get(int SteamId, string apiKey, bool IsManual)
@@ -363,7 +388,6 @@ namespace SuccessStory.Clients
             return ReturnAchievements;
         }
 
-
         private List<Achievements> GetSteamEmu(string DirAchivements)
         {
             List<Achievements> ReturnAchievements = new List<Achievements>();
@@ -416,47 +440,6 @@ namespace SuccessStory.Clients
 
             return ReturnAchievements;
         }
-
-
-        public int GetSteamId()
-        {
-            return SteamId;
-        }
-
-
-        public static byte[] StringToByteArray(string hex)
-        {
-            return Enumerable.Range(0, hex.Length)
-                             .Where(x => x % 2 == 0)
-                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                             .ToArray();
-        }
-
-
-
-        public override GameAchievements GetAchievements(Game game)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsConnected()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsConfigured()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool EnabledInSettings(SuccessStorySettings settings)
-        {
-            return true; //not sure about this one
-        }
+        #endregion
     }
 }

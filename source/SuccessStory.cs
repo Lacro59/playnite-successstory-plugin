@@ -160,11 +160,10 @@ namespace SuccessStory
 
                 if (WinIdProperty == "WindowSettings" ||WinIdProperty == "WindowExtensions" || WinIdProperty == "WindowLibraryIntegrations")
                 {
-                    Common.LogDebug(true, $"Reset VerifToAdd");
-
                     foreach (var achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
                     {
                         achievementProvider.ResetCachedConfigurationValidationResult();
+                        achievementProvider.ResetCachedIsConnectedResult();
                     }
                 }
             }
@@ -722,7 +721,7 @@ namespace SuccessStory
 
             // TODO Sourcelink
             var sourceLinkNull = PluginDatabase.Database?.Select(x => x)
-                                    .Where(x => x.SourcesLink == null && x.IsManual && x.HaveAchivements && PlayniteApi.Database.Games.Get(x.Id) != null);
+                                    .Where(x => x.SourcesLink == null && x.IsManual && x.HasAchivements && PlayniteApi.Database.Games.Get(x.Id) != null);
             if (sourceLinkNull?.Count() > 0)
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
@@ -903,7 +902,7 @@ namespace SuccessStory
                     foreach (Game game in PlayniteApi.Database.Games)
                     {
                         Models.GameAchievements successStories = PluginDatabase.GetOnlyCache(game.Id);
-                        if (successStories != null && successStories.HaveAchivements)
+                        if (successStories != null && successStories.HasAchivements)
                         {
                             Common.LogDebug(true, $"TaskCacheImage - {game.Name} - {successStories.Items.Count}");
 

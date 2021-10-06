@@ -5,7 +5,6 @@ using CommonPluginsShared.Models;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
-using Playnite.SDK.Plugins;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
@@ -50,12 +49,15 @@ namespace SuccessStory.Clients
             }
         }
 
+        private const string UrlExophase = @"https://www.exophase.com/";
+        private const string UrlExophaseAccount = @"https://www.exophase.com/account/";
+
         private const string UrlExophaseSearch = @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
         private const string UrlExophaseLogin = @"https://www.exophase.com/login/";
         private const string UrlExophaseLogout = @"https://www.exophase.com/logout/";
 
 
-        public ExophaseAchievements() : base()
+        public ExophaseAchievements() : base("Exophase")
         {
 
         }
@@ -68,15 +70,8 @@ namespace SuccessStory.Clients
 
         public GameAchievements GetAchievements(Game game, SearchResult searchResult, bool IsRetry = false)
         {
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
-            string GameName = game.Name;
-            bool HaveAchivements = false;
-            int Total = 0;
-            int Unlocked = 0;
-            int Locked = 0;
-
-            GameAchievements Result = SuccessStory.PluginDatabase.GetDefault(game);
-            Result.Items = AllAchievements;
 
 
             try
@@ -128,10 +123,6 @@ namespace SuccessStory.Clients
                             }
                         }
                     }
-
-                    HaveAchivements = true;
-                    Total = AllAchievements.Count;
-                    Locked = AllAchievements.Count;
                 }
             }
             catch (Exception ex)
@@ -140,17 +131,13 @@ namespace SuccessStory.Clients
             }
 
 
-            Result.Name = GameName;
-            Result.HaveAchivements = HaveAchivements;
-            Result.Total = Total;
-            Result.Unlocked = Unlocked;
-            Result.Locked = Locked;
-            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
-            Result.Items = AllAchievements;
+            gameAchievements.Items = AllAchievements;
 
-            if (Result.HaveAchivements)
+
+            // Set source link
+            if (gameAchievements.HasAchivements)
             {
-                Result.SourcesLink = new SourceLink
+                gameAchievements.SourcesLink = new SourceLink
                 {
                     GameName = searchResult.Name,
                     Name = "Exophase",
@@ -158,11 +145,80 @@ namespace SuccessStory.Clients
                 };
             }
 
-            return Result;
+
+            return gameAchievements;
         }
 
 
-        public List<SearchResult> SearchGame(string Name, bool IsTwo = false)
+        #region Configuration
+        public override bool ValidateConfiguration()
+        {
+            // The authentification is only for localised achievement
+            return true;
+        }
+
+
+        public override bool IsConnected()
+        {
+            if (CachedIsConnectedResult == null)
+            {
+                CachedIsConnectedResult = GetIsUserLoggedIn();
+            }
+
+            return (bool)CachedIsConnectedResult;
+        }
+
+        public override bool EnabledInSettings()
+        {
+            // No necessary activation
+            return true; 
+        }
+        #endregion
+
+
+        #region Exophase
+        public void Login()
+        {
+            ResetCachedIsConnectedResult();
+
+            var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(600, 600);
+            WebView.LoadingChanged += (s, e) =>
+            {
+                string address = WebView.GetCurrentAddress();
+                if (address.Contains(UrlExophaseAccount) && !address.Contains(UrlExophaseLogout))
+                {
+                    IsConnected();
+                    WebView.Close();
+                }
+            };
+
+            WebView.LoadingChanged += (s, e) =>
+            {
+                if (WebView.GetCurrentAddress() == UrlExophase)
+                {
+                    WebView.Navigate(UrlExophaseLogin);
+                }
+            };
+
+            WebView.Navigate(UrlExophaseLogout);
+            WebView.OpenDialog();
+        }
+
+        private bool GetIsUserLoggedIn()
+        {
+            WebViewOffscreen.NavigateAndWait(UrlExophaseLogin);
+
+            if (WebViewOffscreen.GetCurrentAddress().StartsWith(UrlExophaseLogin))
+            {
+                logger.Warn("Exophase user is not connected");
+                return false;
+            }
+            logger.Info("Exophase user is connected");
+            return true;
+        }
+
+
+        public List<SearchResult> SearchGame(string Name)
         {
             List<SearchResult> ListSearchGames = new List<SearchResult>();
 
@@ -173,7 +229,7 @@ namespace SuccessStory.Clients
                 string StringJsonResult = Web.DownloadStringData(UrlSearch).GetAwaiter().GetResult();
                 if (StringJsonResult == "{\"success\":true,\"games\":false}")
                 {
-                    logger.Warn($"no Exophase result for {Name}");
+                    logger.Warn($"No Exophase result for {Name}");
                     return ListSearchGames;
                 }
 
@@ -200,11 +256,14 @@ namespace SuccessStory.Clients
             return ListSearchGames;
         }
 
+
         private string GetAchievementsPageUrl(GameAchievements gameAchievements, Services.SuccessStoryDatabase.AchievementSource source)
         {
             string sourceLinkName = gameAchievements.SourcesLink?.Name;
             if (sourceLinkName == "Exophase")
+            {
                 return gameAchievements.SourcesLink.Url;
+            }                
 
             var searchResults = SearchGame(gameAchievements.Name);
             if (searchResults.Count == 0)
@@ -217,21 +276,26 @@ namespace SuccessStory.Clients
             var searchResult = searchResults.Find(x => PlayniteTools.NormalizeGameName(x.Name) == normalizedGameName && PlatformAndProviderMatch(x, gameAchievements, source));
 
             if (searchResult == null)
+            {
                 logger.Warn($"No matching game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
+            }
 
             return searchResult?.Url;
         }
 
+
         /// <summary>
-        /// Set achievement rarity via Exophase web scraping
+        /// Set achievement rarity via Exophase web scraping.
         /// </summary>
         /// <param name="gameAchievements"></param>
         /// <param name="source"></param>
         public void SetRarety(GameAchievements gameAchievements, Services.SuccessStoryDatabase.AchievementSource source)
         {
             string achievementsUrl = GetAchievementsPageUrl(gameAchievements, source);
-            if (achievementsUrl == null)
+            if (achievementsUrl.IsNullOrEmpty())
+            {
                 return;
+            }
 
             try
             {
@@ -257,8 +321,8 @@ namespace SuccessStory.Clients
                         {
                             string achievementName = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml).Trim();
                             float.TryParse(SearchAchievements.GetAttribute("data-average")
-                                .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
-                                .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+                                    .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                    .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out float Percent);
 
                             var achievement = gameAchievements.Items.Find(x => x.Name.Equals(achievementName, StringComparison.InvariantCultureIgnoreCase));
                             if (achievement == null)
@@ -288,6 +352,7 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, false);
             }
         }
+
 
         private static bool PlatformAndProviderMatch(SearchResult exophaseGame, GameAchievements playniteGame, Services.SuccessStoryDatabase.AchievementSource achievementSource)
         {
@@ -343,68 +408,6 @@ namespace SuccessStory.Clients
             }
             return false;
         }
-
-
-        public override bool IsConfigured()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool IsConnected()
-        {
-            return GetIsUserLoggedIn();
-        }
-
-
-        public void Login()
-        {
-            var view = PluginDatabase.PlayniteApi.WebViews.CreateView(600, 600);
-
-            logger.Info("Login()");
-
-            view.LoadingChanged += (s, e) =>
-            {
-                string address = view.GetCurrentAddress();
-                if (address.Contains("https://www.exophase.com/account/") && !address.Contains(UrlExophaseLogout))
-                {
-                    view.Close();
-                }
-            };
-
-            view.LoadingChanged += (s, e) =>
-            {
-                if (view.GetCurrentAddress() == "https://www.exophase.com/")
-                {
-                    view.Navigate(UrlExophaseLogin);
-                }
-            };
-
-            view.Navigate(UrlExophaseLogout);
-            view.OpenDialog();
-        }
-
-        public bool GetIsUserLoggedIn()
-        {
-            WebViewOffscreen.NavigateAndWait(UrlExophaseLogin);
-
-            if (WebViewOffscreen.GetCurrentAddress().StartsWith(UrlExophaseLogin))
-            {
-                logger.Warn("Exophase user is not connected");
-                return false;
-            }
-            logger.Info("Exophase user is connected");
-            return true;
-        }
-
-
-        public override bool ValidateConfiguration(IPlayniteAPI playniteAPI, Plugin plugin, SuccessStorySettings settings)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool EnabledInSettings(SuccessStorySettings settings)
-        {
-            return true; //not sure about this one
-        }
+        #endregion
     }
 }
