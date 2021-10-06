@@ -26,8 +26,12 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Profil Steam n'est pas public</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam n'a pas été correctement configuré dans les paramètres</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key in settings menu for Steam Library</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user in settings menu for Steam Library</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Utilisateur GOG n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG has not been correctly configured in settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Utilisateur PSN n'est pas connecté</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
