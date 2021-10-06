@@ -24,7 +24,7 @@
 
         <Label Grid.Column="0" Content="{Binding LabelContent, FallbackValue='15/22'}" 
                HorizontalAlignment="Center" Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
-               FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}"
+               FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}"
                Margin="0,0,10,0"
                Visibility="{Binding IntegrationShowProgressBarIndicator, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
@@ -36,10 +36,10 @@
                     Visibility="{Binding IntegrationShowProgressBarPercent, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Label Content="{Binding Percent, Mode=OneWay, FallbackValue='30'}" 
                    Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
-                   FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}" />
+                   FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" />
             <Label HorizontalAlignment="Center" Content="%"
                    Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
-                   FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}" />
+                   FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" />
         </StackPanel>
     </Grid>
 </controls:PluginUserControlExtend>
