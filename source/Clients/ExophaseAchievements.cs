@@ -31,24 +31,6 @@ namespace SuccessStory.Clients
 
     class ExophaseAchievements : GenericAchievements
     {
-        protected static IWebView _WebViewOffscreen;
-        internal static IWebView WebViewOffscreen
-        {
-            get
-            {
-                if (_WebViewOffscreen == null)
-                {
-                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
-                }
-                return _WebViewOffscreen;
-            }
-
-            set
-            {
-                _WebViewOffscreen = value;
-            }
-        }
-
         private const string UrlExophase = @"https://www.exophase.com/";
         private const string UrlExophaseAccount = @"https://www.exophase.com/account/";
 

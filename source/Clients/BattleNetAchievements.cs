@@ -8,24 +8,6 @@ namespace SuccessStory.Clients
 {
     abstract class BattleNetAchievements : GenericAchievements
     {
-        protected static IWebView _WebViewOffscreen;
-        internal static IWebView WebViewOffscreen
-        {
-            get
-            {
-                if (_WebViewOffscreen == null)
-                {
-                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
-                }
-                return _WebViewOffscreen;
-            }
-
-            set
-            {
-                _WebViewOffscreen = value;
-            }
-        }
-
         protected const string UrlOauth2 = @"https://account.blizzard.com:443/oauth2/authorization/account-settings";
         protected const string UrlApiStatus = @"https://account.blizzard.com/api/";
 

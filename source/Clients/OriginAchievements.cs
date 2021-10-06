@@ -1,5 +1,4 @@
-﻿using Playnite.SDK;
-using Playnite.SDK.Data;
+﻿using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
 using CommonPluginsPlaynite.PluginLibrary.OriginLibrary.Models;
@@ -30,24 +29,6 @@ namespace SuccessStory.Clients
             set
             {
                 _OriginAPI = value;
-            }
-        }
-
-        protected static IWebView _WebViewOffscreen;
-        internal static IWebView WebViewOffscreen
-        {
-            get
-            {
-                if (_WebViewOffscreen == null)
-                {
-                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
-                }
-                return _WebViewOffscreen;
-            }
-
-            set
-            {
-                _WebViewOffscreen = value;
             }
         }
 

@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using CommonPluginsShared;
 using CommonPluginsStores;
-using Playnite.SDK;
 using Playnite.SDK.Models;
 using Playnite.SDK.Data;
 using SuccessStory.Models;
 using CommonPluginsShared.Models;
-using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {

@@ -13,6 +13,24 @@ namespace SuccessStory.Clients
         internal static readonly ILogger logger = LogManager.GetLogger();
         internal static readonly IResourceProvider resources = new ResourceProvider();
 
+        protected static IWebView _WebViewOffscreen;
+        internal static IWebView WebViewOffscreen
+        {
+            get
+            {
+                if (_WebViewOffscreen == null)
+                {
+                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
+                }
+                return _WebViewOffscreen;
+            }
+
+            set
+            {
+                _WebViewOffscreen = value;
+            }
+        }
+
         internal static SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
         protected bool? CachedConfigurationValidationResult { get; set; }

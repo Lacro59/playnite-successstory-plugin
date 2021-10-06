@@ -68,19 +68,19 @@ namespace SuccessStory.Services
         {
             this.Plugin = Plugin;
 
-            foreach (var achievementProvider in AchievementProviders.Values)
+            Task.Run(() =>
             {
-                if (achievementProvider.EnabledInSettings())
-                {
-                    Task.Run(() => 
-                    {
-                        // Wait extension database are loaded
-                        System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
+                // Wait extension database are loaded
+                System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
 
+                foreach (var achievementProvider in AchievementProviders.Values)
+                {
+                    if (achievementProvider.EnabledInSettings())
+                    {
                         achievementProvider.ValidateConfiguration();
-                    });
+                    }
                 }
-            }
+            });
         }
 
 

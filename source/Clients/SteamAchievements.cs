@@ -43,24 +43,6 @@ namespace SuccessStory.Clients
             }
         }
 
-        protected static IWebView _WebViewOffscreen;
-        internal static IWebView WebViewOffscreen
-        {
-            get
-            {
-                if (_WebViewOffscreen == null)
-                {
-                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
-                }
-                return _WebViewOffscreen;
-            }
-
-            set
-            {
-                _WebViewOffscreen = value;
-            }
-        }
-
         private IHtmlDocument HtmlDocument { get; set; } = null;
 
         private bool IsLocal { get; set; } = false;
