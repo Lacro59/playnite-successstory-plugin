@@ -26,8 +26,12 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Профиль Steam не является публичным</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam подключен к Достижениям, но расширение библиотеки было отключено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam не был правильно настроен в настройка</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key in settings menu for Steam Library</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user in settings menu for Steam Library</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG подключен к Достижениям, но расширение библиотеки было отключено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Пользователь GOG не аутентифицирован</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG has not been correctly configured in settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin подключен к Достижениям, но расширение библиотеки было отключено в Playnite</sys:String>
