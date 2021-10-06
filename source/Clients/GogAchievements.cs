@@ -51,24 +51,6 @@ namespace SuccessStory.Clients
             }
         }
 
-        protected static IWebView _WebViewOffscreen;
-        internal static IWebView WebViewOffscreen
-        {
-            get
-            {
-                if (_WebViewOffscreen == null)
-                {
-                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
-                }
-                return _WebViewOffscreen;
-            }
-
-            set
-            {
-                _WebViewOffscreen = value;
-            }
-        }
-
         private const string UrlGogAchievements = @"https://gameplay.gog.com/clients/{0}/users/{1}/achievements";
         private const string UrlGogLang = @"https://www.gog.com/user/changeLanguage/{0}";
 

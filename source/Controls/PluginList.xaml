@@ -7,7 +7,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
-        xmlns:playnitecontrols="clr-namespace:CommonPluginsPlaynite.Controls"
         xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="150"
@@ -55,7 +54,9 @@
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <wpftk:VirtualizingWrapPanel Orientation="Vertical" ItemSize="{Binding ItemSize}" />
+                    <wpftk:VirtualizingWrapPanel Orientation="Vertical" ItemSize="{Binding ItemSize}"
+                                                 VirtualizingPanel.CacheLengthUnit="Item" 
+                                                 VirtualizingPanel.VirtualizationMode="Recycling" />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
