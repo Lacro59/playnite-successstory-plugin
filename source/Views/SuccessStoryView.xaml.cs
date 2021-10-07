@@ -237,6 +237,10 @@ namespace SuccessStory
                     successViewData.TotalFoundCount = ListGames.Count;
                     ListviewGames.Sorting();
 
+                    PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
+                    PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+                    PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+
 
                     if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements && isRetroAchievements)
                     {
@@ -377,6 +381,10 @@ namespace SuccessStory
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
 
+                PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
+                PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+                PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+
                 return;
             }
 
@@ -385,6 +393,10 @@ namespace SuccessStory
                 successViewData.ListGames = ListGames.Where(x => x.Name.Contains(TextboxSearch.Text, StringComparison.InvariantCultureIgnoreCase)).ToObservable();
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
+
+                PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
+                PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+                PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
 
                 return;
             }
@@ -395,12 +407,20 @@ namespace SuccessStory
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
 
+                PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
+                PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+                PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+
                 return;
             }
 
             successViewData.ListGames = ListGames;
             successViewData.TotalFoundCount = successViewData.ListGames.Count;
             ListviewGames.Sorting();
+
+            PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
+            PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+            PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
         }
 
 

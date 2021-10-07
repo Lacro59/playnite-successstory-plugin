@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
@@ -55,6 +54,9 @@
                         <ColumnDefinition Width="6" />
                         <ColumnDefinition Width="275" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
@@ -71,21 +73,58 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                    <StackPanel HorizontalAlignment="Right" Grid.Column="7" Orientation="Horizontal">
+                    <StackPanel Grid.Column="8" Orientation="Horizontal">
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{DynamicResource LOCCommonTotalFound}" 
                                    VerticalAlignment="Center" />
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TotalFoundCount" 
                                    Text="{Binding ListGames.Count}"
                                    VerticalAlignment="Center" Width="40" TextAlignment="Right" />
                     </StackPanel>
+
+                    <Grid Grid.Column="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="15" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <Label Content="{DynamicResource LOCSuccessStoryRarety}" />
+
+                        <Grid Grid.Column="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="10" />
+
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="10" />
+
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="40" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Grid.Column="0" Content="&#127942;" Margin="0,0,5,0" />
+                            <Label Grid.Column="2" Name="PART_TotalCommun" HorizontalAlignment="Right" Content="32" />
+
+                            <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="DarkGray" />
+                            <Label Grid.Column="6" Name="PART_TotalNoCommun" HorizontalAlignment="Right" Content="11" />
+
+                            <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="Gold" />
+                            <Label Grid.Column="10" Name="PART_TotalRare" HorizontalAlignment="Right" Content="2" />
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Border>
 
             <!-- List games with achievements -->
             <Grid Grid.Column="0" Grid.Row="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="2.5*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 
@@ -123,68 +162,74 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Graphic all achievements by sources -->
-                    <DockPanel Grid.Column="0" Name="PART_GraphicBySource">
-                        <StackPanel DockPanel.Dock="Top">
-                            <Label Content="{DynamicResource LOCSuccessStoryGraphicTitleSources}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
-                        </StackPanel>
+                    <Grid Grid.Column="0" Name="PART_GraphicBySource">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                        <StackPanel Name="SuccessStory_Achievements_Graphics_Sources" DockPanel.Dock="Bottom" Height="168" MaxHeight="168">
-                            <lvc:CartesianChart Name="StatsGraphicAchievementsSources" Height="168" LegendLocation="Bottom" FontFamily="{DynamicResource CommonFont}">
-                                <lvc:CartesianChart.ChartLegend>
-                                    <lvc:DefaultLegend Height="2" Visibility="Hidden" />
-                                </lvc:CartesianChart.ChartLegend>
+                        <Label Content="{DynamicResource LOCSuccessStoryGraphicTitleSources}" FontSize="16" HorizontalAlignment="Center" />
 
-                                <lvc:CartesianChart.DataTooltip>
-                                    <livechartscommon:CustomerToolTipForSingle />
-                                </lvc:CartesianChart.DataTooltip>
+                        <lvc:CartesianChart Name="StatsGraphicAchievementsSources" LegendLocation="Bottom" 
+                                            FontFamily="{DynamicResource CommonFont}" Grid.Row="2">
+                            <lvc:CartesianChart.ChartLegend>
+                                <lvc:DefaultLegend Height="2" Visibility="Hidden" />
+                            </lvc:CartesianChart.ChartLegend>
 
-                                <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Name="StatsGraphicAchievementsSourcesX" ShowLabels="True" FontFamily="{DynamicResource CommonFont}" FontSize="16">
-                                        <lvc:Axis.Separator>
-                                            <lvc:Separator Step="1" />
-                                        </lvc:Axis.Separator>
-                                    </lvc:Axis>
-                                </lvc:CartesianChart.AxisX>
-                                
-                                <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis Name="StatsGraphicAchievementsSourcesY" ShowLabels="True">
-                                    </lvc:Axis>
-                                </lvc:CartesianChart.AxisY>
-                            </lvc:CartesianChart>
-                        </StackPanel>
-                    </DockPanel>
+                            <lvc:CartesianChart.DataTooltip>
+                                <livechartscommon:CustomerToolTipForSingle />
+                            </lvc:CartesianChart.DataTooltip>
+
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Name="StatsGraphicAchievementsSourcesX" ShowLabels="True" FontFamily="{DynamicResource CommonFont}" FontSize="16">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator Step="1" />
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Name="StatsGraphicAchievementsSourcesY" ShowLabels="True">
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </Grid>
 
                     <!-- Graphic all unlocked achievements -->
-                    <DockPanel Grid.Column="2" Name="PART_GraphicAllUnlocked">
-                        <StackPanel DockPanel.Dock="Top">
-                            <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSuccessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" Margin="0,0,0,10"></Label>
-                        </StackPanel>
+                    <Grid Grid.Column="2" Name="PART_GraphicAllUnlocked">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                        <StackPanel Name="SuccessStory_Achievements_Graphics" DockPanel.Dock="Bottom" Height="168">
-                            <lvc:CartesianChart Name="AchievementsMonth" Height="168" LegendLocation="Bottom" FontFamily="{DynamicResource CommonFont}">
-                                <lvc:CartesianChart.ChartLegend>
-                                    <lvc:DefaultLegend Height="2" Visibility="Hidden" />
-                                </lvc:CartesianChart.ChartLegend>
+                        <Label Name="GraphicTitleALL" Content="{DynamicResource LOCSuccessStoryGraphicTitleALL}" FontSize="16" HorizontalAlignment="Center" />
 
-                                <lvc:CartesianChart.DataTooltip>
-                                    <livechartscommon:CustomerToolTipForSingle />
-                                </lvc:CartesianChart.DataTooltip>
+                        <lvc:CartesianChart Name="AchievementsMonth" LegendLocation="Bottom" 
+                                            Grid.Row="2" FontFamily="{DynamicResource CommonFont}">
+                            <lvc:CartesianChart.ChartLegend>
+                                <lvc:DefaultLegend Height="2" Visibility="Hidden" />
+                            </lvc:CartesianChart.ChartLegend>
 
-                                <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Name="AchievementsMonthX" ShowLabels="True" FontFamily="{DynamicResource CommonFont}">
-                                        <lvc:Axis.Separator>
-                                            <lvc:Separator Step="1" />
-                                        </lvc:Axis.Separator>
-                                    </lvc:Axis>
-                                </lvc:CartesianChart.AxisX>
-                                
-                                <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis Name="AchievementsMonthY" ShowLabels="True" MinValue="0">
-                                    </lvc:Axis>
-                                </lvc:CartesianChart.AxisY>
-                            </lvc:CartesianChart>
-                        </StackPanel>
-                    </DockPanel>
+                            <lvc:CartesianChart.DataTooltip>
+                                <livechartscommon:CustomerToolTipForSingle />
+                            </lvc:CartesianChart.DataTooltip>
+
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Name="AchievementsMonthX" ShowLabels="True" FontFamily="{DynamicResource CommonFont}">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator Step="1" />
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Name="AchievementsMonthY" ShowLabels="True" MinValue="0">
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </Grid>
                 </Grid>
 
                 <!-- List games -->
@@ -266,7 +311,7 @@
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
 
-                                <GridViewColumn Width="170" x:Name="lvGameRaretyCount">
+                                <GridViewColumn Width="250" x:Name="lvGameRaretyCount">
                                     <GridViewColumnHeader Content="{DynamicResource LOCSuccessStoryRarety}" Tag="noSort" />
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -274,17 +319,17 @@
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="auto" />
                                                     <ColumnDefinition Width="5" />
-                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="40" />
                                                     <ColumnDefinition Width="10" />
 
                                                     <ColumnDefinition Width="auto" />
                                                     <ColumnDefinition Width="5" />
-                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="40" />
                                                     <ColumnDefinition Width="10" />
-                                                    
+
                                                     <ColumnDefinition Width="auto" />
                                                     <ColumnDefinition Width="5" />
-                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="40" />
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Grid.Column="0" Content="&#127942;" Margin="0,0,5,0" />

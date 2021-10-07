@@ -202,7 +202,7 @@ namespace SuccessStory.Services
 
         private GameAchievements SetEstimateTimeToUnlock(Game game, GameAchievements gameAchievements)
         {
-            if (gameAchievements.HasAchivements)
+            if (game != null && gameAchievements.HasAchivements)
             {
                 try
                 {
@@ -939,6 +939,8 @@ namespace SuccessStory.Services
 
                 foreach (GameAchievements gameAchievements in db)
                 {
+                    logger.Info($"RefreshRarety({gameAchievements.Name})");
+
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
                         CancelText = " canceled";
@@ -1003,6 +1005,8 @@ namespace SuccessStory.Services
 
                 foreach (GameAchievements gameAchievements in db)
                 {
+                    logger.Info($"RefreshEstimateTime({gameAchievements.Name})");
+
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
                         CancelText = " canceled";

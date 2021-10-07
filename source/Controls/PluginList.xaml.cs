@@ -122,7 +122,7 @@ namespace SuccessStory.Controls
             return Task.Run(() =>
             {
 #if DEBUG
-                Common.LogDebug(true, $"SetData - Start");
+                Common.LogDebug(true, $"PluginList.SetData - Start");
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
 #endif

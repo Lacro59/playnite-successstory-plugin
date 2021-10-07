@@ -900,7 +900,7 @@ namespace SuccessStory
                     // Wait Playnite & extension database are loaded
                     System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
 
-                    var db = PluginDatabase.Database.Where(x => !x.ImageIsCached);
+                    var db = PluginDatabase.Database.Where(x => !x.ImageIsCached && x.HasAchivements);
 #if DEBUG
                     Common.LogDebug(true, $"TaskCacheImage - {db.Count()} - Start");
                     Stopwatch stopwatch = new Stopwatch();
@@ -909,45 +909,42 @@ namespace SuccessStory
                     
                     foreach (GameAchievements gameAchievements in db)
                     {
-                        if ((bool)gameAchievements?.HasAchivements)
+                        Common.LogDebug(true, $"TaskCacheImage - {gameAchievements.Name} - {gameAchievements.Items.Count}");
+
+                        foreach (var achievement in gameAchievements.Items)
                         {
-                            Common.LogDebug(true, $"TaskCacheImage - {gameAchievements.Name} - {gameAchievements.Items.Count}");
-
-                            foreach (var achievement in gameAchievements.Items)
+                            try
                             {
-                                try
+                                if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
                                 {
-                                    if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
-                                    {
-                                        Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Locked)");
-                                        Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
-                                    }
-
-                                    if (ct.IsCancellationRequested)
-                                    {
-                                        break;
-                                    }
-
-                                    if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, "SuccessStory").IsNullOrEmpty())
-                                    {
-                                        Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
-                                        Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
-                                    }
-
-                                    if (ct.IsCancellationRequested)
-                                    {
-                                        break;
-                                    }
+                                    Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Locked)");
+                                    Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
                                 }
-                                catch (Exception ex)
+
+                                if (ct.IsCancellationRequested)
                                 {
-                                    Common.LogError(ex, true, $"Error on TaskCacheImage");
+                                    break;
+                                }
+
+                                if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, "SuccessStory").IsNullOrEmpty())
+                                {
+                                    Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
+                                    Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
+                                }
+
+                                if (ct.IsCancellationRequested)
+                                {
+                                    break;
                                 }
                             }
-
-                            gameAchievements.ImageIsCached = true;
-                            PluginDatabase.Update(gameAchievements);
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, true, $"Error on TaskCacheImage");
+                            }
                         }
+
+                        gameAchievements.ImageIsCached = true;
+                        PluginDatabase.Update(gameAchievements);
 
                         if (ct.IsCancellationRequested)
                         {
