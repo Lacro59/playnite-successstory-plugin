@@ -42,20 +42,50 @@
                     <RowDefinition Height="200" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="0" Grid.Row="0">
-                    <TextBlock Text="{Binding GameContext.Name, FallbackValue='Game Name'}"
+                <Grid Grid.Column="0" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.ColumnSpan="3"
+                               Text="{Binding GameContext.Name, FallbackValue='Game Name'}"
                                FontSize="{DynamicResource FontSizeLargest}" TextWrapping="Wrap"
                                Foreground="{DynamicResource TextBrush}" />
 
-                    <StackPanel Name="PART_TimeToUnlockContener" Margin="0,5,0,0"
-                                HorizontalAlignment="Right" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal"
+                                Visibility="{Binding ElementName=PART_FirstUnlock, Path=Text, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
+                        <TextBlock Text="{DynamicResource LOCSuccessStoryFirstUnlock}" 
+                                   Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+
+                        <TextBlock Name="PART_FirstUnlock" Margin="20,0,0,0" Text="xx/xx/xxxx xx:xx:xx"
+                                   Foreground="{DynamicResource TextBrush}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal"
+                                Visibility="{Binding ElementName=PART_LastUnlock, Path=Text, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
+                        <TextBlock Text="{DynamicResource LOCSuccessStoryLastUnlock}" 
+                                   Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+
+                        <TextBlock Name="PART_LastUnlock" Margin="20,0,0,0" Text="xx/xx/xxxx xx:xx:xx"
+                                   Foreground="{DynamicResource TextBrush}" />
+                    </StackPanel>
+
+                    <StackPanel Name="PART_TimeToUnlockContener" Grid.Column="2" Grid.Row="2"
+                                HorizontalAlignment="Right" Orientation="Horizontal">
                         <TextBlock Text="{DynamicResource LOCSsTimeToUnlock}" 
                                    Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
                     
                         <TextBlock Name="PART_TimeToUnlock" Margin="20,0,0,0" Text="xx:xx:xx"
                                    Foreground="{DynamicResource TextBrush}" />
                     </StackPanel>
-                </StackPanel>
+                </Grid>
 
                 <controls:PluginChart IgnoreSettings="True" AxisLimit="16" GameContext="{Binding GameContext}" 
                                       Grid.Row="2"

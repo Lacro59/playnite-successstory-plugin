@@ -1,25 +1,16 @@
-﻿using Playnite.SDK;
+﻿using CommonPluginsShared.Converters;
+using Playnite.SDK;
 using Playnite.SDK.Models;
-using SuccessStory.Controls;
 using SuccessStory.Models;
 using SuccessStory.Services;
-using SuccessStory.Views.Interface;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SuccessStory.Views
 {
@@ -80,6 +71,11 @@ namespace SuccessStory.Views
                 PART_AchCommonTotal.Content = AchCommon.Total;
                 PART_AchNoCommonTotal.Content = AchNoCommon.Total;
                 PART_AchRareTotal.Content = AchRare.Total;
+
+
+                var converter = new LocalDateTimeConverter();
+                PART_FirstUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, null);
+                PART_LastUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, null);
             }
 
 
