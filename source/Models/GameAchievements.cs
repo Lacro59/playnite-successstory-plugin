@@ -208,5 +208,8 @@ namespace SuccessStory.Models
 
         // only for RA
         public int RAgameID { get; set; }
+
+
+        public bool ImageIsCached { get; set; }
     }
 }

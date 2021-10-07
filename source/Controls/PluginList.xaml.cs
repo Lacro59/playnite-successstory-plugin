@@ -1,4 +1,5 @@
-﻿using CommonPluginsShared.Collections;
+﻿using CommonPluginsShared;
+using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK.Data;
@@ -8,6 +9,7 @@ using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -119,6 +121,13 @@ namespace SuccessStory.Controls
         {
             return Task.Run(() =>
             {
+#if DEBUG
+                Common.LogDebug(true, $"SetData - Start");
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+#endif
+
+
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(delegate
                 {
                     this.DataContext = null;
@@ -136,6 +145,12 @@ namespace SuccessStory.Controls
                     this.DataContext = null;
                     this.DataContext = ControlDataContext;
                 }));
+
+#if DEBUG
+                stopwatch.Stop();
+                TimeSpan ts = stopwatch.Elapsed;
+                Common.LogDebug(true, $"SetData() - End - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+#endif
 
                 return true;
             });

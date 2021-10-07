@@ -899,25 +899,27 @@ namespace SuccessStory
                 {
                     // Wait Playnite & extension database are loaded
                     System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
+
+                    var db = PluginDatabase.Database.Where(x => !x.ImageIsCached);
 #if DEBUG
-                    Common.LogDebug(true, $"TaskCacheImage - {PlayniteApi.Database.Games.Count} - Start");
+                    Common.LogDebug(true, $"TaskCacheImage - {db.Count()} - Start");
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
 #endif
-                    foreach (Game game in PlayniteApi.Database.Games)
+                    
+                    foreach (GameAchievements gameAchievements in db)
                     {
-                        Models.GameAchievements successStories = PluginDatabase.GetOnlyCache(game.Id);
-                        if (successStories != null && successStories.HasAchivements)
+                        if ((bool)gameAchievements?.HasAchivements)
                         {
-                            Common.LogDebug(true, $"TaskCacheImage - {game.Name} - {successStories.Items.Count}");
+                            Common.LogDebug(true, $"TaskCacheImage - {gameAchievements.Name} - {gameAchievements.Items.Count}");
 
-                            foreach (var achievement in successStories.Items)
+                            foreach (var achievement in gameAchievements.Items)
                             {
                                 try
                                 {
                                     if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
                                     {
-                                        Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name}" + "_Locked)");
+                                        Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Locked)");
                                         Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
 
@@ -928,7 +930,7 @@ namespace SuccessStory
 
                                     if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, "SuccessStory").IsNullOrEmpty())
                                     {
-                                        Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {game.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
+                                        Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
                                         Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
                                     }
 
@@ -942,6 +944,9 @@ namespace SuccessStory
                                     Common.LogError(ex, true, $"Error on TaskCacheImage");
                                 }
                             }
+
+                            gameAchievements.ImageIsCached = true;
+                            PluginDatabase.Update(gameAchievements);
                         }
 
                         if (ct.IsCancellationRequested)
@@ -954,7 +959,7 @@ namespace SuccessStory
 #if DEBUG
                     stopwatch.Stop();
                     TimeSpan ts = stopwatch.Elapsed;
-                    Common.LogDebug(true, $"TaskCacheImage() - End - {String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                    Common.LogDebug(true, $"TaskCacheImage() - End - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
                 }, tokenSource.Token);
             }
