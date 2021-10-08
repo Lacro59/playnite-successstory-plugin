@@ -148,6 +148,9 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryFirstUnlock">First unlock</sys:String>
+    <sys:String x:Key="LOCSuccessStoryLastUnlock">Last unlock</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryAchStats">Achievements statistics</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Statystyki użytkownika</sys:String>
 

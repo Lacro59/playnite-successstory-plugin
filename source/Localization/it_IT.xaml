@@ -148,6 +148,9 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryFirstUnlock">Primo sblocco</sys:String>
+    <sys:String x:Key="LOCSuccessStoryLastUnlock">Ultimo sblocco</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryAchStats">Statistiche sugli obiettivi</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Statistiche utente</sys:String>
 

@@ -149,6 +149,9 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryFirstUnlock">Premier déverrouillage</sys:String>
+    <sys:String x:Key="LOCSuccessStoryLastUnlock">Dernier déverrouillage</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryAchStats">Statistiques des succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Statistiques de l'utilisateur</sys:String>
 
