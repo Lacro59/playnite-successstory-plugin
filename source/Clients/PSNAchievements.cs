@@ -125,6 +125,8 @@ namespace SuccessStory.Clients
             }
             else
             {
+                PsnAPI.CheckAuthentication().GetAwaiter().GetResult();
+
                 if (CachedConfigurationValidationResult == null)
                 {
                     CachedConfigurationValidationResult = IsConnected();
@@ -134,8 +136,7 @@ namespace SuccessStory.Clients
                         ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"));
                     }
                 }
-
-                if (!(bool)CachedConfigurationValidationResult)
+                else if (!(bool)CachedConfigurationValidationResult)
                 {
                     ShowNotificationPluginErrorMessage();
                 }

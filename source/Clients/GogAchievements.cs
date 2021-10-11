@@ -194,8 +194,7 @@ namespace SuccessStory.Clients
                         }
                     }
                 }
-
-                if (!(bool)CachedConfigurationValidationResult)
+                else if (!(bool)CachedConfigurationValidationResult)
                 {
                     ShowNotificationPluginErrorMessage();
                 }

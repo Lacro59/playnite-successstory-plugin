@@ -164,8 +164,7 @@ namespace SuccessStory.Clients
                     ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"));
                 }
             }
-
-            if (!(bool)CachedConfigurationValidationResult)
+            else if (!(bool)CachedConfigurationValidationResult)
             {
                 ShowNotificationPluginErrorMessage();
             }

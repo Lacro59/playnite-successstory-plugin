@@ -142,8 +142,7 @@ namespace SuccessStory.Clients
                     ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
                 }
             }
-
-            if (!(bool)CachedConfigurationValidationResult)
+            else if (!(bool)CachedConfigurationValidationResult)
             {
                 ShowNotificationPluginErrorMessage();
             }

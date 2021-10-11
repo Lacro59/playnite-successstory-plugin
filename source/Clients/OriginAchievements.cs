@@ -150,8 +150,7 @@ namespace SuccessStory.Clients
                         ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"));
                     }
                 }
-
-                if (!(bool)CachedConfigurationValidationResult)
+                else if (!(bool)CachedConfigurationValidationResult)
                 {
                     ShowNotificationPluginErrorMessage();
                 }

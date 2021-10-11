@@ -284,110 +284,6 @@ namespace SuccessStory.Clients
         }
 
 
-        private List<Achievements> GetAchievementsByWeb(int AppId)
-        {
-            List<Achievements> achievements = new List<Achievements>();
-            string url = string.Empty;
-
-            // Get data
-            url = string.Format(UrlProfilById, SteamId, AppId, LocalLang);
-            achievements = GetAchievementsByWeb(achievements, url);
-
-            if (achievements.Count == 0)
-            {
-                url = string.Format(UrlProfilByName, SteamUser, AppId, LocalLang);
-                achievements = GetAchievementsByWeb(achievements, url);
-            }
-
-            return achievements;
-        }
-
-        private List<Achievements> GetAchievementsByWeb(List<Achievements> Achievements, string Url)
-        {
-            string ResultWeb = string.Empty;
-
-            try
-            {
-                Url = Url + "&panorama=please";
-                WebViewOffscreen.NavigateAndWait(Url);
-                ResultWeb = WebViewOffscreen.GetPageSource();
-
-
-                string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
-                if (CurrentUrl != Url)
-                {
-                    var urlParams = Url.Split('?').ToList();
-                    if (urlParams.Count == 2)
-                    {
-                        Url = CurrentUrl + "?" + urlParams[1];
-                    }
-
-                    WebViewOffscreen.NavigateAndWait(Url);
-                    ResultWeb = WebViewOffscreen.GetPageSource();
-                }
-
-
-                int index = ResultWeb.IndexOf("var g_rgAchievements = ");
-                if (index > -1)
-                {
-                    ResultWeb = ResultWeb.Substring(index + "var g_rgAchievements = ".Length);
-
-                    index = ResultWeb.IndexOf("var g_rgLeaderboards");
-                    ResultWeb = ResultWeb.Substring(0, index).Trim();
-
-                    ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
-
-                    dynamic data = Serialization.FromJson<dynamic>(ResultWeb);
-
-                    dynamic OpenData = data["open"];
-                    foreach (dynamic dd in OpenData)
-                    {
-                        string stringData = Serialization.ToJson(dd.Value);
-                        SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
-                        Achievements.Add(new Achievements
-                        {
-                            Name = WebUtility.HtmlDecode(steamAchievementData.Name.Trim()),
-                            ApiName = steamAchievementData.RawName.Trim(),
-                            Description = WebUtility.HtmlDecode(steamAchievementData.Desc.Trim()),
-                            UrlUnlocked = steamAchievementData.IconClosed.Trim(),
-                            UrlLocked = steamAchievementData.IconClosed.Trim(),
-                            DateUnlocked = default(DateTime),
-                            IsHidden = steamAchievementData.Hidden,
-                            Percent = 100
-                        });
-                    }
-
-                    dynamic ClosedData = data["closed"];
-                    foreach (dynamic dd in ClosedData)
-                    {
-                        string stringData = Serialization.ToJson(dd.Value);
-                        SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
-                        Achievements.Add(new Achievements
-                        {
-                            Name = WebUtility.HtmlDecode(steamAchievementData.Name.Trim()),
-                            ApiName = steamAchievementData.RawName.Trim(),
-                            Description = WebUtility.HtmlDecode(steamAchievementData.Desc.Trim()),
-                            UrlUnlocked = steamAchievementData.IconClosed.Trim(),
-                            UrlLocked = steamAchievementData.IconClosed.Trim(),
-                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(steamAchievementData.UnlockTime),
-                            IsHidden = steamAchievementData.Hidden,
-                            Percent = 100
-                        });
-                    }
-                }
-                else
-                {
-                    Common.LogDebug(true, $"No achievement data on {Url}");
-                }
-            }
-            catch (WebException ex)
-            {
-                Common.LogError(ex, false);
-            }
-
-            return Achievements;
-        }
-
 
         #region Configuration
         // TODO Rewrite
@@ -431,6 +327,10 @@ namespace SuccessStory.Clients
                     {
                         ShowNotificationPluginErrorMessage();
                     }
+                }
+                else if (!(bool)CachedConfigurationValidationResult)
+                {
+                    ShowNotificationPluginErrorMessage();
                 }
 
                 return (bool)CachedConfigurationValidationResult;
@@ -1177,7 +1077,112 @@ namespace SuccessStory.Clients
             return AllAchievements;
         }
 
-        
+
+        private List<Achievements> GetAchievementsByWeb(int AppId)
+        {
+            List<Achievements> achievements = new List<Achievements>();
+            string url = string.Empty;
+
+            // Get data
+            url = string.Format(UrlProfilById, SteamId, AppId, LocalLang);
+            achievements = GetAchievementsByWeb(achievements, url);
+
+            if (achievements.Count == 0)
+            {
+                url = string.Format(UrlProfilByName, SteamUser, AppId, LocalLang);
+                achievements = GetAchievementsByWeb(achievements, url);
+            }
+
+            return achievements;
+        }
+
+        private List<Achievements> GetAchievementsByWeb(List<Achievements> Achievements, string Url)
+        {
+            string ResultWeb = string.Empty;
+
+            try
+            {
+                Url = Url + "&panorama=please";
+                WebViewOffscreen.NavigateAndWait(Url);
+                ResultWeb = WebViewOffscreen.GetPageSource();
+
+
+                string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
+                if (CurrentUrl != Url)
+                {
+                    var urlParams = Url.Split('?').ToList();
+                    if (urlParams.Count == 2)
+                    {
+                        Url = CurrentUrl + "?" + urlParams[1];
+                    }
+
+                    WebViewOffscreen.NavigateAndWait(Url);
+                    ResultWeb = WebViewOffscreen.GetPageSource();
+                }
+
+
+                int index = ResultWeb.IndexOf("var g_rgAchievements = ");
+                if (index > -1)
+                {
+                    ResultWeb = ResultWeb.Substring(index + "var g_rgAchievements = ".Length);
+
+                    index = ResultWeb.IndexOf("var g_rgLeaderboards");
+                    ResultWeb = ResultWeb.Substring(0, index).Trim();
+
+                    ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
+
+                    dynamic data = Serialization.FromJson<dynamic>(ResultWeb);
+
+                    dynamic OpenData = data["open"];
+                    foreach (dynamic dd in OpenData)
+                    {
+                        string stringData = Serialization.ToJson(dd.Value);
+                        SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
+                        Achievements.Add(new Achievements
+                        {
+                            Name = WebUtility.HtmlDecode(steamAchievementData.Name.Trim()),
+                            ApiName = steamAchievementData.RawName.Trim(),
+                            Description = WebUtility.HtmlDecode(steamAchievementData.Desc.Trim()),
+                            UrlUnlocked = steamAchievementData.IconClosed.Trim(),
+                            UrlLocked = steamAchievementData.IconClosed.Trim(),
+                            DateUnlocked = default(DateTime),
+                            IsHidden = steamAchievementData.Hidden,
+                            Percent = 100
+                        });
+                    }
+
+                    dynamic ClosedData = data["closed"];
+                    foreach (dynamic dd in ClosedData)
+                    {
+                        string stringData = Serialization.ToJson(dd.Value);
+                        SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
+                        Achievements.Add(new Achievements
+                        {
+                            Name = WebUtility.HtmlDecode(steamAchievementData.Name.Trim()),
+                            ApiName = steamAchievementData.RawName.Trim(),
+                            Description = WebUtility.HtmlDecode(steamAchievementData.Desc.Trim()),
+                            UrlUnlocked = steamAchievementData.IconClosed.Trim(),
+                            UrlLocked = steamAchievementData.IconClosed.Trim(),
+                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(steamAchievementData.UnlockTime),
+                            IsHidden = steamAchievementData.Hidden,
+                            Percent = 100
+                        });
+                    }
+                }
+                else
+                {
+                    Common.LogDebug(true, $"No achievement data on {Url}");
+                }
+            }
+            catch (WebException ex)
+            {
+                Common.LogError(ex, false);
+            }
+
+            return Achievements;
+        }
+
+
         public static SteamAchievements GetLocalSteamAchievementsProvider()
         {
             var provider = new SteamAchievements();

@@ -142,8 +142,7 @@ namespace SuccessStory.Clients
                     ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"));
                 }
             }
-
-            if (!(bool)CachedConfigurationValidationResult)
+            else if (!(bool)CachedConfigurationValidationResult)
             {
                 ShowNotificationPluginErrorMessage();
             }

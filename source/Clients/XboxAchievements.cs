@@ -101,11 +101,10 @@ namespace SuccessStory.Clients
                     {
                         ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"));
                     }
-
-                    if (!(bool)CachedConfigurationValidationResult)
-                    {
-                        ShowNotificationPluginErrorMessage();
-                    }
+                }
+                else if (!(bool)CachedConfigurationValidationResult)
+                {
+                    ShowNotificationPluginErrorMessage();
                 }
 
                 return (bool)CachedConfigurationValidationResult;
@@ -130,7 +129,8 @@ namespace SuccessStory.Clients
         #endregion
 
 
-
+        
+        #region Xbox
         private string GetTitleId(Game game)
         {
             string titleId = string.Empty;
@@ -541,7 +541,7 @@ namespace SuccessStory.Clients
                 return titleHistory.titles.First();
             }
         }
-
+        #endregion
     }
 
 
