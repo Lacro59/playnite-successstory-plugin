@@ -36,3 +36,12 @@ Packages:
       - Improve performances and code optimizations (thanks to Jeshibu)
       - Added tag with time to full unlock
       - Xbox360 achievements support (thanks to Jeshibu)
+  - Version: 2.2.1
+    RequiredApiVersion: 6.0.0
+    ReleaseDate: 2021-10-11
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.2.1/playnite-successstory-plugin_2_2_1.pext
+    Changelog:
+      - Playnite 9 (not compatible with Playnite 8)
+      - UI tweaks
+      - Fixed many bugs
+      - Fixed PSN trophies
