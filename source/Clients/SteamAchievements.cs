@@ -20,6 +20,7 @@ using CommonPluginsStores;
 using CommonPluginsShared.Models;
 using PlayniteTools = CommonPluginsShared.PlayniteTools;
 using CommonPluginsShared.Extensions;
+using System.Threading;
 
 namespace SuccessStory.Clients
 {
@@ -312,8 +313,12 @@ namespace SuccessStory.Clients
 
                     if (PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !IsConnected())
                     {
-                        ShowNotificationPluginNoPublic(resources.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"));
-                        CachedConfigurationValidationResult = false;
+                        Thread.Sleep(2000);
+                        if (PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !IsConnected())
+                        {
+                            ShowNotificationPluginNoPublic(resources.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"));
+                            CachedConfigurationValidationResult = false;
+                        }
                     }
 
 

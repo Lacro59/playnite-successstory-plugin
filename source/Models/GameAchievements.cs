@@ -6,6 +6,7 @@ using SuccessStory.Clients;
 using Playnite.SDK.Data;
 using CommonPluginsShared;
 using CommonPluginsShared.Models;
+using System.IO;
 
 namespace SuccessStory.Models
 {
@@ -210,6 +211,18 @@ namespace SuccessStory.Models
         public int RAgameID { get; set; }
 
 
-        public bool ImageIsCached { get; set; }
+        public bool ImageIsCached
+        {
+            get
+            {
+                if (!HasAchivements)
+                {
+                    return true;
+                }
+
+                string pathImageUnlocked = PlayniteTools.GetCacheFile(Items?.FirstOrDefault()?.CacheUnlocked, "SuccessStory");
+                return !pathImageUnlocked.IsNullOrEmpty() && File.Exists(pathImageUnlocked);
+            }
+        }
     }
 }

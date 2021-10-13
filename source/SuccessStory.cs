@@ -31,6 +31,7 @@ namespace SuccessStory
     {
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
+        private bool TaskIsPaused = false;
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         public static bool IsFromMenu { get; set; } = false;
@@ -831,7 +832,7 @@ namespace SuccessStory
         // Add code to be executed when game is preparing to be started.
         public override void OnGameStarting(OnGameStartingEventArgs args)
         {
-
+            TaskIsPaused = true;
         }
 
         // Add code to be executed when game is started running.
@@ -843,6 +844,8 @@ namespace SuccessStory
         // Add code to be executed when game is preparing to be started.
         public override void OnGameStopped(OnGameStoppedEventArgs args)
         {
+            TaskIsPaused = false;
+
             // Refresh Achievements database for game played.
             var TaskGameStopped = Task.Run(() =>
             {
@@ -901,7 +904,7 @@ namespace SuccessStory
                     System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
                     System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                    var db = PluginDatabase.Database.Where(x => !x.ImageIsCached && x.HasAchivements);
+                    var db = PluginDatabase.Database.Where(x => x.HasAchivements && !x.ImageIsCached);
 #if DEBUG
                     Common.LogDebug(true, $"TaskCacheImage - {db.Count()} - Start");
                     Stopwatch stopwatch = new Stopwatch();
@@ -914,6 +917,11 @@ namespace SuccessStory
 
                         foreach (var achievement in gameAchievements.Items)
                         {
+                            while (TaskIsPaused)
+                            {
+                                Thread.Sleep(100); 
+                            }
+
                             try
                             {
                                 if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
@@ -943,9 +951,6 @@ namespace SuccessStory
                                 Common.LogError(ex, true, $"Error on TaskCacheImage");
                             }
                         }
-
-                        gameAchievements.ImageIsCached = true;
-                        PluginDatabase.Update(gameAchievements);
 
                         if (ct.IsCancellationRequested)
                         {
