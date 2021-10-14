@@ -714,34 +714,48 @@ namespace SuccessStory.Services
                     {
                         case "overwatch":
                             if (settings.EnableOverwatchAchievements)
+                            {
                                 return AchievementSource.Overwatch;
+                            }
                             break;
                         case "starcraft 2":
                         case "starcraft ii":
                             if (settings.EnableSc2Achievements)
+                            {
                                 return AchievementSource.Starcraft2;
+                            }
                             break;
                     }
                     break;
                 case ExternalPlugin.GogLibrary:
                     if (settings.EnableGog)
+                    {
                         return AchievementSource.GOG;
+                    }
                     break;
                 case ExternalPlugin.OriginLibrary:
                     if (settings.EnableOrigin)
+                    {
                         return AchievementSource.Origin;
+                    }
                     break;
                 case ExternalPlugin.PSNLibrary:
                     if (settings.EnablePsn)
+                    {
                         return AchievementSource.Playstation;
+                    }
                     break;
                 case ExternalPlugin.SteamLibrary:
                     if (settings.EnableSteam)
+                    {
                         return AchievementSource.Steam;
+                    }
                     break;
                 case ExternalPlugin.XboxLibrary:
                     if (settings.EnableXbox)
+                    {
                         return AchievementSource.Xbox;
+                    }
                     break;
             }
             return AchievementSource.None;
@@ -750,21 +764,34 @@ namespace SuccessStory.Services
         private static AchievementSource GetAchievementSourceFromEmulator(SuccessStorySettings settings, Game game)
         {
             if (game.GameActions == null)
+            {
                 return AchievementSource.None;
+            }
 
             foreach (var action in game.GameActions)
             {
                 if (!action.IsPlayAction || action.EmulatorId == Guid.Empty)
+                {
                     continue;
+                }
 
                 var emulator = API.Instance.Database.Emulators.FirstOrDefault(e => e.Id == action.EmulatorId);
                 if (emulator == null)
+                {
                     continue;
+                }
 
                 if (emulator.BuiltInConfigId == "rpcs3" && settings.EnableRpcs3Achievements)
+                {
                     return AchievementSource.RPCS3;
-                if (emulator.BuiltInConfigId == "retroarch" && settings.EnableRetroAchievements)
+                }
+
+                // TODO With the emulator migration problem emulator.BuiltInConfigId is null
+                // TODO emulator.BuiltInConfigId = "retroarch" is limited; other emulators has RA
+                if (settings.EnableRetroAchievements)
+                {
                     return AchievementSource.RetroAchievements;
+                }
             }
 
             return AchievementSource.None;

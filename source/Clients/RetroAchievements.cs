@@ -281,9 +281,13 @@ namespace SuccessStory.Clients
             {
                 PlatformName = "mega drive";
             }
-            if (PlatformName.ToLower().Contains("sony playstation"))
+            if (PlatformName.Contains("sony playstation", StringComparison.InvariantCultureIgnoreCase))
             {
                 PlatformName = PlatformName.ToLower().Replace("sony playstation", "playstation");
+            }
+            if (PlatformName.Contains("sega saturn", StringComparison.InvariantCultureIgnoreCase))
+            {
+                PlatformName = "saturn";
             }
 
 
