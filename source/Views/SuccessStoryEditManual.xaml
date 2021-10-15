@@ -3,12 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:SuccessStory.Views"
-             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
-             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"             
+             xmlns:local="clr-namespace:SuccessStory.Views"      
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:controls="clr-namespace:SuccessStory.Controls"
-             xmlns:Commonplaynitecontrols="clr-namespace:CommonPluginsPlaynite.Controls"
+             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d" Height="700" Width="800">
 

@@ -13,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using CommonPluginsPlaynite;
+using CommonPlayniteShared;
 using System.Diagnostics;
 using SuccessStory.Services;
 using System.Windows.Automation;
@@ -22,7 +22,7 @@ using System.Windows.Media;
 using CommonPluginsShared.Controls;
 using SuccessStory.Controls;
 using CommonPluginsShared.Models;
-using CommonPluginsPlaynite.Common;
+using CommonPlayniteShared.Common;
 using System.Reflection;
 
 namespace SuccessStory

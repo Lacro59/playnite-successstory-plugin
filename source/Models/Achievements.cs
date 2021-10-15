@@ -7,7 +7,7 @@ using CommonPluginsShared;
 using SuccessStory.Services;
 using CommonPluginsShared.Converters;
 using System.Net;
-using CommonPluginsPlaynite.Common;
+using CommonPlayniteShared.Common;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows;
@@ -53,7 +53,7 @@ namespace SuccessStory.Models
                     ImageFileName += "_Unlocked";
                 }
 
-                return Regex.Replace(WebUtility.HtmlDecode(Paths.GetSafeFilename(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
+                return Regex.Replace(WebUtility.HtmlDecode(Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
             }
         }
         /// <summary>
@@ -100,7 +100,7 @@ namespace SuccessStory.Models
                     ImageFileName += "_Locked";
                 }
 
-                return Regex.Replace(WebUtility.HtmlDecode(Paths.GetSafeFilename(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
+                return Regex.Replace(WebUtility.HtmlDecode(Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
             }
         }
         /// <summary>

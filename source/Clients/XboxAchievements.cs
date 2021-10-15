@@ -10,7 +10,7 @@ using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
-using CommonPluginsPlaynite.PluginLibrary.XboxLibrary.Models;
+using CommonPlayniteShared.PluginLibrary.XboxLibrary.Models;
 using SuccessStory.Models;
 using CommonPluginsShared.Models;
 using System.Security.Principal;

@@ -7,9 +7,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
-        xmlns:convertersPlaynite="clr-namespace:CommonPluginsPlaynite.Converters"
-        xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+        xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
         mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
@@ -19,7 +18,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:SetColorConverter x:Key="SetColorConverter" />
-        <convertersPlaynite:StringNullOrEmptyToBoolConverter x:Key="StringNullOrEmptyToBoolConverter" />
+        <converters:StringNullOrEmptyToBoolConverter x:Key="StringNullOrEmptyToBoolConverter" />
         <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
     </controls:PluginUserControlExtend.Resources>
 

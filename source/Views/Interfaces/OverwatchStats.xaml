@@ -4,19 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views.Interfaces"
-             xmlns:controls="clr-namespace:CommonPluginsShared.Controls"
-             xmlns:playnitecontrols="clr-namespace:CommonPluginsPlaynite.Controls"
-             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
-             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
-             xmlns:local1="clr-namespace:SuccessStory.Controls"
+             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+             xmlns:controls1="clr-namespace:SuccessStory.Controls"
+             xmlns:playnitecontrols="clr-namespace:CommonPlayniteShared.Controls"
+             xmlns:controls="clr-namespace:CommonPluginsShared.Controls"
              mc:Ignorable="d" d:DesignWidth="1000">
 
     <UserControl.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <local1:SetColorConverter x:Key="SetColorConverter" />
+        <controls1:SetColorConverter x:Key="SetColorConverter" />
         <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
     </UserControl.Resources>
 

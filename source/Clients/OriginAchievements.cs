@@ -1,8 +1,8 @@
 ﻿using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
-using CommonPluginsPlaynite.PluginLibrary.OriginLibrary.Models;
-using CommonPluginsPlaynite.PluginLibrary.OriginLibrary.Services;
+using CommonPlayniteShared.PluginLibrary.OriginLibrary.Models;
+using CommonPlayniteShared.PluginLibrary.OriginLibrary.Services;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;

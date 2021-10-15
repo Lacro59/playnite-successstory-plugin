@@ -8,7 +8,7 @@
              xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
-             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:Controls="clr-namespace:SuccessStory.Controls"
              mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280"

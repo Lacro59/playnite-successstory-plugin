@@ -14,7 +14,7 @@ using AngleSharp.Parser.Html;
 using Playnite.SDK.Models;
 using SteamKit2;
 using System.Globalization;
-using CommonPluginsPlaynite.Common.Web;
+using CommonPlayniteShared.Common.Web;
 using System.Text.RegularExpressions;
 using CommonPluginsStores;
 using CommonPluginsShared.Models;

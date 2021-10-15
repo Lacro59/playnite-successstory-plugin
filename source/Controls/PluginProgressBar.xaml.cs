@@ -1,4 +1,4 @@
-﻿using CommonPluginsPlaynite.Controls;
+﻿using CommonPlayniteShared.Controls;
 using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;

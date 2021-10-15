@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Controls.Customs"
-             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
+             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:controls="clr-namespace:SuccessStory.Controls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"

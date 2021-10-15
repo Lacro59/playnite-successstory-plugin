@@ -4,10 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views.Interface"
-             xmlns:converters="clr-namespace:CommonPluginsPlaynite.Converters"
-             xmlns:controls="clr-namespace:CommonPluginsPlaynite.Controls"
-             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:local1="clr-namespace:SuccessStory.Controls"
+             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100">
 

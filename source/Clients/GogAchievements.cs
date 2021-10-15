@@ -2,13 +2,13 @@
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
-using CommonPluginsPlaynite.PluginLibrary.Services.GogLibrary;
+using CommonPlayniteShared.PluginLibrary.Services.GogLibrary;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using CommonPluginsShared.Models;
-using CommonPluginsPlaynite.PluginLibrary.GogLibrary.Models;
+using CommonPlayniteShared.PluginLibrary.GogLibrary.Models;
 
 namespace SuccessStory.Clients
 {
