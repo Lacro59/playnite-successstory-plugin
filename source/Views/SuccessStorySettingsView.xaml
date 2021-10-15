@@ -633,11 +633,15 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
 
-                    <CheckBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" IsChecked="{Binding Settings.EnableImageCache}" ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}"
+                    <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.EnableImageCache}" 
+                              VerticalAlignment="Center"
+                              ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}"
                               Command="{x:Static pcmd:Commands.RestartRequired}" 
                               CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
                         <Label Content="{DynamicResource LOCSuccessStoryEnableImageCache}" />
                     </CheckBox>
+                    <Button Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Right" 
+                            Click="Button_Click_Cache" Content="{DynamicResource LOCSettingsClearWebCache}" />
 
                     <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" >
                         <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />

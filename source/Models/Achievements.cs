@@ -50,7 +50,7 @@ namespace SuccessStory.Models
                     ImageFileName = GetNameFromUrl(UrlUnlocked);
                     ImageFileName += "_" + Name.Replace(" ", "").Substring(0, maxLenght);
                     ImageFileName = string.Concat(ImageFileName.Split(Path.GetInvalidFileNameChars()));
-                    ImageFileName += "_Unlocked";
+                    ImageFileName += "_Unlocked.png";
                 }
 
                 return Regex.Replace(WebUtility.HtmlDecode(Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
@@ -97,7 +97,7 @@ namespace SuccessStory.Models
                     ImageFileName = GetNameFromUrl(UrlLocked);
                     ImageFileName += "_" + Name.Replace(" ", "").Substring(0, maxLenght);
                     ImageFileName = string.Concat(ImageFileName.Split(Path.GetInvalidFileNameChars()));
-                    ImageFileName += "_Locked";
+                    ImageFileName += "_Locked.png";
                 }
 
                 return Regex.Replace(WebUtility.HtmlDecode(Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);

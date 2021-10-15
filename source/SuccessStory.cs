@@ -31,7 +31,7 @@ namespace SuccessStory
     {
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
-        private bool TaskIsPaused = false;
+        public static bool TaskIsPaused = false;
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         public static bool IsFromMenu { get; set; } = false;

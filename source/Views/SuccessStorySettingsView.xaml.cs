@@ -331,6 +331,13 @@ namespace SuccessStory.Views
             PART_IgnoredGames.ItemsSource = null;
             PART_IgnoredGames.ItemsSource = IgnoredGames;
         }
+
+
+        private void Button_Click_Cache(object sender, RoutedEventArgs e)
+        {
+            SuccessStory.TaskIsPaused = true;
+            PluginDatabase.ClearCache();
+        }
     }
 
 
