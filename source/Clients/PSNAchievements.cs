@@ -108,6 +108,10 @@ namespace SuccessStory.Clients
                             {
                                 GameId = TMP_GameId;
                             }
+                            else
+                            {
+                                logger.Warn($"No trohpies find for {game.Name} - {GameId}");
+                            }
                         }
                         catch (Exception ex)
                         {
