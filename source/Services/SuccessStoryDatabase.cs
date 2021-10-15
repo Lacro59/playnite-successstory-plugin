@@ -165,6 +165,7 @@ namespace SuccessStory.Services
             {
                 var achievementProvider = AchievementProviders[achievementSource];
                 var retroAchievementsProvider = achievementProvider as RetroAchievements;
+                var psnAchievementsProvider = achievementProvider as PSNAchievements;
 
                 if (retroAchievementsProvider != null && !SuccessStory.IsFromMenu)
                 {
@@ -177,6 +178,18 @@ namespace SuccessStory.Services
                 {
                     ((RetroAchievements)achievementProvider).GameId = 0;
                 }
+
+
+                if (psnAchievementsProvider != null && !SuccessStory.IsFromMenu)
+                {
+                    GameAchievements TEMPgameAchievements = Get(game, true);
+                    ((PSNAchievements)achievementProvider).CommunicationId = TEMPgameAchievements.CommunicationId;
+                }
+                else if (psnAchievementsProvider != null)
+                {
+                    ((PSNAchievements)achievementProvider).CommunicationId = null;
+                }
+
 
                 gameAchievements = achievementProvider.GetAchievements(game);
 

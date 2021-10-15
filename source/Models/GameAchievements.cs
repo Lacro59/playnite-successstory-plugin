@@ -210,6 +210,9 @@ namespace SuccessStory.Models
         // only for RA
         public int RAgameID { get; set; }
 
+        // only for PSN
+        public string CommunicationId { get; set; }
+
 
         public bool ImageIsCached
         {
