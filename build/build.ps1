@@ -4,7 +4,7 @@ param(
 )
 
 
-$PlaynitePath = "D:\Playnite_dev"
+$PlaynitePath = "G:\Playnite_dev"
 $ToolboxPath = (Join-Path $PlaynitePath "toolbox.exe")
 $OutDirPath = (Join-Path $OutDir "..")
 
