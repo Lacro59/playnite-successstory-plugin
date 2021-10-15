@@ -33,11 +33,12 @@ namespace SuccessStory.Clients
     class ExophaseAchievements : GenericAchievements
     {
         private const string UrlExophase = @"https://www.exophase.com/";
-        private const string UrlExophaseAccount = @"https://www.exophase.com/account/";
 
         private const string UrlExophaseSearch = @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
-        private const string UrlExophaseLogin = @"https://www.exophase.com/login/";
-        private const string UrlExophaseLogout = @"https://www.exophase.com/logout/";
+
+        private const string UrlExophaseLogin = @"https://www.exophase.com/login";
+        private const string UrlExophaseLogout = @"https://www.exophase.com/logout";
+        private const string UrlExophaseAccount = @"https://www.exophase.com/account";
 
 
         public ExophaseAchievements() : base("Exophase")
@@ -170,7 +171,7 @@ namespace SuccessStory.Clients
                 string address = WebView.GetCurrentAddress();
                 if (address.Contains(UrlExophaseAccount) && !address.Contains(UrlExophaseLogout))
                 {
-                    IsConnected();
+                    CachedIsConnectedResult = true;
                     WebView.Close();
                 }
             };
@@ -191,7 +192,7 @@ namespace SuccessStory.Clients
         {
             WebViewOffscreen.NavigateAndWait(UrlExophaseLogin);
 
-            if (WebViewOffscreen.GetCurrentAddress().StartsWith(UrlExophaseLogin))
+            if (!WebViewOffscreen.GetCurrentAddress().StartsWith(UrlExophaseAccount))
             {
                 logger.Warn("Exophase user is not connected");
                 return false;
