@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace SuccessStory.Clients
 {
@@ -241,6 +242,8 @@ namespace SuccessStory.Clients
 
         private string GetAchievementsPageUrl(GameAchievements gameAchievements, Services.SuccessStoryDatabase.AchievementSource source)
         {
+            bool UsedSplit = false;
+
             string sourceLinkName = gameAchievements.SourcesLink?.Name;
             if (sourceLinkName == "Exophase")
             {
@@ -251,10 +254,23 @@ namespace SuccessStory.Clients
             if (searchResults.Count == 0)
             {
                 logger.Warn($"No game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
-                return null;
+
+                searchResults = SearchGame(PlayniteTools.NormalizeGameName(gameAchievements.Name));
+                if (searchResults.Count == 0)
+                {
+                    logger.Warn($"No game found for {PlayniteTools.NormalizeGameName(gameAchievements.Name)} in GetAchievementsPageUrl()");
+
+                    searchResults = SearchGame(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value);
+                    UsedSplit = true;
+                    if (searchResults.Count == 0)
+                    {
+                        logger.Warn($"No game found for {Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value} in GetAchievementsPageUrl()");
+                        return null;
+                    }                    
+                }                    
             }
 
-            string normalizedGameName = PlayniteTools.NormalizeGameName(gameAchievements.Name);
+            string normalizedGameName = UsedSplit ? PlayniteTools.NormalizeGameName(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value) : PlayniteTools.NormalizeGameName(gameAchievements.Name);
             var searchResult = searchResults.Find(x => PlayniteTools.NormalizeGameName(x.Name) == normalizedGameName && PlatformAndProviderMatch(x, gameAchievements, source));
 
             if (searchResult == null)
