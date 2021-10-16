@@ -175,7 +175,7 @@ namespace SuccessStory.Clients
                 };
             }
 
-            // Set rarety from Exophase
+            // Set rarity from Exophase
             if (gameAchievements.HasAchivements)
             {
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();

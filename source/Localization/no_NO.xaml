@@ -170,7 +170,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGameInformation">Information</sys:String>
 
 
-    <sys:String x:Key="LOCSuccessStoryRarety">Rarety</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarety">Rarity</sys:String>
 
     <!-- ListViewGames -->
 

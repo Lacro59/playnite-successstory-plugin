@@ -625,7 +625,7 @@ namespace SuccessStory
                     Description = "-"
                 });
 
-                // Refresh rarety data for manual achievements
+                // Refresh rarity data for manual achievements
                 mainMenuItems.Add(new MainMenuItem
                 {
                     MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
