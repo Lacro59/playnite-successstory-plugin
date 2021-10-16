@@ -185,7 +185,7 @@ namespace SuccessStory.Clients
             }
 
 
-            // Set rarety
+            // Set rarity
             if (gameAchievements.HasAchivements)
             {
                 if (!IsLocal && (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate))
