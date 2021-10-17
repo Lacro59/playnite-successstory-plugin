@@ -170,7 +170,7 @@
     <sys:String x:Key="LOCSuccessStoryGameInformation">Інформація</sys:String>
 
 
-    <sys:String x:Key="LOCSuccessStoryRarety">Рідкісність</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarety">Рідкість</sys:String>
 
     <!-- ListViewGames -->
 
