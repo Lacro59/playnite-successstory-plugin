@@ -990,7 +990,7 @@ namespace SuccessStory.Clients
                         string ApiName = AchievementPercentagesData.Children.Find(x => x.Name == "name")?.Value;
                         float.TryParse(AchievementPercentagesData.Children.Find(x => x.Name == "percent")?.Value?.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out float Percent);
 
-                        Common.LogDebug(false, $"{AppId} - ApiName: {ApiName} - Percent: {Percent}");
+                        Common.LogDebug(true, $"{AppId} - ApiName: {ApiName} - Percent: {Percent}");
 
                         if (AllAchievements.Find(x => x.ApiName == ApiName) != null)
                         {

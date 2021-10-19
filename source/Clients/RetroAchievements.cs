@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using CommonPluginsShared.Models;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Clients
 {
@@ -269,25 +270,122 @@ namespace SuccessStory.Clients
             string PlatformName = game.Platforms.FirstOrDefault().Name;
             int consoleID = 0;
 
-            if (PlatformName.ToLower() == "super nintendo")
+
+            if (PlatformName.IsEqual("Sega Genesis"))
             {
-                PlatformName = "snes";
+                PlatformName = "Mega Drive";
             }
-            if (PlatformName.ToLower() == "nintendo")
+            if (PlatformName.IsEqual("Super Nintendo Entertainment System"))
             {
-                PlatformName = "nes";
+                PlatformName = "SNES";
             }
-            if (PlatformName.ToLower() == "sega genesis")
+            if (PlatformName.IsEqual("Nintendo Game Boy"))
             {
-                PlatformName = "mega drive";
+                PlatformName = "Game Boy";
             }
-            if (PlatformName.Contains("sony playstation", StringComparison.InvariantCultureIgnoreCase))
+            if (PlatformName.IsEqual("Nintendo Game Boy Advance"))
             {
-                PlatformName = PlatformName.ToLower().Replace("sony playstation", "playstation");
+                PlatformName = "Game Boy Advance";
             }
-            if (PlatformName.Contains("sega saturn", StringComparison.InvariantCultureIgnoreCase))
+            if (PlatformName.IsEqual("Nintendo Game Boy Color"))
             {
-                PlatformName = "saturn";
+                PlatformName = "Game Boy Color";
+            }
+            if (PlatformName.IsEqual("Nintendo Entertainment System"))
+            {
+                PlatformName = "NES";
+            }
+            if (PlatformName.IsEqual("PC Engine SuperGrafx"))
+            {
+                PlatformName = "PC Engine";
+            }
+            if (PlatformName.IsEqual("Sega 32X"))
+            {
+                PlatformName = "32X";
+            }
+            if (PlatformName.IsEqual("Sega Master System"))
+            {
+                PlatformName = "Master System";
+            }
+            if (PlatformName.IsEqual("Sony PlayStation"))
+            {
+                PlatformName = "PlayStation";
+            }
+            if (PlatformName.IsEqual("SNK Neo Geo Pocket"))
+            {
+                PlatformName = "Neo Geo Pocket";
+            }
+            if (PlatformName.IsEqual("Sega Game Gear"))
+            {
+                PlatformName = "Game Gear";
+            }
+            if (PlatformName.IsEqual("Nintendo GameCube"))
+            {
+                PlatformName = "GameCube";
+            }
+            if (PlatformName.IsEqual("Nintendo Wii"))
+            {
+                PlatformName = "Wii";
+            }
+            if (PlatformName.IsEqual("Nintendo Wii U"))
+            {
+                PlatformName = "Wii U";
+            }
+            if (PlatformName.IsEqual("Sony PlayStation 2"))
+            {
+                PlatformName = "PlayStation 2";
+            }
+            if (PlatformName.IsEqual("Microsoft Xbox"))
+            {
+                PlatformName = "Xbox";
+            }
+            if (PlatformName.IsEqual("Magnavox Odyssey2"))
+            {
+                PlatformName = "Magnavox Odyssey 2";
+            }
+            if (PlatformName.IsEqual("PC (DOS)"))
+            {
+                PlatformName = "DOS";
+            }
+            if (PlatformName.IsEqual("Various"))
+            {
+                PlatformName = "Arcade";
+            }
+            if (PlatformName.IsEqual("MAME 2003 Plus"))
+            {
+                PlatformName = "Arcade";
+            }
+            if (PlatformName.IsEqual("Nintendo Virtual Boy"))
+            {
+                PlatformName = "Virtual Boy";
+            }
+            if (PlatformName.IsEqual("Sega SG 1000"))
+            {
+                PlatformName = "SG-1000";
+            }
+            if (PlatformName.IsEqual("Atari ST/STE/TT/Falcon"))
+            {
+                PlatformName = "Atari ST";
+            }
+            if (PlatformName.IsEqual("Sega Saturn"))
+            {
+                PlatformName = "Saturn";
+            }
+            if (PlatformName.IsEqual("Sega Dreamcast"))
+            {
+                PlatformName = "Dreamcast";
+            }
+            if (PlatformName.IsEqual("Sony PSP"))
+            {
+                PlatformName = "PlayStation Portable";
+            }
+            if (PlatformName.IsEqual("Coleco ColecoVision"))
+            {
+                PlatformName = "ColecoVision";
+            }
+            if (PlatformName.IsEqual("SNK Neo Geo CD"))
+            {
+                PlatformName = "Neo Geo CD";
             }
 
 
