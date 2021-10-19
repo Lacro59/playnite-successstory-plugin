@@ -8,7 +8,7 @@
     
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
 
-    <sys:String x:Key="LOCSsRefreshRaretyManual">Oppdater sjeldenhet for manuelle prestasjoner</sys:String>
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarity for manual achievements</sys:String>
     <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Oppdater beregnet tid for manuelle prestasjoner</sys:String>
     
     <!-- MainView -->
@@ -170,7 +170,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGameInformation">Information</sys:String>
 
 
-    <sys:String x:Key="LOCSuccessStoryRarety">Rarety</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarety">Rarity</sys:String>
 
     <!-- ListViewGames -->
 

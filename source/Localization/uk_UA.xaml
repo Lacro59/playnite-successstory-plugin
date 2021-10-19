@@ -4,12 +4,12 @@
     <sys:String x:Key="LOCSuccessStoryProgress">Прогрес</sys:String>
     <sys:String x:Key="LOCSuccessStoryEarned">Отримано</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryManualAchievements">Ручні досягнення</sys:String>
+    <sys:String x:Key="LOCSuccessStoryManualAchievements">Користувацькі досягнення</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Прихований трофей</sys:String>
 
-    <sys:String x:Key="LOCSsRefreshRaretyManual">Оновити рідкість для ручних досягнень</sys:String>
-    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Оновити приблизний час ручних досягнень</sys:String>
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Оновити рідкість для користувацьких досягнень</sys:String>
+    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Оновити приблизний час користувацьких досягнень</sys:String>
     
     <!-- MainView -->
 
@@ -69,7 +69,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Увімкнути досягнення Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Увімкнути досягнення RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Увімкнути досягнення RPCS3</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Увімкнути ручні досягнення</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Увімкнути користувацькі досягнення</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Увімкнути досягнення Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Увімкнути досягнення StarCraft II</sys:String>
 
@@ -170,7 +170,7 @@
     <sys:String x:Key="LOCSuccessStoryGameInformation">Інформація</sys:String>
 
 
-    <sys:String x:Key="LOCSuccessStoryRarety">Рідкісність</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarety">Рідкість</sys:String>
 
     <!-- ListViewGames -->
 
