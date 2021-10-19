@@ -167,7 +167,7 @@ namespace SuccessStory.Controls
 
                 ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
 
-                if (IsUnlocked && ListAchievements.Count > 0)
+                if (IsUnlocked && ListAchievements.Count > 0 && ControlDataContext.DisplayLastest)
                 {
                     ControlDataContext.LastestAchievement = ListAchievements[0];
                     ListAchievements.RemoveAt(0);
@@ -240,11 +240,15 @@ namespace SuccessStory.Controls
 
             if (ControlDataContext.OneLine)
             {
+                PART_GridAchContener.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
+
                 Grid.SetColumn(PART_DisplayLastest, 0);
                 Grid.SetRow(PART_DisplayLastest, 2);
             }
             else
             {
+                PART_GridAchContener.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Auto);
+
                 Grid.SetColumn(PART_DisplayLastest, 1);
                 Grid.SetRow(PART_DisplayLastest, 0);
             }
