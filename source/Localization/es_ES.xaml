@@ -8,7 +8,7 @@
     
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Trofeo oculto</sys:String>
 
-    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarity for manual achievements</sys:String>
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Actualizar rareza para logros manuales</sys:String>
     <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Actualizar el tiempo estimado de los logros manuales</sys:String>
     
     <!-- MainView -->
@@ -170,7 +170,7 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
     <sys:String x:Key="LOCSuccessStoryGameInformation">Información</sys:String>
 
 
-    <sys:String x:Key="LOCSuccessStoryRarety">Rarity</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarety">Rareza</sys:String>
 
     <!-- ListViewGames -->
 
