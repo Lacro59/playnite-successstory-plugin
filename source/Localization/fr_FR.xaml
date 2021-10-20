@@ -155,7 +155,7 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <sys:String x:Key="LOCSuccessStoryAchStats">Statistiques des succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Statistiques de l'utilisateur</sys:String>
 
-    <sys:String x:Key="LOCSsTimeToUnlock">Temps pour déverrouiller complètement</sys:String>
+    <sys:String x:Key="LOCSsTimeToUnlock">Temps pour tout débloquer</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryCommon">Commun</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">Non commun</sys:String>
