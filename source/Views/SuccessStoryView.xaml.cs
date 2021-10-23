@@ -19,6 +19,7 @@ using CommonPluginsControls.LiveChartsCommon;
 using System.Windows.Threading;
 using System.Threading;
 using System.Collections.ObjectModel;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory
 {
@@ -376,7 +377,7 @@ namespace SuccessStory
             // Filter
             if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
             {
-                successViewData.ListGames = ListGames.Where(x => x.Name.Contains(TextboxSearch.Text, StringComparison.InvariantCultureIgnoreCase) && SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase))
+                successViewData.ListGames = ListGames.Where(x => x.Name.RemoveDiacritics().Contains(TextboxSearch.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) && SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase))
                                                     .Union(SourcesManual).Distinct().ToObservable();
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
@@ -390,7 +391,7 @@ namespace SuccessStory
 
             if (!TextboxSearch.Text.IsNullOrEmpty())
             {
-                successViewData.ListGames = ListGames.Where(x => x.Name.Contains(TextboxSearch.Text, StringComparison.InvariantCultureIgnoreCase)).ToObservable();
+                successViewData.ListGames = ListGames.Where(x => x.Name.RemoveDiacritics().Contains(TextboxSearch.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase)).ToObservable();
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
 

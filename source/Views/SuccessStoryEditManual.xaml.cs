@@ -1,4 +1,5 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -163,7 +164,7 @@ namespace SuccessStory.Views
             if (!SearchElement.Text.IsNullOrEmpty())
             {
                 ((ObservableCollection<Achievements>)lbAchievements.ItemsSource)
-                    .Where(x => !x.Name.Contains(SearchElement.Text, StringComparison.OrdinalIgnoreCase))
+                    .Where(x => !x.Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase))
                     .ForEach(x => x.IsVisible = false);
             }
         }
