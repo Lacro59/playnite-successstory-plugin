@@ -180,13 +180,14 @@ namespace SuccessStory.Clients
         {
             string TrophyGameFolder = string.Empty;
             string TrophyFolder = Path.Combine(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder, "trophy");
-            string TempTrophyGameFolder = Directory.GetParent(game.InstallDirectory).FullName;
+            //string TempTrophyGameFolder = Directory.GetParent(game.InstallDirectory).FullName;
+            string GameTrophyFolder = Path.Combine(game.InstallDirectory, "..", "TROPDIR");
 
             try
             {
-                if (Directory.Exists(Path.Combine(TempTrophyGameFolder, "TROPDIR")))
+                if (Directory.Exists(GameTrophyFolder))
                 {
-                    Parallel.ForEach(Directory.EnumerateDirectories(Path.Combine(TempTrophyGameFolder, "TROPDIR")), (objectDirectory, state) =>
+                    Parallel.ForEach(Directory.EnumerateDirectories(GameTrophyFolder), (objectDirectory, state) =>
                     {
                         DirectoryInfo di = new DirectoryInfo(objectDirectory);
                         string NameFolder = di.Name;
