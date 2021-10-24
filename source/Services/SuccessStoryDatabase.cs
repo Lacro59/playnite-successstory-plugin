@@ -794,7 +794,7 @@ namespace SuccessStory.Services
                     continue;
                 }
 
-                if (emulator.BuiltInConfigId == "rpcs3" && settings.EnableRpcs3Achievements)
+                if (PlayniteTools.GameUseRpcs3(API.Instance, game) && settings.EnableRpcs3Achievements)
                 {
                     return AchievementSource.RPCS3;
                 }

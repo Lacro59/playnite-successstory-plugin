@@ -4,7 +4,25 @@ param(
 )
 
 
-$PlaynitePath = "G:\Playnite_dev"
+$PlaynitePathTEMP = "C:\Playnite_dev"
+if (Test-Path -Path $PlaynitePathTEMP) 
+{
+	$PlaynitePath = $PlaynitePathTEMP
+}
+
+$PlaynitePathTEMP = "D:\Playnite_dev"
+if (Test-Path -Path $PlaynitePathTEMP) 
+{
+	$PlaynitePath = $PlaynitePathTEMP
+}
+
+$PlaynitePathTEMP = "G:\Playnite_dev"
+if (Test-Path -Path $PlaynitePathTEMP) 
+{
+	$PlaynitePath = $PlaynitePathTEMP
+}
+
+
 $ToolboxPath = (Join-Path $PlaynitePath "toolbox.exe")
 $OutDirPath = (Join-Path $OutDir "..")
 
