@@ -135,6 +135,11 @@ namespace SuccessStory
                             icon = TransformIcon.Get("GOG") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "GOG", SourceNameShort = "GOG", IsCheck = false });
                         }
+                        if (PluginDatabase.PluginSettings.Settings.EnableEpic)
+                        {
+                            icon = TransformIcon.Get("Epic") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Epic", SourceNameShort = "Epic", IsCheck = false });
+                        }
                         if (PluginDatabase.PluginSettings.Settings.EnableOrigin)
                         {
                             icon = TransformIcon.Get("Origin") + " ";
@@ -186,6 +191,11 @@ namespace SuccessStory
                     {
                         icon = TransformIcon.Get("GOG") + " ";
                         FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "GOG", SourceNameShort = "GOG", IsCheck = false });
+                    }
+                    if (PluginDatabase.PluginSettings.Settings.EnableEpic)
+                    {
+                        icon = TransformIcon.Get("Epic") + " ";
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Epic", SourceNameShort = "Epic", IsCheck = false });
                     }
                     if (PluginDatabase.PluginSettings.Settings.EnableOrigin)
                     {

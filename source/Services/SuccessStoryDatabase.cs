@@ -381,6 +381,10 @@ namespace SuccessStory.Services
                     {
                         tempSourcesLabels.Add("GOG");
                     }
+                    if (PluginSettings.Settings.EnableEpic)
+                    {
+                        tempSourcesLabels.Add("Epic");
+                    }
                     if (PluginSettings.Settings.EnableSteam)
                     {
                         tempSourcesLabels.Add("Steam");
@@ -432,6 +436,10 @@ namespace SuccessStory.Services
                 if (PluginSettings.Settings.EnableGog)
                 {
                     tempSourcesLabels.Add("GOG");
+                }
+                if (PluginSettings.Settings.EnableEpic)
+                {
+                    tempSourcesLabels.Add("Epic");
                 }
                 if (PluginSettings.Settings.EnableSteam)
                 {
