@@ -42,6 +42,7 @@ namespace SuccessStory.Services
                     {
                         _achievementProviders = new Dictionary<AchievementSource, GenericAchievements> {
                             { AchievementSource.GOG, new GogAchievements() },
+                            { AchievementSource.Epic, new EpicAchievements() },
                             { AchievementSource.Origin, new OriginAchievements() },
                             { AchievementSource.Overwatch, new OverwatchAchievements() },
                             { AchievementSource.Playstation, new PSNAchievements() },
@@ -704,6 +705,7 @@ namespace SuccessStory.Services
             Playstation,
             Steam,
             GOG,
+            Epic,
             Origin,
             Xbox,
             RetroAchievements,
@@ -744,6 +746,12 @@ namespace SuccessStory.Services
                     if (settings.EnableGog)
                     {
                         return AchievementSource.GOG;
+                    }
+                    break;
+                case ExternalPlugin.EpicLibrary:
+                    if (settings.EnableEpic)
+                    {
+                        return AchievementSource.Epic;
                     }
                     break;
                 case ExternalPlugin.OriginLibrary:

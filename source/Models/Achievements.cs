@@ -270,6 +270,11 @@ namespace SuccessStory.Models
             string NameFromUrl = string.Empty;
             List<string> urlSplited = url.Split('/').ToList();
 
+            if (url.IndexOf("epicgames.com") > -1)
+            {
+                NameFromUrl = "epic_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - 4).Replace(".png", string.Empty);
+            }
+            
             if (url.IndexOf(".playstation.") > -1)
             {
                 NameFromUrl = "playstation_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - 4).Replace(".png", string.Empty);

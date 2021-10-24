@@ -44,6 +44,8 @@ namespace SuccessStory.Views
         int SteamTotalAchievements;
         int GogTotal;
         int GogTotalAchievements;
+        int EpicTotal;
+        int EpicTotalAchievements;
         int OriginTotal;
         int OriginTotalAchievements;
         int XboxTotal;
@@ -118,6 +120,8 @@ namespace SuccessStory.Views
             SteamTotalAchievements = 0;
             GogTotal = 0;
             GogTotalAchievements = 0;
+            EpicTotal = 0;
+            EpicTotalAchievements = 0;
             OriginTotal = 0;
             OriginTotalAchievements = 0;
             XboxTotal = 0;
@@ -152,6 +156,13 @@ namespace SuccessStory.Views
                             if (PluginDatabase.VerifAchievementsLoad(game.Id))
                             {
                                 GogTotalAchievements += 1;
+                            }
+                            break;
+                        case "epic":
+                            EpicTotal += 1;
+                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
+                            {
+                                EpicTotalAchievements += 1;
                             }
                             break;
                         case "origin":
@@ -206,6 +217,7 @@ namespace SuccessStory.Views
 
             SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
             GogLoad.Content = GogTotalAchievements + "/" + GogTotal;
+            EpicLoad.Content = EpicTotalAchievements + "/" + EpicTotal;
             OriginLoad.Content = OriginTotalAchievements + "/" + OriginTotal;
             XboxLoad.Content = XboxTotalAchievements + "/" + XboxTotal;
             RetroAchievementsLoad.Content = RetroAchievementsTotalAchievements + "/" + RetroAchievementsTotal;

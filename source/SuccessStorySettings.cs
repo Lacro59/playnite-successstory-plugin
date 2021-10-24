@@ -183,6 +183,7 @@ namespace SuccessStory
         public bool EnablePsn { get; set; } = false;
         public bool EnableSteam { get; set; } = false;
         public bool EnableGog { get; set; } = false;
+        public bool EnableEpic { get; set; } = false;
         public bool EnableOrigin { get; set; } = false;
         public bool EnableXbox { get; set; } = false;
         public bool EnableRetroAchievements { get; set; } = false;
