@@ -727,6 +727,11 @@ namespace SuccessStory.Services
             ExternalPlugin pluginType = PlayniteTools.GetPluginType(game.PluginId);
             if (pluginType == ExternalPlugin.None)
             {
+                if (game.Source.Name.Contains("Xbox Game Pass", StringComparison.OrdinalIgnoreCase))
+                {
+                    return AchievementSource.Xbox;
+                }
+
                 return AchievementSource.None;
             }
 
