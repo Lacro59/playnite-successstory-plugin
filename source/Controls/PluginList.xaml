@@ -9,6 +9,7 @@
         xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="150"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding Height}"
@@ -20,6 +21,7 @@
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <local:SetColorConverter x:Key="SetColorConverter" />
         <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
+        <convertersshared:ValueOperationConverter x:Key="ValueOperationConverter" />
     </controls:PluginUserControlExtend.Resources>
 
     <Grid Name="PART_GridContener">
@@ -62,7 +64,7 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="0,5">
+                    <Grid Margin="0,5" Name="PART_Grid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="58" />
                             <ColumnDefinition Width="*" />
@@ -119,7 +121,7 @@
                                 <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"
                                            MouseEnter="TextBlock_MouseEnter">
                                     <TextBlock.ToolTip>
-                                        <ToolTip Content="{Binding Name}"></ToolTip>
+                                        <ToolTip Content="{Binding Name}" />
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                                 <TextBlock Grid.Column="1" TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
@@ -127,7 +129,18 @@
                             </Grid>
 
                             <TextBlock Grid.Row="1" Text="{Binding Description}" VerticalAlignment="Top"
-                                       TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}" />
+                                       TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}">
+                                <TextBlock.Width>
+                                    <MultiBinding Converter="{StaticResource ValueOperationConverter}" ConverterParameter="-">
+                                        <Binding ElementName="PART_GridContener" Path="ActualWidth" />
+                                        <Binding>
+                                            <Binding.Source>
+                                                <sys:Double>100</sys:Double>
+                                            </Binding.Source>
+                                        </Binding>
+                                    </MultiBinding>
+                                </TextBlock.Width>
+                            </TextBlock>
                         </Grid>
                     </Grid>
                 </DataTemplate>
