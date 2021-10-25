@@ -731,6 +731,10 @@ namespace SuccessStory.Services
                 {
                     return AchievementSource.Xbox;
                 }
+                if (game.Source?.Name?.Contains("Microsoft Store", StringComparison.OrdinalIgnoreCase) ?? false)
+                {
+                    return AchievementSource.Xbox;
+                }
 
                 return AchievementSource.None;
             }
