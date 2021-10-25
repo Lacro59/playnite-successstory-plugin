@@ -515,7 +515,7 @@ namespace SuccessStory.Services
             {
                 try
                 {
-                    string SourceName = PlayniteTools.GetSourceName(PlayniteApi, item.Key);
+                    string SourceName = PlayniteTools.GetSourceName(item.Key);
 
                     foreach (Achievements achievements in item.Value.Items)
                     {
@@ -727,7 +727,7 @@ namespace SuccessStory.Services
             ExternalPlugin pluginType = PlayniteTools.GetPluginType(game.PluginId);
             if (pluginType == ExternalPlugin.None)
             {
-                if (game.Source.Name.Contains("Xbox Game Pass", StringComparison.OrdinalIgnoreCase))
+                if (game.Source?.Name?.Contains("Xbox Game Pass", StringComparison.OrdinalIgnoreCase) ?? false)
                 {
                     return AchievementSource.Xbox;
                 }
@@ -815,7 +815,7 @@ namespace SuccessStory.Services
                     continue;
                 }
 
-                if (PlayniteTools.GameUseRpcs3(API.Instance, game) && settings.EnableRpcs3Achievements)
+                if (PlayniteTools.GameUseRpcs3(game) && settings.EnableRpcs3Achievements)
                 {
                     return AchievementSource.RPCS3;
                 }
@@ -950,7 +950,7 @@ namespace SuccessStory.Services
                     }
 
                     Game game = PlayniteApi.Database.Games.Get(Id);
-                    string SourceName = PlayniteTools.GetSourceName(PlayniteApi, game);
+                    string SourceName = PlayniteTools.GetSourceName(game);
                     var achievementSource = GetAchievementSource(PluginSettings.Settings, game);
                     string GameName = game.Name;
                     bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, game);

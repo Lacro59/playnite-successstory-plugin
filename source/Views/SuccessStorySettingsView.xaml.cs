@@ -140,7 +140,7 @@ namespace SuccessStory.Views
             {
                 foreach (var game in _PlayniteApi.Database.Games)
                 {
-                    string GameSourceName = PlayniteTools.GetSourceName(_PlayniteApi, game);
+                    string GameSourceName = PlayniteTools.GetSourceName(game);
 
                     switch (GameSourceName.ToLower())
                     {

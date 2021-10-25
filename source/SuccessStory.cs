@@ -126,7 +126,7 @@ namespace SuccessStory
                         windowOptions.Width = 1280;
                         windowOptions.Height = 740;
 
-                        if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, PluginDatabase.GameContext))
+                        if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PluginDatabase.GameContext))
                         {
                             ViewExtension = new SuccessView(true, PluginDatabase.GameContext);
                         }
@@ -580,7 +580,7 @@ namespace SuccessStory
                     {
                         PluginDatabase.IsViewOpen = true;
                         SuccessView ViewExtension = null;
-                        if (PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PlayniteApi, PluginDatabase.GameContext))
+                        if (PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PluginDatabase.GameContext))
                         {
                             ViewExtension = new SuccessView(true, PluginDatabase.GameContext);
                         }
@@ -745,7 +745,7 @@ namespace SuccessStory
                                 break;
                             }
 
-                            string SourceName = PlayniteTools.GetSourceName(PlayniteApi, game);
+                            string SourceName = PlayniteTools.GetSourceName(game);
 
                             if (gameAchievements.IsManual)
                             {                                
@@ -849,7 +849,7 @@ namespace SuccessStory
             // Refresh Achievements database for game played.
             var TaskGameStopped = Task.Run(() =>
             {
-                string SourceName = PlayniteTools.GetSourceName(PlayniteApi, args.Game);
+                string SourceName = PlayniteTools.GetSourceName(args.Game);
                 string GameName = args.Game.Name;
                 bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, args.Game);
                 GameAchievements gameAchievements = PluginDatabase.Get(args.Game, true);

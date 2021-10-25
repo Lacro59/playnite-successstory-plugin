@@ -86,7 +86,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                string SourceName = PlayniteTools.GetSourceName(SuccessStory.PluginDatabase.PlayniteApi, Id);
+                string SourceName = PlayniteTools.GetSourceName(Id);
                 return TransformIcon.Get(SourceName);
             }
         }
