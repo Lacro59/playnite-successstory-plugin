@@ -42,8 +42,7 @@ namespace SuccessStory.Views
         private List<GameAchievements> IgnoredGames;
 
         public static bool WithoutMessage = false;
-        public static CancellationTokenSource tokenSource;
-        private CancellationToken ct;
+
 
         int SteamTotal;
         int SteamTotalAchievements;
