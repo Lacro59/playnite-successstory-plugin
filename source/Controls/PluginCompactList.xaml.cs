@@ -112,12 +112,6 @@ namespace SuccessStory.Controls
                 return true;
             });
         }
-
-
-        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            ((Image)sender).Source = new BitmapImage(new Uri(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "default_icon.png")));
-        }
     }
 
 

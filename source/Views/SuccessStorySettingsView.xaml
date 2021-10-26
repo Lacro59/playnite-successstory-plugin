@@ -10,6 +10,7 @@
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:SuccessStory="clr-namespace:SuccessStory"
+             xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              mc:Ignorable="d" d:DesignWidth="650"
              d:DataContext="{d:DesignInstance SuccessStory:SuccessStorySettingsViewModel}">
 
@@ -651,39 +652,143 @@
 
             <TabItem Header="{DynamicResource LOCCommonMisc}">
                 <Grid Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
+                    <Grid Name="PART_SelectorColor" Visibility="Collapsed">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <controls:ControlPickerGradient x:Name="PART_SelectorColorPicker" />
+                        </StackPanel>
 
-                    <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding Settings.EnableImageCache}" 
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="90" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="90" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Button Name="PART_TM_ColorOK" Grid.Column="1" Grid.Row="1" Content="{DynamicResource LOCOKLabel}" 
+                                    Click="PART_TM_ColorOK_Click" />
+                            <Button Name="PART_TM_ColorCancel" Grid.Column="3" Grid.Row="1" Content="{DynamicResource LOCCancelLabel}" 
+                                    Click="PART_TM_ColorCancel_Click" />
+                        </Grid>
+                    </Grid>
+
+                    <Grid Name="PART_MiscTab">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+
+                        <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableImageCache}" 
                               VerticalAlignment="Center"
                               ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}"
                               Command="{x:Static pcmd:Commands.RestartRequired}" 
                               CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
-                        <Label Content="{DynamicResource LOCSuccessStoryEnableImageCache}" />
-                    </CheckBox>
-                    <Button Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Right" 
+                            <Label Content="{DynamicResource LOCSuccessStoryEnableImageCache}" />
+                        </CheckBox>
+                        <Button Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="0" HorizontalAlignment="Right" 
                             Click="Button_Click_Cache" Content="{DynamicResource LOCSettingsClearWebCache}" />
 
-                    <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" >
-                        <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />
-                        <Separator Margin="0,0,0,10" />
-                    
-                        <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top">
-                            <Button Name="btAuth" Content="{DynamicResource LOCCommonAuthenticateLabel}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                        <GroupBox Header="{DynamicResource LOCSuccessStoryRarityConfig}" 
+                              Grid.ColumnSpan="3" Grid.Row="2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Content="{DynamicResource LOCSuccessStoryNoCommon}" Grid.Row="0" Grid.Column="0" />
+                                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2">
+                                    <Slider Name="PART_SlidderUncommun" Value="{Binding Settings.RarityUncommon}" 
+                                        VerticalAlignment="Center"
+                                        IsSnapToTickEnabled="True" TickFrequency="1"
+                                        Width="100" Maximum="50" Minimum="{Binding Settings.RarityRare}" />
+                                    <Label Content="{Binding ElementName=PART_SlidderUncommun, Path=Value}" 
+                                       ContentStringFormat=" {0}%" Width="50" VerticalAlignment="Center"
+                                       Margin="10,0,0,0" HorizontalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="0" HorizontalAlignment="center" VerticalAlignment="Center">
+                                    <TextBlock Height="28" Width="28" Background="{Binding Settings.RarityUncommonColor, FallbackValue=DarkGray}" Tag="1" VerticalAlignment="Center" />
+                                    <Button Click="BtPickColor_Click" Content="&#x270f;" Width="41" Tag="1" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                    <Button Click="BtRestore_Click" Content="&#x1f5d9;" Width="41" Tag="1" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                </StackPanel>
+
+                                <Label Content="{DynamicResource LOCSuccessStoryRare}" Grid.Row="2" Grid.Column="0" />
+                                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="2">
+                                    <Slider Name="PART_SlidderRare" Value="{Binding Settings.RarityRare}" 
+                                        VerticalAlignment="Center" ValueChanged="PART_SlidderRare_ValueChanged"
+                                        IsSnapToTickEnabled="True" TickFrequency="1"
+                                        Width="100" Maximum="50" Minimum="{Binding Settings.RarityUltraRare}" />
+                                    <Label Content="{Binding ElementName=PART_SlidderRare, Path=Value}" 
+                                       ContentStringFormat=" {0}%" Width="50" VerticalAlignment="Center"
+                                       Margin="10,0,0,0" HorizontalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="2" HorizontalAlignment="center" VerticalAlignment="Center">
+                                    <TextBlock Height="28" Width="28" Background="{Binding Settings.RarityRareColor, FallbackValue=Gold}" Tag="2" VerticalAlignment="Center" />
+                                    <Button Click="BtPickColor_Click" Content="&#x270f;" Width="41" Tag="2" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                    <Button Click="BtRestore_Click" Content="&#x1f5d9;" Width="41" Tag="2" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                </StackPanel>
+
+                                <CheckBox Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="4" IsChecked="{Binding Settings.UseUltraRare}"
+                                      Name="PART_CbUltraRare">
+                                    <Label Content="{DynamicResource LOCSuccessStoryUseUltraRare}" />
+                                </CheckBox>
+
+                                <Label Content="{DynamicResource LOCSuccessStoryUltraRare}" Grid.Row="6" Grid.Column="0"
+                                   IsEnabled="{Binding ElementName=PART_CbUltraRare, Path=IsChecked}" />
+                                <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="2"
+                                        IsEnabled="{Binding ElementName=PART_CbUltraRare, Path=IsChecked}">
+                                    <Slider Name="PART_SlidderUltraRare" Value="{Binding Settings.RarityUltraRare}" 
+                                        VerticalAlignment="Center" ValueChanged="PART_SlidderUltraRare_ValueChanged"
+                                        IsSnapToTickEnabled="True" TickFrequency="1"
+                                        Width="100" Maximum="50" Minimum="1" />
+                                    <Label Content="{Binding ElementName=PART_SlidderUltraRare, Path=Value}" 
+                                       ContentStringFormat=" {0}%" Width="50" VerticalAlignment="Center"
+                                       Margin="10,0,0,0" HorizontalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="4" Grid.Row="6" HorizontalAlignment="center" VerticalAlignment="Center"
+                                        IsEnabled="{Binding ElementName=PART_CbUltraRare, Path=IsChecked}">
+                                    <TextBlock Height="28" Width="28" Background="{Binding Settings.RarityUltraRareColor, FallbackValue=MediumPurple}" Tag="3" VerticalAlignment="Center" />
+                                    <Button Click="BtPickColor_Click" Content="&#x270f;" Width="41" Tag="3" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                    <Button Click="BtRestore_Click" Content="&#x1f5d9;" Width="41" Tag="3" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+
+                        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" >
+                            <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />
+                            <Separator Margin="0,0,0,10" />
+
+                            <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top">
+                                <Button Name="btAuth" Content="{DynamicResource LOCCommonAuthenticateLabel}" HorizontalAlignment="Left" VerticalAlignment="Center"
                                     Click="Button_Click" />
-                            <Label Name="lIsAuth" Margin="20,0,0,0" VerticalAlignment="Center" />
+                                <Label Name="lIsAuth" Margin="20,0,0,0" VerticalAlignment="Center" />
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </TabItem>
 

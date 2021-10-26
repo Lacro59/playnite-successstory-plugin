@@ -9,7 +9,9 @@
         xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
-        mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
+        xmlns:converters1="clr-namespace:SuccessStory.Converters"
+    xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
+    mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 
@@ -17,7 +19,7 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <local:SetColorConverter x:Key="SetColorConverter" />
+        <converters1:SetColorConverter x:Key="SetColorConverter" />
         <converters:StringNullOrEmptyToBoolConverter x:Key="StringNullOrEmptyToBoolConverter" />
         <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
     </controls:PluginUserControlExtend.Resources>
@@ -59,36 +61,12 @@
                 <DataTemplate>
                     <Grid>
                         <StackPanel ToolTip="{Binding AchToolTipCompactList}" Margin="2">
-                            <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant" 
-                                   Width="{Binding ElementName=PART_GridContener, Path=Tag}"
-                                   Height="{Binding ElementName=PART_GridContener, Path=Tag}"
-                                   ImageFailed="Image_ImageFailed">
-                                <Image.Style>
-                                    <Style TargetType="{x:Type Image}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding EnableRaretyIndicator}" Value="True">
-                                                <Setter Property="Effect">
-                                                    <Setter.Value>
-                                                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </DataTrigger>
-
-                                            <DataTrigger Binding="{Binding IsGray}" Value="False">
-                                                <Setter Property="Source" Value="{Binding Icon, IsAsync=True}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsGray}" Value="True">
-                                                <Setter Property="Source" Value="{Binding Icon, Converter={StaticResource ImageToGrayConverter}}" />
-                                                <Setter Property="OpacityMask">
-                                                    <Setter.Value>
-                                                        <ImageBrush ImageSource="{Binding Icon, IsAsync=True}" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Style>
-                            </Image>
+                            <customs:AchievementImage Width="{Binding ElementName=PART_GridContener, Path=Tag}"
+                                                      Height="{Binding ElementName=PART_GridContener, Path=Tag}"
+                                                      Icon="{Binding Icon, IsAsync=True}"
+                                                      IsGray="{Binding IsGray}"
+                                                      Percent="{Binding Percent}"
+                                                      EnableRaretyIndicator="{Binding EnableRaretyIndicator}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

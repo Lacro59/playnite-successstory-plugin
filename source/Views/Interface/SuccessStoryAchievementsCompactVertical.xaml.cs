@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using SuccessStory.Controls;
 using CommonPluginsShared.Converters;
+using SuccessStory.Converters;
 
 namespace SuccessStory.Views.Interface
 {

@@ -8,26 +8,47 @@
              xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
              xmlns:controls="clr-namespace:SuccessStory.Controls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
+             xmlns:converters1="clr-namespace:SuccessStory.Converters"
              mc:Ignorable="d" d:DesignHeight="48" d:DesignWidth="48">
 
     <UserControl.Resources>
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <controls:SetColorConverter x:Key="SetColorConverter" />
+        <converters1:SetColorConverter x:Key="SetColorConverter" />
         <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
+
+        <Storyboard Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="Effect.Color" x:Key="PART_ColorEffect">
+            <ColorAnimationUsingKeyFrames Duration="00:00:00">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="Effect.Color" x:Key="PART_ColorEffectUltraRare">
+            <ColorAnimationUsingKeyFrames Duration="00:00:05" RepeatBehavior="Forever">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="Blue"/>
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="Red"/>
+                <EasingColorKeyFrame KeyTime="00:00:02" Value="Yellow"/>
+                <EasingColorKeyFrame KeyTime="00:00:03" Value="Green"/>
+                <EasingColorKeyFrame KeyTime="00:00:04" Value="Orange"/>
+                <EasingColorKeyFrame KeyTime="00:00:04" Value="Blue"/>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
     </UserControl.Resources>
 
     <Grid Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Height}" 
           Width="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Width}">
-        <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant">
+        <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant" x:Name="PART_Image"
+               Loaded="Image_Loaded" ImageFailed="Image_ImageFailed">
             <Image.Style>
                 <Style TargetType="{x:Type Image}">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=EnableRaretyIndicator}" Value="True">
                             <Setter Property="Effect">
                                 <Setter.Value>
-                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Percent, Converter={StaticResource SetColorConverter}}" />
+                                    <!--DropShadowEffect BlurRadius="15" ShadowDepth="0" /-->
+                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" 
+                                                      Color="{Binding ElementName=PART_Image, Path=Tag, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SetColorConverter}}" />
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>

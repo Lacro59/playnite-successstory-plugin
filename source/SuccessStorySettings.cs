@@ -7,6 +7,7 @@ using SuccessStory.Models;
 using Playnite.SDK.Data;
 using SuccessStory.Views;
 using CommonPluginsShared.Models;
+using System.Windows.Media;
 
 namespace SuccessStory
 {
@@ -212,6 +213,13 @@ namespace SuccessStory
         public bool IsAsc { get; set; } = false;
 
         public bool EnableRaretyIndicator { get; set; } = true;
+        public double RarityUncommon { get; set; } = 30;
+        public SolidColorBrush RarityUncommonColor { get; set; } = Brushes.DarkGray;
+        public double RarityRare { get; set; } = 10;
+        public SolidColorBrush RarityRareColor { get; set; } = Brushes.Gold;
+        public bool UseUltraRare { get; set; } = false;
+        public double RarityUltraRare { get; set; } = 2;
+        public SolidColorBrush RarityUltraRareColor { get; set; } = Brushes.MediumPurple;
 
         public bool lvGamesIcon100Percent { get; set; } = true;
         public bool lvGamesIcon { get; set; } = true;
@@ -382,6 +390,10 @@ namespace SuccessStory
         // This method should save settings made to Option1 and Option2.
         public void EndEdit()
         {
+            Settings.RarityUncommonColor = SuccessStorySettingsView.RarityUncommonColor;
+            Settings.RarityRareColor = SuccessStorySettingsView.RarityRareColor;
+            Settings.RarityUltraRareColor = SuccessStorySettingsView.RarityUltraRareColor;
+
             Settings.LocalPath = SuccessStorySettingsView.LocalPath;
 
             Plugin.SavePluginSettings(Settings);

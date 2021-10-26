@@ -27,6 +27,8 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using SuccessStory.Converters;
+using SuccessStory.Controls.Customs;
 
 namespace SuccessStory.Controls
 {
@@ -294,61 +296,16 @@ namespace SuccessStory.Controls
                                 tooltip.Inlines.Add(new Run(AchievementsList[i].Description));
                             }
 
-                            Image gridImage = new Image();
-                            gridImage.Stretch = Stretch.UniformToFill;
-                            gridImage.Width = ControlDataContext.Height;
-                            gridImage.Height = ControlDataContext.Height;
-                            gridImage.ToolTip = tooltip;
-                            gridImage.SetValue(Grid.ColumnProperty, i);
+                            AchievementImage achievementImage = new AchievementImage();
+                            achievementImage.Width = ControlDataContext.Height;
+                            achievementImage.Height = ControlDataContext.Height;
+                            achievementImage.ToolTip = tooltip;
+                            achievementImage.SetValue(Grid.ColumnProperty, i);
+                            achievementImage.Icon = AchievementsList[i].Icon;
+                            achievementImage.Percent = AchievementsList[i].Percent;
+                            achievementImage.IsGray = AchievementsList[i].IsGray;
 
-                            if (AchievementsList[i].IsGray)
-                            {
-                                if (AchievementsList[i].Icon.IsNullOrEmpty() || AchievementsList[i].Icon.IsNullOrEmpty())
-                                {
-                                    logger.Warn($"Empty image");
-                                }
-                                else
-                                {
-                                    var tmpImg = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
-                                    gridImage.Source = ImageTools.ConvertBitmapImage(tmpImg, ImageColor.Gray);
-
-                                    ImageBrush imgB = new ImageBrush
-                                    {
-                                        ImageSource = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute))
-                                    };
-                                    gridImage.OpacityMask = imgB;
-                                }
-                            }
-                            else
-                            {
-                                if (AchievementsList[i].Icon.IsNullOrEmpty())
-                                {
-                                    logger.Warn($"Empty image");
-                                }
-                                else
-                                {
-                                    gridImage.Source = new BitmapImage(new Uri(AchievementsList[i].Icon, UriKind.Absolute));
-                                }
-                            }
-
-                            DropShadowEffect myDropShadowEffect = new DropShadowEffect();
-                            myDropShadowEffect.ShadowDepth = 0;
-                            myDropShadowEffect.BlurRadius = 15;
-
-                            SetColorConverter setColorConverter = new SetColorConverter();
-                            var color = setColorConverter.Convert(AchievementsList[i].Percent, null, null, CultureInfo.CurrentCulture);
-
-                            if (color != null)
-                            {
-                                myDropShadowEffect.Color = (Color)color;
-                            }
-
-                            if (PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator)
-                            {
-                                gridImage.Effect = myDropShadowEffect;
-                            }
-
-                            PART_ScCompactView.Children.Add(gridImage);
+                            PART_ScCompactView.Children.Add(achievementImage);
                         }
                         else
                         {

@@ -8,6 +8,8 @@
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
+        xmlns:converters1="clr-namespace:SuccessStory.Converters"
+        xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
         mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 
@@ -15,7 +17,7 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <local:SetColorConverter x:Key="SetColorConverter" />
+        <converters1:SetColorConverter x:Key="SetColorConverter" />
         <convertersshared:TwoBooleanToVisibilityConverter x:Key="TwoBooleanToVisibilityConverter" />
     </controls:PluginUserControlExtend.Resources>
 
@@ -43,32 +45,12 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Top">
-                        <Image Stretch="UniformToFill" Source="{Binding LastestAchievement.Icon, IsAsync=True}"
-                               Height="{Binding Height}" Width="{Binding Height}"
-                               RenderOptions.BitmapScalingMode="Fant"
-                               ImageFailed="Image_ImageFailed">
-                            <Image.Style>
-                                <Style TargetType="{x:Type Image}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding LastestAchievement.EnableRaretyIndicator}" Value="True">
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding LastestAchievement.Percent, Converter={StaticResource SetColorConverter}}" />
-                                                </Setter.Value>
-                                            </Setter>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Image.Style>
-                        </Image>
+                        <customs:AchievementImage Height="{Binding Height}" Width="{Binding Height}"
+                                                  Icon="{Binding LastestAchievement.Icon, IsAsync=True}"
+                                                  IsGray="false"
+                                                  Percent="{Binding LastestAchievement.Percent}"
+                                                  EnableRaretyIndicator="{Binding LastestAchievement.EnableRaretyIndicator}" />
                     </StackPanel>
-
-                    <!--customs:AchievementImage Grid.Column="0" VerticalAlignment="Top"
-                                              Height="{Binding Height}" Width="{Binding Height}"
-                                              IsGray="{Binding LastestAchievement.IsGray}" 
-                                              Icon="{Binding LastestAchievement.Icon}"
-                                              Percent="{Binding LastestAchievement.Percent}"
-                                              EnableRaretyIndicator="{Binding LastestAchievement.EnableRaretyIndicator}" /-->
 
                     <Grid Grid.Column="2" Margin="10,0,0,0">
                         <Grid.ColumnDefinitions>

@@ -991,7 +991,7 @@ namespace SuccessStory
 
         public override UserControl GetSettingsView(bool firstRunSettings)
         {
-            return new SuccessStorySettingsView(this, PlayniteApi, this.GetPluginUserDataPath());
+            return new SuccessStorySettingsView(this);
         }
         #endregion
     }

@@ -10,6 +10,8 @@
         xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:converters1="clr-namespace:SuccessStory.Converters"
+        xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="150"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding Height}"
@@ -19,7 +21,7 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <local:SetColorConverter x:Key="SetColorConverter" />
+        <converters1:SetColorConverter x:Key="SetColorConverter" />
         <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
         <convertersshared:ValueOperationConverter x:Key="ValueOperationConverter" />
     </controls:PluginUserControlExtend.Resources>
@@ -71,34 +73,11 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,5,0,0">
-                            <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant" Height="48" Width="48"
-                                   ImageFailed="Image_ImageFailed">
-                                <Image.Style>
-                                    <Style TargetType="{x:Type Image}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding EnableRaretyIndicator}" Value="True">
-                                                <Setter Property="Effect">
-                                                    <Setter.Value>
-                                                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </DataTrigger>
-
-                                            <DataTrigger Binding="{Binding IsGray}" Value="False">
-                                                <Setter Property="Source" Value="{Binding Icon, IsAsync=True}" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsGray}" Value="True">
-                                                <Setter Property="Source" Value="{Binding Icon, Converter={StaticResource ImageToGrayConverter}}" />
-                                                <Setter Property="OpacityMask">
-                                                    <Setter.Value>
-                                                        <ImageBrush ImageSource="{Binding Icon, IsAsync=True}" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Style>
-                            </Image>
+                            <customs:AchievementImage Width="48" Height="48"
+                                                      Icon="{Binding Icon, IsAsync=True}"
+                                                      IsGray="{Binding IsGray}"
+                                                      Percent="{Binding Percent}"
+                                                      EnableRaretyIndicator="{Binding EnableRaretyIndicator}" />
                         </StackPanel>
                         
                         <Grid Grid.Column="1" Margin="10,0,0,0">

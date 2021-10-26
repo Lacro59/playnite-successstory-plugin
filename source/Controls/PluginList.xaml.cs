@@ -206,12 +206,6 @@ namespace SuccessStory.Controls
             }
         }
         #endregion
-
-
-        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            ((Image)sender).Source = new BitmapImage(new Uri(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "default_icon.png")));
-        }
     }
 
 
@@ -224,39 +218,5 @@ namespace SuccessStory.Controls
         public int ColDefinied { get; set; }
 
         public ObservableCollection<Achievements> ItemsSource { get; set; }
-    }
-
-    public class SetColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            Color color = Brushes.Transparent.Color;
-
-            if ((float)value <= 10)
-            {
-                return Brushes.Gold.Color;
-            }
-            if ((float)value <= 30)
-            {
-                return Brushes.DarkGray.Color;
-            }
-            if ((float)value > 30)
-            {
-                return null;
-            }
-
-            Color newColor = new Color();
-            newColor.ScR = (float)color.R / 255;
-            newColor.ScG = (float)color.G / 255;
-            newColor.ScB = (float)color.B / 255;
-
-            return newColor;
-
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
     }
 }

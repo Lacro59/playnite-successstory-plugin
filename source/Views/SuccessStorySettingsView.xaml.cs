@@ -16,6 +16,7 @@ using System.Diagnostics;
 using SuccessStory.Services;
 using CommonPluginsShared.Models;
 using Playnite.SDK.Data;
+using System.Windows.Media;
 
 namespace SuccessStory.Views
 {
@@ -24,7 +25,13 @@ namespace SuccessStory.Views
         private static readonly ILogger logger = LogManager.GetLogger();
         private static IResourceProvider resources = new ResourceProvider();
 
-        private IPlayniteAPI _PlayniteApi;
+
+        public static SolidColorBrush RarityUncommonColor;
+        public static SolidColorBrush RarityRareColor;
+        public static SolidColorBrush RarityUltraRareColor;
+
+        private TextBlock tbControl;
+
 
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
@@ -33,8 +40,6 @@ namespace SuccessStory.Views
         public static List<Folder> LocalPath = new List<Folder>();
 
         private List<GameAchievements> IgnoredGames;
-
-        private string _PluginUserDataPath;
 
         public static bool WithoutMessage = false;
         public static CancellationTokenSource tokenSource;
@@ -61,12 +66,16 @@ namespace SuccessStory.Views
         int LocalTotalAchievements;
 
 
-        public SuccessStorySettingsView(SuccessStory plugin, IPlayniteAPI PlayniteApi, string PluginUserDataPath)
+        public SuccessStorySettingsView(SuccessStory plugin)
         {
-            _PlayniteApi = PlayniteApi;
-            _PluginUserDataPath = PluginUserDataPath;
-
             InitializeComponent();
+
+
+            PART_SelectorColorPicker.OnlySimpleColor = true;
+
+            RarityUncommonColor = PluginDatabase.PluginSettings.Settings.RarityUncommonColor;
+            RarityRareColor = PluginDatabase.PluginSettings.Settings.RarityRareColor;
+            RarityUltraRareColor = PluginDatabase.PluginSettings.Settings.RarityUltraRareColor;
 
             SetTotal();
 
@@ -138,7 +147,7 @@ namespace SuccessStory.Views
 
             try
             {
-                foreach (var game in _PlayniteApi.Database.Games)
+                foreach (var game in PluginDatabase.PlayniteApi.Database.Games)
                 {
                     string GameSourceName = PlayniteTools.GetSourceName(game);
 
@@ -235,7 +244,7 @@ namespace SuccessStory.Views
 
         private void ButtonSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            string SelectedFolder = _PlayniteApi.Dialogs.SelectFolder();
+            string SelectedFolder = PluginDatabase.PlayniteApi.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 PART_Rpcs3Folder.Text = SelectedFolder;
@@ -313,7 +322,7 @@ namespace SuccessStory.Views
         {
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
-            string SelectedFolder = _PlayniteApi.Dialogs.SelectFolder();
+            string SelectedFolder = PluginDatabase.PlayniteApi.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 PART_ItemsControl.ItemsSource = null;
@@ -332,6 +341,112 @@ namespace SuccessStory.Views
         }
         #endregion
 
+
+        #region Rarity configuration
+        private void BtPickColor_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                tbControl = ((StackPanel)((FrameworkElement)sender).Parent).Children.OfType<TextBlock>().FirstOrDefault();
+                
+                if (tbControl.Background is SolidColorBrush)
+                {
+                    Color color = ((SolidColorBrush)tbControl.Background).Color;
+                    PART_SelectorColorPicker.SetColors(color);
+                }
+                
+                PART_SelectorColor.Visibility = Visibility.Visible;
+                PART_MiscTab.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
+        }
+
+        private void BtRestore_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TextBlock tbControl = ((StackPanel)((FrameworkElement)sender).Parent).Children.OfType<TextBlock>().FirstOrDefault();
+
+                switch ((string)((Button)sender).Tag)
+                {
+                    case "1":
+                        tbControl.Background = Brushes.DarkGray;
+                        RarityUncommonColor = Brushes.DarkGray;
+                        break;
+
+                    case "2":
+                        tbControl.Background = Brushes.Gold;
+                        RarityRareColor = Brushes.Gold;
+                        break;
+
+                    case "3":
+                        tbControl.Background = Brushes.MediumPurple;
+                        RarityUltraRareColor = Brushes.MediumPurple;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
+        }
+
+        private void PART_TM_ColorOK_Click(object sender, RoutedEventArgs e)
+        {
+            Color color = default(Color);
+
+            if (tbControl != null)
+            {
+                if (PART_SelectorColorPicker.IsSimpleColor)
+                {
+                    color = PART_SelectorColorPicker.SimpleColor;
+                    tbControl.Background = new SolidColorBrush(color);
+
+                    switch ((string)tbControl.Tag)
+                    {
+                        case "1":
+                            RarityUncommonColor = new SolidColorBrush(color);
+                            break;
+
+                        case "2":
+                            RarityRareColor = new SolidColorBrush(color);
+                            break;
+
+                        case "3":
+                            RarityUltraRareColor = new SolidColorBrush(color);
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                logger.Warn("One control is undefined");
+            }
+
+            PART_SelectorColor.Visibility = Visibility.Collapsed;
+            PART_MiscTab.Visibility = Visibility.Visible;
+        }
+
+        private void PART_TM_ColorCancel_Click(object sender, RoutedEventArgs e)
+        {
+            PART_SelectorColor.Visibility = Visibility.Collapsed;
+            PART_MiscTab.Visibility = Visibility.Visible;
+        }
+
+
+        private void PART_SlidderRare_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            PART_SlidderUncommun.Minimum = PART_SlidderRare.Value;
+        }
+
+        private void PART_SlidderUltraRare_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            PART_SlidderRare.Minimum = PART_SlidderUltraRare.Value;
+        }
+        #endregion
 
         private void Button_Click_Remove(object sender, RoutedEventArgs e)
         {

@@ -15,9 +15,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using SuccessStory.Models;
+using SuccessStory.Services;
+using System.IO;
+using System.Windows.Media.Effects;
+using SuccessStory.Converters;
+using System.Globalization;
+using System.Windows.Media.Animation;
 
 namespace SuccessStory.Controls.Customs
 {
@@ -26,58 +31,24 @@ namespace SuccessStory.Controls.Customs
     /// </summary>
     public partial class AchievementImage : UserControl
     {
-        #region Properties
-        public string Icon
-        {
-            get { return (string)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
-        }
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
+        internal Storyboard PART_ColorEffect;
+        internal Storyboard PART_ColorEffectUltraRare;
+
+
+        #region Properties
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
             nameof(Icon),
             typeof(string),
             typeof(AchievementImage),
             new FrameworkPropertyMetadata(string.Empty)
         );
-
-        //private static void IconPropertyChangedCallback(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (sender is AchievementImage obj && e.NewValue != e.OldValue)
-        //    {
-        //        obj.Dispatcher.BeginInvoke(DispatcherPriority.Background, new ThreadStart(delegate
-        //        {
-        //            //obj.LoadIcon(e.NewValue);
-        //        }));
-        //    }
-        //}
-        //
-        //private async void LoadIcon(object AchievementContext)
-        //{
-        //    var IconSource = await Task.Factory.StartNew(() =>
-        //    {
-        //        if (AchievementContext is Achievements achievements)
-        //        {
-        //            return BitmapExtensions.BitmapFromFile(achievements.UrlUnlocked);
-        //        }
-        //        else
-        //        {
-        //            return null;
-        //        }
-        //    });
-        //
-        //    PART_Icon.Source = IconSource;
-        //
-        //    if (AchievementContext != null)
-        //    {
-        //        this.DataContext = new
-        //        {
-        //            IsGray = ((Achievements)AchievementContext).IsGray,
-        //            EnableRaretyIndicator = ((Achievements)AchievementContext).EnableRaretyIndicator,
-        //            Percent = ((Achievements)AchievementContext).Percent
-        //        };
-        //    }
-        //}
-
+        public string Icon
+        {
+            get { return (string)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
+        }
 
         public static readonly DependencyProperty IsGrayProperty = DependencyProperty.Register(
             nameof(IsGray),
@@ -120,6 +91,32 @@ namespace SuccessStory.Controls.Customs
         public AchievementImage()
         {
             InitializeComponent();
+
+            PART_ColorEffect = (Storyboard)TryFindResource("PART_ColorEffect");
+            PART_ColorEffectUltraRare = (Storyboard)TryFindResource("PART_ColorEffectUltraRare");
+        }
+
+
+        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            ((Image)sender).Source = new BitmapImage(new Uri(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "default_icon.png")));
+        }
+
+        private void Image_Loaded(object sender, RoutedEventArgs e)
+        {
+            // TODO The property don't auto refresh with PluginCompact only
+            PART_Image.Tag = Percent;
+
+            if (Percent > PluginDatabase.PluginSettings.Settings.RarityUltraRare)
+            {
+                //PART_ColorEffect.Begin();
+                //PART_ColorEffectUltraRare.Stop();
+            }
+            else
+            {
+                //PART_ColorEffect.Stop();
+                //PART_ColorEffectUltraRare.Begin();
+            }
         }
     }
 }
