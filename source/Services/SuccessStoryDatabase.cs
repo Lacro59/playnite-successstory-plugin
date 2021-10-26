@@ -90,6 +90,8 @@ namespace SuccessStory.Services
             Database = new SuccessStoryCollection(Paths.PluginDatabasePath);
             Database.SetGameInfo<Achievements>(PlayniteApi);
 
+            DeleteDataWithDeletedGame();
+
             return true;
         }
 
