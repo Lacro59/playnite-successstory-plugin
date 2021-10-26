@@ -56,7 +56,7 @@
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <wpftk:VirtualizingWrapPanel Orientation="Vertical" ItemSize="{Binding ItemSize}"
+                    <wpftk:VirtualizingWrapPanel Orientation="Vertical" 
                                                  VirtualizingPanel.CacheLengthUnit="Item" 
                                                  VirtualizingPanel.VirtualizationMode="Recycling" />
                 </ItemsPanelTemplate>
