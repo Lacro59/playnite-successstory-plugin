@@ -1,8 +1,5 @@
 ﻿using Playnite.SDK;
-using CommonPluginsShared;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using SuccessStory.Services;
 using SuccessStory.Models;
 using Playnite.SDK.Data;
 using SuccessStory.Views;
@@ -378,12 +375,6 @@ namespace SuccessStory
         public void CancelEdit()
         {
             Settings = EditingClone;
-
-            if (SuccessStorySettingsView.tokenSource != null)
-            {
-                SuccessStorySettingsView.WithoutMessage = true;
-                SuccessStorySettingsView.tokenSource.Cancel();
-            }
         }
 
         // Code executed when user decides to confirm changes made since BeginEdit was called.

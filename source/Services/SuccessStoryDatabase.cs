@@ -10,7 +10,6 @@ using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using static SuccessStory.Clients.TrueAchievements;
 using System.Windows.Threading;
 using System.Windows;

@@ -2,7 +2,6 @@
 using Playnite.SDK.Data;
 using SuccessStory.Services;
 using System;
-using System.Windows.Media.Imaging;
 
 namespace SuccessStory.Models
 {
