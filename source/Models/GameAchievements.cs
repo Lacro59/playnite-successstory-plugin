@@ -7,11 +7,15 @@ using Playnite.SDK.Data;
 using CommonPluginsShared;
 using CommonPluginsShared.Models;
 using System.IO;
+using SuccessStory.Services;
 
 namespace SuccessStory.Models
 {
     public class GameAchievements : PluginDataBaseGame<Achievements>
     {
+        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+
+
         private List<Achievements> _Items = new List<Achievements>();
         public override List<Achievements> Items
         {
@@ -160,13 +164,16 @@ namespace SuccessStory.Models
 
         // Commun, Non Commun, Rare, Épique
         [DontSerialize]
-        public AchRaretyStats Common {
+        public AchRaretyStats Common
+        {
             get
             {
+                var RarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
+
                 AchRaretyStats achRaretyStats = new AchRaretyStats
                 {
-                    Total = Items.Where(x => x.Percent > 30).Count(),
-                    UnLocked = Items.Where(x => x.Percent > 30 && x.IsUnlock).Count()
+                    Total = Items.Where(x => x.Percent > RarityUncommon).Count(),
+                    UnLocked = Items.Where(x => x.Percent > RarityUncommon && x.IsUnlock).Count()
                 };
                 achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
 
@@ -179,10 +186,13 @@ namespace SuccessStory.Models
         {
             get
             {
+                var RarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
+                var RarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
+
                 AchRaretyStats achRaretyStats = new AchRaretyStats
                 {
-                    Total = Items.Where(x => x.Percent <= 30 && x.Percent > 10).Count(),
-                    UnLocked = Items.Where(x => x.Percent <= 30 && x.Percent > 10 && x.IsUnlock).Count()
+                    Total = Items.Where(x => x.Percent <= RarityUncommon && x.Percent > RarityRare).Count(),
+                    UnLocked = Items.Where(x => x.Percent <= RarityUncommon && x.Percent > RarityRare && x.IsUnlock).Count()
                 };
                 achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
 
@@ -195,10 +205,33 @@ namespace SuccessStory.Models
         {
             get
             {
+                var RarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
+                var RarityUltraRare = PluginDatabase.PluginSettings.Settings.UseUltraRare ? 
+                                            PluginDatabase.PluginSettings.Settings.RarityUltraRare :
+                                            0;
+
                 AchRaretyStats achRaretyStats = new AchRaretyStats
                 {
-                    Total = Items.Where(x => x.Percent <= 10).Count(),
-                    UnLocked = Items.Where(x => x.Percent <= 10 && x.IsUnlock).Count()
+                    Total = Items.Where(x => x.Percent <= RarityRare && x.Percent > RarityUltraRare).Count(),
+                    UnLocked = Items.Where(x => x.Percent <= RarityRare && x.Percent > RarityUltraRare && x.IsUnlock).Count()
+                };
+                achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
+
+                return achRaretyStats;
+            }
+        }
+
+        [DontSerialize]
+        public AchRaretyStats UltraRare
+        {
+            get
+            {
+                var RarityUltraRare = PluginDatabase.PluginSettings.Settings.RarityUltraRare;
+
+                AchRaretyStats achRaretyStats = new AchRaretyStats
+                {
+                    Total = Items.Where(x => x.Percent <= RarityUltraRare).Count(),
+                    UnLocked = Items.Where(x => x.Percent <= RarityUltraRare && x.IsUnlock).Count()
                 };
                 achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
 

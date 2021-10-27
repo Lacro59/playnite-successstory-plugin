@@ -54,6 +54,7 @@ namespace SuccessStory.Views
                 var AchCommon = gameAchievements.Common;
                 var AchNoCommon = gameAchievements.NoCommon;
                 var AchRare = gameAchievements.Rare;
+                var AchUltraRare = gameAchievements.UltraRare;
 
                 if (gameAchievements.EstimateTime == null || gameAchievements.EstimateTime.EstimateTimeMin == 0)
                 {
@@ -66,12 +67,13 @@ namespace SuccessStory.Views
 
                 PART_AchCommon.Content = AchCommon.UnLocked;
                 PART_AchNoCommon.Content = AchNoCommon.UnLocked;
-                PART_AchRare.Content = AchRare.UnLocked;
+                PART_AchRare.Content = AchRare.UnLocked;            
+                PART_AchUltraRare.Content = AchUltraRare.UnLocked;            
 
                 PART_AchCommonTotal.Content = AchCommon.Total;
                 PART_AchNoCommonTotal.Content = AchNoCommon.Total;
                 PART_AchRareTotal.Content = AchRare.Total;
-
+                PART_AchUltraRareTotal.Content = AchUltraRare.Total;
 
                 var converter = new LocalDateTimeConverter();
                 PART_FirstUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, null);
@@ -81,7 +83,8 @@ namespace SuccessStory.Views
 
             this.DataContext = new
             {
-                GameContext
+                GameContext,
+                Settings = PluginDatabase.PluginSettings.Settings
             };
         }
 

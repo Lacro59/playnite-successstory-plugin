@@ -44,7 +44,14 @@ namespace SuccessStory
         public SuccessView(bool isRetroAchievements = false, Game GameSelected = null)
         {
             InitializeComponent();
+
+            successViewData.Settings = PluginDatabase.PluginSettings.Settings;
             DataContext = successViewData;
+
+            if (PluginDatabase.PluginSettings.Settings.UseUltraRare)
+            {
+                lvGameRaretyCount.Width = 350;
+            }
 
 
             // sorting options
@@ -251,6 +258,7 @@ namespace SuccessStory
                     PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
                     PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
                     PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+                    PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
 
 
                     if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements && isRetroAchievements)
@@ -346,7 +354,8 @@ namespace SuccessStory
 
                                     Common = x.Common,
                                     NoCommon = x.NoCommon,
-                                    Rare = x.Rare
+                                    Rare = x.Rare,
+                                    UltraRare = x.UltraRare
                                 }).ToObservable();
             }
             catch (Exception ex)
@@ -395,6 +404,7 @@ namespace SuccessStory
                 PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
                 PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
                 PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+                PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
 
                 return;
             }
@@ -408,6 +418,7 @@ namespace SuccessStory
                 PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
                 PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
                 PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+                PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
 
                 return;
             }
@@ -421,6 +432,7 @@ namespace SuccessStory
                 PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
                 PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
                 PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+                PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
 
                 return;
             }
@@ -432,6 +444,7 @@ namespace SuccessStory
             PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
             PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
             PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+            PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
         }
 
 
@@ -580,6 +593,17 @@ namespace SuccessStory
             set
             {
                 _GameContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private SuccessStorySettings _Settings;
+        public SuccessStorySettings Settings
+        {
+            get => _Settings;
+            set
+            {
+                _Settings = value;
                 OnPropertyChanged();
             }
         }

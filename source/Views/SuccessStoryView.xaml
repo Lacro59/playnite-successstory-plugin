@@ -44,6 +44,7 @@
             <Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" 
                     BorderThickness="{DynamicResource PopupBorderThickness}" BorderBrush="{DynamicResource NormalBorderBrush}" 
                     Margin="0,0,0,10">
+                
                 <Grid Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -56,7 +57,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="40" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
@@ -81,7 +82,7 @@
                                    VerticalAlignment="Center" Width="40" TextAlignment="Right" />
                     </StackPanel>
 
-                    <Grid Grid.Column="10">
+                    <Grid Grid.Column="10" HorizontalAlignment="Right">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="15" />
@@ -105,16 +106,29 @@
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="5" />
                                 <ColumnDefinition Width="40" />
+
+                                <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
 
                             <Label Grid.Column="0" Content="&#127942;" Margin="0,0,5,0" />
                             <Label Grid.Column="2" Name="PART_TotalCommun" HorizontalAlignment="Right" Content="32" />
 
-                            <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="DarkGray" />
+                            <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityUncommonColor}" />
                             <Label Grid.Column="6" Name="PART_TotalNoCommun" HorizontalAlignment="Right" Content="11" />
 
-                            <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="Gold" />
+                            <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityRareColor}" />
                             <Label Grid.Column="10" Name="PART_TotalRare" HorizontalAlignment="Right" Content="2" />
+
+                            <Grid Grid.Column="11" Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="40" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <Label Grid.Column="0" Content="&#127942;" Margin="40,0,5,0" Foreground="{Binding Settings.RarityUltraRareColor}" />
+                                <Label Grid.Column="2" Name="PART_TotalUltraRare" HorizontalAlignment="Right" Content="2" />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -330,16 +344,29 @@
                                                     <ColumnDefinition Width="auto" />
                                                     <ColumnDefinition Width="5" />
                                                     <ColumnDefinition Width="40" />
+                                                    
+                                                    <ColumnDefinition Width="auto" />
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Grid.Column="0" Content="&#127942;" Margin="0,0,5,0" />
                                                 <Label Grid.Column="2" Content="{Binding Common.UnLocked}" HorizontalAlignment="Right" />
 
-                                                <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="DarkGray" />
+                                                <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityUncommonColor}" />
                                                 <Label Grid.Column="6" Content="{Binding NoCommon.UnLocked}" HorizontalAlignment="Right" />
 
-                                                <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="Gold" />
+                                                <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityRareColor}" />
                                                 <Label Grid.Column="10" Content="{Binding Rare.UnLocked}" HorizontalAlignment="Right" />
+
+                                                <Grid Grid.Column="11" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="5" />
+                                                        <ColumnDefinition Width="40" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Label Grid.Column="0" Content="&#127942;" Margin="40,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityUltraRareColor}" />
+                                                    <Label Grid.Column="2" Content="{Binding UltraRare.UnLocked}" HorizontalAlignment="Right" />
+                                                </Grid>
                                             </Grid>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
