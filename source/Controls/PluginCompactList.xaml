@@ -10,8 +10,8 @@
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
         xmlns:converters1="clr-namespace:SuccessStory.Converters"
-    xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
-    mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
+        xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
+        mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 
@@ -66,7 +66,8 @@
                                                       Icon="{Binding Icon, IsAsync=True}"
                                                       IsGray="{Binding IsGray}"
                                                       Percent="{Binding Percent}"
-                                                      EnableRaretyIndicator="{Binding EnableRaretyIndicator}" />
+                                                      EnableRaretyIndicator="{Binding EnableRaretyIndicator}"
+                                                      DispalyRaretyValue="{Binding DisplayRaretyValue}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

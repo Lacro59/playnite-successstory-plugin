@@ -166,6 +166,19 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
+        public bool DisplayRaretyValue
+        {
+            get
+            {
+                if (!PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator)
+                {
+                    return PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
+                }
+                return PluginDatabase.PluginSettings.Settings.DisplayRarityValue;
+            }
+        }
+
+        [DontSerialize]
         public string NameWithDateUnlock
         {
             get

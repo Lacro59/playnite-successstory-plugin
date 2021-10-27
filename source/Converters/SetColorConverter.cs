@@ -23,20 +23,22 @@ namespace SuccessStory.Converters
                 return null;
             }
 
-            if ((float)value <= PluginDatabase.PluginSettings.Settings.RarityUltraRare && PluginDatabase.PluginSettings.Settings.UseUltraRare)
+            double.TryParse(value.ToString(), out double valueDouble);
+
+            if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityUltraRare && PluginDatabase.PluginSettings.Settings.UseUltraRare)
             {
                 return PluginDatabase.PluginSettings.Settings.RarityUltraRareColor.Color;
             }
 
-            if ((float)value <= PluginDatabase.PluginSettings.Settings.RarityRare)
+            if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityRare)
             {
                 return PluginDatabase.PluginSettings.Settings.RarityRareColor.Color;
             }
-            if ((float)value <= PluginDatabase.PluginSettings.Settings.RarityUncommon)
+            if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityUncommon)
             {
                 return PluginDatabase.PluginSettings.Settings.RarityUncommonColor.Color;
             }
-            if ((float)value > PluginDatabase.PluginSettings.Settings.RarityUncommon)
+            if (valueDouble > PluginDatabase.PluginSettings.Settings.RarityUncommon)
             {
                 return null;
             }

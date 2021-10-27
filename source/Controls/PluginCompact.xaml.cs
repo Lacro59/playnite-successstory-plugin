@@ -304,6 +304,8 @@ namespace SuccessStory.Controls
                             achievementImage.Icon = AchievementsList[i].Icon;
                             achievementImage.Percent = AchievementsList[i].Percent;
                             achievementImage.IsGray = AchievementsList[i].IsGray;
+                            achievementImage.EnableRaretyIndicator = AchievementsList[i].EnableRaretyIndicator;
+                            achievementImage.DispalyRaretyValue = AchievementsList[i].DisplayRaretyValue;
 
                             PART_ScCompactView.Children.Add(achievementImage);
                         }

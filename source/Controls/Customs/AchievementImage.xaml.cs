@@ -74,6 +74,18 @@ namespace SuccessStory.Controls.Customs
             set { SetValue(EnableRaretyIndicatorProperty, value); }
         }
 
+        public static readonly DependencyProperty DispalyRaretyValueProperty = DependencyProperty.Register(
+            nameof(DispalyRaretyValue),
+            typeof(bool),
+            typeof(AchievementImage),
+            new FrameworkPropertyMetadata(true)
+        );
+        public bool DispalyRaretyValue
+        {
+            get { return (bool)GetValue(DispalyRaretyValueProperty); }
+            set { SetValue(DispalyRaretyValueProperty, value); }
+        }
+
         public static readonly DependencyProperty PercentProperty = DependencyProperty.Register(
             nameof(Percent),
             typeof(float),
@@ -104,19 +116,23 @@ namespace SuccessStory.Controls.Customs
 
         private void Image_Loaded(object sender, RoutedEventArgs e)
         {
-            // TODO The property don't auto refresh with PluginCompact only
-            PART_Image.Tag = Percent;
+            try
+            {
+                PART_Label.Content = Math.Round(Percent, 1);
+                PART_ProgressBar.Value = Math.Round(Percent, 1);
 
-            if (Percent > PluginDatabase.PluginSettings.Settings.RarityUltraRare)
-            {
-                //PART_ColorEffect.Begin();
-                //PART_ColorEffectUltraRare.Stop();
+                if (Percent > PluginDatabase.PluginSettings.Settings.RarityUltraRare)
+                {
+                    //PART_ColorEffect.Begin();
+                    //PART_ColorEffectUltraRare.Stop();
+                }
+                else
+                {
+                    //PART_ColorEffect.Stop();
+                    //PART_ColorEffectUltraRare.Begin();
+                }
             }
-            else
-            {
-                //PART_ColorEffect.Stop();
-                //PART_ColorEffectUltraRare.Begin();
-            }
+            catch { }
         }
     }
 }

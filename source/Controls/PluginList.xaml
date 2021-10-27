@@ -66,7 +66,7 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Margin="0,5" Name="PART_Grid">
+                    <Grid Margin="0,5" Name="PART_Grid" d:DesignWidth="400">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="58" />
                             <ColumnDefinition Width="*" />
@@ -77,7 +77,8 @@
                                                       Icon="{Binding Icon, IsAsync=True}"
                                                       IsGray="{Binding IsGray}"
                                                       Percent="{Binding Percent}"
-                                                      EnableRaretyIndicator="{Binding EnableRaretyIndicator}" />
+                                                      EnableRaretyIndicator="{Binding EnableRaretyIndicator}"
+                                                      DispalyRaretyValue="{Binding DisplayRaretyValue}" />
                         </StackPanel>
                         
                         <Grid Grid.Column="1" Margin="10,0,0,0">
@@ -97,17 +98,18 @@
                                     <ColumnDefinition Width="10" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"
+                                <TextBlock Grid.Column="0" Text="{Binding Name, FallbackValue='Game Name'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"
                                            MouseEnter="TextBlock_MouseEnter">
                                     <TextBlock.ToolTip>
                                         <ToolTip Content="{Binding Name}" />
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                                 <TextBlock Grid.Column="1" TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
-                                           Text="{Binding DateWhenUnlocked, Converter={StaticResource LocalDateTimeConverter}}" />
+                                           Text="{Binding DateWhenUnlocked, FallbackValue='1982-12-15 00:08:23', Converter={StaticResource LocalDateTimeConverter}}" />
                             </Grid>
 
-                            <TextBlock Grid.Row="1" Text="{Binding Description}" VerticalAlignment="Top"
+                            <TextBlock Grid.Row="1" Text="{Binding Description, FallbackValue='This is a description.'}" 
+                                       VerticalAlignment="Top"
                                        TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}">
                                 <TextBlock.Width>
                                     <MultiBinding Converter="{StaticResource ValueOperationConverter}" ConverterParameter="-">

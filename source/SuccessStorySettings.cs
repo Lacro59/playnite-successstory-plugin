@@ -210,6 +210,7 @@ namespace SuccessStory
         public bool IsAsc { get; set; } = false;
 
         public bool EnableRaretyIndicator { get; set; } = true;
+        public bool DisplayRarityValue { get; set; } = true;
         public double RarityUncommon { get; set; } = 30;
         public SolidColorBrush RarityUncommonColor { get; set; } = Brushes.DarkGray;
         public double RarityRare { get; set; } = 10;

@@ -555,21 +555,28 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableRaretyIndicator}">
+                            <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableRaretyIndicator}" Name="PART_EnableRarity">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableRaretyIndicator}" />
                             </CheckBox>
 
-                            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.EnableOneGameView}">
+                            <CheckBox Grid.Row="2" Margin="50,0,0,0" IsChecked="{Binding Settings.DisplayRarityValue}"
+                                      IsEnabled="{Binding ElementName=PART_EnableRarity, Path=IsChecked}">
+                                <Label Content="{DynamicResource LOCSuccessStoryDisplayRarityValue}" />
+                            </CheckBox>
+
+                            <CheckBox Grid.Row="4" IsChecked="{Binding Settings.EnableOneGameView}">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableOneGameView}" />
                             </CheckBox>
 
-                            <CheckBox Grid.Row="4" IsChecked="{Binding Settings.Auto100PercentCompleted}">
+                            <CheckBox Grid.Row="6" IsChecked="{Binding Settings.Auto100PercentCompleted}">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableAuto100PercentCompleted}" />
                             </CheckBox>
 
-                            <Grid Grid.Row="6" >
+                            <Grid Grid.Row="8" >
                                 <CheckBox Name="cbEnableTag" Grid.Row="4" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
                                     <Label Content="{DynamicResource LOSuccessStoryAddTagDescription}" />
                                 </CheckBox>

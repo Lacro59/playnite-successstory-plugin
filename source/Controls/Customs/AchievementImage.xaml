@@ -5,8 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Controls.Customs"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
-             xmlns:commonpluginsshared="clr-namespace:CommonPluginsShared"
-             xmlns:controls="clr-namespace:SuccessStory.Controls"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:converters1="clr-namespace:SuccessStory.Converters"
              mc:Ignorable="d" d:DesignHeight="48" d:DesignWidth="48">
@@ -38,6 +36,11 @@
 
     <Grid Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Height}" 
           Width="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Width}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        
         <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant" x:Name="PART_Image"
                Loaded="Image_Loaded" ImageFailed="Image_ImageFailed">
             <Image.Style>
@@ -48,7 +51,7 @@
                                 <Setter.Value>
                                     <!--DropShadowEffect BlurRadius="15" ShadowDepth="0" /-->
                                     <DropShadowEffect BlurRadius="15" ShadowDepth="0" 
-                                                      Color="{Binding ElementName=PART_Image, Path=Tag, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource SetColorConverter}}" />
+                                                      Color="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Percent, Converter={StaticResource SetColorConverter}}" />
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
@@ -68,5 +71,12 @@
                 </Style>
             </Image.Style>
         </Image>
+
+        <Grid VerticalAlignment="Bottom" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DispalyRaretyValue, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ProgressBar Height="12" Name="PART_ProgressBar" Maximum="100" />
+            <Label Name="PART_Label"
+                   ContentStringFormat=" {0}%"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" />
+        </Grid>
     </Grid>
 </UserControl>
