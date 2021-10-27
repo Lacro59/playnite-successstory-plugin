@@ -44,7 +44,9 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II user is not authenticated</sys:String>
-
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic user is not authenticated</sys:String>
+    
     <!-- SuccessStoreGameSelection -->
 
     <sys:String x:Key="LOCSuccessStoryAchievementsCount">Achievements count</sys:String>
@@ -65,6 +67,7 @@
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Enable Steam achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Enable GOG achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEpic">Enable Epic achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable Origin achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Enable Xbox achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Enable RetroAchievements achievements</sys:String>
@@ -142,6 +145,9 @@
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Resets and downloads achievements of installed games. (Use if there is any problem with achievements)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Resets and downloads achievements of all games. (Use if there is any problem with achievements)</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryRarityConfig">Rarity configuration</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseUltraRare">Use ultra rare achievements</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryEnableImageCache">Enable caching achievements images *</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Non-blocking process which can increase memory usage a bit when caching only.
 Especially useful for Xbox achievements with their larges images which are reduced when caching.</sys:String>
@@ -159,6 +165,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">ultra-rare</sys:String>
 
     <!-- SuccessStoryView -->
 
