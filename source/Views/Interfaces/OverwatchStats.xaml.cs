@@ -1,4 +1,5 @@
 ﻿using CommonPluginsShared;
+using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -101,11 +102,11 @@ namespace SuccessStory.Views.Interfaces
                 switch (DataMode)
                 {
                     case OverWatchMode.QuickPlay:
-                        gameStats = Serialization.GetClone(gameAchievements.ItemsStats.Where(x => x.Mode != null && x.Mode.ToLower() == "quickplay").ToList());
+                        gameStats = Serialization.GetClone(gameAchievements.ItemsStats.Where(x => x.Mode?.IsEqual("quickplay") ?? false).ToList());
                         break;
 
                     case OverWatchMode.CompetitivePlay:
-                        gameStats = Serialization.GetClone(gameAchievements.ItemsStats.Where(x => x.Mode != null && x.Mode.ToLower() == "competitive").ToList());
+                        gameStats = Serialization.GetClone(gameAchievements.ItemsStats.Where(x => x.Mode?.IsEqual("competitive") ?? false).ToList());
                         break;
                 }
 

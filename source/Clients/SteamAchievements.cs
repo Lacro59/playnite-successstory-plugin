@@ -800,13 +800,13 @@ namespace SuccessStory.Clients
                     {
                         foreach (KeyValue AchievementsData in SchemaForGame.Children?.Find(x => x.Name == "availableGameStats").Children?.Find(x => x.Name == "achievements").Children)
                         {
-                            AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).IsHidden = AchievementsData.Children?.Find(x => x.Name == "hidden").Value == "1";
-                            AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).UrlUnlocked = AchievementsData.Children?.Find(x => x.Name == "icon").Value;
-                            AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).UrlLocked = AchievementsData.Children?.Find(x => x.Name == "icongray").Value;
+                            AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).IsHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
+                            AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlUnlocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
+                            AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlLocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
 
-                            if (AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).IsHidden)
+                            if (AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).IsHidden)
                             {
-                                AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).Description = FindHiddenDescription(AppId, AllAchievements.Find(x => x.ApiName.ToLower() == AchievementsData.Name.ToLower()).Name);
+                                AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).Description = FindHiddenDescription(AppId, AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).Name);
                             }
                         }
                     }
@@ -817,31 +817,31 @@ namespace SuccessStory.Clients
 
                     try
                     {
-                        var availableGameStats = SchemaForGame.Children.Find(x => x.Name == "availableGameStats");
+                        var availableGameStats = SchemaForGame.Children.Find(x => x.Name.IsEqual("availableGameStats"));
 
                         if (availableGameStats != null)
                         {
-                            var stats = availableGameStats.Children.Find(x => x.Name == "stats");
+                            var stats = availableGameStats.Children.Find(x => x.Name.IsEqual("stats"));
 
                             if (stats != null)
                             {
                                 var ListStatsData = stats.Children;
                                 foreach (KeyValue StatsData in ListStatsData)
                                 {
-                                    if (AllStats.Find(x => x.Name == StatsData.Name) == null)
+                                    if (AllStats.Find(x => x.Name.IsEqual(StatsData.Name)) == null)
                                     {
-                                        double.TryParse(StatsData.Children.Find(x => x.Name == "defaultvalue").Value, out double ValueStats);
+                                        double.TryParse(StatsData.Children.Find(x => x.Name.IsEqual("defaultvalue")).Value, out double ValueStats);
 
                                         AllStats.Add(new GameStats
                                         {
                                             Name = StatsData.Name,
-                                            DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value,
+                                            DisplayName = StatsData.Children.Find(x => x.Name.IsEqual("displayName")).Value,
                                             Value = ValueStats
                                         });
                                     }
                                     else
                                     {
-                                        AllStats.Find(x => x.Name == StatsData.Name).DisplayName = StatsData.Children.Find(x => x.Name == "displayName").Value;
+                                        AllStats.Find(x => x.Name.IsEqual(StatsData.Name)).DisplayName = StatsData.Children.Find(x => x.Name.IsEqual("displayName")).Value;
                                     }
                                 }
                             }
@@ -941,7 +941,7 @@ namespace SuccessStory.Clients
                 {
                     try
                     {
-                        if (achieveRow.QuerySelector("h3").InnerHtml.Trim().ToLower() == DisplayName.Trim().ToLower())
+                        if (achieveRow.QuerySelector("h3").InnerHtml.IsEqual(DisplayName))
                         {
                             string TempDescription = achieveRow.QuerySelector("h5").InnerHtml;
 
@@ -1070,7 +1070,7 @@ namespace SuccessStory.Clients
                             Percent = float.Parse(achieveRow.QuerySelector(".achievePercent").InnerHtml.Replace("%", string.Empty).Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
                         }
 
-                        AllAchievements.Find(x => x.Name.ToLower() == Name.ToLower()).Percent = Percent;
+                        AllAchievements.Find(x => x.Name.IsEqual(Name)).Percent = Percent;
                     }
                     catch (Exception ex)
                     {

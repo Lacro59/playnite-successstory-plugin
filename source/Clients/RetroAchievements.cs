@@ -389,7 +389,7 @@ namespace SuccessStory.Clients
             }
 
 
-            var FindConsole = ra_Consoles.ListConsoles.Find(x => PlatformName.ToLower() == x.Name.ToLower());
+            var FindConsole = ra_Consoles.ListConsoles.Find(x => PlatformName.IsEqual(x.Name));
             if (FindConsole != null)
             {
                 consoleID = FindConsole.ID;
@@ -420,9 +420,9 @@ namespace SuccessStory.Clients
                     {
                         foreach (string TitleSplit in TitleSplits)
                         {
-                            if (GameName.Trim().ToLower() == TitleSplit.Trim() && gameID == 0)
+                            if (GameName.IsEqual(TitleSplit) && gameID == 0)
                             {
-                                logger.Info($"SuccessStory - Find for {GameName.Trim().ToLower()} / {TitleSplit.Trim()} with {PlatformName} in {consoleID}");
+                                logger.Info($"SuccessStory - Find for {GameName} / {TitleSplit} with {PlatformName} in {consoleID}");
                                 gameID = ra_Game.ID;
                                 break;
                             }
@@ -434,9 +434,9 @@ namespace SuccessStory.Clients
                     {
                         foreach (string TitleSplit in TitleSplits)
                         {
-                            if (GameName.Trim().ToLower() == TitleSplit.Trim() && gameID == 0)
+                            if (GameName.IsEqual(TitleSplit) && gameID == 0)
                             {
-                                logger.Info($"Find for {GameName.Trim().ToLower()} / {TitleSplit.Trim()} with {PlatformName} in {consoleID}");
+                                logger.Info($"Find for {GameName} / {TitleSplit} with {PlatformName} in {consoleID}");
                                 gameID = ra_Game.ID;
                                 break;
                             }
@@ -512,7 +512,7 @@ namespace SuccessStory.Clients
             }
             
             HashMD5 = GetHash(FilePath, PlatformType.All);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.ToLower() == HashMD5.ToLower());
+            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
             if (rA_MD5List != null)
             {
                 ZipFileManafeRemove();
@@ -525,7 +525,7 @@ namespace SuccessStory.Clients
             }
 
             HashMD5 = GetHash(FilePath, PlatformType.SNES);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.ToLower() == HashMD5.ToLower());
+            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
             if (rA_MD5List != null)
             {
                 ZipFileManafeRemove();
@@ -538,7 +538,7 @@ namespace SuccessStory.Clients
             }
 
             HashMD5 = GetHash(FilePath, PlatformType.NES);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.ToLower() == HashMD5.ToLower());
+            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
             if (rA_MD5List != null)
             {
                 ZipFileManafeRemove();
@@ -551,7 +551,7 @@ namespace SuccessStory.Clients
             }
 
             HashMD5 = GetHash(FilePath, PlatformType.Arcade);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.ToLower() == HashMD5.ToLower());
+            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
             if (rA_MD5List != null)
             {
                 ZipFileManafeRemove();
@@ -564,7 +564,7 @@ namespace SuccessStory.Clients
             }
 
             HashMD5 = GetHash(FilePath, PlatformType.Famicom);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.ToLower() == HashMD5.ToLower());
+            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
             if (rA_MD5List != null)
             {
                 ZipFileManafeRemove();
@@ -577,7 +577,7 @@ namespace SuccessStory.Clients
             }
 
             HashMD5 = GetHash(FilePath, PlatformType.Sega_CD_Saturn);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.ToLower() == HashMD5.ToLower());
+            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
             if (rA_MD5List != null)
             {
                 ZipFileManafeRemove();

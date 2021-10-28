@@ -66,11 +66,11 @@ namespace SuccessStory.Clients
                     string Description = TrophyXml.Element("detail").Value;
 
                     int Percent = 100;
-                    if (TrophyType.ToLower() == "s")
+                    if (TrophyType.IsListEqual("s"))
                     {
                         Percent = 30;
                     }
-                    if (TrophyType.ToLower() == "g")
+                    if (TrophyType.IsListEqual("g"))
                     {
                         Percent = 10;
                     }

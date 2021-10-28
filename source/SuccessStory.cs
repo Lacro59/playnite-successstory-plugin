@@ -24,6 +24,7 @@ using SuccessStory.Controls;
 using CommonPluginsShared.Models;
 using CommonPlayniteShared.Common;
 using System.Reflection;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory
 {
@@ -110,7 +111,7 @@ namespace SuccessStory
 
                     if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                     {
-                        if (PluginDatabase.GameContext.Source?.Name?.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+                        if (PluginDatabase.GameContext.Name.IsEqual("overwatch") && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
                         {
                             ViewExtension = new SuccessStoryOverwatchView(PluginDatabase.GameContext);
                         }
@@ -368,7 +369,7 @@ namespace SuccessStory
 
                                 if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                                 {
-                                    if (PluginDatabase.GameContext.Source?.Name?.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+                                    if (PluginDatabase.GameContext.Name.IsEqual("overwatch") && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
                                     {
                                         ViewExtension = new SuccessStoryOverwatchView(GameMenu);
                                     }

@@ -10,6 +10,7 @@ using Playnite.SDK.Models;
 using Playnite.SDK.Data;
 using SuccessStory.Models;
 using CommonPluginsShared.Models;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Clients
 {
@@ -260,14 +261,14 @@ namespace SuccessStory.Clients
                         default:
                             if (ReturnAchievements.Count == 0)
                             {
-                                if (!DirAchivements.ToLower().Contains("steamemu"))
+                                if (!DirAchivements.Contains("steamemu", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     ReturnAchievements = GetSteamEmu(DirAchivements + $"\\{SteamId}\\SteamEmu");
                                 }
                                 else
                                 {
                                     var DataPath = DirAchivements.Split('\\').ToList();
-                                    int index = DataPath.FindIndex(x => x.ToLower() == "steamemu");
+                                    int index = DataPath.FindIndex(x => x.IsEqual("steamemu"));
                                     string GameName = DataPath[index - 1];
 
                                     SteamApi steamApi = new SteamApi();
@@ -336,7 +337,7 @@ namespace SuccessStory.Clients
                         bool isFind = false;
                         for (int j = 0; j < ReturnAchievements.Count; j++)
                         {
-                            if (ReturnAchievements[j].ApiName.ToLower() == ((string)resultItems[i]["name"]).ToLower())
+                            if (ReturnAchievements[j].ApiName.IsEqual(((string)resultItems[i]["name"])))
                             {
                                 Achievements temp = new Achievements
                                 {

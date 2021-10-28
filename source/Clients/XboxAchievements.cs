@@ -16,6 +16,7 @@ using CommonPluginsShared.Models;
 using System.Security.Principal;
 using CommonPlayniteShared.Common;
 using CommonPlayniteShared.PluginLibrary.XboxLibrary;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Clients
 {
@@ -277,7 +278,7 @@ namespace SuccessStory.Clients
             List<XboxOneAchievement> relevantAchievements;
             if (titleId.IsNullOrEmpty())
             {
-                relevantAchievements = response.achievements.Where(x => x.titleAssociations.First().name.ToLower() == game.Name.ToLower()).ToList();
+                relevantAchievements = response.achievements.Where(x => x.titleAssociations.First().name.IsEqual(game.Name)).ToList();
                 Common.LogDebug(true, $"Not find with {game.GameId} for {game.Name} - {relevantAchievements.Count}");
             }
             else

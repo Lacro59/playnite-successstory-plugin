@@ -1,6 +1,7 @@
 ﻿using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using CommonPluginsShared;
+using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using System;
@@ -96,7 +97,7 @@ namespace SuccessStory.Clients
 
                                 string ItemType = GameInfos[2].InnerHtml;
 
-                                if (ItemType.ToLower() == "game")
+                                if (ItemType.IsEqual("game"))
                                 {
                                     ListSearchGames.Add(new TrueAchievementSearch
                                     {

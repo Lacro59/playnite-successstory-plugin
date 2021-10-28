@@ -1,6 +1,7 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
+using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
@@ -121,7 +122,7 @@ namespace SuccessStory.Controls
         private void PART_PluginButton_Click(object sender, RoutedEventArgs e)
         {
             dynamic ViewExtension = null;
-            if (PluginDatabase.GameContext.Source?.Name?.ToLower() == "battle.net" && PluginDatabase.GameContext.Name.ToLower() == "overwatch")
+            if (PluginDatabase.GameContext.Name.IsEqual("overwatch") && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
             {
                 ViewExtension = new SuccessStoryOverwatchView(PluginDatabase.GameContext);
             }
