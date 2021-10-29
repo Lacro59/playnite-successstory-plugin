@@ -44,8 +44,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">El usuario de Battle.net no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">El usuario de Overwatch de Battle.net no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">El usuario de Battle.net StarCraft II no está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic está activado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">El usuario de Epic no está autenticado</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
@@ -67,7 +67,7 @@
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Habilitar logros de PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar logros de Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar logros de GOG</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableEpic">Enable Epic achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEpic">Habilitar logros de Epic</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOrigin">Habilitar los logros de Origin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Habilitar logros de Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Habilitar logros de RetroAchievements</sys:String>
@@ -119,6 +119,7 @@
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vista de extensión</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Mostrar indicador de rareza en los logros</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Mostrar el valor de rareza con la imagen de logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Mostrar sólo los logros del juego seleccionado desde el menú del juego</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Establece el juego automáticamente a &quot;Completado&quot; cuando todos los logros sean desbloqueados</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">Lista de Juegos</sys:String>
@@ -145,8 +146,8 @@
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Restablece y descarga los logros de los juegos instalados. (Usar si hay algún problema con los logros)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Restablece y descarga los logros de todos los juegos. (Usar si hay algún problema con los logros)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryRarityConfig">Rarity configuration</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUseUltraRare">Use ultra rare achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarityConfig">Configuración de rareza</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseUltraRare">Utilizar logros ultra raros</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryEnableImageCache">Habilitar cach'e de imágenes de logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Proceso de no bloqueo que puede aumentar el uso de la memoria un poco cuando solo almacena en caché.
@@ -165,7 +166,7 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
     <sys:String x:Key="LOCSuccessStoryCommon">Común</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">No común</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Raro</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">ultra-rare</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">Ultra-raro</sys:String>
 
     <!-- SuccessStoryView -->
 
