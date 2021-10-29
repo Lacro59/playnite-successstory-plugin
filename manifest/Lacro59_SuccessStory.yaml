@@ -54,3 +54,16 @@ Packages:
       - Optimizations for images caching
       - Fixed many bugs
       - Fixed PSN trophies
+  - Version: 2.3
+    RequiredApiVersion: 6.1.0
+    ReleaseDate: 2021-10-29
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.3/playnite-successstory-plugin_2_3.pext
+    Changelog:
+      - Added Epic achievements (not developers achievements)
+      - Added optional Ultra-rare achievements system
+      - Added configuration for rarity achievements system
+      - UI tweaks
+      - Optimizations for images caching
+      - Updated localizations
+      - Fixed bugs on achievements for emulated games
+      - Fixed many bugs
