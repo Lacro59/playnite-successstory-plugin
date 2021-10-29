@@ -44,8 +44,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Користувач Battle.net не авторизований</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Користувач Battle.net Overwatch не авторизований</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Користувач Battle.net StarCraft II не авторизований</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Користувач Epic не авторизований</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
@@ -67,7 +67,7 @@
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Увімкнути досягнення PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Увімкнути досягнення Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Увімкнути досягнення GOG</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableEpic">Enable Epic achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEpic">Увімкнути досягнення Epic</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOrigin">Увімкнути досягнення Origin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Увімкнути досягнення Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Увімкнути досягнення RetroAchievements</sys:String>
@@ -119,6 +119,7 @@
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Вигляд розширення</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Показувати індикатор рідкості на досягненні</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Показати значення рідкості із зображенням досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Відображати лише досягнення гри, вибраної з ігрового меню</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Автоматично встановлювати гру як &quot;Повністю пройдену&quot;, коли всі досягнення відкрито</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">Список іго</sys:String>
@@ -145,8 +146,8 @@
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Скидання та завантаження досягнень встановлених ігор. (Використовуйте, якщо виникли проблеми з досягненнями)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Скидання та завантаження досягнень всіх ігор. (Використовуйте, якщо виникли проблеми з досягненнями)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryRarityConfig">Rarity configuration</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUseUltraRare">Use ultra rare achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarityConfig">Налаштування рідкості</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseUltraRare">Використовувати ультра-рідкісні досягнення</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryEnableImageCache">Ввімкнути кешування зображень досягнень *</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Неблокуючий процес, який може трохи збільшити використання пам'яті при кешуванні.
@@ -165,7 +166,7 @@
     <sys:String x:Key="LOCSuccessStoryCommon">Загальні</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">Не-звичайний</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Рідкісний</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">ultra-rare</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">Ультра-рідкісне</sys:String>
 
     <!-- SuccessStoryView -->
 

@@ -119,6 +119,7 @@
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Extension view</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarity indicator on achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Show rarity value with achievements image</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the achievements of the game selected from the game menu</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Automatically set the game to &quot;Beaten&quot; when all achievements are unlocked</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">List games</sys:String>
@@ -165,7 +166,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">ultra-rare</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">Ultra-rare</sys:String>
 
     <!-- SuccessStoryView -->
 
