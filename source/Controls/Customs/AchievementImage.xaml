@@ -56,11 +56,19 @@
                             </Setter>
                         </DataTrigger>
 
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsGray}" Value="False">
+                        <!--DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsGray}" Value="False">
                             <Setter Property="Source" Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, IsAsync=True}" />
-                        </DataTrigger>
+                        </>
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsGray}" Value="True">
                             <Setter Property="Source" Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, Converter={StaticResource ImageToGrayConverter}}" />
+                            <Setter Property="OpacityMask">
+                                <Setter.Value>
+                                    <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, IsAsync=True}" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger-->
+
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsGray}" Value="True">
                             <Setter Property="OpacityMask">
                                 <Setter.Value>
                                     <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, IsAsync=True}" />

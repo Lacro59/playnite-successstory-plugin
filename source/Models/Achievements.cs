@@ -63,17 +63,25 @@ namespace SuccessStory.Models
         {
             get
             {
+                var Options = new
+                {
+                    CachedFileIfMissing = true,
+                    Url = UrlUnlocked
+                };
+
                 string TempUrlUnlocked = UrlUnlocked;
                 if (TempUrlUnlocked?.IndexOf("rpcs3") > -1)
                 {
-                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, UrlUnlocked); ;
+                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, UrlUnlocked);
+                    Options = null;
                 }
                 if (TempUrlUnlocked?.IndexOf("hidden_trophy") > -1)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
+                    Options = null;
                 }
 
-                string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory");
+                string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, "SuccessStory", Options);
                 if (pathImageUnlocked.IsNullOrEmpty() && !File.Exists(pathImageUnlocked))
                 {
                     pathImageUnlocked = TempUrlUnlocked;
@@ -112,7 +120,13 @@ namespace SuccessStory.Models
             {
                 if (!UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked)
                 {
-                    string pathImageLocked = PlayniteTools.GetCacheFile(CacheLocked, "SuccessStory");
+                    var Options = new
+                    {
+                        CachedFileIfMissing = true,
+                        Url = UrlLocked
+                    };
+
+                    string pathImageLocked = PlayniteTools.GetCacheFile(CacheLocked, "SuccessStory", Options);
                     if (pathImageLocked.IsNullOrEmpty() && !File.Exists(pathImageLocked))
                     {
                         pathImageLocked = UrlLocked;

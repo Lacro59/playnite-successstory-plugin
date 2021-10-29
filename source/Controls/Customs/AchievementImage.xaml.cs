@@ -23,6 +23,9 @@ using System.Windows.Media.Effects;
 using SuccessStory.Converters;
 using System.Globalization;
 using System.Windows.Media.Animation;
+using CommonPlayniteShared;
+using CommonPluginsShared.Converters;
+using CommonPluginsShared;
 
 namespace SuccessStory.Controls.Customs
 {
@@ -36,18 +39,32 @@ namespace SuccessStory.Controls.Customs
         internal Storyboard PART_ColorEffect;
         internal Storyboard PART_ColorEffectUltraRare;
 
+        internal object currentIcon { get; set; }
+
 
         #region Properties
         public static readonly DependencyProperty IconProperty = DependencyProperty.Register(
             nameof(Icon),
             typeof(string),
             typeof(AchievementImage),
-            new FrameworkPropertyMetadata(string.Empty)
+            new FrameworkPropertyMetadata(string.Empty, IconChanged)
         );
         public string Icon
         {
             get { return (string)GetValue(IconProperty); }
             set { SetValue(IconProperty, value); }
+        }
+        private static void IconChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        {
+            try
+            {
+                var control = (AchievementImage)obj;
+                control.LoadNewIcon(args.NewValue, args.OldValue);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
+            }
         }
 
         public static readonly DependencyProperty IsGrayProperty = DependencyProperty.Register(
@@ -133,6 +150,45 @@ namespace SuccessStory.Controls.Customs
                 }
             }
             catch { }
+        }
+
+
+        private async void LoadNewIcon(object newSource, object oldSource)
+        {
+            if (newSource?.Equals(currentIcon) == true)
+            {
+                return;
+            }
+
+            currentIcon = newSource;
+            dynamic image = null;
+            bool IsGray = this.IsGray;
+
+            if (newSource != null)
+            {
+                image = await Task.Factory.StartNew(() =>
+                {
+                    if (newSource is string str)
+                    {
+                        dynamic tmpImage = ImageSourceManager.GetImage(str, false); 
+
+                        if (IsGray)
+                        {
+                            return ImageTools.ConvertBitmapImage(tmpImage, ImageColor.Gray);
+                        }
+                        else
+                        {
+                            return tmpImage;
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                });
+            }
+
+            PART_Image.Source = image;
         }
     }
 }

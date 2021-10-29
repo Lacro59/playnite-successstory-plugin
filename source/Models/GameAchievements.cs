@@ -256,8 +256,7 @@ namespace SuccessStory.Models
                     return true;
                 }
 
-                string pathImageUnlocked = PlayniteTools.GetCacheFile(Items?.FirstOrDefault()?.CacheUnlocked, "SuccessStory");
-                return !pathImageUnlocked.IsNullOrEmpty() && File.Exists(pathImageUnlocked);
+                return Items.Where(x => PlayniteTools.GetCacheFile(x.CacheUnlocked, "SuccessStory").IsNullOrEmpty()).Count() == 0;
             }
         }
     }

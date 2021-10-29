@@ -935,7 +935,7 @@ namespace SuccessStory
                                 {
                                     break;
                                 }
-
+                                
                                 if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, "SuccessStory").IsNullOrEmpty())
                                 {
                                     Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
