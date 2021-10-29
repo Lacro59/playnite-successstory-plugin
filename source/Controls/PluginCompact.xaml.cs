@@ -301,9 +301,9 @@ namespace SuccessStory.Controls
                             achievementImage.Height = ControlDataContext.Height;
                             achievementImage.ToolTip = tooltip;
                             achievementImage.SetValue(Grid.ColumnProperty, i);
+                            achievementImage.IsGray = AchievementsList[i].IsGray;
                             achievementImage.Icon = AchievementsList[i].Icon;
                             achievementImage.Percent = AchievementsList[i].Percent;
-                            achievementImage.IsGray = AchievementsList[i].IsGray;
                             achievementImage.EnableRaretyIndicator = AchievementsList[i].EnableRaretyIndicator;
                             achievementImage.DispalyRaretyValue = AchievementsList[i].DisplayRaretyValue;
 
