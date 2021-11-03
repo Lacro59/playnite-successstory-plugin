@@ -13,7 +13,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="10" Name="PART_Grid" Tag="{Binding GameContext}">
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="10" />
@@ -88,14 +88,16 @@
                     </StackPanel>
                 </Grid>
 
-                <controls:PluginChart IgnoreSettings="True" AxisLimit="16" GameContext="{Binding ElementName=PART_Grid, Path=Tag}" 
+                <controls:PluginChart IgnoreSettings="True" AxisLimit="16" 
+                                      GameContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GameContext}" 
                                       Grid.Row="2"
                                       LabelsRotation="160" Grid.ColumnSpan="2" />
             </Grid>
         </Grid>
 
         <Grid Name="PART_Achievements_List_Contener" Grid.Column="0" Grid.Row="2">
-            <controls:PluginList IgnoreSettings="True" ForceOneCol="True" GameContext="{Binding ElementName=PART_Grid, Path=Tag}" 
+            <controls:PluginList IgnoreSettings="True" ForceOneCol="True" 
+                                 GameContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GameContext}" 
                                  Height="{Binding ElementName=PART_Achievements_List_Contener, Path=ActualHeight}" />
         </Grid>
 
@@ -193,7 +195,8 @@
 
             <Grid Name="PART_ScUserStats_Contener" Grid.Row="4">
                 <controls:PluginUserStats Height="{Binding ElementName=PART_ScUserStats_Contener, Path=ActualHeight}"
-                                            IgnoreSettings="True" GameContext="{Binding GameContext}" />
+                                          IgnoreSettings="True" 
+                                          GameContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GameContext}" />
             </Grid>
 
             <Grid Grid.Row="6" Margin="0,10,0,0"

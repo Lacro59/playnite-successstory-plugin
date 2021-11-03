@@ -4,6 +4,7 @@ using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -23,11 +24,14 @@ namespace SuccessStory.Views
         private static IResourceProvider resources = new ResourceProvider();
 
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private ControlDataContext ControlDataContext = new ControlDataContext();
 
 
         public SuccessStoryOneGameView(Game GameContext)
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
+
 
             // Cover
             if (!GameContext.CoverImage.IsNullOrEmpty())
@@ -81,11 +85,8 @@ namespace SuccessStory.Views
             }
 
 
-            this.DataContext = new
-            {
-                GameContext,
-                Settings = PluginDatabase.PluginSettings.Settings
-            };
+            ControlDataContext.GameContext = GameContext;
+            ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
         }
 
 
@@ -97,6 +98,42 @@ namespace SuccessStory.Views
                 {
                     Process.Start((string)((Hyperlink)sender).Tag);
                 }
+            }
+        }
+    }
+
+
+    public class ControlDataContext : ObservableObject
+    {
+        private Game _GameContext { get; set; }
+        public Game GameContext
+        {
+            get => _GameContext;
+            set
+            {
+                if (value?.Equals(_GameContext) == true)
+                {
+                    return;
+                }
+
+                _GameContext = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private SuccessStorySettings _Settings { get; set; }
+        public SuccessStorySettings Settings
+        {
+            get => _Settings;
+            set
+            {
+                if (value?.Equals(_Settings) == true)
+                {
+                    return;
+                }
+
+                _Settings = value;
+                OnPropertyChanged();
             }
         }
     }
