@@ -156,16 +156,20 @@ namespace SuccessStory.Controls.Customs
                 {
                     if (newSource is string str)
                     {
-                        dynamic tmpImage = ImageSourceManager.GetImage(str, false); 
+                        dynamic tmpImage = ImageSourceManager.GetImage(str, false);
+
+                        if (tmpImage == null)
+                        {
+                            tmpImage = new BitmapImage(new Uri(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "default_icon.png")));
+                            ((BitmapImage)tmpImage).Freeze();
+                        }
 
                         if (IsGray)
                         {
                             return ImageTools.ConvertBitmapImage(tmpImage, ImageColor.Gray);
                         }
-                        else
-                        {
-                            return tmpImage;
-                        }
+
+                        return tmpImage;
                     }
                     else
                     {
