@@ -11,15 +11,14 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using SuccessStory.Controls.Customs;
+using CommonPluginsShared.Converters;
 
 namespace SuccessStory.Controls
 {
@@ -120,6 +119,15 @@ namespace SuccessStory.Controls
                 ControlDataContext.DisplayLastest = false;
             }
 
+            if (ControlDataContext.DisplayLastest)
+            {
+                PART_DisplayLastest.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PART_DisplayLastest.Visibility = Visibility.Collapsed;
+            }
+
             PART_ScCompactView.Children.Clear();
             PART_ScCompactView.ColumnDefinitions.Clear();
 
@@ -140,15 +148,36 @@ namespace SuccessStory.Controls
             if (ListAchievements.Count == 0)
             {
                 MustDisplay = false;
+                return;
             }
 
 
             ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
 
+            PART_AchievementImage.Children.Clear();
             if (IsUnlocked && ListAchievements.Count > 0 && ControlDataContext.DisplayLastest)
             {
                 ControlDataContext.LastestAchievement = ListAchievements[0];
                 ListAchievements.RemoveAt(0);
+
+                AchievementImage achievementImage = new AchievementImage();
+                achievementImage.Width = ControlDataContext.Height;
+                achievementImage.Height = ControlDataContext.Height;
+                achievementImage.IsGray = false;
+                achievementImage.Icon = ControlDataContext.LastestAchievement.Icon;
+                achievementImage.Percent = ControlDataContext.LastestAchievement.Percent;
+                achievementImage.EnableRaretyIndicator = ControlDataContext.LastestAchievement.EnableRaretyIndicator;
+                achievementImage.DispalyRaretyValue = ControlDataContext.LastestAchievement.DisplayRaretyValue;
+
+                PART_AchievementImage.Children.Add(achievementImage);
+
+
+                PART_LastestAchievementName.Text = ControlDataContext.LastestAchievement.Name;
+                PART_LastestAchievementNameToolTip.Content = ControlDataContext.LastestAchievement.Name;
+                PART_LastestAchievementDescription.Text = ControlDataContext.LastestAchievement.Description;
+
+                LocalDateTimeConverter localDateTimeConverter = new LocalDateTimeConverter();
+                PART_LastestAchievemenDateWhenUnlocked.Text = (string)localDateTimeConverter.Convert(ControlDataContext.LastestAchievement.DateWhenUnlocked, null, null, null);
             }
 
             ControlDataContext.ItemsSource = ListAchievements.ToObservable();
@@ -306,102 +335,24 @@ namespace SuccessStory.Controls
     }
 
 
-    public class PluginCompactDataContext : ObservableObject, IDataContext
+    public class PluginCompactDataContext : ObservableObjectExtend, IDataContext
     {
-        private bool _IsActivated { get; set; }
-        public bool IsActivated
-        {
-            get => _IsActivated;
-            set
-            {
-                if (value.Equals(_IsActivated) == true)
-                {
-                    return;
-                }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-                _IsActivated = value;
-                OnPropertyChanged();
-            }
-        }
+        private double _Height;
+        public double Height { get => _Height; set => SetValue(ref _Height, value); }
 
-        private double _Height { get; set; }
-        public double Height
-        {
-            get => _Height;
-            set
-            {
-                if (value.Equals(_Height) == true)
-                {
-                    return;
-                }
+        private bool _DisplayLastest;
+        public bool DisplayLastest { get => _DisplayLastest; set => SetValue(ref _DisplayLastest, value); }
 
-                _Height = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _OneLine;
+        public bool OneLine { get => _OneLine; set => SetValue(ref _OneLine, value); }
 
-        private bool _DisplayLastest { get; set; }
-        public bool DisplayLastest
-        {
-            get => _DisplayLastest;
-            set
-            {
-                if (value.Equals(_DisplayLastest) == true)
-                {
-                    return;
-                }
+        private ObservableCollection<Achievements> _ItemsSource;
+        public ObservableCollection<Achievements> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
 
-                _DisplayLastest = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _OneLine { get; set; }
-        public bool OneLine
-        {
-            get => _OneLine;
-            set
-            {
-                if (value.Equals(_OneLine) == true)
-                {
-                    return;
-                }
-
-                _OneLine = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ObservableCollection<Achievements> _ItemsSource { get; set; }
-        public ObservableCollection<Achievements> ItemsSource
-        {
-            get => _ItemsSource;
-            set
-            {
-                if (value?.Equals(_ItemsSource) == true)
-                {
-                    return;
-                }
-
-                _ItemsSource = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Achievements _LastestAchievement { get; set; }
-        public Achievements LastestAchievement
-        {
-            get => _LastestAchievement;
-            set
-            {
-                if (value?.Equals(_LastestAchievement) == true)
-                {
-                    return;
-                }
-
-                _LastestAchievement = value;
-                OnPropertyChanged();
-            }
-        }
+        private Achievements _LastestAchievement;
+        public Achievements LastestAchievement { get => _LastestAchievement; set => SetValue(ref _LastestAchievement, value); }
     }
 }

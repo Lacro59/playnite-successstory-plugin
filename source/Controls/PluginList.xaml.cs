@@ -173,84 +173,19 @@ namespace SuccessStory.Controls
 
     public class PluginListDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated { get; set; }
-        public bool IsActivated
-        {
-            get => _IsActivated;
-            set
-            {
-                if (value.Equals(_IsActivated) == true)
-                {
-                    return;
-                }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-                _IsActivated = value;
-                OnPropertyChanged();
-            }
-        }
+        private double _Height;
+        public double Height { get => _Height; set => SetValue(ref _Height, value); }
 
-        private double _Height { get; set; }
-        public double Height
-        {
-            get => _Height;
-            set
-            {
-                if (value.Equals(_Height) == true)
-                {
-                    return;
-                }
+        private Size _ItemSize;
+        public Size ItemSize { get => _ItemSize; set => SetValue(ref _ItemSize, value); }
 
-                _Height = value;
-                OnPropertyChanged();
-            }
-        }
+        private int _ColDefinied;
+        public int ColDefinied { get => _ColDefinied; set => SetValue(ref _ColDefinied, value); }
 
-        private Size _ItemSize { get; set; }
-        public Size ItemSize
-        {
-            get => _ItemSize;
-            set
-            {
-                if (value.Equals(_ItemSize) == true)
-                {
-                    return;
-                }
-
-                _ItemSize = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _ColDefinied { get; set; }
-        public int ColDefinied
-        {
-            get => _ColDefinied;
-            set
-            {
-                if (value.Equals(_ColDefinied) == true)
-                {
-                    return;
-                }
-
-                _ColDefinied = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ObservableCollection<Achievements> _ItemsSource { get; set; }
-        public ObservableCollection<Achievements> ItemsSource
-        {
-            get => _ItemsSource;
-            set
-            {
-                if (value?.Equals(_ItemsSource) == true)
-                {
-                    return;
-                }
-
-                _ItemsSource = value;
-                OnPropertyChanged();
-            }
-        }
+        private ObservableCollection<Achievements> _ItemsSource;
+        public ObservableCollection<Achievements> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
     }
 }

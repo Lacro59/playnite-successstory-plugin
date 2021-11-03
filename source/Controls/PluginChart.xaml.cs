@@ -235,212 +235,43 @@ namespace SuccessStory.Controls
 
     public class PluginChartDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated { get; set; }
-        public bool IsActivated
-        {
-            get => _IsActivated;
-            set
-            {
-                if (value.Equals(_IsActivated) == true)
-                {
-                    return;
-                }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-                _IsActivated = value;
-                OnPropertyChanged();
-            }
-        }
+        private double _ChartHeight;
+        public double ChartHeight { get => _ChartHeight; set => SetValue(ref _ChartHeight, value); }
 
-        private double _ChartHeight { get; set; }
-        public double ChartHeight
-        {
-            get => _ChartHeight;
-            set
-            {
-                if (value.Equals(_ChartHeight) == true)
-                {
-                    return;
-                }
+        private bool _EnableAxisLabel;
+        public bool EnableAxisLabel { get => _EnableAxisLabel; set => SetValue(ref _EnableAxisLabel, value); }
 
-                _ChartHeight = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableOrdinatesLabel;
+        public bool EnableOrdinatesLabel { get => _EnableOrdinatesLabel; set => SetValue(ref _EnableOrdinatesLabel, value); }
 
-        private bool _EnableAxisLabel { get; set; }
-        public bool EnableAxisLabel
-        {
-            get => _EnableAxisLabel;
-            set
-            {
-                if (value.Equals(_EnableAxisLabel) == true)
-                {
-                    return;
-                }
+        private int _CountAbscissa;
+        public int CountAbscissa { get => _CountAbscissa; set => SetValue(ref _CountAbscissa, value); }
 
-                _EnableAxisLabel = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _HideChartOptions;
+        public bool HideChartOptions { get => _HideChartOptions; set => SetValue(ref _HideChartOptions, value); }
 
-        private bool _EnableOrdinatesLabel { get; set; }
-        public bool EnableOrdinatesLabel
-        {
-            get => _EnableOrdinatesLabel;
-            set
-            {
-                if (value.Equals(_EnableOrdinatesLabel) == true)
-                {
-                    return;
-                }
+        private bool _AllPeriod;
+        public bool AllPeriod { get => _AllPeriod; set => SetValue(ref _AllPeriod, value); }
 
-                _EnableOrdinatesLabel = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _CutPeriod;
+        public bool CutPeriod { get => _CutPeriod; set => SetValue(ref _CutPeriod, value); }
 
-        private int _CountAbscissa { get; set; }
-        public int CountAbscissa
-        {
-            get => _CountAbscissa;
-            set
-            {
-                if (value.Equals(_CountAbscissa) == true)
-                {
-                    return;
-                }
+        private bool _CutEnabled;
+        public bool CutEnabled { get => _CutEnabled; set => SetValue(ref _CutEnabled, value); }
 
-                _CountAbscissa = value;
-                OnPropertyChanged();
-            }
-        }
+        private SeriesCollection _Series;
+        public SeriesCollection Series { get => _Series; set => SetValue(ref _Series, value); }
 
-        private bool _HideChartOptions { get; set; }
-        public bool HideChartOptions
-        {
-            get => _HideChartOptions;
-            set
-            {
-                if (value.Equals(_HideChartOptions) == true)
-                {
-                    return;
-                }
+        private IList<string> _Labels;
+        public IList<string> Labels { get => _Labels; set => SetValue(ref _Labels, value); }
 
-                _HideChartOptions = value;
-                OnPropertyChanged();
-            }
-        }
+        public int _LabelsRotation;
+        public int LabelsRotation { get => _LabelsRotation; set => SetValue(ref _LabelsRotation, value); }
 
-        private bool _AllPeriod { get; set; }
-        public bool AllPeriod
-        {
-            get => _AllPeriod;
-            set
-            {
-                if (value.Equals(_AllPeriod) == true)
-                {
-                    return;
-                }
-
-                _AllPeriod = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _CutPeriod { get; set; }
-        public bool CutPeriod
-        {
-            get => _CutPeriod;
-            set
-            {
-                if (value.Equals(_CutPeriod) == true)
-                {
-                    return;
-                }
-
-                _CutPeriod = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _CutEnabled { get; set; }
-        public bool CutEnabled
-        {
-            get => _CutEnabled;
-            set
-            {
-                if (value.Equals(_CutEnabled) == true)
-                {
-                    return;
-                }
-
-                _CutEnabled = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private SeriesCollection _Series { get; set; }
-        public SeriesCollection Series
-        {
-            get => _Series;
-            set
-            {
-                if (value?.Equals(_Series) == true)
-                {
-                    return;
-                }
-
-                _Series = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private IList<string> _Labels { get; set; }
-        public IList<string> Labels
-        {
-            get => _Labels;
-            set
-            {
-                if (value?.Equals(_Labels) == true)
-                {
-                    return;
-                }
-
-                _Labels = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int _LabelsRotation { get; set; }
-        public int LabelsRotation
-        {
-            get => _LabelsRotation;
-            set
-            {
-                if (value.Equals(_LabelsRotation) == true)
-                {
-                    return;
-                }
-
-                _LabelsRotation = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private Func<double, string> _Formatter { get; set; }
-        public Func<double, string> Formatter
-        {
-            get => _Formatter;
-            set
-            {
-                if (value?.Equals(_Formatter) == true)
-                {
-                    return;
-                }
-
-                _Formatter = value;
-                OnPropertyChanged();
-            }
-        }
+        private Func<double, string> _Formatter;
+        public Func<double, string> Formatter { get => _Formatter; set => SetValue(ref _Formatter, value); }
     }
 }

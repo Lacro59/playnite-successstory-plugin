@@ -92,68 +92,16 @@ namespace SuccessStory.Controls
 
     public class PluginCompactListDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated { get; set; }
-        public bool IsActivated
-        {
-            get => _IsActivated;
-            set
-            {
-                if (value.Equals(_IsActivated) == true)
-                {
-                    return;
-                }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-                _IsActivated = value;
-                OnPropertyChanged();
-            }
-        }
+        private double _Height;
+        public double Height { get => _Height; set => SetValue(ref _Height, value); }
 
-        private double _Height { get; set; }
-        public double Height
-        {
-            get => _Height;
-            set
-            {
-                if (value.Equals(_Height) == true)
-                {
-                    return;
-                }
+        private double _PictureHeight;
+        public double PictureHeight { get => _PictureHeight; set => SetValue(ref _PictureHeight, value); }
 
-                _Height = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _PictureHeight { get; set; }
-        public double PictureHeight
-        {
-            get => _PictureHeight;
-            set
-            {
-                if (value.Equals(_PictureHeight) == true)
-                {
-                    return;
-                }
-
-                _PictureHeight = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ObservableCollection<Achievements> _ItemsSource { get; set; }
-        public ObservableCollection<Achievements> ItemsSource
-        {
-            get => _ItemsSource;
-            set
-            {
-                if (value?.Equals(_ItemsSource) == true)
-                {
-                    return;
-                }
-
-                _ItemsSource = value;
-                OnPropertyChanged();
-            }
-        }
+        private ObservableCollection<Achievements> _ItemsSource;
+        public ObservableCollection<Achievements> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
     }
 }

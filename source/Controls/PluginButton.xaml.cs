@@ -115,102 +115,24 @@ namespace SuccessStory.Controls
     }
 
 
-    public class PluginButtonDataContext : ObservableObject, IDataContext
+    public class PluginButtonDataContext : ObservableObjectExtend, IDataContext
     {
-        private bool _IsActivated { get; set; }
-        public bool IsActivated
-        {
-            get => _IsActivated;
-            set
-            {
-                if (value.Equals(_IsActivated) == true)
-                {
-                    return;
-                }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-                _IsActivated = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _DisplayDetails;
+        public bool DisplayDetails { get => _DisplayDetails; set => SetValue(ref _DisplayDetails, value); }
 
-        private bool _DisplayDetails { get; set; }
-        public bool DisplayDetails
-        {
-            get => _DisplayDetails;
-            set
-            {
-                if (value.Equals(_DisplayDetails) == true)
-                {
-                    return;
-                }
+        private bool _Is100Percent;
+        public bool Is100Percent { get => _Is100Percent; set => SetValue(ref _Is100Percent, value); }
 
-                _DisplayDetails = value;
-                OnPropertyChanged();
-            }
-        }
+        private string _LabelContent;
+        public string LabelContent { get => _LabelContent; set => SetValue(ref _LabelContent, value); }
 
-        private bool _Is100Percent { get; set; }
-        public bool Is100Percent
-        {
-            get => _Is100Percent;
-            set
-            {
-                if (value.Equals(_Is100Percent) == true)
-                {
-                    return;
-                }
+        private int _Value;
+        public int Value { get => _Value; set => SetValue(ref _Value, value); }
 
-                _Is100Percent = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _LabelContent { get; set; }
-        public string LabelContent
-        {
-            get => _LabelContent;
-            set
-            {
-                if (value?.Equals(_LabelContent) == true)
-                {
-                    return;
-                }
-
-                _LabelContent = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _Value { get; set; }
-        public int Value
-        {
-            get => _Value;
-            set
-            {
-                if (value.Equals(_Value) == true)
-                {
-                    return;
-                }
-
-                _Value = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _Maximum { get; set; }
-        public int Maximum
-        {
-            get => _Maximum;
-            set
-            {
-                if (value.Equals(_Maximum) == true)
-                {
-                    return;
-                }
-
-                _Maximum = value;
-                OnPropertyChanged();
-            }
-        }
+        private int _Maximum;
+        public int Maximum { get => _Maximum; set => SetValue(ref _Maximum, value); }
     }
 }

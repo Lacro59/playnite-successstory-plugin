@@ -9,9 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace SuccessStory.Controls
 {
@@ -109,52 +107,13 @@ namespace SuccessStory.Controls
 
     public class PluginUserStatsDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated { get; set; }
-        public bool IsActivated
-        {
-            get => _IsActivated;
-            set
-            {
-                if (value.Equals(_IsActivated) == true)
-                {
-                    return;
-                }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-                _IsActivated = value;
-                OnPropertyChanged();
-            }
-        }
+        private double _Height;
+        public double Height { get => _Height; set => SetValue(ref _Height, value); }
 
-        private double _Height { get; set; }
-        public double Height
-        {
-            get => _Height;
-            set
-            {
-                if (value.Equals(_Height) == true)
-                {
-                    return;
-                }
-
-                _Height = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private ObservableCollection<GameStats> _ItemsSource { get; set; }
-        public ObservableCollection<GameStats> ItemsSource
-        {
-            get => _ItemsSource;
-            set
-            {
-                if (value?.Equals(_ItemsSource) == true)
-                {
-                    return;
-                }
-
-                _ItemsSource = value;
-                OnPropertyChanged();
-            }
-        }
+        private ObservableCollection<GameStats> _ItemsSource;
+        public ObservableCollection<GameStats> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
     }
 }

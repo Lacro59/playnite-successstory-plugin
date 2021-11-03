@@ -92,84 +92,19 @@ namespace SuccessStory.Controls
 
     public class PluginViewItemDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated { get; set; }
-        public bool IsActivated
-        {
-            get => _IsActivated;
-            set
-            {
-                if (value.Equals(_IsActivated) == true)
-                {
-                    return;
-                }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-                _IsActivated = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _IntegrationViewItemWithProgressBar;
+        public bool IntegrationViewItemWithProgressBar { get => _IntegrationViewItemWithProgressBar; set => SetValue(ref _IntegrationViewItemWithProgressBar, value); }
 
-        private bool _IntegrationViewItemWithProgressBar { get; set; }
-        public bool IntegrationViewItemWithProgressBar
-        {
-            get => _IntegrationViewItemWithProgressBar;
-            set
-            {
-                if (value.Equals(_IntegrationViewItemWithProgressBar) == true)
-                {
-                    return;
-                }
+        private string _LabelContent;
+        public string LabelContent { get => _LabelContent; set => SetValue(ref _LabelContent, value); }
 
-                _IntegrationViewItemWithProgressBar = value;
-                OnPropertyChanged();
-            }
-        }
+        private double _Unlocked;
+        public double Unlocked { get => _Unlocked; set => SetValue(ref _Unlocked, value); }
 
-        private string _LabelContent { get; set; }
-        public string LabelContent
-        {
-            get => _LabelContent;
-            set
-            {
-                if (value?.Equals(_LabelContent) == true)
-                {
-                    return;
-                }
-
-                _LabelContent = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _Unlocked { get; set; }
-        public double Unlocked
-        {
-            get => _Unlocked;
-            set
-            {
-                if (value.Equals(_Unlocked) == true)
-                {
-                    return;
-                }
-
-                _Unlocked = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _Total { get; set; }
-        public double Total
-        {
-            get => _Total;
-            set
-            {
-                if (value.Equals(_Total) == true)
-                {
-                    return;
-                }
-
-                _Total = value;
-                OnPropertyChanged();
-            }
-        }
+        private double _Total;
+        public double Total { get => _Total; set => SetValue(ref _Total, value); }
     }
 }

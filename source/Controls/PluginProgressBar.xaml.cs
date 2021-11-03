@@ -7,7 +7,6 @@ using SuccessStory.Models;
 using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -116,116 +115,25 @@ namespace SuccessStory.Controls
 
     public class PluginProgressBarDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated { get; set; }
-        public bool IsActivated
-        {
-            get => _IsActivated;
-            set
-            {
-                if (value.Equals(_IsActivated) == true)
-                {
-                    return;
-                }
+        private bool _IsActivated;
+        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-                _IsActivated = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _IntegrationShowProgressBarIndicator;
+        public bool IntegrationShowProgressBarIndicator { get => _IntegrationShowProgressBarIndicator; set => SetValue(ref _IntegrationShowProgressBarIndicator, value); }
 
-        private bool _IntegrationShowProgressBarIndicator { get; set; }
-        public bool IntegrationShowProgressBarIndicator
-        {
-            get => _IntegrationShowProgressBarIndicator;
-            set
-            {
-                if (value.Equals(_IntegrationShowProgressBarIndicator) == true)
-                {
-                    return;
-                }
+        private bool _IntegrationShowProgressBarPercent;
+        public bool IntegrationShowProgressBarPercent { get => _IntegrationShowProgressBarPercent; set => SetValue(ref _IntegrationShowProgressBarPercent, value); }
 
-                _IntegrationShowProgressBarIndicator = value;
-                OnPropertyChanged();
-            }
-        }
+        private double _Percent;
+        public double Percent { get => _Percent; set => SetValue(ref _Percent, value); }
 
-        private bool _IntegrationShowProgressBarPercent { get; set; }
-        public bool IntegrationShowProgressBarPercent
-        {
-            get => _IntegrationShowProgressBarPercent;
-            set
-            {
-                if (value.Equals(_IntegrationShowProgressBarPercent) == true)
-                {
-                    return;
-                }
+        private double _Value;
+        public double Value { get => _Value; set => SetValue(ref _Value, value); }
 
-                _IntegrationShowProgressBarPercent = value;
-                OnPropertyChanged();
-            }
-        }
+        private double _Maximum;
+        public double Maximum { get => _Maximum; set => SetValue(ref _Maximum, value); }
 
-        private double _Percent { get; set; }
-        public double Percent
-        {
-            get => _Percent;
-            set
-            {
-                if (value.Equals(_Percent) == true)
-                {
-                    return;
-                }
-
-                _Percent = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _Value { get; set; }
-        public double Value
-        {
-            get => _Value;
-            set
-            {
-                if (value.Equals(_Value) == true)
-                {
-                    return;
-                }
-
-                _Value = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private double _Maximum { get; set; }
-        public double Maximum
-        {
-            get => _Maximum;
-            set
-            {
-                if (value.Equals(_Maximum) == true)
-                {
-                    return;
-                }
-
-                _Maximum = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _LabelContent { get; set; }
-        public string LabelContent
-        {
-            get => _LabelContent;
-            set
-            {
-                if (value?.Equals(_LabelContent) == true)
-                {
-                    return;
-                }
-
-                _LabelContent = value;
-                OnPropertyChanged();
-            }
-        }
+        private string _LabelContent;
+        public string LabelContent { get => _LabelContent; set => SetValue(ref _LabelContent, value); }
     }
 }
