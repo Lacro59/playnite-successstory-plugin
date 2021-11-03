@@ -7,15 +7,9 @@ using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 
 namespace SuccessStory.Controls
 {
@@ -37,7 +31,7 @@ namespace SuccessStory.Controls
             }
         }
 
-        private PluginCompactListDataContext ControlDataContext;
+        private PluginCompactListDataContext ControlDataContext = new PluginCompactListDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -54,13 +48,14 @@ namespace SuccessStory.Controls
         public PluginCompactList()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
                 // Wait extension database are loaded
                 System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                this.Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -76,51 +71,89 @@ namespace SuccessStory.Controls
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext = new PluginCompactListDataContext
-            {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompact,
-                Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight + 28,
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompact;
+            ControlDataContext.Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight + 28;
 
-                PictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight,
-                ItemsSource = new ObservableCollection<Achievements>()
-            };
+            ControlDataContext.PictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight;
+            ControlDataContext.ItemsSource = new ObservableCollection<Achievements>();
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
-            {
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(delegate
-                {
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
-                })).Wait();
-                
-                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-                ControlDataContext.ItemsSource = gameAchievements.Items.OrderByDescending(x => x.DateUnlocked)
-                                                        .ThenBy(x => x.IsUnlock)
-                                                        .ThenBy(x => x.Name)
-                                                        .ToObservable();
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
-                }));
-
-                return true;
-            });
+            GameAchievements gameAchievements = (GameAchievements)PluginGameData;
+            ControlDataContext.ItemsSource = gameAchievements.Items.OrderByDescending(x => x.DateUnlocked)
+                                                    .ThenBy(x => x.IsUnlock)
+                                                    .ThenBy(x => x.Name)
+                                                    .ToObservable();
         }
     }
 
 
-    public class PluginCompactListDataContext : IDataContext
+    public class PluginCompactListDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public double Height { get; set; }
+        private bool _IsActivated { get; set; }
+        public bool IsActivated
+        {
+            get => _IsActivated;
+            set
+            {
+                if (value.Equals(_IsActivated) == true)
+                {
+                    return;
+                }
 
-        public double PictureHeight { get; set; }
-        public ObservableCollection<Achievements> ItemsSource { get; set; }
+                _IsActivated = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Height { get; set; }
+        public double Height
+        {
+            get => _Height;
+            set
+            {
+                if (value.Equals(_Height) == true)
+                {
+                    return;
+                }
+
+                _Height = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _PictureHeight { get; set; }
+        public double PictureHeight
+        {
+            get => _PictureHeight;
+            set
+            {
+                if (value.Equals(_PictureHeight) == true)
+                {
+                    return;
+                }
+
+                _PictureHeight = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<Achievements> _ItemsSource { get; set; }
+        public ObservableCollection<Achievements> ItemsSource
+        {
+            get => _ItemsSource;
+            set
+            {
+                if (value?.Equals(_ItemsSource) == true)
+                {
+                    return;
+                }
+
+                _ItemsSource = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

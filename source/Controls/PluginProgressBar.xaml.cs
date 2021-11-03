@@ -1,5 +1,4 @@
-﻿using CommonPlayniteShared.Controls;
-using CommonPluginsShared;
+﻿using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
@@ -11,18 +10,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
 
 namespace SuccessStory.Controls
 {
@@ -44,7 +34,7 @@ namespace SuccessStory.Controls
             }
         }
 
-        private PluginProgressBarDataContext ControlDataContext;
+        private PluginProgressBarDataContext ControlDataContext = new PluginProgressBarDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -61,13 +51,14 @@ namespace SuccessStory.Controls
         public PluginProgressBar()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
                 // Wait extension database are loaded
                 System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                this.Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -99,52 +90,142 @@ namespace SuccessStory.Controls
                 IsActivated = true;
             }
 
-            ControlDataContext = new PluginProgressBarDataContext
-            {
-                IsActivated = IsActivated,
-                IntegrationShowProgressBarIndicator = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBarIndicator,
-                IntegrationShowProgressBarPercent = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBarPercent,
+            ControlDataContext.IsActivated = IsActivated;
+            ControlDataContext.IntegrationShowProgressBarIndicator = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBarIndicator;
+            ControlDataContext.IntegrationShowProgressBarPercent = PluginDatabase.PluginSettings.Settings.EnableIntegrationProgressBarPercent;
 
-                Percent = 0,
-                Value = 0,
-                Maximum = 0,
-                LabelContent = string.Empty
-            };
+            ControlDataContext.Percent = 0;
+            ControlDataContext.Value = 0;
+            ControlDataContext.Maximum = 0;
+            ControlDataContext.LabelContent = string.Empty;
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
-            {
-                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
+            GameAchievements gameAchievements = (GameAchievements)PluginGameData;
 
-                ControlDataContext.Percent = gameAchievements.Progression;
-                ControlDataContext.Value = gameAchievements.Unlocked;
-                ControlDataContext.Maximum = gameAchievements.Total;
+            ControlDataContext.Percent = gameAchievements.Progression;
+            ControlDataContext.Value = gameAchievements.Unlocked;
+            ControlDataContext.Maximum = gameAchievements.Total;
 
-                ControlDataContext.LabelContent = gameAchievements.Unlocked + "/" + gameAchievements.Total;
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.DataContext = ControlDataContext;
-                }));
-
-                return true;
-            });
+            ControlDataContext.LabelContent = gameAchievements.Unlocked + "/" + gameAchievements.Total;
         }
     }
 
 
-    public class PluginProgressBarDataContext : IDataContext
+    public class PluginProgressBarDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public bool IntegrationShowProgressBarIndicator { get; set; }
-        public bool IntegrationShowProgressBarPercent { get; set; }
+        private bool _IsActivated { get; set; }
+        public bool IsActivated
+        {
+            get => _IsActivated;
+            set
+            {
+                if (value.Equals(_IsActivated) == true)
+                {
+                    return;
+                }
 
-        public double Percent { get; set; }
-        public double Value { get; set; }
-        public double Maximum { get; set; }
-        public string LabelContent { get; set; }
+                _IsActivated = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _IntegrationShowProgressBarIndicator { get; set; }
+        public bool IntegrationShowProgressBarIndicator
+        {
+            get => _IntegrationShowProgressBarIndicator;
+            set
+            {
+                if (value.Equals(_IntegrationShowProgressBarIndicator) == true)
+                {
+                    return;
+                }
+
+                _IntegrationShowProgressBarIndicator = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _IntegrationShowProgressBarPercent { get; set; }
+        public bool IntegrationShowProgressBarPercent
+        {
+            get => _IntegrationShowProgressBarPercent;
+            set
+            {
+                if (value.Equals(_IntegrationShowProgressBarPercent) == true)
+                {
+                    return;
+                }
+
+                _IntegrationShowProgressBarPercent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Percent { get; set; }
+        public double Percent
+        {
+            get => _Percent;
+            set
+            {
+                if (value.Equals(_Percent) == true)
+                {
+                    return;
+                }
+
+                _Percent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Value { get; set; }
+        public double Value
+        {
+            get => _Value;
+            set
+            {
+                if (value.Equals(_Value) == true)
+                {
+                    return;
+                }
+
+                _Value = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Maximum { get; set; }
+        public double Maximum
+        {
+            get => _Maximum;
+            set
+            {
+                if (value.Equals(_Maximum) == true)
+                {
+                    return;
+                }
+
+                _Maximum = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _LabelContent { get; set; }
+        public string LabelContent
+        {
+            get => _LabelContent;
+            set
+            {
+                if (value?.Equals(_LabelContent) == true)
+                {
+                    return;
+                }
+
+                _LabelContent = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

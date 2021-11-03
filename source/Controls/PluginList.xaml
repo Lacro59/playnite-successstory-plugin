@@ -13,6 +13,7 @@
         xmlns:converters1="clr-namespace:SuccessStory.Converters"
         xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
         mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="150"
+        d:DataContext="{d:DesignInstance Type=local:PluginListDataContext, IsDesignTimeCreatable=True}"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding Height}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
@@ -57,9 +58,6 @@
 
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <!--wpftk:VirtualizingWrapPanel Orientation="Vertical" 
-                                                 VirtualizingPanel.CacheLengthUnit="Item" 
-                                                 VirtualizingPanel.VirtualizationMode="Recycling" /-->
                     <wpftk:VirtualizingWrapPanel Orientation="Vertical" 
                                                  VirtualizingPanel.CacheLengthUnit="Item" />
                 </ItemsPanelTemplate>

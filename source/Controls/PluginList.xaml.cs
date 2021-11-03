@@ -10,17 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace SuccessStory.Controls
@@ -43,7 +39,7 @@ namespace SuccessStory.Controls
             }
         }
 
-        private PluginListDataContext ControlDataContext;
+        private PluginListDataContext ControlDataContext = new PluginListDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -66,13 +62,14 @@ namespace SuccessStory.Controls
         public PluginList()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
                 // Wait extension database are loaded
                 System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                this.Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -102,58 +99,27 @@ namespace SuccessStory.Controls
                 ColDefinied = 1;
             }
 
-            ControlDataContext = new PluginListDataContext
-            {
-                IsActivated = IsActivated,
-                Height = Height,
 
-                ItemSize = new Size(300, 65),
-                ColDefinied = ColDefinied,
+            ControlDataContext.IsActivated = IsActivated;
+            ControlDataContext.Height = Height;
 
-                ItemsSource = new ObservableCollection<Achievements>()
-            };
+            ControlDataContext.ItemSize = new Size(300, 65);
+            ControlDataContext.ColDefinied = ColDefinied;
+
+            ControlDataContext.ItemsSource = new ObservableCollection<Achievements>();
+
 
             LbAchievements_SizeChanged(null, null);
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
-            {
-#if DEBUG
-                Common.LogDebug(true, $"PluginList.SetData - Start");
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
-#endif
+            GameAchievements gameAchievements = (GameAchievements)PluginGameData;
 
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(delegate
-                {
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
-                })).Wait();
-
-                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-
-                List<Achievements> ListAchievements = Serialization.GetClone(gameAchievements.Items);
-                ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
-                ControlDataContext.ItemsSource = ListAchievements.ToObservable();
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
-                }));
-
-#if DEBUG
-                stopwatch.Stop();
-                TimeSpan ts = stopwatch.Elapsed;
-                Common.LogDebug(true, $"SetData() - End - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
-#endif
-
-                return true;
-            });
+            List<Achievements> ListAchievements = Serialization.GetClone(gameAchievements.Items);
+            ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
+            ControlDataContext.ItemsSource = ListAchievements.ToObservable();
         }
 
 
@@ -209,14 +175,86 @@ namespace SuccessStory.Controls
     }
 
 
-    public class PluginListDataContext : IDataContext
+    public class PluginListDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public double Height { get; set; }
+        private bool _IsActivated { get; set; }
+        public bool IsActivated
+        {
+            get => _IsActivated;
+            set
+            {
+                if (value.Equals(_IsActivated) == true)
+                {
+                    return;
+                }
 
-        public Size ItemSize { get; set; }
-        public int ColDefinied { get; set; }
+                _IsActivated = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public ObservableCollection<Achievements> ItemsSource { get; set; }
+        private double _Height { get; set; }
+        public double Height
+        {
+            get => _Height;
+            set
+            {
+                if (value.Equals(_Height) == true)
+                {
+                    return;
+                }
+
+                _Height = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Size _ItemSize { get; set; }
+        public Size ItemSize
+        {
+            get => _ItemSize;
+            set
+            {
+                if (value.Equals(_ItemSize) == true)
+                {
+                    return;
+                }
+
+                _ItemSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _ColDefinied { get; set; }
+        public int ColDefinied
+        {
+            get => _ColDefinied;
+            set
+            {
+                if (value.Equals(_ColDefinied) == true)
+                {
+                    return;
+                }
+
+                _ColDefinied = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<Achievements> _ItemsSource { get; set; }
+        public ObservableCollection<Achievements> ItemsSource
+        {
+            get => _ItemsSource;
+            set
+            {
+                if (value?.Equals(_ItemsSource) == true)
+                {
+                    return;
+                }
+
+                _ItemsSource = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

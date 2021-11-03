@@ -1,17 +1,13 @@
-﻿using CommonPluginsShared;
-using CommonPluginsShared.Collections;
+﻿using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
-using CommonPluginsShared.Converters;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK.Models;
 using Playnite.SDK.Data;
 using SuccessStory.Models;
 using SuccessStory.Services;
-using SuccessStory.Views.Interface;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,15 +15,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Threading;
-using SuccessStory.Converters;
 using SuccessStory.Controls.Customs;
 
 namespace SuccessStory.Controls
@@ -50,7 +41,7 @@ namespace SuccessStory.Controls
             }
         }
 
-        private PluginCompactDataContext ControlDataContext;
+        private PluginCompactDataContext ControlDataContext = new PluginCompactDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -82,13 +73,14 @@ namespace SuccessStory.Controls
         public PluginCompact()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
                 // Wait extension database are loaded
                 System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                this.Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -110,84 +102,59 @@ namespace SuccessStory.Controls
                 IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompactUnlocked;
             }
 
-            ControlDataContext = new PluginCompactDataContext
-            {
-                IsActivated = IsActivated,
-                DisplayLastest = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastest,
-                OneLine = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastestOneLine,
-                Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialHeight,
 
-                ItemsSource = new ObservableCollection<Achievements>(),
-                LastestAchievement = new Achievements()
-            };
+            ControlDataContext.IsActivated = IsActivated;
+            ControlDataContext.DisplayLastest = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastest;
+            ControlDataContext.OneLine = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastestOneLine;
+            ControlDataContext.Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialHeight;
+
+            ControlDataContext.ItemsSource = new ObservableCollection<Achievements>();
+            ControlDataContext.LastestAchievement = new Achievements();
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            bool IsUnlocked = this.IsUnlocked;
-
-            return Task.Run(() =>
+            if (!IsUnlocked)
             {
-                if (!IsUnlocked)
-                {
-                    ControlDataContext.DisplayLastest = false;
-                }
+                ControlDataContext.DisplayLastest = false;
+            }
 
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(delegate
-                {
-                    PART_ScCompactView.Children.Clear();
-                    PART_ScCompactView.ColumnDefinitions.Clear();
+            PART_ScCompactView.Children.Clear();
+            PART_ScCompactView.ColumnDefinitions.Clear();
 
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
-                })).Wait();
+            GameAchievements gameAchievements = (GameAchievements)PluginGameData;
+            List<Achievements> ListAchievements = Serialization.GetClone(gameAchievements.Items);
 
-                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-                List<Achievements> ListAchievements = Serialization.GetClone(gameAchievements.Items);
-
-                // Select data
-                if (IsUnlocked)
-                {
-                    ListAchievements = ListAchievements.FindAll(x => x.IsUnlock);
-                }
-                else
-                {
-                    ListAchievements = ListAchievements.FindAll(x => !x.IsUnlock);
-                }
+            // Select data
+            if (IsUnlocked)
+            {
+                ListAchievements = ListAchievements.FindAll(x => x.IsUnlock);
+            }
+            else
+            {
+                ListAchievements = ListAchievements.FindAll(x => !x.IsUnlock);
+            }
 
 
-                if (ListAchievements.Count == 0)
-                {
-                    this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                    {
-                        MustDisplay = false;
-                    }));
-                    return true;
-                }
+            if (ListAchievements.Count == 0)
+            {
+                MustDisplay = false;
+            }
 
 
-                ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
+            ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
 
-                if (IsUnlocked && ListAchievements.Count > 0 && ControlDataContext.DisplayLastest)
-                {
-                    ControlDataContext.LastestAchievement = ListAchievements[0];
-                    ListAchievements.RemoveAt(0);
-                }
+            if (IsUnlocked && ListAchievements.Count > 0 && ControlDataContext.DisplayLastest)
+            {
+                ControlDataContext.LastestAchievement = ListAchievements[0];
+                ListAchievements.RemoveAt(0);
+            }
 
-                ControlDataContext.ItemsSource = ListAchievements.ToObservable();
+            ControlDataContext.ItemsSource = ListAchievements.ToObservable();
 
 
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
-
-                    PART_ScCompactView_IsLoaded(null, null);
-                }));
-
-                return true;
-            });
+            PART_ScCompactView_IsLoaded(null, null);
         }
 
 
@@ -339,14 +306,102 @@ namespace SuccessStory.Controls
     }
 
 
-    public class PluginCompactDataContext : IDataContext
+    public class PluginCompactDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public bool DisplayLastest { get; set; }
-        public bool OneLine { get; set; }
-        public double Height { get; set; }
+        private bool _IsActivated { get; set; }
+        public bool IsActivated
+        {
+            get => _IsActivated;
+            set
+            {
+                if (value.Equals(_IsActivated) == true)
+                {
+                    return;
+                }
 
-        public ObservableCollection<Achievements> ItemsSource { get; set; }
-        public Achievements LastestAchievement { get; set; }
+                _IsActivated = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Height { get; set; }
+        public double Height
+        {
+            get => _Height;
+            set
+            {
+                if (value.Equals(_Height) == true)
+                {
+                    return;
+                }
+
+                _Height = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _DisplayLastest { get; set; }
+        public bool DisplayLastest
+        {
+            get => _DisplayLastest;
+            set
+            {
+                if (value.Equals(_DisplayLastest) == true)
+                {
+                    return;
+                }
+
+                _DisplayLastest = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _OneLine { get; set; }
+        public bool OneLine
+        {
+            get => _OneLine;
+            set
+            {
+                if (value.Equals(_OneLine) == true)
+                {
+                    return;
+                }
+
+                _OneLine = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<Achievements> _ItemsSource { get; set; }
+        public ObservableCollection<Achievements> ItemsSource
+        {
+            get => _ItemsSource;
+            set
+            {
+                if (value?.Equals(_ItemsSource) == true)
+                {
+                    return;
+                }
+
+                _ItemsSource = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Achievements _LastestAchievement { get; set; }
+        public Achievements LastestAchievement
+        {
+            get => _LastestAchievement;
+            set
+            {
+                if (value?.Equals(_LastestAchievement) == true)
+                {
+                    return;
+                }
+
+                _LastestAchievement = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

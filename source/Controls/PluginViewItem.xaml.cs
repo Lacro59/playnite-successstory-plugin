@@ -5,11 +5,10 @@ using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 
 namespace SuccessStory.Controls
 {
@@ -31,7 +30,7 @@ namespace SuccessStory.Controls
             }
         }
 
-        private PluginViewItemDataContext ControlDataContext;
+        private PluginViewItemDataContext ControlDataContext = new PluginViewItemDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -48,13 +47,14 @@ namespace SuccessStory.Controls
         public PluginViewItem()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
                 // Wait extension database are loaded
                 System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                this.Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -70,47 +70,106 @@ namespace SuccessStory.Controls
 
         public override void SetDefaultDataContext()
         {
-            ControlDataContext = new PluginViewItemDataContext
-            {
-                IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationViewItem,
-                IntegrationViewItemWithProgressBar = PluginDatabase.PluginSettings.Settings.IntegrationViewItemWithProgressBar,
+            ControlDataContext.IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationViewItem;
+            ControlDataContext.IntegrationViewItemWithProgressBar = PluginDatabase.PluginSettings.Settings.IntegrationViewItemWithProgressBar;
 
-                LabelContent = string.Empty,
-                Unlocked = 0,
-                Total = 0
-            };
+            ControlDataContext.LabelContent = string.Empty;
+            ControlDataContext.Unlocked = 0;
+            ControlDataContext.Total = 0;
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
-            {
-                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
+            GameAchievements gameAchievements = (GameAchievements)PluginGameData;
 
-                ControlDataContext.Unlocked = gameAchievements.Unlocked;
-                ControlDataContext.Total = gameAchievements.Total;
-                ControlDataContext.LabelContent = gameAchievements.Unlocked + "/" + gameAchievements.Total;
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    MustDisplay = true;
-                    this.DataContext = ControlDataContext;
-                }));
-
-                return true;
-            });
+            ControlDataContext.Unlocked = gameAchievements.Unlocked;
+            ControlDataContext.Total = gameAchievements.Total;
+            ControlDataContext.LabelContent = gameAchievements.Unlocked + "/" + gameAchievements.Total;
         }
     }
 
 
-    public class PluginViewItemDataContext : IDataContext
+    public class PluginViewItemDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public bool IntegrationViewItemWithProgressBar { get; set; }
+        private bool _IsActivated { get; set; }
+        public bool IsActivated
+        {
+            get => _IsActivated;
+            set
+            {
+                if (value.Equals(_IsActivated) == true)
+                {
+                    return;
+                }
 
-        public string LabelContent { get; set; }
-        public double Unlocked { get; set; }
-        public double Total { get; set; }
+                _IsActivated = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _IntegrationViewItemWithProgressBar { get; set; }
+        public bool IntegrationViewItemWithProgressBar
+        {
+            get => _IntegrationViewItemWithProgressBar;
+            set
+            {
+                if (value.Equals(_IntegrationViewItemWithProgressBar) == true)
+                {
+                    return;
+                }
+
+                _IntegrationViewItemWithProgressBar = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _LabelContent { get; set; }
+        public string LabelContent
+        {
+            get => _LabelContent;
+            set
+            {
+                if (value?.Equals(_LabelContent) == true)
+                {
+                    return;
+                }
+
+                _LabelContent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Unlocked { get; set; }
+        public double Unlocked
+        {
+            get => _Unlocked;
+            set
+            {
+                if (value.Equals(_Unlocked) == true)
+                {
+                    return;
+                }
+
+                _Unlocked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Total { get; set; }
+        public double Total
+        {
+            get => _Total;
+            set
+            {
+                if (value.Equals(_Total) == true)
+                {
+                    return;
+                }
+
+                _Total = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

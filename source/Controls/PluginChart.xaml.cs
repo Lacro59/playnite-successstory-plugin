@@ -1,5 +1,4 @@
 ﻿using CommonPluginsControls.LiveChartsCommon;
-using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
@@ -13,11 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Threading;
 
 namespace SuccessStory.Controls
 {
@@ -39,7 +36,7 @@ namespace SuccessStory.Controls
             }
         }
 
-        private PluginChartDataContext ControlDataContext;
+        private PluginChartDataContext ControlDataContext = new PluginChartDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -88,13 +85,14 @@ namespace SuccessStory.Controls
         public PluginChart()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
                 // Wait extension database are loaded
                 System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                this.Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -133,72 +131,60 @@ namespace SuccessStory.Controls
             }
             
 
-            ControlDataContext = new PluginChartDataContext
-            {
-                IsActivated = IsActivated,
-                ChartHeight = ChartHeight,
-                EnableAxisLabel = EnableAxisLabel,
-                EnableOrdinatesLabel = EnableOrdinatesLabel,
-                CountAbscissa = CountAbscissa,
+            ControlDataContext.IsActivated = IsActivated;
+            ControlDataContext.ChartHeight = ChartHeight;
+            ControlDataContext.EnableAxisLabel = EnableAxisLabel;
+            ControlDataContext.EnableOrdinatesLabel = EnableOrdinatesLabel;
+            ControlDataContext.CountAbscissa = CountAbscissa;
 
-                HideChartOptions = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartHideOptions,
-                AllPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartAllPerdiod,
-                CutPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartCutPeriod,
-                CutEnabled = true,
+            ControlDataContext.HideChartOptions = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartHideOptions;
+            ControlDataContext.AllPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartAllPerdiod;
+            ControlDataContext.CutPeriod = PluginDatabase.PluginSettings.Settings.EnableIntegrationChartCutPeriod;
+            ControlDataContext.CutEnabled = true;
 
-                Series = null,
-                Labels = null,
+            ControlDataContext.Series = null;
+            ControlDataContext.Labels = null;
 
-                LabelsRotation = LabelsRotation
-            };
+            ControlDataContext.LabelsRotation = LabelsRotation;
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            return Task.Run(() =>
+            GameAchievements gameAchievements = (GameAchievements)PluginGameData;
+
+            AchievementsGraphicsDataCount GraphicsData = null;
+            bool CutPeriod = ControlDataContext.AllPeriod ? ControlDataContext.CutPeriod : false;
+            if (ControlDataContext.AllPeriod)
             {
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Send, new ThreadStart(delegate
+                var DateMin = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Min();
+                var DateMax = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Max();
+
+                if (DateMin != null && DateMax != null)
                 {
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
-                })).Wait();
-
-                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-
-                AchievementsGraphicsDataCount GraphicsData = null;
-                bool CutPeriod = ControlDataContext.AllPeriod ? ControlDataContext.CutPeriod : false;
-                if (ControlDataContext.AllPeriod)
-                {                   
-                    var DateMin = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Min();
-                    var DateMax = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Max();
-
-                    if (DateMin != null && DateMax != null)
+                    int limit = ((int)((DateTime)DateMax - (DateTime)DateMin).TotalDays) + 1;
+                    if (limit > 30)
                     {
-                        int limit = ((int)((DateTime)DateMax - (DateTime)DateMin).TotalDays) + 1;
-                        if (limit > 30)
-                        {
-                            CutPeriod = true;
-                            ControlDataContext.CutPeriod = true;
-                            ControlDataContext.CutEnabled = false;
-                        }
+                        CutPeriod = true;
+                        ControlDataContext.CutPeriod = true;
+                        ControlDataContext.CutEnabled = false;
+                    }
 
-                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, limit, CutPeriod);
-                    }
-                    else
-                    {
-                        GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
-                    }
+                    GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, limit, CutPeriod);
                 }
                 else
                 {
                     GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
                 }
+            }
+            else
+            {
+                GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
+            }
 
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
-                    SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection
+
+            string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection
                     {
                         new LineSeries
                         {
@@ -208,27 +194,20 @@ namespace SuccessStory.Controls
                     };
 
 
-                    ControlDataContext.Formatter = value => (value < 0) ? string.Empty : value.ToString();
+            ControlDataContext.Formatter = value => (value < 0) ? string.Empty : value.ToString();
 
-                    ControlDataContext.Series = StatsGraphicAchievementsSeries;
-                    ControlDataContext.Labels = StatsGraphicsAchievementsLabels;
-
-
-                    ControlDataContext.EnableAxisLabel = !(StatsGraphicsAchievementsLabels.Count() > 16 && ControlDataContext.AllPeriod);
+            ControlDataContext.Series = StatsGraphicAchievementsSeries;
+            ControlDataContext.Labels = StatsGraphicsAchievementsLabels;
 
 
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
+            ControlDataContext.EnableAxisLabel = !(StatsGraphicsAchievementsLabels.Count() > 16 && ControlDataContext.AllPeriod);
 
-                    // TODO With OneGameView the GameContext pass at null
-                    if (this.GameContext == null)
-                    {
-                        this.GameContext = newContext;
-                    }
-                }));
 
-                return true;
-            });
+            // TODO With OneGameView the GameContext pass at null
+            if (this.GameContext == null)
+            {
+                this.GameContext = newContext;
+            }
         }
 
 
@@ -254,24 +233,214 @@ namespace SuccessStory.Controls
     }
 
 
-    public class PluginChartDataContext : IDataContext
+    public class PluginChartDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public double ChartHeight { get; set; }
-        public bool EnableAxisLabel { get; set; }
-        public bool EnableOrdinatesLabel { get; set; }
-        public int CountAbscissa { get; set; }
+        private bool _IsActivated { get; set; }
+        public bool IsActivated
+        {
+            get => _IsActivated;
+            set
+            {
+                if (value.Equals(_IsActivated) == true)
+                {
+                    return;
+                }
 
-        public bool HideChartOptions { get; set; }
-        public bool AllPeriod { get; set; }
-        public bool CutPeriod { get; set; }
-        public bool CutEnabled { get; set; }
+                _IsActivated = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public SeriesCollection Series { get; set; }
-        public IList<string> Labels { get; set; }
+        private double _ChartHeight { get; set; }
+        public double ChartHeight
+        {
+            get => _ChartHeight;
+            set
+            {
+                if (value.Equals(_ChartHeight) == true)
+                {
+                    return;
+                }
 
-        public int LabelsRotation { get; set; }
+                _ChartHeight = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public Func<double, string> Formatter { get; set; }
+        private bool _EnableAxisLabel { get; set; }
+        public bool EnableAxisLabel
+        {
+            get => _EnableAxisLabel;
+            set
+            {
+                if (value.Equals(_EnableAxisLabel) == true)
+                {
+                    return;
+                }
+
+                _EnableAxisLabel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _EnableOrdinatesLabel { get; set; }
+        public bool EnableOrdinatesLabel
+        {
+            get => _EnableOrdinatesLabel;
+            set
+            {
+                if (value.Equals(_EnableOrdinatesLabel) == true)
+                {
+                    return;
+                }
+
+                _EnableOrdinatesLabel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _CountAbscissa { get; set; }
+        public int CountAbscissa
+        {
+            get => _CountAbscissa;
+            set
+            {
+                if (value.Equals(_CountAbscissa) == true)
+                {
+                    return;
+                }
+
+                _CountAbscissa = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _HideChartOptions { get; set; }
+        public bool HideChartOptions
+        {
+            get => _HideChartOptions;
+            set
+            {
+                if (value.Equals(_HideChartOptions) == true)
+                {
+                    return;
+                }
+
+                _HideChartOptions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _AllPeriod { get; set; }
+        public bool AllPeriod
+        {
+            get => _AllPeriod;
+            set
+            {
+                if (value.Equals(_AllPeriod) == true)
+                {
+                    return;
+                }
+
+                _AllPeriod = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _CutPeriod { get; set; }
+        public bool CutPeriod
+        {
+            get => _CutPeriod;
+            set
+            {
+                if (value.Equals(_CutPeriod) == true)
+                {
+                    return;
+                }
+
+                _CutPeriod = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _CutEnabled { get; set; }
+        public bool CutEnabled
+        {
+            get => _CutEnabled;
+            set
+            {
+                if (value.Equals(_CutEnabled) == true)
+                {
+                    return;
+                }
+
+                _CutEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private SeriesCollection _Series { get; set; }
+        public SeriesCollection Series
+        {
+            get => _Series;
+            set
+            {
+                if (value?.Equals(_Series) == true)
+                {
+                    return;
+                }
+
+                _Series = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private IList<string> _Labels { get; set; }
+        public IList<string> Labels
+        {
+            get => _Labels;
+            set
+            {
+                if (value?.Equals(_Labels) == true)
+                {
+                    return;
+                }
+
+                _Labels = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int _LabelsRotation { get; set; }
+        public int LabelsRotation
+        {
+            get => _LabelsRotation;
+            set
+            {
+                if (value.Equals(_LabelsRotation) == true)
+                {
+                    return;
+                }
+
+                _LabelsRotation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Func<double, string> _Formatter { get; set; }
+        public Func<double, string> Formatter
+        {
+            get => _Formatter;
+            set
+            {
+                if (value?.Equals(_Formatter) == true)
+                {
+                    return;
+                }
+
+                _Formatter = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

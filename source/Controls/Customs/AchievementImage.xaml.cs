@@ -1,30 +1,16 @@
 ﻿using Playnite.SDK.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Threading;
-using SuccessStory.Models;
 using SuccessStory.Services;
 using System.IO;
-using System.Windows.Media.Effects;
-using SuccessStory.Converters;
-using System.Globalization;
 using System.Windows.Media.Animation;
 using CommonPlayniteShared;
-using CommonPluginsShared.Converters;
 using CommonPluginsShared;
 
 namespace SuccessStory.Controls.Customs
@@ -39,7 +25,7 @@ namespace SuccessStory.Controls.Customs
         internal Storyboard PART_ColorEffect;
         internal Storyboard PART_ColorEffectUltraRare;
 
-        internal object currentIcon { get; set; }
+        internal object CurrentIcon { get; set; }
 
 
         #region Properties
@@ -155,12 +141,12 @@ namespace SuccessStory.Controls.Customs
 
         private async void LoadNewIcon(object newSource, object oldSource)
         {
-            if (newSource?.Equals(currentIcon) == true)
+            if (newSource?.Equals(CurrentIcon) == true)
             {
                 return;
             }
 
-            currentIcon = newSource;
+            CurrentIcon = newSource;
             dynamic image = null;
             bool IsGray = this.IsGray;
 

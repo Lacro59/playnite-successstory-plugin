@@ -6,19 +6,11 @@ using SuccessStory.Models;
 using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace SuccessStory.Controls
@@ -41,7 +33,7 @@ namespace SuccessStory.Controls
             }
         }
 
-        private PluginUserStatsDataContext ControlDataContext;
+        private PluginUserStatsDataContext ControlDataContext = new PluginUserStatsDataContext();
         internal override IDataContext _ControlDataContext
         {
             get
@@ -58,13 +50,14 @@ namespace SuccessStory.Controls
         public PluginUserStats()
         {
             InitializeComponent();
+            this.DataContext = ControlDataContext;
 
             Task.Run(() =>
             {
                 // Wait extension database are loaded
                 System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher.BeginInvoke((Action)delegate
+                this.Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
@@ -89,53 +82,79 @@ namespace SuccessStory.Controls
             }
 
 
-            ControlDataContext = new PluginUserStatsDataContext
-            {
-                IsActivated = IsActivated,
-                Height = Height,
+            ControlDataContext.IsActivated = IsActivated;
+            ControlDataContext.Height = Height;
 
-                ItemsSource = null
-            };
+            ControlDataContext.ItemsSource = null;
         }
 
 
-        public override Task<bool> SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
+        public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
-            bool MustDisplay = this.MustDisplay;
+            GameAchievements gameAchievements = (GameAchievements)PluginGameData;
+            ObservableCollection<GameStats> ListGameStats = gameAchievements.ItemsStats.ToObservable();
 
-            return Task.Run(() =>
+            if (ListGameStats == null || ListGameStats.Count == 0)
             {
-                GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-                List<GameStats> ListGameStats = gameAchievements.ItemsStats;
-
-                if (ListGameStats == null || ListGameStats.Count == 0)
-                {
-                    MustDisplay = false;
-                }
-                else
-                {
-                    ListGameStats.Sort((x, y) => x.Name.CompareTo(y.Name));
-                    ControlDataContext.ItemsSource = ListGameStats;
-                }
-
-                this.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    this.MustDisplay = MustDisplay;
-                    this.DataContext = null;
-                    this.DataContext = ControlDataContext;
-                }));
-
-                return true;
-            });
+                MustDisplay = false;
+            }
+            else
+            {
+                ListGameStats.OrderBy(x => x.Name);
+                ControlDataContext.ItemsSource = ListGameStats;
+            }
         }
     }
 
 
-    public class PluginUserStatsDataContext : IDataContext
+    public class PluginUserStatsDataContext : ObservableObject, IDataContext
     {
-        public bool IsActivated { get; set; }
-        public double Height { get; set; }
+        private bool _IsActivated { get; set; }
+        public bool IsActivated
+        {
+            get => _IsActivated;
+            set
+            {
+                if (value.Equals(_IsActivated) == true)
+                {
+                    return;
+                }
 
-        public List<GameStats> ItemsSource { get; set; }
+                _IsActivated = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Height { get; set; }
+        public double Height
+        {
+            get => _Height;
+            set
+            {
+                if (value.Equals(_Height) == true)
+                {
+                    return;
+                }
+
+                _Height = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<GameStats> _ItemsSource { get; set; }
+        public ObservableCollection<GameStats> ItemsSource
+        {
+            get => _ItemsSource;
+            set
+            {
+                if (value?.Equals(_ItemsSource) == true)
+                {
+                    return;
+                }
+
+                _ItemsSource = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

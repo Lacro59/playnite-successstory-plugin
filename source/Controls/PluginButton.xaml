@@ -8,7 +8,8 @@
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
-        mc:Ignorable="d" d:DesignHeight="40" d:DesignWidth="150">
+        mc:Ignorable="d" d:DesignHeight="40" d:DesignWidth="150"
+        d:DataContext="{d:DesignInstance Type=local:PluginButtonDataContext, IsDesignTimeCreatable=True}">
 
     <controls:PluginUserControlExtend.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />

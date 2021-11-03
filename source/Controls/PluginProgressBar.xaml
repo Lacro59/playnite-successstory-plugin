@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:SuccessStory.Controls"
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         mc:Ignorable="d" d:DesignHeight="40" d:DesignWidth="200"
+        d:DataContext="{d:DesignInstance Type=local:PluginUserControlExtend, IsDesignTimeCreatable=True}"
         Loaded="PluginUserControlExtend_Loaded">
 
     <controls:PluginUserControlExtend.Resources>

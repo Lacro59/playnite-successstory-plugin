@@ -13,7 +13,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="10">
+    <Grid Margin="10" Name="PART_Grid" Tag="{Binding GameContext}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="10" />
@@ -88,14 +88,14 @@
                     </StackPanel>
                 </Grid>
 
-                <controls:PluginChart IgnoreSettings="True" AxisLimit="16" GameContext="{Binding GameContext}" 
+                <controls:PluginChart IgnoreSettings="True" AxisLimit="16" GameContext="{Binding ElementName=PART_Grid, Path=Tag}" 
                                       Grid.Row="2"
                                       LabelsRotation="160" Grid.ColumnSpan="2" />
             </Grid>
         </Grid>
 
         <Grid Name="PART_Achievements_List_Contener" Grid.Column="0" Grid.Row="2">
-            <controls:PluginList IgnoreSettings="True" ForceOneCol="True" GameContext="{Binding GameContext}"
+            <controls:PluginList IgnoreSettings="True" ForceOneCol="True" GameContext="{Binding ElementName=PART_Grid, Path=Tag}" 
                                  Height="{Binding ElementName=PART_Achievements_List_Contener, Path=ActualHeight}" />
         </Grid>
 

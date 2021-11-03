@@ -12,6 +12,7 @@
         xmlns:converters1="clr-namespace:SuccessStory.Converters"
         xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
         mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
+        d:DataContext="{d:DesignInstance Type=local:PluginCompactListDataContext, IsDesignTimeCreatable=True}"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 

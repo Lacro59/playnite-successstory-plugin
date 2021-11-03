@@ -49,7 +49,6 @@
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=EnableRaretyIndicator}" Value="True">
                             <Setter Property="Effect">
                                 <Setter.Value>
-                                    <!--DropShadowEffect BlurRadius="15" ShadowDepth="0" /-->
                                     <DropShadowEffect BlurRadius="15" ShadowDepth="0" 
                                                       Color="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Percent, Converter={StaticResource SetColorConverter}}" />
                                 </Setter.Value>
