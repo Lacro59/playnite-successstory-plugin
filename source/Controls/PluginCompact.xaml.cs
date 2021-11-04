@@ -144,21 +144,19 @@ namespace SuccessStory.Controls
                 ListAchievements = gameAchievements.OrderItemsOnlyLocked.ToList();
             }
 
-
             if (ListAchievements.Count == 0)
             {
                 MustDisplay = false;
                 return;
             }
 
-
-            ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
-
             PART_AchievementImage.Children.Clear();
             if (IsUnlocked && ListAchievements.Count > 0 && ControlDataContext.DisplayLastest)
             {
-                ControlDataContext.LastestAchievement = ListAchievements[0];
-                ListAchievements.RemoveAt(0);
+                ControlDataContext.LastestAchievement = ListAchievements.Where(x => x.DateUnlocked == ListAchievements.Max(y => y.DateUnlocked)).FirstOrDefault();
+
+                int index = ListAchievements.FindIndex(x => x == ControlDataContext.LastestAchievement);
+                ListAchievements.RemoveAt(index);
 
                 AchievementImage achievementImage = new AchievementImage();
                 achievementImage.Width = ControlDataContext.Height;
