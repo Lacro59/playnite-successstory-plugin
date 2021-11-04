@@ -8,6 +8,7 @@ using CommonPluginsShared;
 using CommonPluginsShared.Models;
 using System.IO;
 using SuccessStory.Services;
+using System.Collections.ObjectModel;
 
 namespace SuccessStory.Models
 {
@@ -47,10 +48,146 @@ namespace SuccessStory.Models
         }
 
 
+        public ObservableCollection<Achievements> OrderItems
+        {
+            get
+            {
+                List<Achievements> OrderItems = Serialization.GetClone(Items);
+                IOrderedEnumerable<Achievements> OrderedItems = null;
+
+                switch (PluginDatabase.PluginSettings.Settings.OrderAchievementTypeFirst)
+                {
+                    case (OrderAchievementType.AchievementName):
+                        if (PluginDatabase.PluginSettings.Settings.OrderTypeFirst == OrderType.Ascending)
+                        {
+                            OrderedItems = OrderItems.OrderBy(x => x.Name);
+                        }
+                        else
+                        {
+                            OrderedItems = OrderItems.OrderByDescending(x => x.Name);
+                        }
+                        break;
+
+                    case (OrderAchievementType.AchievementDateUnlocked):
+                        if (PluginDatabase.PluginSettings.Settings.OrderTypeFirst == OrderType.Ascending)
+                        {
+                            OrderedItems = OrderItems.OrderBy(x => x.DateUnlocked);
+                        }
+                        else
+                        {
+                            OrderedItems = OrderItems.OrderByDescending(x => x.DateUnlocked);
+                        }
+                        break;
+
+                    case (OrderAchievementType.AchievementRarety):
+                        if (PluginDatabase.PluginSettings.Settings.OrderTypeFirst == OrderType.Ascending)
+                        {
+                            OrderedItems = OrderItems.OrderBy(x => x.Percent);
+                        }
+                        else
+                        {
+                            OrderedItems = OrderItems.OrderByDescending(x => x.Percent);
+                        }
+                        break;
+                }
+
+                switch (PluginDatabase.PluginSettings.Settings.OrderAchievementTypeSecond)
+                {
+                    case (OrderAchievementType.AchievementName):
+                        if (PluginDatabase.PluginSettings.Settings.OrderTypeSecond == OrderType.Ascending)
+                        {
+                            OrderedItems = OrderedItems.ThenBy(x => x.Name);
+                        }
+                        else
+                        {
+                            OrderedItems = OrderedItems.ThenByDescending(x => x.Name);
+                        }
+                        break;
+
+                    case (OrderAchievementType.AchievementDateUnlocked):
+                        if (PluginDatabase.PluginSettings.Settings.OrderTypeSecond == OrderType.Ascending)
+                        {
+                            OrderedItems = OrderedItems.ThenBy(x => x.DateUnlocked);
+                        }
+                        else
+                        {
+                            OrderedItems = OrderedItems.ThenByDescending(x => x.DateUnlocked);
+                        }
+                        break;
+
+                    case (OrderAchievementType.AchievementRarety):
+                        if (PluginDatabase.PluginSettings.Settings.OrderTypeSecond == OrderType.Ascending)
+                        {
+                            OrderedItems = OrderedItems.ThenBy(x => x.Percent);
+                        }
+                        else
+                        {
+                            OrderedItems = OrderedItems.ThenByDescending(x => x.Percent);
+                        }
+                        break;
+                }
+
+                switch (PluginDatabase.PluginSettings.Settings.OrderAchievementTypeThird)
+                {
+                    case (OrderAchievementType.AchievementName):
+                        if (PluginDatabase.PluginSettings.Settings.OrderTypeThird == OrderType.Ascending)
+                        {
+                            OrderedItems = OrderedItems.ThenBy(x => x.Name);
+                        }
+                        else
+                        {
+                            OrderedItems = OrderedItems.ThenByDescending(x => x.Name);
+                        }
+                        break;
+
+                    case (OrderAchievementType.AchievementDateUnlocked):
+                        if (PluginDatabase.PluginSettings.Settings.OrderTypeThird == OrderType.Ascending)
+                        {
+                            OrderedItems = OrderedItems.ThenBy(x => x.DateUnlocked);
+                        }
+                        else
+                        {
+                            OrderedItems = OrderedItems.ThenByDescending(x => x.DateUnlocked);
+                        }
+                        break;
+
+                    case (OrderAchievementType.AchievementRarety):
+                        if (PluginDatabase.PluginSettings.Settings.OrderTypeThird == OrderType.Ascending)
+                        {
+                            OrderedItems = OrderedItems.ThenBy(x => x.Percent);
+                        }
+                        else
+                        {
+                            OrderedItems = OrderedItems.ThenByDescending(x => x.Percent);
+                        }
+                        break;
+                }
+
+                return OrderedItems.ToObservable();
+            }
+        }
+
+        public ObservableCollection<Achievements> OrderItemsOnlyUnlocked
+        {
+            get
+            {
+                return OrderItems.Where(x => x.IsUnlock).ToObservable();
+            }
+        }
+
+        public ObservableCollection<Achievements> OrderItemsOnlyLocked
+        {
+            get
+            {
+                return OrderItems.Where(x => !x.IsUnlock).ToObservable();
+            }
+        }
+
+
         /// <summary>
         /// Indicate if the game has stats data.
         /// </summary>
-        [DontSerialize]
+            [DontSerialize]
         public virtual bool HasDataStats
         {
             get

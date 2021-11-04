@@ -132,16 +132,16 @@ namespace SuccessStory.Controls
             PART_ScCompactView.ColumnDefinitions.Clear();
 
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-            List<Achievements> ListAchievements = Serialization.GetClone(gameAchievements.Items);
+            List<Achievements> ListAchievements;
 
             // Select data
             if (IsUnlocked)
             {
-                ListAchievements = ListAchievements.FindAll(x => x.IsUnlock);
+                ListAchievements = gameAchievements.OrderItemsOnlyUnlocked.ToList();
             }
             else
             {
-                ListAchievements = ListAchievements.FindAll(x => !x.IsUnlock);
+                ListAchievements = gameAchievements.OrderItemsOnlyLocked.ToList();
             }
 
 

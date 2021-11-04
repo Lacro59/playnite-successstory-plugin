@@ -8,6 +8,16 @@ using System.Windows.Media;
 
 namespace SuccessStory
 {
+    public enum OrderAchievementType
+    {
+        AchievementName, AchievementDateUnlocked, AchievementRarety
+    }
+    public enum OrderType
+    {
+        Ascending, Descending
+    }
+
+
     public class SuccessStorySettings : ObservableObject
     {
         #region Settings variables
@@ -225,6 +235,14 @@ namespace SuccessStory
         public bool lvGamesLastSession { get; set; } = true;
         public bool lvGamesSource { get; set; } = true;
         public bool lvGamesProgression { get; set; } = true;
+
+
+        public OrderAchievementType OrderAchievementTypeFirst { get; set; } = OrderAchievementType.AchievementDateUnlocked;
+        public OrderAchievementType OrderAchievementTypeSecond { get; set; } = OrderAchievementType.AchievementName;
+        public OrderAchievementType OrderAchievementTypeThird { get; set; } = OrderAchievementType.AchievementRarety;
+        public OrderType OrderTypeFirst { get; set; } = OrderType.Descending;
+        public OrderType OrderTypeSecond { get; set; } = OrderType.Ascending;
+        public OrderType OrderTypeThird { get; set; } = OrderType.Descending;
         #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.

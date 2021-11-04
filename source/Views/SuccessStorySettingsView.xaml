@@ -11,6 +11,7 @@
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:SuccessStory="clr-namespace:SuccessStory"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" d:DesignWidth="650"
              d:DataContext="{d:DesignInstance SuccessStory:SuccessStorySettingsViewModel}">
 
@@ -20,6 +21,21 @@
         <local:BooleanAndConverter x:Key="booleanAndConverter" />
         <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
         <convertersshared:IndexConverter x:Key="IndexConverter"/>
+        
+        <local:OrderAchievementTypeToStringConverter x:Key="OrderAchievementTypeToStringConverter"/>
+        <local:OrderTypeToStringConverter x:Key="OrderTypeToStringConverter"/>
+
+        <ObjectDataProvider x:Key="OrderAchievementType" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="SuccessStory:OrderAchievementType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="OrderType" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="SuccessStory:OrderType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </UserControl.Resources>
 
     <Grid Margin="20">
@@ -653,6 +669,99 @@
                                 </CheckBox>
                             </Grid>
                         </Grid>
+
+
+                        <Label Content="{DynamicResource LOCSuccessStoryListAchievements}" Margin="0,30,0,0" />
+                        <Separator Margin="0,0,0,10" />
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="160" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0" Content="{DynamicResource LOCSuccessStoryAchievementSorting}" />
+                                <ComboBox Grid.Column="1" SelectedItem="{Binding Settings.OrderAchievementTypeFirst}"
+                                                          ItemsSource="{Binding Source={StaticResource OrderAchievementType}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource OrderAchievementTypeToStringConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <ComboBox Grid.Column="3" SelectedItem="{Binding Settings.OrderTypeFirst}"
+                                                          ItemsSource="{Binding Source={StaticResource OrderType}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource OrderTypeToStringConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                            
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="160" />
+                                </Grid.ColumnDefinitions>
+
+                                <ComboBox Grid.Column="1" SelectedItem="{Binding Settings.OrderAchievementTypeSecond}"
+                                                          ItemsSource="{Binding Source={StaticResource OrderAchievementType}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource OrderAchievementTypeToStringConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <ComboBox Grid.Column="3" SelectedItem="{Binding Settings.OrderTypeSecond}"
+                                                          ItemsSource="{Binding Source={StaticResource OrderType}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource OrderTypeToStringConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                            
+                            <Grid Grid.Row="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="160" />
+                                </Grid.ColumnDefinitions>
+
+                                <ComboBox Grid.Column="1" SelectedItem="{Binding Settings.OrderAchievementTypeThird}"
+                                                          ItemsSource="{Binding Source={StaticResource OrderAchievementType}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource OrderAchievementTypeToStringConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <ComboBox Grid.Column="3" SelectedItem="{Binding Settings.OrderTypeThird}"
+                                                          ItemsSource="{Binding Source={StaticResource OrderType}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource OrderTypeToStringConverter}}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                        </Grid>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
@@ -973,15 +1082,19 @@
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto" />
+                                            </Grid.RowDefinitions>
 
                                             <Grid Grid.Column="0">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="160" />
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
 
                                                 <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
                                                 <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationCompactHeight}" 
+                                                                             HorizontalAlignment="Left"
                                                                              Width="40" Grid.Column="1" TextAlignment="Center" />
                                             </Grid>
 

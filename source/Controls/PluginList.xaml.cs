@@ -112,10 +112,7 @@ namespace SuccessStory.Controls
         public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-
-            List<Achievements> ListAchievements = Serialization.GetClone(gameAchievements.Items);
-            ListAchievements = ListAchievements.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.IsUnlock).ThenBy(x => x.Name).ToList();
-            ControlDataContext.ItemsSource = ListAchievements.ToObservable();
+            ControlDataContext.ItemsSource = gameAchievements.OrderItems;
         }
 
 

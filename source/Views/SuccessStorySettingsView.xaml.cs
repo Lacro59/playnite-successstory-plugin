@@ -17,6 +17,7 @@ using SuccessStory.Services;
 using CommonPluginsShared.Models;
 using Playnite.SDK.Data;
 using System.Windows.Media;
+using System.Windows.Markup;
 
 namespace SuccessStory.Views
 {
@@ -483,6 +484,62 @@ namespace SuccessStory.Views
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
+        }
+    }
+
+    public class OrderAchievementTypeToStringConverter : MarkupExtension, IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var source = (OrderAchievementType)value;
+            switch (source)
+            {
+                case OrderAchievementType.AchievementName:
+                    return ResourceProvider.GetString("LOCGameNameTitle");
+                case OrderAchievementType.AchievementDateUnlocked:
+                    return ResourceProvider.GetString("LOCSuccessStoryDateUnlocked");
+                case OrderAchievementType.AchievementRarety:
+                    return ResourceProvider.GetString("LOCSuccessStoryRarety");
+                default:
+                    return string.Empty;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return new NotSupportedException();
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return this;
+        }
+    }
+
+    public class OrderTypeToStringConverter : MarkupExtension, IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            var source = (OrderType)value;
+            switch (source)
+            {
+                case OrderType.Ascending:
+                    return ResourceProvider.GetString("LOCMenuSortAscending");
+                case OrderType.Descending:
+                    return ResourceProvider.GetString("LOCMenuSortDescending");
+                default:
+                    return string.Empty;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            return new NotSupportedException();
+        }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return this;
         }
     }
 }
