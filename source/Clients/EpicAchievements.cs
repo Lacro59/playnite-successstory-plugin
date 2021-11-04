@@ -1,5 +1,4 @@
-﻿using CommonPlayniteShared.Common;
-using CommonPlayniteShared.PluginLibrary.EpicLibrary;
+﻿using CommonPlayniteShared.PluginLibrary.EpicLibrary;
 using CommonPlayniteShared.PluginLibrary.EpicLibrary.Services;
 using CommonPluginsShared;
 using CommonPluginsShared.Models;
@@ -9,10 +8,7 @@ using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
@@ -90,19 +86,18 @@ namespace SuccessStory.Clients
                         int indexStart = ResultWeb.IndexOf("window.__REACT_QUERY_INITIAL_QUERIES__ =");
                         int indexEnd = ResultWeb.IndexOf("window.server_rendered");
 
-                        int length = ResultWeb.Length 
-                            - (indexStart + "window.__REACT_QUERY_INITIAL_QUERIES__ =".Length)
-                            - (ResultWeb.Length - indexEnd);
+                        string stringStart = ResultWeb.Substring(0, indexStart + "window.__REACT_QUERY_INITIAL_QUERIES__ =".Length);
+                        string stringEnd = ResultWeb.Substring(indexEnd);
 
+                        int length = ResultWeb.Length - stringStart.Length - stringEnd.Length;
 
                         string JsonDataString = ResultWeb.Substring(
                             indexStart + "window.__REACT_QUERY_INITIAL_QUERIES__ =".Length,
                             length
                         );
 
-
-                        indexEnd = JsonDataString.IndexOf(";");
-                        length = JsonDataString.Length - (JsonDataString.Length - indexEnd);
+                        indexEnd = JsonDataString.IndexOf("}]};");
+                        length = JsonDataString.Length - (JsonDataString.Length - indexEnd - 3);
                         JsonDataString = JsonDataString.Substring(0, length);
 
 
