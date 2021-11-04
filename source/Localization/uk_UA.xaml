@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSuccessStoryProgress">Прогре</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgress">Прогрес</sys:String>
     <sys:String x:Key="LOCSuccessStoryEarned">Отримано</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryManualAchievements">Користувацькі досягнення</sys:String>
@@ -20,8 +20,8 @@
     <sys:String x:Key="LOCSuccessStoryViewGames">Переглянути ігрові досягнення</sys:String>
     <sys:String x:Key="LOCSuccessStoryViewGame">Переглянути досягнення в грі</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnored">Ігнорувати гр</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotIgnored">Не ігнорувати гр</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnored">Ігнорувати гру</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotIgnored">Не ігнорувати гру</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Профіль Steam не є публічним</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
@@ -49,7 +49,7 @@
     
     <!-- SuccessStoreGameSelection -->
 
-    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Кількість досягненнь</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Кількість досягнень</sys:String>
     
     
     <!-- SuccessStorySettingsView -->
@@ -81,7 +81,7 @@
 
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Використовувати окремий вигляд для RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDatabase">База дани</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDatabase">База даних</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Завантажити дані досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Оновити дані</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Завантажити відсутні дані</sys:String>
@@ -92,7 +92,7 @@
     <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Встановлені ігри з відсутніми даними</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Встановлені ігри</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">Просування зі смугою прогрес</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">Просування зі смугою прогресу</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Відображати графік досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Відображати список досягнень</sys:String>
@@ -103,12 +103,12 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">Відображати статистику гри користувача</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Параметри графіка</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Кількість днів для відображення на графік</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Кількість днів для відображення на графіку</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">Показувати мітки на горизонтальній осі</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">Показувати мітки на вертикальній осі</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Параметри смуги прогрес</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Показувати підпис смуги прогрес</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">Показувати відсоток прогрес</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Параметри смуги прогресу</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Показувати підпис смуги прогресу</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">Показувати відсоток прогресу</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">Параметри списку досягнень</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactListOptions">Параметри компактного списку досягнень</sys:String>
@@ -122,16 +122,16 @@
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Показати значення рідкості із зображенням досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Відображати лише досягнення гри, вибраної з ігрового меню</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Автоматично встановлювати гру як &quot;Повністю пройдену&quot;, коли всі досягнення відкрито</sys:String>
-    <sys:String x:Key="LOCSuccessStoryListGames">Список іго</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Типове впорядкування списку іго</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGames">Список ігор</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Типове впорядкування списку ігор</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Графік з усіма досягненнями</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Поля гри для відображення:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Іконка 100% досягнень</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Показати досягнення в прихованих ігра</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Показати графік досягнень по місяця</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Показати графік досягнень по дня</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Показати досягнення в прихованих іграх</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Показати графік досягнень по місяцях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Показати графік досягнень по днях</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">База досягнень обраного була скинута.</sys:String>
 
@@ -152,6 +152,11 @@
     <sys:String x:Key="LOCSuccessStoryEnableImageCache">Ввімкнути кешування зображень досягнень *</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Неблокуючий процес, який може трохи збільшити використання пам'яті при кешуванні.
 Особливо корисно для досягнень Xbox з їхніми великими зображеннями, які зменшуються під час кешування.</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryListAchievements">List achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Achievements sorting</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Feature to add if the game has achievements</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
@@ -174,21 +179,22 @@
 
     <sys:String x:Key="LOCSuccessStoryFilterSource">Фільтрувати за джерелом</sys:String>
     <sys:String x:Key="LOCSuccessStoryGlobalProgression">Глобальне просування досягнень</sys:String>
-    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Просування досягнень запущених іго</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Просування досягнень запущених ігор</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Інформація</sys:String>
 
 
     <sys:String x:Key="LOCSuccessStoryRarety">Рідкість</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDateUnlocked">Date unlocked</sys:String>
 
     <!-- ListViewGames -->
 
     <sys:String x:Key="LOCSuccessStorylvGamesProgression">Просування</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">Всі досягнення відкриті по місяця</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">Всі досягнення відкриті по дня</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Досягнення відкриті по місяця</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Досягнення відкриті по джерела</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Досягнення відкриті по дня</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">Всі досягнення відкриті по місяцях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">Всі досягнення відкриті по днях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Досягнення відкриті по місяцях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Досягнення відкриті по джерелах</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Досягнення відкриті по днях</sys:String>
 
     <!-- Overwatch -->
 

@@ -153,6 +153,11 @@
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Non-blocking process which can increase memory usage a bit when caching only.
 Especially useful for Xbox achievements with their larges images which are reduced when caching.</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryListAchievements">List achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Achievements sorting</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Feature to add if the game has achievements</sys:String>
+
     <!-- SuccessStoryOneGameView -->
 
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">First unlock</sys:String>
@@ -179,6 +184,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
 
     <sys:String x:Key="LOCSuccessStoryRarety">Rarity</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDateUnlocked">Date unlocked</sys:String>
 
     <!-- ListViewGames -->
 
