@@ -153,6 +153,11 @@
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Proceso de no bloqueo que puede aumentar el uso de la memoria un poco cuando solo almacena en caché.
 Especialmente útil para los logros de Xbox con sus imágenes grandes que se reducen cuando el almacenan en caché.</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryListAchievements">List achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Achievements sorting</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Feature to add if the game has achievements</sys:String>
+
     <!-- SuccessStoryOneGameView -->
 
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Primer desbloqueo</sys:String>
@@ -179,6 +184,7 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
 
 
     <sys:String x:Key="LOCSuccessStoryRarety">Rareza</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDateUnlocked">Date unlocked</sys:String>
 
     <!-- ListViewGames -->
 
