@@ -24,7 +24,7 @@ Packages:
       - Added new menu options for manual achievements
       - UI tweaks
       - Fixed many bugs
-      - Improve performances
+      - Improved performances
   - Version: 2.2
     RequiredApiVersion: 6.0.0
     ReleaseDate: 2021-09-30
@@ -33,7 +33,7 @@ Packages:
       - Playnite 9 (not compatible with Playnite 8)
       - UI tweaks
       - Fixed many bugs
-      - Improve performances and code optimizations (thanks to Jeshibu)
+      - Improved performances and code optimizations (thanks to Jeshibu)
       - Added tag with time to full unlock
       - Xbox360 achievements support (thanks to Jeshibu)
   - Version: 2.2.1
@@ -66,4 +66,15 @@ Packages:
       - Optimizations for images caching
       - Updated localizations
       - Fixed bugs on achievements for emulated games
+      - Fixed many bugs
+  - Version: 2.4
+    RequiredApiVersion: 6.1.0
+    ReleaseDate: 2021-11-04
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.4/playnite-successstory-plugin_2_4.pext
+    Changelog:
+      - Fixed an issue on Epic achievements
+      - Improved performances
+      - Added sorting options on achievements lists
+      - Fixed an issue on time zone
+      - Added an option for add a selected feature when game has achievements
       - Fixed many bugs
