@@ -1,17 +1,14 @@
 ﻿using Playnite.SDK;
-using Playnite.SDK.Models;
 using CommonPluginsShared;
 using SuccessStory.Clients;
 using SuccessStory.Models;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Threading;
 using System.Diagnostics;
 using SuccessStory.Services;
 using CommonPluginsShared.Models;
@@ -121,6 +118,10 @@ namespace SuccessStory.Views
             IgnoredGames = Serialization.GetClone(PluginDatabase.Database.Where(x => x.IsIgnored).ToList());
             IgnoredGames.Sort((x, y) => x.Name.CompareTo(y.Name));
             PART_IgnoredGames.ItemsSource = IgnoredGames;
+
+
+            // List features
+            PART_FeatureAchievement.ItemsSource = PluginDatabase.PlayniteApi.Database.Features.OrderBy(x => x.Name);
         }
 
         private void SetTotal()

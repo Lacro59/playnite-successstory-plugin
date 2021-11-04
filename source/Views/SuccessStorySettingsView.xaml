@@ -569,10 +569,6 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
                             <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableRaretyIndicator}" Name="PART_EnableRarity">
@@ -587,21 +583,6 @@
                             <CheckBox Grid.Row="4" IsChecked="{Binding Settings.EnableOneGameView}">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableOneGameView}" />
                             </CheckBox>
-
-                            <CheckBox Grid.Row="6" IsChecked="{Binding Settings.Auto100PercentCompleted}">
-                                <Label Content="{DynamicResource LOCSuccessStoryEnableAuto100PercentCompleted}" />
-                            </CheckBox>
-
-                            <Grid Grid.Row="8" >
-                                <CheckBox Name="cbEnableTag" Grid.Row="4" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOSuccessStoryAddTagDescription}" />
-                                </CheckBox>
-
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Content="{DynamicResource LOCAddTitle}" Margin="0,0,10,0" VerticalAlignment="Center" Click="ButtonAddTag_Click" />
-                                    <Button Content="{DynamicResource LOCRemoveTitle}" VerticalAlignment="Bottom" Click="ButtonRemoveTag_Click" Margin="0,0,0,1" />
-                                </StackPanel>
-                            </Grid>
                         </Grid>
 
 
@@ -800,6 +781,8 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="30" />
@@ -816,8 +799,51 @@
                         <Button Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="0" HorizontalAlignment="Right" 
                             Click="Button_Click_Cache" Content="{DynamicResource LOCSettingsClearWebCache}" />
 
+                        <Grid Grid.ColumnSpan="3" Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            
+                            <CheckBox Grid.Row="0" IsChecked="{Binding Settings.Auto100PercentCompleted}">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableAuto100PercentCompleted}" />
+                            </CheckBox>
+
+                            <Grid Grid.Row="2" >
+                                <CheckBox Name="cbEnableTag" Grid.Row="4" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOSuccessStoryAddTagDescription}" />
+                                </CheckBox>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="{DynamicResource LOCAddTitle}" Margin="0,0,10,0" VerticalAlignment="Center" Click="ButtonAddTag_Click" />
+                                    <Button Content="{DynamicResource LOCRemoveTitle}" VerticalAlignment="Bottom" Click="ButtonRemoveTag_Click" Margin="0,0,0,1" />
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Grid.Row="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Column="0" Content="{DynamicResource LOCSuccessStoryFeatureAchievement}" />
+                                <ComboBox Grid.Column="1" SelectedItem="{Binding Settings.AchievementFeature}"
+                                          Width="250" HorizontalAlignment="Right"
+                                          Name="PART_FeatureAchievement">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                        </Grid>
+
                         <GroupBox Header="{DynamicResource LOCSuccessStoryRarityConfig}" 
-                              Grid.ColumnSpan="3" Grid.Row="2">
+                                  Grid.ColumnSpan="3" Grid.Row="4">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto" />
@@ -894,7 +920,7 @@
                             </Grid>
                         </GroupBox>
 
-                        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" >
+                        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6" >
                             <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />
                             <Separator Margin="0,0,0,10" />
 

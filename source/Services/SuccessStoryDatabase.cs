@@ -970,15 +970,32 @@ namespace SuccessStory.Services
                                 RefreshNoLoader(Id);
                             }
                         }
-                    }
 
-                    activateGlobalProgress.CurrentProgressValue++;
+                        activateGlobalProgress.CurrentProgressValue++;
+                    }
                 }
 
-                stopWatch.Stop();
+                    stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
                 logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
+        }
+
+        public override void ActionAfterRefresh(GameAchievements item)
+        {
+            Game game = PlayniteApi.Database.Games.Get(item.Id);
+            if ((item?.HasAchivements ?? false) && PluginSettings.Settings.AchievementFeature != null)
+            {
+                if (game.FeatureIds != null)
+                {
+                    game.FeatureIds.AddMissing(PluginSettings.Settings.AchievementFeature.Id);
+                }
+                else
+                {
+                    game.FeatureIds = new List<Guid> { PluginSettings.Settings.AchievementFeature.Id };
+                }
+                PlayniteApi.Database.Games.Update(game);
+            }
         }
 
 

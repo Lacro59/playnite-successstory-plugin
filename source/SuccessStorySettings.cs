@@ -5,6 +5,8 @@ using Playnite.SDK.Data;
 using SuccessStory.Views;
 using CommonPluginsShared.Models;
 using System.Windows.Media;
+using System;
+using Playnite.SDK.Models;
 
 namespace SuccessStory
 {
@@ -243,6 +245,9 @@ namespace SuccessStory
         public OrderType OrderTypeFirst { get; set; } = OrderType.Descending;
         public OrderType OrderTypeSecond { get; set; } = OrderType.Ascending;
         public OrderType OrderTypeThird { get; set; } = OrderType.Descending;
+
+
+        public GameFeature AchievementFeature { get; set; } = null;
         #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.

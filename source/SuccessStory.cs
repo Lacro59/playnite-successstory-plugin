@@ -865,6 +865,7 @@ namespace SuccessStory
                         {
                             PluginDatabase.RefreshNoLoader(args.Game.Id);
 
+
                             // Set to Beaten
                             if (PluginSettings.Settings.Auto100PercentCompleted)
                             {
