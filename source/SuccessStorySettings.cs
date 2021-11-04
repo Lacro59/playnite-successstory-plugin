@@ -14,6 +14,7 @@ namespace SuccessStory
     {
         AchievementName, AchievementDateUnlocked, AchievementRarety
     }
+
     public enum OrderType
     {
         Ascending, Descending
@@ -187,7 +188,6 @@ namespace SuccessStory
 
         public double IntegrationListHeight { get; set; } = 200;
         public int IntegrationListColCount { get; set; } = 1;
-
 
 
         public bool EnablePsn { get; set; } = false;

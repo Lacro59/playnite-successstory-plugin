@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using CommonPlayniteShared;
-using System.Diagnostics;
 using SuccessStory.Services;
 using System.Windows.Automation;
 using CommonPluginsShared.PlayniteExtended;
