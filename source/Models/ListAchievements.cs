@@ -1,6 +1,7 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Converters;
 using System;
+using System.Globalization;
 using System.Windows.Media.Imaging;
 
 namespace SuccessStory.Models
@@ -27,7 +28,7 @@ namespace SuccessStory.Models
                 if (DateUnlock != null && DateUnlock != default(DateTime) && DateUnlock != new DateTime(1982,12,15,0,0,0))
                 {
                     var converter = new LocalDateTimeConverter();
-                    NameWithDateUnlock += " (" + converter.Convert(DateUnlock, null, null, null) + ")";
+                    NameWithDateUnlock += " (" + converter.Convert(DateUnlock, null, null, CultureInfo.CurrentCulture) + ")";
                 }
 
                 return NameWithDateUnlock;

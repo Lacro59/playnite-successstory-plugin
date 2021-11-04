@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Documents;
+using System.Globalization;
 
 namespace SuccessStory.Models
 {
@@ -202,7 +203,7 @@ namespace SuccessStory.Models
                 if (DateUnlocked != null && DateUnlocked != default(DateTime) && DateUnlocked != new DateTime(1982, 12, 15, 0, 0, 0))
                 {
                     var converter = new LocalDateTimeConverter();
-                    NameWithDateUnlock += " (" + converter.Convert(DateUnlocked, null, null, null) + ")";
+                    NameWithDateUnlock += " (" + converter.Convert(DateUnlocked, null, null, CultureInfo.CurrentCulture) + ")";
                 }
 
                 return NameWithDateUnlock;
@@ -286,7 +287,7 @@ namespace SuccessStory.Models
                 }
 
                 var converter = new LocalDateTimeConverter();
-                return (string)converter.Convert(DateUnlocked, null, null, null);
+                return (string)converter.Convert(DateUnlocked, null, null, CultureInfo.CurrentCulture);
             }
         }
 

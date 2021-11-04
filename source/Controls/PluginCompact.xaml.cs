@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SuccessStory.Controls.Customs;
 using CommonPluginsShared.Converters;
+using System.Globalization;
 
 namespace SuccessStory.Controls
 {
@@ -175,7 +176,7 @@ namespace SuccessStory.Controls
                 PART_LastestAchievementDescription.Text = ControlDataContext.LastestAchievement.Description;
 
                 LocalDateTimeConverter localDateTimeConverter = new LocalDateTimeConverter();
-                PART_LastestAchievemenDateWhenUnlocked.Text = (string)localDateTimeConverter.Convert(ControlDataContext.LastestAchievement.DateWhenUnlocked, null, null, null);
+                PART_LastestAchievemenDateWhenUnlocked.Text = (string)localDateTimeConverter.Convert(ControlDataContext.LastestAchievement.DateWhenUnlocked, null, null, CultureInfo.CurrentCulture);
             }
 
             ControlDataContext.ItemsSource = ListAchievements.ToObservable();
