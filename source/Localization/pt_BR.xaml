@@ -153,10 +153,10 @@
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Processo não bloqueado, que pode aumentar o uso de memória um pouco apenas ao gerar o cache.
 Especialmente útil para conquistas do Xbox com suas imagens grandes que são reduzidas ao fazer o cache.</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryListAchievements">List achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Achievements sorting</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListAchievements">Listar conquistas</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Ordenar conquistas</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Feature to add if the game has achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Recurso para adicionar se o jogo tiver conquistas</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
@@ -184,7 +184,7 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
 
 
     <sys:String x:Key="LOCSuccessStoryRarety">Raridade</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDateUnlocked">Date unlocked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDateUnlocked">Data desbloqueada</sys:String>
 
     <!-- ListViewGames -->
 
