@@ -153,10 +153,10 @@
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Неблокуючий процес, який може трохи збільшити використання пам'яті при кешуванні.
 Особливо корисно для досягнень Xbox з їхніми великими зображеннями, які зменшуються під час кешування.</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryListAchievements">List achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Achievements sorting</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListAchievements">Список досягнень</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Сортування досягнень</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Feature to add if the game has achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Додати особливість, якщо гра має досягнення</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
@@ -184,7 +184,7 @@
 
 
     <sys:String x:Key="LOCSuccessStoryRarety">Рідкість</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDateUnlocked">Date unlocked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDateUnlocked">Дата відкриття</sys:String>
 
     <!-- ListViewGames -->
 
