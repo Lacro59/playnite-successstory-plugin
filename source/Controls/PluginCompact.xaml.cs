@@ -334,7 +334,7 @@ namespace SuccessStory.Controls
     }
 
 
-    public class PluginCompactDataContext : ObservableObjectExtend, IDataContext
+    public class PluginCompactDataContext : ObservableObject, IDataContext
     {
         private bool _IsActivated;
         public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
