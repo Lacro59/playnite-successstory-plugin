@@ -24,6 +24,7 @@ using CommonPluginsShared.Models;
 using CommonPlayniteShared.Common;
 using System.Reflection;
 using CommonPluginsShared.Extensions;
+using System.Diagnostics;
 
 namespace SuccessStory
 {
