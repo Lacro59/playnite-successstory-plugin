@@ -55,6 +55,11 @@ namespace SuccessStory.Models
                 List<Achievements> OrderItems = Serialization.GetClone(Items);
                 IOrderedEnumerable<Achievements> OrderedItems = null;
 
+                if (OrderItems == null)
+                {
+                    return new ObservableCollection<Achievements>();
+                }
+
                 switch (PluginDatabase.PluginSettings.Settings.OrderAchievementTypeFirst)
                 {
                     case (OrderAchievementType.AchievementName):
