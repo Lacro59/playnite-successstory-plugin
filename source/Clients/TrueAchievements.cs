@@ -110,14 +110,14 @@ namespace SuccessStory.Clients
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false);
+                            Common.LogError(ex, false, true, "SuccessStory");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             return ListSearchGames;
@@ -197,7 +197,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             return EstimateTimeToUnlock;

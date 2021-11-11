@@ -135,7 +135,7 @@ namespace SuccessStory.Clients
                             }
                             catch (Exception ex)
                             {
-                                Common.LogError(ex, false);
+                                Common.LogError(ex, false, true, "SuccessStory");
                             }
                         }
                     }
@@ -146,7 +146,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, $"Error on GetUsersStats({game.Name})");
+                        Common.LogError(ex, false, $"Error on GetUsersStats({game.Name})", true, "SuccessStory");
                     }
                 }
                 else
@@ -326,7 +326,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error on CareerStats for {Mode}");
+                    Common.LogError(ex, false, $"Error on CareerStats for {Mode}", true, "SuccessStory");
                 }
             }
             #endregion
@@ -362,7 +362,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error on CareerStats for {Mode}");
+                    Common.LogError(ex, false, $"Error on CareerStats for {Mode}", true, "SuccessStory");
                 }
             }
             #endregion
@@ -422,7 +422,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, "SuccessStory");
                 }
             }
 
@@ -470,7 +470,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, "SuccessStory");
                 }
             }
 

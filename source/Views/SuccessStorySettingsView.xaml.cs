@@ -222,7 +222,7 @@ namespace SuccessStory.Views
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
@@ -361,7 +361,7 @@ namespace SuccessStory.Views
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
         }
 
@@ -391,7 +391,7 @@ namespace SuccessStory.Views
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
         }
 

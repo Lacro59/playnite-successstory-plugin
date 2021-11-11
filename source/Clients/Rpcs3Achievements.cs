@@ -202,7 +202,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             return TrophyGameFolder;
@@ -229,7 +229,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             return Path.Combine("rpcs3", NameFolder, TrophyFile);

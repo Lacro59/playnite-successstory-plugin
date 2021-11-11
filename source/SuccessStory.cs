@@ -54,7 +54,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             PluginDatabase.InitializeClient(this);
@@ -149,7 +149,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
         }
 
@@ -171,7 +171,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on WindowBase_LoadedEvent for {WinIdProperty}");
+                Common.LogError(ex, false, $"Error on WindowBase_LoadedEvent for {WinIdProperty}", true, "SuccessStory");
             }
         }
         #endregion
@@ -775,7 +775,7 @@ namespace SuccessStory
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false);
+                            Common.LogError(ex, false, true, "SuccessStory");
                         }
                     }
                 }, globalProgressOptions);
@@ -799,7 +799,7 @@ namespace SuccessStory
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false);
+                        Common.LogError(ex, false, true, "SuccessStory");
                     }
                 }, globalProgressOptions);
             }
@@ -814,7 +814,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
         }
 

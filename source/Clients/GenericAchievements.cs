@@ -159,24 +159,12 @@ namespace SuccessStory.Clients
 
         public virtual void ShowNotificationPluginError(Exception ex)
         {
-            Common.LogError(ex, false, $"{ClientName}");
-
-            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-error",
-                $"SuccessStory\r\n{ex.Message}",
-                NotificationType.Error
-            ));
+            Common.LogError(ex, false, $"{ClientName}", true, "SuccessStory");
         }
 
         public virtual void ShowNotificationPluginWebError(Exception ex, string Url)
         {
-            Common.LogError(ex, false, $"{ClientName} - Failed to load {Url}");
-
-            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-weberror",
-                $"SuccessStory\r\n{ex.Message}",
-                NotificationType.Error
-            ));
+            Common.LogError(ex, false, $"{ClientName} - Failed to load {Url}", true, "SuccessStory");
         }
 
 

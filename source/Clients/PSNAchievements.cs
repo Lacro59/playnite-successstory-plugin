@@ -115,7 +115,7 @@ namespace SuccessStory.Clients
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false);
+                            Common.LogError(ex, false, true, "SuccessStory");
                         }
                     }
 
@@ -147,7 +147,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, "SuccessStory");
                 }
             }
             else
@@ -235,7 +235,7 @@ namespace SuccessStory.Clients
             }
             catch(Exception ex)
             {
-                Common.LogError(ex, false);
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             return psnAllTrophies;

@@ -316,7 +316,7 @@ namespace SuccessStory.Clients
                         case HttpStatusCode.ServiceUnavailable: // HTTP 503
                             break;
                         default:
-                            Common.LogError(ex, false, $"Failed to load from {url}");
+                            Common.LogError(ex, false, $"Failed to load from {url}", true, "SuccessStory");
                             break;
                     }
                     return new List<Achievements>();

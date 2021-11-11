@@ -119,12 +119,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false);
-                PlayniteApi.Notifications.Add(new NotificationMessage(
-                    "SuccessStory-error-manual",
-                    $"SuccessStory\r\n{ex.Message}",
-                    NotificationType.Error
-                ));
+                Common.LogError(ex, false, true, "SuccessStory");
             }
         }
 
@@ -251,7 +246,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, "SuccessStory");
                 }
             }
 
@@ -307,7 +302,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, "Error in load GetCountByMonth()");
+                    Common.LogError(ex, false, true, "SuccessStory");
                 }
             }
             // Achievement for a game
@@ -354,7 +349,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error in load GetCountByMonth({GameID.ToString()})");
+                    Common.LogError(ex, false, $"Error in load GetCountByMonth({GameID.ToString()})", true, "SuccessStory");
                 }
             }
 
@@ -539,7 +534,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error on GetCountBySources() for {item.Key}");
+                    Common.LogError(ex, false, $"Error on GetCountBySources() for {item.Key}", true, "SuccessStory");
                 }
             }
 
@@ -623,7 +618,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error in load GetCountByDay()");
+                    Common.LogError(ex, false, true, "SuccessStory");
                 }
             }
             // Achievement for a game
@@ -700,7 +695,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error in load GetCountByDay({GameID.ToString()})");
+                    Common.LogError(ex, false, $"Error in load GetCountByDay({GameID.ToString()})", true, "SuccessStory");
                 }
             }
 
@@ -1300,7 +1295,7 @@ namespace SuccessStory.Services
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false);
+                            Common.LogError(ex, false, true, "SuccessStory");
                         }
 
                         activateGlobalProgress.CurrentProgressValue++;
@@ -1312,7 +1307,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false);
+                    Common.LogError(ex, false, true, "SuccessStory");
                 }
             }, globalProgressOptions);
         }
@@ -1351,7 +1346,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on Progession()");
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             return Result;
@@ -1385,7 +1380,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on ProgessionLaunched()");
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             Result.Total = Total;
@@ -1426,7 +1421,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on ProgessionSource()");
+                Common.LogError(ex, false, true, "SuccessStory");
             }
 
             Result.Total = Total;

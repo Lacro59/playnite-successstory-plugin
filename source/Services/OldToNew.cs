@@ -88,7 +88,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Failed to load item from {objectFile} or {objectFileManual}");
+                    Common.LogError(ex, false, $"Failed to load item from {objectFile} or {objectFileManual}", true, "SuccessStory");
                 }
             });
 
@@ -134,7 +134,7 @@ namespace SuccessStory.Services
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, $"Failed to load ConvertDB from {item.Key.ToString()}");
+                        Common.LogError(ex, false, $"Failed to load ConvertDB from {item.Key.ToString()}", true, "SuccessStory");
                     }
                 }
 

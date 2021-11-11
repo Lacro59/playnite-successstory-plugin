@@ -104,7 +104,7 @@ namespace SuccessStory.Clients
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false);
+                            Common.LogError(ex, false, true, "SuccessStory");
                         }
                     }
                 }
