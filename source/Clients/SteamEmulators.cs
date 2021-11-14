@@ -251,11 +251,11 @@ namespace SuccessStory.Clients
                             break;
 
                         case "%localappdata%\\skidrow":
-                            logger.Warn($"no treatment for {DirAchivements}");
+                            logger.Warn($"No treatment for {DirAchivements}");
                             break;
 
                         case "%documents%\\skidrow":
-                            logger.Warn($"no treatment for {DirAchivements}");
+                            logger.Warn($"No treatment for {DirAchivements}");
                             break;
 
                         default:
@@ -288,7 +288,7 @@ namespace SuccessStory.Clients
 
                 if (ReturnAchievements == new List<Achievements>())
                 {
-                    logger.Error($"AchievementsLocal - No data for {SteamId}. ");
+                    logger.Warn($"No data for {SteamId}");
                     return new List<Achievements>();
                 }
             }

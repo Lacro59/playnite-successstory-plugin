@@ -299,6 +299,7 @@ namespace SuccessStory.Clients
             string achievementsUrl = GetAchievementsPageUrl(gameAchievements, source);
             if (achievementsUrl.IsNullOrEmpty())
             {
+                logger.Warn($"No Exophase (rarity) url find for {gameAchievements.Name} - {gameAchievements.Id}");
                 return;
             }
 
@@ -323,7 +324,7 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        logger.Warn($"No Exophase matching achievements found for {gameAchievements.Name} - {y.Name} in {achievementsUrl}");
+                        logger.Warn($"No Exophase (rarity) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
                     }
                 });
 
@@ -341,6 +342,7 @@ namespace SuccessStory.Clients
             string achievementsUrl = GetAchievementsPageUrl(gameAchievements, source);
             if (achievementsUrl.IsNullOrEmpty())
             {
+                logger.Warn($"No Exophase (description) url find for {gameAchievements.Name} - {gameAchievements.Id}");
                 return;
             }
 
@@ -368,7 +370,7 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        logger.Warn($"No Exophase matching achievements found for {gameAchievements.Name} - {y.Name} in {achievementsUrl}");
+                        logger.Warn($"No Exophase (description) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
                     }
                 });
 

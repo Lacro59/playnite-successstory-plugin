@@ -67,20 +67,6 @@ namespace SuccessStory.Services
         public void InitializeClient(SuccessStory Plugin)
         {
             this.Plugin = Plugin;
-
-            //Task.Run(() =>
-            //{
-            //    // Wait extension database are loaded
-            //    System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
-            //
-            //    foreach (var achievementProvider in AchievementProviders.Values)
-            //    {
-            //        if (achievementProvider.EnabledInSettings())
-            //        {
-            //            achievementProvider.ValidateConfiguration();
-            //        }
-            //    }
-            //});
         }
 
 
@@ -126,6 +112,7 @@ namespace SuccessStory.Services
         public override GameAchievements Get(Guid Id, bool OnlyCache = false, bool Force = false)
         {
             GameAchievements gameAchievements = base.GetOnlyCache(Id);
+            Game game = PlayniteApi.Database.Games.Get(Id);
 
             // Get from web
             if ((gameAchievements == null && !OnlyCache) || Force)
@@ -134,13 +121,21 @@ namespace SuccessStory.Services
                 AddOrUpdate(gameAchievements);
             }
             else if (gameAchievements == null)
-            {
-                Game game = PlayniteApi.Database.Games.Get(Id);
+            {                
                 if (game != null)
                 {
                     gameAchievements = GetDefault(game);
                     Add(gameAchievements);
                 }
+            }
+
+            if (!(bool)gameAchievements?.HasAchivements)
+            {
+                logger.Info($"No achievements find for {game.Name} - {game.Id}");
+            }
+            else
+            {
+                logger.Info($"Find {gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
             }
 
             return gameAchievements;
@@ -163,6 +158,10 @@ namespace SuccessStory.Services
                 var achievementProvider = AchievementProviders[achievementSource];
                 var retroAchievementsProvider = achievementProvider as RetroAchievements;
                 var psnAchievementsProvider = achievementProvider as PSNAchievements;
+
+
+                logger.Warn($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id}");
+
 
                 if (retroAchievementsProvider != null && !SuccessStory.IsFromMenu)
                 {
@@ -202,9 +201,7 @@ namespace SuccessStory.Services
                 Common.LogDebug(true, $"VerifToAddOrShow({game.Name}, {achievementSource}) - KO");
             }
 
-
             SetEstimateTimeToUnlock(game, gameAchievements);
-
 
             return gameAchievements;
         }

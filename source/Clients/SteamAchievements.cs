@@ -212,6 +212,13 @@ namespace SuccessStory.Clients
                 }
             }
 
+            // Set missing description
+            if (gameAchievements.HasAchivements)
+            {
+                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
+            }
+
             return gameAchievements;
         }
 
@@ -276,7 +283,7 @@ namespace SuccessStory.Clients
             }
 
 
-            if (gameAchievements.Items.Count > 0)
+            if (gameAchievements.HasAchivements)
             {
                 gameAchievements.Items = GetGlobalAchievementPercentagesForApp(AppId, gameAchievements.Items);
 
