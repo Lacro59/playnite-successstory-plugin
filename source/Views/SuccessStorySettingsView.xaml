@@ -662,6 +662,8 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
                             
                             <Grid Grid.Row="0">
@@ -741,6 +743,19 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
+                            </Grid>
+
+                            <Grid Grid.Row="6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="160" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <CheckBox Grid.Column="1" Grid.ColumnSpan="3" IsChecked="{Binding Settings.OrderGroupByUnlocked}">
+                                    <Label Content="{DynamicResource LOCSuccessStoryGroupByUnlocked}" />
+                                </CheckBox>
                             </Grid>
                         </Grid>
                     </StackPanel>

@@ -245,6 +245,7 @@ namespace SuccessStory
         public OrderType OrderTypeFirst { get; set; } = OrderType.Descending;
         public OrderType OrderTypeSecond { get; set; } = OrderType.Ascending;
         public OrderType OrderTypeThird { get; set; } = OrderType.Descending;
+        public bool OrderGroupByUnlocked { get; set; } = false;
 
 
         public GameFeature AchievementFeature { get; set; } = null;

@@ -60,38 +60,43 @@ namespace SuccessStory.Models
                     return new ObservableCollection<Achievements>();
                 }
 
+                if (PluginDatabase.PluginSettings.Settings.OrderGroupByUnlocked)
+                {
+                    OrderedItems = OrderItems.OrderByDescending(x => x.IsUnlock);
+                }
+
                 switch (PluginDatabase.PluginSettings.Settings.OrderAchievementTypeFirst)
                 {
                     case (OrderAchievementType.AchievementName):
                         if (PluginDatabase.PluginSettings.Settings.OrderTypeFirst == OrderType.Ascending)
                         {
-                            OrderedItems = OrderItems.OrderBy(x => x.Name);
+                            OrderedItems = OrderedItems?.ThenBy(x => x.Name) ?? OrderItems.OrderBy(x => x.Name);
                         }
                         else
                         {
-                            OrderedItems = OrderItems.OrderByDescending(x => x.Name);
+                            OrderedItems = OrderedItems?.ThenByDescending(x => x.Name) ?? OrderItems.OrderByDescending(x => x.Name);
                         }
                         break;
 
                     case (OrderAchievementType.AchievementDateUnlocked):
                         if (PluginDatabase.PluginSettings.Settings.OrderTypeFirst == OrderType.Ascending)
                         {
-                            OrderedItems = OrderItems.OrderBy(x => x.DateUnlocked);
+                            OrderedItems = OrderedItems?.ThenBy(x => x.DateUnlocked) ?? OrderItems.OrderBy(x => x.DateUnlocked);
                         }
                         else
                         {
-                            OrderedItems = OrderItems.OrderByDescending(x => x.DateUnlocked);
+                            OrderedItems = OrderedItems?.ThenByDescending(x => x.DateUnlocked) ?? OrderItems.OrderByDescending(x => x.DateUnlocked);
                         }
                         break;
 
                     case (OrderAchievementType.AchievementRarety):
                         if (PluginDatabase.PluginSettings.Settings.OrderTypeFirst == OrderType.Ascending)
                         {
-                            OrderedItems = OrderItems.OrderBy(x => x.Percent);
+                            OrderedItems = OrderedItems?.ThenBy(x => x.Percent) ?? OrderItems.OrderBy(x => x.Percent);
                         }
                         else
                         {
-                            OrderedItems = OrderItems.OrderByDescending(x => x.Percent);
+                            OrderedItems = OrderedItems?.ThenByDescending(x => x.Percent) ?? OrderItems.OrderByDescending(x => x.Percent);
                         }
                         break;
                 }
