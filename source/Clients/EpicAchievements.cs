@@ -63,7 +63,21 @@ namespace SuccessStory.Clients
                     string ProductSlug = GetProductSlug(game.Name);
                     Url = string.Format(UrlAchievements, LocalLang, ProductSlug);
                     
-                    ResultWeb = Web.DownloadStringData(Url, tokens.access_token).GetAwaiter().GetResult();
+                    //ResultWeb = Web.DownloadStringData(Url, tokens.access_token).GetAwaiter().GetResult();
+                    WebViewOffscreen.SetCookies(Url, new Playnite.SDK.HttpCookie
+                    {
+                        Domain = ".www.epicgames.com",
+                        Name = "EPIC_LOCALE_COOKIE",
+                        Value = "fr"
+                    });
+                    WebViewOffscreen.SetCookies(Url, new Playnite.SDK.HttpCookie
+                    {
+                        Domain = ".www.epicgames.com",
+                        Name = "EPIC_EG1",
+                        Value = tokens.access_token
+                    });
+                    WebViewOffscreen.NavigateAndWait(Url);
+                    ResultWeb = WebViewOffscreen.GetPageSource();
                 }
                 catch (Exception ex)
                 {
