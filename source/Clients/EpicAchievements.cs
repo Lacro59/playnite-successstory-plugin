@@ -68,7 +68,7 @@ namespace SuccessStory.Clients
                     {
                         Domain = ".www.epicgames.com",
                         Name = "EPIC_LOCALE_COOKIE",
-                        Value = "fr"
+                        Value = LocalLang
                     });
                     WebViewOffscreen.SetCookies(Url, new Playnite.SDK.HttpCookie
                     {
