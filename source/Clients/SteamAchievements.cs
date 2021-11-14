@@ -279,6 +279,9 @@ namespace SuccessStory.Clients
             if (gameAchievements.Items.Count > 0)
             {
                 gameAchievements.Items = GetGlobalAchievementPercentagesForApp(AppId, gameAchievements.Items);
+
+                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
             }
 
             return gameAchievements;

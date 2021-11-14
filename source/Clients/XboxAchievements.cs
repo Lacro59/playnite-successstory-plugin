@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -13,8 +12,6 @@ using CommonPluginsShared;
 using CommonPlayniteShared.PluginLibrary.XboxLibrary.Models;
 using SuccessStory.Models;
 using CommonPluginsShared.Models;
-using System.Security.Principal;
-using CommonPlayniteShared.Common;
 using CommonPlayniteShared.PluginLibrary.XboxLibrary;
 using CommonPluginsShared.Extensions;
 
@@ -184,6 +181,7 @@ namespace SuccessStory.Clients
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
                 SetAuthenticationHeaders(client.DefaultRequestHeaders, authData, contractVersion);
+
                 var response = client.GetAsync(url).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
