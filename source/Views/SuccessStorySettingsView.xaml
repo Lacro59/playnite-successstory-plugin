@@ -812,7 +812,7 @@
                             <Label Content="{DynamicResource LOCSuccessStoryEnableImageCache}" />
                         </CheckBox>
                         <Button Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="0" HorizontalAlignment="Right" 
-                            Click="Button_Click_Cache" Content="{DynamicResource LOCSettingsClearWebCache}" />
+                                Click="Button_Click_Cache" Content="{DynamicResource LOCSettingsClearWebCache}" />
 
                         <Grid Grid.ColumnSpan="3" Grid.Row="2">
                             <Grid.RowDefinitions>
@@ -822,11 +822,24 @@
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
-                            
-                            <CheckBox Grid.Row="0" IsChecked="{Binding Settings.Auto100PercentCompleted}">
-                                <Label Content="{DynamicResource LOCSuccessStoryEnableAuto100PercentCompleted}" />
-                            </CheckBox>
 
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                
+                                <CheckBox IsChecked="{Binding Settings.Auto100PercentCompleted}" Name="PART_Auto100PErcent">
+                                    <Label Content="{DynamicResource LOCSuccessStoryEnableAuto100PercentCompleted}" />
+                                </CheckBox>
+
+                                <ComboBox Grid.Column="2" Name="PART_CbCompletation" MinWidth="150"
+                                          IsEnabled="{Binding ElementName=PART_Auto100PErcent, Path=IsChecked}"
+                                          DisplayMemberPath="Name"
+                                          SelectionChanged="PART_CbCompletation_SelectionChanged" />
+                            </Grid>
+                            
                             <Grid Grid.Row="2" >
                                 <CheckBox Name="cbEnableTag" Grid.Row="4" IsChecked="{Binding Settings.EnableTag}" Grid.Column="0" VerticalAlignment="Center">
                                     <Label Content="{DynamicResource LOSuccessStoryAddTagDescription}" />

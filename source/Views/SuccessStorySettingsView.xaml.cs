@@ -15,6 +15,7 @@ using CommonPluginsShared.Models;
 using Playnite.SDK.Data;
 using System.Windows.Media;
 using System.Windows.Markup;
+using Playnite.SDK.Models;
 
 namespace SuccessStory.Views
 {
@@ -27,6 +28,8 @@ namespace SuccessStory.Views
         public static SolidColorBrush RarityUncommonColor;
         public static SolidColorBrush RarityRareColor;
         public static SolidColorBrush RarityUltraRareColor;
+
+        public static CompletionStatus completionStatus;
 
         private TextBlock tbControl;
 
@@ -122,6 +125,12 @@ namespace SuccessStory.Views
 
             // List features
             PART_FeatureAchievement.ItemsSource = PluginDatabase.PlayniteApi.Database.Features.OrderBy(x => x.Name);
+
+
+            // List completation
+            PART_CbCompletation.ItemsSource = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList();
+            PART_CbCompletation.SelectedIndex = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList()
+                .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent.Id);
         }
 
         private void SetTotal()
@@ -465,6 +474,11 @@ namespace SuccessStory.Views
         {
             SuccessStory.TaskIsPaused = true;
             PluginDatabase.ClearCache();
+        }
+
+        private void PART_CbCompletation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            completionStatus = (CompletionStatus)PART_CbCompletation.SelectedItem;
         }
     }
 

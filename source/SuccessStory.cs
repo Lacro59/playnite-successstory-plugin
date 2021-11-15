@@ -867,13 +867,13 @@ namespace SuccessStory
 
 
                             // Set to Beaten
-                            if (PluginSettings.Settings.Auto100PercentCompleted)
+                            if (PluginSettings.Settings.Auto100PercentCompleted && PluginSettings.Settings.CompletionStatus100Percent != null)
                             {
                                 gameAchievements = PluginDatabase.Get(args.Game, true);
 
                                 if (gameAchievements.Is100Percent)
                                 {
-                                    args.Game.CompletionStatusId = PlayniteApi.Database.CompletionStatuses.Where(x => x.Name == "Beaten").FirstOrDefault().Id;
+                                    args.Game.CompletionStatusId = PluginSettings.Settings.CompletionStatus100Percent.Id;
                                     PlayniteApi.Database.Games.Update(args.Game);
                                 }
                             }

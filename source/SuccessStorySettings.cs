@@ -30,6 +30,7 @@ namespace SuccessStory
 
 
         public bool Auto100PercentCompleted { get; set; } = false;
+        public CompletionStatus CompletionStatus100Percent { get; set; }
 
         public bool EnableImageCache { get; set; } = true;
         public bool IgnoreSettings { get; set; } = false;
@@ -411,6 +412,9 @@ namespace SuccessStory
             Settings.RarityUltraRareColor = SuccessStorySettingsView.RarityUltraRareColor;
 
             Settings.LocalPath = SuccessStorySettingsView.LocalPath;
+
+            Settings.CompletionStatus100Percent = SuccessStorySettingsView.completionStatus;
+
 
             Plugin.SavePluginSettings(Settings);
             SuccessStory.PluginDatabase.PluginSettings = this;
