@@ -155,7 +155,8 @@
 Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont réduites lors de la mise en cache.</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">Liste des succès</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Ordre des succès</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Tri des succès</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Grouper par déverrouillé quand cela est possible</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Fonctionnalité à ajouter si le jeu possède des succès</sys:String>
 
