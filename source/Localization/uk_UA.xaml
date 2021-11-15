@@ -155,6 +155,7 @@
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">Список досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">Сортування досягнень</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Групувати за відкритими коли можливо</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Додати особливість, якщо гра має досягнення</sys:String>
 

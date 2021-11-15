@@ -155,6 +155,7 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">Lista de logos</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">Ordenado de logros</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Group by unlocked when possible</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Característica a añadir si el juego tiene logros</sys:String>
 

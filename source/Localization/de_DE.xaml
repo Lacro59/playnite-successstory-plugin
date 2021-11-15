@@ -155,6 +155,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">Errungenschaften anzeigen</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">Errungenschaften sortieren</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Gruppieren nach Möglichkeit entsperrt</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Funktion hinzufügen, wenn das Spiel Erfolge erzielt hat</sys:String>
 
