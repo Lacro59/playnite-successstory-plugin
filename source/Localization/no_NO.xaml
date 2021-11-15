@@ -155,6 +155,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">Vis prestasjoner</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">Sortering av prestasjoner</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Group by unlocked when possible</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Funksjon som skal legges til om spillet har prestasjoner</sys:String>
 
