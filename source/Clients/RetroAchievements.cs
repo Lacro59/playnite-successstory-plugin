@@ -387,6 +387,10 @@ namespace SuccessStory.Clients
             {
                 PlatformName = "Neo Geo CD";
             }
+            if (PlatformName.Contains("Grafx"))
+            {
+                PlatformName = "PC Engine";
+            }
 
 
             var FindConsole = ra_Consoles.ListConsoles.Find(x => PlatformName.IsEqual(x.Name));
