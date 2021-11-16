@@ -103,8 +103,32 @@
                                         <ToolTip Content="{Binding Name}" />
                                     </TextBlock.ToolTip>
                                 </TextBlock>
-                                <TextBlock Grid.Column="1" TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
-                                           Text="{Binding DateWhenUnlocked, FallbackValue='1982-12-15 00:08:23', Converter={StaticResource LocalDateTimeConverter}}" />
+
+                                <Grid Grid.Column="1">
+                                    <TextBlock TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
+                                               Visibility="{Binding IsUnlock, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                               Text="{Binding DateWhenUnlocked, FallbackValue='1982-12-15 00:08:23', Converter={StaticResource LocalDateTimeConverter}}" />
+
+                                    <Grid Width="120">
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsUnlock}" Value="True">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Progression}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        
+                                        <ProgressBar Minimum="{Binding Progression.Min}" Maximum="{Binding Progression.Max}"
+                                                     Value="{Binding Progression.Value}" />
+                                        <Label Content="{Binding Progression.Progression}" HorizontalAlignment="Center" />
+                                    </Grid>
+                                </Grid>
                             </Grid>
 
                             <TextBlock Grid.Row="1" Text="{Binding Description, FallbackValue='This is a description.'}" 

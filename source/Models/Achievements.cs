@@ -292,6 +292,9 @@ namespace SuccessStory.Models
         }
 
 
+        public AchProgression Progression { get; set; }
+
+
         private string GetNameFromUrl(string url)
         {
             string NameFromUrl = string.Empty;
@@ -301,7 +304,7 @@ namespace SuccessStory.Models
             {
                 NameFromUrl = "epic_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - 4).Replace(".png", string.Empty);
             }
-            
+
             if (url.IndexOf(".playstation.") > -1)
             {
                 NameFromUrl = "playstation_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - 4).Replace(".png", string.Empty);
@@ -357,6 +360,23 @@ namespace SuccessStory.Models
             }
 
             return NameFromUrl;
+        }
+
+    }
+
+    public class AchProgression
+    {
+        public double Min { get; set; }
+        public double Max { get; set; }
+        public double Value { get; set; }
+
+        [DontSerialize]
+        public string Progression
+        {
+            get
+            {
+                return Value + " / " + Max;
+            }
         }
     }
 }

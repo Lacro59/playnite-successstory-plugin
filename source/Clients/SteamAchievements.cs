@@ -132,6 +132,11 @@ namespace SuccessStory.Clients
                         }
                     }
                 }
+
+                if (gameAchievements.HasAchivements)
+                {
+                    gameAchievements.Items = GetProgressionByWeb(gameAchievements.Items, string.Format(UrlProfilById, SteamId, AppId, LocalLang));
+                }
             }
             else
             {
@@ -1146,9 +1151,9 @@ namespace SuccessStory.Clients
 
                     ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
 
-                    dynamic data = Serialization.FromJson<dynamic>(ResultWeb);
+                    dynamic dataByWeb = Serialization.FromJson<dynamic>(ResultWeb);
 
-                    dynamic OpenData = data["open"];
+                    dynamic OpenData = dataByWeb["open"];
                     foreach (dynamic dd in OpenData)
                     {
                         string stringData = Serialization.ToJson(dd.Value);
@@ -1166,7 +1171,7 @@ namespace SuccessStory.Clients
                         });
                     }
 
-                    dynamic ClosedData = data["closed"];
+                    dynamic ClosedData = dataByWeb["closed"];
                     foreach (dynamic dd in ClosedData)
                     {
                         string stringData = Serialization.ToJson(dd.Value);
@@ -1182,6 +1187,106 @@ namespace SuccessStory.Clients
                             IsHidden = steamAchievementData.Hidden,
                             Percent = 100
                         });
+                    }
+                }
+                else
+                {
+                    Common.LogDebug(true, $"No achievement data on {Url}");
+                }
+            }
+            catch (WebException ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+
+            return Achievements;
+        }
+
+        private List<Achievements> GetProgressionByWeb(List<Achievements> Achievements, string Url)
+        {
+            string ResultWeb = string.Empty;
+
+            try
+            {
+                Url = Url + "&panorama=please";
+                WebViewOffscreen.NavigateAndWait(Url);
+                ResultWeb = WebViewOffscreen.GetPageSource();
+
+
+                string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
+                if (CurrentUrl != Url)
+                {
+                    var urlParams = Url.Split('?').ToList();
+                    if (urlParams.Count == 2)
+                    {
+                        Url = CurrentUrl + "?" + urlParams[1];
+                    }
+
+                    WebViewOffscreen.NavigateAndWait(Url);
+                    ResultWeb = WebViewOffscreen.GetPageSource();
+                }
+
+
+                int index = ResultWeb.IndexOf("var g_rgAchievements = ");
+                if (index > -1)
+                {
+                    ResultWeb = ResultWeb.Substring(index + "var g_rgAchievements = ".Length);
+
+                    index = ResultWeb.IndexOf("var g_rgLeaderboards");
+                    ResultWeb = ResultWeb.Substring(0, index).Trim();
+
+                    ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
+
+                    dynamic dataByWeb = Serialization.FromJson<dynamic>(ResultWeb);
+
+                    dynamic OpenData = dataByWeb["open"];
+                    foreach (dynamic dd in OpenData)
+                    {
+                        string stringData = Serialization.ToJson(dd.Value);
+                        SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
+
+                        if (!(steamAchievementData.Progress is string))
+                        {
+                            double.TryParse(steamAchievementData.Progress["min_val"].ToString(), out double min);
+                            double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
+                            double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
+
+                            var finded = Achievements.Find(x => x.ApiName == steamAchievementData.RawName);
+                            if (finded != null)
+                            {
+                                finded.Progression = new AchProgression
+                                {
+                                    Min = min,
+                                    Max = max,
+                                    Value = val,
+                                };
+                            }
+                        }
+                    }
+
+                    dynamic ClosedData = dataByWeb["closed"];
+                    foreach (dynamic dd in ClosedData)
+                    {
+                        string stringData = Serialization.ToJson(dd.Value);
+                        SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
+
+                        if (!(steamAchievementData.Progress is string))
+                        {
+                            double.TryParse(steamAchievementData.Progress["min_val"].ToString(), out double min);
+                            double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
+                            double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
+
+                            var finded = Achievements.Find(x => x.ApiName == steamAchievementData.RawName);
+                            if (finded != null)
+                            {
+                                finded.Progression = new AchProgression
+                                {
+                                    Min = min,
+                                    Max = max,
+                                    Value = val,
+                                };
+                            }
+                        }
                     }
                 }
                 else
