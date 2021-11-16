@@ -121,7 +121,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarity indicator on achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Show rarity value with achievements image</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the achievements of the game selected from the game menu</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Automatically set the game to &quot;Beaten&quot; when all achievements are unlocked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Automatically set the completation when all are unlocked</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">Список иг</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">Сортировка списка игр по умолчанию</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">График со всеми достижениями</sys:String>
