@@ -121,7 +121,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Mostra l'indicatore di rarità sui risultati</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Mostra il valore di rarità con l'immagine degli obiettivi</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Visualizza solo gli obiettivi del gioco selezionato dal menu di gioco</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Imposta automaticamente il gioco a &quot;Beaten&quot; quando tutti gli obiettivi sono sbloccati</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Imposta automaticamente il completamento quando tutti vengono sbloccati</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">Elenco giochi</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">Ordinamento dell'elenco del gioco predefinito</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Grafico con tutti gli obiettivi</sys:String>
