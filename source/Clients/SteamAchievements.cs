@@ -1157,7 +1157,7 @@ namespace SuccessStory.Clients
             return achievements;
         }
 
-        private List<Achievements> GetAchievementsByWeb(List<Achievements> Achievements, string Url)
+        private List<Achievements> GetAchievementsByWeb(List<Achievements> Achievements, string Url, bool isRetry = false)
         {
             string ResultWeb = string.Empty;
 
@@ -1233,7 +1233,10 @@ namespace SuccessStory.Clients
                 else
                 {
                     Common.LogDebug(true, $"No achievement data on {Url}");
-                    return GetProgressionByWeb(Achievements, Url);
+                    if (!isRetry)
+                    {
+                        return GetProgressionByWeb(Achievements, Url, true);
+                    }
                 }
             }
             catch (WebException ex)
@@ -1244,7 +1247,7 @@ namespace SuccessStory.Clients
             return Achievements;
         }
 
-        private List<Achievements> GetProgressionByWeb(List<Achievements> Achievements, string Url)
+        private List<Achievements> GetProgressionByWeb(List<Achievements> Achievements, string Url, bool isRetry = false)
         {
             string ResultWeb = string.Empty;
 
@@ -1334,7 +1337,10 @@ namespace SuccessStory.Clients
                 else
                 {
                     Common.LogDebug(true, $"No achievement data on {Url}");
-                    return GetProgressionByWeb(Achievements, Url);
+                    if (!isRetry)
+                    {
+                        return GetProgressionByWeb(Achievements, Url, true);
+                    }
                 }
             }
             catch (WebException ex)
