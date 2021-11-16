@@ -121,7 +121,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Exibir indicador de raridade sobre conquistas</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Mostrar valor de raridade com a imagem de conquistas</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Exibir apenas as conquistas do jogo selecionado no menu de jogo</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Automaticamente defina o jogo como &quot;finalizado&quot; quando todas as conquistas forem desbloqueadas</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Definir automaticamente a conclusão quando todos forem desbloqueados</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">Listar jogos</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">Classificação padrão da lista de jogos</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Gráfico com todas as conquistas</sys:String>
@@ -155,7 +155,7 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">Listar conquistas</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">Ordenar conquistas</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Group by unlocked when possible</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Agrupar por desbloqueado quando possível</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Recurso para adicionar se o jogo tiver conquistas</sys:String>
 
