@@ -121,7 +121,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Показувати індикатор рідкості на досягненні</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Показати значення рідкості із зображенням досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Відображати лише досягнення гри, вибраної з ігрового меню</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Автоматично встановлювати гру як &quot;Повністю пройдену&quot;, коли всі досягнення відкрито</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Автоматично встановлювати статус завершення на 100%, коли всі досягнення відкрито</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">Список ігор</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">Типове впорядкування списку ігор</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Графік з усіма досягненнями</sys:String>
