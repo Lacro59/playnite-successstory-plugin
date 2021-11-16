@@ -48,11 +48,12 @@ namespace SuccessStory.Clients
 
         private bool IsLocal { get; set; } = false;
         private bool IsManual { get; set; } = false;
+ 
+        private static string SteamId { get; set; } = string.Empty;
+        private static string SteamApiKey { get; set; } = string.Empty;
+        private static string SteamUser { get; set; } = string.Empty;
 
-        private string SteamId { get; set; } = string.Empty;
-        private string SteamApiKey { get; set; } = string.Empty;
-        private string SteamUser { get; set; } = string.Empty;
-
+        private const string UrlProfil = @"https://steamcommunity.com/my/profile";
         private const string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}?tab=achievements&l={2}";
         private const string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}?tab=achievements&l={2}";
 
@@ -373,25 +374,64 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
-            try
+            if (SteamId.IsNullOrEmpty() && SteamApiKey.IsNullOrEmpty() && SteamUser.IsNullOrEmpty())
             {
-                if (File.Exists(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"))
+                try
                 {
-                    dynamic SteamConfig = Serialization.FromJsonFile<dynamic>(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json");
-                    SteamId = (string)SteamConfig["UserId"];
-                    SteamApiKey = (string)SteamConfig["ApiKey"];
-                    SteamUser = (string)SteamConfig["UserName"];
+                    if (File.Exists(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"))
+                    {
+                        dynamic SteamConfig = Serialization.FromJsonFile<dynamic>(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json");
+                        SteamId = (string)SteamConfig["UserId"];
+                        SteamApiKey = (string)SteamConfig["ApiKey"];
+                        SteamUser = (string)SteamConfig["UserName"];
+
+                        // Find by web
+                        if (SteamUser.IsNullOrEmpty() || SteamId.IsNullOrEmpty())
+                        {
+                            WebViewOffscreen.NavigateAndWait(UrlProfil);
+                            WebViewOffscreen.NavigateAndWait(WebViewOffscreen.GetCurrentAddress());
+                            string ResultWeb = WebViewOffscreen.GetPageSource();
+
+                            if (SteamUser.IsNullOrEmpty())
+                            {
+                                HtmlParser parser = new HtmlParser();
+                                IHtmlDocument htmlDocument = parser.Parse(ResultWeb);
+
+                                var el = htmlDocument.QuerySelector(".actual_persona_name");
+                                if (el != null)
+                                {
+                                    SteamUser = el.InnerHtml;
+                                }
+                            }
+
+                            if (SteamId.IsNullOrEmpty())
+                            {
+                                int index = ResultWeb.IndexOf("g_steamID = ");
+                                if (index > -1)
+                                {
+                                    ResultWeb = ResultWeb.Substring(index + "g_steamID  = ".Length);
+
+                                    index = ResultWeb.IndexOf("g_strLanguage =");
+                                    ResultWeb = ResultWeb.Substring(0, index).Trim();
+
+                                    ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
+
+                                    SteamId = Regex.Replace(ResultWeb, @"[^\d]", string.Empty);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
+                        return false;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
+                    ShowNotificationPluginError(ex);
                     return false;
                 }
-            }
-            catch (Exception ex)
-            {
-                ShowNotificationPluginError(ex);
-                return false;
             }
 
 
@@ -1193,6 +1233,7 @@ namespace SuccessStory.Clients
                 else
                 {
                     Common.LogDebug(true, $"No achievement data on {Url}");
+                    return GetProgressionByWeb(Achievements, Url);
                 }
             }
             catch (WebException ex)
@@ -1293,6 +1334,7 @@ namespace SuccessStory.Clients
                 else
                 {
                     Common.LogDebug(true, $"No achievement data on {Url}");
+                    return GetProgressionByWeb(Achievements, Url);
                 }
             }
             catch (WebException ex)
