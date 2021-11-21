@@ -300,19 +300,29 @@ namespace SuccessStory.Models
             string NameFromUrl = string.Empty;
             List<string> urlSplited = url.Split('/').ToList();
 
+            int Length = 5;
+            if (url.Length > 10)
+            {
+                Length = 10;
+            }
+            if (url.Length > 15)
+            {
+                Length = 15;
+            }
+
             if (url.IndexOf("epicgames.com") > -1)
             {
-                NameFromUrl = "epic_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - 4).Replace(".png", string.Empty);
+                NameFromUrl = "epic_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - Length).Replace(".png", string.Empty);
             }
 
             if (url.IndexOf(".playstation.") > -1)
             {
-                NameFromUrl = "playstation_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - 4).Replace(".png", string.Empty);
+                NameFromUrl = "playstation_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - Length).Replace(".png", string.Empty);
             }
 
             if (url.IndexOf(".xboxlive.com") > -1)
             {
-                NameFromUrl = "xbox_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - 5);
+                NameFromUrl = "xbox_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - Length);
             }
 
             if (url.IndexOf("steamcommunity") > -1)
