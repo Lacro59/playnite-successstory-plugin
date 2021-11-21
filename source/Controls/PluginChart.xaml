@@ -49,7 +49,7 @@
                             Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
                             Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
                             Series="{Binding Series}"
-                            DisableAnimations="{Binding DisableAnimations}" AnimationsSpeed="10">
+                            DisableAnimations="{Binding DisableAnimations}">
                 <lvc:CartesianChart.ChartLegend>
                     <lvc:DefaultLegend Height="2" Visibility="Hidden" />
                 </lvc:CartesianChart.ChartLegend>
