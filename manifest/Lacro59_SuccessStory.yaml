@@ -78,3 +78,15 @@ Packages:
       - Fixed an issue on time zone
       - Added an option for add a selected feature when game has achievements
       - Fixed many bugs
+  - Version: 2.5
+    RequiredApiVersion: 6.1.0
+    ReleaseDate: 2021-11-21
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.5/playnite-successstory-plugin_2_5.pext
+    Changelog:
+      - Fixed many issues with Epic achievements
+      - Fixed many issues with RetroAchievements
+      - Fixed an issue on time zone
+      - Added achievements progression (Steam only)
+      - Added auto import with library update
+      - Updated localizations
+      - Fixed many bugs
