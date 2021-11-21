@@ -981,7 +981,17 @@ namespace SuccessStory
         // Add code to be executed when library is updated.
         public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args)
         {
+            if (PluginSettings.Settings.AutoImport)
+            {
+                var PlayniteDb = PlayniteApi.Database.Games
+                        .Where(x => x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload)
+                        .Select(x => x.Id).ToList();
 
+                PluginDatabase.Refresh(PlayniteDb);
+
+                PluginSettings.Settings.LastAutoLibUpdateAssetsDownload = DateTime.Now;
+                SavePluginSettings(PluginSettings.Settings);
+            }
         }
 
 

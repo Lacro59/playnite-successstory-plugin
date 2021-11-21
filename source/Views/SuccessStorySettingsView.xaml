@@ -798,6 +798,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="30" />
@@ -814,7 +816,11 @@
                         <Button Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="0" HorizontalAlignment="Right" 
                                 Click="Button_Click_Cache" Content="{DynamicResource LOCSettingsClearWebCache}" />
 
-                        <Grid Grid.ColumnSpan="3" Grid.Row="2">
+                        <CheckBox Name="cbAutoImport" Grid.Row="2" IsChecked="{Binding Settings.AutoImport}" Grid.ColumnSpan="3" >
+                            <Label Content="{DynamicResource LOCCommonAutoImport}" />
+                        </CheckBox>
+
+                        <Grid Grid.ColumnSpan="3" Grid.Row="4">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
@@ -871,7 +877,7 @@
                         </Grid>
 
                         <GroupBox Header="{DynamicResource LOCSuccessStoryRarityConfig}" 
-                                  Grid.ColumnSpan="3" Grid.Row="4">
+                                  Grid.ColumnSpan="3" Grid.Row="6">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto" />
@@ -948,7 +954,7 @@
                             </Grid>
                         </GroupBox>
 
-                        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6" >
+                        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="8" >
                             <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />
                             <Separator Margin="0,0,0,10" />
 

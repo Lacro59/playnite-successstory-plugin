@@ -77,6 +77,7 @@ namespace SuccessStory.Clients
                         Value = tokens.access_token
                     });
                     WebViewOffscreen.NavigateAndWait(Url);
+                    WebViewOffscreen.NavigateAndWait(Url);
                     ResultWeb = WebViewOffscreen.GetPageSource();
                 }
                 catch (Exception ex)
@@ -90,6 +91,12 @@ namespace SuccessStory.Clients
                         ShowNotificationPluginError(ex);
                     }
 
+                    return gameAchievements;
+                }
+
+                if (!ResultWeb.Contains("\"achievements\":[{\"achievement\""))
+                {
+                    logger.Warn($"Error 404 for {game.Name}");
                     return gameAchievements;
                 }
 

@@ -129,15 +129,6 @@ namespace SuccessStory.Services
                 }
             }
 
-            if (!(bool)gameAchievements?.HasAchivements)
-            {
-                logger.Info($"No achievements find for {game.Name} - {game.Id}");
-            }
-            else
-            {
-                logger.Info($"Find {gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
-            }
-
             return gameAchievements;
         }
 
@@ -202,6 +193,15 @@ namespace SuccessStory.Services
             }
 
             SetEstimateTimeToUnlock(game, gameAchievements);
+
+            if (!(bool)gameAchievements?.HasAchivements)
+            {
+                logger.Info($"No achievements find for {game.Name} - {game.Id}");
+            }
+            else
+            {
+                logger.Info($"Find {gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
+            }
 
             return gameAchievements;
         }

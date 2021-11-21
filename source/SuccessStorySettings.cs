@@ -25,9 +25,10 @@ namespace SuccessStory
     {
         #region Settings variables
         public bool MenuInExtensions { get; set; } = true;
+        public DateTime LastAutoLibUpdateAssetsDownload { get; set; } = DateTime.Now;
 
         public bool EnableTag { get; set; } = false;
-
+        public bool AutoImport { get; set; } = true;
 
         public bool Auto100PercentCompleted { get; set; } = false;
         public CompletionStatus CompletionStatus100Percent { get; set; }
