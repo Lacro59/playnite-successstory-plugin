@@ -123,10 +123,11 @@ namespace SuccessStory.Clients
 
                 gameAchievementsCached.Items.ForEach(x =>
                 {
-                    if (x.DateUnlocked == null || x.DateUnlocked == default(DateTime))
+                    var finded = AllAchievements.Find(y => x.ApiName == y.ApiName);
+                    if (finded != null)
                     {
-                        var finded = AllAchievements.Find(y => x.ApiName == y.ApiName);
-                        if (finded != null)
+                        x.Name = finded.Name;
+                        if (x.DateUnlocked == null || x.DateUnlocked == default(DateTime))
                         {
                             x.DateUnlocked = finded.DateUnlocked;
                         }
