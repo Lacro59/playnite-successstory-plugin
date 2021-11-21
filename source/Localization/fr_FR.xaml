@@ -185,7 +185,7 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <sys:String x:Key="LOCSuccessStoryGameInformation">Informations</sys:String>
 
 
-    <sys:String x:Key="LOCSuccessStoryRarety">Raret</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarety">Rareté</sys:String>
     <sys:String x:Key="LOCSuccessStoryDateUnlocked">Date de déblocage</sys:String>
 
     <!-- ListViewGames -->
