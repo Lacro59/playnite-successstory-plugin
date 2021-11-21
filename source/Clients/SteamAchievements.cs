@@ -773,7 +773,7 @@ namespace SuccessStory.Clients
                                     ApiName = AchievementsData.Children.Find(x => x.Name == "apiname").Value,
                                     Name = AchievementsData.Children.Find(x => x.Name == "name").Value,
                                     Description = AchievementsData.Children.Find(x => x.Name == "description").Value,
-                                    DateUnlocked = achieved ? new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unlocktime) : default(DateTime)
+                                    DateUnlocked = achieved ? new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(unlocktime).ToLocalTime() : default(DateTime)
                                 });
                             }
                         }
@@ -1224,7 +1224,7 @@ namespace SuccessStory.Clients
                             Description = WebUtility.HtmlDecode(steamAchievementData.Desc.Trim()),
                             UrlUnlocked = steamAchievementData.IconClosed.Trim(),
                             UrlLocked = steamAchievementData.IconClosed.Trim(),
-                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(steamAchievementData.UnlockTime),
+                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(steamAchievementData.UnlockTime).ToLocalTime(),
                             IsHidden = steamAchievementData.Hidden,
                             Percent = 100
                         });

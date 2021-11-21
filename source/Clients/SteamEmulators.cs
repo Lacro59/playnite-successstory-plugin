@@ -147,7 +147,7 @@ namespace SuccessStory.Clients
                                     // Achievement UnlockTime
                                     if (line.IndexOf("UnlockTime") > -1 && line.ToLower() != "unlocktime=0")
                                     {
-                                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(line.Replace("UnlockTime=", string.Empty)));
+                                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(line.Replace("UnlockTime=", string.Empty))).ToLocalTime();
                                     }
 
                                     // End Achievement
@@ -221,7 +221,7 @@ namespace SuccessStory.Clients
                                                     sTimeUnlock = line.Replace("CurProgress = ", string.Empty);
                                                     timeUnlock = BitConverter.ToInt32(StringToByteArray(line.Replace("CurProgress = ", string.Empty)), 0);
                                                 }
-                                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock);
+                                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
 
                                                 // End Achievement
                                                 if (timeUnlock != 0 && State)
@@ -412,7 +412,7 @@ namespace SuccessStory.Clients
                         {
                             var data = line.Split('=');
 
-                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(data[1]));
+                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(data[1])).ToLocalTime();
                             Name = data[0];
 
                             ReturnAchievements.Add(new Achievements
