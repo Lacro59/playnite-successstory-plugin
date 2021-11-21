@@ -374,7 +374,7 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
-            if (SteamId.IsNullOrEmpty() && SteamApiKey.IsNullOrEmpty() && SteamUser.IsNullOrEmpty())
+            if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty() || SteamUser.IsNullOrEmpty())
             {
                 try
                 {
@@ -383,43 +383,7 @@ namespace SuccessStory.Clients
                         dynamic SteamConfig = Serialization.FromJsonFile<dynamic>(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json");
                         SteamId = (string)SteamConfig["UserId"];
                         SteamApiKey = (string)SteamConfig["ApiKey"];
-                        SteamUser = (string)SteamConfig["UserName"];
-
-                        // Find by web
-                        if (SteamUser.IsNullOrEmpty() || SteamId.IsNullOrEmpty())
-                        {
-                            WebViewOffscreen.NavigateAndWait(UrlProfil);
-                            WebViewOffscreen.NavigateAndWait(WebViewOffscreen.GetCurrentAddress());
-                            string ResultWeb = WebViewOffscreen.GetPageSource();
-
-                            if (SteamUser.IsNullOrEmpty())
-                            {
-                                HtmlParser parser = new HtmlParser();
-                                IHtmlDocument htmlDocument = parser.Parse(ResultWeb);
-
-                                var el = htmlDocument.QuerySelector(".actual_persona_name");
-                                if (el != null)
-                                {
-                                    SteamUser = el.InnerHtml;
-                                }
-                            }
-
-                            if (SteamId.IsNullOrEmpty())
-                            {
-                                int index = ResultWeb.IndexOf("g_steamID = ");
-                                if (index > -1)
-                                {
-                                    ResultWeb = ResultWeb.Substring(index + "g_steamID  = ".Length);
-
-                                    index = ResultWeb.IndexOf("g_strLanguage =");
-                                    ResultWeb = ResultWeb.Substring(0, index).Trim();
-
-                                    ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
-
-                                    SteamId = Regex.Replace(ResultWeb, @"[^\d]", string.Empty);
-                                }
-                            }
-                        }
+                        SteamUser = steamApi.GetSteamUsers()?.First()?.PersonaName;                       
                     }
                     else
                     {
@@ -434,12 +398,13 @@ namespace SuccessStory.Clients
                 }
             }
 
+            SteamUserAndSteamIdByWeb();
 
             if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
-            {
+            {                
                 if (SteamUser.IsNullOrEmpty())
                 {
-                    ShowNotificationPluginNoConfiguration(resources.GetString("Error on SteamAchievements: no Steam user in settings menu for Steam Library."));
+                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig2"));
                     return false;
                 }
             }
@@ -556,6 +521,45 @@ namespace SuccessStory.Clients
             }
 
             return ListSearchGames;
+        }
+
+
+        private void SteamUserAndSteamIdByWeb()
+        {
+            if (SteamUser.IsNullOrEmpty() || SteamId.IsNullOrEmpty())
+            {
+                WebViewOffscreen.NavigateAndWait(UrlProfil);
+                WebViewOffscreen.NavigateAndWait(WebViewOffscreen.GetCurrentAddress());
+                string ResultWeb = WebViewOffscreen.GetPageSource();
+
+                if (SteamUser.IsNullOrEmpty())
+                {
+                    HtmlParser parser = new HtmlParser();
+                    IHtmlDocument htmlDocument = parser.Parse(ResultWeb);
+
+                    var el = htmlDocument.QuerySelector(".actual_persona_name");
+                    if (el != null)
+                    {
+                        SteamUser = el.InnerHtml;
+                    }
+                }
+
+                if (SteamId.IsNullOrEmpty())
+                {
+                    int index = ResultWeb.IndexOf("g_steamID = ");
+                    if (index > -1)
+                    {
+                        ResultWeb = ResultWeb.Substring(index + "g_steamID  = ".Length);
+
+                        index = ResultWeb.IndexOf("g_strLanguage =");
+                        ResultWeb = ResultWeb.Substring(0, index).Trim();
+
+                        ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
+
+                        SteamId = Regex.Replace(ResultWeb, @"[^\d]", string.Empty);
+                    }
+                }
+            }
         }
 
 

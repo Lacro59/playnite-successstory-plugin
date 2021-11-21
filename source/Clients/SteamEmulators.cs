@@ -94,6 +94,8 @@ namespace SuccessStory.Clients
         public GameAchievements GetAchievementsLocal(Game game, string apiKey, int SteamId = 0, bool IsManual = false)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
+            GameAchievements gameAchievementsCached = SuccessStory.PluginDatabase.Get(game, true);
+
             List<Achievements> AllAchievements = new List<Achievements>();
 
             if (SteamId != 0)
@@ -105,12 +107,33 @@ namespace SuccessStory.Clients
                 this.SteamId = steamApi.GetSteamId(game.Name);
             }
 
-
             AllAchievements = Get(this.SteamId, apiKey, IsManual);
-            gameAchievements.Items = AllAchievements;
+            if (gameAchievementsCached == null)
+            {
+                gameAchievements.Items = AllAchievements;
+                return gameAchievements;
+            }
+            else
+            {
+                if (gameAchievementsCached.Items.Count != AllAchievements.Count)
+                {
+                    gameAchievements.Items = AllAchievements;
+                    return gameAchievements;
+                }
 
-
-            return gameAchievements;
+                gameAchievementsCached.Items.ForEach(x =>
+                {
+                    if (x.DateUnlocked == null || x.DateUnlocked == default(DateTime))
+                    {
+                        var finded = AllAchievements.Find(y => x.ApiName == y.ApiName);
+                        if (finded != null)
+                        {
+                            x.DateUnlocked = finded.DateUnlocked;
+                        }
+                    }
+                });
+                return gameAchievementsCached;
+            }
         }
 
         private List<Achievements> Get(int SteamId, string apiKey, bool IsManual)
