@@ -90,3 +90,9 @@ Packages:
       - Added auto import with library update
       - Updated localizations
       - Fixed many bugs
+  - Version: 2.5.1
+    RequiredApiVersion: 6.1.0
+    ReleaseDate: 2021-11-21
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.5.1/playnite-successstory-plugin_2_5_1.pext
+    Changelog:
+      - Fixed settings issue

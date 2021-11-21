@@ -130,7 +130,7 @@ namespace SuccessStory.Views
             // List completation
             PART_CbCompletation.ItemsSource = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList();
             PART_CbCompletation.SelectedIndex = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList()
-                .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent.Id);
+                .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent?.Id);
         }
 
         private void SetTotal()
