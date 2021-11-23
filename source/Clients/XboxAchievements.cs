@@ -179,7 +179,7 @@ namespace SuccessStory.Clients
 
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0");
+                client.DefaultRequestHeaders.Add("User-Agent", Web.UserAgent);
                 SetAuthenticationHeaders(client.DefaultRequestHeaders, authData, contractVersion);
 
                 var response = client.GetAsync(url).Result;

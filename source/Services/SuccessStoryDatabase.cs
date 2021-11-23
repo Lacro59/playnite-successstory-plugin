@@ -72,10 +72,25 @@ namespace SuccessStory.Services
 
         protected override bool LoadDatabase()
         {
-            Database = new SuccessStoryCollection(Paths.PluginDatabasePath);
-            Database.SetGameInfo<Achievements>(PlayniteApi);
+            try
+            {
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
 
-            DeleteDataWithDeletedGame();
+                Database = new SuccessStoryCollection(Paths.PluginDatabasePath);
+                Database.SetGameInfo<Achievements>(PlayniteApi);
+
+                DeleteDataWithDeletedGame();
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+                return false;
+            }
 
             return true;
         }
