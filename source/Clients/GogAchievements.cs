@@ -1,5 +1,4 @@
-﻿using Playnite.SDK;
-using Playnite.SDK.Data;
+﻿using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
 using CommonPlayniteShared.PluginLibrary.Services.GogLibrary;
@@ -94,6 +93,7 @@ namespace SuccessStory.Clients
                 {
                     if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
                     {
+                        Common.LogError(ex, false);
                         var resp = (HttpWebResponse)ex.Response;
                         switch (resp.StatusCode)
                         {

@@ -91,7 +91,9 @@ namespace SuccessStory.Clients
                         {
                             try
                             {
-                                float.TryParse(SearchAchievements.GetAttribute("data-average").Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+                                float.TryParse(SearchAchievements.GetAttribute("data-average")
+                                    .Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator)
+                                    .Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
 
                                 string UrlUnlocked = SearchAchievements.QuerySelector("img").GetAttribute("src");
                                 string Name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
