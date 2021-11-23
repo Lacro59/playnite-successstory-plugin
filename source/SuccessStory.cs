@@ -32,6 +32,10 @@ namespace SuccessStory
     {
         public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
+        internal TopPanelItem topPanelItem;
+        internal SuccessStoryViewSidebar successStoryViewSidebar;
+        internal SuccessStoryViewRaSidebar successStoryViewRaSidebar;
+
         public static bool TaskIsPaused = false;
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -67,6 +71,40 @@ namespace SuccessStory
 
             // Add Event for WindowBase for get the "WindowSettings".
             EventManager.RegisterClassHandler(typeof(Window), Window.LoadedEvent, new RoutedEventHandler(WindowBase_LoadedEvent));
+
+            // Initialize top & side bar
+            topPanelItem = new TopPanelItem()
+            {
+                Icon = new TextBlock
+                {
+                    Text = "\ue820",
+                    FontSize = 22,
+                    FontFamily = resources.GetResource("FontIcoFont") as FontFamily
+                },
+                Title = resources.GetString("LOCSuccessStoryViewGames"),
+                Activated = () =>
+                {
+                    var ViewExtension = new SuccessView();
+
+                    var windowOptions = new WindowOptions
+                    {
+                        ShowMinimizeButton = false,
+                        ShowMaximizeButton = true,
+                        ShowCloseButton = true,
+                        Width = 1280,
+                        Height = 740
+                    };
+
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
+                    windowExtension.ResizeMode = ResizeMode.CanResize;
+                    windowExtension.ShowDialog();
+                    PluginDatabase.IsViewOpen = false;
+                },
+                Visible = PluginSettings.Settings.EnableIntegrationButtonHeader
+            };
+
+            successStoryViewSidebar = new SuccessStoryViewSidebar(this);
+            successStoryViewRaSidebar = new SuccessStoryViewRaSidebar(this);
 
             // Custom elements integration
             AddCustomElementSupport(new AddCustomElementSupportArgs
@@ -181,39 +219,7 @@ namespace SuccessStory
         // Button on top panel
         public override IEnumerable<TopPanelItem> GetTopPanelItems()
         {
-            if (PluginSettings.Settings.EnableIntegrationButtonHeader)
-            {
-                yield return new TopPanelItem()
-                {
-                    Icon = new TextBlock
-                    {
-                        Text = "\ue820",
-                        FontSize = 22,
-                        FontFamily = resources.GetResource("FontIcoFont") as FontFamily
-                    },
-                    Title = resources.GetString("LOCSuccessStoryViewGames"),
-                    Activated = () =>
-                    {
-                        var ViewExtension = new SuccessView();
-
-                        var windowOptions = new WindowOptions
-                        {
-                            ShowMinimizeButton = false,
-                            ShowMaximizeButton = true,
-                            ShowCloseButton = true,
-                            Width = 1280,
-                            Height = 740
-                        };
-
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
-                        windowExtension.ResizeMode = ResizeMode.CanResize;
-                        windowExtension.ShowDialog();
-                        PluginDatabase.IsViewOpen = false;
-                    }
-                };
-            }
-
-            yield break;
+            yield return topPanelItem;
         }
 
         // List custom controls
@@ -270,7 +276,7 @@ namespace SuccessStory
         // SidebarItem
         public class SuccessStoryViewSidebar : SidebarItem
         {
-            public SuccessStoryViewSidebar()
+            public SuccessStoryViewSidebar(SuccessStory plugin)
             {
                 Type = SiderbarItemType.View;
                 Title = resources.GetString("LOCSuccessStoryAchievements");
@@ -287,12 +293,13 @@ namespace SuccessStory
 
                     return sidebarItemControl;
                 };
+                Visible = plugin.PluginSettings.Settings.EnableIntegrationButtonSide;
             }
         }
 
         public class SuccessStoryViewRaSidebar : SidebarItem
         {
-            public SuccessStoryViewRaSidebar()
+            public SuccessStoryViewRaSidebar(SuccessStory plugin)
             {
                 Type = SiderbarItemType.View;
                 Title = resources.GetString("LOCSuccessStoryRetroAchievements");
@@ -309,22 +316,17 @@ namespace SuccessStory
 
                     return sidebarItemControl;
                 };
+                Visible = (plugin.PluginSettings.Settings.EnableIntegrationButtonSide && plugin.PluginSettings.Settings.EnableRetroAchievementsView);
             }
         }
 
         public override IEnumerable<SidebarItem> GetSidebarItems()
         {
-            var items = new List<SidebarItem>
+            return new List<SidebarItem>
             {
-                new SuccessStoryViewSidebar()
+                successStoryViewSidebar,
+                successStoryViewRaSidebar
             };
-
-            if (PluginSettings.Settings.EnableRetroAchievementsView)
-            {
-                items.Add(new SuccessStoryViewRaSidebar());
-            }
-
-            return items;
         }
         #endregion
 

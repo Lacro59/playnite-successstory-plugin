@@ -25,6 +25,9 @@ namespace SuccessStory
     {
         #region Settings variables
         public bool MenuInExtensions { get; set; } = true;
+        public bool EnableIntegrationButtonHeader { get; set; } = false;
+        public bool EnableIntegrationButtonSide { get; set; } = true;
+
         public DateTime LastAutoLibUpdateAssetsDownload { get; set; } = DateTime.Now;
 
         public bool EnableTag { get; set; } = false;
@@ -43,9 +46,6 @@ namespace SuccessStory
         public bool GraphicAllUnlockedByDay { get; set; } = false;
 
         public bool IncludeHiddenGames { get; set; } = false;
-
-
-        public bool EnableIntegrationButtonHeader { get; set; } = false;
 
 
         private bool _EnableIntegrationViewItem { get; set; } = true;
@@ -419,6 +419,11 @@ namespace SuccessStory
 
             Plugin.SavePluginSettings(Settings);
             SuccessStory.PluginDatabase.PluginSettings = this;
+
+            Plugin.topPanelItem.Visible = Settings.EnableIntegrationButtonHeader;
+            Plugin.successStoryViewSidebar.Visible = Settings.EnableIntegrationButtonSide;
+            Plugin.successStoryViewRaSidebar.Visible = (Settings.EnableIntegrationButtonSide && Settings.EnableRetroAchievementsView);
+
             this.OnPropertyChanged();
         }
 
