@@ -675,7 +675,7 @@ namespace SuccessStory.Clients
                         {
                             foreach (KeyValue StatsData in UserStatsData.Children)
                             {
-                                double.TryParse(StatsData.Children.First().Value.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out double ValueStats);
+                                double.TryParse(StatsData.Children.First().Value.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out double ValueStats);
 
                                 AllStats.Add(new GameStats
                                 {

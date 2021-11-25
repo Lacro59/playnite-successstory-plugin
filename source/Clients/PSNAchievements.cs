@@ -131,7 +131,7 @@ namespace SuccessStory.Clients
                     {
                         Trophie trophieDetails = trophiesDetails.trophies.Where(x => x.trophyId == trophie.trophyId).FirstOrDefault();
 
-                        float.TryParse(trophie.trophyEarnedRate.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+                        float.TryParse(trophie.trophyEarnedRate.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
 
                         AllAchievements.Add(new Achievements
                         {

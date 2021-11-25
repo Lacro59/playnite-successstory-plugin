@@ -394,7 +394,7 @@ namespace SuccessStory.Clients
                         DisplayName = ValueData;
                     }
 
-                    double.TryParse(ValueData.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace("%", string.Empty), out Value);
+                    double.TryParse(ValueData.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace("%", string.Empty), out Value);
 
                     if (DateTime.TryParse(ValueData, out DateTime dateTime))
                     {
@@ -444,7 +444,7 @@ namespace SuccessStory.Clients
                     TimeSpan Time = default(TimeSpan);
 
                     string ValueData = td[1].InnerHtml;
-                    double.TryParse(ValueData.Replace(".", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out Value);
+                    double.TryParse(ValueData.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out Value);
 
                     if (DateTime.TryParse(ValueData, out DateTime dateTime))
                     {
