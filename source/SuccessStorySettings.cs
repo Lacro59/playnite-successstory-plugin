@@ -420,9 +420,12 @@ namespace SuccessStory
             Plugin.SavePluginSettings(Settings);
             SuccessStory.PluginDatabase.PluginSettings = this;
 
-            Plugin.topPanelItem.Visible = Settings.EnableIntegrationButtonHeader;
-            Plugin.successStoryViewSidebar.Visible = Settings.EnableIntegrationButtonSide;
-            Plugin.successStoryViewRaSidebar.Visible = (Settings.EnableIntegrationButtonSide && Settings.EnableRetroAchievementsView);
+            if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
+            {
+                Plugin.topPanelItem.Visible = Settings.EnableIntegrationButtonHeader;
+                Plugin.successStoryViewSidebar.Visible = Settings.EnableIntegrationButtonSide;
+                Plugin.successStoryViewRaSidebar.Visible = (Settings.EnableIntegrationButtonSide && Settings.EnableRetroAchievementsView);
+            }
 
             this.OnPropertyChanged();
         }

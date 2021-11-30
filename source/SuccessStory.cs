@@ -73,38 +73,41 @@ namespace SuccessStory
             EventManager.RegisterClassHandler(typeof(Window), Window.LoadedEvent, new RoutedEventHandler(WindowBase_LoadedEvent));
 
             // Initialize top & side bar
-            topPanelItem = new TopPanelItem()
+            if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {
-                Icon = new TextBlock
+                topPanelItem = new TopPanelItem()
                 {
-                    Text = "\ue820",
-                    FontSize = 22,
-                    FontFamily = resources.GetResource("FontIcoFont") as FontFamily
-                },
-                Title = resources.GetString("LOCSuccessStoryViewGames"),
-                Activated = () =>
-                {
-                    var ViewExtension = new SuccessView();
-
-                    var windowOptions = new WindowOptions
+                    Icon = new TextBlock
                     {
-                        ShowMinimizeButton = false,
-                        ShowMaximizeButton = true,
-                        ShowCloseButton = true,
-                        Width = 1280,
-                        Height = 740
-                    };
+                        Text = "\ue820",
+                        FontSize = 22,
+                        FontFamily = resources.GetResource("FontIcoFont") as FontFamily
+                    },
+                    Title = resources.GetString("LOCSuccessStoryViewGames"),
+                    Activated = () =>
+                    {
+                        var ViewExtension = new SuccessView();
 
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
-                    windowExtension.ResizeMode = ResizeMode.CanResize;
-                    windowExtension.ShowDialog();
-                    PluginDatabase.IsViewOpen = false;
-                },
-                Visible = PluginSettings.Settings.EnableIntegrationButtonHeader
-            };
+                        var windowOptions = new WindowOptions
+                        {
+                            ShowMinimizeButton = false,
+                            ShowMaximizeButton = true,
+                            ShowCloseButton = true,
+                            Width = 1280,
+                            Height = 740
+                        };
 
-            successStoryViewSidebar = new SuccessStoryViewSidebar(this);
-            successStoryViewRaSidebar = new SuccessStoryViewRaSidebar(this);
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
+                        windowExtension.ResizeMode = ResizeMode.CanResize;
+                        windowExtension.ShowDialog();
+                        PluginDatabase.IsViewOpen = false;
+                    },
+                    Visible = PluginSettings.Settings.EnableIntegrationButtonHeader
+                };
+
+                successStoryViewSidebar = new SuccessStoryViewSidebar(this);
+                successStoryViewRaSidebar = new SuccessStoryViewRaSidebar(this);
+            }
 
             // Custom elements integration
             AddCustomElementSupport(new AddCustomElementSupportArgs
