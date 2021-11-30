@@ -25,6 +25,7 @@ using CommonPlayniteShared.Common;
 using System.Reflection;
 using CommonPluginsShared.Extensions;
 using System.Diagnostics;
+using SuccessStory.Clients;
 
 namespace SuccessStory
 {
@@ -531,7 +532,7 @@ namespace SuccessStory
                 Description = "Test",
                 Action = (mainMenuItem) => 
                 {
-
+                    
                 }
             });
 #endif

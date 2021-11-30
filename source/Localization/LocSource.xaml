@@ -75,6 +75,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Enable manual achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Enable Overwatch achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Enable StarCraft II achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Enable World of Warcraft achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Disable API usage (Use when you don't have an API key)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Home user folder</sys:String>

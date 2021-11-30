@@ -44,6 +44,7 @@ namespace SuccessStory.Services
                             { AchievementSource.Epic, new EpicAchievements() },
                             { AchievementSource.Origin, new OriginAchievements() },
                             { AchievementSource.Overwatch, new OverwatchAchievements() },
+                            { AchievementSource.Wow, new WowAchievements() },
                             { AchievementSource.Playstation, new PSNAchievements() },
                             { AchievementSource.RetroAchievements, new RetroAchievements() },
                             { AchievementSource.RPCS3, new Rpcs3Achievements() },
@@ -418,7 +419,7 @@ namespace SuccessStory.Services
                     {
                         tempSourcesLabels.Add("RPCS3");
                     }
-                    if (PluginSettings.Settings.EnableSc2Achievements || PluginSettings.Settings.EnableOverwatchAchievements)
+                    if (PluginSettings.Settings.EnableSc2Achievements || PluginSettings.Settings.EnableOverwatchAchievements || PluginSettings.Settings.EnableWowAchievements)
                     {
                         tempSourcesLabels.Add("Battle.net");
                     }
@@ -473,7 +474,7 @@ namespace SuccessStory.Services
                 {
                     tempSourcesLabels.Add("RPCS3");
                 }
-                if (PluginSettings.Settings.EnableSc2Achievements || PluginSettings.Settings.EnableOverwatchAchievements)
+                if (PluginSettings.Settings.EnableSc2Achievements || PluginSettings.Settings.EnableOverwatchAchievements || PluginSettings.Settings.EnableWowAchievements)
                 {
                     tempSourcesLabels.Add("Battle.net");
                 }
@@ -727,7 +728,8 @@ namespace SuccessStory.Services
             RetroAchievements,
             RPCS3,
             Overwatch,
-            Starcraft2
+            Starcraft2,
+            Wow
         }
 
         private static AchievementSource GetAchievementSourceFromLibraryPlugin(SuccessStorySettings settings, Game game)
@@ -763,6 +765,13 @@ namespace SuccessStory.Services
                             if (settings.EnableSc2Achievements)
                             {
                                 return AchievementSource.Starcraft2;
+                            }
+                            break;
+                        case "wow":
+                        case "world of warcraft":
+                            if (settings.EnableWowAchievements)
+                            {
+                                return AchievementSource.Wow;
                             }
                             break;
                     }

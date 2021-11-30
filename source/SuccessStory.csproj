@@ -127,6 +127,7 @@
     <Compile Include="Clients\SteamAchievements.cs" />
     <Compile Include="Clients\SteamEmulators.cs" />
     <Compile Include="Clients\TrueAchievements.cs" />
+    <Compile Include="Clients\WowAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />
     <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
       <DependentUpon>AchievementImage.xaml</DependentUpon>
@@ -171,6 +172,7 @@
     <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
+    <Compile Include="Models\WowAchievementsData.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml.cs">
       <DependentUpon>ComboBoxRemovable.xaml</DependentUpon>
     </Compile>

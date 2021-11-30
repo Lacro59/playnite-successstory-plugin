@@ -203,6 +203,11 @@ namespace SuccessStory
 
         public bool EnableOverwatchAchievements { get; set; } = false;
         public bool EnableSc2Achievements { get; set; } = false;
+        public bool EnableWowAchievements { get; set; } = false;
+
+        public string WowRegion { get; set; } = "eu";
+        public string WowRealm { get; set; } = "kirin-tor";
+        public string WowCharacter { get; set; } = "iryaël";
 
         public bool EnableSteamWithoutWebApi { get; set; } = false;
         public bool SteamIsPrivate { get; set; } = false;

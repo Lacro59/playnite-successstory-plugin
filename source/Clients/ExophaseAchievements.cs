@@ -401,6 +401,7 @@ namespace SuccessStory.Clients
                     return exophaseGame.Platforms.Contains("Retro", StringComparer.InvariantCultureIgnoreCase);
                 case Services.SuccessStoryDatabase.AchievementSource.Overwatch:
                 case Services.SuccessStoryDatabase.AchievementSource.Starcraft2:
+                case Services.SuccessStoryDatabase.AchievementSource.Wow:
                     return exophaseGame.Platforms.Contains("Blizzard", StringComparer.InvariantCultureIgnoreCase);
 
                 //Console: match platform
