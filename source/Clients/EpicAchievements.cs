@@ -2,6 +2,7 @@
 using CommonPlayniteShared.PluginLibrary.EpicLibrary.Services;
 using CommonPluginsShared;
 using CommonPluginsShared.Models;
+using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
@@ -38,7 +39,7 @@ namespace SuccessStory.Clients
         private const string UrlAchievements = @"https://www.epicgames.com/store/{0}/achievements/{1}";
 
 
-        public EpicAchievements() : base("Epic", CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public EpicAchievements() : base("Epic", CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language), CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
 
         }
@@ -62,23 +63,30 @@ namespace SuccessStory.Clients
 
                     string ProductSlug = GetProductSlug(game.Name);
                     Url = string.Format(UrlAchievements, LocalLang, ProductSlug);
-                    
-                    //ResultWeb = Web.DownloadStringData(Url, tokens.access_token).GetAwaiter().GetResult();
-                    WebViewOffscreen.SetCookies(Url, new Playnite.SDK.HttpCookie
+
+                    List<HttpCookie> Cookies = new List<HttpCookie>
                     {
-                        Domain = ".www.epicgames.com",
-                        Name = "EPIC_LOCALE_COOKIE",
-                        Value = LocalLang
-                    });
-                    WebViewOffscreen.SetCookies(Url, new Playnite.SDK.HttpCookie
+                        new Playnite.SDK.HttpCookie
+                        {
+                            Domain = ".www.epicgames.com",
+                            Name = "EPIC_LOCALE_COOKIE",
+                            Value = LocalLangShort
+                        },
+                        new Playnite.SDK.HttpCookie
+                        {
+                            Domain = ".www.epicgames.com",
+                            Name = "EPIC_EG1",
+                            Value = tokens.access_token
+                        }
+                    };
+
+                    ResultWeb = Web.DownloadStringData(Url, Cookies).GetAwaiter().GetResult();
+
+                    if (!ResultWeb.Contains("lang=\"" + LocalLang + "\"", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        Domain = ".www.epicgames.com",
-                        Name = "EPIC_EG1",
-                        Value = tokens.access_token
-                    });
-                    WebViewOffscreen.NavigateAndWait(Url);
-                    WebViewOffscreen.NavigateAndWait(Url);
-                    ResultWeb = WebViewOffscreen.GetPageSource();
+                        Url = string.Format(UrlAchievements, LocalLangShort, ProductSlug);
+                        ResultWeb = Web.DownloadStringData(Url, Cookies).GetAwaiter().GetResult();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -158,7 +166,8 @@ namespace SuccessStory.Clients
 
                         if (achievemenstOwnedData != null)
                         {
-                            EpicAchievementsOwnedData epicAchievementsOwnedData = Serialization.FromJson<EpicAchievementsOwnedData>(Serialization.ToJson(achievemenstOwnedData.state.data));
+                            string dataAch = Serialization.ToJson(achievemenstOwnedData.state.data).Replace("\"N/A\"", "null");
+                            EpicAchievementsOwnedData epicAchievementsOwnedData = Serialization.FromJson<EpicAchievementsOwnedData>(dataAch);
 
                             if (epicAchievementsOwnedData != null && epicAchievementsOwnedData.PlayerAchievement.playerAchievementGameRecordsBySandbox.records.FirstOrDefault()?.playerAchievements?.Count() > 0)
                             {
@@ -167,7 +176,7 @@ namespace SuccessStory.Clients
                                     var owned = AllAchievements.Find(x => x.ApiName == ach.playerAchievement.achievementName);
                                     if (owned != null)
                                     {
-                                        owned.DateUnlocked = ach.playerAchievement.unlockDate;
+                                        owned.DateUnlocked = ach.playerAchievement.unlockDate ?? default(DateTime);
                                     }
                                     else
                                     {

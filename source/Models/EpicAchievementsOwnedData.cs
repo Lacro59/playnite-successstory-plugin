@@ -18,7 +18,7 @@ namespace SuccessStory.Models
         public bool unlocked { get; set; }
         public int progress { get; set; }
         public int XP { get; set; }
-        public DateTime unlockDate { get; set; }
+        public DateTime? unlockDate { get; set; }
         public string achievementName { get; set; }
     }
 
