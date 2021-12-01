@@ -124,11 +124,11 @@ namespace SuccessStory.Clients
         #region WebView manager
         private static void _WebViewOffscreen_LoadingChanged(object sender, Playnite.SDK.Events.WebViewLoadingChangedEventArgs e)
         {
-            UrlCurrent = _WebViewOffscreen.GetCurrentAddress();
-            timer = new Timer(60000);
-            timer.AutoReset = true;
-            timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            timer.Start();
+            //UrlCurrent = _WebViewOffscreen.GetCurrentAddress();
+            //timer = new Timer(60000);
+            //timer.AutoReset = true;
+            //timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            //timer.Start();
         }
 
         private static async void OnTimedEvent(object source, ElapsedEventArgs e)
@@ -137,12 +137,12 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    _WebViewOffscreen.Dispose();
-                    _WebViewOffscreen = null;
-
-                    timer.Stop();
-                    timer.Dispose();
-                    timer = null;
+                    //_WebViewOffscreen.Dispose();
+                    //_WebViewOffscreen = null;
+                    //
+                    //timer.Stop();
+                    //timer.Dispose();
+                    //timer = null;
                 }
                 catch { }
             }

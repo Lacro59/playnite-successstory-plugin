@@ -110,3 +110,9 @@ Packages:
     PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.6.1/playnite-successstory-plugin_2_6_1.pext
     Changelog:
       - Fixed minors bugs
+  - Version: 2.6.2
+    RequiredApiVersion: 6.2.0
+    ReleaseDate: 2021-12-01
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.6.2/playnite-successstory-plugin_2_6_2.pext
+    Changelog:
+      - Comed back on a modification that blocks the download in an infinite time
