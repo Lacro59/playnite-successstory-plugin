@@ -125,7 +125,7 @@ namespace SuccessStory.Clients
         private static void _WebViewOffscreen_LoadingChanged(object sender, Playnite.SDK.Events.WebViewLoadingChangedEventArgs e)
         {
             UrlCurrent = _WebViewOffscreen.GetCurrentAddress();
-            timer = new Timer(20000);
+            timer = new Timer(60000);
             timer.AutoReset = true;
             timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             timer.Start();
