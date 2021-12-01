@@ -5,6 +5,7 @@ using SuccessStory.Services;
 using System;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared;
+using System.Timers;
 
 namespace SuccessStory.Clients
 {
@@ -13,6 +14,7 @@ namespace SuccessStory.Clients
         internal static readonly ILogger logger = LogManager.GetLogger();
         internal static readonly IResourceProvider resources = new ResourceProvider();
 
+        internal static Timer timer;
         protected static IWebView _WebViewOffscreen;
         internal static IWebView WebViewOffscreen
         {
@@ -21,6 +23,7 @@ namespace SuccessStory.Clients
                 if (_WebViewOffscreen == null)
                 {
                     _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
+                    _WebViewOffscreen.LoadingChanged += _WebViewOffscreen_LoadingChanged;
                 }
                 return _WebViewOffscreen;
             }
@@ -114,6 +117,34 @@ namespace SuccessStory.Clients
         {
             CachedIsConnectedResult = null;
         }
+
+
+        #region WebView manager
+        private static void _WebViewOffscreen_LoadingChanged(object sender, Playnite.SDK.Events.WebViewLoadingChangedEventArgs e)
+        {
+            timer = new Timer(20000);
+            timer.AutoReset = true;
+            timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            timer.Start();
+        }
+
+        private static async void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            if (_WebViewOffscreen != null)
+            {
+                try
+                {
+                    _WebViewOffscreen.Dispose();
+                    _WebViewOffscreen = null;
+
+                    timer.Stop();
+                    timer.Dispose();
+                    timer = null;
+                }
+                catch { }
+            }
+        }
+        #endregion
 
 
         #region Errors

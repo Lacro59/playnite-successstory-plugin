@@ -175,27 +175,29 @@ namespace SuccessStory.Clients
         {
             ResetCachedIsConnectedResult();
 
-            var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(600, 600);
-            WebView.LoadingChanged += (s, e) =>
+            using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(600, 600))
             {
-                string address = WebView.GetCurrentAddress();
-                if (address.Contains(UrlExophaseAccount) && !address.Contains(UrlExophaseLogout))
+                WebView.LoadingChanged += (s, e) =>
                 {
-                    CachedIsConnectedResult = true;
-                    WebView.Close();
-                }
-            };
+                    string address = WebView.GetCurrentAddress();
+                    if (address.Contains(UrlExophaseAccount) && !address.Contains(UrlExophaseLogout))
+                    {
+                        CachedIsConnectedResult = true;
+                        WebView.Close();
+                    }
+                };
 
-            WebView.LoadingChanged += (s, e) =>
-            {
-                if (WebView.GetCurrentAddress() == UrlExophase)
+                WebView.LoadingChanged += (s, e) =>
                 {
-                    WebView.Navigate(UrlExophaseLogin);
-                }
-            };
+                    if (WebView.GetCurrentAddress() == UrlExophase)
+                    {
+                        WebView.Navigate(UrlExophaseLogin);
+                    }
+                };
 
-            WebView.Navigate(UrlExophaseLogout);
-            WebView.OpenDialog();
+                WebView.Navigate(UrlExophaseLogout);
+                WebView.OpenDialog();
+            }
         }
 
         private bool GetIsUserLoggedIn()
