@@ -96,3 +96,11 @@ Packages:
     PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.5.1/playnite-successstory-plugin_2_5_1.pext
     Changelog:
       - Fixed settings issue
+  - Version: 2.6
+    RequiredApiVersion: 6.2.0
+    ReleaseDate: 2021-12-01
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.6/playnite-successstory-plugin_2_6.pext
+    Changelog:
+      - Added World of Warcraft achievements
+      - Updated localizations
+      - Fixed many bugs
