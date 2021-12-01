@@ -75,6 +75,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Abilita obiettivi manuali</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Abilita gli obiettivi di Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Abilita obiettivi di StarCraft II</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Abilita gli obiettivi di World of Warcraft</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Disabilita l'utilizzo API (Usare quando non si dispone di una chiave API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Cartella utente della Home</sys:String>
@@ -206,5 +207,11 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
     
     <sys:String x:Key="LOCSsOverwatchTopHero">Miglior Eroe</sys:String>
     <sys:String x:Key="LOCSsOverwatchCareerStats">Statistiche Di Carriera</sys:String>
+
+    <!-- Wow -->
+
+    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
+    <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
 
 </ResourceDictionary>

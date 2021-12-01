@@ -75,6 +75,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Enable manual achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Enable Overwatch achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Enable StarCraft II achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Enable World of Warcraft achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Disable API usage (Use when you don't have an API key)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Home user folder</sys:String>
@@ -208,5 +209,11 @@ Especially useful for Xbox achievements with their larges images which are reduc
     
     <sys:String x:Key="LOCSsOverwatchTopHero">Top Hero</sys:String>
     <sys:String x:Key="LOCSsOverwatchCareerStats">Career Stats</sys:String>
+
+    <!-- Wow -->
+
+    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
+    <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
 
 </ResourceDictionary>
