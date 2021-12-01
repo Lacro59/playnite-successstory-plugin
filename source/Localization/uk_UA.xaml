@@ -75,6 +75,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Увімкнути користувацькі досягнення</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Увімкнути досягнення Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Увімкнути досягнення StarCraft II</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Увімкнути досягнення World of Warcraft</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Вимкнути використання API (використовувати, коли у вас немає ключа API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Домашня тека користувача</sys:String>
@@ -206,5 +207,11 @@
     
     <sys:String x:Key="LOCSsOverwatchTopHero">Топовий герой</sys:String>
     <sys:String x:Key="LOCSsOverwatchCareerStats">Статистика кар'єри</sys:String>
+
+    <!-- Wow -->
+
+    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
+    <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
 
 </ResourceDictionary>
