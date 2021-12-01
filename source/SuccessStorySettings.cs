@@ -205,8 +205,17 @@ namespace SuccessStory
         public bool EnableSc2Achievements { get; set; } = false;
         public bool EnableWowAchievements { get; set; } = false;
 
-        public string WowRegion { get; set; } = "eu";
-        public string WowRealm { get; set; } = "kirin-tor";
+        public List<CbData> WowRegions { get; set; } = new List<CbData>();
+        private List<CbData> _WowRealms = new List<CbData>();
+        public List<CbData> WowRealms
+        {
+            get => _WowRealms;
+            set
+            {
+                _WowRealms = value;
+                OnPropertyChanged();
+            }
+        }
         public string WowCharacter { get; set; } = "iryaël";
 
         public bool EnableSteamWithoutWebApi { get; set; } = false;
@@ -393,6 +402,11 @@ namespace SuccessStory
             else
             {
                 Settings = new SuccessStorySettings();
+            }
+
+            if (Settings.WowRegions?.Count == 0)
+            {
+                Settings.WowRegions = new List<CbData> { new CbData { Name = "us" }, new CbData { Name = "kr" }, new CbData { Name = "eu" }, new CbData { Name = "tw" } };
             }
         }
 

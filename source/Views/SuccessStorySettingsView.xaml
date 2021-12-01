@@ -21,6 +21,7 @@
         <local:BooleanAndConverter x:Key="booleanAndConverter" />
         <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
         <convertersshared:IndexConverter x:Key="IndexConverter"/>
+        <converters:StringNullOrEmptyToBoolConverter x:Key="StringNullOrEmptyToBoolConverter"/>
         
         <local:OrderAchievementTypeToStringConverter x:Key="OrderAchievementTypeToStringConverter"/>
         <local:OrderTypeToStringConverter x:Key="OrderTypeToStringConverter"/>
@@ -477,7 +478,8 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableWowAchievements}" VerticalAlignment="Center">
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableWowAchievements}" 
+                                              Name="PART_EnableWowchievements"  VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableWowAchievements}"></Label>
                                     </CheckBox>
 
@@ -487,7 +489,7 @@
                             </Expander.Header>
 
                             <Expander.Content>
-                                <Border IsEnabled="{Binding ElementName=PART_EnableRpcs3Achievements, Path=IsChecked}"
+                                <Border IsEnabled="{Binding ElementName=PART_EnableWowchievements, Path=IsChecked}"
 				                        Margin="5" Padding="10"
 				                        BorderBrush="{DynamicResource PopupBorderBrush}"
 				                        BorderThickness="{DynamicResource PopupBorderThickness}">
@@ -496,6 +498,8 @@
                                             <ColumnDefinition Width="auto" />
                                             <ColumnDefinition Width="10" />
                                             <ColumnDefinition Width="300" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="auto" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto"/>
@@ -504,14 +508,43 @@
                                             <RowDefinition Height="10"/>
                                             <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
-                                        
-                                        <Label Grid.Row="0" Grid.Column="0" Content="Region" />
-                                        <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Settings.WowRegion}" />
 
-                                        <Label Grid.Row="2" Grid.Column="0" Content="Realm" />
-                                        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Settings.WowRealm}" />
+                                        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource LOCSsWowRegion}" />
+                                        <ComboBox Name="PART_WowRegion" Grid.Row="0" Grid.Column="2" IsEditable="True" IsReadOnly="True" 
+                                                  ItemsSource="{Binding Settings.WowRegions}" TextSearch.TextPath="Name">
+                                            <ComboBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ComboBoxItem}">
+                                                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                                                </Style>
+                                            </ComboBox.ItemContainerStyle>
+                                            
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
 
-                                        <Label Grid.Row="4" Grid.Column="0" Content="Character" />
+                                        <Label Grid.Row="2" Grid.Column="0" Content="{DynamicResource LOCSsWowRealm}" />
+                                        <ComboBox Name="PART_WowRealm" Grid.Row="2" Grid.Column="2" IsEditable="True" IsReadOnly="True" 
+                                                  ItemsSource="{Binding Settings.WowRealms}" TextSearch.TextPath="Name">
+                                            <ComboBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ComboBoxItem}">
+                                                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                                                </Style>
+                                            </ComboBox.ItemContainerStyle>
+
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" />
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Button Grid.Row="2" Grid.Column="4" Content="&#xefd1;" FontFamily="{DynamicResource FontIcoFont}"
+                                                IsEnabled="{Binding ElementName=PART_WowRegion, Path=Text, Converter={StaticResource StringNullOrEmptyToBoolConverter}}" 
+                                                Click="Button_RefreshWowRealm" />
+
+                                        <Label Grid.Row="4" Grid.Column="0" Content="{DynamicResource LOCSsWowCharacter}" />
                                         <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding Settings.WowCharacter}" />
                                     </Grid>
                                 </Border>

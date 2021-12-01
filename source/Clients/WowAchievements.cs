@@ -14,6 +14,7 @@ namespace SuccessStory.Clients
 {
     internal class WowAchievements : BattleNetAchievements
     {
+        private const string UrlWowGraphQL = @"https://worldofwarcraft.com/graphql";
         private const string UrlWowBase = @"https://worldofwarcraft.com/{0}/character/{1}/{2}/{3}/achievements/";
         private string UrlWowBaseLocalised;
 
@@ -35,17 +36,7 @@ namespace SuccessStory.Clients
 
         public WowAchievements() : base("Wow", CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
-            string region = PluginDatabase.PluginSettings.Settings.WowRegion;
-            string realm = PluginDatabase.PluginSettings.Settings.WowRealm;
-            string character = PluginDatabase.PluginSettings.Settings.WowCharacter;
 
-            UrlWowBaseLocalised = string.Format(UrlWowBase, LocalLang, region, realm, WebUtility.UrlEncode(character));
-            Urls = new List<string>
-            {
-                UrlWowAchCharacter, UrlWowAchPvp, UrlWowAchQuests, UrlWowAchExploration, UrlWowAchWorlEvents, UrlWowAchDungeonsRaids,
-                UrlWowAchProfessions, UrlWowAchReputation, UrlWowAchPetBattles, UrlWowAchCollections, UrlWowAchExpansionFeatures, UrlWowAchFeatsStrength,
-                UrlWowAchLegacy
-            };
         }
 
 
@@ -58,6 +49,18 @@ namespace SuccessStory.Clients
             string urlFinal = string.Empty;
             try
             {
+                string region = PluginDatabase.PluginSettings.Settings.WowRegions.Find(x => x.IsSelected)?.Name;
+                string realm = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Slug;
+                string character = PluginDatabase.PluginSettings.Settings.WowCharacter;
+
+                UrlWowBaseLocalised = string.Format(UrlWowBase, LocalLang, region, realm, WebUtility.UrlEncode(character));
+                Urls = new List<string>
+                {
+                    UrlWowAchCharacter, UrlWowAchPvp, UrlWowAchQuests, UrlWowAchExploration, UrlWowAchWorlEvents, UrlWowAchDungeonsRaids,
+                    UrlWowAchProfessions, UrlWowAchReputation, UrlWowAchPetBattles, UrlWowAchCollections, UrlWowAchExpansionFeatures, UrlWowAchFeatsStrength,
+                    UrlWowAchLegacy
+                };
+
                 foreach (string url in Urls)
                 {
                     urlFinal = UrlWowBaseLocalised + url;
@@ -130,7 +133,37 @@ namespace SuccessStory.Clients
 
         public override bool EnabledInSettings()
         {
-            return PluginDatabase.PluginSettings.Settings.EnableWowAchievements;
+            string region = PluginDatabase.PluginSettings.Settings.WowRegions.Find(x => x.IsSelected)?.Name;
+            string realm = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Slug;
+            string character = PluginDatabase.PluginSettings.Settings.WowCharacter;
+
+            return (PluginDatabase.PluginSettings.Settings.EnableWowAchievements 
+                && !region.IsNullOrEmpty() && !realm.IsNullOrEmpty() && !character.IsNullOrEmpty());
+        }
+        #endregion
+
+
+        #region Wow
+        public static List<CbData> GetRealm(string Region)
+        {
+            List<CbData> CbDatas = new List<CbData>();
+
+            try
+            {
+                string payload = "{\"operationName\":\"GetRealmStatusData\",\"variables\":{\"input\":{\"compoundRegionGameVersionSlug\":\"" + Region + "\"}},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"c40d282bc48d4d686417f39ba896174eea212d3b86ba8bacd6cdf452b9111554\"}}}";
+                string result = Web.PostStringDataPayload(UrlWowGraphQL, payload).GetAwaiter().GetResult();
+                WowRegionResult wowRegionResult = Serialization.FromJson<WowRegionResult>(result);
+                foreach(Realm realm in wowRegionResult.data.Realms)
+                {
+                    CbDatas.Add(new CbData { Name = realm.name, Slug = realm.slug });
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+
+            return CbDatas;
         }
         #endregion
     }

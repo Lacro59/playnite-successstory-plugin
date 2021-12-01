@@ -70,6 +70,8 @@ namespace SuccessStory.Views
         {
             InitializeComponent();
 
+            PART_WowRegion.Text = PluginDatabase.PluginSettings.Settings.WowRegions.Find(x => x.IsSelected)?.Name;
+            PART_WowRealm.Text = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Name;
 
             PART_SelectorColorPicker.OnlySimpleColor = true;
 
@@ -479,6 +481,13 @@ namespace SuccessStory.Views
         private void PART_CbCompletation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             completionStatus = (CompletionStatus)PART_CbCompletation.SelectedItem;
+        }
+
+
+        private void Button_RefreshWowRealm(object sender, RoutedEventArgs e)
+        {
+            PluginDatabase.PluginSettings.Settings.WowRealms = WowAchievements.GetRealm(PART_WowRegion.Text);
+            PART_WowRealm.Text = string.Empty;
         }
     }
 

@@ -173,6 +173,8 @@
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
     <Compile Include="Models\WowAchievementsData.cs" />
+    <Compile Include="Models\CbData.cs" />
+    <Compile Include="Models\WowRegionResult.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml.cs">
       <DependentUpon>ComboBoxRemovable.xaml</DependentUpon>
     </Compile>

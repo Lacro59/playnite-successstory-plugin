@@ -208,4 +208,10 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSsOverwatchTopHero">Top Hero</sys:String>
     <sys:String x:Key="LOCSsOverwatchCareerStats">Career Stats</sys:String>
 
+    <!-- Wow -->
+
+    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
+    <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
+
 </ResourceDictionary>
