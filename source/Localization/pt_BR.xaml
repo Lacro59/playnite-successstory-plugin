@@ -75,6 +75,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Habilitar conquistas manuais</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Habilitar conquistas do Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Habilitar conquistas do StarCraft II</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Ativar conquistas de World of Warcraft</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Desabilitar o uso da API (Use quando você não tem uma chave de API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Pasta principal do usuário</sys:String>
@@ -206,5 +207,11 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
     
     <sys:String x:Key="LOCSsOverwatchTopHero">Herói principal</sys:String>
     <sys:String x:Key="LOCSsOverwatchCareerStats">Estatísticas da carreira</sys:String>
+
+    <!-- Wow -->
+
+    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
+    <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
 
 </ResourceDictionary>
