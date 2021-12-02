@@ -1,6 +1,8 @@
 ﻿using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
+using CommonPlayniteShared.Common;
 using CommonPluginsShared;
+using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Models;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -9,8 +11,11 @@ using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SuccessStory.Clients
@@ -32,18 +37,18 @@ namespace SuccessStory.Clients
 
     class ExophaseAchievements : GenericAchievements
     {
-        private const string UrlExophase = @"https://www.exophase.com/";
-
         private const string UrlExophaseSearch = @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
+        private const string UrlExophase = @"https://www.exophase.com";
+        private string UrlExophaseLogin = $"{UrlExophase}/login";
+        private string UrlExophaseLogout = $"{UrlExophase}/logout";
+        private string UrlExophaseAccount = $"{UrlExophase}/account";
 
-        private const string UrlExophaseLogin = @"https://www.exophase.com/login";
-        private const string UrlExophaseLogout = @"https://www.exophase.com/logout";
-        private const string UrlExophaseAccount = @"https://www.exophase.com/account";
+        private string cookiesPath;
 
 
         public ExophaseAchievements() : base("Exophase")
         {
-
+            cookiesPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "exophase.json");
         }
 
 
@@ -62,12 +67,9 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
 
-
             try
             {
-                WebViewOffscreen.NavigateAndWait(searchResult.Url);
-                WebViewOffscreen.NavigateAndWait(searchResult.Url);
-                string DataExophase = WebViewOffscreen.GetPageSource();
+                string DataExophase = Web.DownloadStringData(searchResult.Url, GetCookies()).GetAwaiter().GetResult();
 
                 HtmlParser parser = new HtmlParser();
                 IHtmlDocument htmlDocument = parser.Parse(DataExophase);
@@ -171,8 +173,30 @@ namespace SuccessStory.Clients
 
 
         #region Exophase
+        private List<HttpCookie> GetCookies()
+        {
+            if (File.Exists(cookiesPath))
+            {
+                try
+                {
+                    return Serialization.FromJson<List<HttpCookie>>(
+                        Encryption.DecryptFromFile(
+                            cookiesPath,
+                            Encoding.UTF8,
+                            WindowsIdentity.GetCurrent().User.Value));
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, "Failed to load saved cookies");
+                }
+            }
+
+            return null;
+        }
+
         public void Login()
         {
+            FileSystem.DeleteFile(cookiesPath);
             ResetCachedIsConnectedResult();
 
             using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(600, 600))
@@ -187,30 +211,26 @@ namespace SuccessStory.Clients
                     }
                 };
 
-                WebView.LoadingChanged += (s, e) =>
-                {
-                    if (WebView.GetCurrentAddress() == UrlExophase)
-                    {
-                        WebView.Navigate(UrlExophaseLogin);
-                    }
-                };
-
-                WebView.Navigate(UrlExophaseLogout);
+                WebView.DeleteDomainCookies(".exophase.com");
+                WebView.Navigate(UrlExophaseLogin);
                 WebView.OpenDialog();
             }
+
+            List<HttpCookie> httpCookies = Serialization.GetClone(WebViewOffscreen.GetCookies().Where(x => x.Domain.IsEqual(".exophase.com")).ToList());
+            FileSystem.CreateDirectory(Path.GetDirectoryName(cookiesPath));
+            Encryption.EncryptToFile(
+                cookiesPath,
+                Serialization.ToJson(httpCookies),
+                Encoding.UTF8,
+                WindowsIdentity.GetCurrent().User.Value);
+            WebViewOffscreen.DeleteDomainCookies(".exophase.com");
+            WebViewOffscreen.Dispose();
         }
 
         private bool GetIsUserLoggedIn()
         {
-            WebViewOffscreen.NavigateAndWait(UrlExophaseLogin);
-
-            if (!WebViewOffscreen.GetCurrentAddress().StartsWith(UrlExophaseAccount))
-            {
-                logger.Warn("Exophase user is not connected");
-                return false;
-            }
-            logger.Info("Exophase user is connected");
-            return true;
+            string DataExophase = Web.DownloadStringData(UrlExophaseAccount, GetCookies()).GetAwaiter().GetResult();
+            return DataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
         }
 
 
