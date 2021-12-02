@@ -137,7 +137,7 @@ namespace SuccessStory.Services
                 AddOrUpdate(gameAchievements);
             }
             else if (gameAchievements == null)
-            {                
+            {
                 if (game != null)
                 {
                     gameAchievements = GetDefault(game);
@@ -643,64 +643,67 @@ namespace SuccessStory.Services
 
                     if (Achievements != null && Achievements.Count > 0)
                     {
-                        Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
-                        DateTime TempDateTime = Achievements.Where(x => x.IsUnlock).Select(x => x.DateWhenUnlocked).Max()?.ToLocalTime() ?? DateTime.Now;
-
-                        for (int i = limit; i >= 0; i--)
-                        {
-                            GraphicsAchievementsLabels[(limit - i)] = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null);
-
-                            double DataValue = CutPeriod ? double.NaN : 0;
-
-                            SourceAchievementsSeries.Add(new CustomerForSingle
-                            {
-                                Name = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null),
-                                Values = DataValue
-                            });
-                        }
-
-                        for (int i = 0; i < Achievements.Count; i++)
-                        {
-                            if (Achievements[i].DateWhenUnlocked != null)
-                            {
-                                string tempDate = (string)localDateConverter.Convert(((DateTime)Achievements[i].DateUnlocked).ToLocalTime(), null, null, null);
-                                int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
-
-                                if (index >= 0 && index < (limit + 1))
-                                {
-                                    if (double.IsNaN(SourceAchievementsSeries[index].Values))
-                                    {
-                                        SourceAchievementsSeries[index].Values = 0;
-                                    }
-                                    SourceAchievementsSeries[index].Values += 1;
-                                }
-                            }
-                        }
-
                         if (CutPeriod)
                         {
-                            bool PrevIsNaN = false;
+                            var groupedAchievements = Achievements
+                                .Where(a => a.IsUnlock && a.DateWhenUnlocked.HasValue)
+                                .GroupBy(a => a.DateWhenUnlocked.Value.ToLocalTime().Date)
+                                .OrderBy(g => g.Key);
 
-                            for (int i = (SourceAchievementsSeries.Count - 1); i > -1; i--)
+                            DateTime? previousDate = null;
+
+                            foreach (var grouping in groupedAchievements)
                             {
-                                if (double.IsNaN(SourceAchievementsSeries[i].Values))
+                                if (previousDate.HasValue && previousDate < grouping.Key.AddDays(-1))
                                 {
-                                    if (PrevIsNaN)
+                                    SourceAchievementsSeries.Add(new CustomerForSingle
                                     {
-                                        SourceAchievementsSeries.RemoveAt(i);
-                                        var temp = GraphicsAchievementsLabels.ToList();
-                                        temp.RemoveAt(i);
-                                        GraphicsAchievementsLabels = temp.ToArray();
-                                    }
-                                    else
-                                    {
-                                        GraphicsAchievementsLabels[i] = string.Empty;
-                                        PrevIsNaN = true;
-                                    }
+                                        Name = string.Empty,
+                                        Values = double.NaN
+                                    });
                                 }
-                                else
+                                SourceAchievementsSeries.Add(new CustomerForSingle
                                 {
-                                    PrevIsNaN = false;
+                                    Name = (string)localDateConverter.Convert(grouping.Key, null, null, null),
+                                    Values = grouping.Count()
+                                });
+                                previousDate = grouping.Key;
+                            }
+                            GraphicsAchievementsLabels = SourceAchievementsSeries.Select(x => x.Name).ToArray();
+                        }
+                        else
+                        {
+                            Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
+                            DateTime TempDateTime = Achievements.Where(x => x.IsUnlock).Select(x => x.DateWhenUnlocked).Max()?.ToLocalTime() ?? DateTime.Now;
+
+                            for (int i = limit; i >= 0; i--)
+                            {
+                                GraphicsAchievementsLabels[(limit - i)] = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null);
+
+                                double DataValue = CutPeriod ? double.NaN : 0;
+
+                                SourceAchievementsSeries.Add(new CustomerForSingle
+                                {
+                                    Name = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null),
+                                    Values = DataValue
+                                });
+                            }
+
+                            for (int i = 0; i < Achievements.Count; i++)
+                            {
+                                if (Achievements[i].DateWhenUnlocked != null)
+                                {
+                                    string tempDate = (string)localDateConverter.Convert(((DateTime)Achievements[i].DateUnlocked).ToLocalTime(), null, null, null);
+                                    int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
+
+                                    if (index >= 0 && index < (limit + 1))
+                                    {
+                                        if (double.IsNaN(SourceAchievementsSeries[index].Values))
+                                        {
+                                            SourceAchievementsSeries[index].Values = 0;
+                                        }
+                                        SourceAchievementsSeries[index].Values += 1;
+                                    }
                                 }
                             }
                         }
@@ -991,7 +994,7 @@ namespace SuccessStory.Services
                     }
                 }
 
-                    stopWatch.Stop();
+                stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
                 logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
