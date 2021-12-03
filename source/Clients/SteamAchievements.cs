@@ -122,7 +122,7 @@ namespace SuccessStory.Clients
 
 
                         // Set source link
-                        if (gameAchievements.HasAchivements)
+                        if (gameAchievements.HasAchievements)
                         {
                             gameAchievements.SourcesLink = new SourceLink
                             {
@@ -135,7 +135,7 @@ namespace SuccessStory.Clients
                 }
 
                 // Set progression
-                if (gameAchievements.HasAchivements)
+                if (gameAchievements.HasAchievements)
                 {
                     gameAchievements.Items = GetProgressionByWeb(gameAchievements.Items, string.Format(UrlProfilById, SteamId, AppId, LocalLang));
                 }
@@ -178,7 +178,7 @@ namespace SuccessStory.Clients
 
 
                         // Set source link
-                        if (gameAchievements.HasAchivements)
+                        if (gameAchievements.HasAchievements)
                         {
                             gameAchievements.SourcesLink = new SourceLink
                             {
@@ -193,7 +193,7 @@ namespace SuccessStory.Clients
 
 
             // Set rarity
-            if (gameAchievements.HasAchivements)
+            if (gameAchievements.HasAchievements)
             {
                 if (!IsLocal && (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate))
                 {
@@ -220,7 +220,7 @@ namespace SuccessStory.Clients
             }
 
             // Set missing description
-            if (gameAchievements.HasAchivements)
+            if (gameAchievements.HasAchievements)
             {
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
@@ -290,7 +290,7 @@ namespace SuccessStory.Clients
             }
 
 
-            if (gameAchievements.HasAchivements)
+            if (gameAchievements.HasAchievements)
             {
                 gameAchievements.Items = GetGlobalAchievementPercentagesForApp(AppId, gameAchievements.Items);
 

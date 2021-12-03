@@ -114,7 +114,7 @@ namespace SuccessStory.Clients
 
 
             // Set source link
-            if (gameAchievements.HasAchivements)
+            if (gameAchievements.HasAchievements)
             {
                 string LangUrl = CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
 

@@ -206,7 +206,7 @@ namespace SuccessStory.Clients
 
 
             // Set source link
-            if (gameAchievements.HasAchivements)
+            if (gameAchievements.HasAchievements)
             {
                 gameAchievements.SourcesLink = new SourceLink
                 {
