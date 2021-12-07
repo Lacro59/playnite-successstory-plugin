@@ -22,6 +22,12 @@ if (Test-Path -Path $PlaynitePathTEMP)
 	$PlaynitePath = $PlaynitePathTEMP
 }
 
+$PlaynitePathTEMP = "F:\Playnite_dev"
+if (Test-Path -Path $PlaynitePathTEMP) 
+{
+	$PlaynitePath = $PlaynitePathTEMP
+}
+
 
 $ToolboxPath = (Join-Path $PlaynitePath "toolbox.exe")
 $OutDirPath = (Join-Path $OutDir "..")

@@ -26,6 +26,8 @@ using System.Reflection;
 using CommonPluginsShared.Extensions;
 using System.Diagnostics;
 using SuccessStory.Clients;
+using AngleSharp.Parser.Html;
+using AngleSharp.Dom.Html;
 
 namespace SuccessStory
 {
@@ -708,7 +710,43 @@ namespace SuccessStory
                 Description = "Test",
                 Action = (mainMenuItem) => 
                 {
-                    
+                    //List<HttpCookie> cookies = null;
+                    //List<HttpCookie> cookiesAll = null;
+                    //var UrlProfil = "";
+                    //var lang = CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+                    //
+                    //using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(600, 600))
+                    //{
+                    //    WebView.Navigate($"https://playoverwatch.com/{lang}");
+                    //    WebView.OpenDialog();
+                    //
+                    //
+                    //    HtmlParser parser = new HtmlParser();
+                    //    IHtmlDocument htmlDocument = parser.Parse(WebView.GetPageSource());
+                    //
+                    //
+                    //    foreach (var SearchElement in htmlDocument.QuerySelectorAll("a.ow-SiteNavLogin-profile"))
+                    //    {
+                    //        UrlProfil = SearchElement.GetAttribute("href");
+                    //    }
+                    //
+                    //
+                    //    cookies = WebView.GetCookies().Where(
+                    //        x => x.Domain.Contains("playoverwatch.com") 
+                    //                    || x.Domain.Contains("blizzard.com", StringComparison.OrdinalIgnoreCase)
+                    //                    || x.Domain.Contains("battle.net", StringComparison.OrdinalIgnoreCase)
+                    //    ).ToList();
+                    //
+                    //    cookiesAll = WebView.GetCookies();
+                    //}
+                    //
+                    //var url = $"https://playoverwatch.com/{lang}{UrlProfil}";
+                    //
+                    //var data = Web.DownloadStringData(url, cookies).GetAwaiter().GetResult();
+                    //
+                    //
+                    //var bbb = data.Contains("11:49:44");
+                    //var cccc = data.Contains("js-show-more-heroes");
                 }
             });
 #endif

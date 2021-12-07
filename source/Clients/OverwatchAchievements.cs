@@ -18,9 +18,9 @@ namespace SuccessStory.Clients
 {
     internal class OverwatchAchievements : BattleNetAchievements
     {
-        private const string UrlOverwatchProfil = @"https://playoverwatch.com/";
-        private const string UrlOverwatchLogin = @"https://playoverwatch.com/login";
-        private string UrlOverwatchProfilLocalised { get; set; }
+        private const string UrlOverwatchProfil = @"https://playoverwatch.com";
+        private string UrlOverwatchLogin = $"{UrlOverwatchProfil}/login";
+        private string UrlOverwatchProfilLocalised = $"{UrlOverwatchProfil}/" + "{0}";
 
         private List<ColorElement> OverwatchColor = new List<ColorElement>
         {
@@ -61,7 +61,7 @@ namespace SuccessStory.Clients
 
         public OverwatchAchievements() : base("Overwatch", CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
-            UrlOverwatchProfilLocalised = UrlOverwatchProfil + LocalLang;
+            UrlOverwatchProfilLocalised = string.Format(UrlOverwatchProfilLocalised, LocalLang);
         }
 
 

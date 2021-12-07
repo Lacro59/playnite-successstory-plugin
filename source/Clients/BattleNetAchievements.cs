@@ -1,6 +1,5 @@
 ﻿using CommonPlayniteShared.PluginLibrary.BattleNetLibrary.Models;
 using CommonPluginsShared;
-using Playnite.SDK;
 using Playnite.SDK.Data;
 using System;
 
