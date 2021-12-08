@@ -137,6 +137,102 @@ namespace SuccessStory.Clients
             }
         }
 
+
+        private List<Achievements> ReadAchievementsINI(string pathFile, List<Achievements> ReturnAchievements)
+        {
+            try
+            {
+                string line;
+
+                string Name = string.Empty;
+                bool State = false;
+                string sTimeUnlock = string.Empty;
+                int timeUnlock = 0;
+                DateTime? DateUnlocked = null;
+
+                StreamReader file = new StreamReader(pathFile);
+                while ((line = file.ReadLine()) != null)
+                {
+                    // Achievement name
+                    if (line.IndexOf("[") > -1)
+                    {
+                        Name = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
+                        State = false;
+                        timeUnlock = 0;
+                        DateUnlocked = null;
+                    }
+
+                    if (Name != "Steam")
+                    {
+                        // State
+                        if (line.IndexOf("State") > -1 && line.ToLower() != "state = 0000000000")
+                        {
+                            State = true;
+                        }
+
+                        // Unlock
+                        if (line.IndexOf("Time") > -1 && line.ToLower() != "time = 0000000000")
+                        {
+                            if (line.Contains("Time = "))
+                            {
+                                sTimeUnlock = line.Replace("Time = ", string.Empty);
+                                timeUnlock = BitConverter.ToInt32(StringToByteArray(line.Replace("Time = ", string.Empty)), 0);
+                            }
+                            if (line.Contains("Time="))
+                            {
+                                sTimeUnlock = line.Replace("Time=", string.Empty);
+                                sTimeUnlock = sTimeUnlock.Substring(0, sTimeUnlock.Length - 2);
+
+                                char[] ca = sTimeUnlock.ToCharArray();
+                                StringBuilder sb = new StringBuilder(sTimeUnlock.Length);
+                                for (int i = 0; i < sTimeUnlock.Length; i += 2)
+                                {
+                                    sb.Insert(0, ca, i, 2);
+                                }
+                                sTimeUnlock = sb.ToString();
+
+                                timeUnlock = int.Parse(sTimeUnlock, System.Globalization.NumberStyles.HexNumber);
+                            }
+                        }
+                        if (line.IndexOf("CurProgress") > -1 && line.ToLower() != "curprogress = 0000000000")
+                        {
+                            sTimeUnlock = line.Replace("CurProgress = ", string.Empty);
+                            timeUnlock = BitConverter.ToInt32(StringToByteArray(line.Replace("CurProgress = ", string.Empty)), 0);
+                        }
+
+                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+
+                        // End Achievement
+                        if (timeUnlock != 0 && State)
+                        {
+                            ReturnAchievements.Add(new Achievements
+                            {
+                                ApiName = Name,
+                                Name = string.Empty,
+                                Description = string.Empty,
+                                UrlUnlocked = string.Empty,
+                                UrlLocked = string.Empty,
+                                DateUnlocked = DateUnlocked
+                            });
+
+                            Name = string.Empty;
+                            State = false;
+                            timeUnlock = 0;
+                            DateUnlocked = null;
+                        }
+                    }
+                }
+                file.Close();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+
+            return ReturnAchievements;
+        }
+
+
         private List<Achievements> Get(int SteamId, string apiKey, bool IsManual)
         {
             List<Achievements> ReturnAchievements = new List<Achievements>();
@@ -206,68 +302,7 @@ namespace SuccessStory.Clients
                                 {
                                     if (File.Exists(dirUser + $"\\{SteamId}\\stats\\achievements.ini"))
                                     {
-                                        string line;
-
-                                        string Name = string.Empty;
-                                        bool State = false;
-                                        string sTimeUnlock = string.Empty;
-                                        int timeUnlock = 0;
-                                        DateTime? DateUnlocked = null;
-
-                                        StreamReader file = new StreamReader(dirUser + $"\\{SteamId}\\stats\\achievements.ini");
-                                        while ((line = file.ReadLine()) != null)
-                                        {
-                                            // Achievement name
-                                            if (line.IndexOf("[") > -1)
-                                            {
-                                                Name = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
-                                                State = false;
-                                                timeUnlock = 0;
-                                                DateUnlocked = null;
-                                            }
-
-                                            if (Name != "Steam")
-                                            {
-                                                // State
-                                                if (line.IndexOf("State") > -1 && line.ToLower() != "state = 0000000000")
-                                                {
-                                                    State = true;
-                                                }
-
-                                                // Unlock
-                                                if (line.IndexOf("Time") > -1 && line.ToLower() != "time = 0000000000")
-                                                {
-                                                    sTimeUnlock = line.Replace("Time = ", string.Empty);
-                                                    timeUnlock = BitConverter.ToInt32(StringToByteArray(line.Replace("Time = ", string.Empty)), 0);
-                                                }
-                                                if (line.IndexOf("CurProgress") > -1 && line.ToLower() != "curprogress = 0000000000")
-                                                {
-                                                    sTimeUnlock = line.Replace("CurProgress = ", string.Empty);
-                                                    timeUnlock = BitConverter.ToInt32(StringToByteArray(line.Replace("CurProgress = ", string.Empty)), 0);
-                                                }
-                                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
-
-                                                // End Achievement
-                                                if (timeUnlock != 0 && State)
-                                                {
-                                                    ReturnAchievements.Add(new Achievements
-                                                    {
-                                                        ApiName = Name,
-                                                        Name = string.Empty,
-                                                        Description = string.Empty,
-                                                        UrlUnlocked = string.Empty,
-                                                        UrlLocked = string.Empty,
-                                                        DateUnlocked = DateUnlocked
-                                                    });
-
-                                                    Name = string.Empty;
-                                                    State = false;
-                                                    timeUnlock = 0;
-                                                    DateUnlocked = null;
-                                                }
-                                            }
-                                        }
-                                        file.Close();
+                                        ReturnAchievements = ReadAchievementsINI(dirUser + $"\\{SteamId}\\stats\\achievements.ini", ReturnAchievements);
                                     }
                                 }
                             }
@@ -287,7 +322,14 @@ namespace SuccessStory.Clients
                             {
                                 if (!DirAchivements.Contains("steamemu", StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    ReturnAchievements = GetSteamEmu(DirAchivements + $"\\{SteamId}\\SteamEmu");
+                                    if (File.Exists(DirAchivements + $"\\{SteamId}\\stats\\achievements.ini"))
+                                    {
+                                        ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\{SteamId}\\stats\\achievements.ini", ReturnAchievements);
+                                    }
+                                    else
+                                    {
+                                        ReturnAchievements = GetSteamEmu(DirAchivements + $"\\{SteamId}\\SteamEmu");
+                                    }
                                 }
                                 else
                                 {
@@ -316,8 +358,7 @@ namespace SuccessStory.Clients
                     return new List<Achievements>();
                 }
             }
-
-
+            
             #region Get details achievements
             // List details acheviements
             string lang = CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
