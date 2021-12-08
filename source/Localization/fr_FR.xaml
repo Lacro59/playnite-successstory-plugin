@@ -75,7 +75,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Activer les succès manuels</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Activer les accomplissements de Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Activer les succès de StarCraft II</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Enable World of Warcraft achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Activer les succès de World of Warcraft</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Désactiver l'utilisation de l'API (à utiliser lorsque vous n'avez pas de clé API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Dossier de l'utilisateur</sys:String>

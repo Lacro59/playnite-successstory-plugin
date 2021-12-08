@@ -210,8 +210,8 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
 
     <!-- Wow -->
 
-    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
-    <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
-    <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
+    <sys:String x:Key="LOCSsWowRegion">Regione</sys:String>
+    <sys:String x:Key="LOCSsWowRealm">Reame</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">Personaggio</sys:String>
 
 </ResourceDictionary>
