@@ -37,10 +37,7 @@ namespace SuccessStory.Clients
         private const string UrlAchievements = @"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true";
 
 
-        public OriginAchievements() : base(
-            "Origin", 
-            CodeLang.GetOriginLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language),
-            CodeLang.GetOriginLangCountry(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public OriginAchievements() : base("Origin", CodeLang.GetOriginLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language), CodeLang.GetOriginLangCountry(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
 
         }

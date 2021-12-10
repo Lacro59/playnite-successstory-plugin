@@ -453,12 +453,12 @@ namespace SuccessStory.Clients
         {
             List<SearchResult> ListSearchGames = new List<SearchResult>();
 
+            string Url = string.Empty;
             try
             {
-                var DataSteamSearch = Web.DownloadStringData(string.Format(UrlSearch, WebUtility.UrlEncode(Name))).GetAwaiter().GetResult();
-
-                HtmlParser parser = new HtmlParser();
-                IHtmlDocument htmlDocument = parser.Parse(DataSteamSearch);
+                Url = string.Format(UrlSearch, WebUtility.UrlEncode(Name));
+                string DataSteamSearch = Web.DownloadStringData(Url).GetAwaiter().GetResult();
+                IHtmlDocument htmlDocument = new HtmlParser().Parse(DataSteamSearch);
 
                 int index = 0;
                 foreach (var gameElem in htmlDocument.QuerySelectorAll(".search_result_row"))
@@ -520,7 +520,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, $"Error with SearchGame{Name} on {Url}", true, "SuccessStory");
             }
 
             return ListSearchGames;

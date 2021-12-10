@@ -9,7 +9,6 @@ using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SuccessStory.Clients
 {
@@ -50,10 +49,8 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
 
-
             string Url = string.Empty;
             string ResultWeb = string.Empty;
-
 
             if (IsConnected())
             {
