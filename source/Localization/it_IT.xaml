@@ -214,4 +214,10 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
     <sys:String x:Key="LOCSsWowRealm">Reame</sys:String>
     <sys:String x:Key="LOCSsWowCharacter">Personaggio</sys:String>
 
+    <!-- QuickSearch -->
+
+    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+
 </ResourceDictionary>

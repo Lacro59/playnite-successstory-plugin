@@ -215,4 +215,10 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <sys:String x:Key="LOCSsWowRealm">Royaume</sys:String>
     <sys:String x:Key="LOCSsWowCharacter">Personnage</sys:String>
 
+    <!-- QuickSearch -->
+
+    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+
 </ResourceDictionary>

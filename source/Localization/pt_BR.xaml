@@ -214,4 +214,10 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
     <sys:String x:Key="LOCSsWowRealm">Reino</sys:String>
     <sys:String x:Key="LOCSsWowCharacter">Personagem</sys:String>
 
+    <!-- QuickSearch -->
+
+    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+
 </ResourceDictionary>
