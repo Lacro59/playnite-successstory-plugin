@@ -214,4 +214,10 @@
     <sys:String x:Key="LOCSsWowRealm">Реалм</sys:String>
     <sys:String x:Key="LOCSsWowCharacter">Персонаж</sys:String>
 
+    <!-- QuickSearch -->
+
+    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+
 </ResourceDictionary>
