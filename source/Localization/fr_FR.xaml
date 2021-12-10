@@ -211,8 +211,8 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
 
     <!-- Wow -->
 
-    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
-    <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
-    <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
+    <sys:String x:Key="LOCSsWowRegion">Région</sys:String>
+    <sys:String x:Key="LOCSsWowRealm">Royaume</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">Personnage</sys:String>
 
 </ResourceDictionary>
