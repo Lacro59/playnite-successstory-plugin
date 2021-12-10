@@ -216,4 +216,10 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
     <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
 
+    <!-- QuickSearch -->
+
+    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+
 </ResourceDictionary>
