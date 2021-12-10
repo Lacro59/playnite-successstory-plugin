@@ -19,22 +19,22 @@ namespace SuccessStory.Clients
 
         #region Battle.net
         // TODO Rewrite authentification
-        protected BattleNetApiStatus GetApiStatus()
-        {
-            try
-            {
-                // This refreshes authentication cookie
-                WebViewOffscreen.NavigateAndWait(UrlOauth2);
-                WebViewOffscreen.NavigateAndWait(UrlApiStatus);
-                var textStatus = WebViewOffscreen.GetPageText();
-                return Serialization.FromJson<BattleNetApiStatus>(textStatus);
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, "SuccessStory");
-                return null;
-            }
-        }
+        //protected BattleNetApiStatus GetApiStatus()
+        //{
+        //    try
+        //    {
+        //        // This refreshes authentication cookie
+        //        WebViewOffscreen.NavigateAndWait(UrlOauth2);
+        //        WebViewOffscreen.NavigateAndWait(UrlApiStatus);
+        //        var textStatus = WebViewOffscreen.GetPageText();
+        //        return Serialization.FromJson<BattleNetApiStatus>(textStatus);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Common.LogError(ex, false, true, "SuccessStory");
+        //        return null;
+        //    }
+        //}
         #endregion
     }
 }

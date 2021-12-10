@@ -361,15 +361,18 @@ namespace SuccessStory.Clients
 
         public override bool IsConnected()
         {
-            if (IsConfigured())
+            if (CachedIsConnectedResult == null)
             {
-                string ProfileById = $"https://steamcommunity.com/profiles/{SteamId}";
-                string ProfileByName = $"https://steamcommunity.com/id/{SteamUser}";
+                if (IsConfigured())
+                {
+                    string ProfileById = $"https://steamcommunity.com/profiles/{SteamId}";
+                    string ProfileByName = $"https://steamcommunity.com/id/{SteamUser}";
 
-                return IsProfileConnected(ProfileById) || IsProfileConnected(ProfileByName);
+                    CachedIsConnectedResult = IsProfileConnected(ProfileById) || IsProfileConnected(ProfileByName);
+                }
             }
 
-            return false;
+            return (bool)CachedIsConnectedResult;
         }
 
         public override bool IsConfigured()
@@ -528,9 +531,13 @@ namespace SuccessStory.Clients
         {
             if (SteamUser.IsNullOrEmpty() || SteamId.IsNullOrEmpty())
             {
-                WebViewOffscreen.NavigateAndWait(UrlProfil);
-                WebViewOffscreen.NavigateAndWait(WebViewOffscreen.GetCurrentAddress());
-                string ResultWeb = WebViewOffscreen.GetPageSource();
+                string ResultWeb = string.Empty;
+                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                {
+                    WebViewOffscreen.NavigateAndWait(UrlProfil);
+                    WebViewOffscreen.NavigateAndWait(WebViewOffscreen.GetCurrentAddress());
+                    ResultWeb = WebViewOffscreen.GetPageSource();
+                }
 
                 if (SteamUser.IsNullOrEmpty())
                 {
@@ -632,8 +639,14 @@ namespace SuccessStory.Clients
         {
             try
             {
-                WebViewOffscreen.NavigateAndWait(profilePageUrl);
-                IHtmlDocument HtmlDoc = new HtmlParser().Parse(WebViewOffscreen.GetPageSource());
+                string ResultWeb = string.Empty;
+                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                {
+                    WebViewOffscreen.NavigateAndWait(profilePageUrl);
+                    ResultWeb = WebViewOffscreen.GetPageSource();
+                }
+
+                IHtmlDocument HtmlDoc = new HtmlParser().Parse(ResultWeb);
 
                 //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
                 var gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
@@ -948,8 +961,11 @@ namespace SuccessStory.Clients
                     url = string.Format(UrlProfilById, SteamId, AppId, LocalLang);
                     try
                     {
-                        WebViewOffscreen.NavigateAndWait(url);
-                        ResultWeb = WebViewOffscreen.GetPageSource();
+                        using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                        {
+                            WebViewOffscreen.NavigateAndWait(url);
+                            ResultWeb = WebViewOffscreen.GetPageSource();
+                        }
                     }
                     catch (WebException ex)
                     {
@@ -963,8 +979,11 @@ namespace SuccessStory.Clients
                     url = string.Format(UrlProfilByName, SteamUser, AppId, LocalLang);
                     try
                     {
-                        WebViewOffscreen.NavigateAndWait(url);
-                        ResultWeb = WebViewOffscreen.GetPageSource();
+                        using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                        {
+                            WebViewOffscreen.NavigateAndWait(url);
+                            ResultWeb = WebViewOffscreen.GetPageSource();
+                        }
                     }
                     catch (WebException ex)
                     {
@@ -1167,24 +1186,25 @@ namespace SuccessStory.Clients
 
             try
             {
-                Url = Url + "&panorama=please";
-                WebViewOffscreen.NavigateAndWait(Url);
-                ResultWeb = WebViewOffscreen.GetPageSource();
-
-
-                string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
-                if (CurrentUrl != Url)
+                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
-                    var urlParams = Url.Split('?').ToList();
-                    if (urlParams.Count == 2)
-                    {
-                        Url = CurrentUrl + "?" + urlParams[1];
-                    }
-
+                    Url = Url + "&panorama=please";
                     WebViewOffscreen.NavigateAndWait(Url);
                     ResultWeb = WebViewOffscreen.GetPageSource();
-                }
 
+                    string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
+                    if (CurrentUrl != Url)
+                    {
+                        var urlParams = Url.Split('?').ToList();
+                        if (urlParams.Count == 2)
+                        {
+                            Url = CurrentUrl + "?" + urlParams[1];
+                        }
+
+                        WebViewOffscreen.NavigateAndWait(Url);
+                        ResultWeb = WebViewOffscreen.GetPageSource();
+                    }
+                }
 
                 int index = ResultWeb.IndexOf("var g_rgAchievements = ");
                 if (index > -1)
@@ -1257,24 +1277,25 @@ namespace SuccessStory.Clients
 
             try
             {
-                Url = Url + "&panorama=please";
-                WebViewOffscreen.NavigateAndWait(Url);
-                ResultWeb = WebViewOffscreen.GetPageSource();
-
-
-                string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
-                if (CurrentUrl != Url)
+                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
-                    var urlParams = Url.Split('?').ToList();
-                    if (urlParams.Count == 2)
-                    {
-                        Url = CurrentUrl + "?" + urlParams[1];
-                    }
-
+                    Url = Url + "&panorama=please";
                     WebViewOffscreen.NavigateAndWait(Url);
                     ResultWeb = WebViewOffscreen.GetPageSource();
-                }
 
+                    string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
+                    if (CurrentUrl != Url)
+                    {
+                        var urlParams = Url.Split('?').ToList();
+                        if (urlParams.Count == 2)
+                        {
+                            Url = CurrentUrl + "?" + urlParams[1];
+                        }
+
+                        WebViewOffscreen.NavigateAndWait(Url);
+                        ResultWeb = WebViewOffscreen.GetPageSource();
+                    }
+                }
 
                 int index = ResultWeb.IndexOf("var g_rgAchievements = ");
                 if (index > -1)
