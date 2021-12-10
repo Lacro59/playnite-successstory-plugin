@@ -53,7 +53,7 @@ namespace SuccessStory.Models
                     ImageFileName += "_Unlocked.png";
                 }
 
-                return Regex.Replace(WebUtility.HtmlDecode(Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
+                return Regex.Replace(WebUtility.HtmlDecode(CommonPlayniteShared.Common.Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
             }
         }
         /// <summary>
@@ -108,7 +108,7 @@ namespace SuccessStory.Models
                     ImageFileName += "_Locked.png";
                 }
 
-                return Regex.Replace(WebUtility.HtmlDecode(Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
+                return Regex.Replace(WebUtility.HtmlDecode(CommonPlayniteShared.Common.Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
             }
         }
         /// <summary>

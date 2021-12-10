@@ -283,7 +283,7 @@ namespace SuccessStory.Clients
                         catalog = catalogs[0];
                     }
 
-                    ProductSlug = catalog.productSlug;
+                    ProductSlug = catalog.productSlug.Replace("/home", string.Empty);
                 }
             }
 
