@@ -510,7 +510,7 @@ namespace SuccessStory.Clients
                 FileInfo fi = new FileInfo(FilePath);
                 if (fi.Length > 800000000)
                 {
-                    logger.Warn($"The file is too long - {FilePath}");
+                    logger.Warn($"Hash impossible - The file is too long - {FilePath}");
                     return GameId;
                 }
             }

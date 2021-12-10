@@ -59,9 +59,22 @@ namespace SuccessStory.Clients
                 string personasId = GetPersonas(OriginAPI.GetAccessToken());
                 string origineGameId = GetOrigineGameAchievementId(game.Id);
 
+                if (personasId.IsNullOrEmpty())
+                {
+                    logger.Warn("No personasId");
+                    gameAchievements.Items = AllAchievements;
+                    return gameAchievements;
+                }
+
+                if (origineGameId.IsNullOrEmpty())
+                {
+                    logger.Warn($"No origineGameId for {game.Name}");
+                    gameAchievements.Items = AllAchievements;
+                    return gameAchievements;
+                }
+
                 // Achievements (default return in english)
                 string Url = string.Format(UrlAchievements, personasId, origineGameId, LocalLang);
-
                 using (var webClient = new WebClient { Encoding = Encoding.UTF8 })
                 {
                     try
