@@ -903,7 +903,7 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableImageCache}" 
+                        <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" IsChecked="{Binding Settings.EnableImageCache}" 
                               VerticalAlignment="Center"
                               ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}"
                               Command="{x:Static pcmd:Commands.RestartRequired}" 
