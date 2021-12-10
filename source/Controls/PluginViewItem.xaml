@@ -20,8 +20,10 @@
                    Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Foreground}"
                    FontSize="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=FontSize}" />
 
+        <TextBlock Text="-" HorizontalAlignment="Center"
+                   Visibility="{Binding IntegrationViewItemWithProgressBar, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <ProgressBar Value="{Binding Unlocked, Mode=OneWay, FallbackValue=20}" Maximum="{Binding Total, Mode=OneWay}" 
-                     MinWidth="30" Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}"
+                     MinWidth="30"
                      Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Foreground}"
                      Visibility="{Binding IntegrationViewItemWithProgressBar, Converter={StaticResource BooleanToVisibilityConverter}}" />
     </Grid>

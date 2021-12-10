@@ -494,7 +494,7 @@ namespace SuccessStory.Clients
                     else
                     {
                         DataSteamSearch = Web.DownloadStringData(string.Format(url, WebUtility.UrlEncode(Name))).GetAwaiter().GetResult();
-                        IHtmlDocument htmlDocumentDetails = parser.Parse(DataSteamSearch);
+                        IHtmlDocument htmlDocumentDetails = new HtmlParser().Parse(DataSteamSearch);
 
                         var AchievementsInfo = htmlDocumentDetails.QuerySelector("#achievement_block .block_title");
                         if (AchievementsInfo != null)
