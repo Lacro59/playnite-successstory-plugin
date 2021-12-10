@@ -27,6 +27,7 @@ using CommonPluginsShared.Extensions;
 using System.Diagnostics;
 using AngleSharp.Parser.Html;
 using AngleSharp.Dom.Html;
+using QuickSearch.SearchItems;
 
 namespace SuccessStory
 {
@@ -990,6 +991,23 @@ namespace SuccessStory
                     Common.LogDebug(true, $"TaskCacheImage() - End - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
                 }, tokenSource.Token);
+            }
+
+
+            // QuickSearch support
+            try
+            {
+                string icon = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "star.png");
+
+                var SsSubItemsAction = new SubItemsAction() { Action = () => { }, Name = "", CloseAfterExecute = false, SubItemSource = new QuickSearchItemSource() };
+                var SsCommand = new CommandItem("SuccessStory", new List<CommandAction>(), ResourceProvider.GetString("LOCSsQuickSearchDescription"), icon);
+                SsCommand.Keys.Add(new CommandItemKey() { Key = "ss", Weight = 1 });
+                SsCommand.Actions.Add(SsSubItemsAction);
+                QuickSearch.QuickSearchSDK.AddCommand(SsCommand);
+            }
+            catch (Exception)
+            {
+
             }
         }
 

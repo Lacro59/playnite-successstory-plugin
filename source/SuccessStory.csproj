@@ -78,6 +78,14 @@
       <HintPath>packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="QuickSearchSDK, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\QuickSearchSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickSearchSDK.Attributes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\QuickSearchSDK.Attributes.dll</HintPath>
+    </Reference>
     <Reference Include="SteamKit2, Version=1.8.3.0, Culture=neutral, PublicKeyToken=ed3ce47ed5aad940, processorArchitecture=MSIL">
       <HintPath>packages\SteamKit2.1.8.3\lib\net45\SteamKit2.dll</HintPath>
       <Private>False</Private>
@@ -170,6 +178,7 @@
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
     <Compile Include="Models\GameAchievements.cs" />
+    <Compile Include="Models\QuickSearchItemSource.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
     <Compile Include="Models\WowAchievementsData.cs" />
@@ -504,6 +513,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\default_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\command-line.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\QuickSearchSDK.Attributes.dll" />
+    <None Include="Resources\QuickSearchSDK.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\star.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
