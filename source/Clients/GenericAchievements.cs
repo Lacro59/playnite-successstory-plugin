@@ -5,7 +5,12 @@ using SuccessStory.Services;
 using System;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared;
-using System.Timers;
+using System.IO;
+using System.Collections.Generic;
+using Playnite.SDK.Data;
+using System.Text;
+using System.Security.Principal;
+using CommonPlayniteShared.Common;
 
 namespace SuccessStory.Clients
 {
@@ -14,8 +19,6 @@ namespace SuccessStory.Clients
         internal static readonly ILogger logger = LogManager.GetLogger();
         internal static readonly IResourceProvider resources = new ResourceProvider();
 
-        protected static Timer timer;
-        protected static string UrlCurrent;
         protected static IWebView _WebViewOffscreen;
         internal static IWebView WebViewOffscreen
         {
@@ -24,7 +27,6 @@ namespace SuccessStory.Clients
                 if (_WebViewOffscreen == null)
                 {
                     _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
-                    _WebViewOffscreen.LoadingChanged += _WebViewOffscreen_LoadingChanged;
                 }
                 return _WebViewOffscreen;
             }
@@ -47,6 +49,8 @@ namespace SuccessStory.Clients
         protected string LastErrorId { get; set; }
         protected string LastErrorMessage { get; set; }
 
+        internal readonly string cookiesPath;
+
 
 
         public GenericAchievements(string ClientName, string LocalLang = "", string LocalLangShort = "")
@@ -54,6 +58,8 @@ namespace SuccessStory.Clients
             this.ClientName = ClientName;
             this.LocalLang = LocalLang;
             this.LocalLangShort = LocalLangShort;
+
+            cookiesPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, CommonPlayniteShared.Common.Paths.GetSafePathName($"{ClientName}.json"));
         }
 
 
@@ -121,31 +127,36 @@ namespace SuccessStory.Clients
         }
 
 
-        #region WebView manager
-        private static void _WebViewOffscreen_LoadingChanged(object sender, Playnite.SDK.Events.WebViewLoadingChangedEventArgs e)
+        #region Cookies
+        internal List<HttpCookie> GetCookies()
         {
-            //UrlCurrent = _WebViewOffscreen.GetCurrentAddress();
-            //timer = new Timer(60000);
-            //timer.AutoReset = true;
-            //timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            //timer.Start();
-        }
-
-        private static async void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            if (_WebViewOffscreen != null && UrlCurrent == _WebViewOffscreen.GetCurrentAddress())
+            if (File.Exists(cookiesPath))
             {
                 try
                 {
-                    //_WebViewOffscreen.Dispose();
-                    //_WebViewOffscreen = null;
-                    //
-                    //timer.Stop();
-                    //timer.Dispose();
-                    //timer = null;
+                    return Serialization.FromJson<List<HttpCookie>>(
+                        Encryption.DecryptFromFile(
+                            cookiesPath,
+                            Encoding.UTF8,
+                            WindowsIdentity.GetCurrent().User.Value));
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, "Failed to load saved cookies");
+                }
             }
+
+            return null;
+        }
+
+        internal void SetCookies(List<HttpCookie> httpCookies)
+        {
+            FileSystem.CreateDirectory(Path.GetDirectoryName(cookiesPath));
+            Encryption.EncryptToFile(
+                cookiesPath,
+                Serialization.ToJson(httpCookies),
+                Encoding.UTF8,
+                WindowsIdentity.GetCurrent().User.Value);
         }
         #endregion
 

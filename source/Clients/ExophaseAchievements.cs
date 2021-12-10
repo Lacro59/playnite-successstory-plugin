@@ -11,11 +11,8 @@ using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Principal;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SuccessStory.Clients
@@ -39,16 +36,16 @@ namespace SuccessStory.Clients
     {
         private const string UrlExophaseSearch = @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
         private const string UrlExophase = @"https://www.exophase.com";
-        private string UrlExophaseLogin = $"{UrlExophase}/login";
-        private string UrlExophaseLogout = $"{UrlExophase}/logout";
-        private string UrlExophaseAccount = $"{UrlExophase}/account";
+        private readonly string UrlExophaseLogin = $"{UrlExophase}/login";
+        private readonly string UrlExophaseLogout = $"{UrlExophase}/logout";
+        private readonly string UrlExophaseAccount = $"{UrlExophase}/account";
 
-        private string cookiesPath;
+        
 
 
         public ExophaseAchievements() : base("Exophase")
         {
-            cookiesPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "exophase.json");
+
         }
 
 
@@ -173,27 +170,6 @@ namespace SuccessStory.Clients
 
 
         #region Exophase
-        private List<HttpCookie> GetCookies()
-        {
-            if (File.Exists(cookiesPath))
-            {
-                try
-                {
-                    return Serialization.FromJson<List<HttpCookie>>(
-                        Encryption.DecryptFromFile(
-                            cookiesPath,
-                            Encoding.UTF8,
-                            WindowsIdentity.GetCurrent().User.Value));
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, "Failed to load saved cookies");
-                }
-            }
-
-            return null;
-        }
-
         public void Login()
         {
             FileSystem.DeleteFile(cookiesPath);
@@ -217,12 +193,7 @@ namespace SuccessStory.Clients
             }
 
             List<HttpCookie> httpCookies = Serialization.GetClone(WebViewOffscreen.GetCookies().Where(x => x.Domain.IsEqual(".exophase.com")).ToList());
-            FileSystem.CreateDirectory(Path.GetDirectoryName(cookiesPath));
-            Encryption.EncryptToFile(
-                cookiesPath,
-                Serialization.ToJson(httpCookies),
-                Encoding.UTF8,
-                WindowsIdentity.GetCurrent().User.Value);
+            SetCookies(httpCookies);
             WebViewOffscreen.DeleteDomainCookies(".exophase.com");
             WebViewOffscreen.Dispose();
         }

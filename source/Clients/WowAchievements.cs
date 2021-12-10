@@ -5,10 +5,7 @@ using Playnite.SDK.Models;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
@@ -64,8 +61,7 @@ namespace SuccessStory.Clients
                 foreach (string url in Urls)
                 {
                     urlFinal = UrlWowBaseLocalised + url;
-                    WebViewOffscreen.NavigateAndWait(urlFinal);
-                    string data = WebViewOffscreen.GetPageText();
+                    string data = Web.DownloadStringData(urlFinal).GetAwaiter().GetResult();
                     WowAchievementsData wowAchievementsData = Serialization.FromJson<WowAchievementsData>(data);
                     dynamic subcategories = Serialization.FromJson<dynamic>(Serialization.ToJson(wowAchievementsData.subcategories));
                     foreach (var subItems in subcategories)

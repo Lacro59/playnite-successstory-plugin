@@ -22,6 +22,7 @@ namespace SuccessStory.Clients
         private string UrlOverwatchLogin = $"{UrlOverwatchProfil}/login";
         private string UrlOverwatchProfilLocalised = $"{UrlOverwatchProfil}/" + "{0}";
 
+        private string UrlProfil = string.Empty;
         private List<ColorElement> OverwatchColor = new List<ColorElement>
         {
             new ColorElement { Name = "ow-ana-color", Color = "#9c978a" },
@@ -72,30 +73,20 @@ namespace SuccessStory.Clients
             List<GameStats> AllStats = new List<GameStats>();
 
 
-            string UrlProfil = string.Empty;
+            //string UrlProfil = string.Empty;
             if (IsConnected())
             {
-                WebViewOffscreen.NavigateAndWait(UrlOverwatchProfilLocalised);
-                string data = WebViewOffscreen.GetPageSource();
-
-                HtmlParser parser = new HtmlParser();
-                IHtmlDocument htmlDocument = parser.Parse(data);
-
-                foreach (var SearchElement in htmlDocument.QuerySelectorAll("a.ow-SiteNavLogin-profile"))
-                {
-                    UrlProfil = SearchElement.GetAttribute("href");
-                }
-
                 if (!UrlProfil.IsNullOrEmpty())
                 {
-                    WebViewOffscreen.NavigateAndWait(UrlOverwatchProfilLocalised + UrlProfil);
-                    data = WebViewOffscreen.GetPageSource();
+                    string data = Web.DownloadStringData(UrlOverwatchProfilLocalised + UrlProfil, GetCookies()).GetAwaiter().GetResult();
+                    string dataEn = data;
+                    if (!UrlOverwatchProfilLocalised.Contains("en-US"))
+                    {
+                        dataEn = Web.DownloadStringData(UrlOverwatchProfil + "en-US" + UrlProfil + UrlProfil, GetCookies()).GetAwaiter().GetResult();
+                    }
 
-                    WebViewOffscreen.NavigateAndWait(UrlOverwatchProfil);
-                    WebViewOffscreen.NavigateAndWait(UrlOverwatchProfil + "en-US" + UrlProfil);
-                    string dataEn = WebViewOffscreen.GetPageSource();
-
-                    htmlDocument = parser.Parse(data);
+                    HtmlParser parser = new HtmlParser();
+                    IHtmlDocument htmlDocument = parser.Parse(data);
                     IHtmlDocument htmlDocumentEn = parser.Parse(dataEn);
 
                     var SectionAchievements = htmlDocument.QuerySelector("#achievements-section");
@@ -218,25 +209,34 @@ namespace SuccessStory.Clients
         {
             if (CachedIsConnectedResult == null)
             {
-                var ApiStatus = GetApiStatus();
-                if (ApiStatus == null)
+                CachedIsConnectedResult = false;
+                string data = string.Empty;
+                List<HttpCookie> cookies = null;
+                using (var WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
                 {
-                    CachedIsConnectedResult = false;
-                }
+                    WebViewOffscreen.NavigateAndWait(UrlOverwatchProfil);
+                    data = WebViewOffscreen.GetPageSource();
 
-                // TODO Force auth in game profile
-                if (ApiStatus != null && ApiStatus.authenticated)
-                {
-                    Task.Run(() =>
+                    HtmlParser parser = new HtmlParser();
+                    IHtmlDocument htmlDocument = parser.Parse(data);
+
+                    foreach (var SearchElement in htmlDocument.QuerySelectorAll("a.ow-SiteNavLogin-profile"))
                     {
-                        using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
-                        {
-                            WebView.Navigate(UrlOverwatchProfil);
-                        }
-                    });
-                }
+                        UrlProfil = SearchElement.GetAttribute("href");
+                    }
 
-                CachedIsConnectedResult = ApiStatus == null ? false : ApiStatus.authenticated;
+                    if (!UrlProfil.IsNullOrEmpty())
+                    {
+                        CachedIsConnectedResult = true;
+
+                        cookies = WebViewOffscreen.GetCookies().Where(
+                            x => x.Domain.Contains("playoverwatch.com")
+                                        || x.Domain.Contains("blizzard.com", StringComparison.OrdinalIgnoreCase)
+                                        || x.Domain.Contains("battle.net", StringComparison.OrdinalIgnoreCase)
+                        ).ToList();
+                        SetCookies(cookies);
+                    }
+                }
             }
 
             return (bool)CachedIsConnectedResult;
@@ -297,7 +297,6 @@ namespace SuccessStory.Clients
                 Value = double.Parse(htmlDocument.QuerySelector(".EndorsementIcon-tooltip .u-center").InnerHtml)
             });
 
-
             AllStats = ParseDateMode(htmlDocument, AllStats, "QuickPlay");
             AllStats = ParseDateMode(htmlDocument, AllStats, "Competitive");
 
@@ -310,7 +309,8 @@ namespace SuccessStory.Clients
             var TopHeroSection = htmlDocument.QuerySelectorAll($"#{Mode.ToLower()} .career-section")[0];
             var DataProgressAll = TopHeroSection.QuerySelectorAll(".progress-category");
 
-            foreach (var item in TopHeroSection.QuerySelectorAll(".dropdown-select-element option").Select((ElementSection, i) => new { i, ElementSection }))
+            //foreach (var item in TopHeroSection.QuerySelectorAll(".dropdown-select-element option").Select((ElementSection, i) => new { i, ElementSection }))
+            foreach (var item in TopHeroSection.QuerySelectorAll("select option").Select((ElementSection, i) => new { i, ElementSection }))
             {
                 try
                 {
@@ -335,7 +335,8 @@ namespace SuccessStory.Clients
             var CareerStatsSection = htmlDocument.QuerySelectorAll($"#{Mode.ToLower()} .career-section")[1];
             var DataTableSection = CareerStatsSection.QuerySelectorAll("div.row div.row");
 
-            foreach (var item in CareerStatsSection.QuerySelectorAll(".dropdown-select-element option").Select((ElementSection, i) => new { i, ElementSection }))
+            //foreach (var item in CareerStatsSection.QuerySelectorAll(".dropdown-select-element option").Select((ElementSection, i) => new { i, ElementSection }))
+            foreach (var item in CareerStatsSection.QuerySelectorAll("select option").Select((ElementSection, i) => new { i, ElementSection }))
             {
                 try
                 {
@@ -498,6 +499,7 @@ namespace SuccessStory.Clients
                         WebView.OpenDialog();
 
                         ResetCachedConfigurationValidationResult();
+                        ResetCachedIsConnectedResult();
                     }
                 }
             ));

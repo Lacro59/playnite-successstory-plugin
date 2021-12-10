@@ -23,6 +23,8 @@ namespace SuccessStory.Clients
         private const string UrlStarCraft2ProfilInfo = @"https://starcraft2.com/fr-fr/api/sc2/profile/2/1/{0}?locale={1}";
         private const string UrlStarCraft2AchInfo = @"https://starcraft2.com/fr-fr/api/sc2/static/profile/2?locale={0}";
 
+        private string UrlProfil = string.Empty;
+
 
         public Starcraft2Achievements() : base("Starcraft 2", PluginDatabase.PlayniteApi.ApplicationSettings.Language)
         {
@@ -36,21 +38,8 @@ namespace SuccessStory.Clients
             List<Achievements> AllAchievements = new List<Achievements>();
             List<GameStats> AllStats = new List<GameStats>();
 
-
-            string UrlProfil = string.Empty;
             if (IsConnected())
             {
-                WebViewOffscreen.NavigateAndWait(UrlStarCraft2);
-                string data = WebViewOffscreen.GetPageSource();
-
-                HtmlParser parser = new HtmlParser();
-                IHtmlDocument htmlDocument = parser.Parse(data);
-
-                foreach (var SearchElement in htmlDocument.QuerySelectorAll("a.ProfilePill"))
-                {
-                    UrlProfil = SearchElement.GetAttribute("href");
-                }
-
                 if (!UrlProfil.IsNullOrEmpty())
                 {
                     UserSc2Id = UrlProfil.Split('/').Last();
@@ -58,14 +47,11 @@ namespace SuccessStory.Clients
                     string UrlStarCraft2ProfilInfo = string.Format(Starcraft2Achievements.UrlStarCraft2ProfilInfo, UserSc2Id, LocalLang);
                     string UrlStarCraft2AchInfo = string.Format(Starcraft2Achievements.UrlStarCraft2AchInfo, LocalLang);
 
-                    WebViewOffscreen.NavigateAndWait(UrlStarCraft2ProfilInfo);
-                    data = WebViewOffscreen.GetPageText();
+                    string data = Web.DownloadStringData(UrlStarCraft2ProfilInfo, GetCookies()).GetAwaiter().GetResult();
                     BattleNetSc2Profil battleNetSc2Profil = Serialization.FromJson<BattleNetSc2Profil>(data);
 
-                    WebViewOffscreen.NavigateAndWait(UrlStarCraft2AchInfo);
-                    data = WebViewOffscreen.GetPageText();
+                    data = Web.DownloadStringData(UrlStarCraft2AchInfo, GetCookies()).GetAwaiter().GetResult();
                     BattleNetSc2Ach battleNetSc2Ach = Serialization.FromJson<BattleNetSc2Ach>(data);
-
 
                     foreach (var earnedAchievement in battleNetSc2Profil.earnedAchievements)
                     {
@@ -177,25 +163,34 @@ namespace SuccessStory.Clients
         {
             if (CachedIsConnectedResult == null)
             {
-                var ApiStatus = GetApiStatus();
-                if (ApiStatus == null)
+                CachedIsConnectedResult = false;
+                string data = string.Empty;
+                List<HttpCookie> cookies = null;
+                using (var WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
                 {
-                    CachedIsConnectedResult = false;
-                }
+                    WebViewOffscreen.NavigateAndWait(UrlStarCraft2Login);
+                    data = WebViewOffscreen.GetPageSource();
 
-                // TODO Force auth in game profile
-                if (ApiStatus != null && ApiStatus.authenticated)
-                {
-                    Task.Run(() =>
+                    HtmlParser parser = new HtmlParser();
+                    IHtmlDocument htmlDocument = parser.Parse(data);
+
+                    foreach (var SearchElement in htmlDocument.QuerySelectorAll("a.ProfilePill"))
                     {
-                        using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
-                        {
-                            WebView.Navigate(UrlStarCraft2);
-                        }
-                    });
-                }
+                        UrlProfil = SearchElement.GetAttribute("href");
+                    }
 
-                CachedIsConnectedResult = ApiStatus == null ? false : ApiStatus.authenticated;
+                    if (!UrlProfil.IsNullOrEmpty())
+                    {
+                        CachedIsConnectedResult = true;
+
+                        cookies = WebViewOffscreen.GetCookies().Where(
+                            x => x.Domain.Contains("starcraft2")
+                                        || x.Domain.Contains("blizzard.com", StringComparison.OrdinalIgnoreCase)
+                                        || x.Domain.Contains("battle.net", StringComparison.OrdinalIgnoreCase)
+                        ).ToList();
+                        SetCookies(cookies);
+                    }
+                }
             }
 
             return (bool)CachedIsConnectedResult;
@@ -226,6 +221,7 @@ namespace SuccessStory.Clients
                         WebView.Navigate(UrlStarCraft2Login);
                         WebView.OpenDialog();
 
+                        ResetCachedIsConnectedResult();
                         ResetCachedConfigurationValidationResult();
                     }
                 }
