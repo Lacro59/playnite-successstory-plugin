@@ -208,7 +208,6 @@ namespace SuccessStory.Clients
         public List<SearchResult> SearchGame(string Name)
         {
             List<SearchResult> ListSearchGames = new List<SearchResult>();
-
             try
             {
                 string UrlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
@@ -237,7 +236,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, $"Error on SearchGame({Name})", true, "SuccessStory");
             }
 
             return ListSearchGames;

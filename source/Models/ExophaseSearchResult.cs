@@ -32,9 +32,9 @@ namespace SuccessStory.Models
     public class List
     {
         public int master_id { get; set; }
-        public int total_exp { get; set; }
-        public int global_players { get; set; }
-        public int global_complete { get; set; }
+        public int? total_exp { get; set; }
+        public int? global_players { get; set; }
+        public int? global_complete { get; set; }
         public int total_awards { get; set; }
         public int total_points { get; set; }
         public string title { get; set; }
