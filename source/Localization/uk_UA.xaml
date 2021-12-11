@@ -216,8 +216,8 @@
 
     <!-- QuickSearch -->
 
-    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchDescription">Пошук ігор за даними SuccessStory</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">Знайти за середнім часом для повного здобуття</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByPercent">Знайти за прогресією</sys:String>
 
 </ResourceDictionary>
