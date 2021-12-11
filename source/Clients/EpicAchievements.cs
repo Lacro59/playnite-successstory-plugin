@@ -59,6 +59,13 @@ namespace SuccessStory.Clients
                     var tokens = EpicAPI.loadTokens();
 
                     string ProductSlug = GetProductSlug(game.Name);
+                    if (ProductSlug.IsNullOrEmpty())
+                    {
+                        logger.Warn($"No ProductSlug for {game.Name}");
+                        gameAchievements.Items = AllAchievements;
+                        return gameAchievements;
+                    }
+
                     Url = string.Format(UrlAchievements, LocalLang, ProductSlug);
 
                     List<HttpCookie> Cookies = new List<HttpCookie>
@@ -268,7 +275,6 @@ namespace SuccessStory.Clients
         private string GetProductSlug(string Name)
         {
             string ProductSlug = string.Empty;
-
             using (var client = new WebStoreClient())
             {
                 var catalogs = client.QuerySearch(Name).GetAwaiter().GetResult();
@@ -280,10 +286,9 @@ namespace SuccessStory.Clients
                         catalog = catalogs[0];
                     }
 
-                    ProductSlug = catalog.productSlug.Replace("/home", string.Empty);
+                    ProductSlug = catalog?.productSlug?.Replace("/home", string.Empty);
                 }
             }
-
             return ProductSlug;
         }
         #endregion
