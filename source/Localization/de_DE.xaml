@@ -216,8 +216,8 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- QuickSearch -->
 
-    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchDescription">Spiele auf SuccessStory Daten suchen</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">Nach Schätzungszeit zum vollständigen Entsperren suchen</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByPercent">Nach Fortschritt suchen</sys:String>
 
 </ResourceDictionary>
