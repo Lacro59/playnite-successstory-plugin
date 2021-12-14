@@ -216,8 +216,8 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
 
     <!-- QuickSearch -->
 
-    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchDescription">Buscar juegos en datos de SuccessStory</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">Encontrar por estimación de tiempo para desbloquear completamente</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByPercent">Buscar por progresión</sys:String>
 
 </ResourceDictionary>
