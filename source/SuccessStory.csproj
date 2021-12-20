@@ -226,6 +226,9 @@
     <Compile Include="Views\Interfaces\OverwatchStats.xaml.cs">
       <DependentUpon>OverwatchStats.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Interfaces\SettingsOrderAchievement.xaml.cs">
+      <DependentUpon>SettingsOrderAchievement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SuccessStoreGameSelection.xaml.cs">
       <DependentUpon>SuccessStoreGameSelection.xaml</DependentUpon>
     </Compile>
@@ -433,6 +436,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Interfaces\OverwatchStats.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Interfaces\SettingsOrderAchievement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

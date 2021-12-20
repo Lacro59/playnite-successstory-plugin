@@ -138,10 +138,12 @@ namespace SuccessStory.Controls
             // Select data
             if (IsUnlocked)
             {
+                gameAchievements.orderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationCompactUnlockedOrderAchievement;
                 ListAchievements = gameAchievements.OrderItemsOnlyUnlocked.ToList();
             }
             else
             {
+                gameAchievements.orderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationCompactLockedOrderAchievement;
                 ListAchievements = gameAchievements.OrderItemsOnlyLocked.ToList();
             }
 

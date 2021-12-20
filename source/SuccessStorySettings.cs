@@ -254,15 +254,10 @@ namespace SuccessStory
         public bool lvGamesSource { get; set; } = true;
         public bool lvGamesProgression { get; set; } = true;
 
-
-        public OrderAchievementType OrderAchievementTypeFirst { get; set; } = OrderAchievementType.AchievementDateUnlocked;
-        public OrderAchievementType OrderAchievementTypeSecond { get; set; } = OrderAchievementType.AchievementName;
-        public OrderAchievementType OrderAchievementTypeThird { get; set; } = OrderAchievementType.AchievementRarety;
-        public OrderType OrderTypeFirst { get; set; } = OrderType.Descending;
-        public OrderType OrderTypeSecond { get; set; } = OrderType.Ascending;
-        public OrderType OrderTypeThird { get; set; } = OrderType.Descending;
-        public bool OrderGroupByUnlocked { get; set; } = false;
-
+        public OrderAchievement IntegrationCompactOrderAchievement { get; set; } = new OrderAchievement();
+        public OrderAchievement IntegrationCompactUnlockedOrderAchievement { get; set; } = new OrderAchievement();
+        public OrderAchievement IntegrationCompactLockedOrderAchievement { get; set; } = new OrderAchievement();
+        public OrderAchievement IntegrationListOrderAchievement { get; set; } = new OrderAchievement();
 
         public GameFeature AchievementFeature { get; set; } = null;
         #endregion
@@ -457,5 +452,17 @@ namespace SuccessStory
             errors = new List<string>();
             return true;
         }
+    }
+
+
+    public class OrderAchievement
+    {
+        public OrderAchievementType OrderAchievementTypeFirst { get; set; } = OrderAchievementType.AchievementDateUnlocked;
+        public OrderAchievementType OrderAchievementTypeSecond { get; set; } = OrderAchievementType.AchievementName;
+        public OrderAchievementType OrderAchievementTypeThird { get; set; } = OrderAchievementType.AchievementRarety;
+        public OrderType OrderTypeFirst { get; set; } = OrderType.Descending;
+        public OrderType OrderTypeSecond { get; set; } = OrderType.Ascending;
+        public OrderType OrderTypeThird { get; set; } = OrderType.Descending;
+        public bool OrderGroupByUnlocked { get; set; } = false;
     }
 }
