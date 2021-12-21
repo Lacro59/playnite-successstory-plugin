@@ -48,10 +48,26 @@ namespace SuccessStory.Controls
             }
         }
 
+        private string NameAsc = "\uea64";
+        private string NameDesc = "\uea67";
+        private string CalAsc = "\uea65";
+        private string CalDesc = "\uea66";
+        private string RarityAsc = "\uea68";
+        private string RarityDesc = "\uea69";
+
+        private int NameIndex = 1;
+        private int CalIndex = 2;
+        private int RarityIndex = 3;
+
+        private OrderAchievement orderAchievement;
+
 
         #region Properties
         public static readonly DependencyProperty ForceOneColProperty;
         public bool ForceOneCol { get; set; } = false;
+
+        public static readonly DependencyProperty DisplayFilterProperty;
+        public bool DisplayFilter { get; set; } = false;
         #endregion
 
 
@@ -59,6 +75,147 @@ namespace SuccessStory.Controls
         {
             InitializeComponent();
             this.DataContext = ControlDataContext;
+
+
+            orderAchievement = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement);
+            PART_SortGroupBy.IsChecked = orderAchievement.OrderGroupByUnlocked;
+
+            switch (orderAchievement.OrderAchievementTypeFirst)
+            {
+                case (OrderAchievementType.AchievementName):
+                    NameIndex = 1;
+                    PART_SortNameOrder.Content = NameIndex;
+
+                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
+                    {
+                        PART_SortName.Content = NameAsc;
+                    }
+                    else
+                    {
+                        PART_SortName.Content = NameDesc;
+                    }
+                    break;
+
+                case (OrderAchievementType.AchievementDateUnlocked):
+                    CalIndex = 1;
+                    PART_SortCalOrder.Content = CalIndex;
+
+                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
+                    {
+                        PART_SortCal.Content = CalAsc;
+                    }
+                    else
+                    {
+                        PART_SortCal.Content = CalDesc;
+                    }
+                    break;
+
+                case (OrderAchievementType.AchievementRarety):
+                    RarityIndex = 1;
+                    PART_SortRarityOrder.Content = RarityIndex;
+
+                    if (orderAchievement.OrderTypeSecond == OrderType.Ascending)
+                    {
+                        PART_SortRarity.Content = RarityAsc;
+                    }
+                    else
+                    {
+                        PART_SortRarity.Content = RarityDesc;
+                    }
+                    break;
+            }
+
+            switch (orderAchievement.OrderAchievementTypeSecond)
+            {
+                case (OrderAchievementType.AchievementName):
+                    NameIndex = 2;
+                    PART_SortNameOrder.Content = NameIndex;
+
+                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
+                    {
+                        PART_SortName.Content = NameAsc;
+                    }
+                    else
+                    {
+                        PART_SortName.Content = NameDesc;
+                    }
+                    break;
+
+                case (OrderAchievementType.AchievementDateUnlocked):
+                    CalIndex = 2;
+                    PART_SortCalOrder.Content = CalIndex;
+
+                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
+                    {
+                        PART_SortCal.Content = CalAsc;
+                    }
+                    else
+                    {
+                        PART_SortCal.Content = CalDesc;
+                    }
+                    break;
+
+                case (OrderAchievementType.AchievementRarety):
+                    RarityIndex = 2;
+                    PART_SortRarityOrder.Content = RarityIndex;                
+
+                    if (orderAchievement.OrderTypeSecond == OrderType.Ascending)
+                    {
+                        PART_SortRarity.Content = RarityAsc;
+                    }
+                    else
+                    {
+                        PART_SortRarity.Content = RarityDesc;
+                    }
+                    break;
+            }
+
+            switch (orderAchievement.OrderAchievementTypeThird)
+            {
+                case (OrderAchievementType.AchievementName):
+                    NameIndex = 3;
+                    PART_SortNameOrder.Content = NameIndex;
+
+                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
+                    {
+                        PART_SortName.Content = NameAsc;
+                    }
+                    else
+                    {
+                        PART_SortName.Content = NameDesc;
+                    }
+                    break;
+
+                case (OrderAchievementType.AchievementDateUnlocked):
+                    CalIndex = 3;
+                    PART_SortCalOrder.Content = CalIndex;
+
+                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
+                    {
+                        PART_SortCal.Content = CalAsc;
+                    }
+                    else
+                    {
+                        PART_SortCal.Content = CalDesc;
+                    }
+                    break;
+
+                case (OrderAchievementType.AchievementRarety):
+                    RarityIndex = 3;
+                    PART_SortRarityOrder.Content = RarityIndex;
+
+                    if (orderAchievement.OrderTypeSecond == OrderType.Ascending)
+                    {
+                        PART_SortRarity.Content = RarityAsc;
+                    }
+                    else
+                    {
+                        PART_SortRarity.Content = RarityDesc;
+                    }
+                    break;
+            }
+
+
 
             Task.Run(() =>
             {
@@ -164,6 +321,211 @@ namespace SuccessStory.Controls
                 this.DataContext = null;
                 this.DataContext = ControlDataContext;
             }
+        }
+        #endregion
+
+
+        #region Filter
+        private void PART_SortName_Click(object sender, RoutedEventArgs e)
+        {
+            if (PART_SortName.Content.ToString() == NameAsc)
+            {
+                PART_SortName.Content = NameDesc;
+            }
+            else
+            {
+                ChangeIndex();
+                PART_SortName.Content = NameAsc;
+            }
+
+            SetOrder();
+        }
+
+        private void PART_SortCal_Click(object sender, RoutedEventArgs e)
+        {
+            if (PART_SortCal.Content.ToString() == CalAsc)
+            {
+                PART_SortCal.Content = CalDesc;
+            }
+            else
+            {
+                ChangeIndex();
+                PART_SortCal.Content = CalAsc;
+            }
+
+            SetOrder();
+        }
+
+        private void PART_SortRarity_Click(object sender, RoutedEventArgs e)
+        {
+            if (PART_SortRarity.Content.ToString() == RarityAsc)
+            {
+                PART_SortRarity.Content = RarityDesc;
+            }
+            else
+            {
+                ChangeIndex();
+                PART_SortRarity.Content = RarityAsc;
+            }
+
+            SetOrder();
+        }
+
+        private void PART_SortGroupBy_Checked(object sender, RoutedEventArgs e)
+        {
+            SetOrder();
+        }
+
+        private void PART_SortGroupBy_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SetOrder();
+        }
+
+        
+        private void ChangeIndex()
+        {
+            NameIndex++;
+            if (NameIndex == 4)
+            {
+                NameIndex = 1;
+            }
+            PART_SortNameOrder.Content = NameIndex;
+
+            CalIndex++;
+            if (CalIndex == 4)
+            {
+                CalIndex = 1;
+            }
+            PART_SortCalOrder.Content = CalIndex;
+
+            RarityIndex++;
+            if (RarityIndex == 4)
+            {
+                RarityIndex = 1;
+            }
+            PART_SortRarityOrder.Content = RarityIndex;
+        }
+
+
+        private void SetOrder()
+        {
+            orderAchievement.OrderGroupByUnlocked = (bool)PART_SortGroupBy.IsChecked;
+
+            switch(NameIndex)
+            {
+                case 1:
+                    orderAchievement.OrderAchievementTypeFirst = OrderAchievementType.AchievementName;
+                    if (PART_SortName.Content.ToString() == NameAsc)
+                    {
+                        orderAchievement.OrderTypeFirst = OrderType.Ascending;
+                    }
+                    else
+                    {
+                        orderAchievement.OrderTypeFirst = OrderType.Descending;
+                    }
+                    break;
+                case 2:
+                    orderAchievement.OrderAchievementTypeSecond = OrderAchievementType.AchievementName;
+                    if (PART_SortName.Content.ToString() == NameAsc)
+                    {
+                        orderAchievement.OrderTypeSecond = OrderType.Ascending;
+                    }
+                    else
+                    {
+                        orderAchievement.OrderTypeSecond = OrderType.Descending;
+                    }
+                    break;
+                case 3:
+                    orderAchievement.OrderAchievementTypeThird = OrderAchievementType.AchievementName;
+                    if (PART_SortName.Content.ToString() == NameAsc)
+                    {
+                        orderAchievement.OrderTypeThird = OrderType.Ascending;
+                    }
+                    else
+                    {
+                        orderAchievement.OrderTypeThird = OrderType.Descending;
+                    }
+                    break;
+            }
+
+            switch (CalIndex)
+            {
+                case 1:
+                    orderAchievement.OrderAchievementTypeFirst = OrderAchievementType.AchievementDateUnlocked;
+                    if (PART_SortCal.Content.ToString() == CalAsc)
+                    {
+                        orderAchievement.OrderTypeFirst = OrderType.Ascending;
+                    }
+                    else
+                    {
+                        orderAchievement.OrderTypeFirst = OrderType.Descending;
+                    }
+                    break;
+                case 2:
+                    orderAchievement.OrderAchievementTypeSecond = OrderAchievementType.AchievementDateUnlocked;
+                    if (PART_SortCal.Content.ToString() == CalAsc)
+                    {
+                        orderAchievement.OrderTypeSecond = OrderType.Ascending;
+                    }
+                    else
+                    {
+                        orderAchievement.OrderTypeSecond = OrderType.Descending;
+                    }
+                    break;
+                case 3:
+                    orderAchievement.OrderAchievementTypeThird = OrderAchievementType.AchievementDateUnlocked;
+                    if (PART_SortCal.Content.ToString() == CalAsc)
+                    {
+                        orderAchievement.OrderTypeThird = OrderType.Ascending;
+                    }
+                    else
+                    {
+                        orderAchievement.OrderTypeThird = OrderType.Descending;
+                    }
+                    break;
+            }
+
+            switch (RarityIndex)
+            {
+                case 1:
+                    orderAchievement.OrderAchievementTypeFirst = OrderAchievementType.AchievementRarety;
+                    if (PART_SortRarity.Content.ToString() == RarityAsc)
+                    {
+                        orderAchievement.OrderTypeFirst = OrderType.Ascending;
+                    }
+                    else
+                    {
+                        orderAchievement.OrderTypeFirst = OrderType.Descending;
+                    }
+                    break;
+                case 2:
+                    orderAchievement.OrderAchievementTypeSecond = OrderAchievementType.AchievementRarety;
+                    if (PART_SortRarity.Content.ToString() == RarityAsc)
+                    {
+                        orderAchievement.OrderTypeSecond = OrderType.Ascending;
+                    }
+                    else
+                    {
+                        orderAchievement.OrderTypeSecond = OrderType.Descending;
+                    }
+                    break;
+                case 3:
+                    orderAchievement.OrderAchievementTypeThird = OrderAchievementType.AchievementRarety;
+                    if (PART_SortRarity.Content.ToString() == RarityAsc)
+                    {
+                        orderAchievement.OrderTypeThird = OrderType.Ascending;
+                    }
+                    else
+                    {
+                        orderAchievement.OrderTypeThird = OrderType.Descending;
+                    }
+                    break;
+            }
+
+
+            GameAchievements gameAchievements = PluginDatabase.Get(GameContext);
+            gameAchievements.orderAchievement = orderAchievement;
+            ControlDataContext.ItemsSource = gameAchievements.OrderItems;
         }
         #endregion
     }

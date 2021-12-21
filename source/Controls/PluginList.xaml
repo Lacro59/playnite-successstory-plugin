@@ -26,129 +26,163 @@
         <convertersshared:ValueOperationConverter x:Key="ValueOperationConverter" />
     </controls:PluginUserControlExtend.Resources>
 
-    <Grid Name="PART_GridContener">
-        <controls:ListBoxExtend x:Name="lbAchievements" SizeChanged="LbAchievements_SizeChanged"
-                                BubblingScrollEvents="True" Style="{StaticResource {x:Type ListBox}}"
-                                ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                                ItemsSource="{Binding ItemsSource}"
-                                Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
-                                Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <Grid>
-                                    <Border Padding="{TemplateBinding Padding}" Background="Transparent">
-                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                          Margin="3,0,0,0" />
-                                    </Border>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="Selector.IsSelected" Value="True">
-                            <Setter Property="Foreground" Value="{DynamicResource TextBrushDark}" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.ItemContainerStyle>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <wpftk:VirtualizingWrapPanel Orientation="Vertical" 
-                                                 VirtualizingPanel.CacheLengthUnit="Item" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
+        <Grid Margin="0,0,0,10"
+              Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DisplayFilter, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="1" Name="PART_SortName" Content="&#xea64;" FontFamily="{DynamicResource CommonFont}" FontSize="16" Click="PART_SortName_Click" />
+            <Label Grid.Column="1" Name="PART_SortNameOrder" Content="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,2,0" />
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Margin="0,5" Name="PART_Grid" d:DesignWidth="400">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="58" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+            <Button Grid.Column="3" Name="PART_SortCal" Content="&#xea65;" FontFamily="{DynamicResource CommonFont}" FontSize="16" Click="PART_SortCal_Click" />
+            <Label Grid.Column="3" Name="PART_SortCalOrder" Content="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,2,0" />
 
-                        <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,5,0,0">
-                            <customs:AchievementImage Width="48" Height="48"
-                                                      Icon="{Binding Icon, IsAsync=True}"
-                                                      IsGray="{Binding IsGray}"
-                                                      Percent="{Binding Percent}"
-                                                      EnableRaretyIndicator="{Binding EnableRaretyIndicator}"
-                                                      DispalyRaretyValue="{Binding DisplayRaretyValue}" />
-                        </StackPanel>
-                        
-                        <Grid Grid.Column="1" Margin="10,0,0,0">
+            <Button Grid.Column="5" Name="PART_SortRarity" Content="&#xea68;" FontFamily="{DynamicResource CommonFont}" FontSize="16" Click="PART_SortRarity_Click" />
+            <Label Grid.Column="5" Name="PART_SortRarityOrder" Content="3" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,2,0" />
+
+            <CheckBox Grid.Column="7" Name="PART_SortGroupBy" Checked="PART_SortGroupBy_Checked" Unchecked="PART_SortGroupBy_Unchecked" VerticalAlignment="Center">
+                <Label Content="{DynamicResource LOCSuccessStoryGroupByUnlocked}" />
+            </CheckBox>
+        </Grid>
+        
+        <Grid Name="PART_GridContener" Grid.Row="1">
+            <controls:ListBoxExtend x:Name="lbAchievements" SizeChanged="LbAchievements_SizeChanged"
+                                    BubblingScrollEvents="True" Style="{StaticResource {x:Type ListBox}}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                    ItemsSource="{Binding ItemsSource}"
+                                    Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
+                                    Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Grid>
+                                        <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                              Margin="3,0,0,0" />
+                                        </Border>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="Selector.IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource TextBrushDark}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <wpftk:VirtualizingWrapPanel Orientation="Vertical" 
+                                                     VirtualizingPanel.CacheLengthUnit="Item" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5" Name="PART_Grid" d:DesignWidth="400">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="58" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <Grid Grid.Row="0">
+                            <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,5,0,0">
+                                <customs:AchievementImage Width="48" Height="48"
+                                                          Icon="{Binding Icon, IsAsync=True}"
+                                                          IsGray="{Binding IsGray}"
+                                                          Percent="{Binding Percent}"
+                                                          EnableRaretyIndicator="{Binding EnableRaretyIndicator}"
+                                                          DispalyRaretyValue="{Binding DisplayRaretyValue}" />
+                            </StackPanel>
+                        
+                            <Grid Grid.Column="1" Margin="10,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="10" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" Text="{Binding Name, FallbackValue='Game Name'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"
-                                           MouseEnter="TextBlock_MouseEnter">
-                                    <TextBlock.ToolTip>
-                                        <ToolTip Content="{Binding Name}" />
-                                    </TextBlock.ToolTip>
-                                </TextBlock>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
 
-                                <Grid Grid.Column="1">
-                                    <TextBlock TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
-                                               Visibility="{Binding IsUnlock, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                               Text="{Binding DateWhenUnlocked, FallbackValue='1982-12-15 00:08:23', Converter={StaticResource LocalDateTimeConverter}}" />
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="10" />
+                                    </Grid.ColumnDefinitions>
 
-                                    <Grid Width="120">
-                                        <Grid.Style>
-                                            <Style TargetType="{x:Type Grid}">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsUnlock}" Value="True">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Progression}" Value="{x:Null}">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
+                                    <TextBlock Grid.Column="0" Text="{Binding Name, FallbackValue='Game Name'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"
+                                               MouseEnter="TextBlock_MouseEnter">
+                                        <TextBlock.ToolTip>
+                                            <ToolTip Content="{Binding Name}" />
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
+
+                                    <Grid Grid.Column="1">
+                                        <TextBlock TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
+                                                   Visibility="{Binding IsUnlock, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   Text="{Binding DateWhenUnlocked, FallbackValue='1982-12-15 00:08:23', Converter={StaticResource LocalDateTimeConverter}}" />
+
+                                        <Grid Width="120">
+                                            <Grid.Style>
+                                                <Style TargetType="{x:Type Grid}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsUnlock}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Progression}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
                                         
-                                        <ProgressBar Minimum="{Binding Progression.Min}" Maximum="{Binding Progression.Max}"
-                                                     Value="{Binding Progression.Value}" />
-                                        <Label Content="{Binding Progression.Progression}" HorizontalAlignment="Center" />
+                                            <ProgressBar Minimum="{Binding Progression.Min}" Maximum="{Binding Progression.Max}"
+                                                         Value="{Binding Progression.Value}" />
+                                            <Label Content="{Binding Progression.Progression}" HorizontalAlignment="Center" />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
 
-                            <TextBlock Grid.Row="1" Text="{Binding Description, FallbackValue='This is a description.'}" 
-                                       VerticalAlignment="Top"
-                                       TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}">
-                                <TextBlock.Width>
-                                    <MultiBinding Converter="{StaticResource ValueOperationConverter}" ConverterParameter="-">
-                                        <Binding ElementName="PART_GridContener" Path="ActualWidth" />
-                                        <Binding>
-                                            <Binding.Source>
-                                                <sys:Double>100</sys:Double>
-                                            </Binding.Source>
-                                        </Binding>
-                                    </MultiBinding>
-                                </TextBlock.Width>
-                            </TextBlock>
+                                <TextBlock Grid.Row="1" Text="{Binding Description, FallbackValue='This is a description.'}" 
+                                           VerticalAlignment="Top"
+                                           TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}">
+                                    <TextBlock.Width>
+                                        <MultiBinding Converter="{StaticResource ValueOperationConverter}" ConverterParameter="-">
+                                            <Binding ElementName="PART_GridContener" Path="ActualWidth" />
+                                            <Binding>
+                                                <Binding.Source>
+                                                    <sys:Double>100</sys:Double>
+                                                </Binding.Source>
+                                            </Binding>
+                                        </MultiBinding>
+                                    </TextBlock.Width>
+                                </TextBlock>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </controls:ListBoxExtend>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </controls:ListBoxExtend>
+        </Grid>
     </Grid>
 </controls:PluginUserControlExtend>

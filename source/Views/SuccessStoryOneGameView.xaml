@@ -96,7 +96,7 @@
         </Grid>
 
         <Grid Name="PART_Achievements_List_Contener" Grid.Column="0" Grid.Row="2">
-            <controls:PluginList IgnoreSettings="True" ForceOneCol="True" 
+            <controls:PluginList IgnoreSettings="True" ForceOneCol="True" DisplayFilter="True"
                                  GameContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GameContext}" 
                                  Height="{Binding ElementName=PART_Achievements_List_Contener, Path=ActualHeight}" />
         </Grid>

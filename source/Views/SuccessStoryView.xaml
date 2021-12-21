@@ -410,7 +410,7 @@
                 <Grid Name="PART_PluginListContener" Margin="0,10,0,0" Grid.Row="1"
                       Tag="{Binding GameContext}">
                     <Controls:PluginList GameContext="{Binding ElementName=PART_PluginListContener, Path=Tag}" 
-                                         IgnoreSettings="True" ForceOneCol="True"
+                                         IgnoreSettings="True" ForceOneCol="True" DisplayFilter="True"
                                          Height="{Binding ElementName=PART_PluginListContener, Path=ActualHeight}" />
                 </Grid>
             </Grid>
