@@ -835,7 +835,7 @@ namespace SuccessStory.Clients
                                 UrlLocked = string.Format(BaseUrlLocked, (string)it["BadgeName"]),
                                 UrlUnlocked = string.Format(BaseUrlUnlocked, (string)it["BadgeName"]),
                                 DateUnlocked = (it["DateEarned"] == null) ? default(DateTime) : Convert.ToDateTime((string)it["DateEarned"]),
-                                Percent = (int)it["NumAwarded"] * 100 / NumDistinctPlayersCasual
+                                Percent = (int)it["NumAwarded"] == 0 || NumDistinctPlayersCasual == 0 ? 100 : (int)it["NumAwarded"] * 100 / NumDistinctPlayersCasual
                             });
                         }
                     }
