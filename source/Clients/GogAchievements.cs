@@ -100,6 +100,9 @@ namespace SuccessStory.Clients
                             case HttpStatusCode.ServiceUnavailable: // HTTP 503
                                 ShowNotificationPluginWebError(ex, Url);
                                 break;
+                            case HttpStatusCode.Unauthorized: // HTTP 401
+                                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"));
+                                break;
                             default:
                                 ShowNotificationPluginWebError(ex, Url);
                                 break;

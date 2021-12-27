@@ -32,6 +32,19 @@ namespace SuccessStory.Clients
             }
         }
 
+        private AuthTokenResponse _token;
+        private AuthTokenResponse token
+        {
+            get
+            {
+                if (_token == null)
+                {
+                    _token = OriginAPI.GetAccessToken();
+                }
+                return _token;
+            }
+        }
+
         private const string UrlPersonas = @"https://gateway.ea.com/proxy/identity/pids/{0}/personas?namespaceName=cem_ea_id";
         private const string UrlGameStoreData = @"https://api2.origin.com/ecommerce2/public/supercat/{0}/{1}?country={2}";
         private const string UrlAchievements = @"https://achievements.gameservices.ea.com/achievements/personas/{0}/{1}/all?lang={2}&metadata=true&fullset=true";
@@ -52,8 +65,8 @@ namespace SuccessStory.Clients
             if (IsConnected())
             {
                 // Get informations from Origin plugin.
-                string accessToken = OriginAPI.GetAccessToken().access_token;
-                string personasId = GetPersonas(OriginAPI.GetAccessToken());
+                string accessToken = token.access_token;
+                string personasId = GetPersonas(token);
                 string origineGameId = GetOrigineGameAchievementId(game.Id);
 
                 if (personasId.IsNullOrEmpty())
@@ -174,7 +187,14 @@ namespace SuccessStory.Clients
         {
             if (CachedIsConnectedResult == null)
             {
-                CachedIsConnectedResult = OriginAPI.GetIsUserLoggedIn();
+                try
+                {
+                    CachedIsConnectedResult = OriginAPI.GetIsUserLoggedIn();
+                }
+                catch (Exception ex)
+                {
+                    CachedIsConnectedResult = false;
+                }
             }
             
             return (bool)CachedIsConnectedResult;
