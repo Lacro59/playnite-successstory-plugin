@@ -287,6 +287,10 @@ namespace SuccessStory.Clients
                     }
 
                     ProductSlug = catalog?.productSlug?.Replace("/home", string.Empty);
+                    if (ProductSlug.IsNullOrEmpty())
+                    {
+                        logger.Warn($"No ProductSlug for {Name}");
+                    }
                 }
             }
             return ProductSlug;
