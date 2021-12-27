@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using CommonPluginsShared.Models;
+using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -129,7 +130,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"));
+                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"), ExternalPlugin.OriginLibrary);
             }
 
 
@@ -170,7 +171,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"));
+                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"), ExternalPlugin.OriginLibrary);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)

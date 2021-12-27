@@ -11,6 +11,7 @@ using Playnite.SDK.Data;
 using System.Text;
 using System.Security.Principal;
 using CommonPlayniteShared.Common;
+using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -175,7 +176,7 @@ namespace SuccessStory.Clients
             ));
         }
 
-        public virtual void ShowNotificationPluginNoAuthenticate(string Message)
+        public virtual void ShowNotificationPluginNoAuthenticate(string Message, ExternalPlugin PluginSource)
         {
             LastErrorId = $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noauthenticate";
             LastErrorMessage = Message;
@@ -184,7 +185,22 @@ namespace SuccessStory.Clients
             PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
                 $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noauthenticate",
                 $"SuccessStory\r\n{Message}",
-                NotificationType.Error
+                NotificationType.Error,
+                () =>
+                {
+                    try
+                    {
+                        var plugin = API.Instance.Addons.Plugins.Find(x => x.Id == PlayniteTools.GetPluginId(PluginSource));
+                        if (plugin != null)
+                        {
+                            plugin.OpenSettingsView();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false, true, "SuccessStory");
+                    }
+                }
             ));
         }
 

@@ -13,6 +13,7 @@ using System.IO.Compression;
 using System.Threading.Tasks;
 using CommonPluginsShared.Models;
 using CommonPluginsShared.Extensions;
+using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -140,7 +141,7 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"));
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"), ExternalPlugin.None);
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)

@@ -14,6 +14,7 @@ using SuccessStory.Models;
 using CommonPluginsShared.Models;
 using CommonPlayniteShared.PluginLibrary.XboxLibrary;
 using CommonPluginsShared.Extensions;
+using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -62,7 +63,7 @@ namespace SuccessStory.Clients
                     var authData = XboxAccountClient.GetSavedXstsTokens();
                     if (authData == null)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"));
+                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
                         return gameAchievements;
                     }
 
@@ -75,7 +76,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"));
+                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
             }
 
 
@@ -121,7 +122,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"));
+                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)

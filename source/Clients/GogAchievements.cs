@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using CommonPluginsShared.Models;
 using CommonPlayniteShared.PluginLibrary.GogLibrary.Models;
+using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -101,7 +102,7 @@ namespace SuccessStory.Clients
                                 ShowNotificationPluginWebError(ex, Url);
                                 break;
                             case HttpStatusCode.Unauthorized: // HTTP 401
-                                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"));
+                                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
                                 break;
                             default:
                                 ShowNotificationPluginWebError(ex, Url);
@@ -146,7 +147,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"));
+                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
             }
 
 
@@ -185,7 +186,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"));
+                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
                     }
                     else
                     {

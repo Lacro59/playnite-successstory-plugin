@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -142,12 +143,12 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch"));
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch"), ExternalPlugin.BattleNetLibrary);
                 }
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"));
+                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
             }
 
 
@@ -193,7 +194,7 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"));
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)
@@ -481,7 +482,7 @@ namespace SuccessStory.Clients
 
 
         #region Errors
-        public override void ShowNotificationPluginNoAuthenticate(string Message)
+        public override void ShowNotificationPluginNoAuthenticate(string Message, ExternalPlugin PluginSource)
         {
             LastErrorId = $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noauthenticate";
             LastErrorMessage = Message;
