@@ -377,25 +377,25 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    string Name = element.QuerySelector(".ProgressBar-title").InnerHtml;
-                    string ImageUrl = element.QuerySelector("img").GetAttribute("src");
+                    string Name = element.QuerySelector(".ProgressBar-title")?.InnerHtml;
+                    string ImageUrl = element.QuerySelector("img")?.GetAttribute("src");
 
-                    string stringClass = element.QuerySelector(".ProgressBar-bar").GetAttribute("class")
+                    string stringClass = element.QuerySelector(".ProgressBar-bar")?.GetAttribute("class")
                         .Replace("ProgressBar-bar", string.Empty).Replace("velocity-animating", string.Empty).Trim();
-                    string Color = OverwatchColor.Find(x => x.Name == stringClass).Color;
+                    string Color = OverwatchColor.Find(x => x.Name == stringClass)?.Color;
 
                     double Value = 0;
                     TimeSpan Time = default(TimeSpan);
 
-                    string ValueData = element.QuerySelector(".ProgressBar-description").InnerHtml;
+                    string ValueData = element.QuerySelector(".ProgressBar-description")?.InnerHtml;
 
                     string DisplayName = string.Empty;
-                    if (ValueData.IndexOf("%") > -1)
+                    if (ValueData?.IndexOf("%") > -1)
                     {
                         DisplayName = ValueData;
                     }
 
-                    double.TryParse(ValueData.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace("%", string.Empty), out Value);
+                    double.TryParse(ValueData?.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator).Replace("%", string.Empty), out Value);
 
                     if (DateTime.TryParse(ValueData, out DateTime dateTime))
                     {
