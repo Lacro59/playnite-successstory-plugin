@@ -210,7 +210,7 @@ namespace SuccessStory.Services
 
             SetEstimateTimeToUnlock(game, gameAchievements);
 
-            if (!(bool)gameAchievements?.HasAchivements)
+            if (!(bool)gameAchievements?.HasAchievements)
             {
                 logger.Info($"No achievements find for {game.Name} - {game.Id}");
             }
@@ -225,7 +225,7 @@ namespace SuccessStory.Services
 
         private GameAchievements SetEstimateTimeToUnlock(Game game, GameAchievements gameAchievements)
         {
-            if (game != null && gameAchievements.HasAchivements)
+            if (game != null && gameAchievements.HasAchievements)
             {
                 try
                 {
@@ -294,7 +294,7 @@ namespace SuccessStory.Services
 
                 try
                 {
-                    var db = Database.Items.Where(x => x.Value.HasAchivements && !x.Value.IsDeleted).ToList();
+                    var db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted).ToList();
                     foreach (var item in db)
                     {
                         List<Achievements> temp = item.Value.Items;
@@ -519,7 +519,7 @@ namespace SuccessStory.Services
             }
 
 
-            db = Database.Items.Where(x => x.Value.HasAchivements && !x.Value.IsDeleted).ToList();
+            db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted).ToList();
             foreach (var item in db)
             {
                 try
@@ -610,7 +610,7 @@ namespace SuccessStory.Services
 
                 try
                 {
-                    var db = Database.Items.Where(x => x.Value.HasAchivements && !x.Value.IsDeleted).ToList();
+                    var db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted).ToList();
                     foreach (var item in db)
                     {
                         List<Achievements> temp = item.Value.Items;
@@ -1003,7 +1003,7 @@ namespace SuccessStory.Services
         public override void ActionAfterRefresh(GameAchievements item)
         {
             Game game = PlayniteApi.Database.Games.Get(item.Id);
-            if ((item?.HasAchivements ?? false) && PluginSettings.Settings.AchievementFeature != null)
+            if ((item?.HasAchievements ?? false) && PluginSettings.Settings.AchievementFeature != null)
             {
                 if (game.FeatureIds != null)
                 {
@@ -1031,7 +1031,7 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                var db = Database.Where(x => x.IsManual && x.HasAchivements);
+                var db = Database.Where(x => x.IsManual && x.HasAchievements);
                 activateGlobalProgress.ProgressMaxValue = (double)db.Count();
                 string CancelText = string.Empty;
 
@@ -1097,7 +1097,7 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                var db = Database.Where(x => x.IsManual && x.HasAchivements);
+                var db = Database.Where(x => x.IsManual && x.HasAchievements);
                 activateGlobalProgress.ProgressMaxValue = (double)db.Count();
                 string CancelText = string.Empty;
 
@@ -1134,7 +1134,7 @@ namespace SuccessStory.Services
             GetPluginTags();
             GameAchievements gameAchievements = Get(game, true);
 
-            if (gameAchievements.HasAchivements)
+            if (gameAchievements.HasAchievements)
             {
                 try
                 {
@@ -1340,7 +1340,7 @@ namespace SuccessStory.Services
 
             try
             {
-                var db = Database.Items.Where(x => x.Value.HasAchivements).ToList();
+                var db = Database.Items.Where(x => x.Value.HasAchievements).ToList();
                 foreach (var item in db)
                 {
                     var GameAchievements = item.Value;
@@ -1379,7 +1379,7 @@ namespace SuccessStory.Services
 
             try
             {
-                var db = Database.Items.Where(x => x.Value.Playtime > 0 && x.Value.HasAchivements).ToList();
+                var db = Database.Items.Where(x => x.Value.Playtime > 0 && x.Value.HasAchievements).ToList();
                 foreach (var item in db)
                 {
                     var GameAchievements = item.Value;

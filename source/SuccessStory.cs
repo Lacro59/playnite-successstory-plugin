@@ -731,7 +731,7 @@ namespace SuccessStory
 
             // TODO Sourcelink
             var sourceLinkNull = PluginDatabase.Database?.Select(x => x)
-                                    .Where(x => x.SourcesLink == null && x.IsManual && x.HasAchivements && PlayniteApi.Database.Games.Get(x.Id) != null);
+                                    .Where(x => x.SourcesLink == null && x.IsManual && x.HasAchievements && PlayniteApi.Database.Games.Get(x.Id) != null);
             if (sourceLinkNull?.Count() > 0)
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
@@ -930,7 +930,7 @@ namespace SuccessStory
                     System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
                     System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                    var db = PluginDatabase.Database.Where(x => x.HasAchivements && !x.ImageIsCached);
+                    var db = PluginDatabase.Database.Where(x => x.HasAchievements && !x.ImageIsCached);
 #if DEBUG
                     Common.LogDebug(true, $"TaskCacheImage - {db.Count()} - Start");
                     Stopwatch stopwatch = new Stopwatch();

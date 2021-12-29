@@ -110,7 +110,7 @@ namespace SuccessStory.Clients
 
 
             // Set source link
-            if (gameAchievements.HasAchivements)
+            if (gameAchievements.HasAchievements)
             {
                 gameAchievements.SourcesLink = new SourceLink
                 {
@@ -122,7 +122,7 @@ namespace SuccessStory.Clients
 
 
             // Set rarity from Exophase
-            if (gameAchievements.HasAchivements)
+            if (gameAchievements.HasAchievements)
             {
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Starcraft2);

@@ -209,12 +209,12 @@ namespace SuccessStory.Models
         /// <summary>
         /// Indicate if the game has stats data.
         /// </summary>
-            [DontSerialize]
+        [DontSerialize]
         public virtual bool HasDataStats
         {
             get
             {
-                return (bool)(ItemsStats?.Count > 0);
+                return ItemsStats?.Count > 0;
             }
         }
 
@@ -222,11 +222,11 @@ namespace SuccessStory.Models
         /// Indicate if the game has achievements.
         /// </summary>
         [DontSerialize]
-        public bool HasAchivements
+        public bool HasAchievements
         {
             get
             {
-                return (bool)(Items?.Count > 0);
+                return Items?.Count > 0;
             }
         }
 
@@ -410,7 +410,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                if (!HasAchivements)
+                if (!HasAchievements)
                 {
                     return true;
                 }
