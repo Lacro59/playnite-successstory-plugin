@@ -413,7 +413,7 @@ namespace SuccessStory
                         });
                     }
 
-                    if (!gameAchievements.IsManual)
+                    if (!gameAchievements.IsManual || (gameAchievements.IsManual && gameAchievements.HasData))
                     {
                         gameMenuItems.Add(new GameMenuItem
                         {
@@ -433,7 +433,10 @@ namespace SuccessStory
                                 }
                             }
                         });
+                    }
 
+                    if (!gameAchievements.IsManual)
+                    {
                         gameMenuItems.Add(new GameMenuItem
                         {
                             MenuSection = resources.GetString("LOCSuccessStory"),

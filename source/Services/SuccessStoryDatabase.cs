@@ -20,6 +20,7 @@ using CommonPluginsControls.Controls;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using static CommonPluginsShared.PlayniteTools;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Services
 {
@@ -113,9 +114,8 @@ namespace SuccessStory.Services
                     gameAchievements.IsManual = true;
                 }
 
+                gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
                 AddOrUpdate(gameAchievements);
-
-                SetEstimateTimeToUnlock(game, gameAchievements);
 
                 Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
             }
@@ -124,6 +124,48 @@ namespace SuccessStory.Services
                 Common.LogError(ex, false, true, "SuccessStory");
             }
         }
+
+        public GameAchievements RefreshManual(Game game)
+        {
+            GameAchievements gameAchievements = null;
+
+            try
+            {
+                gameAchievements = Get(game, true);
+                if (gameAchievements != null && gameAchievements.HasData)
+                {
+                    if (gameAchievements.SourcesLink?.Name.IsEqual("steam") ?? false)
+                    {
+                        string str = gameAchievements.SourcesLink?.Url.Replace("https://steamcommunity.com/stats/", string.Empty).Replace("/achievements", string.Empty);
+                        int.TryParse(str, out int AppId);
+
+                        SteamAchievements steamAchievements = new SteamAchievements();
+                        steamAchievements.SetLocal();
+                        steamAchievements.SetManual();
+                        gameAchievements = steamAchievements.GetAchievements(game, AppId);
+                    }
+                    else if (gameAchievements.SourcesLink?.Name.IsEqual("exophase") ?? false)
+                    {
+                        SearchResult searchResult = new SearchResult
+                        {
+                            Url = gameAchievements.SourcesLink?.Url
+                        };
+
+                        ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                        gameAchievements = exophaseAchievements.GetAchievements(game, searchResult);
+                    }
+
+                    Common.LogDebug(true, $"RefreshManual({game.Id.ToString()}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+
+            return gameAchievements;
+        }
+
 
         public override GameAchievements Get(Guid Id, bool OnlyCache = false, bool Force = false)
         {
@@ -208,7 +250,7 @@ namespace SuccessStory.Services
                 Common.LogDebug(true, $"VerifToAddOrShow({game.Name}, {achievementSource}) - KO");
             }
 
-            SetEstimateTimeToUnlock(game, gameAchievements);
+            gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
 
             if (!(bool)gameAchievements?.HasAchievements)
             {
@@ -254,8 +296,6 @@ namespace SuccessStory.Services
                         Common.LogDebug(true, $"Get EstimateTimeXbox for {game.Name}");
                         gameAchievements.EstimateTime = EstimateTimeXbox;
                     }
-
-                    Update(gameAchievements);
                 }
                 catch (Exception ex)
                 {
@@ -948,6 +988,48 @@ namespace SuccessStory.Services
         }
 
 
+        public override void RefreshNoLoader(Guid Id)
+        {
+            var game = PlayniteApi.Database.Games.Get(Id);
+            logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
+
+            GameAchievements loadedItem = Get(Id, true);
+
+            GameAchievements webItem = null;
+            if (loadedItem.IsManual)
+            {
+                webItem = RefreshManual(game);
+                if (webItem != null)
+                {
+                    webItem.IsManual = true;
+                    webItem = SetEstimateTimeToUnlock(game, webItem);
+                    for (int i = 0; i < webItem.Items.Count; i++)
+                    {
+                        var finded = loadedItem.Items.Find(x => x.Name.IsEqual(webItem.Items[i].Name));
+                        if (finded != null)
+                        {
+                            webItem.Items[i].DateUnlocked = finded.DateUnlocked;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                webItem = GetWeb(Id);
+            }
+
+            if (webItem != null && !ReferenceEquals(loadedItem, webItem))
+            {
+                Update(webItem);
+            }
+            else
+            {
+                webItem = loadedItem;
+            }
+
+            ActionAfterRefresh(webItem);
+        }
+
         public override void Refresh(List<Guid> Ids)
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
@@ -1116,8 +1198,10 @@ namespace SuccessStory.Services
                     }
 
                     Game game = PlayniteApi.Database.Games.Get(gameAchievements.Id);
-                    SetEstimateTimeToUnlock(game, gameAchievements);
-                    AddOrUpdate(gameAchievements);
+                    GameAchievements gameAchievementsNew = Serialization.GetClone(gameAchievements);
+                    gameAchievementsNew = SetEstimateTimeToUnlock(game, gameAchievements);
+                    AddOrUpdate(gameAchievementsNew);
+
                     activateGlobalProgress.CurrentProgressValue++;
                 }
 
