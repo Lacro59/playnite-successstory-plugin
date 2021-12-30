@@ -649,6 +649,7 @@ namespace SuccessStory.Clients
             return new SteamEmulatorData { Achievements = ReturnAchievements, Stats = ReturnStats };
         }
 
+
         private List<Achievements> GetSteamEmu(string DirAchivements)
         {
             List<Achievements> ReturnAchievements = new List<Achievements>();

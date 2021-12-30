@@ -289,11 +289,36 @@ namespace SuccessStory.Clients
                 }
             }
 
-
+            // Set rarity
             if (gameAchievements.HasAchievements)
             {
-                gameAchievements.Items = GetGlobalAchievementPercentagesForApp(AppId, gameAchievements.Items);
+                if (!IsLocal && (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate))
+                {
+                    try
+                    {
+                        gameAchievements.Items = GetGlobalAchievementPercentagesForAppByWeb(AppId, gameAchievements.Items);
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false, true, "SuccessStory");
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        gameAchievements.Items = GetGlobalAchievementPercentagesForApp(AppId, gameAchievements.Items);
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false, true, "SuccessStory");
+                    }
+                }
+            }
 
+            // Set missing description
+            if (gameAchievements.HasAchievements)
+            {
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
             }
