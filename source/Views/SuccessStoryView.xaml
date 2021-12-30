@@ -11,6 +11,7 @@
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:Controls="clr-namespace:SuccessStory.Controls"
+             xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280"
              d:DataContext="{d:DesignInstance Type=local:SuccessViewData}">
 
@@ -59,8 +60,8 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="6" />
-                        <ColumnDefinition Width="200" />
-                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="6" />
                         <ColumnDefinition Width="275" />
@@ -84,6 +85,24 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
+                    <Grid Margin="10,0,50,0" Grid.Column="7">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="{DynamicResource LOCCommonProgression}" />
+                        <controls:RangeSlider Grid.Column="2" VerticalAlignment="Center" x:Name="PART_FilterRange"
+                                              IsSnapToTickEnabled="True" TickFrequency="1"
+                                              AutoToolTipPlacement="TopLeft"
+                                              ValueChanged="RangeSlider_ValueChanged"
+                                              LowerValue="0"
+                                              UpperValue="100"
+                                              Minimum="0"
+                                              Maximum="100" />
+                    </Grid>
+                    
                     <StackPanel Grid.Column="8" Orientation="Horizontal">
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{DynamicResource LOCCommonTotalFound}" 
                                    VerticalAlignment="Center" />

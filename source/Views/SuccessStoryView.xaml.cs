@@ -20,6 +20,7 @@ using System.Windows.Threading;
 using System.Threading;
 using System.Collections.ObjectModel;
 using CommonPluginsShared.Extensions;
+using CommonPluginsControls.Controls;
 
 namespace SuccessStory
 {
@@ -386,17 +387,21 @@ namespace SuccessStory
         #region Filter
         private void Filter()
         {
+            double Min = PART_FilterRange.LowerValue;
+            double Max = PART_FilterRange.UpperValue;
+
+
             ObservableCollection<ListViewGames> SourcesManual = new ObservableCollection<ListViewGames>();
             if (SearchSources.Contains(resources.GetString("LOCSuccessStoryManualAchievements")))
             {
-                SourcesManual = ListGames.Where(x => x.IsManual).ToObservable();
+                SourcesManual = ListGames.Where(x => x.IsManual && x.ProgressionValue >= Min && x.ProgressionValue <= Max).ToObservable();
             }
 
 
             // Filter
             if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
             {
-                successViewData.ListGames = ListGames.Where(x => x.Name.RemoveDiacritics().Contains(TextboxSearch.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) && SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase))
+                successViewData.ListGames = ListGames.Where(x => x.Name.RemoveDiacritics().Contains(TextboxSearch.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) && SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase) && x.ProgressionValue >= Min && x.ProgressionValue <= Max)
                                                     .Union(SourcesManual).Distinct().ToObservable();
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
@@ -411,7 +416,7 @@ namespace SuccessStory
 
             if (!TextboxSearch.Text.IsNullOrEmpty())
             {
-                successViewData.ListGames = ListGames.Where(x => x.Name.RemoveDiacritics().Contains(TextboxSearch.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase)).ToObservable();
+                successViewData.ListGames = ListGames.Where(x => x.Name.RemoveDiacritics().Contains(TextboxSearch.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) && x.ProgressionValue >= Min && x.ProgressionValue <= Max).ToObservable();
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
 
@@ -425,7 +430,8 @@ namespace SuccessStory
 
             if (SearchSources.Count != 0)
             {
-                successViewData.ListGames = ListGames.Where(x => SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase)).Union(SourcesManual).Distinct().ToObservable();
+                successViewData.ListGames = ListGames.Where(x => SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase) && x.ProgressionValue >= Min && x.ProgressionValue <= Max)
+                                                    .Union(SourcesManual).Distinct().ToObservable();
                 successViewData.TotalFoundCount = successViewData.ListGames.Count;
                 ListviewGames.Sorting();
 
@@ -437,7 +443,7 @@ namespace SuccessStory
                 return;
             }
 
-            successViewData.ListGames = ListGames;
+            successViewData.ListGames = ListGames.Where(x => x.ProgressionValue >= Min && x.ProgressionValue <= Max).Distinct().ToObservable();
             successViewData.TotalFoundCount = successViewData.ListGames.Count;
             ListviewGames.Sorting();
 
@@ -457,10 +463,12 @@ namespace SuccessStory
         {
             FilterCbSource((CheckBox)sender);
         }
+
         private void ChkSource_Unchecked(object sender, RoutedEventArgs e)
         {
             FilterCbSource((CheckBox)sender);
         }
+
         private void FilterCbSource(CheckBox sender)
         {
             FilterSource.Text = string.Empty;
@@ -479,6 +487,11 @@ namespace SuccessStory
                 FilterSource.Text = String.Join(", ", SearchSources);
             }
 
+            Filter();
+        }
+
+        private void RangeSlider_ValueChanged(object sender, RoutedEventArgs e)
+        {
             Filter();
         }
         #endregion

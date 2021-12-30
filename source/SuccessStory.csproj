@@ -190,6 +190,9 @@
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.xaml.cs">
       <DependentUpon>ControlPickerGradient.xaml</DependentUpon>
     </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\RangeSlider.xaml.cs">
+      <DependentUpon>RangeSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\TextBlockWithIcon.xaml.cs">
       <DependentUpon>TextBlockWithIcon.xaml</DependentUpon>
     </Compile>
@@ -396,6 +399,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\RangeSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
