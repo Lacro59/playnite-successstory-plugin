@@ -105,7 +105,7 @@ namespace SuccessStory.Clients
                                 UrlUnlocked = (string)item.Value["icons"]["208"],
                                 UrlLocked = string.Empty,
                                 DateUnlocked = ((string)item.Value["state"]["a_st"] == "ACTIVE") ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds((int)item.Value["u"]).ToLocalTime(),
-                                Percent = (float)item.Value["achievedPercentage"]
+                                Percent = (float)item.Value["achievedPercentage"] == 0 ? 100 : (float)item.Value["achievedPercentage"]
                             });
                         }
                     }
