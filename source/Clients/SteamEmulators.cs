@@ -107,7 +107,7 @@ namespace SuccessStory.Clients
                 this.SteamId = steamApi.GetSteamId(game.Name);
             }
 
-            AllAchievements = Get(this.SteamId, apiKey, IsManual);
+            AllAchievements = Get(game, this.SteamId, apiKey, IsManual);
             if (gameAchievementsCached == null)
             {
                 gameAchievements.Items = AllAchievements;
@@ -139,6 +139,39 @@ namespace SuccessStory.Clients
 
 
         private List<Achievements> ReadAchievementsINI(string pathFile, List<Achievements> ReturnAchievements)
+        {
+            bool isType2 = false;
+
+            try
+            {
+                string line;
+                StreamReader file = new StreamReader(pathFile);
+                while ((line = file.ReadLine()) != null)
+                {
+                    if (line.IsEqual("[Time]"))
+                    {
+                        isType2 = true;
+                        break;
+                    }
+                }
+                file.Close();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+
+            if (!isType2)
+            {
+                return ReadAchievementsINI_type1(pathFile, ReturnAchievements);
+            }
+            else
+            {
+                return ReadAchievementsINI_type2(pathFile, ReturnAchievements);
+            }
+        }
+
+        private List<Achievements> ReadAchievementsINI_type1(string pathFile, List<Achievements> ReturnAchievements)
         {
             try
             {
@@ -232,8 +265,65 @@ namespace SuccessStory.Clients
             return ReturnAchievements;
         }
 
+        private List<Achievements> ReadAchievementsINI_type2(string pathFile, List<Achievements> ReturnAchievements)
+        {
+            try
+            {
+                string line;
+                bool startAchievement = false;
 
-        private List<Achievements> Get(int SteamId, string apiKey, bool IsManual)
+                string Name = string.Empty;
+                bool State = false;
+                string sTimeUnlock = string.Empty;
+                int timeUnlock = 0;
+                DateTime? DateUnlocked = null;
+
+                StreamReader file = new StreamReader(pathFile);
+                while ((line = file.ReadLine()) != null)
+                {
+                    if (line.IsEqual("[Time]"))
+                    {
+                        startAchievement = true;
+                    }
+                    else if (startAchievement)
+                    {
+                        var data = line.Split('=');
+                        Name = data[0];
+                        sTimeUnlock = data[1];
+                        timeUnlock = BitConverter.ToInt32(StringToByteArray(sTimeUnlock), 0);
+                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+
+                        if (timeUnlock != 0)
+                        {
+                            ReturnAchievements.Add(new Achievements
+                            {
+                                ApiName = Name,
+                                Name = string.Empty,
+                                Description = string.Empty,
+                                UrlUnlocked = string.Empty,
+                                UrlLocked = string.Empty,
+                                DateUnlocked = DateUnlocked
+                            });
+
+                            Name = string.Empty;
+                            State = false;
+                            timeUnlock = 0;
+                            DateUnlocked = null;
+                        }
+                    }
+                }
+                file.Close();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+
+            return ReturnAchievements;
+        }
+
+
+        private List<Achievements> Get(Game game, int SteamId, string apiKey, bool IsManual)
         {
             List<Achievements> ReturnAchievements = new List<Achievements>();
 
@@ -320,11 +410,21 @@ namespace SuccessStory.Clients
                         default:
                             if (ReturnAchievements.Count == 0)
                             {
+                                var finded = PluginDatabase.PluginSettings.Settings.LocalPath.Find(x => x.FolderPath.IsEqual(DirAchivements));
+                                Guid.TryParse(finded?.GameId, out Guid GameId);
+
                                 if (!DirAchivements.Contains("steamemu", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     if (File.Exists(DirAchivements + $"\\{SteamId}\\stats\\achievements.ini"))
                                     {
                                         ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\{SteamId}\\stats\\achievements.ini", ReturnAchievements);
+                                    }
+                                    else if (GameId != default(Guid) && GameId == game.Id && (finded?.HasGame ?? false))
+                                    {
+                                        if (File.Exists(DirAchivements + $"\\stats\\achievements.ini"))
+                                        {
+                                            ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\stats\\achievements.ini", ReturnAchievements);
+                                        }
                                     }
                                     else
                                     {

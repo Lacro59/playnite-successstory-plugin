@@ -14,7 +14,7 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:interfaces="clr-namespace:SuccessStory.Views.Interfaces"
              mc:Ignorable="d" d:DesignWidth="650"
-             d:DataContext="{d:DesignInstance SuccessStory:SuccessStorySettingsViewModel}">
+             d:DataContext="{d:DesignInstance SuccessStory:SuccessStorySettingsViewModel, IsDesignTimeCreatable=True}">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -593,13 +593,14 @@
                                         <ItemsControl MinHeight="10" Name="PART_ItemsControl" AlternationCount="100">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Grid Margin="40,0,0,5">
+                                                    <Grid Margin="0,0,0,5">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*" />
                                                             <ColumnDefinition Width="8" />
                                                             <ColumnDefinition Width="auto" />
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
+                                                            <RowDefinition Height="auto" />
                                                             <RowDefinition Height="auto" />
                                                         </Grid.RowDefinitions>
 
@@ -610,7 +611,7 @@
                                                                 <ColumnDefinition Width="auto" />
                                                                 <ColumnDefinition Width="8" />
                                                                 <ColumnDefinition Width="auto" />
-                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="20" />
                                                                 <ColumnDefinition Width="auto" />
                                                             </Grid.ColumnDefinitions>
 
@@ -619,11 +620,19 @@
                                                                     Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
                                                                     VerticalAlignment="Center" Grid.Column="0" />
 
+                                                            <ToggleButton Content="&#xe905;" FontFamily="{DynamicResource CommonFont}" IsChecked="{Binding HasGame, FallbackValue=True}"
+                                                                          Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                          Name="PART_TbButton"
+                                                                          VerticalAlignment="Center" Grid.Column="2" />
+
                                                             <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveLocalFolder_Click" 
                                                                     Name="ButtonRemoveLocalFolder"
                                                                     Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
                                                                     VerticalAlignment="Center" Grid.Column="4" />
                                                         </Grid>
+
+                                                        <TextBox Grid.Row="3" Margin="100,8,0,0" Text="{Binding GameId}"
+                                                                 Visibility="{Binding ElementName=PART_TbButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                                     </Grid>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
