@@ -54,7 +54,6 @@ namespace SuccessStory.Clients
         }
 
 
-
         public override GameAchievements GetAchievements(Game game)
         {
             throw new NotImplementedException();
@@ -96,8 +95,6 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             GameAchievements gameAchievementsCached = SuccessStory.PluginDatabase.Get(game, true);
 
-            List<Achievements> AllAchievements = new List<Achievements>();
-
             if (SteamId != 0)
             {
                 this.SteamId = SteamId;
@@ -107,23 +104,27 @@ namespace SuccessStory.Clients
                 this.SteamId = steamApi.GetSteamId(game.Name);
             }
 
-            AllAchievements = Get(game, this.SteamId, apiKey, IsManual);
+
+            var data = Get(game, this.SteamId, apiKey, IsManual); 
+
             if (gameAchievementsCached == null)
             {
-                gameAchievements.Items = AllAchievements;
+                gameAchievements.Items = data.Achievements;
+                gameAchievements.ItemsStats = data.Stats;
                 return gameAchievements;
             }
             else
             {
-                if (gameAchievementsCached.Items.Count != AllAchievements.Count)
+                if (gameAchievementsCached.Items.Count != data.Achievements.Count)
                 {
-                    gameAchievements.Items = AllAchievements;
+                    gameAchievements.Items = data.Achievements;
+                    gameAchievements.ItemsStats = data.Stats;
                     return gameAchievements;
                 }
 
                 gameAchievementsCached.Items.ForEach(x =>
                 {
-                    var finded = AllAchievements.Find(y => x.ApiName == y.ApiName);
+                    var finded = data.Achievements.Find(y => x.ApiName == y.ApiName);
                     if (finded != null)
                     {
                         x.Name = finded.Name;
@@ -133,10 +134,60 @@ namespace SuccessStory.Clients
                         }
                     }
                 });
+                gameAchievementsCached.ItemsStats = data.Stats;
                 return gameAchievementsCached;
             }
         }
 
+
+
+        private List<GameStats> ReadStatsINI(string pathFile, List<GameStats> gameStats)
+        {
+            try
+            {
+                string line;
+                string Name = string.Empty;
+                double Value = 0;
+
+                StreamReader file = new StreamReader(pathFile);
+                while ((line = file.ReadLine()) != null)
+                {
+                    // Achievement name
+                    if (!line.IsEqual("[Stats]"))
+                    {
+                        var data = line.Split('=');
+                        if (data.Count() > 1 && !data[0].IsNullOrEmpty() && !data[0].IsEqual("STACount"))
+                        {
+                            Name = data[0];
+                            try
+                            {
+                                Value = BitConverter.ToInt32(StringToByteArray(data[1]), 0);
+                            }
+                            catch
+                            {
+                                double.TryParse(data[1], out Value);
+                            }
+
+                            gameStats.Add(new GameStats
+                            {
+                                Name = Name,
+                                Value = Value
+                            });
+
+                            Name = string.Empty;
+                            Value = 0;
+                        }
+                    }
+                }
+                file.Close();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+
+            return gameStats;
+        }
 
         private List<Achievements> ReadAchievementsINI(string pathFile, List<Achievements> ReturnAchievements)
         {
@@ -321,9 +372,10 @@ namespace SuccessStory.Clients
         }
 
 
-        private List<Achievements> Get(Game game, int SteamId, string apiKey, bool IsManual)
+        private SteamEmulatorData Get(Game game, int SteamId, string apiKey, bool IsManual)
         {
             List<Achievements> ReturnAchievements = new List<Achievements>();
+            List<GameStats> ReturnStats = new List<GameStats>();
 
             if (!IsManual)
             {
@@ -334,9 +386,6 @@ namespace SuccessStory.Clients
                     {
                         case ("%public%\\documents\\steam\\codex"):
                         case ("%appdata%\\steam\\codex"):
-#if DEBUG
-                            logger.Debug(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.ini");
-#endif
                             if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.ini"))
                             {
                                 string line;
@@ -377,12 +426,15 @@ namespace SuccessStory.Clients
                                 }
                                 file.Close();
                             }
+
+                            if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\stats.ini"))
+                            {
+                                ReturnStats = ReadStatsINI(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\stats.ini", ReturnStats);
+                            }
+
                             break;
 
                         case "%programdata%\\steam":
-#if DEBUG
-                            logger.Debug(Environment.ExpandEnvironmentVariables("%ProgramData%\\Steam"));
-#endif
                             if (Directory.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Steam")))
                             {
                                 string[] dirsUsers = Directory.GetDirectories(Environment.ExpandEnvironmentVariables("%ProgramData%\\Steam"));
@@ -391,6 +443,11 @@ namespace SuccessStory.Clients
                                     if (File.Exists(dirUser + $"\\{SteamId}\\stats\\achievements.ini"))
                                     {
                                         ReturnAchievements = ReadAchievementsINI(dirUser + $"\\{SteamId}\\stats\\achievements.ini", ReturnAchievements);
+                                    }
+
+                                    if (File.Exists(dirUser + $"\\{SteamId}\\stats\\stats.ini"))
+                                    {
+                                        ReturnStats = ReadStatsINI(dirUser + $"\\{SteamId}\\stats\\stats.ini", ReturnStats);
                                     }
                                 }
                             }
@@ -416,12 +473,23 @@ namespace SuccessStory.Clients
                                     if (File.Exists(DirAchivements + $"\\{SteamId}\\stats\\achievements.ini"))
                                     {
                                         ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\{SteamId}\\stats\\achievements.ini", ReturnAchievements);
+
+                                        if (File.Exists(DirAchivements + $"\\{SteamId}\\stats\\stats.ini"))
+                                        {
+                                            ReturnStats = ReadStatsINI(DirAchivements + $"\\{SteamId}\\stats\\stats.ini", ReturnStats);
+                                        }
+
                                     }
                                     else if (GameId != default(Guid) && GameId == game.Id && (finded?.HasGame ?? false))
                                     {
                                         if (File.Exists(DirAchivements + $"\\stats\\achievements.ini"))
                                         {
                                             ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\stats\\achievements.ini", ReturnAchievements);
+
+                                            if (File.Exists(DirAchivements + $"\\stats\\stats.ini"))
+                                            {
+                                                ReturnStats = ReadStatsINI(DirAchivements + $"\\stats\\stats.ini", ReturnStats);
+                                            }
                                         }
                                     }
                                     else
@@ -453,11 +521,11 @@ namespace SuccessStory.Clients
                 if (ReturnAchievements == new List<Achievements>())
                 {
                     logger.Warn($"No data for {SteamId}");
-                    return new List<Achievements>();
+                    return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };
                 }
             }
             
-            #region Get details achievements
+            #region Get details achievements & stats
             // List details acheviements
             string lang = CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
             string url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}", apiKey, SteamId, lang);
@@ -482,7 +550,7 @@ namespace SuccessStory.Clients
                             Common.LogError(ex, false, $"Failed to load from {url}", true, "SuccessStory");
                             break;
                     }
-                    return new List<Achievements>();
+                    return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };
                 }
             }
 
@@ -490,12 +558,14 @@ namespace SuccessStory.Clients
             {
                 dynamic resultObj = Serialization.FromJson<dynamic>(ResultWeb);
                 dynamic resultItems = null;
+                dynamic resultItemsStats = null;
 
                 try
                 {
-                    resultItems = resultObj["game"]["availableGameStats"]["achievements"];
+                    resultItems = resultObj["game"]?["availableGameStats"]?["achievements"];
+                    resultItemsStats = resultObj["game"]?["availableGameStats"]?["stats"];
 
-                    for (int i = 0; i < resultItems.Count; i++)
+                    for (int i = 0; i < resultItems?.Count; i++)
                     {
                         bool isFind = false;
                         for (int j = 0; j < ReturnAchievements.Count; j++)
@@ -531,11 +601,43 @@ namespace SuccessStory.Clients
                             });
                         }
                     }
+
+                    if (ReturnStats.Count > 0)
+                    {
+                        for (int i = 0; i < resultItemsStats?.Count; i++)
+                        {
+                            bool isFind = false;
+                            for (int j = 0; j < ReturnStats.Count; j++)
+                            {
+                                if (ReturnStats[j].Name.IsEqual(((string)resultItemsStats[i]["name"])))
+                                {
+                                    GameStats temp = new GameStats
+                                    {
+                                        Name = (string)resultItemsStats[i]["name"],
+                                        Value = ReturnStats[j].Value
+                                    };
+
+                                    isFind = true;
+                                    ReturnStats[j] = temp;
+                                    j = ReturnStats.Count;
+                                }
+                            }
+
+                            if (!isFind)
+                            {
+                                ReturnStats.Add(new GameStats
+                                {
+                                    Name = (string)resultItemsStats[i]["name"],
+                                    Value = 0
+                                });
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     Common.LogError(ex, true, $"Failed to parse");
-                    return new List<Achievements>();
+                    return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };
                 }
             }
             #endregion
@@ -544,9 +646,7 @@ namespace SuccessStory.Clients
             // Delete empty (SteamEmu)
             ReturnAchievements = ReturnAchievements.Select(x => x).Where(x => !string.IsNullOrEmpty(x.UrlLocked)).ToList();
 
-
-            Common.LogDebug(true, $"{Serialization.ToJson(ReturnAchievements)}");
-            return ReturnAchievements;
+            return new SteamEmulatorData { Achievements = ReturnAchievements, Stats = ReturnStats };
         }
 
         private List<Achievements> GetSteamEmu(string DirAchivements)
@@ -602,5 +702,12 @@ namespace SuccessStory.Clients
             return ReturnAchievements;
         }
         #endregion
+    }
+
+
+    public class SteamEmulatorData
+    {
+        public List<Achievements> Achievements { get; set; }
+        public List<GameStats> Stats { get; set; }
     }
 }

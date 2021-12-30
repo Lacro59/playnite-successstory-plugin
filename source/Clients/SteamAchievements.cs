@@ -173,8 +173,8 @@ namespace SuccessStory.Clients
                             });
                         }
 
-
                         gameAchievements.Items = AllAchievements;
+                        gameAchievements.ItemsStats = temp.ItemsStats;
 
 
                         // Set source link
