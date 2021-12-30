@@ -106,7 +106,7 @@ namespace SuccessStory
                 ProgressionGlobal = PluginDatabase.Progession();
                 ProgressionLaunched = PluginDatabase.ProgessionLaunched();
 
-                GraphicsData = PluginDatabase.GetCountByMonth(null, 4);
+                GraphicsData = PluginDatabase.GetCountByMonth(null, 12);
                 StatsGraphicsAchievementsLabels = GraphicsData.Labels;
 
 
