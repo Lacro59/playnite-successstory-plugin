@@ -273,7 +273,6 @@ namespace SuccessStory.Clients
                 bool startAchievement = false;
 
                 string Name = string.Empty;
-                bool State = false;
                 string sTimeUnlock = string.Empty;
                 int timeUnlock = 0;
                 DateTime? DateUnlocked = null;
@@ -306,7 +305,6 @@ namespace SuccessStory.Clients
                             });
 
                             Name = string.Empty;
-                            State = false;
                             timeUnlock = 0;
                             DateUnlocked = null;
                         }
