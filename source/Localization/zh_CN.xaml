@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSuccessStoryProgress">Progress</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEarned">Earned</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgress">进度</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEarned">已获得</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryManualAchievements">Manual Achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryManualAchievements">手动成就</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">隐藏奖杯</sys:String>
 
-    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarity for manual achievements</sys:String>
-    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Refresh estimate time for manual achievements</sys:String>
+    <sys:String x:Key="LOCSsRefreshRaretyManual">刷新手动成就稀有度</sys:String>
+    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">刷新手动成就估计时间</sys:String>
     
     <!-- MainView -->
 
@@ -20,29 +20,29 @@
     <sys:String x:Key="LOCSuccessStoryViewGames">查看游戏成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryViewGame">查看游戏成就</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnored">Ignored the game</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnored">忽略此游戏</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotIgnored">不忽略游戏</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam个人资料未公</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam在功成名就Success Story中已启用，但库扩展在Playnite中被</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam在设置中没有正确配置</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key in settings menu for Steam Library</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user in settings menu for Steam Library</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Steam库设置菜单中没有Steam配置和/或API密钥</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Steam库设置菜单中没有Steam用户</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG在功成名就Success Story中已启用，但库扩展在Playnite中被</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG用户未验</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG has not been correctly configured in settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">设置中没有正确配置GOG</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">GOG在功成名就Success Story中已启用，但库扩展在Playnite中被禁用</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN 用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin在功成名就Success Story中已启用，但库扩展在Playnite中被</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin用户未验</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox在功成名就Success Story中已启用，但库扩展在Playnite中被</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox用户未验</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements在设置中没有正确配置</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3在设置中没有正确配置</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net在功成名就Success Story中已启用，但库扩展在Playnite中被禁用</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net 用户未验证</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net守望先锋用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic user is not authenticated</sys:String>
