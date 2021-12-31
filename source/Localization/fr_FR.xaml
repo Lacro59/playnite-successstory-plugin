@@ -6,7 +6,7 @@
 
     <sys:String x:Key="LOCSuccessStoryManualAchievements">Accomplissements manuels</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Trophée caché</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Trophée cach</sys:String>
 
     <sys:String x:Key="LOCSsRefreshRaretyManual">Rafraîchir le taux de rareté pour les succès manuels</sys:String>
     <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Rafraîchir l'estimation de temps pour les succès manuels</sys:String>
@@ -28,24 +28,24 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Aucune configuration Steam et/ou clé d'API dans le menu des paramètres de la bibliothèque Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Aucun utilisateur Steam dans le menu des paramètres de la bibliothèque Steam</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">L'utilisateur Steam n'est pas authentifié</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">L'utilisateur Steam n'est pas authentifi</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Utilisateur GOG n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Utilisateur GOG n'est pas connect</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Utilisateur PSN n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Utilisateur PSN n'est pas connect</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Utilisateur Origin n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Utilisateur Origin n'est pas connect</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox non authentifié</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox non authentifi</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net est activé dans SuccessStory mais l'extension de bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">L'utilisateur de Battle.net n'est pas authentifié</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">L'utilisateur Overwatch de Battle.net n'est pas authentifié</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">L'utilisateur StarCraft II de Battle.net n'est pas authentifié</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">L'utilisateur de Battle.net n'est pas authentifi</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">L'utilisateur Overwatch de Battle.net n'est pas authentifi</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">L'utilisateur StarCraft II de Battle.net n'est pas authentifi</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Utilisateur Epic n'est pas connecté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Utilisateur Epic n'est pas connect</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
@@ -115,7 +115,7 @@
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactListOptions">Options de la liste de succès compacte</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Options des résumés de succès</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">Montrer le dernier succès débloqué</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">Montrer le dernier succès débloqu</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Montrer le dernier succès sur une ligne</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vue de l'extension</sys:String>
@@ -148,7 +148,7 @@
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Réinitialise et télécharge les succès des jeux installés. (Utiliser s'il y a un problème avec les réalisations)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Réinitialise et télécharge les réalisations de tous les jeux. (Utiliser s'il y a un problème avec les accomplissements)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryRarityConfig">Configuration de la rareté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarityConfig">Configuration de la raret</sys:String>
     <sys:String x:Key="LOCSuccessStoryUseUltraRare">Utilisez les succès ultra rares</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryEnableImageCache">Activer la mise en cache des images des succès *</sys:String>
