@@ -135,3 +135,9 @@ Packages:
       - Added filters options for each type of plugin control
       - Many minor improvements
       - Fixed many bugs
+  - Version: 2.8.1
+    RequiredApiVersion: 6.2.0
+    ReleaseDate: 2022-01-02
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.8.1/playnite-successstory-plugin_2_8_1.pext
+    Changelog:
+      - Fixed a crash
