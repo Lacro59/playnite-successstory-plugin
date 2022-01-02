@@ -97,7 +97,7 @@ namespace SuccessStory.Views.Interfaces
             try
             {
                 gameStats = new List<GameStats>();
-                gameAchievements = PluginDatabase.Get(GameContext);
+                gameAchievements = PluginDatabase.Get(GameContext, true);
 
                 switch (DataMode)
                 {

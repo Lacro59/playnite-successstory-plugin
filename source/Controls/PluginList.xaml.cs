@@ -522,10 +522,12 @@ namespace SuccessStory.Controls
                     break;
             }
 
-
-            GameAchievements gameAchievements = PluginDatabase.Get(GameContext);
-            gameAchievements.orderAchievement = orderAchievement;
-            ControlDataContext.ItemsSource = gameAchievements.OrderItems;
+            if (GameContext != null)
+            {
+                GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
+                gameAchievements.orderAchievement = orderAchievement;
+                ControlDataContext.ItemsSource = gameAchievements.OrderItems;
+            }
         }
         #endregion
     }
