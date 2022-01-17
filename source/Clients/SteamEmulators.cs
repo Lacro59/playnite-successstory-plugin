@@ -43,6 +43,8 @@ namespace SuccessStory.Clients
             AchievementsDirectories.Add("%PUBLIC%\\Documents\\Steam\\CODEX");
             AchievementsDirectories.Add("%appdata%\\Steam\\CODEX");
 
+            AchievementsDirectories.Add("%appdata%\\Goldberg SteamEmu Saves");
+
             AchievementsDirectories.Add("%ProgramData%\\Steam");
             AchievementsDirectories.Add("%localappdata%\\SKIDROW");
             AchievementsDirectories.Add("%DOCUMENTS%\\SKIDROW");
@@ -430,6 +432,51 @@ namespace SuccessStory.Clients
                             if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\stats.ini"))
                             {
                                 ReturnStats = ReadStatsINI(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\stats.ini", ReturnStats);
+                            }
+
+                            break;
+
+                        case ("%appdata%\\goldberg steamemu saves"):
+                            if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.json"))
+                            {
+                                string line;
+                                string Name = string.Empty;
+                                DateTime? DateUnlocked = null;
+                                
+                                StreamReader r = new StreamReader(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.json");
+                                
+                                while ((line = r.ReadLine()) != null)
+                                {
+                                    // Achievement Name
+                                    if (line.IndexOf("{") > -1)
+                                    {
+                                        Name = line.Replace("\"", string.Empty).Replace(": {", string.Empty).Trim();
+                                    }
+
+                                    // Achievement UnlockTime
+                                    if (line.IndexOf("earned_time") > -1 && line.ToLower() != "    \"earned_time\": 0")
+                                    {
+                                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(line.Replace("\"earned_time\": ", string.Empty))).ToLocalTime();
+                                    }
+
+                                    // End Achievement
+                                    if (Name != string.Empty && DateUnlocked != null)
+                                    {
+                                        ReturnAchievements.Add(new Achievements
+                                        {
+                                            ApiName = Name,
+                                            Name = string.Empty,
+                                            Description = string.Empty,
+                                            UrlUnlocked = string.Empty,
+                                            UrlLocked = string.Empty,
+                                            DateUnlocked = DateUnlocked
+                                        });
+
+                                        Name = string.Empty;
+                                        DateUnlocked = null;
+                                    }
+                                }
+                                r.Close();
                             }
 
                             break;
