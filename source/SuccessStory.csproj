@@ -178,6 +178,7 @@
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
     <Compile Include="Models\GameAchievements.cs" />
+    <Compile Include="Models\PSN_NPWR_LIST.cs" />
     <Compile Include="Models\QuickSearchItemSource.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />

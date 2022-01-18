@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
+using CommonPluginsShared.Extensions;
 using CommonPlayniteShared.PluginLibrary.PSNLibrary.Models;
 using static CommonPluginsShared.PlayniteTools;
 
@@ -111,7 +112,17 @@ namespace SuccessStory.Clients
                             }
                             else
                             {
-                                logger.Warn($"No trohpies find for {game.Name} - {GameId}");
+                                TMP_GameId = GetNPWR(game.Name);
+                                if (!TMP_GameId.IsNullOrEmpty())
+                                {
+                                    GameId = TMP_GameId;
+                                }
+                                else
+                                {
+                                    logger.Warn($"No trohpies find for {game.Name} - {GameId}");
+                                    gameAchievements.Items = AllAchievements;
+                                    return gameAchievements;
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -123,24 +134,30 @@ namespace SuccessStory.Clients
                     Url = string.Format(UrlTrophies, GameId) + (IsPS5 ? string.Empty : "?npServiceName=trophy");
                     UrlDetails = string.Format(UrlTrophiesDetails, GameId) + (IsPS5 ? string.Empty : "?npServiceName=trophy");
 
-                    string WebResult = Web.DownloadStringData(Url, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
-                    string WebResultDetails = Web.DownloadStringData(UrlDetails, PsnAPI.mobileToken.access_token, "", LocalLang).GetAwaiter().GetResult();
-
-                    Trophies trophies = Serialization.FromJson<Trophies>(WebResult);
-                    Trophies trophiesDetails = Serialization.FromJson<Trophies>(WebResultDetails);
-                    foreach (Trophie trophie in trophies?.trophies)
+                    string WebResult = string.Empty;
+                    Trophies trophies = new Trophies { trophies = new List<Trophie>() };
+                    try
                     {
-                        Trophie trophieDetails = trophiesDetails.trophies.Where(x => x.trophyId == trophie.trophyId).FirstOrDefault();
+                        WebResult = Web.DownloadStringData(Url, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
+                        trophies = Serialization.FromJson<Trophies>(WebResult);
+                    }
+                    catch { }
 
-                        float.TryParse(trophie.trophyEarnedRate.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+                    string WebResultDetails = Web.DownloadStringData(UrlDetails, PsnAPI.mobileToken.access_token, "", LocalLang).GetAwaiter().GetResult();
+                    Trophies trophiesDetails = Serialization.FromJson<Trophies>(WebResultDetails);
+
+                    foreach (Trophie trophie in trophiesDetails?.trophies)
+                    {
+                        Trophie trophieUser = trophies.trophies.Where(x => x.trophyId == trophie.trophyId).FirstOrDefault();
+                        float.TryParse(trophieUser?.trophyEarnedRate.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
 
                         AllAchievements.Add(new Achievements
                         {
-                            Name = (trophieDetails.trophyName.IsNullOrEmpty()) ? resources.GetString("LOCSuccessStoryHiddenTrophy") : trophieDetails.trophyName,
-                            Description = trophieDetails.trophyDetail,
-                            UrlUnlocked = (trophieDetails.trophyIconUrl.IsNullOrEmpty()) ? "hidden_trophy.png" : trophieDetails.trophyIconUrl,
-                            DateUnlocked = (trophie.earnedDateTime == null) ? default(DateTime) : trophie.earnedDateTime,
-                            Percent = Percent
+                            Name = (trophie.trophyName.IsNullOrEmpty()) ? resources.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
+                            Description = trophie.trophyDetail,
+                            UrlUnlocked = (trophie.trophyIconUrl.IsNullOrEmpty()) ? "hidden_trophy.png" : trophie.trophyIconUrl,
+                            DateUnlocked = (trophieUser?.earnedDateTime == null) ? default(DateTime) : trophieUser.earnedDateTime,
+                            Percent = Percent == 0 ? 100 : Percent
                         });
                     }
 
@@ -240,6 +257,17 @@ namespace SuccessStory.Clients
             }
 
             return psnAllTrophies;
+        }
+
+        public string GetNPWR(string Name)
+        {
+            var finded = PSN_NPWR_LIST.NPWR_LIST.Where(x => CommonPluginsShared.PlayniteTools.NormalizeGameName(x.Name).IsEqual(CommonPluginsShared.PlayniteTools.NormalizeGameName(Name)));
+            if (finded?.Count() > 0)
+            {
+                return finded.First().NPWR;
+            }
+
+            return "";
         }
         #endregion
     }
