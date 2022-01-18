@@ -133,6 +133,12 @@ namespace SuccessStory.Clients
         {
             EstimateTimeToUnlock EstimateTimeToUnlock = new EstimateTimeToUnlock();
 
+            if (UrlTrueAchievement.IsNullOrEmpty())
+            {
+                logger.Warn($"No url for GetEstimateTimeToUnlock()");
+                return EstimateTimeToUnlock;
+            }
+
             try
             {
                 string WebData = Web.DownloadStringData(UrlTrueAchievement).GetAwaiter().GetResult();
