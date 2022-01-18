@@ -24,7 +24,7 @@ using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Services
 {
-    public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettingsViewModel, SuccessStoryCollection, GameAchievements>
+    public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettingsViewModel, SuccessStoryCollection, GameAchievements, Achievements>
     {
         public SuccessStory Plugin;
 
