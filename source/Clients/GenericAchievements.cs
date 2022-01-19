@@ -194,6 +194,12 @@ namespace SuccessStory.Clients
                         if (plugin != null)
                         {
                             plugin.OpenSettingsView();
+
+                            foreach (var achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
+                            {
+                                achievementProvider.ResetCachedConfigurationValidationResult();
+                                achievementProvider.ResetCachedIsConnectedResult();
+                            }
                         }
                     }
                     catch (Exception ex)
