@@ -241,7 +241,14 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "SuccessStory");
+                    if (ex.Message.Contains("User is not authenticated", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
+                    }
+                    else
+                    {
+                        Common.LogError(ex, false, true, "SuccessStory");
+                    }
                 }
             }
 
