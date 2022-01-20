@@ -415,9 +415,9 @@ namespace SuccessStory.Clients
                     //TODO: Decide if editions should be removed here
                     string normalizedRetroArchTitle = PlayniteTools.NormalizeGameName(retroArchTitle, true);
                     string normalizedPlayniteTitle = PlayniteTools.NormalizeGameName(GameName, true);
-                    if (normalizedPlayniteTitle == normalizedRetroArchTitle && gameID == 0)
+                    if (normalizedPlayniteTitle.IsEqual(normalizedRetroArchTitle))
                     {
-                        logger.Info($"Find for {GameName.Trim().ToLower()} / {retroArchTitle} with {PlatformName} in {consoleID}");
+                        logger.Info($"Find for {GameName} [{ra_Game.ID}] / {retroArchTitle} with {PlatformName} in {consoleID}");
                         gameID = ra_Game.ID;
                         break;
                     }
@@ -429,7 +429,7 @@ namespace SuccessStory.Clients
                         {
                             if (GameName.IsEqual(TitleSplit) && gameID == 0)
                             {
-                                logger.Info($"SuccessStory - Find for {GameName} / {TitleSplit} with {PlatformName} in {consoleID}");
+                                logger.Info($"SuccessStory - Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
                                 gameID = ra_Game.ID;
                                 break;
                             }
@@ -443,18 +443,11 @@ namespace SuccessStory.Clients
                         {
                             if (GameName.IsEqual(TitleSplit) && gameID == 0)
                             {
-                                logger.Info($"Find for {GameName} / {TitleSplit} with {PlatformName} in {consoleID}");
+                                logger.Info($"Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
                                 gameID = ra_Game.ID;
                                 break;
                             }
                         }
-                    }
-
-                    if (normalizedPlayniteTitle == normalizedRetroArchTitle && gameID == 0)
-                    {
-                        logger.Info($"Find for {normalizedPlayniteTitle} / {normalizedRetroArchTitle} with {PlatformName} in {consoleID}");
-                        gameID = ra_Game.ID;
-                        break;
                     }
                 }
             }
