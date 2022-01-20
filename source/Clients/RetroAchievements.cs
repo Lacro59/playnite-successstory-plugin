@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using CommonPluginsShared.Models;
 using CommonPluginsShared.Extensions;
 using static CommonPluginsShared.PlayniteTools;
+using SuccessStory.Services;
 
 namespace SuccessStory.Clients
 {
@@ -24,7 +25,8 @@ namespace SuccessStory.Clients
         Sega_CD_Saturn,
         NES,
         Famicom,
-        Arcade
+        Arcade,
+        NDS
     }
 
 
@@ -489,7 +491,7 @@ namespace SuccessStory.Clients
             {
                 // Exclude for performance
                 FileInfo fi = new FileInfo(FilePath);
-                if (fi.Length > 10000000)
+                if (fi.Length > 50000000)
                 {
                     return GameId;
                 }
@@ -515,7 +517,26 @@ namespace SuccessStory.Clients
                     return GameId;
                 }
             }
-            
+
+
+            string ext = Path.GetExtension(FilePath);
+
+            if (ext.IsEqual(".nds"))
+            {
+                HashMD5 = GetHash(FilePath, PlatformType.NDS);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                if (rA_MD5List != null)
+                {
+                    ZipFileManafeRemove();
+                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                    return rA_MD5List.Id;
+                }
+                if (GameId == 0)
+                {
+                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                }
+            }
+
             HashMD5 = GetHash(FilePath, PlatformType.All);
             rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
             if (rA_MD5List != null)
@@ -606,6 +627,19 @@ namespace SuccessStory.Clients
                 long length = new FileInfo(FilePath).Length;
 
                 byte[] byteSequenceFinal = byteSequence;
+
+                if (platformType == PlatformType.NDS)
+                {
+                    try
+                    {
+                        NDS nds = new NDS(FilePath);
+                        byteSequenceFinal = nds.getByteToHash();
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, true);
+                    }
+                }
 
                 if (platformType == PlatformType.SNES)
                 {
@@ -734,16 +768,9 @@ namespace SuccessStory.Clients
             ZipFile.ExtractToDirectory(FilePath, extractPath);
 
             string FilePathReturn = string.Empty;
-            Parallel.ForEach(Directory.EnumerateFiles(extractPath, "*.*"), (objectFile) => 
+            Parallel.ForEach(Directory.EnumerateFiles(extractPath, "*.*", SearchOption.AllDirectories), (objectFile) => 
             {
                 FilePathReturn = objectFile;
-
-                string FileExtension = Path.GetExtension(objectFile).ToLower(); ;
-
-                if (FileExtension == "nes")
-                {
-                    return;
-                }
             });
 
             return FilePathReturn;
