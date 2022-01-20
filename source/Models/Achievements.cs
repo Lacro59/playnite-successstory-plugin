@@ -36,6 +36,8 @@ namespace SuccessStory.Models
         public string Category { get; set; } = string.Empty;
         public string ParentCategory { get; set; } = string.Empty;
 
+        public string CategoryRpcs3 { get; set; } = string.Empty;
+
         [DontSerialize]
         public string CacheUnlocked
         {

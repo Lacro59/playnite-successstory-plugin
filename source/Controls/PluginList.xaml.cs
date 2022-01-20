@@ -1,4 +1,5 @@
-﻿using CommonPluginsShared.Collections;
+﻿using CommonPluginsControls.Controls;
+using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK.Data;
@@ -9,11 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using MoreLinq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Controls
 {
@@ -59,6 +62,7 @@ namespace SuccessStory.Controls
         private int CalIndex = 2;
         private int RarityIndex = 3;
 
+        private string GameName = string.Empty;
         private OrderAchievement orderAchievement;
 
 
@@ -216,7 +220,6 @@ namespace SuccessStory.Controls
             }
 
 
-
             Task.Run(() =>
             {
                 // Wait extension database are loaded
@@ -262,6 +265,13 @@ namespace SuccessStory.Controls
             ControlDataContext.ItemsSource = new ObservableCollection<Achievements>();
 
 
+            foreach (var item in PART_TabControl.Items)
+            {
+                ((TabItem)item).Visibility = Visibility.Collapsed;
+                ((TabItem)item).Header = string.Empty;
+            }
+
+
             LbAchievements_SizeChanged(null, null);
         }
 
@@ -270,7 +280,24 @@ namespace SuccessStory.Controls
         {
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
             gameAchievements.orderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement;
-            ControlDataContext.ItemsSource = gameAchievements.OrderItems;
+
+            if (!gameAchievements.Items.FirstOrDefault().CategoryRpcs3.IsNullOrEmpty())
+            {
+                List<string> Categories = gameAchievements.Items.Select(x => x.CategoryRpcs3).Distinct().ToList();
+                Categories.ForEach((x, idx) => 
+                {
+                    ((TabItem)PART_TabControl.Items[idx]).Header = new TextBlockTrimmed { Text = x };
+                    ((TabItem)PART_TabControl.Items[idx]).Visibility = Visibility.Visible;
+                    ((TabItem)PART_TabControl.Items[idx]).Tag = x;
+                });
+
+                PART_TabControl.SelectedIndex = 0;
+                PART_TabControl_SelectionChanged(PART_TabControl, null);
+            }
+            else
+            {
+                ControlDataContext.ItemsSource = gameAchievements.OrderItems;
+            }                                            
         }
 
 
@@ -322,6 +349,22 @@ namespace SuccessStory.Controls
                 this.DataContext = ControlDataContext;
             }
         }
+
+
+        private void PART_TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                TabControl tb = sender as TabControl;
+                if (tb.SelectedIndex > -1)
+                {
+                    TabItem ti = (TabItem)tb.Items[tb.SelectedIndex];
+                    GameName = ti.Tag.ToString();
+                    SetOrder(GameName);
+                }
+            }
+            catch { }
+        }
         #endregion
 
 
@@ -338,7 +381,7 @@ namespace SuccessStory.Controls
                 PART_SortName.Content = NameAsc;
             }
 
-            SetOrder();
+            SetOrder(GameName);
         }
 
         private void PART_SortCal_Click(object sender, RoutedEventArgs e)
@@ -353,7 +396,7 @@ namespace SuccessStory.Controls
                 PART_SortCal.Content = CalAsc;
             }
 
-            SetOrder();
+            SetOrder(GameName);
         }
 
         private void PART_SortRarity_Click(object sender, RoutedEventArgs e)
@@ -368,17 +411,17 @@ namespace SuccessStory.Controls
                 PART_SortRarity.Content = RarityAsc;
             }
 
-            SetOrder();
+            SetOrder(GameName);
         }
 
         private void PART_SortGroupBy_Checked(object sender, RoutedEventArgs e)
         {
-            SetOrder();
+            SetOrder(GameName);
         }
 
         private void PART_SortGroupBy_Unchecked(object sender, RoutedEventArgs e)
         {
-            SetOrder();
+            SetOrder(GameName);
         }
 
         
@@ -407,7 +450,7 @@ namespace SuccessStory.Controls
         }
 
 
-        private void SetOrder()
+        private void SetOrder(string GameName = "")
         {
             orderAchievement.OrderGroupByUnlocked = (bool)PART_SortGroupBy.IsChecked;
 
@@ -526,7 +569,15 @@ namespace SuccessStory.Controls
             {
                 GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
                 gameAchievements.orderAchievement = orderAchievement;
-                ControlDataContext.ItemsSource = gameAchievements.OrderItems;
+
+                if (GameName.IsNullOrEmpty())
+                {
+                    ControlDataContext.ItemsSource = gameAchievements.OrderItems;
+                }
+                else
+                {
+                    ControlDataContext.ItemsSource = gameAchievements.OrderItems.Where(x => x.CategoryRpcs3.IsEqual(GameName)).ToObservable();
+                }
             }
         }
         #endregion
