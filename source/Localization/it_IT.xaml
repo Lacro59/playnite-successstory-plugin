@@ -160,6 +160,11 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Caratteristica da aggiungere se il gioco ha obiettivi</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Configurazione icona bloccata</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Aggiunta icona per gli obiettivi bloccati</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Icona personalizzata per gli obiettivi bloccati</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Solo quando l'icona non è presente</sys:String>
+
     <!-- SuccessStoryOneGameView -->
 
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Primo sblocco</sys:String>

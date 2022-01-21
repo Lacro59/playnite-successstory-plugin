@@ -161,6 +161,11 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Fonctionnalité à ajouter si le jeu possède des succès</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Locked icon configuration</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Added icon on locked achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Custom icon for locked achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Only when icon is missing</sys:String>
+
     <!-- SuccessStoryOneGameView -->
 
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Premier déverrouillage</sys:String>

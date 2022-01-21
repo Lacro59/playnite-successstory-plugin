@@ -160,6 +160,11 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Recurso para adicionar se o jogo tiver conquistas</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Configuração de ícones bloqueados</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Added icon on locked achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Custom icon for locked achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Only when icon is missing</sys:String>
+
     <!-- SuccessStoryOneGameView -->
 
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Primeiro desbloqueio</sys:String>
