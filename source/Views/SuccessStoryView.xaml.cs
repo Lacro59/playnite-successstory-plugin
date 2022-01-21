@@ -172,8 +172,20 @@ namespace SuccessStory
                         {
                             icon = TransformIcon.Get("Manual Achievements") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
+
+                            PluginDatabase.Database.Items.Where(x => x.Value.IsManual && !x.Value.IsEmulators).Select(x => PlayniteTools.GetSourceName(x.Value.Game)).Distinct()
+                                    .ForEach(x => 
+                                    {
+                                        icon = TransformIcon.Get(x) + " ";
+
+                                        var finded = FilterSourceItems.Where(y => y.SourceNameShort.IsEqual(x)).FirstOrDefault();
+                                        if (finded == null)
+                                        {
+                                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + x, SourceNameShort = x, IsCheck = false });
+                                        }
+                                    });
                         }
-                        if (PluginDatabase.PluginSettings.Settings.EnableManual)
+                        if (PluginDatabase.PluginSettings.Settings.EnableOverwatchAchievements || PluginDatabase.PluginSettings.Settings.EnableSc2Achievements)
                         {
                             icon = TransformIcon.Get("Battle.net") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Battle.net", SourceNameShort = "Battle.net", IsCheck = false });
@@ -234,8 +246,20 @@ namespace SuccessStory
                     {
                         icon = TransformIcon.Get("Manual Achievements") + " ";
                         FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
+
+                        PluginDatabase.Database.Items.Where(x => x.Value.IsManual).Select(x => PlayniteTools.GetSourceName(x.Value.Game)).Distinct()
+                                .ForEach(x =>
+                                {
+                                    icon = TransformIcon.Get(x) + " ";
+
+                                    var finded = FilterSourceItems.Where(y => y.SourceNameShort.IsEqual(x)).FirstOrDefault();
+                                    if (finded == null)
+                                    {
+                                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + x, SourceNameShort = x, IsCheck = false });
+                                    }
+                                });
                     }
-                    if (PluginDatabase.PluginSettings.Settings.EnableManual)
+                    if (PluginDatabase.PluginSettings.Settings.EnableOverwatchAchievements || PluginDatabase.PluginSettings.Settings.EnableSc2Achievements)
                     {
                         icon = TransformIcon.Get("Battle.net") + " ";
                         FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Battle.net", SourceNameShort = "Battle.net", IsCheck = false });
@@ -249,7 +273,7 @@ namespace SuccessStory
                     GraphicTitle.Content = string.Empty;
                     GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
 
-                    FilterSourceItems = FilterSourceItems.OrderBy(x => x.SourceName).ToObservable();
+                    FilterSourceItems = FilterSourceItems.OrderBy(x => x.SourceNameShort).ToObservable();
                     successViewData.FilterSourceItems = FilterSourceItems;
 
                     successViewData.ListGames = ListGames;
