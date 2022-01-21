@@ -140,6 +140,13 @@ namespace SuccessStory.Clients
             if (CachedIsConnectedResult == null)
             {
                 CachedIsConnectedResult = XboxAccountClient.GetIsUserLoggedIn().GetAwaiter().GetResult();
+
+                if (!(bool)CachedIsConnectedResult && File.Exists(XboxAccountClient.liveTokensPath))
+                {
+                    XboxAccountClient.RefreshTokens().GetAwaiter().GetResult();
+                    CachedIsConnectedResult = XboxAccountClient.GetIsUserLoggedIn().GetAwaiter().GetResult();
+                }
+
             }
 
             return (bool)CachedIsConnectedResult;
