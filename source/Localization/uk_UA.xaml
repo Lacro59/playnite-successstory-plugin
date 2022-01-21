@@ -160,6 +160,11 @@
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Додати особливість, якщо гра має досягнення</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Налаштування значка для заблокованих досягнень</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Додано значок для заблокованих досягнень</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Власний значок для заблокованих досягнень</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Лише коли значок відсутній</sys:String>
+
     <!-- SuccessStoryOneGameView -->
 
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Перше здобуте</sys:String>
