@@ -143,8 +143,18 @@ namespace SuccessStory.Clients
                     }
                     catch { }
 
-                    string WebResultDetails = Web.DownloadStringData(UrlDetails, PsnAPI.mobileToken.access_token, "", LocalLang).GetAwaiter().GetResult();
-                    Trophies trophiesDetails = Serialization.FromJson<Trophies>(WebResultDetails);
+                    Trophies trophiesDetails = null;
+                    try
+                    {
+                        string WebResultDetails = Web.DownloadStringData(UrlDetails, PsnAPI.mobileToken.access_token, "", LocalLang).GetAwaiter().GetResult();
+                        trophiesDetails = Serialization.FromJson<Trophies>(WebResultDetails);
+                    }
+                    catch
+                    {
+                        logger.Warn($"No trophiesDetails find for {game.Name} - {GameId}");
+                        gameAchievements.Items = AllAchievements;
+                        return gameAchievements;
+                    }
 
                     foreach (Trophie trophie in trophiesDetails?.trophies)
                     {
