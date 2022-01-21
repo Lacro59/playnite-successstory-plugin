@@ -167,6 +167,9 @@
                                                     <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Ubisoft">
                                                         <Setter Property="Background" Value="#0070ff" />
                                                     </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Epic">
+                                                        <Setter Property="Background" Value="#333333" />
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Border.Style>
