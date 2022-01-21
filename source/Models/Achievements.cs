@@ -168,7 +168,6 @@ namespace SuccessStory.Models
                 {
                     return false;
                 }
-
                 return UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked;
             }
         }
@@ -374,6 +373,29 @@ namespace SuccessStory.Models
             return NameFromUrl;
         }
 
+
+        [DontSerialize]
+        public string IconText => PluginDatabase.PluginSettings.Settings.IconLocked;
+        [DontSerialize]
+        public string IconCustom
+        {
+            get
+            {
+                if (PluginDatabase.PluginSettings.Settings.IconCustomOnlyMissing)
+                {
+                    if (IsGray)
+                    {
+                        return PluginDatabase.PluginSettings.Settings.IconCustomLocked;
+                    }
+                }
+                else
+                {
+                    return PluginDatabase.PluginSettings.Settings.IconCustomLocked;
+                }
+
+                return string.Empty;
+            }
+        }
     }
 
     public class AchProgression

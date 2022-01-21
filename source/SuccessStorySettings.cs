@@ -48,6 +48,11 @@ namespace SuccessStory
         public bool IncludeHiddenGames { get; set; } = false;
 
 
+        public string IconLocked { get; set; } = string.Empty;
+        public string IconCustomLocked { get; set; } = string.Empty;
+        public bool IconCustomOnlyMissing { get; set; } = true;
+
+
         private bool _EnableIntegrationViewItem { get; set; } = true;
         public bool EnableIntegrationViewItem
         {

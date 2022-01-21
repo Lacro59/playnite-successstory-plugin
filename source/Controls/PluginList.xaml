@@ -24,6 +24,7 @@
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <converters1:SetColorConverter x:Key="SetColorConverter" />
         <convertersshared:ValueOperationConverter x:Key="ValueOperationConverter" />
+        <converters:InvertedBoolenConverter x:Key="InvertedBoolenConverter" />
     </controls:PluginUserControlExtend.Resources>
 
     <Grid>
@@ -119,6 +120,9 @@
                             <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,5,0,0">
                                 <customs:AchievementImage Width="48" Height="48"
                                                           Icon="{Binding Icon, IsAsync=True}"
+                                                          IsLocked="{Binding IsUnlock, Converter={StaticResource InvertedBoolenConverter}}"
+                                                          IconCustom="{Binding IconCustom}"
+                                                          IconText="{Binding IconText}"
                                                           IsGray="{Binding IsGray}"
                                                           Percent="{Binding Percent}"
                                                           EnableRaretyIndicator="{Binding EnableRaretyIndicator}"

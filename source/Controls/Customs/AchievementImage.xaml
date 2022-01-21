@@ -79,6 +79,14 @@
             </Image.Style>
         </Image>
 
+        <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IconText, FallbackValue='🔒'}" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Name="PART_IconText" FontWeight="Bold"
+                   Foreground="Black">
+            <TextBlock.Effect>
+                <DropShadowEffect Color="White" Opacity="0.75" BlurRadius="3" ShadowDepth="0" />
+            </TextBlock.Effect>
+        </TextBlock>
+
         <Grid VerticalAlignment="Bottom" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DispalyRaretyValue, Converter={StaticResource BooleanToVisibilityConverter}}">
             <ProgressBar Height="12" Name="PART_ProgressBar" Maximum="100" />
             <Label Name="PART_Label"

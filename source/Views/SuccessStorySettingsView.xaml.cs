@@ -13,9 +13,12 @@ using System.Diagnostics;
 using SuccessStory.Services;
 using CommonPluginsShared.Models;
 using Playnite.SDK.Data;
+using CommonPlayniteShared;
 using System.Windows.Media;
 using System.Windows.Markup;
 using Playnite.SDK.Models;
+using System.IO;
+using System.Windows.Documents;
 
 namespace SuccessStory.Views
 {
@@ -460,6 +463,7 @@ namespace SuccessStory.Views
         }
         #endregion
 
+
         private void Button_Click_Remove(object sender, RoutedEventArgs e)
         {
             int index = int.Parse(((Button)sender).Tag.ToString());
@@ -489,6 +493,39 @@ namespace SuccessStory.Views
             PluginDatabase.PluginSettings.Settings.WowRealms = WowAchievements.GetRealm(PART_WowRegion.Text);
             PART_WowRealm.Text = string.Empty;
         }
+
+
+        #region Unlocked icon configuration
+        private void PART_RemoveCustomIcon_Click(object sender, RoutedEventArgs e)
+        {
+            PART_IconUnlocked.Source = null;
+            ((SuccessStorySettingsViewModel)this.DataContext).Settings.IconCustomLocked = string.Empty;
+        }
+
+        private void PART_AddCustomIcon_Click(object sender, RoutedEventArgs e)
+        {
+            var result = PluginDatabase.PlayniteApi.Dialogs.SelectImagefile();
+            if (!result.IsNullOrEmpty())
+            {
+                try
+                {
+                    File.Copy(result, Path.Combine(PluginDatabase.Paths.PluginUserDataPath, Path.GetFileName(result)), true);
+                    PART_IconUnlocked.Source = ImageSourceManager.GetImage(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, Path.GetFileName(result)), false);
+                    ((SuccessStorySettingsViewModel)this.DataContext).Settings.IconCustomLocked = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, Path.GetFileName(result));
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false);
+                }
+            }
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            Hyperlink link = (Hyperlink)sender;
+            Process.Start((string)link.Tag);
+        }
+        #endregion
     }
 
 

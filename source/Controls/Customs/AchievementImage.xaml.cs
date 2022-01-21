@@ -100,6 +100,57 @@ namespace SuccessStory.Controls.Customs
             get { return (float)GetValue(PercentProperty); }
             set { SetValue(PercentProperty, value); }
         }
+
+
+        public static readonly DependencyProperty IsLockedProperty = DependencyProperty.Register(
+            nameof(IsLocked),
+            typeof(bool),
+            typeof(AchievementImage),
+            new FrameworkPropertyMetadata(false, PropertyChanged)
+        );
+        public bool IsLocked
+        {
+            get { return (bool)GetValue(IsLockedProperty); }
+            set { SetValue(IsLockedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IconTextProperty = DependencyProperty.Register(
+            nameof(IconText),
+            typeof(string),
+            typeof(AchievementImage),
+            new FrameworkPropertyMetadata(string.Empty, PropertyChanged)
+        );        
+        public string IconText
+        {
+            get { return (string)GetValue(IconTextProperty); }
+            set { SetValue(IconTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty IconCustomProperty = DependencyProperty.Register(
+            nameof(IconCustom),
+            typeof(string),
+            typeof(AchievementImage),
+            new FrameworkPropertyMetadata(string.Empty, PropertyChanged)
+        );        
+        public string IconCustom
+        {
+            get { return (string)GetValue(IconCustomProperty); }
+            set { SetValue(IconCustomProperty, value); }
+        }
+
+
+        private static void PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
+        {
+            try
+            {
+                var control = (AchievementImage)obj;
+                control.NewProperty();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+        }
         #endregion
 
 
@@ -109,6 +160,8 @@ namespace SuccessStory.Controls.Customs
 
             PART_ColorEffect = (Storyboard)TryFindResource("PART_ColorEffect");
             PART_ColorEffectUltraRare = (Storyboard)TryFindResource("PART_ColorEffectUltraRare");
+
+            NewProperty();
         }
 
 
@@ -179,6 +232,20 @@ namespace SuccessStory.Controls.Customs
             }
 
             PART_Image.Source = image;
+        }
+
+
+        private void NewProperty()
+        {
+            PART_IconText.Visibility = Visibility.Collapsed;
+            if (IsLocked)
+            {
+                PART_IconText.Visibility = Visibility.Visible;
+                if (File.Exists(IconCustom))
+                {
+                    Icon = IconCustom;
+                }
+            }
         }
     }
 }

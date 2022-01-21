@@ -160,6 +160,11 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Feature to add if the game has achievements</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Locked icon configuration</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Added icon on locked achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Custom icon for locked achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Only when icon is missing</sys:String>
+
     <!-- SuccessStoryOneGameView -->
 
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">First unlock</sys:String>
