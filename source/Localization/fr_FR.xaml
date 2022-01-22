@@ -161,10 +161,10 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Fonctionnalité à ajouter si le jeu possède des succès</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Locked icon configuration</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Added icon on locked achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Custom icon for locked achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Only when icon is missing</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Configuration des icônes verrouillées</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Icône ajoutée aux succès verrouillés</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Icône personnalisée pour les succès verrouillés</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Seulement quand l'icône est manquante</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
