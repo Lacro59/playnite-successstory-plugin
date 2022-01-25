@@ -44,7 +44,6 @@ namespace SuccessStory.Clients
             return String.Join("-", Regex.Split(str, @"(?<=\G.{" + pos + "})(?!$)"));
         }
 
-
         public SteamEmulators(List<Folder> LocalFolders) : base("SteamEmulators")
         {
             AchievementsDirectories.Add("%PUBLIC%\\Documents\\Steam\\CODEX");
@@ -52,6 +51,7 @@ namespace SuccessStory.Clients
 
             AchievementsDirectories.Add("%appdata%\\Goldberg SteamEmu Saves");
             AchievementsDirectories.Add("%appdata%\\SmartSteamEmu");
+            AchievementsDirectories.Add("%DOCUMENTS%\\DARKSiDERS");
 
             AchievementsDirectories.Add("%ProgramData%\\Steam");
             AchievementsDirectories.Add("%localappdata%\\SKIDROW");
@@ -617,6 +617,68 @@ namespace SuccessStory.Clients
                             }
                             break;
 
+                        case "%documents%\\skidrow":
+                        case "%documents%\\darksiders":
+                            string skidrowfile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\SKIDROW\\{SteamId}\\SteamEmu\\UserStats\\achiev.ini";
+                            string darksidersfile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\DARKSiDERS\\{SteamId}\\SteamEmu\\UserStats\\achiev.ini";
+                            string emu = "";
+                            
+                            if (File.Exists(skidrowfile))
+                            {
+                                emu = skidrowfile;
+                            }
+                            else if (File.Exists(darksidersfile))
+                            {
+                                emu = darksidersfile;
+                            }
+                            if (!(emu == ""))
+                            {
+                                logger.Warn($"File found at {emu}");
+                                string line;
+                                string Name = string.Empty;
+                                DateTime? DateUnlocked = null;
+                                List<List<string>> achlist = new List<List<string>>();
+                                StreamReader r = new StreamReader(emu);
+
+                                while ((line = r.ReadLine()) != null)
+                                {
+                                    // Achievement Name
+                                    if (line.IndexOf("[AchievementsUnlockTimes]") > -1)
+                                    {
+                                        string nextline = r.ReadLine();
+                                        while (nextline.IndexOf("[") == -1)
+                                        {
+                                            achlist.Add(new List<string>(nextline.Split('=')));
+                                            nextline = r.ReadLine();
+                                        }
+
+                                        foreach (List<string> l in achlist)
+                                        {
+                                            Name = l[0];
+                                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(l[1])).ToLocalTime();
+                                            if (Name != string.Empty && DateUnlocked != null)
+                                            {
+                                                ReturnAchievements.Add(new Achievements
+                                                {
+                                                    ApiName = Name,
+                                                    Name = string.Empty,
+                                                    Description = string.Empty,
+                                                    UrlUnlocked = string.Empty,
+                                                    UrlLocked = string.Empty,
+                                                    DateUnlocked = DateUnlocked
+                                                });
+
+                                                Name = string.Empty;
+                                                DateUnlocked = null;
+                                            }
+                                        }
+                                    }
+                                }
+                                r.Close();
+                            }
+
+                            break;
+
                         case "%programdata%\\steam":
                             if (Directory.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Steam")))
                             {
@@ -641,9 +703,7 @@ namespace SuccessStory.Clients
                             logger.Warn($"No treatment for {DirAchivements}");
                             break;
 
-                        case "%documents%\\skidrow":
-                            logger.Warn($"No treatment for {DirAchivements}");
-                            break;
+                        
 
                         default:
                             if (ReturnAchievements.Count == 0)
