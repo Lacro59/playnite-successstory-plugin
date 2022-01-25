@@ -160,10 +160,10 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Característica a añadir si el juego tiene logros</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Locked icon configuration</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Added icon on locked achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Custom icon for locked achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Only when icon is missing</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Configuración de iconos bloqueada</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Icono añadido en logros bloqueados</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Icono personalizado para logros bloqueados</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Sólo cuando falta el icono</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
