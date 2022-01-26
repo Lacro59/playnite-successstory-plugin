@@ -63,12 +63,12 @@
 
         <Grid Margin="0,0,0,10" Grid.Row="1">
             <TabControl Name="PART_TabControl" SelectionChanged="PART_TabControl_SelectionChanged">
-                <TabItem MaxWidth="200" />
-                <TabItem MaxWidth="200" />
-                <TabItem MaxWidth="200" />
-                <TabItem MaxWidth="200" />
-                <TabItem MaxWidth="200" />
-                <TabItem MaxWidth="200" Header="123" />
+                <TabItem MaxWidth="200" Visibility="Collapsed" />
+                <TabItem MaxWidth="200" Visibility="Collapsed" />
+                <TabItem MaxWidth="200" Visibility="Collapsed" />
+                <TabItem MaxWidth="200" Visibility="Collapsed" />
+                <TabItem MaxWidth="200" Visibility="Collapsed" />
+                <TabItem MaxWidth="200" Visibility="Collapsed" />
             </TabControl>
         </Grid>
         
