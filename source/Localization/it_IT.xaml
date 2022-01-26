@@ -203,6 +203,12 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Obiettivi sbloccati dalla sorgente</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Obiettivi sbloccati per giorno</sys:String>
 
+    <!-- Genshin Impact -->
+
+    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Abilita obiettivi di Genshin Impact</sys:String>
+    <sys:String x:Key="LOCAddGenshinImpact">Aggiungi Genshin Impact</sys:String>
+
+    
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Riproduzione Rapida</sys:String>
