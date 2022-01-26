@@ -65,6 +65,8 @@ namespace SuccessStory.Controls
         private string GameName = string.Empty;
         private OrderAchievement orderAchievement;
 
+        public string CategoryName;
+
 
         #region Properties
         public static readonly DependencyProperty ForceOneColProperty;
@@ -298,6 +300,18 @@ namespace SuccessStory.Controls
             {
                 ControlDataContext.ItemsSource = gameAchievements.OrderItems;
             }                                            
+        }
+
+
+        public void SetDataCategory(string CategoryName)
+        {
+            this.CategoryName = CategoryName;
+
+            GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
+            gameAchievements.orderAchievement = orderAchievement;
+
+            ObservableCollection<Achievements> achievements = gameAchievements.OrderItems.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
+            ControlDataContext.ItemsSource = achievements;
         }
 
 
@@ -570,13 +584,19 @@ namespace SuccessStory.Controls
                 GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
                 gameAchievements.orderAchievement = orderAchievement;
 
+                ObservableCollection<Achievements> achievements = gameAchievements.OrderItems;
+                if (!CategoryName.IsNullOrEmpty())
+                {
+                    achievements = achievements.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
+                }
+
                 if (GameName.IsNullOrEmpty())
                 {
-                    ControlDataContext.ItemsSource = gameAchievements.OrderItems;
+                    ControlDataContext.ItemsSource = achievements;
                 }
                 else
                 {
-                    ControlDataContext.ItemsSource = gameAchievements.OrderItems.Where(x => x.CategoryRpcs3.IsEqual(GameName)).ToObservable();
+                    ControlDataContext.ItemsSource = achievements.Where(x => x.CategoryRpcs3.IsEqual(GameName)).ToObservable();
                 }
             }
         }

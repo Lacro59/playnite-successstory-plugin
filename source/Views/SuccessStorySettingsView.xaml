@@ -54,6 +54,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                             <RowDefinition Height="30" />
                             
                             <RowDefinition Height="auto" />
@@ -537,8 +539,23 @@
                             </Expander.Content>
                         </Expander>
 
-
                         <Expander Grid.Row="22" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding Settings.EnableGenshinImpact}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSsEnableGenshinImpactAchievements}"></Label>
+                                    </CheckBox>
+                                </Grid>
+                            </Expander.Header>
+                        </Expander>
+
+                        <Expander Grid.Row="24" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -552,7 +569,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="24"
+                        <Expander Grid.Row="26"
                                   Visibility="{Binding Settings.EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">

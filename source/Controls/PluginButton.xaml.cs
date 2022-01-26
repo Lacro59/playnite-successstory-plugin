@@ -103,6 +103,10 @@ namespace SuccessStory.Controls
             {
                 ViewExtension = new SuccessStoryOverwatchView(PluginDatabase.GameContext);
             }
+            else if (PluginDatabase.PluginSettings.Settings.EnableGenshinImpact && PluginDatabase.GameContext.Name.IsEqual("Genshin Impact"))
+            {
+                ViewExtension = new SuccessStoryGenshinImpactView(PluginDatabase.GameContext);
+            }
             else
             {
                 ViewExtension = new SuccessStoryOneGameView(PluginDatabase.GameContext);

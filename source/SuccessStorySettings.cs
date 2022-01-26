@@ -239,6 +239,8 @@ namespace SuccessStory
 
         public bool EnableManual { get; set; } = false;
 
+        public bool EnableGenshinImpact { get; set; } = false;
+
         public string NameSorting { get; set; } = "LastActivity";
         public bool IsAsc { get; set; } = false;
 

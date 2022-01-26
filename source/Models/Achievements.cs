@@ -33,6 +33,22 @@ namespace SuccessStory.Models
         /// </summary>
         public float Percent { get; set; } = 100;
 
+        [DontSerialize]
+        public string ImageCategoryIcon
+        {
+            get
+            {
+                string ImagePath = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", CategoryIcon);
+                if (File.Exists(ImagePath))
+                {
+                    return ImagePath;
+                }
+                return string.Empty;
+            }
+        }
+
+        public int CategoryOrder { get; set; }
+        public string CategoryIcon { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public string ParentCategory { get; set; } = string.Empty;
 
@@ -79,6 +95,11 @@ namespace SuccessStory.Models
                     Options = null;
                 }
                 if (TempUrlUnlocked?.IndexOf("hidden_trophy") > -1)
+                {
+                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
+                    Options = null;
+                }
+                if (TempUrlUnlocked?.IndexOf("GenshinImpact") > -1)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
                     Options = null;

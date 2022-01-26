@@ -167,6 +167,39 @@ namespace SuccessStory.Services
         }
 
 
+        public void GetGenshinImpact(Game game)
+        {
+            try
+            {
+                GenshinImpactAchievements genshinImpactAchievements = new GenshinImpactAchievements();
+                GameAchievements gameAchievements = genshinImpactAchievements.GetAchievements(game);
+                AddOrUpdate(gameAchievements);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+        }
+
+        public GameAchievements RefreshGenshinImpact(Game game)
+        {
+            GameAchievements gameAchievements = null;
+
+            try
+            {
+                GenshinImpactAchievements genshinImpactAchievements = new GenshinImpactAchievements();
+                gameAchievements = genshinImpactAchievements.GetAchievements(game);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, "SuccessStory");
+            }
+
+            return gameAchievements;
+        }
+
+
+
         public override GameAchievements Get(Guid Id, bool OnlyCache = false, bool Force = false)
         {
             GameAchievements gameAchievements = base.GetOnlyCache(Id);
@@ -772,7 +805,8 @@ namespace SuccessStory.Services
             RPCS3,
             Overwatch,
             Starcraft2,
-            Wow
+            Wow,
+            GenshinImpact
         }
 
         private static AchievementSource GetAchievementSourceFromLibraryPlugin(SuccessStorySettings settings, Game game)
@@ -897,6 +931,11 @@ namespace SuccessStory.Services
 
         public static AchievementSource GetAchievementSource(SuccessStorySettings settings, Game game)
         {
+            if (game.Name.IsEqual("Genshin Impact"))
+            {
+                return AchievementSource.GenshinImpact;
+            }
+
             var source = GetAchievementSourceFromLibraryPlugin(settings, game);
             if (source != AchievementSource.None)
             {
@@ -998,7 +1037,15 @@ namespace SuccessStory.Services
             GameAchievements webItem = null;
             if (loadedItem.IsManual)
             {
-                webItem = RefreshManual(game);
+                if (game.Name.IsEqual("Genshin Impact"))
+                {
+                    webItem = RefreshGenshinImpact(game);
+                }
+                else
+                {
+                    webItem = RefreshManual(game);
+                }
+
                 if (webItem != null)
                 {
                     webItem.IsManual = true;
