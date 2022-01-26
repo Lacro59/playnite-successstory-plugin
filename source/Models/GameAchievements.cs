@@ -415,7 +415,7 @@ namespace SuccessStory.Models
                     return true;
                 }
 
-                return Items.Where(x => PlayniteTools.GetCacheFile(x.CacheUnlocked, "SuccessStory").IsNullOrEmpty()).Count() == 0;
+                return Items.Where(x => PlayniteTools.GetCacheFile(x.CacheUnlocked, PluginDatabase.PluginName).IsNullOrEmpty()).Count() == 0;
             }
         }
     }

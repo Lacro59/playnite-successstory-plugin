@@ -31,7 +31,7 @@ namespace SuccessStory.Clients
         //    }
         //    catch (Exception ex)
         //    {
-        //        Common.LogError(ex, false, true, "SuccessStory");
+        //        Common.LogError(ex, false, true, PluginDatabase.PluginName);
         //        return null;
         //    }
         //}

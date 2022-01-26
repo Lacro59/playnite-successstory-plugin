@@ -167,21 +167,21 @@ namespace SuccessStory.Clients
                 var consoleGameIdParts = game.GameId.Split('_');
                 titleId = consoleGameIdParts[1];
 
-                Common.LogDebug(true, $"XboxAchievements - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
+                Common.LogDebug(true, $"{ClientName} - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
             }
             else if (!game.GameId.IsNullOrEmpty())
             {
                 var libTitle = XboxAccountClient.GetTitleInfo(game.GameId).Result;
                 titleId = libTitle.titleId;
 
-                Common.LogDebug(true, $"XboxAchievements - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
+                Common.LogDebug(true, $"{ClientName} - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
             }
             return titleId;
         }
 
         private async Task<TContent> GetSerializedContentFromUrl<TContent>(string url, AuthorizationData authData, string contractVersion) where TContent : class
         {
-            Common.LogDebug(true, $"XboxAchievements - url: {url}");
+            Common.LogDebug(true, $"{ClientName} - url: {url}");
 
             using (var client = new HttpClient())
             {
@@ -193,7 +193,7 @@ namespace SuccessStory.Clients
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                     {
-                        logger.Warn($"XboxAchievements - User is not authenticated - {response.StatusCode}");
+                        logger.Warn($"{ClientName} - User is not authenticated - {response.StatusCode}");
                         PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Xbox-notAuthenticate",
                             $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
@@ -202,7 +202,7 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        logger.Warn($"XboxAchievements - Error on GetXboxAchievements() - {response.StatusCode}");
+                        logger.Warn($"{ClientName} - Error on GetXboxAchievements() - {response.StatusCode}");
                         PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
                             "SuccessStory-Xbox-webError",
                             $"SuccessStory\r\nXbox achievements: {resources.GetString("LOCImportError")}",
@@ -252,7 +252,7 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
             }
@@ -281,7 +281,7 @@ namespace SuccessStory.Clients
             if (titleId.IsNullOrEmpty())
             {
                 url = string.Format(AchievementsBaseUrl, xuid) + "?maxItems=10000";
-                logger.Warn($"XboxAchievements - Bad request");
+                logger.Warn($"{ClientName} - Bad request");
             }
 
             var response = await GetSerializedContentFromUrl<XboxOneAchievementResponse>(url, authorizationData, "2");

@@ -90,7 +90,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginName);
                 return false;
             }
 
@@ -121,7 +121,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginName);
             }
         }
 
@@ -160,7 +160,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginName);
             }
 
             return gameAchievements;
@@ -177,7 +177,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginName);
             }
         }
 
@@ -192,7 +192,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginName);
             }
 
             return gameAchievements;
@@ -332,7 +332,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "SuccessStory");
+                    Common.LogError(ex, false, true, PluginName);
                 }
             }
 
@@ -388,7 +388,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "SuccessStory");
+                    Common.LogError(ex, false, true, PluginName);
                 }
             }
             // Achievement for a game
@@ -435,7 +435,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error in load GetCountByMonth({GameID.ToString()})", true, "SuccessStory");
+                    Common.LogError(ex, false, $"Error in load GetCountByMonth({GameID.ToString()})", true, PluginName);
                 }
             }
 
@@ -620,7 +620,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error on GetCountBySources() for {item.Key}", true, "SuccessStory");
+                    Common.LogError(ex, false, $"Error on GetCountBySources() for {item.Key}", true, PluginName);
                 }
             }
 
@@ -704,7 +704,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "SuccessStory");
+                    Common.LogError(ex, false, true, PluginName);
                 }
             }
             // Achievement for a game
@@ -784,7 +784,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error in load GetCountByDay({GameID.ToString()})", true, "SuccessStory");
+                    Common.LogError(ex, false, $"Error in load GetCountByDay({GameID.ToString()})", true, PluginName);
                 }
             }
 
@@ -1444,7 +1444,7 @@ namespace SuccessStory.Services
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false, true, "SuccessStory");
+                            Common.LogError(ex, false, true, PluginName);
                         }
 
                         activateGlobalProgress.CurrentProgressValue++;
@@ -1456,7 +1456,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "SuccessStory");
+                    Common.LogError(ex, false, true, PluginName);
                 }
             }, globalProgressOptions);
         }
@@ -1495,7 +1495,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginName);
             }
 
             return Result;
@@ -1529,7 +1529,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginName);
             }
 
             Result.Total = Total;
@@ -1570,7 +1570,7 @@ namespace SuccessStory.Services
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginName);
             }
 
             Result.Total = Total;

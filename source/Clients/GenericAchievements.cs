@@ -165,26 +165,26 @@ namespace SuccessStory.Clients
         #region Errors
         public virtual void ShowNotificationPluginDisable(string Message)
         {
-            LastErrorId = $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-disabled";
+            LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled";
             LastErrorMessage = Message;
             logger.Warn($"{ClientName} is enable then disabled in Playnite");
 
             PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-disabled",
-                $"SuccessStory\r\n{Message}",
+                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled",
+                $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error
             ));
         }
 
         public virtual void ShowNotificationPluginNoAuthenticate(string Message, ExternalPlugin PluginSource)
         {
-            LastErrorId = $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noauthenticate";
+            LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate";
             LastErrorMessage = Message;
             logger.Warn($"{ClientName} user is not authenticated");
 
             PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noauthenticate",
-                $"SuccessStory\r\n{Message}",
+                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate",
+                $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
                 () =>
                 {
@@ -204,7 +204,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
             ));
@@ -212,13 +212,13 @@ namespace SuccessStory.Clients
 
         public virtual void ShowNotificationPluginNoConfiguration(string Message)
         {
-            LastErrorId = $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noconfig";
+            LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noconfig";
             LastErrorMessage = Message;
             logger.Warn($"{ClientName} is not configured");
 
             PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noconfig",
-                $"SuccessStory\r\n{Message}",
+                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noconfig",
+                $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
                 () => PluginDatabase.Plugin.OpenSettingsView()
             ));
@@ -226,12 +226,12 @@ namespace SuccessStory.Clients
 
         public virtual void ShowNotificationPluginError(Exception ex)
         {
-            Common.LogError(ex, false, $"{ClientName}", true, "SuccessStory");
+            Common.LogError(ex, false, $"{ClientName}", true, PluginDatabase.PluginName);
         }
 
         public virtual void ShowNotificationPluginWebError(Exception ex, string Url)
         {
-            Common.LogError(ex, false, $"{ClientName} - Failed to load {Url}", true, "SuccessStory");
+            Common.LogError(ex, false, $"{ClientName} - Failed to load {Url}", true, PluginDatabase.PluginName);
         }
 
 
@@ -241,7 +241,7 @@ namespace SuccessStory.Clients
             {
                 PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
                     LastErrorId,
-                    $"SuccessStory\r\n{LastErrorMessage}",
+                    $"{PluginDatabase.PluginName}\r\n{LastErrorMessage}",
                     NotificationType.Error
                 ));
             }

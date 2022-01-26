@@ -236,7 +236,7 @@ namespace SuccessStory.Views
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
@@ -375,7 +375,7 @@ namespace SuccessStory.Views
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 
@@ -405,7 +405,7 @@ namespace SuccessStory.Views
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 

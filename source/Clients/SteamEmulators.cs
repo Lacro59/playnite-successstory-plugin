@@ -193,7 +193,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return gameStats;
@@ -219,7 +219,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             if (!isType2)
@@ -320,7 +320,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return ReturnAchievements;
@@ -375,7 +375,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return ReturnAchievements;
@@ -545,7 +545,7 @@ namespace SuccessStory.Clients
                                             case HttpStatusCode.ServiceUnavailable: // HTTP 503
                                                 break;
                                             default:
-                                                Common.LogError(ex, false, $"Failed to load from {site}", true, "SuccessStory");
+                                                Common.LogError(ex, false, $"Failed to load from {site}", true, PluginDatabase.PluginName);
                                                 break;
                                         }
                                     }
@@ -790,7 +790,7 @@ namespace SuccessStory.Clients
                         case HttpStatusCode.ServiceUnavailable: // HTTP 503
                             break;
                         default:
-                            Common.LogError(ex, false, $"Failed to load from {url}", true, "SuccessStory");
+                            Common.LogError(ex, false, $"Failed to load from {url}", true, PluginDatabase.PluginName);
                             break;
                     }
                     return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };

@@ -210,7 +210,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return TrophyGameFolder;
@@ -240,7 +240,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return Path.Combine("rpcs3", NameFolder, TrophyFile);

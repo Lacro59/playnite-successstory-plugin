@@ -90,7 +90,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on {urlFinal}", true, "SuccessStory");
+                Common.LogError(ex, false, $"Error on {urlFinal}", true, PluginDatabase.PluginName);
             }
 
 
@@ -156,7 +156,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return CbDatas;

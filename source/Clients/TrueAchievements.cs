@@ -4,6 +4,7 @@ using CommonPluginsShared;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using Playnite.SDK.Models;
+using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace SuccessStory.Clients
     class TrueAchievements
     {
         internal static readonly ILogger logger = LogManager.GetLogger();
+
+        private static SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
         public static string XboxUrlSearch = @"https://www.trueachievements.com/searchresults.aspx?search={0}";
         public static string SteamUrlSearch = @"https://truesteamachievements.com/searchresults.aspx?search={0}";
@@ -110,14 +113,14 @@ namespace SuccessStory.Clients
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false, true, "SuccessStory");
+                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return ListSearchGames;
@@ -203,7 +206,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return EstimateTimeToUnlock;

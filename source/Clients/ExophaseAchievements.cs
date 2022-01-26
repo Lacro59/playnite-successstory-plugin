@@ -112,7 +112,7 @@ namespace SuccessStory.Clients
                             }
                             catch (Exception ex)
                             {
-                                Common.LogError(ex, false, true, "SuccessStory");
+                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
                             }
                         }
                     }
@@ -120,7 +120,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
 
@@ -236,7 +236,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on SearchGame({Name})", true, "SuccessStory");
+                Common.LogError(ex, false, $"Error on SearchGame({Name})", true, PluginDatabase.PluginName);
             }
 
             return ListSearchGames;
@@ -328,7 +328,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 
@@ -374,7 +374,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 

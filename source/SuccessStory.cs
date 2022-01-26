@@ -62,7 +62,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             PluginDatabase.InitializeClient(this);
@@ -121,13 +121,13 @@ namespace SuccessStory
                     "PluginCompactLocked", "PluginCompactUnlocked", "PluginChart",
                     "PluginUserStats", "PluginList"
                 },
-                SourceName = "SuccessStory"
+                SourceName = PluginDatabase.PluginName
             });
 
             // Settings integration
             AddSettingsSupport(new AddSettingsSupportArgs
             {
-                SourceName = "SuccessStory",
+                SourceName = PluginDatabase.PluginName,
                 SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
             });
         }
@@ -198,7 +198,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 
@@ -220,7 +220,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on WindowBase_LoadedEvent for {WinIdProperty}", true, "SuccessStory");
+                Common.LogError(ex, false, $"Error on WindowBase_LoadedEvent for {WinIdProperty}", true, PluginDatabase.PluginName);
             }
         }
         #endregion
@@ -794,7 +794,7 @@ namespace SuccessStory
             if (sourceLinkNull?.Count() > 0)
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                    "SuccessStory - Database migration",
+                    $"{PluginDatabase.PluginName} - Database migration",
                     false
                 );
                 globalProgressOptions.IsIndeterminate = true;
@@ -842,17 +842,17 @@ namespace SuccessStory
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false, true, "SuccessStory");
+                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
                         }
                     }
                 }, globalProgressOptions);
             }
 
             // TODO Moving cache
-            if (Directory.Exists(Path.Combine(PlaynitePaths.ImagesCachePath, "successstory")))
+            if (Directory.Exists(Path.Combine(PlaynitePaths.ImagesCachePath, PluginDatabase.PluginName)))
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                    "SuccessStory - Folder migration",
+                    $"{PluginDatabase.PluginName} - Folder migration",
                     false
                 );
                 globalProgressOptions.IsIndeterminate = true;
@@ -862,11 +862,11 @@ namespace SuccessStory
                     try
                     {
                         FileSystem.DeleteDirectory(PluginDatabase.Paths.PluginCachePath);
-                        Directory.Move(Path.Combine(PlaynitePaths.ImagesCachePath, "successstory"), PluginDatabase.Paths.PluginCachePath);
+                        Directory.Move(Path.Combine(PlaynitePaths.ImagesCachePath, PluginDatabase.PluginName), PluginDatabase.Paths.PluginCachePath);
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }, globalProgressOptions);
             }
@@ -897,7 +897,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 
@@ -1009,10 +1009,10 @@ namespace SuccessStory
 
                             try
                             {
-                                if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, "SuccessStory").IsNullOrEmpty())
+                                if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, PluginDatabase.PluginName).IsNullOrEmpty())
                                 {
                                     Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Locked)");
-                                    Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
+                                    Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.DataCachePath, PluginDatabase.PluginName).GetAwaiter().GetResult();
                                 }
 
                                 if (ct.IsCancellationRequested)
@@ -1020,10 +1020,10 @@ namespace SuccessStory
                                     break;
                                 }
                                 
-                                if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, "SuccessStory").IsNullOrEmpty())
+                                if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, PluginDatabase.PluginName).IsNullOrEmpty())
                                 {
                                     Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
-                                    Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.DataCachePath, "SuccessStory").GetAwaiter().GetResult();
+                                    Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.DataCachePath, PluginDatabase.PluginName).GetAwaiter().GetResult();
                                 }
 
                                 if (ct.IsCancellationRequested)
@@ -1059,7 +1059,7 @@ namespace SuccessStory
                 string icon = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "star.png");
 
                 var SsSubItemsAction = new SubItemsAction() { Action = () => { }, Name = "", CloseAfterExecute = false, SubItemSource = new QuickSearchItemSource() };
-                var SsCommand = new CommandItem("SuccessStory", new List<CommandAction>(), ResourceProvider.GetString("LOCSsQuickSearchDescription"), icon);
+                var SsCommand = new CommandItem(PluginDatabase.PluginName, new List<CommandAction>(), ResourceProvider.GetString("LOCSsQuickSearchDescription"), icon);
                 SsCommand.Keys.Add(new CommandItemKey() { Key = "ss", Weight = 1 });
                 SsCommand.Actions.Add(SsSubItemsAction);
                 QuickSearch.QuickSearchSDK.AddCommand(SsCommand);

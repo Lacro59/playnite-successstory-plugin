@@ -91,7 +91,7 @@ namespace SuccessStory.Clients
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false, true, "SuccessStory");
+                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
                         }
                     }
                 }
@@ -207,13 +207,13 @@ namespace SuccessStory.Clients
         #region Errors
         public override void ShowNotificationPluginNoAuthenticate(string Message, ExternalPlugin PluginSource)
         {
-            LastErrorId = $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-noauthenticate";
+            LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate";
             LastErrorMessage = Message;
             logger.Warn($"{ClientName} user is not authenticated");
 
             PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-disabled",
-                $"SuccessStory\r\n{Message}",
+                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled",
+                $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
                 () =>
                 {

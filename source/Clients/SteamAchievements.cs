@@ -203,7 +203,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
                 else
@@ -214,7 +214,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
             }
@@ -300,7 +300,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
                 else
@@ -311,7 +311,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
             }
@@ -545,7 +545,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error with SearchGame{Name} on {Url}", true, "SuccessStory");
+                Common.LogError(ex, false, $"Error with SearchGame{Name} on {Url}", true, PluginDatabase.PluginName);
             }
 
             return ListSearchGames;
@@ -624,7 +624,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 
@@ -655,7 +655,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 return false;
             }
         }
@@ -679,7 +679,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 return false;
             }
         }
@@ -732,8 +732,8 @@ namespace SuccessStory.Clients
             //    if (wex.StatusCode == HttpStatusCode.Forbidden)
             //    {
             //        _PlayniteApi.Notifications.Add(new NotificationMessage(
-            //            $"SuccessStory-Steam-PrivateProfil",
-            //            "SuccessStory - Steam profil is private",
+            //            $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
+            //            $"{PluginDatabase.PluginName} - Steam profil is private",
             //            NotificationType.Error
             //        ));
             //        logger.Warn("Steam profil is private");
@@ -752,27 +752,27 @@ namespace SuccessStory.Clients
                         if (response.StatusCode == HttpStatusCode.Forbidden)
                         {
                             PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                                "SuccessStory-Steam-PrivateProfil",
-                                $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
+                                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
+                                $"{PluginDatabase.PluginName}\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                                 NotificationType.Error,
                                 () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                             ));
                             logger.Warn("Steam profil is private");
 
                             // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
-                            Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})", true, "SuccessStory");
+                            Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
                         }
                     }
                     else
                     {
                         // no http status code available
-                        Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})", true, "SuccessStory");
+                        Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
                     }
                 }
                 else
                 {
                     // no http status code available
-                    Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})", true, "SuccessStory");
+                    Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
                 }
             }
 
@@ -828,8 +828,8 @@ namespace SuccessStory.Clients
             //    if (wex.StatusCode == HttpStatusCode.Forbidden)
             //    {
             //        _PlayniteApi.Notifications.Add(new NotificationMessage(
-            //            $"SuccessStory-Steam-PrivateProfil",
-            //            "SuccessStory - Steam profil is private",
+            //            $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
+            //            $"{PluginDatabase.PluginName} - Steam profil is private",
             //            NotificationType.Error
             //        ));
             //        logger.Warn("Steam profil is private");
@@ -848,27 +848,27 @@ namespace SuccessStory.Clients
                         if (response.StatusCode == HttpStatusCode.Forbidden)
                         {
                             PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                                "SuccessStory-Steam-PrivateProfil",
-                                $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
+                                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
+                                $"{PluginDatabase.PluginName}\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                                 NotificationType.Error,
                                 () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                             ));
                             logger.Warn("Steam profil is private");
 
                             // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
-                            Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})", true, "SuccessStory");
+                            Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
                         }
                     }
                     else
                     {
                         // no http status code available
-                        Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})", true, "SuccessStory");
+                        Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
                     }
                 }
                 else
                 {
                     // no http status code available
-                    Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})", true, "SuccessStory");
+                    Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
                 }
             }
 
@@ -910,7 +910,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, $"Error on AchievementsData({AppId}, {LocalLang})", true, "SuccessStory");
+                        Common.LogError(ex, false, $"Error on AchievementsData({AppId}, {LocalLang})", true, PluginDatabase.PluginName);
                     }
 
                     try
@@ -955,13 +955,13 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, $"Error on AvailableGameStats({AppId}, {LocalLang})", true, "SuccessStory");
+                        Common.LogError(ex, false, $"Error on AvailableGameStats({AppId}, {LocalLang})", true, PluginDatabase.PluginName);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on GetSchemaForGame({AppId}, {LocalLang})", true, "SuccessStory");
+                Common.LogError(ex, false, $"Error on GetSchemaForGame({AppId}, {LocalLang})", true, PluginDatabase.PluginName);
             }
 
             return Tuple.Create(AllAchievements, AllStats);
@@ -994,7 +994,7 @@ namespace SuccessStory.Clients
                     }
                     catch (WebException ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
                 else
@@ -1012,7 +1012,7 @@ namespace SuccessStory.Clients
                     }
                     catch (WebException ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
 
@@ -1062,7 +1062,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
             }
@@ -1109,7 +1109,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on GetGlobalAchievementPercentagesForApp({SteamId}, {AppId}, {LocalLang})", true, "SuccessStory");
+                Common.LogError(ex, false, $"Error on GetGlobalAchievementPercentagesForApp({SteamId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
             }
 
             return AllAchievements;
@@ -1134,7 +1134,7 @@ namespace SuccessStory.Clients
                 }
                 catch (WebException ex)
                 {
-                    Common.LogError(ex, false, true, "SuccessStory");
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
 
                 if (!ResultWeb.IsNullOrEmpty())
@@ -1178,7 +1178,7 @@ namespace SuccessStory.Clients
                     }
                     catch (Exception ex)
                     {
-                        Common.LogError(ex, false, true, "SuccessStory");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
                 }
             }
@@ -1290,7 +1290,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return Achievements;
@@ -1395,7 +1395,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return Achievements;
@@ -1417,8 +1417,8 @@ namespace SuccessStory.Clients
             logger.Warn($"{ClientName} user is not public");
 
             PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                $"successStory-{ClientName.RemoveWhiteSpace().ToLower()}-nopublic",
-                $"SuccessStory\r\n{Message}",
+                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-nopublic",
+                $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
                 () => PluginDatabase.Plugin.OpenSettingsView()
             ));

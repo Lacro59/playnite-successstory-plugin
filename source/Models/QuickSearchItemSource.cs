@@ -20,7 +20,7 @@ namespace SuccessStory.Models
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
 
-        public string Prefix => "SuccessStory";
+        public string Prefix => PluginDatabase.PluginName;
 
         public bool DisplayAllIfQueryIsEmpty => true;
 

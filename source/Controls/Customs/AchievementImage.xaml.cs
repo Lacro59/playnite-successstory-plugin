@@ -20,7 +20,7 @@ namespace SuccessStory.Controls.Customs
     /// </summary>
     public partial class AchievementImage : UserControl
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private static SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
         internal Storyboard PART_ColorEffect;
         internal Storyboard PART_ColorEffectUltraRare;
@@ -49,7 +49,7 @@ namespace SuccessStory.Controls.Customs
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 
@@ -148,7 +148,7 @@ namespace SuccessStory.Controls.Customs
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
         #endregion

@@ -179,7 +179,7 @@ namespace SuccessStory.Views.Interfaces
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
 

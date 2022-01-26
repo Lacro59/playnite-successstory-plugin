@@ -82,7 +82,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, "SuccessStory");
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
 
                 // Game Id
@@ -192,7 +192,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, $"Failed to load from {Url}", true, "SuccessStory");
+                Common.LogError(ex, false, $"Failed to load from {Url}", true, PluginDatabase.PluginName);
             }
 
 
@@ -205,7 +205,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Failed to parse {ResultWeb}", true, "SuccessStory");
+                    Common.LogError(ex, false, $"Failed to parse {ResultWeb}", true, PluginDatabase.PluginName);
                 }
             }
 
@@ -244,7 +244,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Error GetConsoleIDs({rA_Console.ID}, {rA_Console.Name})", true, "SuccessStory");
+                    Common.LogError(ex, false, $"Error GetConsoleIDs({rA_Console.ID}, {rA_Console.Name})", true, PluginDatabase.PluginName);
                 }
             }
 
@@ -257,7 +257,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Failed to save ListMD5", true, "SuccessStory");
+                    Common.LogError(ex, false, $"Failed to save ListMD5", true, PluginDatabase.PluginName);
                 }
             }
 
@@ -429,7 +429,7 @@ namespace SuccessStory.Clients
                         {
                             if (GameName.IsEqual(TitleSplit) && gameID == 0)
                             {
-                                logger.Info($"SuccessStory - Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
+                                logger.Info($"Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
                                 gameID = ra_Game.ID;
                                 break;
                             }
@@ -730,7 +730,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, "SuccessStory");
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 return string.Empty;
             }
         }
@@ -800,7 +800,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, $"Failed to load from {url}", true, "SuccessStory");
+                Common.LogError(ex, false, $"Failed to load from {url}", true, PluginDatabase.PluginName);
             }
 
             try
@@ -810,7 +810,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Failed to parse {ResultWeb}", true, "SuccessStory");
+                Common.LogError(ex, false, $"Failed to parse {ResultWeb}", true, PluginDatabase.PluginName);
             }
 
             return resultObj;
@@ -831,7 +831,7 @@ namespace SuccessStory.Clients
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, $"Failed to load from {UrlAchievements}", true, "SuccessStory");
+                Common.LogError(ex, false, $"Failed to load from {UrlAchievements}", true, PluginDatabase.PluginName);
                 return Achievements;
             }
 
@@ -863,7 +863,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"[{gameID}] Failed to parse {ResultWeb}", true, "SuccessStory");
+                Common.LogError(ex, false, $"[{gameID}] Failed to parse {ResultWeb}", true, PluginDatabase.PluginName);
                 return Achievements;
             }
 
