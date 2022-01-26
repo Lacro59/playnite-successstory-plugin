@@ -203,6 +203,12 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Achievements unlocked by source</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">每日解锁成就</sys:String>
 
+    <!-- Genshin Impact -->
+
+    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
+    <sys:String x:Key="LOCAddGenshinImpact">Add Genshin Impact</sys:String>
+
+    
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Quick Play</sys:String>
