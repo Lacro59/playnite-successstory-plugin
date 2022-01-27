@@ -222,6 +222,14 @@ namespace SuccessStory.Clients
             // Set missing description
             if (gameAchievements.HasAchievements)
             {
+                gameAchievements.Items.ForEach(x =>
+                {
+                    if (x.IsHidden && x.Description.IsNullOrEmpty())
+                    {
+                        x.Description = FindHiddenDescription(AppId, x.Name);
+                    }
+                });
+
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
             }
@@ -912,11 +920,6 @@ namespace SuccessStory.Clients
                             AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).IsHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
                             AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlUnlocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
                             AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlLocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
-
-                            if (AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).IsHidden)
-                            {
-                                AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).Description = FindHiddenDescription(AppId, AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).Name);
-                            }
                         }
                     }
                     catch (Exception ex)
@@ -1237,9 +1240,9 @@ namespace SuccessStory.Clients
                 //    }
                 //}
 
-                int index = ResultWeb.IndexOf("var g_rgAchievements = ");
-                if (index > -1)
+                if (ResultWeb.IndexOf("var g_rgAchievements = ") > -1)
                 {
+                    int index = ResultWeb.IndexOf("var g_rgAchievements = ");
                     ResultWeb = ResultWeb.Substring(index + "var g_rgAchievements = ".Length);
 
                     index = ResultWeb.IndexOf("var g_rgLeaderboards");
@@ -1285,6 +1288,44 @@ namespace SuccessStory.Clients
                         });
                     }
                 }
+                //else if (ResultWeb.IndexOf("achieveRow") > -1)
+                //{
+                //    Url = Url.Replace("&panorama=please", string.Empty).Replace($"l={LocalLang}", "l=english");
+                //    ResultWeb = Web.DownloadStringData(Url, GetCookies(), string.Empty, true).GetAwaiter().GetResult();
+                //    IHtmlDocument htmlDocument = new HtmlParser().Parse(ResultWeb);
+                //    var achieveRow_English = htmlDocument.QuerySelectorAll(".achieveRow");
+                //
+                //    htmlDocument = new HtmlParser().Parse(ResultWeb);
+                //    int idx = 0;
+                //    foreach(var el in htmlDocument.QuerySelectorAll(".achieveRow"))
+                //    {
+                //        string UrlUnlocked = el.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty;
+                //        string Name = el.QuerySelector(".achieveTxtHolder h3").GetAttribute("src");
+                //        string Description = el.QuerySelector(".achieveTxtHolder h5").GetAttribute("src");
+                //
+                //        DateTime DateUnlocked = default(DateTime);
+                //        string stringDateUnlocked = achieveRow_English[idx].QuerySelector(".achieveUnlockTime")?.InnerHtml ?? string.Empty;
+                //        if (!stringDateUnlocked.IsNullOrEmpty())
+                //        {
+                //            stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Trim();
+                //            DateTime.TryParseExact(stringDateUnlocked, "dd MMM, yyyy @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
+                //        }
+                //
+                //        Achievements.Add(new Achievements
+                //        {
+                //            Name = WebUtility.HtmlDecode(Name),
+                //            ApiName = string.Empty,
+                //            Description = WebUtility.HtmlDecode(Description),
+                //            UrlUnlocked = UrlUnlocked,
+                //            UrlLocked = string.Empty,
+                //            DateUnlocked = DateUnlocked,
+                //            IsHidden = false,
+                //            Percent = 100
+                //        });
+                //
+                //        idx++;
+                //    }
+                //}
                 else
                 {
                     Common.LogDebug(true, $"No achievement data on {Url}");
