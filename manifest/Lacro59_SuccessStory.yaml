@@ -141,3 +141,20 @@ Packages:
     PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.8.1/playnite-successstory-plugin_2_8_1.pext
     Changelog:
       - Fixed a crash
+  - Version: 2.9
+    RequiredApiVersion: 6.2.2
+    ReleaseDate: 2022-01-27
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.9/playnite-successstory-plugin_2_9.pext
+    Changelog:
+      - Updated localizations	  
+      - Fixed minors bugs
+      - Minors UI tweaks
+      - Minors optimizations
+      - Xbox achievements minors optimizations
+      - Steam achievements minors optimizations
+      - RetroAchievements minors optmizations
+      - PSN achievements minors optmizations
+      - Added Tab for PS3 games with multi games achievements
+      - Added options for custom locked achievements
+      - Added missing color for Epic achievements in Exophase selection
+      - Added manual achivements for Genshin Impact
