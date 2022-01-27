@@ -358,7 +358,7 @@ namespace SuccessStory.Clients
                         Thread.Sleep(2000);
                         if (PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !IsConnected())
                         {
-                            ShowNotificationPluginNoPublic(resources.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"));
+                            ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"), PlayniteTools.ExternalPlugin.SteamLibrary);
                             CachedConfigurationValidationResult = false;
                         }
                     }
@@ -556,13 +556,8 @@ namespace SuccessStory.Clients
         {
             if (SteamUser.IsNullOrEmpty() || SteamId.IsNullOrEmpty())
             {
-                string ResultWeb = string.Empty;
-                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
-                {
-                    WebViewOffscreen.NavigateAndWait(UrlProfil);
-                    WebViewOffscreen.NavigateAndWait(WebViewOffscreen.GetCurrentAddress());
-                    ResultWeb = WebViewOffscreen.GetPageSource();
-                }
+                List<HttpCookie> cookies = GetCookies();
+                string ResultWeb = Web.DownloadStringData(UrlProfil, cookies).GetAwaiter().GetResult();
 
                 if (SteamUser.IsNullOrEmpty())
                 {
@@ -642,7 +637,7 @@ namespace SuccessStory.Clients
             return false;
         }
 
-        private static bool IsProfilePublic(string profilePageUrl)
+        private bool IsProfilePublic(string profilePageUrl)
         {
             try
             {
@@ -660,22 +655,38 @@ namespace SuccessStory.Clients
             }
         }
 
-        private static bool IsProfileConnected(string profilePageUrl)
+        private bool IsProfileConnected(string profilePageUrl)
         {
             try
             {
-                string ResultWeb = string.Empty;
+                List<HttpCookie> cookies = GetCookies();
+                string ResultWeb = Web.DownloadStringData(profilePageUrl, cookies).GetAwaiter().GetResult();
+
+                //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
+                IHtmlDocument HtmlDoc = new HtmlParser().Parse(ResultWeb);
+                var gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
+                if (gamesPageLink != null)
+                {
+                    return true;
+                }
+
                 using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
                     WebViewOffscreen.NavigateAndWait(profilePageUrl);
                     ResultWeb = WebViewOffscreen.GetPageSource();
+                    cookies = WebViewOffscreen.GetCookies().Where(x => x.Domain.Contains("steam")).ToList();
                 }
 
-                IHtmlDocument HtmlDoc = new HtmlParser().Parse(ResultWeb);
-
                 //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
-                var gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
-                return gamesPageLink != null;
+                HtmlDoc = new HtmlParser().Parse(ResultWeb);
+                gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
+                if (gamesPageLink != null)
+                {
+                    SetCookies(cookies);
+                    return true;
+                }
+
+                return false;
             }
             catch (WebException ex)
             {
@@ -982,15 +993,11 @@ namespace SuccessStory.Clients
                 if (!TryByName)
                 {
                     Common.LogDebug(true, $"FindHiddenDescription() for {SteamId} - {AppId}");
-
                     url = string.Format(UrlProfilById, SteamId, AppId, LocalLang);
                     try
                     {
-                        using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
-                        {
-                            WebViewOffscreen.NavigateAndWait(url);
-                            ResultWeb = WebViewOffscreen.GetPageSource();
-                        }
+                        List<HttpCookie> cookies = GetCookies();
+                        ResultWeb = Web.DownloadStringData(url, cookies).GetAwaiter().GetResult();
                     }
                     catch (WebException ex)
                     {
@@ -1000,15 +1007,11 @@ namespace SuccessStory.Clients
                 else
                 {
                     Common.LogDebug(true, $"FindHiddenDescription() for {SteamUser} - {AppId}");
-
                     url = string.Format(UrlProfilByName, SteamUser, AppId, LocalLang);
                     try
                     {
-                        using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
-                        {
-                            WebViewOffscreen.NavigateAndWait(url);
-                            ResultWeb = WebViewOffscreen.GetPageSource();
-                        }
+                        List<HttpCookie> cookies = GetCookies();
+                        ResultWeb = Web.DownloadStringData(url, cookies).GetAwaiter().GetResult();
                     }
                     catch (WebException ex)
                     {
@@ -1211,25 +1214,28 @@ namespace SuccessStory.Clients
 
             try
             {
-                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
-                {
-                    Url = Url + "&panorama=please";
-                    WebViewOffscreen.NavigateAndWait(Url);
-                    ResultWeb = WebViewOffscreen.GetPageSource();
-
-                    string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
-                    if (CurrentUrl != Url)
-                    {
-                        var urlParams = Url.Split('?').ToList();
-                        if (urlParams.Count == 2)
-                        {
-                            Url = CurrentUrl + "?" + urlParams[1];
-                        }
-
-                        WebViewOffscreen.NavigateAndWait(Url);
-                        ResultWeb = WebViewOffscreen.GetPageSource();
-                    }
-                }
+                Url = Url + "&panorama=please";
+                List<HttpCookie> cookies = GetCookies();
+                ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
+                //using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                //{
+                //    Url = Url + "&panorama=please";
+                //    WebViewOffscreen.NavigateAndWait(Url);
+                //    ResultWeb = WebViewOffscreen.GetPageSource();
+                //
+                //    string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
+                //    if (CurrentUrl != Url)
+                //    {
+                //        var urlParams = Url.Split('?').ToList();
+                //        if (urlParams.Count == 2)
+                //        {
+                //            Url = CurrentUrl + "?" + urlParams[1];
+                //        }
+                //
+                //        WebViewOffscreen.NavigateAndWait(Url);
+                //        ResultWeb = WebViewOffscreen.GetPageSource();
+                //    }
+                //}
 
                 int index = ResultWeb.IndexOf("var g_rgAchievements = ");
                 if (index > -1)
@@ -1299,28 +1305,30 @@ namespace SuccessStory.Clients
         private List<Achievements> GetProgressionByWeb(List<Achievements> Achievements, string Url, bool isRetry = false)
         {
             string ResultWeb = string.Empty;
-
             try
             {
-                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
-                {
-                    Url = Url + "&panorama=please";
-                    WebViewOffscreen.NavigateAndWait(Url);
-                    ResultWeb = WebViewOffscreen.GetPageSource();
-
-                    string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
-                    if (CurrentUrl != Url)
-                    {
-                        var urlParams = Url.Split('?').ToList();
-                        if (urlParams.Count == 2)
-                        {
-                            Url = CurrentUrl + "?" + urlParams[1];
-                        }
-
-                        WebViewOffscreen.NavigateAndWait(Url);
-                        ResultWeb = WebViewOffscreen.GetPageSource();
-                    }
-                }
+                Url = Url + "&panorama=please";
+                List<HttpCookie> cookies = GetCookies();
+                ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
+                //using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                //{
+                //    Url = Url + "&panorama=please";
+                //    WebViewOffscreen.NavigateAndWait(Url);
+                //    ResultWeb = WebViewOffscreen.GetPageSource();
+                //
+                //    string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
+                //    if (CurrentUrl != Url)
+                //    {
+                //        var urlParams = Url.Split('?').ToList();
+                //        if (urlParams.Count == 2)
+                //        {
+                //            Url = CurrentUrl + "?" + urlParams[1];
+                //        }
+                //
+                //        WebViewOffscreen.NavigateAndWait(Url);
+                //        ResultWeb = WebViewOffscreen.GetPageSource();
+                //    }
+                //}
 
                 int index = ResultWeb.IndexOf("var g_rgAchievements = ");
                 if (index > -1)
@@ -1420,7 +1428,12 @@ namespace SuccessStory.Clients
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-nopublic",
                 $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
-                () => PluginDatabase.Plugin.OpenSettingsView()
+                () => 
+                {
+                    ResetCachedConfigurationValidationResult();
+                    ResetCachedIsConnectedResult();
+                    PluginDatabase.Plugin.OpenSettingsView();
+                }
             ));
         }
         #endregion
