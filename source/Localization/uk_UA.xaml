@@ -203,6 +203,12 @@
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Досягнення здобуті по джерелах</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Досягнення здобуті по днях</sys:String>
 
+    <!-- Genshin Impact -->
+
+    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Увімкнути досягнення Genshin Impact</sys:String>
+    <sys:String x:Key="LOCAddGenshinImpact">Додати Genshin Impact</sys:String>
+
+    
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Швидка гра</sys:String>

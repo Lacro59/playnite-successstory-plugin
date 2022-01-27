@@ -204,6 +204,12 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Succès obtenus par sources</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Succès obtenus par jour</sys:String>
 
+    <!-- Genshin Impact -->
+
+    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
+    <sys:String x:Key="LOCAddGenshinImpact">Add Genshin Impact</sys:String>
+
+    
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Jeu Rapide</sys:String>

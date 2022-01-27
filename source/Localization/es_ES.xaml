@@ -203,6 +203,12 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Logros desbloqueados por fuente</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Logros desbloqueados por día</sys:String>
 
+    <!-- Genshin Impact -->
+
+    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
+    <sys:String x:Key="LOCAddGenshinImpact">Add Genshin Impact</sys:String>
+
+    
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Partida rápida</sys:String>
