@@ -2,7 +2,6 @@
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Models;
 using CommonPluginsStores;
-using Newtonsoft.Json.Linq;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Converters;
@@ -452,17 +451,15 @@ namespace SuccessStory.Clients
                                 DateTime? DateUnlocked = null;
 
                                 var jsonText = File.ReadAllText(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.json");
-                                var jsonAchievements = JObject.Parse(jsonText);
-
-                                foreach (var achievement in jsonAchievements.Children())
+                                foreach (var achievement in Serialization.FromJson<dynamic>(jsonText))
                                 {
                                     Name = achievement.Path;
 
                                     var elements = achievement.First;
                                     var unlockedTimeToken = elements.SelectToken("earned_time");
-                                    if (unlockedTimeToken?.Value<int>() > 0)
+                                    if (unlockedTimeToken.Value > 0)
                                     {
-                                        DateUnlocked = new DateTime(1970, 1, 1).AddSeconds(unlockedTimeToken.Value<int>());
+                                        DateUnlocked = new DateTime(1970, 1, 1).AddSeconds(unlockedTimeToken.Value);
                                     }
 
                                     if (Name != string.Empty && DateUnlocked != null)
