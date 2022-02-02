@@ -447,27 +447,21 @@ namespace SuccessStory.Clients
                         case ("%appdata%\\goldberg steamemu saves"):
                             if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.json"))
                             {
-                                string line;
                                 string Name = string.Empty;
                                 DateTime? DateUnlocked = null;
 
-                                StreamReader r = new StreamReader(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.json");
-
-                                while ((line = r.ReadLine()) != null)
+                                var jsonText = File.ReadAllText(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.json");
+                                foreach (var achievement in Serialization.FromJson<dynamic>(jsonText))
                                 {
-                                    // Achievement Name
-                                    if (line.IndexOf("{") > -1)
+                                    Name = achievement.Path;
+
+                                    var elements = achievement.First;
+                                    var unlockedTimeToken = elements.SelectToken("earned_time");
+                                    if (unlockedTimeToken.Value > 0)
                                     {
-                                        Name = line.Replace("\"", string.Empty).Replace(": {", string.Empty).Trim();
+                                        DateUnlocked = new DateTime(1970, 1, 1).AddSeconds(unlockedTimeToken.Value);
                                     }
 
-                                    // Achievement UnlockTime
-                                    if (line.IndexOf("earned_time") > -1 && line.ToLower() != "    \"earned_time\": 0")
-                                    {
-                                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(line.Replace("\"earned_time\": ", string.Empty))).ToLocalTime();
-                                    }
-
-                                    // End Achievement
                                     if (Name != string.Empty && DateUnlocked != null)
                                     {
                                         ReturnAchievements.Add(new Achievements
@@ -484,7 +478,6 @@ namespace SuccessStory.Clients
                                         DateUnlocked = null;
                                     }
                                 }
-                                r.Close();
                             }
 
                             break;
