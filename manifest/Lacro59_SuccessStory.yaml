@@ -158,3 +158,13 @@ Packages:
       - Added options for custom locked achievements
       - Added missing color for Epic achievements in Exophase selection
       - Added manual achivements for Genshin Impact
+  - Version: 2.9.1
+    RequiredApiVersion: 6.2.2
+    ReleaseDate: 2022-02-02
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.9/playnite-successstory-plugin_2_9.pext
+    Changelog:
+      - Updated localizations
+      - Minor cache system optimizations
+      - Fixed minors bugs
+      - Fixed bugs with manual achievements
+      - Added progress indicator for Genshin Impact achievements
