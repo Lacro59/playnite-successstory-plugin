@@ -51,6 +51,7 @@ namespace SuccessStory.Models
         [DontSerialize]
         public OrderAchievement orderAchievement;
 
+        [DontSerialize]
         public ObservableCollection<Achievements> OrderItems
         {
             get
@@ -189,6 +190,7 @@ namespace SuccessStory.Models
             }
         }
 
+        [DontSerialize]
         public ObservableCollection<Achievements> OrderItemsOnlyUnlocked
         {
             get
@@ -197,6 +199,7 @@ namespace SuccessStory.Models
             }
         }
 
+        [DontSerialize]
         public ObservableCollection<Achievements> OrderItemsOnlyLocked
         {
             get
@@ -406,6 +409,7 @@ namespace SuccessStory.Models
         public string CommunicationId { get; set; }
 
 
+        [DontSerialize]
         public bool ImageIsCached
         {
             get
