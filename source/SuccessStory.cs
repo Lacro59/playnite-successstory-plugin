@@ -999,7 +999,6 @@ namespace SuccessStory
                     foreach (GameAchievements gameAchievements in db)
                     {
                         Common.LogDebug(true, $"TaskCacheImage - {gameAchievements.Name} - {gameAchievements.Items.Count}");
-
                         foreach (var achievement in gameAchievements.Items)
                         {
                             while (TaskIsPaused)
@@ -1009,6 +1008,16 @@ namespace SuccessStory
 
                             try
                             {
+                                if (achievement.UrlUnlocked.Contains("rpcs3", StringComparison.InvariantCultureIgnoreCase) && PlayniteTools.GetCacheFile(achievement.CacheUnlocked, PluginDatabase.PluginName).IsNullOrEmpty())
+                                {
+                                    string PathFile = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, achievement.UrlUnlocked);
+                                    string PathImageFileName = Path.Combine(PlaynitePaths.DataCachePath, PluginDatabase.PluginName, achievement.CacheUnlocked);
+                                    if (File.Exists(PathFile))
+                                    {
+                                        FileSystem.CopyFile(PathFile, PathImageFileName);
+                                    }
+                                }
+
                                 if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, PluginDatabase.PluginName).IsNullOrEmpty())
                                 {
                                     Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Locked)");

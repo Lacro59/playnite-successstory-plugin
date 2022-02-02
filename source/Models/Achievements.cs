@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Documents;
 using System.Globalization;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Models
 {
@@ -97,12 +98,12 @@ namespace SuccessStory.Models
                 if (TempUrlUnlocked?.IndexOf("hidden_trophy") > -1)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
-                    Options = null;
+                    return TempUrlUnlocked;
                 }
                 if (TempUrlUnlocked?.IndexOf("GenshinImpact") > -1)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
-                    Options = null;
+                    return TempUrlUnlocked;
                 }
 
                 string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, PluginDatabase.PluginName, Options);
