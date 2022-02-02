@@ -161,7 +161,7 @@ Packages:
   - Version: 2.9.1
     RequiredApiVersion: 6.2.2
     ReleaseDate: 2022-02-02
-    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.9/playnite-successstory-plugin_2_9.pext
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.9.1/playnite-successstory-plugin_2_9_1.pext
     Changelog:
       - Updated localizations
       - Minor cache system optimizations
