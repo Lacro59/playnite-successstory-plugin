@@ -458,7 +458,7 @@ namespace SuccessStory
                     }
                 }
 
-                if (PluginSettings.Settings.EnableManual)
+                if (PluginSettings.Settings.EnableManual && !GameMenu.Name.IsEqual("Genshin Impact"))
                 {
                     if (!gameAchievements.HasData)
                     {
@@ -473,7 +473,7 @@ namespace SuccessStory
                             }
                         });
                     }
-                    else if (gameAchievements.IsManual && !PluginSettings.Settings.EnableGenshinImpact)
+                    else if (gameAchievements.IsManual)
                     {
                         gameMenuItems.Add(new GameMenuItem
                         {
