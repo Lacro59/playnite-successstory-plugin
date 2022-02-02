@@ -363,6 +363,7 @@ namespace SuccessStory.Clients
 
                     if (PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !IsConnected())
                     {
+                        ResetCachedIsConnectedResult();
                         Thread.Sleep(2000);
                         if (PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !IsConnected())
                         {
