@@ -104,13 +104,25 @@
                     <DataTemplate>
                         <Grid Margin="0,5">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="50" />
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="15" />
+                            </Grid.RowDefinitions>
 
-                            <controls1:ImageAsync Width="48" Height="48" Source="{Binding CategoryIcon, IsAsync=True}" />
-                            <Label Grid.Column="2" Content="{Binding CategoryName}" />
+                            <controls1:ImageAsync Width="48" Height="48" Source="{Binding CategoryIcon, IsAsync=True}" Grid.RowSpan="3"
+                                                  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            
+                            <Label Grid.Column="2" Content="{Binding CategoryName, FallbackValue='category'}" />
+
+                            <Grid Grid.Row="2" Grid.Column="2" Width="200" HorizontalAlignment="Right">
+                                <ProgressBar Value="{Binding Value}" Maximum="{Binding Maximum}" />
+                                <Label Content="{Binding Progression}" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" />
+                            </Grid>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

@@ -1,5 +1,6 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Converters;
+using CommonPluginsShared.Extensions;
 using MoreLinq;
 using Playnite.SDK;
 using Playnite.SDK.Models;
@@ -65,7 +66,15 @@ namespace SuccessStory.Views
 
                 // Category
                 List<CategoryAchievement> categories = gameAchievements.Items
-                    .Select(x => new CategoryAchievement { CategoryIcon = x.ImageCategoryIcon, CategoryName = x.Category, CategoryOrder = x.CategoryOrder })
+                    .Select(x => new CategoryAchievement
+                    {
+                        CategoryIcon = x.ImageCategoryIcon,
+                        CategoryName = x.Category,
+                        CategoryOrder = x.CategoryOrder,
+                        Maximum = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count(),
+                        Value = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count(),
+                        Progression = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() + " / " + gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count()
+                    })
                     .DistinctBy(x => x.CategoryName).OrderBy(x => x.CategoryOrder).ToList();
                 PART_ListCategory.ItemsSource = categories;
                 PART_ListCategory.SelectedIndex = 0;
@@ -115,5 +124,9 @@ namespace SuccessStory.Views
         public string CategoryIcon { get; set; }
         public string CategoryName { get; set; }
         public int CategoryOrder { get; set; }
+
+        public double Value { get; set; }
+        public double Maximum { get; set; }
+        public string Progression { get; set; }
     }
 }
