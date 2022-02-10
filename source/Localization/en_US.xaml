@@ -122,7 +122,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarity indicator on achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Show rarity value with achievements image</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the achievements of the game selected from the game menu</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Automatically set the completation when all are unlocked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Automatically set the completion when all are unlocked</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">List games</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">Default game list sorting</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Chart with all achievements</sys:String>
@@ -154,7 +154,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Non-blocking process which can increase memory usage a bit when caching only.
 Especially useful for Xbox achievements with their larges images which are reduced when caching.</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryListAchievements">List achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListAchievements">Achievements list</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">Achievements sorting</sys:String>
     <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Group by unlocked when possible</sys:String>
 
@@ -176,7 +176,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSsTimeToUnlock">Time to unlock everything</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNoCommon">Uncommon</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">Non-common</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
     <sys:String x:Key="LOCSuccessStoryUltraRare">Ultra-rare</sys:String>
 
