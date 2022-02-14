@@ -289,7 +289,7 @@ namespace SuccessStory.Clients
             List<XboxOneAchievement> relevantAchievements;
             if (titleId.IsNullOrEmpty())
             {
-                relevantAchievements = response.achievements.Where(x => x.titleAssociations.First().name.IsEqual(game.Name)).ToList();
+                relevantAchievements = response.achievements.Where(x => x.titleAssociations.First().name.IsEqual(game.Name, true)).ToList();
                 Common.LogDebug(true, $"Not find with {game.GameId} for {game.Name} - {relevantAchievements.Count}");
             }
             else
@@ -405,6 +405,7 @@ namespace SuccessStory.Clients
         public string continuationToken { get; set; }
         public int totalRecords { get; set; }
     }
+
 
     #region Xbox One models
     public class XboxOneAchievement
