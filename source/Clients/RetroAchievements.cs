@@ -278,6 +278,10 @@ namespace SuccessStory.Clients
             {
                 PlatformName = "Mega Drive";
             }
+            if (PlatformName.IsEqual("Nintendo SNES"))
+            {
+                PlatformName = "SNES";
+            }
             if (PlatformName.IsEqual("Super Nintendo Entertainment System"))
             {
                 PlatformName = "SNES";
@@ -377,6 +381,10 @@ namespace SuccessStory.Clients
             if (PlatformName.IsEqual("Sega Dreamcast"))
             {
                 PlatformName = "Dreamcast";
+            }
+            if (PlatformName.IsEqual("Sony PlayStation Portable"))
+            {
+                PlatformName = "PlayStation Portable";
             }
             if (PlatformName.IsEqual("Sony PSP"))
             {
