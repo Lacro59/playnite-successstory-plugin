@@ -16,7 +16,7 @@
 
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="450" />
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -116,10 +116,10 @@
 
                             <controls1:ImageAsync Width="48" Height="48" Source="{Binding CategoryIcon, IsAsync=True}" Grid.RowSpan="3"
                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            
-                            <Label Grid.Column="2" Content="{Binding CategoryName, FallbackValue='category'}" />
 
-                            <Grid Grid.Row="2" Grid.Column="2" Width="200" HorizontalAlignment="Right">
+                            <TextBlock Grid.Column="2" Text="{Binding CategoryName, FallbackValue='category'}" Width="350" TextTrimming="CharacterEllipsis" />
+
+                            <Grid Grid.Row="2" Grid.Column="2" Width="220" HorizontalAlignment="Right">
                                 <ProgressBar Value="{Binding Value}" Maximum="{Binding Maximum}" />
                                 <Label Content="{Binding Progression}" Grid.Column="3" Grid.Row="2" HorizontalAlignment="Center" />
                             </Grid>
