@@ -12,6 +12,7 @@
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:Controls="clr-namespace:SuccessStory.Controls"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280"
              d:DataContext="{d:DesignInstance Type=local:SuccessViewData}">
 
@@ -169,13 +170,14 @@
                 <controlsShared:ListViewExtend x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}"
                                                SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}" 
                                                SortingEnable="True" ItemsSource="{Binding ListGames}">
+
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="46" x:Name="lvGameIcon100Percent">
                                 <GridViewColumnHeader Content="100%" Tag="noSort" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent}" />
+                                        <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent, IsAsync=True}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -185,7 +187,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
-                                                   Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}}" />
+                                                   Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}, IsAsync=True}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

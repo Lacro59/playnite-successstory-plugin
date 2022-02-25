@@ -82,7 +82,6 @@ namespace SuccessStory.Controls
             InitializeComponent();
             this.DataContext = ControlDataContext;
 
-
             orderAchievement = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement);
             PART_SortGroupBy.IsChecked = orderAchievement.OrderGroupByUnlocked;
 
