@@ -9,6 +9,8 @@
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:converters1="clr-namespace:SuccessStory.Converters"
+             xmlns:controls1="clr-namespace:CommonPluginsShared.Controls"
+             xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              mc:Ignorable="d" Height="700" Width="800">
 
     <UserControl.Resources>
@@ -54,21 +56,21 @@
         </Grid>
 
         <Grid Name="PART_LbContener" Grid.Row="2">
-            <ListBox x:Name="lbAchievements"
+            <ListBox x:Name="lbAchievements" 
                      Height="{Binding ElementName=PART_LbContener, Path=ActualHeight}" 
                      Width="{Binding ElementName=PART_LbContener, Path=ActualWidth}" 
                      Loaded="LbAchievements_Loaded" Grid.Row="2"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
 
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                        <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <wpftk:VirtualizingWrapPanel Orientation="Vertical" VirtualizingPanel.CacheLengthUnit="Item" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0,5" Height="65">
+                        <Grid Margin="0,5" Height="65" Width="750">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="58" />
                                 <ColumnDefinition Width="*" />
@@ -78,7 +80,7 @@
                                         Visibility="{Binding ElementName=PART_CbUnlock, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
                                             Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <Image Stretch="UniformToFill" Source="{Binding ImageUnlocked}"
+                                    <controls1:ImageAsync Stretch="UniformToFill" Source="{Binding ImageUnlocked, IsAsync=True}"
                                            Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Image.OpacityMask>
                                             <ImageBrush ImageSource="{Binding ImageUnlocked, IsAsync=True}" />
@@ -86,19 +88,19 @@
                                         <Image.Effect>
                                             <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
                                         </Image.Effect>
-                                    </Image>
+                                    </controls1:ImageAsync>
                                 </StackPanel>
 
                                 <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
                                             Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                                    <Image Stretch="UniformToFill" Source="{Binding ImageUnlocked, IsAsync=True}"
+                                    <controls1:ImageAsync Stretch="UniformToFill" Source="{Binding ImageUnlocked, IsAsync=True}"
                                            Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
-                                    <Image Stretch="UniformToFill" Source="{Binding ImageUnlocked, IsAsync=True}"
+                                    <controls1:ImageAsync Stretch="UniformToFill" Source="{Binding ImageUnlocked, IsAsync=True}"
                                            Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Image.Effect>
                                             <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
                                         </Image.Effect>
-                                    </Image>
+                                    </controls1:ImageAsync>
                                 </StackPanel>
                             </StackPanel>
 
@@ -106,7 +108,7 @@
                                         Visibility="{Binding ElementName=PART_CbUnlock, Path=IsChecked, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                 <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
                                             Visibility="{Binding IsGray, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <Image Stretch="UniformToFill"
+                                    <controls1:ImageAsync Stretch="UniformToFill"
                                            Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
                                         <Image.Source>
                                             <FormatConvertedBitmap Source="{Binding ImageLocked}" DestinationFormat="Gray32Float" />
@@ -114,8 +116,8 @@
                                         <Image.OpacityMask>
                                             <ImageBrush ImageSource="{Binding ImageLocked, IsAsync=True}" />
                                         </Image.OpacityMask>
-                                    </Image>
-                                    <Image Stretch="UniformToFill" 
+                                    </controls1:ImageAsync>
+                                    <controls1:ImageAsync Stretch="UniformToFill" 
                                            Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Image.Source>
                                             <FormatConvertedBitmap Source="{Binding ImageLocked}" DestinationFormat="Gray32Float" />
@@ -126,19 +128,19 @@
                                         <Image.Effect>
                                             <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
                                         </Image.Effect>
-                                    </Image>
+                                    </controls1:ImageAsync>
                                 </StackPanel>
 
                                 <StackPanel Height="48" Width="48" VerticalAlignment="Top" Margin="0,5,0,0"
                                             Visibility="{Binding IsGray, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                                    <Image Stretch="UniformToFill" Source="{Binding ImageLocked, IsAsync=True}"
+                                    <controls1:ImageAsync Stretch="UniformToFill" Source="{Binding ImageLocked, IsAsync=True}"
                                            Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
-                                    <Image Stretch="UniformToFill" Source="{Binding ImageLocked, IsAsync=True}" 
+                                    <controls1:ImageAsync Stretch="UniformToFill" Source="{Binding ImageLocked, IsAsync=True}" 
                                            Visibility="{Binding EnableRaretyIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Image.Effect>
                                             <DropShadowEffect BlurRadius="15" ShadowDepth="0" Color="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
                                         </Image.Effect>
-                                    </Image>
+                                    </controls1:ImageAsync>
                                 </StackPanel>
                             </StackPanel>
 

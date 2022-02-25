@@ -16,13 +16,13 @@
         <converters1:SetColorConverter x:Key="SetColorConverter" />
         <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
 
-        <Storyboard Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="Effect.Color" x:Key="PART_ColorEffect">
+        <!--Storyboard Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="Effect.Color" x:Key="PART_ColorEffect">
             <ColorAnimationUsingKeyFrames Duration="00:00:00">
                 <EasingColorKeyFrame KeyTime="00:00:00" Value="{Binding Percent, Converter={StaticResource SetColorConverter}}" />
             </ColorAnimationUsingKeyFrames>
-        </Storyboard>
+        </Storyboard-->
 
-        <Storyboard Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="Effect.Color" x:Key="PART_ColorEffectUltraRare">
+        <!--Storyboard Storyboard.TargetName="PART_Image" Storyboard.TargetProperty="Effect.Color" x:Key="PART_ColorEffectUltraRare">
             <ColorAnimationUsingKeyFrames Duration="00:00:05" RepeatBehavior="Forever">
                 <EasingColorKeyFrame KeyTime="00:00:00" Value="Blue"/>
                 <EasingColorKeyFrame KeyTime="00:00:01" Value="Red"/>
@@ -31,7 +31,7 @@
                 <EasingColorKeyFrame KeyTime="00:00:04" Value="Orange"/>
                 <EasingColorKeyFrame KeyTime="00:00:04" Value="Blue"/>
             </ColorAnimationUsingKeyFrames>
-        </Storyboard>
+        </Storyboard-->
     </UserControl.Resources>
 
     <Grid Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Height}" 
@@ -54,19 +54,7 @@
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
-
-                        <!--DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsGray}" Value="False">
-                            <Setter Property="Source" Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, IsAsync=True}" />
-                        </>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsGray}" Value="True">
-                            <Setter Property="Source" Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, Converter={StaticResource ImageToGrayConverter}}" />
-                            <Setter Property="OpacityMask">
-                                <Setter.Value>
-                                    <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Icon, IsAsync=True}" />
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger-->
-
+                        
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsGray}" Value="True">
                             <Setter Property="OpacityMask">
                                 <Setter.Value>

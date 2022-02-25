@@ -79,6 +79,7 @@
                                     ItemsSource="{Binding ItemsSource}"
                                     Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
                                     Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}">
+                
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                         <Setter Property="Template">
@@ -104,8 +105,7 @@
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <wpftk:VirtualizingWrapPanel Orientation="Vertical" 
-                                                     VirtualizingPanel.CacheLengthUnit="Item" />
+                        <wpftk:VirtualizingWrapPanel Orientation="Vertical" VirtualizingPanel.CacheLengthUnit="Item" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 

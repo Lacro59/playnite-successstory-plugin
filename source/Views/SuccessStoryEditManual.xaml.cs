@@ -37,6 +37,15 @@ namespace SuccessStory.Views
 
         private ObservableCollection<Achievements> ListAchievements = new ObservableCollection<Achievements>();
 
+        private bool viewFilter(object item)
+        {
+            bool b1 = SearchElement.Text.IsNullOrEmpty() ? true : (item as Achievements).Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
+            bool b2 = !(bool)PART_IncludeDescription.IsChecked ? true : (item as Achievements).Description.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
+            bool b3 = !(bool)PART_OnlyLocked.IsChecked ? true : !(item as Achievements).IsUnlock;
+
+            return ((bool)PART_IncludeDescription.IsChecked ? (b1 || b2) : b1) && b3;
+        }
+
 
         public SuccessStoryEditManual(Game game)
         {
@@ -49,8 +58,13 @@ namespace SuccessStory.Views
         private void LoadData(Game GameSelected)
         {
             ListAchievements = Serialization.GetClone(gameAchievements.Items).ToObservable();
+
             ListAchievements = ListAchievements.OrderBy(x => x.Name).ToObservable();
             lbAchievements.ItemsSource = ListAchievements;
+
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
+            view.Filter = viewFilter;
+
             Filter();
         }
 
@@ -165,15 +179,8 @@ namespace SuccessStory.Views
                 return;
             }
 
-            ((ObservableCollection<Achievements>)lbAchievements.ItemsSource).ForEach(x => 
-            {
-                bool b1 = SearchElement.Text.IsNullOrEmpty() ? true : x.Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
-                bool b2 = !(bool)PART_IncludeDescription.IsChecked ? true : x.Description.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
-                bool b3 = !(bool)PART_OnlyLocked.IsChecked ? true : !x.IsUnlock;
-
-                x.IsVisible = ((bool)PART_IncludeDescription.IsChecked ? (b1 || b2) : b1) && b3;
-            });
-        }
+            CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource).Refresh();
+        } 
     
         private void SearchElement_TextChanged(object sender, TextChangedEventArgs e)
         {
