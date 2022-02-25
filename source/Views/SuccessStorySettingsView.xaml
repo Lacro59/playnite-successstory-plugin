@@ -710,6 +710,7 @@
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
@@ -723,11 +724,15 @@
                             <ToggleButton Content="{DynamicResource LOCMenuSortAscending}" IsChecked="{Binding Settings.IsAsc}" Grid.Column="4" Grid.Row="0" Height="30"></ToggleButton>
 
                             <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" IsChecked="{Binding Settings.IncludeHiddenGames}" VerticalAlignment="Center">
-                                <Label Content="{DynamicResource LOCSuccessStoryIncludeHiddenGames}"></Label>
+                                <Label Content="{DynamicResource LOCSuccessStoryIncludeHiddenGames}" />
                             </CheckBox>
 
-                            <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Content="{DynamicResource LOCSuccessStoryListGamesFields}" />
-                            <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="5" Margin="30,0,0,0">
+                            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" IsChecked="{Binding Settings.DisplayChart}" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryDisplayChart}" />
+                            </CheckBox>
+
+                            <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Content="{DynamicResource LOCSuccessStoryListGamesFields}" />
+                            <Grid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="5" Margin="30,0,0,0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />

@@ -324,6 +324,18 @@ namespace SuccessStory
                     PART_Data.Visibility = Visibility.Visible;
                 }));
             });
+
+
+            if (!PluginDatabase.PluginSettings.Settings.DisplayChart)
+            {
+                PART_Chart1.Visibility = Visibility.Collapsed;
+                Grid.SetRow(PART_PluginListContener, 2);
+
+                PART_GraphicBySource.Visibility = Visibility.Collapsed;
+                PART_GraphicAllUnlocked.Visibility = Visibility.Collapsed;
+                Grid.SetRowSpan(PART_PluginListContener, 5);
+                Grid.SetRowSpan(lvGamesStackPanel, 5);
+            }
         }
 
         private void SetGraphicsAchievementsSources()

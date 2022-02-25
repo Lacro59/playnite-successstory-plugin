@@ -46,6 +46,7 @@ namespace SuccessStory
         public bool GraphicAllUnlockedByDay { get; set; } = false;
 
         public bool IncludeHiddenGames { get; set; } = false;
+        public bool DisplayChart { get; set; } = true;
 
 
         public string IconLocked { get; set; } = string.Empty;

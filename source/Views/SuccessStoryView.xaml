@@ -297,7 +297,7 @@
             </Grid>
 
             <!-- Achievement by day for selected game -->
-            <Grid Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="3">
+            <Grid Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="3" Name="PART_Chart1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="10" />
