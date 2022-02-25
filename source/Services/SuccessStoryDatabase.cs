@@ -1033,8 +1033,8 @@ namespace SuccessStory.Services
             logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
 
             GameAchievements loadedItem = Get(Id, true);
-
             GameAchievements webItem = null;
+
             if (loadedItem.IsManual)
             {
                 if (game.Name.IsEqual("Genshin Impact"))
@@ -1052,7 +1052,7 @@ namespace SuccessStory.Services
                     webItem = SetEstimateTimeToUnlock(game, webItem);
                     for (int i = 0; i < webItem.Items.Count; i++)
                     {
-                        var finded = loadedItem.Items.Find(x => x.Name.IsEqual(webItem.Items[i].Name));
+                        var finded = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() ? true : x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
                         if (finded != null)
                         {
                             webItem.Items[i].DateUnlocked = finded.DateUnlocked;
