@@ -231,4 +231,9 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
 
+    <!-- SuccessStoryEditManual -->
+
+    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
+
 </ResourceDictionary>

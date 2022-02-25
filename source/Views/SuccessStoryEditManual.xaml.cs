@@ -51,6 +51,7 @@ namespace SuccessStory.Views
             ListAchievements = Serialization.GetClone(gameAchievements.Items).ToObservable();
             ListAchievements = ListAchievements.OrderBy(x => x.Name).ToObservable();
             lbAchievements.ItemsSource = ListAchievements;
+            Filter();
         }
 
 
@@ -156,17 +157,49 @@ namespace SuccessStory.Views
         }
 
 
+        #region Filter
+        private void Filter()
+        {
+            if (lbAchievements?.ItemsSource == null)
+            {
+                return;
+            }
+
+            ((ObservableCollection<Achievements>)lbAchievements.ItemsSource).ForEach(x => 
+            {
+                bool b1 = SearchElement.Text.IsNullOrEmpty() ? true : x.Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
+                bool b2 = !(bool)PART_IncludeDescription.IsChecked ? true : x.Description.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
+                bool b3 = !(bool)PART_OnlyLocked.IsChecked ? true : !x.IsUnlock;
+
+                x.IsVisible = ((bool)PART_IncludeDescription.IsChecked ? (b1 || b2) : b1) && b3;
+            });
+        }
+    
         private void SearchElement_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ((ObservableCollection<Achievements>)lbAchievements.ItemsSource)
-                .ForEach(x => x.IsVisible = true);
-
-            if (!SearchElement.Text.IsNullOrEmpty())
-            {
-                ((ObservableCollection<Achievements>)lbAchievements.ItemsSource)
-                    .Where(x => !x.Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase))
-                    .ForEach(x => x.IsVisible = false);
-            }
+            Filter();
         }
+
+
+        private void PART_OnlyLocked_Checked(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void PART_OnlyLocked_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void PART_IncludeDescription_Checked(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void PART_IncludeDescription_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
+        #endregion
     }
 }

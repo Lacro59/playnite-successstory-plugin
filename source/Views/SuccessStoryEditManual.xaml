@@ -33,10 +33,24 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
             <Label Content="{DynamicResource LOCSearchLabel}" Grid.Column="0" />
             <playnitecontrols:SearchBox Grid.Column="2" x:Name="SearchElement" TextChanged="SearchElement_TextChanged" />
+
+            <CheckBox Grid.Column="4" Name="PART_IncludeDescription" IsChecked="False" VerticalAlignment="Center"
+                      Checked="PART_IncludeDescription_Checked" Unchecked="PART_IncludeDescription_Unchecked">
+                <Label Content="{DynamicResource LOCSsIncludeDescription}" />
+            </CheckBox>
+
+            <CheckBox Grid.Column="6" Name="PART_OnlyLocked" IsChecked="True" VerticalAlignment="Center"
+                      Checked="PART_OnlyLocked_Checked" Unchecked="PART_OnlyLocked_Unchecked">
+                <Label Content="{DynamicResource LOCSsOnlyLocked}" />
+            </CheckBox>
         </Grid>
 
         <Grid Name="PART_LbContener" Grid.Row="2">
