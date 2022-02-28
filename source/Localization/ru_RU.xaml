@@ -130,6 +130,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Отображаемые поля:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">100% achievements icon</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Показать достижения скрытых иг</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Показывать график достижений по месяцам</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Показывать график достижений по дням</sys:String>
@@ -232,5 +233,10 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+
+    <!-- SuccessStoryEditManual -->
+
+    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
 
 </ResourceDictionary>
