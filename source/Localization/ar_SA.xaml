@@ -20,7 +20,7 @@
     <sys:String x:Key="LOCSuccessStoryViewGames">View the games achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryViewGame">View the game achievements</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnored">تجاهل اللعب</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnored">تجاهل اللع</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profile is not public</sys:String>
@@ -56,7 +56,7 @@
 
     <sys:String x:Key="LOCSuccessStoryProgressBar">Processing, please wait...</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnoredGames">الألعاب المتجاهل</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnoredGames">الألعاب المتجاه</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
 
@@ -85,12 +85,12 @@
     <sys:String x:Key="LOCSuccessStoryDatabase">قاعدة البيانات</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">تنزيل بيانات الإنجازات</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">تحديث البيانات</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetMissing">تحميل البيانات المفقود</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissing">تحميل البيانات المفقو</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Recent games with missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">أحدث الألعا</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllData">جميع الألعا</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetAllData">الألعاب ذات البيانات المفقود</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">الألعاب المثبتة ذات بيانات مفقود</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllData">الألعاب ذات البيانات المفقو</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">الألعاب المثبتة ذات بيانات مفقو</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">الألعاب المثبت</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">Progression with a progress bar</sys:String>
@@ -99,14 +99,14 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">عرض قائمة الإنجازات</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompact">عرض قائمة الإنجازات المدمج</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Display the achievements progress bar</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">عرض موجز للإنجازات غير المقفل</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">عرض ملخص للإنجازات المقفل</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">عرض موجز للإنجازات غير المقف</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">عرض ملخص للإنجازات المقف</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">Display user game stats</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">خيارات المبيان</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">خيارات المبيا</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">عدد الأيام للعرض على المبيا</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">إظهار التسميات على المحور الأفق</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">إظهار التسميات على المحور العمود</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">إظهار التسميات على المحور الأف</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">إظهار التسميات على المحور العمو</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">Progress bar options</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">Show achievements progress label</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">Show progress percentage</sys:String>
@@ -116,7 +116,7 @@
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">خيارات الإنجازات الملخص</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">إظهار آخر إنجاز تم فتح</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">إظهار آخر إنجاز في سطر خاص ب</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">إظهار آخر إنجاز في سطر خاص </sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Extension view</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarity indicator on achievements</sys:String>
@@ -130,9 +130,10 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Game fields to be displayed:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">100% achievements icon</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">إظهار منجزات الألعاب المخفي</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">إظهار منجزات الألعاب المخف</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">عرض مبياني للإنجازات حسب الشهر</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">عرض مبياني للإنجازات حسب اليو</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">عرض مبياني للإنجازات حسب الي</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">Achievements database of selection has been reset.</sys:String>
 
@@ -160,10 +161,10 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">ميزة للإضافة إذا كانت اللعبة تحتوي على إنجازات</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">إعدادات الأيقونة المقفل</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">إضافة أيقونة على الإنجازات المقفل</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">رمز مخصص للإنجازات المقفل</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">فقط عندما تكون الأيقونة مفقود</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">إعدادات الأيقونة المقف</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">إضافة أيقونة على الإنجازات المقف</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">رمز مخصص للإنجازات المقف</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">فقط عندما تكون الأيقونة مفقو</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
@@ -173,7 +174,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryAchStats">إحصائيات الإنجازات</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">User statistics</sys:String>
 
-    <sys:String x:Key="LOCSsTimeToUnlock">الوقت للفتح بالكام</sys:String>
+    <sys:String x:Key="LOCSsTimeToUnlock">الوقت للفتح بالكا</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryCommon">شائع</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">غير شائع</sys:String>
@@ -195,13 +196,13 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- ListViewGames -->
 
-    <sys:String x:Key="LOCSuccessStorylvGamesProgression">التقد</sys:String>
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">التق</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">جميع الإنجازات التي تم فتحها حسب الشهر</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">جميع الإنجازات التي تم فتحها حسب اليو</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">جميع الإنجازات التي تم فتحها حسب الي</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitle">الإنجازات التي تم فتحها حسب الشهر</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">الإنجازات التي تم فتحها حسب المصدر</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">الإنجازات التي تم فتحها حسب اليو</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">الإنجازات التي تم فتحها حسب الي</sys:String>
 
     <!-- Genshin Impact -->
 
@@ -221,14 +222,19 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- Wow -->
 
-    <sys:String x:Key="LOCSsWowRegion">المنطق</sys:String>
+    <sys:String x:Key="LOCSsWowRegion">المنط</sys:String>
     <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
-    <sys:String x:Key="LOCSsWowCharacter">الشخصي</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">الشخص</sys:String>
 
     <!-- QuickSearch -->
 
     <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+
+    <!-- SuccessStoryEditManual -->
+
+    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
 
 </ResourceDictionary>

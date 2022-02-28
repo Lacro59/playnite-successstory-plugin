@@ -24,27 +24,27 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">不忽略游戏</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam 个人资料未公</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam 已在功成名就中启用，但其库扩展未在 Playnite 中</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">未在设置中正确配置 Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Steam 库设置菜单中没有 Steam 配置和/或 API 密钥</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Steam 库的设置菜单中没有 Steam 用户</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam 用户未验</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG 已在功成名就中启用，但其库扩展未在 Playnite 中</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG 用户未验</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">未在设置中正确配置 GOG</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN 已在功成名就中启用，但其库扩展未在 Playnite 中</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN 用户未验证</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin 已在功成名就中启用，但其库扩展未在 Playnite 中</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin 用户未验</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox 已在功成名就中启用，但其库扩展未在 Playnite 中</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox 用户未验</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">未在设置中正确配置 RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">未在设置中正确配置 RPCS3</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net 已在功成名就中启用，但其库扩展未在 Playnite 中</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net 用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net 守望先锋用户未验</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II 用户未验</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic 已在功成名就中启用，但其库扩展未在 Playnite 中</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic 用户未验</sys:String>
     
     <!-- SuccessStoreGameSelection -->
@@ -130,6 +130,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">要显示的游戏字段</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">100% 成就的图</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">显示已隐藏游戏的成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">按月显示成就图</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">按天显示成就图</sys:String>
@@ -156,7 +157,7 @@
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">列出成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">成就排序</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">可用时按解锁分</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">可用时按解锁</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">若游戏有成就则添加的功能特色</sys:String>
 
@@ -175,10 +176,10 @@
 
     <sys:String x:Key="LOCSsTimeToUnlock">完全解锁需时</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryCommon">常见</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNoCommon">不常见</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRare">稀</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">超稀</sys:String>
+    <sys:String x:Key="LOCSuccessStoryCommon">常</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">不常</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare"></sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">超</sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -230,5 +231,10 @@
     <sys:String x:Key="LOCSsQuickSearchDescription">用功成名就数据搜索游戏</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByTime">按完全解锁预估需时查找</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">按进度查找</sys:String>
+
+    <!-- SuccessStoryEditManual -->
+
+    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
 
 </ResourceDictionary>
