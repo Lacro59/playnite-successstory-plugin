@@ -130,6 +130,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Поля гри для відображення:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Іконка 100% досягнень</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Показати досягнення в прихованих іграх</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Показати графік досягнень по місяцях</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Показати графік досягнень по днях</sys:String>
@@ -230,5 +231,10 @@
     <sys:String x:Key="LOCSsQuickSearchDescription">Пошук ігор за даними SuccessStory</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByTime">Знайти за середнім часом для повного здобуття</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Знайти за прогресією</sys:String>
+
+    <!-- SuccessStoryEditManual -->
+
+    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
 
 </ResourceDictionary>
