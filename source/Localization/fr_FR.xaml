@@ -130,6 +130,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Sélectionner les éléments à afficher :</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Icône de succès 100%</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Montrer les succès des jeux cachés</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Afficher le graphique des succès par mois</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Afficher le graphique des succès par jour</sys:String>
@@ -231,5 +232,10 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <sys:String x:Key="LOCSsQuickSearchDescription">Rechercher des jeux dans les données de SuccessStory</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByTime">Trouver par temps estimé de déverrouillage complet</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Trouver par progression</sys:String>
+
+    <!-- SuccessStoryEditManual -->
+
+    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
 
 </ResourceDictionary>
