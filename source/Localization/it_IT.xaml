@@ -130,6 +130,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Campi di gioco da visualizzare:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Icona 100% risultati</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Mostra obiettivi dei giochi nascosti</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Mostra grafico degli obiettivi per mese</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Mostra grafico degli obiettivi per giorno</sys:String>
@@ -230,5 +231,10 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
     <sys:String x:Key="LOCSsQuickSearchDescription">Cerca partite sui dati della storia successiva</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByTime">Trova per tempo di stima per sblocco completo</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Trova per progressione</sys:String>
+
+    <!-- SuccessStoryEditManual -->
+
+    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
 
 </ResourceDictionary>
