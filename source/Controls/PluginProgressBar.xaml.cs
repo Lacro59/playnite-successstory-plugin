@@ -8,7 +8,6 @@ using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,27 +22,15 @@ namespace SuccessStory.Controls
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         internal override IPluginDatabase _PluginDatabase
         {
-            get
-            {
-                return PluginDatabase;
-            }
-            set
-            {
-                PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-            }
+            get => PluginDatabase;
+            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
         }
 
         private PluginProgressBarDataContext ControlDataContext = new PluginProgressBarDataContext();
         internal override IDataContext _ControlDataContext
         {
-            get
-            {
-                return ControlDataContext;
-            }
-            set
-            {
-                ControlDataContext = (PluginProgressBarDataContext)_ControlDataContext;
-            }
+            get => ControlDataContext;
+            set => ControlDataContext = (PluginProgressBarDataContext)_ControlDataContext;
         }
 
 

@@ -180,7 +180,6 @@ namespace SuccessStory.Clients
 
             gameAchievements.Items = AllAchievements;
 
-
             // Set source link
             if (gameAchievements.HasAchievements)
             {
@@ -191,7 +190,6 @@ namespace SuccessStory.Clients
                     Url = Url
                 };
             }
-
 
             return gameAchievements;
         }

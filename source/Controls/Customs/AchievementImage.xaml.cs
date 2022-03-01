@@ -1,8 +1,5 @@
-﻿using Playnite.SDK.Models;
-using System;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,14 +34,14 @@ namespace SuccessStory.Controls.Customs
         );
         public string Icon
         {
-            get { return (string)GetValue(IconProperty); }
-            set { SetValue(IconProperty, value); }
+            get => (string)GetValue(IconProperty);
+            set => SetValue(IconProperty, value);
         }
         private static void IconChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
             try
             {
-                var control = (AchievementImage)obj;
+                AchievementImage control = (AchievementImage)obj;
                 control.LoadNewIcon(args.NewValue, args.OldValue);
             }
             catch (Exception ex)
@@ -61,8 +58,8 @@ namespace SuccessStory.Controls.Customs
         );
         public bool IsGray
         {
-            get { return (bool)GetValue(IsGrayProperty); }
-            set { SetValue(IsGrayProperty, value); }
+            get => (bool)GetValue(IsGrayProperty);
+            set => SetValue(IsGrayProperty, value);
         }
 
         public static readonly DependencyProperty EnableRaretyIndicatorProperty = DependencyProperty.Register(
@@ -73,8 +70,8 @@ namespace SuccessStory.Controls.Customs
         );
         public bool EnableRaretyIndicator
         {
-            get { return (bool)GetValue(EnableRaretyIndicatorProperty); }
-            set { SetValue(EnableRaretyIndicatorProperty, value); }
+            get => (bool)GetValue(EnableRaretyIndicatorProperty);
+            set => SetValue(EnableRaretyIndicatorProperty, value);
         }
 
         public static readonly DependencyProperty DispalyRaretyValueProperty = DependencyProperty.Register(
@@ -85,8 +82,8 @@ namespace SuccessStory.Controls.Customs
         );
         public bool DispalyRaretyValue
         {
-            get { return (bool)GetValue(DispalyRaretyValueProperty); }
-            set { SetValue(DispalyRaretyValueProperty, value); }
+            get => (bool)GetValue(DispalyRaretyValueProperty);
+            set => SetValue(DispalyRaretyValueProperty, value);
         }
 
         public static readonly DependencyProperty PercentProperty = DependencyProperty.Register(
@@ -97,8 +94,8 @@ namespace SuccessStory.Controls.Customs
         );
         public float Percent
         {
-            get { return (float)GetValue(PercentProperty); }
-            set { SetValue(PercentProperty, value); }
+            get => (float)GetValue(PercentProperty);
+            set => SetValue(PercentProperty, value);
         }
 
 
@@ -110,8 +107,8 @@ namespace SuccessStory.Controls.Customs
         );
         public bool IsLocked
         {
-            get { return (bool)GetValue(IsLockedProperty); }
-            set { SetValue(IsLockedProperty, value); }
+            get => (bool)GetValue(IsLockedProperty);
+            set => SetValue(IsLockedProperty, value);
         }
 
         public static readonly DependencyProperty IconTextProperty = DependencyProperty.Register(
@@ -122,8 +119,8 @@ namespace SuccessStory.Controls.Customs
         );        
         public string IconText
         {
-            get { return (string)GetValue(IconTextProperty); }
-            set { SetValue(IconTextProperty, value); }
+            get => (string)GetValue(IconTextProperty);
+            set => SetValue(IconTextProperty, value);
         }
 
         public static readonly DependencyProperty IconCustomProperty = DependencyProperty.Register(
@@ -134,8 +131,8 @@ namespace SuccessStory.Controls.Customs
         );        
         public string IconCustom
         {
-            get { return (string)GetValue(IconCustomProperty); }
-            set { SetValue(IconCustomProperty, value); }
+            get => (string)GetValue(IconCustomProperty);
+            set => SetValue(IconCustomProperty, value);
         }
 
 
@@ -143,7 +140,7 @@ namespace SuccessStory.Controls.Customs
         {
             try
             {
-                var control = (AchievementImage)obj;
+                AchievementImage control = (AchievementImage)obj;
                 control.NewProperty();
             }
             catch (Exception ex)

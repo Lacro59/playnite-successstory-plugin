@@ -11,7 +11,6 @@ using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -26,27 +25,15 @@ namespace SuccessStory.Controls
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         internal override IPluginDatabase _PluginDatabase
         {
-            get
-            {
-                return PluginDatabase;
-            }
-            set
-            {
-                PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-            }
+            get => PluginDatabase;
+            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
         }
 
         private PluginChartDataContext ControlDataContext = new PluginChartDataContext();
         internal override IDataContext _ControlDataContext
         {
-            get
-            {
-                return ControlDataContext;
-            }
-            set
-            {
-                ControlDataContext = (PluginChartDataContext)_ControlDataContext;
-            }
+            get => ControlDataContext;
+            set => ControlDataContext = (PluginChartDataContext)_ControlDataContext;
         }
 
 
@@ -121,6 +108,7 @@ namespace SuccessStory.Controls
             bool EnableAxisLabel = PluginDatabase.PluginSettings.Settings.EnableIntegrationAxisChart;
             bool EnableOrdinatesLabel = PluginDatabase.PluginSettings.Settings.EnableIntegrationOrdinatesChart;
             int CountAbscissa = PluginDatabase.PluginSettings.Settings.IntegrationChartCountAbscissa;
+            
             if (IgnoreSettings)
             {
                 IsActivated = true;
@@ -130,7 +118,6 @@ namespace SuccessStory.Controls
                 CountAbscissa = AxisLimit;
             }
             
-
             ControlDataContext.IsActivated = IsActivated;
             ControlDataContext.ChartHeight = ChartHeight;
             ControlDataContext.EnableAxisLabel = EnableAxisLabel;
@@ -157,8 +144,8 @@ namespace SuccessStory.Controls
             bool CutPeriod = ControlDataContext.AllPeriod ? ControlDataContext.CutPeriod : false;
             if (ControlDataContext.AllPeriod)
             {
-                var DateMin = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Min();
-                var DateMax = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Max();
+                DateTime? DateMin = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Min();
+                DateTime? DateMax = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Max();
 
                 if (DateMin != null && DateMax != null)
                 {
@@ -185,13 +172,13 @@ namespace SuccessStory.Controls
 
             string[] StatsGraphicsAchievementsLabels = GraphicsData.Labels;
             SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection
-                    {
-                        new LineSeries
-                        {
-                            Title = string.Empty,
-                            Values = GraphicsData.Series
-                        }
-                    };
+            {
+                new LineSeries
+                {
+                    Title = string.Empty,
+                    Values = GraphicsData.Series
+                }
+            };
 
 
             ControlDataContext.Formatter = value => (value < 0) ? string.Empty : value.ToString();
@@ -199,9 +186,7 @@ namespace SuccessStory.Controls
             ControlDataContext.Series = StatsGraphicAchievementsSeries;
             ControlDataContext.Labels = StatsGraphicsAchievementsLabels;
 
-
             ControlDataContext.EnableAxisLabel = !(StatsGraphicsAchievementsLabels.Count() > 16 && ControlDataContext.AllPeriod);
-
 
             // TODO With OneGameView the GameContext pass at null
             if (this.GameContext == null)

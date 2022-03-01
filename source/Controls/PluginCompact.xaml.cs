@@ -2,7 +2,6 @@
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
 using Playnite.SDK.Models;
-using Playnite.SDK.Data;
 using SuccessStory.Models;
 using SuccessStory.Services;
 using System;
@@ -10,7 +9,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,27 +29,15 @@ namespace SuccessStory.Controls
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         internal override IPluginDatabase _PluginDatabase
         {
-            get
-            {
-                return PluginDatabase;
-            }
-            set
-            {
-                PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-            }
+            get => PluginDatabase;
+            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
         }
 
         private PluginCompactDataContext ControlDataContext = new PluginCompactDataContext();
         internal override IDataContext _ControlDataContext
         {
-            get
-            {
-                return ControlDataContext;
-            }
-            set
-            {
-                ControlDataContext = (PluginCompactDataContext)_ControlDataContext;
-            }
+            get => ControlDataContext;
+            set => ControlDataContext = (PluginCompactDataContext)_ControlDataContext;
         }
 
 
@@ -101,7 +87,6 @@ namespace SuccessStory.Controls
             {
                 IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationCompactUnlocked;
             }
-
 
             ControlDataContext.IsActivated = IsActivated;
             ControlDataContext.DisplayLastest = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastest;
@@ -172,7 +157,6 @@ namespace SuccessStory.Controls
 
                 PART_AchievementImage.Children.Add(achievementImage);
 
-
                 PART_LastestAchievementName.Text = ControlDataContext.LastestAchievement.Name;
                 PART_LastestAchievementNameToolTip.Content = ControlDataContext.LastestAchievement.Name;
                 PART_LastestAchievementDescription.Text = ControlDataContext.LastestAchievement.Description;
@@ -182,7 +166,6 @@ namespace SuccessStory.Controls
             }
 
             ControlDataContext.ItemsSource = ListAchievements.ToObservable();
-
 
             PART_ScCompactView_IsLoaded(null, null);
         }

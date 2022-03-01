@@ -10,7 +10,6 @@ using SuccessStory.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -24,27 +23,15 @@ namespace SuccessStory.Controls
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         internal override IPluginDatabase _PluginDatabase
         {
-            get
-            {
-                return PluginDatabase;
-            }
-            set
-            {
-                PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-            }
+            get => PluginDatabase;
+            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
         }
 
         private PluginButtonDataContext ControlDataContext = new PluginButtonDataContext();
         internal override IDataContext _ControlDataContext
         {
-            get
-            {
-                return ControlDataContext;
-            }
-            set
-            {
-                ControlDataContext = (PluginButtonDataContext)_ControlDataContext;
-            }
+            get => ControlDataContext;
+            set => ControlDataContext = (PluginButtonDataContext)_ControlDataContext;
         }
 
 

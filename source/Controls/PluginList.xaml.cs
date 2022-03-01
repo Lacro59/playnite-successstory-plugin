@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using MoreLinq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,27 +27,15 @@ namespace SuccessStory.Controls
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         internal override IPluginDatabase _PluginDatabase
         {
-            get
-            {
-                return PluginDatabase;
-            }
-            set
-            {
-                PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-            }
+            get => PluginDatabase;
+            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
         }
 
         private PluginListDataContext ControlDataContext = new PluginListDataContext();
         internal override IDataContext _ControlDataContext
         {
-            get
-            {
-                return ControlDataContext;
-            }
-            set
-            {
-                ControlDataContext = (PluginListDataContext)_ControlDataContext;
-            }
+            get => ControlDataContext;
+            set => ControlDataContext = (PluginListDataContext)_ControlDataContext;
         }
 
         private string NameAsc = "\uea64";
@@ -322,7 +309,6 @@ namespace SuccessStory.Controls
         /// <param name="e"></param>
         private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            string Text = ((TextBlock)sender).Text;
             TextBlock textBlock = (TextBlock)sender;
 
             Typeface typeface = new Typeface(
@@ -372,8 +358,11 @@ namespace SuccessStory.Controls
                 if (tb.SelectedIndex > -1)
                 {
                     TabItem ti = (TabItem)tb.Items[tb.SelectedIndex];
-                    GameName = ti.Tag.ToString();
-                    SetOrder(GameName);
+                    if (ti.Tag != null)
+                    {
+                        GameName = ti.Tag.ToString();
+                        SetOrder(GameName);
+                    }
                 }
             }
             catch { }
