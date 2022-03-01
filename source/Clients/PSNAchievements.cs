@@ -30,10 +30,7 @@ namespace SuccessStory.Clients
                 return _PsnAllTrophies;
             }
 
-            set
-            {
-                _PsnAllTrophies = value;
-            }
+            set => _PsnAllTrophies = value;
         }
 
         protected static PSNAccountClient _PsnAPI;
@@ -48,10 +45,7 @@ namespace SuccessStory.Clients
                 return _PsnAPI;
             }
 
-            set
-            {
-                _PsnAPI = value;
-            }
+            set => _PsnAPI = value;
         }
 
         private static string PsnDataPath;
@@ -87,7 +81,7 @@ namespace SuccessStory.Clients
                     PsnAPI.CheckAuthentication().GetAwaiter().GetResult();
 
                     // TODO Old plugin, still useful?
-                    var split = game.GameId.Split('#');
+                    string[] split = game.GameId.Split('#');
                     string GameId = split.Count() < 3 ? game.GameId : game.GameId.Split('#')[2];
 
                     bool IsPS5 = game.Platforms.Where(x => x.Name.Contains("5")).Count() > 0;
@@ -103,7 +97,7 @@ namespace SuccessStory.Clients
                         {
                             string UrlTrophiesMobile = string.Format(trophiesWithIdsMobileUrl, GameId);
                             string WebTrophiesMobileResult = Web.DownloadStringData(UrlTrophiesMobile, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
-                            var titles_part = Serialization.FromJson<TrophyTitlesWithIdsMobile>(WebTrophiesMobileResult);
+                            TrophyTitlesWithIdsMobile titles_part = Serialization.FromJson<TrophyTitlesWithIdsMobile>(WebTrophiesMobileResult);
 
                             string TMP_GameId = titles_part?.titles?.FirstOrDefault()?.trophyTitles?.FirstOrDefault()?.npCommunicationId;
                             if (!TMP_GameId.IsNullOrEmpty())
@@ -163,9 +157,9 @@ namespace SuccessStory.Clients
 
                         AllAchievements.Add(new Achievements
                         {
-                            Name = (trophie.trophyName.IsNullOrEmpty()) ? resources.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
+                            Name = trophie.trophyName.IsNullOrEmpty() ? resources.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
                             Description = trophie.trophyDetail,
-                            UrlUnlocked = (trophie.trophyIconUrl.IsNullOrEmpty()) ? "hidden_trophy.png" : trophie.trophyIconUrl,
+                            UrlUnlocked = trophie.trophyIconUrl.IsNullOrEmpty() ? "hidden_trophy.png" : trophie.trophyIconUrl,
                             DateUnlocked = (trophieUser?.earnedDateTime == null) ? default(DateTime) : trophieUser.earnedDateTime,
                             Percent = Percent == 0 ? 100 : Percent
                         });
@@ -271,13 +265,13 @@ namespace SuccessStory.Clients
 
         public string GetNPWR(string Name)
         {
-            var finded = PSN_NPWR_LIST.NPWR_LIST.Where(x => CommonPluginsShared.PlayniteTools.NormalizeGameName(x.Name).IsEqual(CommonPluginsShared.PlayniteTools.NormalizeGameName(Name)));
+            IEnumerable<PSN_NPWR> finded = PSN_NPWR_LIST.NPWR_LIST.Where(x => CommonPluginsShared.PlayniteTools.NormalizeGameName(x.Name).IsEqual(CommonPluginsShared.PlayniteTools.NormalizeGameName(Name)));
             if (finded?.Count() > 0)
             {
                 return finded.First().NPWR;
             }
 
-            return "";
+            return string.Empty;
         }
         #endregion
     }

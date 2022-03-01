@@ -52,6 +52,7 @@ namespace SuccessStory.Services
                             { AchievementSource.Starcraft2, new Starcraft2Achievements() },
                             { AchievementSource.Steam, new SteamAchievements() },
                             { AchievementSource.Xbox, new XboxAchievements() },
+                            { AchievementSource.GenshinImpact, new GenshinImpactAchievements() },
                             { AchievementSource.Local, SteamAchievements.GetLocalSteamAchievementsProvider() }
                         };
                     }
@@ -104,7 +105,7 @@ namespace SuccessStory.Services
             {
                 GameAchievements gameAchievements = GetDefault(game);
 
-                var ViewExtension = new SuccessStoreGameSelection(game);
+                SuccessStoreGameSelection ViewExtension = new SuccessStoreGameSelection(game);
                 Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                 windowExtension.ShowDialog();
 
@@ -231,19 +232,16 @@ namespace SuccessStory.Services
         {
             Game game = PlayniteApi.Database.Games.Get(Id);
             GameAchievements gameAchievements = GetDefault(game);
-
-            var achievementSource = GetAchievementSource(PluginSettings.Settings, game);
+            AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
 
             // Generate database only this source
             if (VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, game))
             {
-                var achievementProvider = AchievementProviders[achievementSource];
-                var retroAchievementsProvider = achievementProvider as RetroAchievements;
-                var psnAchievementsProvider = achievementProvider as PSNAchievements;
-
+                GenericAchievements achievementProvider = AchievementProviders[achievementSource];
+                RetroAchievements retroAchievementsProvider = achievementProvider as RetroAchievements;
+                PSNAchievements psnAchievementsProvider = achievementProvider as PSNAchievements;
 
                 logger.Warn($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id}");
-
 
                 if (retroAchievementsProvider != null && !SuccessStory.IsFromMenu)
                 {
@@ -962,8 +960,8 @@ namespace SuccessStory.Services
         /// <returns>true when achievements can be retrieved for the supplied game</returns>
         public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI playniteApi, SuccessStorySettings settings, Game game)
         {
-            var achievementSource = GetAchievementSource(settings, game);
-            if (!AchievementProviders.TryGetValue(achievementSource, out var achievementProvider))
+            AchievementSource achievementSource = GetAchievementSource(settings, game);
+            if (!AchievementProviders.TryGetValue(achievementSource, out GenericAchievements achievementProvider))
             {
                 return false;
             }
@@ -1020,7 +1018,7 @@ namespace SuccessStory.Services
 
         public override void Games_ItemUpdated(object sender, ItemUpdatedEventArgs<Game> e)
         {
-            foreach (var GameUpdated in e.UpdatedItems)
+            foreach (ItemUpdateEvent<Game> GameUpdated in e.UpdatedItems)
             {
                 Database.SetGameInfo<Achievements>(PlayniteApi, GameUpdated.NewData.Id);
             }
@@ -1052,7 +1050,7 @@ namespace SuccessStory.Services
                     webItem = SetEstimateTimeToUnlock(game, webItem);
                     for (int i = 0; i < webItem.Items.Count; i++)
                     {
-                        var finded = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() ? true : x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
+                        Achievements finded = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() ? true : x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
                         if (finded != null)
                         {
                             webItem.Items[i].DateUnlocked = finded.DateUnlocked;
@@ -1160,18 +1158,17 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                var db = Database.Where(x => x.IsManual && x.HasAchievements);
+                IEnumerable<GameAchievements> db = Database.Where(x => x.IsManual && x.HasAchievements);
                 activateGlobalProgress.ProgressMaxValue = (double)db.Count();
                 string CancelText = string.Empty;
 
-                var exophaseAchievements = new ExophaseAchievements();
-                var steamAchievements = new SteamAchievements();
+                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                SteamAchievements steamAchievements = new SteamAchievements();
                 bool SteamConfig = steamAchievements.IsConfigured();
 
                 foreach (GameAchievements gameAchievements in db)
                 {
                     logger.Info($"RefreshRarety({gameAchievements.Name})");
-
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
                         CancelText = " canceled";
@@ -1226,12 +1223,12 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                var db = Database.Where(x => x.IsManual && x.HasAchievements);
+                IEnumerable<GameAchievements> db = Database.Where(x => x.IsManual && x.HasAchievements);
                 activateGlobalProgress.ProgressMaxValue = (double)db.Count();
                 string CancelText = string.Empty;
 
-                var exophaseAchievements = new ExophaseAchievements();
-                var steamAchievements = new SteamAchievements();
+                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                SteamAchievements steamAchievements = new SteamAchievements();
                 bool SteamConfig = steamAchievements.IsConfigured();
 
                 foreach (GameAchievements gameAchievements in db)
@@ -1373,7 +1370,7 @@ namespace SuccessStory.Services
             if (!gameAchievements.IsIgnored)
             {
                 Remove(gameAchievements.Id);
-                var pluginData = Get(gameAchievements.Id, true);
+                GameAchievements pluginData = Get(gameAchievements.Id, true);
                 pluginData.IsIgnored = true;
                 AddOrUpdate(pluginData);
             }
@@ -1388,11 +1385,11 @@ namespace SuccessStory.Services
 
         public override void GetSelectData()
         {
-            var View = new OptionsDownloadData(PlayniteApi);
+            OptionsDownloadData View = new OptionsDownloadData(PlayniteApi);
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, PluginName + " - " + resources.GetString("LOCCommonSelectData"), View);
             windowExtension.ShowDialog();
 
-            var PlayniteDb = View.GetFilteredGames();
+            List<Game> PlayniteDb = View.GetFilteredGames();
             bool OnlyMissing = View.GetOnlyMissing();
 
             if (PlayniteDb == null)
@@ -1471,11 +1468,10 @@ namespace SuccessStory.Services
 
             try
             {
-                var db = Database.Items.Where(x => x.Value.HasAchievements).ToList();
+                List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.HasAchievements).ToList();
                 foreach (var item in db)
                 {
-                    var GameAchievements = item.Value;
-
+                    GameAchievements GameAchievements = item.Value;
                     if (PlayniteApi.Database.Games.Get(item.Key) != null)
                     {
                         Total += GameAchievements.Total;
@@ -1510,11 +1506,10 @@ namespace SuccessStory.Services
 
             try
             {
-                var db = Database.Items.Where(x => x.Value.Playtime > 0 && x.Value.HasAchievements).ToList();
+                List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.Playtime > 0 && x.Value.HasAchievements).ToList();
                 foreach (var item in db)
                 {
-                    var GameAchievements = item.Value;
-
+                    GameAchievements GameAchievements = item.Value;
                     if (PlayniteApi.Database.Games.Get(item.Key) != null)
                     {
                         Total += GameAchievements.Total;
@@ -1549,12 +1544,12 @@ namespace SuccessStory.Services
 
             try
             {
-                var db = Database.Items.Where(x => x.Value.SourceId == GameSourceId).ToList();
+                List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.SourceId == GameSourceId).ToList();
                 foreach (var item in db)
                 {
                     Guid Id = item.Key;
                     Game Game = PlayniteApi.Database.Games.Get(Id);
-                    var GameAchievements = item.Value;
+                    GameAchievements GameAchievements = item.Value;
 
                     if (PlayniteApi.Database.Games.Get(item.Key) != null)
                     {

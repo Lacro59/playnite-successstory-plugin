@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CommonPluginsShared;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -41,7 +39,7 @@ namespace SuccessStory.Clients
 
                 GenshinImpactAchievements.ForEach(x => 
                 {
-                    var giCategory = GenshinImpactAchievementsCategory.Find(y => y.Id != null && (int)y.Id == x.GoalId);
+                    GenshinImpactAchievementsCategory giCategory = GenshinImpactAchievementsCategory.Find(y => y.Id != null && (int)y.Id == x.GoalId);
                     int CategoryOrder = giCategory?.OrderId ?? 0;
                     string Category = TextMap[giCategory?.NameTextMapHash?.ToString()]?.Value;
                     string CategoryIcon = string.Format("GenshinImpact\\ac_{0}.png", CategoryOrder);
