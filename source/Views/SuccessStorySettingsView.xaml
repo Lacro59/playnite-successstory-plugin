@@ -87,7 +87,6 @@
                                     <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableSteam}" Name="PART_EnableSteam" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableSteam}"></Label>
                                     </CheckBox>
-                                    <Label Grid.Column="2" Name="SteamLoad" HorizontalAlignment="Center">xxx / xxx</Label>
 
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
                                             Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-Steam" />
@@ -142,7 +141,6 @@
                                     <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding Settings.EnableGog}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableGog}"></Label>
                                     </CheckBox>
-                                    <Label Grid.Column="2" Name="GogLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                                 </Grid>
                             </Expander.Header>
                         </Expander>
@@ -171,7 +169,6 @@
                                     <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding Settings.EnableOrigin}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableOrigin}"></Label>
                                     </CheckBox>
-                                    <Label Grid.Column="2" Name="OriginLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                                 </Grid>
                             </Expander.Header>
                         </Expander>
@@ -200,7 +197,6 @@
                                     <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnableXbox}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableXbox}"></Label>
                                     </CheckBox>
-                                    <Label Grid.Column="2" Name="XboxLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                                 </Grid>
                             </Expander.Header>
                         </Expander>
@@ -229,7 +225,6 @@
                                     <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnableEpic}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableEpic}"></Label>
                                     </CheckBox>
-                                    <Label Grid.Column="2" Name="EpicLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                                 </Grid>
                             </Expander.Header>
                         </Expander>
@@ -258,7 +253,6 @@
                                     <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnablePsn}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnablePSN}"></Label>
                                     </CheckBox>
-                                    <Label Grid.Column="2" Name="PSNLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                                 </Grid>
                             </Expander.Header>
                         </Expander>
@@ -288,8 +282,7 @@
                                     <CheckBox Grid.Column="0" Grid.Row="6" IsChecked="{Binding Settings.EnableRetroAchievements}" Name="PART_EnableRetroAchievements" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableRetroAchievements}" />
                                     </CheckBox>
-                                    <Label Grid.Column="2" Name="RetroAchievementsLoad" HorizontalAlignment="Center">xxx / xxx</Label>
-                                    
+
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
                                             Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-RetroAchievements" />
                                 </Grid>
@@ -353,8 +346,7 @@
                                     <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableRpcs3Achievements}" Name="PART_EnableRpcs3Achievements" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableRpcs3Achievements}"></Label>
                                     </CheckBox>
-                                    <Label Grid.Column="2" Name="Rpcs3Load" HorizontalAlignment="Center">xxx / xxx</Label>
-                                    
+
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
                                             Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-RPCS3" />
                                 </Grid>
@@ -594,7 +586,6 @@
                                     <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableLocal}" VerticalAlignment="Center">
                                         <Label Content="Enable Local"></Label>
                                     </CheckBox>
-                                    <Label Grid.Column="2" Name="LocalLoad" HorizontalAlignment="Center">xxx / xxx</Label>
                                     <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddLocalFolder_Click" 
                                             Name="ButtonAddLocalFolder" Grid.Column="8"
                                             Visibility="{Binding ElementName=PART_BoderLocal, Path=Visibility}"

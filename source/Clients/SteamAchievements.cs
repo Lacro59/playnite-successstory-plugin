@@ -679,11 +679,11 @@ namespace SuccessStory.Clients
                     return true;
                 }
 
-                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                using (IWebView WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
                     WebViewOffscreen.NavigateAndWait(profilePageUrl);
                     ResultWeb = WebViewOffscreen.GetPageSource();
-                    cookies = WebViewOffscreen.GetCookies()?.Where(x => x.Domain.Contains("steam"))?.ToList() ?? new List<HttpCookie>();
+                    cookies = WebViewOffscreen.GetCookies()?.Where(x => x?.Domain?.Contains("steam") ?? false)?.ToList() ?? new List<HttpCookie>();
                 }
 
                 //this finds the Games link on the right side of the profile page. If that's public then so are achievements.

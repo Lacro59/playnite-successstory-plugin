@@ -15,7 +15,6 @@ using CommonPluginsShared.Models;
 using Playnite.SDK.Data;
 using CommonPlayniteShared;
 using System.Windows.Media;
-using System.Windows.Markup;
 using Playnite.SDK.Models;
 using System.IO;
 using System.Windows.Documents;
@@ -48,27 +47,6 @@ namespace SuccessStory.Views
         public static bool WithoutMessage = false;
 
 
-        int SteamTotal;
-        int SteamTotalAchievements;
-        int GogTotal;
-        int GogTotalAchievements;
-        int EpicTotal;
-        int EpicTotalAchievements;
-        int OriginTotal;
-        int OriginTotalAchievements;
-        int XboxTotal;
-        int XboxTotalAchievements;
-        int RetroAchievementsTotal;
-        int RetroAchievementsTotalAchievements;
-        int Rpcs3Total;
-        int Rpcs3TotalAchievements;
-        int PsnTotal;
-        int PsnTotalAchievements;
-
-        int LocalTotal;
-        int LocalTotalAchievements;
-
-
         public SuccessStorySettingsView(SuccessStory plugin)
         {
             InitializeComponent();
@@ -82,7 +60,6 @@ namespace SuccessStory.Views
             RarityRareColor = PluginDatabase.PluginSettings.Settings.RarityRareColor;
             RarityUltraRareColor = PluginDatabase.PluginSettings.Settings.RarityUltraRareColor;
 
-            SetTotal();
 
             switch (PluginDatabase.PluginSettings.Settings.NameSorting)
             {
@@ -136,118 +113,6 @@ namespace SuccessStory.Views
             PART_CbCompletation.ItemsSource = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList();
             PART_CbCompletation.SelectedIndex = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList()
                 .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent?.Id);
-        }
-
-        private void SetTotal()
-        {
-            SteamTotal = 0;
-            SteamTotalAchievements = 0;
-            GogTotal = 0;
-            GogTotalAchievements = 0;
-            EpicTotal = 0;
-            EpicTotalAchievements = 0;
-            OriginTotal = 0;
-            OriginTotalAchievements = 0;
-            XboxTotal = 0;
-            XboxTotalAchievements = 0;
-            RetroAchievementsTotal = 0;
-            RetroAchievementsTotalAchievements = 0;
-            Rpcs3Total = 0;
-            Rpcs3TotalAchievements = 0;
-            PsnTotal = 0;
-            PsnTotalAchievements = 0;
-
-            LocalTotal = 0;
-            LocalTotalAchievements = 0;
-
-            try
-            {
-                foreach (var game in PluginDatabase.PlayniteApi.Database.Games)
-                {
-                    string GameSourceName = PlayniteTools.GetSourceName(game);
-
-                    switch (GameSourceName.ToLower())
-                    {
-                        case "steam":
-                            SteamTotal += 1;
-                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                SteamTotalAchievements += 1;
-                            }
-                            break;
-                        case "gog":
-                            GogTotal += 1;
-                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                GogTotalAchievements += 1;
-                            }
-                            break;
-                        case "epic":
-                            EpicTotal += 1;
-                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                EpicTotalAchievements += 1;
-                            }
-                            break;
-                        case "origin":
-                            OriginTotal += 1;
-                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                OriginTotalAchievements += 1;
-                            }
-                            break;
-                        case "xbox":
-                            XboxTotal += 1;
-                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                XboxTotalAchievements += 1;
-                            }
-                            break;
-                        case "retroachievements":
-                            RetroAchievementsTotal += 1;
-                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                RetroAchievementsTotalAchievements += 1;
-                            }
-                            break;
-                        case "rpcs3":
-                            Rpcs3Total += 1;
-                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                Rpcs3TotalAchievements += 1;
-                            }
-                            break;
-                        case "playstation":
-                            PsnTotal += 1;
-                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                PsnTotalAchievements += 1;
-                            }
-                            break;
-                        case "playnite":
-                            LocalTotal += 1;
-                            if (PluginDatabase.VerifAchievementsLoad(game.Id))
-                            {
-                                LocalTotalAchievements += 1;
-                            }
-                            break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-            }
-
-            SteamLoad.Content = SteamTotalAchievements + "/" + SteamTotal;
-            GogLoad.Content = GogTotalAchievements + "/" + GogTotal;
-            EpicLoad.Content = EpicTotalAchievements + "/" + EpicTotal;
-            OriginLoad.Content = OriginTotalAchievements + "/" + OriginTotal;
-            XboxLoad.Content = XboxTotalAchievements + "/" + XboxTotal;
-            RetroAchievementsLoad.Content = RetroAchievementsTotalAchievements + "/" + RetroAchievementsTotal;
-            LocalLoad.Content = LocalTotalAchievements + "/" + LocalTotal;
-            Rpcs3Load.Content = Rpcs3TotalAchievements + "/" + Rpcs3Total;
-            PSNLoad.Content = PsnTotalAchievements + "/" + PsnTotal;
         }
 
 

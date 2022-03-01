@@ -241,7 +241,7 @@ namespace SuccessStory.Services
                 RetroAchievements retroAchievementsProvider = achievementProvider as RetroAchievements;
                 PSNAchievements psnAchievementsProvider = achievementProvider as PSNAchievements;
 
-                logger.Warn($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id}");
+                logger.Info($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id}");
 
                 if (retroAchievementsProvider != null && !SuccessStory.IsFromMenu)
                 {
