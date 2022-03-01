@@ -130,7 +130,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Campos de jogo a serem exibidos:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Ícone de todas as conquistas</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Exibir gráficos na visualização principal do plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Exibir conquistas de jogos ocultos</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Exibir gráfico de conquistas por mês</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Exibir gráfico de conquistas por dia</sys:String>
@@ -206,8 +206,8 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
-    <sys:String x:Key="LOCAddGenshinImpact">Add Genshin Impact</sys:String>
+    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Habilitar conquistas de Genshin Impact</sys:String>
+    <sys:String x:Key="LOCAddGenshinImpact">Adicionar Genshin Impact</sys:String>
 
     
     <!-- Overwatch -->
@@ -234,7 +234,7 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
-    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">Apenas bloqueados</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Incluir a descrição na busca</sys:String>
 
 </ResourceDictionary>
