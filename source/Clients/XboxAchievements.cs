@@ -195,8 +195,8 @@ namespace SuccessStory.Clients
                     {
                         logger.Warn($"{ClientName} - User is not authenticated - {response.StatusCode}");
                         PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                            "SuccessStory-Xbox-notAuthenticate",
-                            $"SuccessStory\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
+                            $"{PluginDatabase.PluginName}-Xbox-notAuthenticate",
+                            $"{PluginDatabase.PluginName}\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
                             NotificationType.Error
                         ));
                     }
@@ -204,8 +204,8 @@ namespace SuccessStory.Clients
                     {
                         logger.Warn($"{ClientName} - Error on GetXboxAchievements() - {response.StatusCode}");
                         PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
-                            "SuccessStory-Xbox-webError",
-                            $"SuccessStory\r\nXbox achievements: {resources.GetString("LOCImportError")}",
+                            $"{PluginDatabase.PluginName}-Xbox-webError",
+                            $"{PluginDatabase.PluginName}\r\nXbox achievements: {resources.GetString("LOCImportError")}",
                             NotificationType.Error
                         ));
                     }
