@@ -2,6 +2,7 @@
 using Playnite.SDK.Data;
 using SuccessStory.Services;
 using System;
+using System.Collections.Generic;
 
 namespace SuccessStory.Models
 {
@@ -25,6 +26,12 @@ namespace SuccessStory.Models
         public string TotalPercent { get; set; }
         public int Unlocked { get; set; }
         public bool IsManual { get; set; }
+
+
+        public DateTime? FirstUnlock { get; set; }
+        public DateTime? LastUnlock { get; set; }
+        public List<DateTime> DatesUnlock { get; set; }
+
 
         public AchRaretyStats Common { get; set; }
         public AchRaretyStats NoCommon { get; set; }

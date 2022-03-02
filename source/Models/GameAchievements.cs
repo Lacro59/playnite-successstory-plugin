@@ -427,5 +427,15 @@ namespace SuccessStory.Models
                 return Items.Where(x => PlayniteTools.GetCacheFile(x.CacheUnlocked, PluginDatabase.PluginName).IsNullOrEmpty()).Count() == 0;
             }
         }
+
+
+        [DontSerialize]
+        public DateTime? FirstUnlock => Items.Select(x => x.DateWhenUnlocked).Min();
+
+        [DontSerialize]
+        public DateTime? LastUnlock => Items.Select(x => x.DateWhenUnlocked).Max();
+
+        [DontSerialize]
+        public List<DateTime> DatesUnlock => Items.Where(x => x.DateWhenUnlocked != null).Select(x => (DateTime)x.DateWhenUnlocked).ToList();
     }
 }

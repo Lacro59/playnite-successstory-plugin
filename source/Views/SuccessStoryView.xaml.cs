@@ -20,7 +20,8 @@ using System.Windows.Threading;
 using System.Threading;
 using System.Collections.ObjectModel;
 using CommonPluginsShared.Extensions;
-using CommonPluginsControls.Controls;
+using CommonPluginsShared.Converters;
+using System.Globalization;
 
 namespace SuccessStory
 {
@@ -38,8 +39,6 @@ namespace SuccessStory
         private ObservableCollection<ListSource> FilterSourceItems = new ObservableCollection<ListSource>();
         private ObservableCollection<ListViewGames> ListGames = new ObservableCollection<ListViewGames>();
         private List<string> SearchSources = new List<string>();
-
-        private string NameSorting { get; set; }
         
 
         public SuccessView(bool isRetroAchievements = false, Game GameSelected = null)
@@ -85,10 +84,6 @@ namespace SuccessStory
             {
                 lvGameProgression.Width = 0;
             }
-
-
-            PART_DataLoad.Visibility = Visibility.Visible;
-            PART_Data.Visibility = Visibility.Hidden;
 
 
             ProgressionAchievements ProgressionGlobal = null;
@@ -318,10 +313,6 @@ namespace SuccessStory
                         ListviewGames.SelectedIndex = ListGames.IndexOf(ListGames.Where(x => x.Name == GameSelected.Name).FirstOrDefault());
                     }
                     ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
-
-
-                    PART_DataLoad.Visibility = Visibility.Hidden;
-                    PART_Data.Visibility = Visibility.Visible;
                 }));
             });
 
@@ -334,7 +325,7 @@ namespace SuccessStory
                 PART_GraphicBySource.Visibility = Visibility.Collapsed;
                 PART_GraphicAllUnlocked.Visibility = Visibility.Collapsed;
                 Grid.SetRowSpan(PART_PluginListContener, 5);
-                Grid.SetRowSpan(lvGamesStackPanel, 5);
+                Grid.SetRowSpan(PART_GridContenerLv, 5);
             }
         }
 
@@ -389,6 +380,10 @@ namespace SuccessStory
                                     Unlocked = x.Unlocked,
                                     IsManual = x.IsManual,
 
+                                    FirstUnlock = x.FirstUnlock,
+                                    LastUnlock = x.LastUnlock,
+                                    DatesUnlock = x.DatesUnlock,
+
                                     Common = x.Common,
                                     NoCommon = x.NoCommon,
                                     Rare = x.Rare,
@@ -409,13 +404,16 @@ namespace SuccessStory
         private void ListviewGames_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListViewGames GameSelected = (ListViewGames)((ListBox)sender).SelectedItem;
-
             if (GameSelected != null)
             {
                 GraphicTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitleDay");
 
                 Guid GameId = Guid.Parse(GameSelected.Id);
                 successViewData.GameContext = PluginDatabase.PlayniteApi.Database.Games.Get(GameId);
+            }
+            else
+            {
+                successViewData.GameContext = null;
             }
         }
 
@@ -426,62 +424,26 @@ namespace SuccessStory
             double Min = PART_FilterRange.LowerValue;
             double Max = PART_FilterRange.UpperValue;
 
+            DateTime dateStart = default(DateTime);
+            DateTime dateEnd = default(DateTime);
+            if (!PART_TextDate.Text.IsNullOrEmpty())
+            {
+                dateStart = (DateTime)PART_DatePicker.SelectedDate;
+                dateEnd = new DateTime(dateStart.Year, dateStart.Month, DateTime.DaysInMonth(dateStart.Year, dateStart.Month));
+            }
 
-            ObservableCollection<ListViewGames> SourcesManual = new ObservableCollection<ListViewGames>();
+            bool IsManual = false;
             if (SearchSources.Contains(resources.GetString("LOCSuccessStoryManualAchievements")))
             {
-                SourcesManual = ListGames.Where(x => x.IsManual && x.ProgressionValue >= Min && x.ProgressionValue <= Max).ToObservable();
+                IsManual = true;
+                SearchSources.Remove(resources.GetString("LOCSuccessStoryManualAchievements"));
             }
 
+            successViewData.ListGames = ListGames.Where(x => CheckData(x, Min, Max, dateStart, dateEnd, IsManual)).Distinct().ToObservable();
 
-            // Filter
-            if (!TextboxSearch.Text.IsNullOrEmpty() && SearchSources.Count != 0)
-            {
-                successViewData.ListGames = ListGames.Where(x => x.Name.RemoveDiacritics().Contains(TextboxSearch.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) && SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase) && x.ProgressionValue >= Min && x.ProgressionValue <= Max)
-                                                    .Union(SourcesManual).Distinct().ToObservable();
-                successViewData.TotalFoundCount = successViewData.ListGames.Count;
-                ListviewGames.Sorting();
-
-                PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
-                PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
-                PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
-                PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
-
-                return;
-            }
-
-            if (!TextboxSearch.Text.IsNullOrEmpty())
-            {
-                successViewData.ListGames = ListGames.Where(x => x.Name.RemoveDiacritics().Contains(TextboxSearch.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) && x.ProgressionValue >= Min && x.ProgressionValue <= Max).ToObservable();
-                successViewData.TotalFoundCount = successViewData.ListGames.Count;
-                ListviewGames.Sorting();
-
-                PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
-                PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
-                PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
-                PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
-
-                return;
-            }
-
-            if (SearchSources.Count != 0)
-            {
-                successViewData.ListGames = ListGames.Where(x => SearchSources.Contains(x.SourceName, StringComparer.InvariantCultureIgnoreCase) && x.ProgressionValue >= Min && x.ProgressionValue <= Max)
-                                                    .Union(SourcesManual).Distinct().ToObservable();
-                successViewData.TotalFoundCount = successViewData.ListGames.Count;
-                ListviewGames.Sorting();
-
-                PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
-                PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
-                PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
-                PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
-
-                return;
-            }
-
-            successViewData.ListGames = ListGames.Where(x => x.ProgressionValue >= Min && x.ProgressionValue <= Max).Distinct().ToObservable();
             successViewData.TotalFoundCount = successViewData.ListGames.Count;
             ListviewGames.Sorting();
+            ListviewGames.SelectedIndex = -1;
 
             PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
             PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
@@ -489,6 +451,18 @@ namespace SuccessStory
             PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
         }
 
+        private bool CheckData(ListViewGames listViewGames, double Min, double Max, DateTime dateStart, DateTime dateEnd, bool IsManual)
+        {
+            bool aa = listViewGames.ProgressionValue >= Min;
+            bool bb = listViewGames.ProgressionValue <= Max;
+            bool cc = !TextboxSearch.Text.IsNullOrEmpty() ? listViewGames.Name.RemoveDiacritics().Contains(TextboxSearch.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) : true;
+            bool dd = !PART_TextDate.Text.IsNullOrEmpty() ? listViewGames.DatesUnlock.Any(y => y >= dateStart && y <= dateEnd) : true;
+            bool ee = SearchSources.Count != 0 ? SearchSources.Contains(listViewGames.SourceName, StringComparer.InvariantCultureIgnoreCase) : true;
+            bool gg = IsManual ? listViewGames.IsManual : true;
+
+            bool ff = aa && bb && cc && dd && ee && gg;
+            return ff;
+        }
 
         private void TextboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -528,6 +502,22 @@ namespace SuccessStory
 
         private void RangeSlider_ValueChanged(object sender, RoutedEventArgs e)
         {
+            Filter();
+        }
+
+
+        private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DatePicker control = sender as DatePicker;
+            DateTime dateNew = (DateTime)control.SelectedDate;
+
+            LocalDateYMConverter localDateYMConverter = new LocalDateYMConverter();
+            PART_TextDate.Text = localDateYMConverter.Convert(dateNew, null, null, CultureInfo.CurrentCulture).ToString();
+            Filter();
+        }
+        private void PART_ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            PART_TextDate.Text = string.Empty;
             Filter();
         }
         #endregion

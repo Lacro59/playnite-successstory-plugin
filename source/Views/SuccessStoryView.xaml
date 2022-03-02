@@ -12,6 +12,7 @@
              xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
              xmlns:Controls="clr-namespace:SuccessStory.Controls"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
+             xmlns:Commonpluginsbehaviors="clr-namespace:CommonPluginsShared.Behaviors"
              xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel"
              mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280"
              d:DataContext="{d:DesignInstance Type=local:SuccessViewData}">
@@ -21,16 +22,10 @@
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <convertersshared:DefaultIconConverter x:Key="DefaultIconConverter" />
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
+        <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid Name="PART_GridContener" Margin="10">
-        <Grid Name="PART_DataLoad">
-            <ProgressBar IsIndeterminate="True" Width="350" Height="40" />
-            <TextBlock Text="{DynamicResource LOCLoadingLabel}"
-                       Style="{DynamicResource BaseTextBlockStyle}"
-                       HorizontalAlignment="Center" VerticalAlignment="Center" />
-        </Grid>
-
         <Grid Name="PART_Data">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.5*" />
@@ -57,26 +52,33 @@
             <Border Grid.Column="0" Grid.ColumnSpan="8" Grid.Row="0" 
                     BorderThickness="{DynamicResource PopupBorderThickness}" BorderBrush="{DynamicResource NormalBorderBrush}">
                 
-                <Grid Margin="10">
+                <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="6" />
                         <ColumnDefinition Width="150" />
-                        <ColumnDefinition Width="10" />
+                        
+                        <ColumnDefinition Width="15" />
+                        
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="6" />
-                        <ColumnDefinition Width="275" />
+                        <ColumnDefinition Width="300" />
+
+                        <ColumnDefinition Width="15" />
+
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="40" />
+                        
+                        <ColumnDefinition Width="50" />
+                        
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
-                    <playnitecontrols:SearchBox Grid.Column="2" x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged" />
+                    <playnitecontrols:SearchBox Grid.Column="2" x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged" VerticalAlignment="Center" />
 
                     <Label Grid.Column="4" Content="{DynamicResource LOCSourceLabel}" FontSize="16" />
-                    <ComboBox Grid.Column="6" Name="FilterSource" ItemsSource="{Binding FilterSourceItems}" IsEditable="True" IsReadOnly="True">
+                    <ComboBox Grid.Column="6" Name="FilterSource" ItemsSource="{Binding FilterSourceItems}" IsEditable="True" IsReadOnly="True"
+                              VerticalAlignment="Center">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Tag="{Binding SourceNameShort}"
@@ -86,7 +88,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
 
-                    <Grid Margin="10,0,50,0" Grid.Column="7">
+                    <Grid  Grid.Column="8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="10" />
@@ -103,8 +105,217 @@
                                               Minimum="0"
                                               Maximum="100" />
                     </Grid>
+
+                    <Border CornerRadius="{DynamicResource ControlCornerRadius}" BorderThickness="{DynamicResource ControlBorderThickness}" 
+                            Grid.Column="10" Background="Transparent" Width="140"
+                            BorderBrush="{DynamicResource NormalBorderBrush}">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="55" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TextDate" Text="" VerticalAlignment="Center" />
+
+                            <Button Grid.Column="1" 
+                                    BorderThickness="0" Padding="3,0,3,0" Margin="0"
+                                    ContentTemplate="{DynamicResource ClearTextIconTemplate}"
+                                    Visibility="{Binding ElementName=PART_TextDate, Path=Text, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"
+                                    FontSize="18" Name="PART_ClearButton" Click="PART_ClearButton_Click">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                        <Setter Property="Background" Value="Transparent" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ComboBox}}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+
+                            <DatePicker Width="35" Grid.Column="3" Name="PART_DatePicker"
+                                        SelectedDateChanged="DatePicker_SelectedDateChanged"
+                                        Commonpluginsbehaviors:DatePickerCalendar.IsMonthYear="True">
+
+                                <DatePicker.CalendarStyle>
+                                    <Style TargetType="Calendar" BasedOn="{StaticResource {x:Type Calendar}}">
+                                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                                        <Setter Property="CalendarDayButtonStyle" Value="{DynamicResource CalendarDayButtonStyle}"/>
+                                        <Setter Property="CalendarButtonStyle" Value="{DynamicResource CalendarButtonStyle}"/>
+                                        <Setter Property="Background" Value="{DynamicResource PopupBackgroundBrush}" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Calendar}">
+                                                    <StackPanel HorizontalAlignment="Center" Name="PART_Root">
+                                                        <CalendarItem Style="{DynamicResource CalendarItemStyle}"
+                                                                      Name="PART_CalendarItem" />
+                                                        <Button Content="{DynamicResource LOCToday}" 
+                                                                Command="Commonpluginsbehaviors:CalendarCommands.SelectToday" 
+                                                                CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DatePicker.CalendarStyle>
+                            </DatePicker>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            
+            <!-- List games -->
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3" Name="PART_GridContenerLv">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                
+                <Grid Name="lvGamesStackPanel" Grid.Row="0">
+                    <controlsShared:ListViewExtend x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}"
+                                                   SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}" 
+                                                   SortingEnable="True" ItemsSource="{Binding ListGames}">
+
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="46" x:Name="lvGameIcon100Percent">
+                                    <GridViewColumnHeader Content="100%" Tag="noSort" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent, IsAsync=True}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="50" x:Name="lvGameIcon">
+                                    <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}" Tag="noSort" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
+                                                       Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}, IsAsync=True}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding Name}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="3" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="240" x:Name="lvGameName">
+                                    <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Visibility="{Binding GameExist, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
+                                                            <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                <TextBlock Visibility="{Binding GameExist, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                                                        <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
+                                                    </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
+                                    <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}" />
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="6" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="75" x:Name="lvGamesSource">
+                                    <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}" Tag="SourceName" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
+                                                       HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="30" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProgressionValue}">
+                                    <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="8" />
+                                </GridViewColumn>
+                                <GridViewColumn Width="105" x:Name="lvGameProgression">
+                                    <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSuccessStorylvGamesProgression}" Tag="ProgressionValue" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <ProgressBar Minimum="0" Maximum="{Binding Total}" Height="28" Value="{Binding Unlocked}" VerticalAlignment="Center" />
+                                                <Label Content="{Binding TotalPercent}" HorizontalAlignment="Center" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Width="250" x:Name="lvGameRaretyCount">
+                                    <GridViewColumnHeader Content="{DynamicResource LOCSuccessStoryRarety}" Tag="noSort" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="40" />
+                                                    <ColumnDefinition Width="10" />
+
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="40" />
+                                                    <ColumnDefinition Width="10" />
+
+                                                    <ColumnDefinition Width="auto" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="40" />
+
+                                                    <ColumnDefinition Width="auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Grid.Column="0" Content="&#127942;" Margin="0,0,5,0" />
+                                                <Label Grid.Column="2" Content="{Binding Common.UnLocked}" HorizontalAlignment="Right" />
+
+                                                <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityUncommonColor}" />
+                                                <Label Grid.Column="6" Content="{Binding NoCommon.UnLocked}" HorizontalAlignment="Right" />
+
+                                                <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityRareColor}" />
+                                                <Label Grid.Column="10" Content="{Binding Rare.UnLocked}" HorizontalAlignment="Right" />
+
+                                                <Grid Grid.Column="11" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="5" />
+                                                        <ColumnDefinition Width="40" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Label Grid.Column="0" Content="&#127942;" Margin="40,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityUltraRareColor}" />
+                                                    <Label Grid.Column="2" Content="{Binding UltraRare.UnLocked}" HorizontalAlignment="Right" />
+                                                </Grid>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </controlsShared:ListViewExtend>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
                     
-                    <StackPanel Grid.Column="8" Orientation="Horizontal">
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{DynamicResource LOCCommonTotalFound}" 
                                    VerticalAlignment="Center" />
                         <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TotalFoundCount" 
@@ -112,13 +323,13 @@
                                    VerticalAlignment="Center" Width="40" TextAlignment="Right" />
                     </StackPanel>
 
-                    <Grid Grid.Column="10" HorizontalAlignment="Right">
+                    <Grid Grid.Column="3" HorizontalAlignment="Right">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="15" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        
+
                         <Label Content="{DynamicResource LOCSuccessStoryRarety}" />
 
                         <Grid Grid.Column="2">
@@ -155,145 +366,13 @@
                                     <ColumnDefinition Width="5" />
                                     <ColumnDefinition Width="40" />
                                 </Grid.ColumnDefinitions>
-                                
+
                                 <Label Grid.Column="0" Content="&#127942;" Margin="40,0,5,0" Foreground="{Binding Settings.RarityUltraRareColor}" />
                                 <Label Grid.Column="2" Name="PART_TotalUltraRare" HorizontalAlignment="Right" Content="2" />
                             </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-            </Border>
-
-            
-            <!-- List games -->
-            <Grid Name="lvGamesStackPanel" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="3">
-                <controlsShared:ListViewExtend x:Name="ListviewGames" Height="{Binding ElementName=lvGamesStackPanel, Path=ActualHeight}"
-                                               SelectionChanged="ListviewGames_SelectionChanged" FontSize="24" Style="{StaticResource {x:Type ListView}}" 
-                                               SortingEnable="True" ItemsSource="{Binding ListGames}">
-
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="46" x:Name="lvGameIcon100Percent">
-                                <GridViewColumnHeader Content="100%" Tag="noSort" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" Source="{Binding Icon100Percent, IsAsync=True}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-
-                            <GridViewColumn Width="50" x:Name="lvGameIcon">
-                                <GridViewColumnHeader Content="{DynamicResource LOCGameIconTitle}" Tag="noSort" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
-                                                   Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}, IsAsync=True}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-
-                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding Name}">
-                                <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="3" />
-                            </GridViewColumn>
-                            <GridViewColumn Width="240" x:Name="lvGameName">
-                                <GridViewColumnHeader Name="lvName" Content="{DynamicResource LOCGameNameTitle}" Tag="Name" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <TextBlock Visibility="{Binding GameExist, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                    <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
-                                                        <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                            <TextBlock Visibility="{Binding GameExist, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-                                                    <TextBlock Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
-                                                </TextBlock>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-
-                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding LastActivity, Converter={StaticResource LocalDateTimeConverter}}" x:Name="lvGameLastActivity">
-                                <GridViewColumnHeader Name="lvLastActivity" Content="{DynamicResource LOCLastPlayed}" />
-                            </GridViewColumn>
-
-                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding SourceName}">
-                                <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="6" />
-                            </GridViewColumn>
-                            <GridViewColumn Width="75" x:Name="lvGamesSource">
-                                <GridViewColumnHeader Name="lvSourceIcon" Content="{DynamicResource LOCSourceLabel}" Tag="SourceName" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
-                                                   HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="30" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-
-                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding ProgressionValue}">
-                                <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="8" />
-                            </GridViewColumn>
-                            <GridViewColumn Width="105" x:Name="lvGameProgression">
-                                <GridViewColumnHeader Name="lvProgression" Content="{DynamicResource LOCSuccessStorylvGamesProgression}" Tag="ProgressionValue" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <ProgressBar Minimum="0" Maximum="{Binding Total}" Height="28" Value="{Binding Unlocked}" VerticalAlignment="Center" />
-                                            <Label Content="{Binding TotalPercent}" HorizontalAlignment="Center" />
-                                        </Grid>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-
-                            <GridViewColumn Width="250" x:Name="lvGameRaretyCount">
-                                <GridViewColumnHeader Content="{DynamicResource LOCSuccessStoryRarety}" Tag="noSort" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto" />
-                                                <ColumnDefinition Width="5" />
-                                                <ColumnDefinition Width="40" />
-                                                <ColumnDefinition Width="10" />
-
-                                                <ColumnDefinition Width="auto" />
-                                                <ColumnDefinition Width="5" />
-                                                <ColumnDefinition Width="40" />
-                                                <ColumnDefinition Width="10" />
-
-                                                <ColumnDefinition Width="auto" />
-                                                <ColumnDefinition Width="5" />
-                                                <ColumnDefinition Width="40" />
-
-                                                <ColumnDefinition Width="auto" />
-                                            </Grid.ColumnDefinitions>
-
-                                            <Label Grid.Column="0" Content="&#127942;" Margin="0,0,5,0" />
-                                            <Label Grid.Column="2" Content="{Binding Common.UnLocked}" HorizontalAlignment="Right" />
-
-                                            <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityUncommonColor}" />
-                                            <Label Grid.Column="6" Content="{Binding NoCommon.UnLocked}" HorizontalAlignment="Right" />
-
-                                            <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityRareColor}" />
-                                            <Label Grid.Column="10" Content="{Binding Rare.UnLocked}" HorizontalAlignment="Right" />
-
-                                            <Grid Grid.Column="11" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto" />
-                                                    <ColumnDefinition Width="5" />
-                                                    <ColumnDefinition Width="40" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <Label Grid.Column="0" Content="&#127942;" Margin="40,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityUltraRareColor}" />
-                                                <Label Grid.Column="2" Content="{Binding UltraRare.UnLocked}" HorizontalAlignment="Right" />
-                                            </Grid>
-                                        </Grid>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </controlsShared:ListViewExtend>
             </Grid>
 
             <!-- Achievement by day for selected game -->
