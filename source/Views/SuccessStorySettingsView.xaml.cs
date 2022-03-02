@@ -18,6 +18,7 @@ using System.Windows.Media;
 using Playnite.SDK.Models;
 using System.IO;
 using System.Windows.Documents;
+using System.Drawing.Imaging;
 
 namespace SuccessStory.Views
 {
@@ -113,6 +114,10 @@ namespace SuccessStory.Views
             PART_CbCompletation.ItemsSource = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList();
             PART_CbCompletation.SelectedIndex = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList()
                 .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent?.Id);
+
+
+            PART_Time.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "time.png"));
+            PART_Percent.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "percent.png"));
         }
 
 

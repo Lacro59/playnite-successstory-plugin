@@ -10,27 +10,20 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SuccessStory.Models
 {
-    class QuickSearchItemSource : ISearchSubItemSource<string>
+    public class QuickSearchItemSource : ISearchSubItemSource<string>
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private readonly SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
 
         public string Prefix => PluginDatabase.PluginName;
 
         public bool DisplayAllIfQueryIsEmpty => true;
 
-        public string Icon
-        {
-            get
-            {
-                return Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "command-line.png");
-            }
-        }
+        public string Icon => Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "command-line.png");
 
 
         public IEnumerable<ISearchItem<string>> GetItems()
@@ -47,6 +40,8 @@ namespace SuccessStory.Models
                     new CommandItem("<", new List<CommandAction>(), "example: time < 30 s", Icon),
                     new CommandItem("<>", new List<CommandAction>(), "example: time 30 min <> 1 h", Icon),
                     new CommandItem(">", new List<CommandAction>(), "example: time > 2 h", Icon),
+
+                    new CommandItem("-np (not played) (optional)", new List<CommandAction>(), "example: time > 2 h -np", Icon),
                 }.AsEnumerable();
             }
 
@@ -56,7 +51,7 @@ namespace SuccessStory.Models
                 {
                     new CommandItem("<", new List<CommandAction>(), "example: percent < 50", Icon),
                     new CommandItem("<>", new List<CommandAction>(), "example: percent 10 <> 30", Icon),
-                    new CommandItem(">", new List<CommandAction>(), "example: percent > 90", Icon),
+                    new CommandItem(">", new List<CommandAction>(), "example: percent > 90", Icon)
                 }.AsEnumerable();
             }
 
@@ -69,7 +64,7 @@ namespace SuccessStory.Models
 
         public Task<IEnumerable<ISearchItem<string>>> GetItemsTask(string query, IReadOnlyList<Candidate> addedItems)
         {
-            var parameters = GetParameters(query);
+            List<string> parameters = GetParameters(query);
             if (parameters.Count > 0)
             {
                 switch (parameters[0].ToLower())
@@ -81,7 +76,6 @@ namespace SuccessStory.Models
                         return SearchByPercent(query);
                 }
             }
-
             return null;
         }
 
@@ -99,18 +93,15 @@ namespace SuccessStory.Models
         private CommandItem GetCommandItem(GameAchievements data, string query)
         {
             DefaultIconConverter defaultIconConverter = new DefaultIconConverter();
-
             LocalDateTimeConverter localDateTimeConverter = new LocalDateTimeConverter();
 
-            var title = data.Name;
-            var icon = defaultIconConverter.Convert(data.Icon, null, null, null).ToString();
-            var dateSession = localDateTimeConverter.Convert(data.LastActivity, null, null, CultureInfo.CurrentCulture).ToString();
-            var LastSession = data.LastActivity == null ? string.Empty : ResourceProvider.GetString("LOCLastPlayedLabel")
-                    + " " + dateSession;
-            var infoEstimate = data.EstimateTime?.EstimateTime.IsNullOrEmpty() ?? true ? string.Empty : "  -  [" + data.EstimateTime?.EstimateTime + "]";
+            string title = data.Name;
+            string icon = defaultIconConverter.Convert(data.Icon, null, null, null).ToString();
+            string dateSession = localDateTimeConverter.Convert(data.LastActivity, null, null, CultureInfo.CurrentCulture).ToString();
+            string LastSession = data.LastActivity == null ? string.Empty : ResourceProvider.GetString("LOCLastPlayedLabel") + " " + dateSession;
+            string infoEstimate = data.EstimateTime?.EstimateTime.IsNullOrEmpty() ?? true ? string.Empty : "  -  [" + data.EstimateTime?.EstimateTime + "]";
 
-
-            var item = new CommandItem(title, () => PluginDatabase.PlayniteApi.MainView.SelectGame(data.Id), "", null, icon)
+            CommandItem item = new CommandItem(title, () => PluginDatabase.PlayniteApi.MainView.SelectGame(data.Id), "", null, icon)
             {
                 IconChar = null,
                 BottomLeft = PlayniteTools.GetSourceName(data.Id),
@@ -136,7 +127,6 @@ namespace SuccessStory.Models
                     double m = double.Parse(value);
                     return m * 60;
 
-
                 case "s":
                     return double.Parse(value);
             }
@@ -146,20 +136,29 @@ namespace SuccessStory.Models
 
         private List<KeyValuePair<Guid, GameAchievements>> GetDb(ConcurrentDictionary<Guid, GameAchievements> db)
         {
-            return db.Where(x => PluginDatabase.PlayniteApi.Database.Games.Get(x.Key) != null).ToList();
+            return db.Where(x => PluginDatabase.PlayniteApi.Database.Games.Get(x.Key) != null && x.Value.HasAchievements).ToList();
         }
 
 
         private Task<IEnumerable<ISearchItem<string>>> SearchByTime(string query)
         {
-            var parameters = GetParameters(query);
-            var db = GetDb(PluginDatabase.Database.Items);
+            bool OnlyNp = query.Contains("-np", StringComparison.OrdinalIgnoreCase);
+            query = query.Replace("-np", string.Empty).Trim();
+
+            List<string> parameters = GetParameters(query);
+            List<KeyValuePair<Guid, GameAchievements>> db = GetDb(PluginDatabase.Database.Items);
+
+            if (OnlyNp)
+            {
+                db = db.Where(x => x.Value.LastActivity == null).ToList();
+            }
+            db = db.Where(x => x.Value.EstimateTime?.EstimateTimeMax != 0).ToList();
 
             if (parameters.Count == 4)
             {
                 return Task.Run(() =>
                 {
-                    var search = new List<ISearchItem<string>>();
+                    List<ISearchItem<string>> search = new List<ISearchItem<string>>();
 
                     switch (parameters[1])
                     {
@@ -167,7 +166,7 @@ namespace SuccessStory.Models
                             try
                             {
                                 double s = GetElapsedSeconde(parameters[2], parameters[3]);
-                                foreach (var data in db)
+                                foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
                                     if (data.Value.EstimateTime?.EstimateTimeMax >= s)
                                     {
@@ -178,12 +177,11 @@ namespace SuccessStory.Models
                             catch { }
                             break;
 
-
                         case "<":
                             try
                             {
                                 double s = GetElapsedSeconde(parameters[2], parameters[3]);
-                                foreach (var data in db)
+                                foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
                                     if (data.Value.EstimateTime?.EstimateTimeMax <= s)
                                     {
@@ -203,7 +201,7 @@ namespace SuccessStory.Models
             {
                 return Task.Run(() =>
                 {
-                    var search = new List<ISearchItem<string>>();
+                    List<ISearchItem<string>> search = new List<ISearchItem<string>>();
                     switch (parameters[3])
                     {
                         case "<>":
@@ -211,7 +209,7 @@ namespace SuccessStory.Models
                             {
                                 double sMin = GetElapsedSeconde(parameters[1], parameters[2]);
                                 double sMax = GetElapsedSeconde(parameters[4], parameters[5]);
-                                foreach (var data in db)
+                                foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
                                     if (data.Value.EstimateTime?.EstimateTimeMax >= sMin && data.Value.EstimateTime?.EstimateTimeMax <= sMax)
                                     {
@@ -232,21 +230,21 @@ namespace SuccessStory.Models
 
         private Task<IEnumerable<ISearchItem<string>>> SearchByPercent(string query)
         {
-            var parameters = GetParameters(query);
-            var db = GetDb(PluginDatabase.Database.Items);
+            List<string> parameters = GetParameters(query);
+            List<KeyValuePair<Guid, GameAchievements>> db = GetDb(PluginDatabase.Database.Items);
 
             if (parameters.Count == 3)
             {
                 return Task.Run(() =>
                 {
-                    var search = new List<ISearchItem<string>>();
+                    List<ISearchItem<string>> search = new List<ISearchItem<string>>();
                     switch (parameters[1])
                     {
                         case ">":
                             try
                             {
                                 int.TryParse(parameters[2], out int percent);
-                                foreach (var data in db)
+                                foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
                                     if (data.Value.Progression >= percent)
                                     {
@@ -257,12 +255,11 @@ namespace SuccessStory.Models
                             catch { }
                             break;
 
-
                         case "<":
                             try
                             {
                                 int.TryParse(parameters[2], out int percent);
-                                foreach (var data in db)
+                                foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
                                     if (data.Value.Progression <= percent)
                                     {
@@ -282,7 +279,7 @@ namespace SuccessStory.Models
             {
                 return Task.Run(() =>
                 {
-                    var search = new List<ISearchItem<string>>();
+                    List<ISearchItem<string>> search = new List<ISearchItem<string>>();
                     switch (parameters[2])
                     {
                         case "<>":
