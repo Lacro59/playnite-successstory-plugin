@@ -7,7 +7,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:SuccessStory.Controls"
         mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="200"
-        d:DataContext="{d:DesignInstance Type=local:PluginUserControlExtend, IsDesignTimeCreatable=True}"
+        d:DataContext="{d:DesignInstance Type=local:PluginUserStatsDataContext, IsDesignTimeCreatable=True}"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding Height}"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">

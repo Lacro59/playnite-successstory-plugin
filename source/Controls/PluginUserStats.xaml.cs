@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SuccessStory.Controls
@@ -21,27 +20,15 @@ namespace SuccessStory.Controls
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         internal override IPluginDatabase _PluginDatabase
         {
-            get
-            {
-                return PluginDatabase;
-            }
-            set
-            {
-                PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-            }
+            get => PluginDatabase;
+            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
         }
 
         private PluginUserStatsDataContext ControlDataContext = new PluginUserStatsDataContext();
         internal override IDataContext _ControlDataContext
         {
-            get
-            {
-                return ControlDataContext;
-            }
-            set
-            {
-                ControlDataContext = (PluginUserStatsDataContext)_ControlDataContext;
-            }
+            get => ControlDataContext;
+            set => ControlDataContext = (PluginUserStatsDataContext)_ControlDataContext;
         }
 
 
@@ -79,10 +66,8 @@ namespace SuccessStory.Controls
                 Height = double.NaN;
             }
 
-
             ControlDataContext.IsActivated = IsActivated;
             ControlDataContext.Height = Height;
-
             ControlDataContext.ItemsSource = null;
         }
 

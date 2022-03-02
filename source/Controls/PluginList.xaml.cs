@@ -38,12 +38,12 @@ namespace SuccessStory.Controls
             set => ControlDataContext = (PluginListDataContext)_ControlDataContext;
         }
 
-        private string NameAsc = "\uea64";
-        private string NameDesc = "\uea67";
-        private string CalAsc = "\uea65";
-        private string CalDesc = "\uea66";
-        private string RarityAsc = "\uea68";
-        private string RarityDesc = "\uea69";
+        private readonly string NameAsc = "\uea64";
+        private readonly string NameDesc = "\uea67";
+        private readonly string CalAsc = "\uea65";
+        private readonly string CalDesc = "\uea66";
+        private readonly string RarityAsc = "\uea68";
+        private readonly string RarityDesc = "\uea69";
 
         private int NameIndex = 1;
         private int CalIndex = 2;

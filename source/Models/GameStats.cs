@@ -16,28 +16,13 @@ namespace SuccessStory.Models
         public double Value { get; set; }
         #endregion
 
-        [DontSerialize]
-        public string NameShow
-        {
-            get
-            {
-                if (DisplayName.IsNullOrEmpty())
-                {
-                    return Name;
-                }
-
-                return DisplayName;
-            }
-        }
 
         [DontSerialize]
-        public double ValueShow
-        {
-            get
-            {
-                return Math.Round(Value, 2, MidpointRounding.AwayFromZero);
-            }
-        }
+        public string NameShow => DisplayName.IsNullOrEmpty() ? Name : DisplayName;
+
+        [DontSerialize]
+        public double ValueShow => Math.Round(Value, 2, MidpointRounding.AwayFromZero);
+
 
         #region More for Battle.net
         public string ImageUrl { get; set; }
