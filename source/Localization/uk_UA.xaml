@@ -231,6 +231,15 @@
     <sys:String x:Key="LOCSsQuickSearchDescription">Пошук ігор за даними SuccessStory</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByTime">Знайти за середнім часом для повного здобуття</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Знайти за прогресією</sys:String>
+    
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
+To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
+        
+Here is the list of commands:</sys:String>
+
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+
 
     <!-- SuccessStoryEditManual -->
 
