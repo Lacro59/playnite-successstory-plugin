@@ -185,6 +185,7 @@
     <Compile Include="Models\GameStats.cs" />
     <Compile Include="Models\GenshinImpactAchievementData.cs" />
     <Compile Include="Models\ListAchievements.cs" />
+    <Compile Include="Models\ListAll.cs" />
     <Compile Include="Models\ListGames.cs" />
     <Compile Include="Models\ProgressionAchievements.cs" />
     <Compile Include="Models\GameAchievements.cs" />

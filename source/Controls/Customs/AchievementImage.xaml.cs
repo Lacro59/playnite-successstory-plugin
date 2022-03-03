@@ -191,41 +191,48 @@ namespace SuccessStory.Controls.Customs
 
         private async void LoadNewIcon(object newSource, object oldSource)
         {
-            if (newSource?.Equals(CurrentIcon) == true)
-            {
-                return;
-            }
-
-            CurrentIcon = newSource;
             dynamic image = null;
-            bool IsGray = this.IsGray;
-
-            if (newSource != null)
+            try
             {
-                image = await Task.Factory.StartNew(() =>
+                if (newSource?.Equals(CurrentIcon) == true)
                 {
-                    if (newSource is string str)
+                    return;
+                }
+
+                CurrentIcon = newSource;
+                bool IsGray = this.IsGray;
+
+                if (newSource != null)
+                {
+                    image = await Task.Factory.StartNew(() =>
                     {
-                        dynamic tmpImage = ImageSourceManager.GetImage(str, false);
-
-                        if (tmpImage == null)
+                        if (newSource is string str)
                         {
-                            tmpImage = new BitmapImage(new Uri(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "default_icon.png")));
-                            ((BitmapImage)tmpImage).Freeze();
-                        }
+                            dynamic tmpImage = ImageSourceManager.GetImage(str, false);
 
-                        if (IsGray)
+                            if (tmpImage == null)
+                            {
+                                tmpImage = new BitmapImage(new Uri(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "default_icon.png")));
+                                ((BitmapImage)tmpImage).Freeze();
+                            }
+
+                            if (IsGray)
+                            {
+                                return ImageTools.ConvertBitmapImage(tmpImage, ImageColor.Gray);
+                            }
+
+                            return tmpImage;
+                        }
+                        else
                         {
-                            return ImageTools.ConvertBitmapImage(tmpImage, ImageColor.Gray);
+                            return null;
                         }
-
-                        return tmpImage;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                });
+                    });
+                }
+            }
+            catch
+            {
+                image = null;
             }
 
             PART_Image.Source = image;

@@ -302,40 +302,6 @@ namespace SuccessStory.Controls
 
 
         #region Events
-        /// <summary>
-        /// Show or not the ToolTip.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            TextBlock textBlock = (TextBlock)sender;
-
-            Typeface typeface = new Typeface(
-                textBlock.FontFamily,
-                textBlock.FontStyle,
-                textBlock.FontWeight,
-                textBlock.FontStretch);
-
-            FormattedText formattedText = new FormattedText(
-                textBlock.Text,
-                System.Threading.Thread.CurrentThread.CurrentCulture,
-                textBlock.FlowDirection,
-                typeface,
-                textBlock.FontSize,
-                textBlock.Foreground,
-                VisualTreeHelper.GetDpi(this).PixelsPerDip);
-
-            if (formattedText.Width > textBlock.DesiredSize.Width)
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
-            }
-        }
-
         private void LbAchievements_SizeChanged(object sender, SizeChangedEventArgs e)
         {           
             if (ControlDataContext != null)

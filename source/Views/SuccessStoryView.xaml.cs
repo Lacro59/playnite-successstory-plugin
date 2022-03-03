@@ -97,6 +97,7 @@ namespace SuccessStory
             Task.Run(() =>
             {
                 GetListGame();
+                GetListAll();
                 SetGraphicsAchievementsSources();
 
                 ProgressionGlobal = PluginDatabase.Progession();
@@ -395,6 +396,51 @@ namespace SuccessStory
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
+        public void GetListAll()
+        {
+            try
+            {
+                string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+                ObservableCollection<ListAll> ListAll = new ObservableCollection<ListAll>();
+                PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted)
+                        .ForEach(x =>
+                        {
+                            x.Items.Where(y => y.IsUnlock).ForEach(y => 
+                            {
+                                ListAll.Add(new ListAll
+                                {
+                                    Id = x.Id.ToString(),
+                                    Name = x.Name,
+                                    Icon = !x.Icon.IsNullOrEmpty() ? PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon) : string.Empty,
+                                    LastActivity = x.LastActivity?.ToLocalTime(),
+                                    SourceName = PlayniteTools.GetSourceName(x.Id),
+                                    SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
+                                    IsManual = x.IsManual,
+
+                                    FirstUnlock = x.FirstUnlock,
+                                    LastUnlock = x.LastUnlock,
+                                    DatesUnlock = x.DatesUnlock,
+
+                                    AchIcon = y.Icon,
+                                    AchIsGray = y.IsGray,
+                                    AchEnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
+                                    AchDisplayRaretyValue = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
+                                    AchName = y.Name,
+                                    AchDateUnlock = y.DateUnlocked,
+                                    AchDescription = y.Description,
+                                    AchPercent = y.Percent
+                                });
+                            });
+                        });
+
+                successViewData.ListAll = ListAll;
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+        }
 
         /// <summary>
         /// Show Achievements for the selected game.
@@ -533,6 +579,17 @@ namespace SuccessStory
             set
             {
                 _ListGames = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<ListAll> _ListAll = new ObservableCollection<ListAll>();
+        public ObservableCollection<ListAll> ListAll
+        {
+            get => _ListAll;
+            set
+            {
+                _ListAll = value;
                 OnPropertyChanged();
             }
         }

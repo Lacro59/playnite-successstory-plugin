@@ -11,8 +11,8 @@
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:converters1="clr-namespace:SuccessStory.Converters"
-        xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
-        mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="150"
+        xmlns:customs="clr-namespace:SuccessStory.Controls.Customs" xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
+    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="150"
         d:DataContext="{d:DesignInstance Type=local:PluginListDataContext, IsDesignTimeCreatable=True}"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
         Height="{Binding Height}"
@@ -146,12 +146,7 @@
                                         <ColumnDefinition Width="10" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Text="{Binding Name, FallbackValue='Game Name'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis"
-                                               MouseEnter="TextBlock_MouseEnter">
-                                        <TextBlock.ToolTip>
-                                            <ToolTip Content="{Binding Name}" />
-                                        </TextBlock.ToolTip>
-                                    </TextBlock>
+                                    <controls1:TextBlockTrimmed  Grid.Column="0" Text="{Binding Name, FallbackValue='Game Name'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis" />
 
                                     <Grid Grid.Column="1">
                                         <TextBlock TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
