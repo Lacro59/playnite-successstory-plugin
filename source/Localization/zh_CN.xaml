@@ -157,7 +157,7 @@
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">列出成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">成就排序</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">可用时按解锁</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">可用时按解</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">若游戏有成就则添加的功能特色</sys:String>
 
@@ -179,7 +179,7 @@
     <sys:String x:Key="LOCSuccessStoryCommon">常</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">不常</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare"></sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">超</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare"></sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -231,6 +231,15 @@
     <sys:String x:Key="LOCSsQuickSearchDescription">用功成名就数据搜索游戏</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByTime">按完全解锁预估需时查找</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">按进度查找</sys:String>
+    
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
+To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
+        
+Here is the list of commands:</sys:String>
+
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+
 
     <!-- SuccessStoryEditManual -->
 
