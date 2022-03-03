@@ -443,7 +443,7 @@ namespace SuccessStory.Services
         public AchievementsGraphicsDataCountSources GetCountBySources()
         {
             List<string> tempSourcesLabels = new List<string>();
-            var db = Database.Items.Where(x => x.Value.IsManual);
+            IEnumerable<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.IsManual);
 
             if (PluginSettings.Settings.EnableRetroAchievementsView && PluginSettings.Settings.EnableRetroAchievements)
             {
@@ -558,12 +558,12 @@ namespace SuccessStory.Services
                 {
                     if (db != null && db.Count() > 0)
                     {
-                        var ListSources = db.Select(x => x.Value.SourceId).Distinct();
-                        foreach (var Source in ListSources)
+                        IEnumerable<Guid> ListSources = db.Select(x => x.Value.SourceId).Distinct();
+                        foreach (Guid Source in ListSources)
                         {
                             if (Source != default(Guid))
                             {
-                                var gameSource = PlayniteApi.Database.Sources.Get(Source);
+                                GameSource gameSource = PlayniteApi.Database.Sources.Get(Source);
                                 if (gameSource != null)
                                 {
                                     tempSourcesLabels.Add(gameSource.Name);
@@ -591,12 +591,11 @@ namespace SuccessStory.Services
 
 
             db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted).ToList();
-            foreach (var item in db)
+            foreach (KeyValuePair<Guid, GameAchievements> item in db)
             {
                 try
                 {
                     string SourceName = PlayniteTools.GetSourceName(item.Key);
-
                     foreach (Achievements achievements in item.Value.Items)
                     {
                         for (int i = 0; i < tempDataUnlocked.Count; i++)
@@ -898,7 +897,7 @@ namespace SuccessStory.Services
                 return AchievementSource.None;
             }
 
-            foreach (var action in game.GameActions)
+            foreach (GameAction action in game.GameActions)
             {
                 if (!action.IsPlayAction || action.EmulatorId == Guid.Empty)
                 {
@@ -1027,7 +1026,7 @@ namespace SuccessStory.Services
 
         public override void RefreshNoLoader(Guid Id)
         {
-            var game = PlayniteApi.Database.Games.Get(Id);
+            Game game = PlayniteApi.Database.Games.Get(Id);
             logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
 
             GameAchievements loadedItem = Get(Id, true);
@@ -1091,7 +1090,6 @@ namespace SuccessStory.Services
                 activateGlobalProgress.ProgressMaxValue = Ids.Count;
 
                 string CancelText = string.Empty;
-
                 foreach (Guid Id in Ids)
                 {
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
@@ -1424,7 +1422,6 @@ namespace SuccessStory.Services
                     activateGlobalProgress.ProgressMaxValue = (double)PlayniteDb.Count();
 
                     string CancelText = string.Empty;
-
                     foreach (Game game in PlayniteDb)
                     {
                         if (activateGlobalProgress.CancelToken.IsCancellationRequested)

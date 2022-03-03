@@ -25,10 +25,7 @@ using CommonPlayniteShared.Common;
 using System.Reflection;
 using CommonPluginsShared.Extensions;
 using System.Diagnostics;
-using AngleSharp.Parser.Html;
-using AngleSharp.Dom.Html;
 using QuickSearch.SearchItems;
-using SuccessStory.Clients;
 
 namespace SuccessStory
 {
@@ -136,10 +133,9 @@ namespace SuccessStory
         #region Custom event
         public void OnCustomThemeButtonClick(object sender, RoutedEventArgs e)
         {
-            string ButtonName = string.Empty;
             try
             {
-                ButtonName = ((Button)sender).Name;
+                string ButtonName = ((Button)sender).Name;
                 if (ButtonName == "PART_CustomScButton")
                 {
                     Common.LogDebug(true, $"OnCustomThemeButtonClick()");

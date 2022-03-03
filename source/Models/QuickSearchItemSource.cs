@@ -287,7 +287,7 @@ namespace SuccessStory.Models
                             {
                                 int.TryParse(parameters[1], out int percentMin);
                                 int.TryParse(parameters[3], out int percentMax);
-                                foreach (var data in db)
+                                foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
                                     if (data.Value.Progression >= percentMin && data.Value.Progression <= percentMax)
                                     {

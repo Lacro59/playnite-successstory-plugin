@@ -7,13 +7,11 @@ using CommonPluginsShared;
 using SuccessStory.Services;
 using CommonPluginsShared.Converters;
 using System.Net;
-using CommonPlayniteShared.Common;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Documents;
 using System.Globalization;
-using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Models
 {
