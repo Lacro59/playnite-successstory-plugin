@@ -168,3 +168,17 @@ Packages:
       - Fixed minors bugs
       - Fixed bugs with manual achievements
       - Added progress indicator for Genshin Impact achievements
+  - Version: 2.10
+    RequiredApiVersion: 6.2.2
+    ReleaseDate: 2022-03-03
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.10/playnite-successstory-plugin_2_10.pext
+    Changelog:
+      - Updated localizations
+      - Fixed minors bugs
+      - Fixed bugs with Genshin Impact achievements
+      - UI tweaks
+      - Fixed minor bugs with RetroAchievements
+      - Added a new filters for editing manual achievements
+      - Added new options in plugin settings to hide chart in plugin main view
+      - Added QuickSearch info in plugin settings
+      - Added new filtes in plugin main view
