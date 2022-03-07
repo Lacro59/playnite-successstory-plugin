@@ -111,13 +111,13 @@ namespace SuccessStory.Controls
         private bool _IsActivated;
         public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
 
-        private bool _DisplayDetails;
+        private bool _DisplayDetails = true;
         public bool DisplayDetails { get => _DisplayDetails; set => SetValue(ref _DisplayDetails, value); }
 
         private bool _Is100Percent;
         public bool Is100Percent { get => _Is100Percent; set => SetValue(ref _Is100Percent, value); }
 
-        private string _LabelContent;
+        private string _LabelContent = "15/23";
         public string LabelContent { get => _LabelContent; set => SetValue(ref _LabelContent, value); }
 
         private int _Value;

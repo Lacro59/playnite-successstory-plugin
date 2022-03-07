@@ -38,7 +38,6 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="3" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="3" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -55,26 +54,28 @@
                            Text="{DynamicResource LOCSuccessStoryAchievements}" Padding="5,3,5,5"
                            FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}" />
 
-                <TextBlock Text="{Binding LabelContent, FallbackValue='15/23'}" 
+                <TextBlock Text="{Binding LabelContent}" 
                            Margin="0,-3,0,-3" Grid.Column="1" Grid.Row="2" Padding="5,3,5,5"
                            FontSize="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight, Converter={StaticResource HeightToFontSizeConverter}}" />
-                
-                <ProgressBar Grid.Column="3" Grid.Row="2" Height="12"
-                             Maximum="{Binding Maximum, Mode=OneWay, FallbackValue='100'}" 
-                             Value="{Binding Value, Mode=OneWay, FallbackValue='30'}">
-                    <ProgressBar.Style>
-                        <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource {x:Type ProgressBar}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
-                                    <Setter Property="Foreground" Value="{Binding ElementName=PART_PluginButton, Path=Foreground}" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsChecked}" Value="True">
-                                    <Setter Property="Foreground" Value="{Binding ElementName=PART_PluginButton, Path=Foreground}" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ProgressBar.Style>
-                </ProgressBar>
+
+                <StackPanel Grid.Column="3" Grid.Row="2" Name="PART_GridProgressBar">
+                    <ProgressBar Height="12" Width="{Binding ElementName=PART_GridProgressBar, Path=ActualWidth}"
+                                 Maximum="{Binding Maximum, Mode=OneWay, FallbackValue='100'}" 
+                                 Value="{Binding Value, Mode=OneWay, FallbackValue='30'}">
+                        <ProgressBar.Style>
+                            <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver}" Value="True">
+                                        <Setter Property="Foreground" Value="{Binding ElementName=PART_PluginButton, Path=Foreground}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsChecked}" Value="True">
+                                        <Setter Property="Foreground" Value="{Binding ElementName=PART_PluginButton, Path=Foreground}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ProgressBar.Style>
+                    </ProgressBar>
+                </StackPanel>
             </Grid>
         </Grid>
     </Button>
