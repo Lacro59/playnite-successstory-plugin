@@ -130,7 +130,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Spielfelder, die angezeigt werden:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">100 % Erfolgssymbol</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Diagramme in der Hauptansicht des Plugins anzeigen</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Erfolge versteckter Spiele anzeigen</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Zeige Diagramm der Erfolge nach Monat</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Zeige Diagramm der Erfolge nach Tag</sys:String>
@@ -232,18 +232,18 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSsQuickSearchByTime">Nach Schätzungszeit zum vollständigen Entsperren suchen</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Nach Fortschritt suchen</sys:String>
     
-    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
-To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">Das Plugin verwendet die Funktionalität des QuickSearch Plugins.
+Um es zu verwenden, müssen Sie den Befehl &quot;successstory&quot; oder &quot;ss&quot; überprüfen.    
         
-Here is the list of commands:</sys:String>
+Hier ist die Liste von Befehlen:</sys:String>
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">Dieser Befehl sucht nach einer Liste von Spielen mit einer bestimmten Zeit zum Entsperren des Spiels.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">Dieser Befehl sucht nach einer Liste von Spielen mit einem bestimmten Prozentsatz entsperrt sind.</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
-    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">Nur gesperrt</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Beschreibung in der Suche einbeziehen</sys:String>
 
 </ResourceDictionary>
