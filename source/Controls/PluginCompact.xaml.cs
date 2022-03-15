@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using SuccessStory.Controls.Customs;
 using CommonPluginsShared.Converters;
 using System.Globalization;
+using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Controls
 {
@@ -95,6 +96,15 @@ namespace SuccessStory.Controls
 
             ControlDataContext.ItemsSource = new ObservableCollection<Achievements>();
             ControlDataContext.LastestAchievement = new Achievements();
+
+
+            // With PlayerActivities
+            if (this.Tag is DateTime)
+            {
+                IsActivated = true;
+                ControlDataContext.DisplayLastest = false;
+                ControlDataContext.Height = 48;
+            }
         }
 
 
@@ -246,6 +256,17 @@ namespace SuccessStory.Controls
 
 
             var AchievementsList = ControlDataContext.ItemsSource;
+            
+            
+            // With PlayerActivities
+            if (this.Tag is DateTime)
+            {
+                AchievementsList = AchievementsList
+                    .Where(x => x.DateUnlocked?.ToLocalTime().ToString("yyyy-MM--dd").IsEqual(((DateTime)this.Tag).ToString("yyyy-MM--dd")) ?? false)
+                    .ToObservable();
+            }
+
+
 
             PART_ScCompactView.Children.Clear();
             PART_ScCompactView.ColumnDefinitions.Clear();
