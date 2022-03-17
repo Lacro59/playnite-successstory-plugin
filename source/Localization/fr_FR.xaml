@@ -130,7 +130,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Sélectionner les éléments à afficher :</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Icône de succès 100%</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Afficher les graphiques dans la vue principale du plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Montrer les succès des jeux cachés</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Afficher le graphique des succès par mois</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Afficher le graphique des succès par jour</sys:String>
@@ -233,18 +233,18 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <sys:String x:Key="LOCSsQuickSearchByTime">Trouver par temps estimé de déverrouillage complet</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Trouver par progression</sys:String>
     
-    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
-To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">Le plugin utilise les fonctionnalités du plugin QuickSearch.
+Pour l'utiliser, vous devez valider la commande &quot;successstory&quot; ou &quot;ss&quot;.    
         
-Here is the list of commands:</sys:String>
+Voici la liste des commandes :</sys:String>
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">Cette commande recherche une liste de jeux avec un temps spécifique pour le déblocage complet.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">Cette commande recherche une liste de jeux avec un pourcentage de progression spécifique.</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
-    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">Seulement verrouillé</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Inclure la description dans la recherche</sys:String>
 
 </ResourceDictionary>

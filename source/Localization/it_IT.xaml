@@ -232,13 +232,13 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
     <sys:String x:Key="LOCSsQuickSearchByTime">Trova per tempo di stima per sblocco completo</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Trova per progressione</sys:String>
     
-    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
-To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">Il plugin usa la funzionalità del plugin QuickSearch.
+Per usarlo, devi convalidare il comando &quot;howlongtobeat&quot; o &quot;hltb&quot;.    
         
-Here is the list of commands:</sys:String>
+Ecco l'elenco dei comandi:</sys:String>
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">Questo comando cerca una lista di partite con un tempo specifico per sbloccare completamente.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">Questo comando cerca una lista di giochi con una percentuale specifica sbloccata.</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
