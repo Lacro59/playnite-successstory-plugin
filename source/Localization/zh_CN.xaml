@@ -46,6 +46,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II 用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic 用户未验证</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 has not been correctly configured in settings</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
@@ -76,6 +77,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">启用守望先锋成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">启用 StarCraft II 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">启用 World of Warcraft 成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Enable Guild Wars 2 achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">禁用 API 使用（适用于当您没有 API 密钥时）</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">主用户文件夹</sys:String>
