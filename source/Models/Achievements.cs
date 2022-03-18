@@ -212,6 +212,11 @@ namespace SuccessStory.Models
         {
             get
             {
+                if (NoRarety)
+                {
+                    return false;
+                }
+
                 if (!PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator)
                 {
                     return PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
@@ -219,6 +224,9 @@ namespace SuccessStory.Models
                 return PluginDatabase.PluginSettings.Settings.DisplayRarityValue;
             }
         }
+
+        [DontSerialize]
+        public bool NoRarety { get; set; } = false;
 
         [DontSerialize]
         public string NameWithDateUnlock

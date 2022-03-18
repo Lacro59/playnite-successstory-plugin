@@ -56,7 +56,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                List<Achievements> OrderItems = Serialization.GetClone(Items);
+                List<Achievements> OrderItems = Items;
                 IOrderedEnumerable<Achievements> OrderedItems = null;
 
                 if (OrderItems == null)
@@ -437,5 +437,15 @@ namespace SuccessStory.Models
 
         [DontSerialize]
         public List<DateTime> DatesUnlock => Items.Where(x => x.DateWhenUnlocked != null).Select(x => (DateTime)x.DateWhenUnlocked).ToList();
+
+
+        public void SetRaretyIndicator()
+        {
+            bool NoRarety = Items.Where(x => x.Percent != 100).Count() == 0;
+            if (NoRarety)
+            {
+                Items.All(x => { x.NoRarety = true; return true; });
+            }
+        }
     }
 }
