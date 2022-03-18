@@ -181,6 +181,13 @@ namespace SuccessStory.Clients
             if (AllAchievements.Count > 0)
             {
                 AllAchievements = AllAchievements.Where(x => !x.Name.IsNullOrEmpty()).ToList();
+
+                gameAchievements.SourcesLink = new CommonPluginsShared.Models.SourceLink
+                {
+                    GameName = "Guild Wars 2",
+                    Name = "Guild Wars 2",
+                    Url = "https://wiki.guildwars2.com/wiki/API:Main"
+                };
             }
 
             gameAchievements.Items = AllAchievements;
