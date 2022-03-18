@@ -181,7 +181,6 @@ namespace SuccessStory.Clients
             if (AllAchievements.Count > 0)
             {
                 AllAchievements = AllAchievements.Where(x => !x.Name.IsNullOrEmpty()).ToList();
-                gameAchievements.SetRaretyIndicator();
 
                 gameAchievements.SourcesLink = new CommonPluginsShared.Models.SourceLink
                 {
@@ -192,6 +191,8 @@ namespace SuccessStory.Clients
             }
 
             gameAchievements.Items = AllAchievements;
+            gameAchievements.SetRaretyIndicator();
+
             return gameAchievements;
         }
 
