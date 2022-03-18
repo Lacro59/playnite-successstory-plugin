@@ -52,12 +52,15 @@ namespace SuccessStory.Controls
         private string GameName = string.Empty;
         private OrderAchievement orderAchievement;
 
-        public string CategoryName;
+        private string CategoryName;
 
 
         #region Properties
         public static readonly DependencyProperty ForceOneColProperty;
         public bool ForceOneCol { get; set; } = false;
+
+        public static readonly DependencyProperty UsedCategoryProperty;
+        public bool UsedCategory { get; set; } = false;
 
         public static readonly DependencyProperty DisplayFilterProperty;
         public bool DisplayFilter { get; set; } = false;
@@ -266,6 +269,12 @@ namespace SuccessStory.Controls
 
         public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
+            if (UsedCategory)
+            {
+                SetDataCategory(this.CategoryName);
+                return;
+            }
+
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
             gameAchievements.orderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement;
 
@@ -292,6 +301,10 @@ namespace SuccessStory.Controls
         public void SetDataCategory(string CategoryName)
         {
             this.CategoryName = CategoryName;
+            if (GameContext == null)
+            {
+                return;
+            }
 
             GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
             gameAchievements.orderAchievement = orderAchievement;

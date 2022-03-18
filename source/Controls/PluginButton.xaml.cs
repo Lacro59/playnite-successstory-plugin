@@ -92,7 +92,11 @@ namespace SuccessStory.Controls
             }
             else if (PluginDatabase.PluginSettings.Settings.EnableGenshinImpact && PluginDatabase.GameContext.Name.IsEqual("Genshin Impact"))
             {
-                ViewExtension = new SuccessStoryGenshinImpactView(PluginDatabase.GameContext);
+                ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
+            }
+            else if (PluginDatabase.PluginSettings.Settings.EnableGuildWars2 && PluginDatabase.GameContext.Name.IsEqual("Guild Wars 2"))
+            {
+                ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
             }
             else
             {

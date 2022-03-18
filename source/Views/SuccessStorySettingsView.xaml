@@ -56,6 +56,8 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="10" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="auto" />
                             <RowDefinition Height="30" />
                             
                             <RowDefinition Height="auto" />
@@ -547,7 +549,59 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="24" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+
+
+                        <Expander Grid.Row="24">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="8" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableGuildWars2}" 
+                                              Name="PART_EnableGw2chievements"  VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableGw2Achievements}"></Label>
+                                    </CheckBox>
+
+                                    <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-GW2.net" />
+                                </Grid>
+                            </Expander.Header>
+
+                            <Expander.Content>
+                                <Border IsEnabled="{Binding ElementName=PART_EnableGw2chievements, Path=IsChecked}"
+				                        Margin="5" Padding="10"
+				                        BorderBrush="{DynamicResource PopupBorderBrush}"
+				                        BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Grid.Row="0" Grid.Column="0" Content="{DynamicResource LOCAPIKey}" />
+                                        <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding Settings.GuildWars2ApiKey}" />
+                                    </Grid>
+                                </Border>
+                            </Expander.Content>
+                        </Expander>
+
+                        <Expander Grid.Row="26" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -561,7 +615,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="26"
+                        <Expander Grid.Row="28"
                                   Visibility="{Binding Settings.EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">

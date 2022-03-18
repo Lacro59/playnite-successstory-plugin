@@ -53,6 +53,7 @@ namespace SuccessStory.Services
                             { AchievementSource.Steam, new SteamAchievements() },
                             { AchievementSource.Xbox, new XboxAchievements() },
                             { AchievementSource.GenshinImpact, new GenshinImpactAchievements() },
+                            { AchievementSource.GuildWars2, new GuildWars2Achievements() },
                             { AchievementSource.Local, SteamAchievements.GetLocalSteamAchievementsProvider() }
                         };
                     }
@@ -803,7 +804,8 @@ namespace SuccessStory.Services
             Overwatch,
             Starcraft2,
             Wow,
-            GenshinImpact
+            GenshinImpact,
+            GuildWars2,
         }
 
         private static AchievementSource GetAchievementSourceFromLibraryPlugin(SuccessStorySettings settings, Game game)
@@ -933,6 +935,11 @@ namespace SuccessStory.Services
                 return AchievementSource.GenshinImpact;
             }
 
+            if (game.Name.IsEqual("Guild Wars 2"))
+            {
+                return AchievementSource.GuildWars2;
+            }
+
             var source = GetAchievementSourceFromLibraryPlugin(settings, game);
             if (source != AchievementSource.None)
             {
@@ -959,6 +966,7 @@ namespace SuccessStory.Services
         /// <returns>true when achievements can be retrieved for the supplied game</returns>
         public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI playniteApi, SuccessStorySettings settings, Game game)
         {
+            
             AchievementSource achievementSource = GetAchievementSource(settings, game);
             if (!AchievementProviders.TryGetValue(achievementSource, out GenericAchievements achievementProvider))
             {

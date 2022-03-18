@@ -22,9 +22,9 @@ using System.Windows.Documents;
 namespace SuccessStory.Views
 {
     /// <summary>
-    /// Logique d'interaction pour SuccessStoryGenshinImpactView.xaml
+    /// Logique d'interaction pour SuccessStoryCategoryView.xaml
     /// </summary>
-    public partial class SuccessStoryGenshinImpactView : UserControl
+    public partial class SuccessStoryCategoryView : UserControl
     {
         private static readonly ILogger logger = LogManager.GetLogger();
         private static IResourceProvider resources = new ResourceProvider();
@@ -33,7 +33,7 @@ namespace SuccessStory.Views
         private ControlDataContext ControlDataContext = new ControlDataContext();
 
 
-        public SuccessStoryGenshinImpactView(Game GameContext)
+        public SuccessStoryCategoryView(Game GameContext)
         {
             InitializeComponent();
             this.DataContext = ControlDataContext;
@@ -66,6 +66,7 @@ namespace SuccessStory.Views
 
                 // Category
                 List<CategoryAchievement> categories = gameAchievements.Items
+                    .DistinctBy(x => x.Category)
                     .Select(x => new CategoryAchievement
                     {
                         CategoryIcon = x.ImageCategoryIcon,
@@ -75,8 +76,8 @@ namespace SuccessStory.Views
                         Value = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count(),
                         Progression = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() + " / " + gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count()
                     })
-                    .DistinctBy(x => x.CategoryName).OrderBy(x => x.CategoryOrder).ToList();
-                PART_ListCategory.ItemsSource = categories;
+                    .OrderBy(x => x.CategoryOrder).ToList();
+                PART_ListCategory.ItemsSource = categories.Where(x => !x.CategoryName.IsNullOrEmpty()).ToList();
                 PART_ListCategory.SelectedIndex = 0;
             }
 

@@ -132,6 +132,7 @@
     <Compile Include="Clients\ExophaseAchievements.cs" />
     <Compile Include="Clients\GenericAchievements.cs" />
     <Compile Include="Clients\GenshinImpactAchievements.cs" />
+    <Compile Include="Clients\GuildWars2Achievements.cs" />
     <Compile Include="Models\GenshinImpactAchievementsCategory.cs" />
     <Compile Include="Clients\GogAchievements.cs" />
     <Compile Include="Clients\OriginAchievements.cs" />
@@ -184,6 +185,9 @@
     <Compile Include="Models\ExophaseSearchResult.cs" />
     <Compile Include="Models\GameStats.cs" />
     <Compile Include="Models\GenshinImpactAchievementData.cs" />
+    <Compile Include="Models\GW2Achievements.cs" />
+    <Compile Include="Models\GW2AchievementsGroups.cs" />
+    <Compile Include="Models\GW2OwnedAchievements.cs" />
     <Compile Include="Models\ListAchievements.cs" />
     <Compile Include="Models\ListAll.cs" />
     <Compile Include="Models\ListGames.cs" />
@@ -254,8 +258,8 @@
     <Compile Include="Views\SuccessStoryEditManual.xaml.cs">
       <DependentUpon>SuccessStoryEditManual.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SuccessStoryGenshinImpactView.xaml.cs">
-      <DependentUpon>SuccessStoryGenshinImpactView.xaml</DependentUpon>
+    <Compile Include="Views\SuccessStoryCategoryView.xaml.cs">
+      <DependentUpon>SuccessStoryCategoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SuccessStoryOneGameView.xaml.cs">
       <DependentUpon>SuccessStoryOneGameView.xaml</DependentUpon>
@@ -481,7 +485,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SuccessStoryGenshinImpactView.xaml">
+    <Page Include="Views\SuccessStoryCategoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

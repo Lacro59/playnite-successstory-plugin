@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Documents;
 using System.Globalization;
+using CommonPlayniteShared;
 
 namespace SuccessStory.Models
 {
@@ -42,7 +43,7 @@ namespace SuccessStory.Models
                 {
                     return ImagePath;
                 }
-                return string.Empty;
+                return ImageSourceManager.GetImagePath(CategoryIcon);
             }
         }
 
@@ -99,6 +100,11 @@ namespace SuccessStory.Models
                     return TempUrlUnlocked;
                 }
                 if (TempUrlUnlocked?.IndexOf("GenshinImpact") > -1)
+                {
+                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
+                    return TempUrlUnlocked;
+                }
+                if (TempUrlUnlocked?.IndexOf("default_icon") > -1)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
                     return TempUrlUnlocked;

@@ -158,7 +158,11 @@ namespace SuccessStory
                         }
                         else if (PluginSettings.Settings.EnableGenshinImpact && PluginDatabase.GameContext.Name.IsEqual("Genshin Impact"))
                         {
-                            ViewExtension = new SuccessStoryGenshinImpactView(PluginDatabase.GameContext);
+                            ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
+                        }
+                        else if (PluginSettings.Settings.EnableGuildWars2 && PluginDatabase.GameContext.Name.IsEqual("Guild Wars 2"))
+                        {
+                            ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
                         }
                         else
                         {
@@ -384,7 +388,11 @@ namespace SuccessStory
                                     }
                                     else if (PluginSettings.Settings.EnableGenshinImpact && GameMenu.Name.IsEqual("Genshin Impact"))
                                     {
-                                        ViewExtension = new SuccessStoryGenshinImpactView(GameMenu);
+                                        ViewExtension = new SuccessStoryCategoryView(GameMenu);
+                                    }
+                                    else if (PluginSettings.Settings.EnableGuildWars2 && GameMenu.Name.IsEqual("Guild Wars 2"))
+                                    {
+                                        ViewExtension = new SuccessStoryCategoryView(GameMenu);
                                     }
                                     else 
                                     {
@@ -1002,7 +1010,7 @@ namespace SuccessStory
 
                             try
                             {
-                                if (achievement.UrlUnlocked.Contains("rpcs3", StringComparison.InvariantCultureIgnoreCase) && PlayniteTools.GetCacheFile(achievement.CacheUnlocked, PluginDatabase.PluginName).IsNullOrEmpty())
+                                if (!achievement.UrlUnlocked.IsNullOrEmpty() && achievement.UrlUnlocked.Contains("rpcs3", StringComparison.InvariantCultureIgnoreCase) && PlayniteTools.GetCacheFile(achievement.CacheUnlocked, PluginDatabase.PluginName).IsNullOrEmpty())
                                 {
                                     string PathFile = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, achievement.UrlUnlocked);
                                     string PathImageFileName = Path.Combine(PlaynitePaths.DataCachePath, PluginDatabase.PluginName, achievement.CacheUnlocked);

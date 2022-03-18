@@ -242,6 +242,9 @@ namespace SuccessStory
 
         public bool EnableGenshinImpact { get; set; } = false;
 
+        public bool EnableGuildWars2 { get; set; } = false;
+        public string GuildWars2ApiKey { get; set; } = string.Empty;
+
         public string NameSorting { get; set; } = "LastActivity";
         public bool IsAsc { get; set; } = false;
 
