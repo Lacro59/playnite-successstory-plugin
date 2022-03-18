@@ -117,7 +117,6 @@ namespace SuccessStory.Services
                 }
 
                 gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
-                gameAchievements.SetRaretyIndicator();
                 AddOrUpdate(gameAchievements);
 
                 Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
@@ -284,7 +283,6 @@ namespace SuccessStory.Services
             }
 
             gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
-            gameAchievements.SetRaretyIndicator();
 
             if (!(bool)gameAchievements?.HasAchievements)
             {
@@ -1074,9 +1072,8 @@ namespace SuccessStory.Services
 
             if (webItem != null && !ReferenceEquals(loadedItem, webItem))
             {
-                Update(webItem);
                 webItem = SetEstimateTimeToUnlock(game, webItem);
-                webItem.SetRaretyIndicator();
+                Update(webItem);
             }
             else
             {
