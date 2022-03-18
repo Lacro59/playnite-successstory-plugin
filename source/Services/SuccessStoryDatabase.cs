@@ -1070,9 +1070,18 @@ namespace SuccessStory.Services
                 webItem = GetWeb(Id);
             }
 
-            if (webItem != null && !ReferenceEquals(loadedItem, webItem))
+            bool mustUpdate = true;
+            if (!webItem.HasAchievements)
             {
-                webItem = SetEstimateTimeToUnlock(game, webItem);
+                mustUpdate = !loadedItem.HasAchievements;
+            }
+
+            if (webItem != null && !ReferenceEquals(loadedItem, webItem) && mustUpdate)
+            {
+                if (webItem.HasAchievements)
+                {
+                    webItem = SetEstimateTimeToUnlock(game, webItem);
+                }
                 Update(webItem);
             }
             else
