@@ -38,8 +38,8 @@ namespace SuccessStory.Clients
 
         private const string BaseMD5List = @"http://retroachievements.org/dorequest.php?r=hashlibrary&c={0}";
 
-        private string User { get; set; }
-        private string Key { get; set; }
+        private static string User = PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
+        private static string Key = PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
 
         public int GameId { get; set; } = 0;
 
@@ -50,8 +50,7 @@ namespace SuccessStory.Clients
 
         public RetroAchievements() : base("RetroAchievements")
         {
-            User = PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
-            Key = PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
+
         }
 
 
@@ -170,7 +169,7 @@ namespace SuccessStory.Clients
 
 
         #region RetroAchievements
-        private RA_Consoles GetConsoleIDs()
+        private static RA_Consoles GetConsoleIDs()
         {
             string Target = "API_GetConsoleIDs.php";
             string Url = string.Format(BaseUrl + Target + @"?z={0}&y={1}", User, Key);
@@ -265,15 +264,12 @@ namespace SuccessStory.Clients
         }
 
 
-        private int GetGameIdByName(Game game, RA_Consoles ra_Consoles)
+        public static int FindConsole(string PlatformName)
         {
-            string GameName = game.Name;
-
-            // Search id console for the game
-            string PlatformName = game.Platforms.FirstOrDefault().Name;
+            RA_Consoles ra_Consoles = GetConsoleIDs();
             int consoleID = 0;
 
-
+            #region Normalize
             if (PlatformName.IsEqual("Sega Genesis"))
             {
                 PlatformName = "Mega Drive";
@@ -402,13 +398,25 @@ namespace SuccessStory.Clients
             {
                 PlatformName = "PC Engine";
             }
+            #endregion
 
-
-            var FindConsole = ra_Consoles.ListConsoles.Find(x => PlatformName.IsEqual(x.Name));
+            RA_Console FindConsole = ra_Consoles.ListConsoles.Find(x => PlatformName.IsEqual(x.Name));
             if (FindConsole != null)
             {
                 consoleID = FindConsole.ID;
             }
+
+            return consoleID;
+        }
+
+
+        private int GetGameIdByName(Game game, RA_Consoles ra_Consoles)
+        {
+            string GameName = game.Name;
+
+            // Search id console for the game
+            string PlatformName = game.Platforms.FirstOrDefault().Name;
+            int consoleID = FindConsole(PlatformName);
 
             // Search game id
             int gameID = 0;

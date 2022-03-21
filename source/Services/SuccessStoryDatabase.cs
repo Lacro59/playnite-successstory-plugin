@@ -906,7 +906,7 @@ namespace SuccessStory.Services
                     continue;
                 }
 
-                var emulator = API.Instance.Database.Emulators.FirstOrDefault(e => e.Id == action.EmulatorId);
+                Emulator emulator = API.Instance.Database.Emulators.FirstOrDefault(e => e.Id == action.EmulatorId);
                 if (emulator == null)
                 {
                     continue;
@@ -919,7 +919,7 @@ namespace SuccessStory.Services
 
                 // TODO With the emulator migration problem emulator.BuiltInConfigId is null
                 // TODO emulator.BuiltInConfigId = "retroarch" is limited; other emulators has RA
-                if (settings.EnableRetroAchievements)
+                if (settings.EnableRetroAchievements && RetroAchievements.FindConsole(game.Platforms.FirstOrDefault().Name) != 0)
                 {
                     return AchievementSource.RetroAchievements;
                 }
@@ -940,7 +940,7 @@ namespace SuccessStory.Services
                 return AchievementSource.GuildWars2;
             }
 
-            var source = GetAchievementSourceFromLibraryPlugin(settings, game);
+            AchievementSource source = GetAchievementSourceFromLibraryPlugin(settings, game);
             if (source != AchievementSource.None)
             {
                 return source;
