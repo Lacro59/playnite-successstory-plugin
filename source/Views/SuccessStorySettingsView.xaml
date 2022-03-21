@@ -578,7 +578,7 @@
                                     </CheckBox>
 
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
-                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-GW2.net" />
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-GW2" />
                                 </Grid>
                             </Expander.Header>
 
