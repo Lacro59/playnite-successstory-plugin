@@ -46,6 +46,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">L'utente StarCraft II di Battle.net non è autenticato</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic è abilitato in SuccessStory ma l'estensione della libreria è stata disabilitata in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Utente Epic non autenticato</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 non è stato configurato correttamente nelle impostazioni</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
@@ -76,6 +77,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Abilita gli obiettivi di Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Abilita obiettivi di StarCraft II</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Abilita gli obiettivi di World of Warcraft</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Abilita obiettivi di Guild Wars 2</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Disabilita l'utilizzo API (Usare quando non si dispone di una chiave API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Cartella utente della Home</sys:String>
