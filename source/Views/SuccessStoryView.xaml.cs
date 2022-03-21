@@ -91,8 +91,11 @@ namespace SuccessStory
 
             AchievementsGraphicsDataCount GraphicsData = null;
             string[] StatsGraphicsAchievementsLabels = null;
-            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection(); 
+            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
 
+
+            PART_DataLoad.Visibility = Visibility.Visible;
+            PART_Data.Visibility = Visibility.Hidden;
 
             Task.Run(() =>
             {
@@ -314,6 +317,10 @@ namespace SuccessStory
                         ListviewGames.SelectedIndex = ListGames.IndexOf(ListGames.Where(x => x.Name == GameSelected.Name).FirstOrDefault());
                     }
                     ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
+
+
+                    PART_DataLoad.Visibility = Visibility.Hidden;
+                    PART_Data.Visibility = Visibility.Visible;
                 }));
             });
 

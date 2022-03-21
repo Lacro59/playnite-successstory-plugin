@@ -30,6 +30,13 @@
     <TabControl Margin="10" Name="PART_TabControl">
         <TabItem Header="{DynamicResource LOCSuccessStory}">
             <Grid Name="PART_GridContener" Margin="0,10,0,0">
+                <Grid Name="PART_DataLoad">
+                    <ProgressBar IsIndeterminate="True" Width="350" Height="40" />
+                    <TextBlock Text="{DynamicResource LOCLoadingLabel}"
+                       Style="{DynamicResource BaseTextBlockStyle}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Grid>
+                
                 <Grid Name="PART_Data">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.5*" />
