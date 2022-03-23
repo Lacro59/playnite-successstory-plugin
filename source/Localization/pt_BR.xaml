@@ -46,7 +46,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">O usuário da StarCraft II pelo Battle.net não está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">A Epic está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">O usuário da Epic não está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 has not been correctly configured in settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 não foi configurado corretamente nas configurações</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
@@ -77,7 +77,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Habilitar conquistas do Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Habilitar conquistas do StarCraft II</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Ativar conquistas de World of Warcraft</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Enable Guild Wars 2 achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Ativar conquistas do Guild Wars 2</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Desabilitar o uso da API (Use quando você não tem uma chave de API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Pasta principal do usuário</sys:String>
@@ -234,13 +234,13 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
     <sys:String x:Key="LOCSsQuickSearchByTime">Localizar por tempo estimado para desbloqueio completo</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Localizar por progressão</sys:String>
     
-    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
-To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">O plugin usa a funcionalidade do plugin Quicksearch.
+Para usá-lo, você deve validar o comando &quot;successstory&quot; ou &quot;ss&quot;.    
         
-Here is the list of commands:</sys:String>
+Aqui está a lista de comandos:</sys:String>
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">Este comando busca uma lista de jogos com um tempo específico para desbloqueio completo.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">Este comando procura uma lista de jogos com um percentual específico desbloqueado.</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
