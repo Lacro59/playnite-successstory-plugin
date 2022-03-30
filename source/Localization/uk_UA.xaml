@@ -46,7 +46,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Користувач Battle.net StarCraft II не авторизований</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Користувач Epic не авторизований</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 has not been correctly configured in settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 неправильно налаштовано в налаштування</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
@@ -77,7 +77,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Увімкнути досягнення Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Увімкнути досягнення StarCraft II</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Увімкнути досягнення World of Warcraft</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Enable Guild Wars 2 achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Увімкнути досягнення Guild Wars 2</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Вимкнути використання API (використовувати, коли у вас немає ключа API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Домашня тека користувача</sys:String>
@@ -132,7 +132,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Поля гри для відображення:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Іконка 100% досягнень</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Показувати графіки в основному вигляді плагіну</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Показати досягнення в прихованих іграх</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Показати графік досягнень по місяцях</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Показати графік досягнень по днях</sys:String>
@@ -234,18 +234,18 @@
     <sys:String x:Key="LOCSsQuickSearchByTime">Знайти за середнім часом для повного здобуття</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Знайти за прогресією</sys:String>
     
-    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
-To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">Плагін використовує функціональність плагіну QuickSearch.
+Щоб використовувати його, потрібно підтвердити команду &quot;successstory&quot; або &quot;ss&quot;.    
         
-Here is the list of commands:</sys:String>
+Ось список команд:</sys:String>
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">Ця команда шукає список ігор з певним часом до повного здобуття.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">Ця команда шукає список ігор із зазначеним відсотком здобуття.</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
-    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">Тільки нездобуті</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Включити опис у пошуку</sys:String>
 
 </ResourceDictionary>
