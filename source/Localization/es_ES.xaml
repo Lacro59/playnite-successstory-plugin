@@ -46,7 +46,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">El usuario de Battle.net StarCraft II no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic está activado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">El usuario de Epic no está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 has not been correctly configured in settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">Guild Wars2 no se ha configurado correctamente en la configuración</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
@@ -77,7 +77,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Habilitar Logros de Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Habilitar logros de StarCraft II</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Activa los logros de World of Warcraft</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Enable Guild Wars 2 achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Habilitar los logros de Guild Wars 2</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Desactivar el uso de la API (Usar cuando no tienes una clave API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Carpeta de usuario</sys:String>
@@ -132,7 +132,7 @@
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Campos de juego a mostrar:</sys:String>
     <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Icono de 100% logros</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Mostrar gráficos en la vista principal del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Mostrar logros de juegos ocultos</sys:String>
     <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Mostrar gráfico de logros por mes</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Mostrar gráfico de logros por día</sys:String>
@@ -208,8 +208,8 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
-    <sys:String x:Key="LOCAddGenshinImpact">Add Genshin Impact</sys:String>
+    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Habilitar los logros de Genshin Impact</sys:String>
+    <sys:String x:Key="LOCAddGenshinImpact">Añadir Genshin Impact</sys:String>
 
     
     <!-- Overwatch -->
@@ -234,18 +234,18 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
     <sys:String x:Key="LOCSsQuickSearchByTime">Encontrar por estimación de tiempo para desbloquear completamente</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">Buscar por progresión</sys:String>
     
-    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
-To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">El plugin utiliza la funcionalidad del plugin de QuickSearch.
+Para usarlo, debes validar el comando &quot;successstory&quot; o &quot;ss&quot;.    
         
-Here is the list of commands:</sys:String>
+Aquí está la lista de comandos:</sys:String>
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">Este comando busca una lista de juegos con un tiempo específico para desbloquar todos los logros.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">Este comando busca una lista de juegos con un porcentaje específico desbloqueado de logros.</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
-    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">Solo bloqueado</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Incluir descripción de la búsqueda</sys:String>
 
 </ResourceDictionary>
