@@ -1,6 +1,7 @@
 ﻿using CommonPlayniteShared.PluginLibrary.EpicLibrary;
 using CommonPlayniteShared.PluginLibrary.EpicLibrary.Services;
 using CommonPluginsShared;
+using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Models;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -59,7 +60,7 @@ namespace SuccessStory.Clients
                 {
                     var tokens = EpicAPI.loadTokens();
 
-                    string ProductSlug = GetProductSlug(game.Name);
+                    string ProductSlug = GetProductSlug(PlayniteTools.NormalizeGameName(game.Name));
                     if (ProductSlug.IsNullOrEmpty())
                     {
                         logger.Warn($"No ProductSlug for {game.Name}");
@@ -281,7 +282,7 @@ namespace SuccessStory.Clients
                 var catalogs = client.QuerySearch(Name).GetAwaiter().GetResult();
                 if (catalogs.HasItems())
                 {
-                    var catalog = catalogs.FirstOrDefault(a => a.title.Equals(Name, StringComparison.InvariantCultureIgnoreCase));
+                    var catalog = catalogs.FirstOrDefault(a => a.title.IsEqual(Name, true));
                     if (catalog == null)
                     {
                         catalog = catalogs[0];
