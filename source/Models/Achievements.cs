@@ -43,7 +43,7 @@ namespace SuccessStory.Models
                 {
                     return ImagePath;
                 }
-                return ImageSourceManager.GetImagePath(CategoryIcon);
+                return ImageSourceManagerPlugin.GetImagePath(CategoryIcon);
             }
         }
 

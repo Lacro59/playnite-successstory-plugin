@@ -380,7 +380,7 @@ namespace SuccessStory.Views
                 try
                 {
                     File.Copy(result, Path.Combine(PluginDatabase.Paths.PluginUserDataPath, Path.GetFileName(result)), true);
-                    PART_IconUnlocked.Source = ImageSourceManager.GetImage(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, Path.GetFileName(result)), false);
+                    PART_IconUnlocked.Source = ImageSourceManagerPlugin.GetImage(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, Path.GetFileName(result)), false);
                     ((SuccessStorySettingsViewModel)this.DataContext).Settings.IconCustomLocked = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, Path.GetFileName(result));
                 }
                 catch (Exception ex)

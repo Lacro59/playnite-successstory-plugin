@@ -208,7 +208,7 @@ namespace SuccessStory.Controls.Customs
                     {
                         if (newSource is string str)
                         {
-                            dynamic tmpImage = ImageSourceManager.GetImage(str, false);
+                            dynamic tmpImage = ImageSourceManagerPlugin.GetImage(str, false);
 
                             if (tmpImage == null)
                             {
