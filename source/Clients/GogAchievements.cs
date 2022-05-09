@@ -1,63 +1,37 @@
-﻿using Playnite.SDK.Data;
-using Playnite.SDK.Models;
+﻿using Playnite.SDK.Models;
 using CommonPluginsShared;
-using CommonPlayniteShared.PluginLibrary.Services.GogLibrary;
 using SuccessStory.Models;
 using System;
-using System.Collections.Generic;
-using System.Net;
-using CommonPluginsShared.Models;
-using CommonPlayniteShared.PluginLibrary.GogLibrary.Models;
+using System.Linq;
 using static CommonPluginsShared.PlayniteTools;
+using CommonPluginsStores.Gog;
+using System.Collections.ObjectModel;
+using CommonPluginsStores.Models;
+using System.Collections.Generic;
 
 namespace SuccessStory.Clients
-{
-    // https://gogapidocs.readthedocs.io/en/latest/
+{    
     class GogAchievements : GenericAchievements
     {
-        protected static GogAccountClient _GogAPI;
-        internal static GogAccountClient GogAPI
+        protected static GogApi _GogAPI;
+        internal static GogApi GogAPI
         {
             get
             {
                 if (_GogAPI == null)
                 {
-                    _GogAPI = new GogAccountClient(WebViewOffscreen);
+                    _GogAPI = new GogApi(PluginDatabase.PluginName);
                 }
                 return _GogAPI;
             }
 
-            set
-            {
-                _GogAPI = value;
-            }
+            set => _GogAPI = value;
         }
-
-        protected static AccountBasicRespose _AccountInfo;
-        internal static AccountBasicRespose AccountInfo
-        {
-            get
-            {
-                if (_AccountInfo == null)
-                {
-                    _AccountInfo = GogAPI.GetAccountInfo();
-                }
-                return _AccountInfo;
-            }
-
-            set
-            {
-                _AccountInfo = value;
-            }
-        }
-
-        private const string UrlGogAchievements = @"https://gameplay.gog.com/clients/{0}/users/{1}/achievements";
-        private const string UrlGogLang = @"https://www.gog.com/user/changeLanguage/{0}";
 
 
         public GogAchievements() : base("GOG", CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
-
+            GogAPI.SetLanguage(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
         }
 
 
@@ -66,105 +40,42 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
 
-            string ClientId = game.GameId;
-
-            string ResultWeb = string.Empty;
-            string Url = string.Empty;
-
-            string AccessToken = string.Empty;
-            string UserId = string.Empty;
-            string UserName = string.Empty;
-
-
             if (IsConnected())
             {
-                AccessToken = AccountInfo.accessToken;
-                UserId = AccountInfo.userId;
-                UserName = AccountInfo.username;
-
-                // Achievements
-                Url = string.Format(UrlGogAchievements, ClientId, UserId);
-
                 try
                 {
-                    string UrlLang = string.Format(UrlGogLang, LocalLang.ToLower());
-                    ResultWeb = Web.DownloadStringData(Url, AccessToken, UrlLang).GetAwaiter().GetResult();
-                }
-                catch (WebException ex)
-                {
-                    if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
+                    ObservableCollection<GameAchievement> gogAchievements = GogAPI.GetAchievements(game.GameId, GogAPI.CurrentAccountInfos);    
+                    if (gogAchievements?.Count > 0)
                     {
-                        Common.LogError(ex, false);
-                        var resp = (HttpWebResponse)ex.Response;
-                        switch (resp.StatusCode)
+                        AllAchievements = gogAchievements.Select(x => new Achievements 
                         {
-                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                ShowNotificationPluginWebError(ex, Url);
-                                break;
-                            case HttpStatusCode.Unauthorized: // HTTP 401
-                                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
-                                break;
-                            default:
-                                ShowNotificationPluginWebError(ex, Url);
-                                break;
-                        }
+                            ApiName = x.Id,
+                            Name = x.Name,
+                            Description =x.Description,
+                            UrlUnlocked = x.UrlUnlocked,
+                            UrlLocked = x.UrlLocked,
+                            DateUnlocked = x.DateUnlocked,
+                            Percent = x.Percent
+                        }).ToList();
+                        gameAchievements.Items = AllAchievements;
                     }
+                    
+                    // Set source link
+                    if (gameAchievements.HasAchievements)
+                    {
+                        gameAchievements.SourcesLink = GogAPI.GetAchievementsSourceLink(game.Name, game.GameId, GogAPI.CurrentAccountInfos);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ShowNotificationPluginError(ex);
                     return gameAchievements;
-                }
-
-                // Parse data
-                if (ResultWeb != string.Empty)
-                {
-                    dynamic resultObj = Serialization.FromJson<dynamic>(ResultWeb);
-                    try
-                    {
-                        dynamic resultItems = resultObj["items"];
-                        if (resultItems.Count > 0)
-                        {
-                            for (int i = 0; i < resultItems.Count; i++)
-                            {
-                                Achievements temp = new Achievements
-                                {
-                                    ApiName = (string)resultItems[i]["achievement_key"],
-                                    Name = (string)resultItems[i]["name"],
-                                    Description = (string)resultItems[i]["description"],
-                                    UrlUnlocked = (string)resultItems[i]["image_url_unlocked"],
-                                    UrlLocked = (string)resultItems[i]["image_url_locked"],
-                                    DateUnlocked = ((string)resultItems[i]["date_unlocked"] == null) ? default(DateTime) : (DateTime)resultItems[i]["date_unlocked"],
-                                    Percent = (float)resultItems[i]["rarity"]
-                                };
-
-                                AllAchievements.Add(temp);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ShowNotificationPluginError(ex);
-                        return gameAchievements;
-                    }
                 }
             }
             else
             {
                 ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
             }
-
-
-            gameAchievements.Items = AllAchievements;
-
-
-            // Set source link
-            if (gameAchievements.HasAchievements)
-            {
-                gameAchievements.SourcesLink = new SourceLink
-                {
-                    GameName = gameAchievements.Name,
-                    Name = "GOG",
-                    Url = $"https://www.gog.com/u/{UserName}/game/{ClientId}?sort=user_unlock_date&sort_user_id={UserId}"
-                };
-            }
-
 
             return gameAchievements;
         }
@@ -212,7 +123,7 @@ namespace SuccessStory.Clients
         {
             if (CachedIsConnectedResult == null)
             {
-                CachedIsConnectedResult = GogAPI.GetIsUserLoggedIn();
+                CachedIsConnectedResult = GogAPI.IsUserLoggedIn;
             }
 
             return (bool)CachedIsConnectedResult;
@@ -220,11 +131,7 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
-            string AccessToken = AccountInfo?.accessToken;
-            string UserId = AccountInfo?.userId;
-            string UserName = AccountInfo?.username;
-
-            return !AccessToken.IsNullOrEmpty() && !UserId.IsNullOrEmpty() && !UserName.IsNullOrEmpty();
+            return IsConnected();
         }
 
         public override bool EnabledInSettings()

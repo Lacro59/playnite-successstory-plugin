@@ -54,6 +54,7 @@ namespace SuccessStory.Clients
 
 
 
+        // TODO Must be removed when all store is refactored
         public GenericAchievements(string ClientName, string LocalLang = "", string LocalLangShort = "")
         {
             this.ClientName = ClientName;
