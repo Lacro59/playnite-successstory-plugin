@@ -21,6 +21,8 @@ using CommonPluginsShared.Models;
 using PlayniteTools = CommonPluginsShared.PlayniteTools;
 using CommonPluginsShared.Extensions;
 using System.Threading;
+using CommonPluginsStores.Steam;
+using CommonPluginsStores.Steam.Models;
 
 namespace SuccessStory.Clients
 {
@@ -33,15 +35,12 @@ namespace SuccessStory.Clients
             {
                 if (_steamApi == null)
                 {
-                    _steamApi = new SteamApi();
+                    _steamApi = new SteamApi(PluginDatabase.PluginName);
                 }
                 return _steamApi;
             }
 
-            set
-            {
-                _steamApi = value;
-            }
+            set => _steamApi = value;
         }
 
         private IHtmlDocument HtmlDocument { get; set; } = null;

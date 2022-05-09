@@ -26,6 +26,7 @@ using System.Reflection;
 using CommonPluginsShared.Extensions;
 using System.Diagnostics;
 using QuickSearch.SearchItems;
+using CommonPluginsStores.Steam;
 
 namespace SuccessStory
 {
@@ -805,7 +806,7 @@ namespace SuccessStory
 
                 PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
                 {
-                    CommonPluginsStores.SteamApi steamApi = new CommonPluginsStores.SteamApi();
+                    SteamApi steamApi = new SteamApi(PluginDatabase.PluginName);
 
                     foreach (GameAchievements gameAchievements in sourceLinkNull)
                     {
@@ -821,7 +822,7 @@ namespace SuccessStory
 
                             if (gameAchievements.IsManual)
                             {                                
-                                int AppId = steamApi.GetSteamId(gameAchievements.Name);
+                                int AppId = steamApi.GetAppId(gameAchievements.Name);
 
                                 if (AppId != 0)
                                 {

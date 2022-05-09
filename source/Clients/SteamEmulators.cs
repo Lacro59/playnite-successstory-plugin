@@ -2,6 +2,7 @@
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Models;
 using CommonPluginsStores;
+using CommonPluginsStores.Steam;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Converters;
@@ -25,15 +26,12 @@ namespace SuccessStory.Clients
             {
                 if (_steamApi == null)
                 {
-                    _steamApi = new SteamApi();
+                    _steamApi = new SteamApi(PluginDatabase.PluginName);
                 }
                 return _steamApi;
             }
 
-            set
-            {
-                _steamApi = value;
-            }
+            set => _steamApi = value;
         }
 
         private List<string> AchievementsDirectories = new List<string>();
@@ -111,7 +109,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                this.SteamId = steamApi.GetSteamId(game.Name);
+                this.SteamId = steamApi.GetAppId(game.Name);
             }
 
 
@@ -739,9 +737,7 @@ namespace SuccessStory.Clients
                                     int index = DataPath.FindIndex(x => x.IsEqual("steamemu"));
                                     string GameName = DataPath[index - 1];
 
-                                    SteamApi steamApi = new SteamApi();
-                                    int TempSteamId = steamApi.GetSteamId(GameName);
-
+                                    int TempSteamId = steamApi.GetAppId(GameName);
                                     if (TempSteamId == SteamId)
                                     {
                                         ReturnAchievements = GetSteamEmu(DirAchivements);
