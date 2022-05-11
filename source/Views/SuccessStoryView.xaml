@@ -63,51 +63,58 @@
                     <Border Grid.Column="0" Grid.ColumnSpan="8" Grid.Row="0" 
                             BorderThickness="{DynamicResource PopupBorderThickness}" BorderBrush="{DynamicResource NormalBorderBrush}">
 
-                        <Grid Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="6" />
-                                <ColumnDefinition Width="150" />
+                        <Grid  Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
 
-                                <ColumnDefinition Width="15" />
-
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="6" />
-                                <ColumnDefinition Width="300" />
-
-                                <ColumnDefinition Width="15" />
-
-                                <ColumnDefinition Width="*" />
-
-                                <ColumnDefinition Width="50" />
-
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
-                            <playnitecontrols:SearchBox Grid.Column="2" x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged" VerticalAlignment="Center" />
-
-                            <Label Grid.Column="4" Content="{DynamicResource LOCSourceLabel}" FontSize="16" />
-                            <ComboBox Grid.Column="6" Name="FilterSource" ItemsSource="{Binding FilterSourceItems}" IsEditable="True" IsReadOnly="True"
-                                      VerticalAlignment="Center">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Tag="{Binding SourceNameShort}"
-                                                  Content="{Binding SourceName}" IsChecked="{Binding isCheck}" FontFamily="{DynamicResource CommonFont}">
-                                        </CheckBox>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-
-                            <Grid  Grid.Column="8">
+                            <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="6" />
+                                    <ColumnDefinition Width="150" />
+
+                                    <ColumnDefinition Width="15" />
+
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="6" />
+                                    <ColumnDefinition Width="300" />
+
+                                    <ColumnDefinition Width="15" />
+
                                     <ColumnDefinition Width="*" />
+
+                                    <ColumnDefinition Width="50" />
+
+                                    <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <Label Content="{DynamicResource LOCCommonProgression}" />
-                                <controls:RangeSlider Grid.Column="2" VerticalAlignment="Center" x:Name="PART_FilterRange"
+                                <Label Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" FontSize="16" />
+                                <playnitecontrols:SearchBox Grid.Column="2" x:Name="TextboxSearch" TextChanged="TextboxSearch_TextChanged" VerticalAlignment="Center" />
+
+                                <Label Grid.Column="4" Content="{DynamicResource LOCSourceLabel}" FontSize="16" />
+                                <ComboBox Grid.Column="6" Name="FilterSource" ItemsSource="{Binding FilterSourceItems}" IsEditable="True" IsReadOnly="True"
+                                      VerticalAlignment="Center">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Name="chkSource" Checked="ChkSource_Checked" Unchecked="ChkSource_Unchecked" Tag="{Binding SourceNameShort}"
+                                                  Content="{Binding SourceName}" IsChecked="{Binding isCheck}" FontFamily="{DynamicResource CommonFont}">
+                                            </CheckBox>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+
+                                <Grid  Grid.Column="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Content="{DynamicResource LOCCommonProgression}" />
+                                    <controls:RangeSlider Grid.Column="2" VerticalAlignment="Center" x:Name="PART_FilterRange"
                                               IsSnapToTickEnabled="True" TickFrequency="1"
                                               AutoToolTipPlacement="TopLeft"
                                               ValueChanged="RangeSlider_ValueChanged"
@@ -115,67 +122,93 @@
                                               UpperValue="100"
                                               Minimum="0"
                                               Maximum="100" />
-                            </Grid>
+                                </Grid>
 
-                            <Border CornerRadius="{DynamicResource ControlCornerRadius}" BorderThickness="{DynamicResource ControlBorderThickness}" 
+                                <Border CornerRadius="{DynamicResource ControlCornerRadius}" BorderThickness="{DynamicResource ControlBorderThickness}" 
                                     Grid.Column="10" Background="Transparent" Width="140"
                                     BorderBrush="{DynamicResource NormalBorderBrush}">
 
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="55" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition Width="auto" />
-                                    </Grid.ColumnDefinitions>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="55" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
 
-                                    <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TextDate" Text="" VerticalAlignment="Center" />
+                                        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TextDate" Text="" VerticalAlignment="Center" />
 
-                                    <Button Grid.Column="1" 
+                                        <Button Grid.Column="1" 
                                             BorderThickness="0" Padding="3,0,3,0" Margin="0"
                                             ContentTemplate="{DynamicResource ClearTextIconTemplate}"
                                             Visibility="{Binding ElementName=PART_TextDate, Path=Text, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"
                                             FontSize="18" Name="PART_ClearButton" Click="PART_ClearButton_Click">
-                                        <Button.Style>
-                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                                <Setter Property="Background" Value="Transparent" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ComboBox}}" Value="True">
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
-                                    </Button>
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                                    <Setter Property="Background" Value="Transparent" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ComboBox}}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
 
-                                    <DatePicker Width="35" Grid.Column="3" Name="PART_DatePicker"
+                                        <DatePicker Width="35" Grid.Column="3" Name="PART_DatePicker"
                                                 SelectedDateChanged="DatePicker_SelectedDateChanged"
                                                 Commonpluginsbehaviors:DatePickerCalendar.IsMonthYear="True">
 
-                                        <DatePicker.CalendarStyle>
-                                            <Style TargetType="Calendar" BasedOn="{StaticResource {x:Type Calendar}}">
-                                                <Setter Property="SnapsToDevicePixels" Value="True" />
-                                                <Setter Property="CalendarDayButtonStyle" Value="{DynamicResource CalendarDayButtonStyle}"/>
-                                                <Setter Property="CalendarButtonStyle" Value="{DynamicResource CalendarButtonStyle}"/>
-                                                <Setter Property="Background" Value="{DynamicResource PopupBackgroundBrush}" />
-                                                <Setter Property="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType="{x:Type Calendar}">
-                                                            <StackPanel HorizontalAlignment="Center" Name="PART_Root">
-                                                                <CalendarItem Style="{DynamicResource CalendarItemStyle}"
+                                            <DatePicker.CalendarStyle>
+                                                <Style TargetType="Calendar" BasedOn="{StaticResource {x:Type Calendar}}">
+                                                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                                                    <Setter Property="CalendarDayButtonStyle" Value="{DynamicResource CalendarDayButtonStyle}"/>
+                                                    <Setter Property="CalendarButtonStyle" Value="{DynamicResource CalendarButtonStyle}"/>
+                                                    <Setter Property="Background" Value="{DynamicResource PopupBackgroundBrush}" />
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="{x:Type Calendar}">
+                                                                <StackPanel HorizontalAlignment="Center" Name="PART_Root">
+                                                                    <CalendarItem Style="{DynamicResource CalendarItemStyle}"
                                                                       Name="PART_CalendarItem" />
-                                                                <Button Content="{DynamicResource LOCToday}" 
+                                                                    <Button Content="{DynamicResource LOCToday}" 
                                                                 Command="Commonpluginsbehaviors:CalendarCommands.SelectToday" 
                                                                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                                            </StackPanel>
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </DatePicker.CalendarStyle>
-                                    </DatePicker>
-                                </Grid>
-                            </Border>
+                                                                </StackPanel>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </DatePicker.CalendarStyle>
+                                        </DatePicker>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="300" />
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0" IsChecked="False" Name="PART_FilteredGames" Click="PART_FilteredGames_Click" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCCommonUsedFilteredGames}" FontSize="16" />
+                                </CheckBox>
+
+                                <Label Grid.Column="2" Content="{DynamicResource LOCCompletionStatuses}" FontSize="16" />
+                                <ComboBox Grid.Column="4" Name="FilterStatus" ItemsSource="{Binding FilterStatusItems}" IsEditable="True" IsReadOnly="True">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Name="chkstatus" Checked="Chkstatus_Checked" Unchecked="Chkstatus_Unchecked" Tag="{Binding StatusName}"
+                                                      Content="{Binding StatusName}" IsChecked="{Binding isCheck}" FontFamily="{DynamicResource CommonFont}">
+                                            </CheckBox>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
                         </Grid>
                     </Border>
 

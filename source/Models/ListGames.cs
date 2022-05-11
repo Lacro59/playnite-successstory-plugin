@@ -18,6 +18,7 @@ namespace SuccessStory.Models
         public string Id { get; set; }
         public string Icon { get; set; }
         public string Name { get; set; }
+        public string CompletionStatus { get; set; }
         public DateTime? LastActivity { get; set; }
         public string SourceName { get; set; }
         public string SourceIcon { get; set; }

@@ -39,6 +39,7 @@ namespace SuccessStory
         private ObservableCollection<ListSource> FilterSourceItems = new ObservableCollection<ListSource>();
         private ObservableCollection<ListViewGames> ListGames = new ObservableCollection<ListViewGames>();
         private List<string> SearchSources = new List<string>();
+        private List<string> SearchStatus = new List<string>();
         
 
         public SuccessView(bool isRetroAchievements = false, Game GameSelected = null)
@@ -335,6 +336,9 @@ namespace SuccessStory
                 Grid.SetRowSpan(PART_PluginListContener, 5);
                 Grid.SetRowSpan(PART_GridContenerLv, 5);
             }
+
+
+            successViewData.FilterStatusItems = API.Instance.Database.CompletionStatuses.Select(x => new ListStatus { StatusName = x.Name }).ToObservable();
         }
 
         private void SetGraphicsAchievementsSources()
@@ -378,6 +382,7 @@ namespace SuccessStory
                                     Icon100Percent = x.Is100Percent ? Path.Combine(pluginFolder, "Resources\\badge.png") : string.Empty,
                                     Id = x.Id.ToString(),
                                     Name = x.Name,
+                                    CompletionStatus = x.Game.CompletionStatus.Name,
                                     Icon = !x.Icon.IsNullOrEmpty() ? PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon) : string.Empty,
                                     LastActivity = x.LastActivity?.ToLocalTime(),
                                     SourceName = PlayniteTools.GetSourceName(x.Id),
@@ -477,6 +482,8 @@ namespace SuccessStory
             double Min = PART_FilterRange.LowerValue;
             double Max = PART_FilterRange.UpperValue;
 
+            bool OnlyFilteredGames = (bool)PART_FilteredGames.IsChecked;
+
             DateTime dateStart = default(DateTime);
             DateTime dateEnd = default(DateTime);
             if (!PART_TextDate.Text.IsNullOrEmpty())
@@ -492,7 +499,7 @@ namespace SuccessStory
                 SearchSources.Remove(resources.GetString("LOCSuccessStoryManualAchievements"));
             }
 
-            successViewData.ListGames = ListGames.Where(x => CheckData(x, Min, Max, dateStart, dateEnd, IsManual)).Distinct().ToObservable();
+            successViewData.ListGames = ListGames.Where(x => CheckData(x, Min, Max, dateStart, dateEnd, IsManual, OnlyFilteredGames)).Distinct().ToObservable();
 
             successViewData.TotalFoundCount = successViewData.ListGames.Count;
             ListviewGames.Sorting();
@@ -504,7 +511,7 @@ namespace SuccessStory
             PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
         }
 
-        private bool CheckData(ListViewGames listViewGames, double Min, double Max, DateTime dateStart, DateTime dateEnd, bool IsManual)
+        private bool CheckData(ListViewGames listViewGames, double Min, double Max, DateTime dateStart, DateTime dateEnd, bool IsManual, bool OnlyFilteredGames)
         {
             bool aa = listViewGames.ProgressionValue >= Min;
             bool bb = listViewGames.ProgressionValue <= Max;
@@ -512,8 +519,10 @@ namespace SuccessStory
             bool dd = !PART_TextDate.Text.IsNullOrEmpty() ? listViewGames.DatesUnlock.Any(y => y >= dateStart && y <= dateEnd) : true;
             bool ee = SearchSources.Count != 0 ? SearchSources.Contains(listViewGames.SourceName, StringComparer.InvariantCultureIgnoreCase) : true;
             bool gg = IsManual ? listViewGames.IsManual : true;
+            bool hh = OnlyFilteredGames ? API.Instance.MainView.FilteredGames.Find(y => y.Id.ToString().IsEqual(listViewGames.Id)) != null : true;
+            bool ii = SearchStatus.Count != 0 ? SearchStatus.Contains(listViewGames.CompletionStatus, StringComparer.InvariantCultureIgnoreCase) : true;
 
-            bool ff = aa && bb && cc && dd && ee && gg;
+            bool ff = aa && bb && cc && dd && ee && gg && hh && ii;
             return ff;
         }
 
@@ -547,13 +556,49 @@ namespace SuccessStory
 
             if (SearchSources.Count != 0)
             {
-                FilterSource.Text = String.Join(", ", SearchSources);
+                FilterSource.Text = string.Join(", ", SearchSources);
+            }
+
+            Filter();
+        }
+
+        private void Chkstatus_Checked(object sender, RoutedEventArgs e)
+        {
+            FilterCbStatus((CheckBox)sender);
+        }
+
+        private void Chkstatus_Unchecked(object sender, RoutedEventArgs e)
+        {
+            FilterCbStatus((CheckBox)sender);
+        }
+
+        private void FilterCbStatus(CheckBox sender)
+        {
+            FilterStatus.Text = string.Empty;
+
+            if ((bool)sender.IsChecked)
+            {
+                SearchStatus.Add((string)sender.Tag);
+            }
+            else
+            {
+                SearchStatus.Remove((string)sender.Tag);
+            }
+
+            if (SearchStatus.Count != 0)
+            {
+                FilterStatus.Text = string.Join(", ", SearchStatus);
             }
 
             Filter();
         }
 
         private void RangeSlider_ValueChanged(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
+
+        private void PART_FilteredGames_Click(object sender, RoutedEventArgs e)
         {
             Filter();
         }
@@ -583,132 +628,91 @@ namespace SuccessStory
         public ObservableCollection<ListViewGames> ListGames
         {
             get => _ListGames;
-            set
-            {
-                _ListGames = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _ListGames, value);
         }
 
         private ObservableCollection<ListAll> _ListAll = new ObservableCollection<ListAll>();
         public ObservableCollection<ListAll> ListAll
         {
-            get => _ListAll;
-            set
-            {
-                _ListAll = value;
-                OnPropertyChanged();
-            }
+            get => _ListAll; 
+            set => SetValue(ref _ListAll, value);
         }
 
         private ObservableCollection<ListSource> _FilterSourceItems = new ObservableCollection<ListSource>();
         public ObservableCollection<ListSource> FilterSourceItems
         {
             get => _FilterSourceItems;
-            set
-            {
-                _FilterSourceItems = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _FilterSourceItems, value);
+        }
+
+        private ObservableCollection<ListStatus> _FilterStatusItems = new ObservableCollection<ListStatus>();
+        public ObservableCollection<ListStatus> FilterStatusItems
+        {
+            get => _FilterStatusItems;
+            set => SetValue(ref _FilterStatusItems, value);
         }
 
         private int _TotalFoundCount = 100;
         public int TotalFoundCount
         {
             get => _TotalFoundCount;
-            set
-            {
-                _TotalFoundCount = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _TotalFoundCount, value);
         }
 
         private int _ProgressionGlobalCountValue = 20;
         public int ProgressionGlobalCountValue
         {
             get => _ProgressionGlobalCountValue;
-            set
-            {
-                _ProgressionGlobalCountValue = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _ProgressionGlobalCountValue, value);
         }
 
         private int _ProgressionGlobalCountMax= 100;
         public int ProgressionGlobalCountMax
         {
             get => _ProgressionGlobalCountMax;
-            set
-            {
-                _ProgressionGlobalCountMax = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _ProgressionGlobalCountMax, value);
         }
 
         private string _ProgressionGlobal = "20%";
         public string ProgressionGlobal
         {
             get => _ProgressionGlobal;
-            set
-            {
-                _ProgressionGlobal = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _ProgressionGlobal, value);
         }
 
         private int _ProgressionLaunchedCountValue = 40;
         public int ProgressionLaunchedCountValue
         {
             get => _ProgressionLaunchedCountValue;
-            set
-            {
-                _ProgressionLaunchedCountValue = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _ProgressionLaunchedCountValue, value);
         }
 
         private int _ProgressionLaunchedCountMax = 100;
         public int ProgressionLaunchedCountMax
         {
             get => _ProgressionLaunchedCountMax;
-            set
-            {
-                _ProgressionLaunchedCountMax = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _ProgressionLaunchedCountMax, value);
         }
 
         private string _ProgressionLaunched = "40%";
         public string ProgressionLaunched
         {
             get => _ProgressionLaunched;
-            set
-            {
-                _ProgressionLaunched = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _ProgressionLaunched, value);
         }
 
         private Game _GameContext;
         public Game GameContext
         {
             get => _GameContext;
-            set
-            {
-                _GameContext = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _GameContext, value);
         }
 
         private SuccessStorySettings _Settings;
         public SuccessStorySettings Settings
         {
             get => _Settings;
-            set
-            {
-                _Settings = value;
-                OnPropertyChanged();
-            }
+            set => SetValue(ref _Settings, value);
         }
     }
 
@@ -717,6 +721,12 @@ namespace SuccessStory
     {
         public string SourceName { get; set; }
         public string SourceNameShort { get; set; }
+        public bool IsCheck { get; set; }
+    }
+
+    public class ListStatus
+    {
+        public string StatusName { get; set; }
         public bool IsCheck { get; set; }
     }
 }
