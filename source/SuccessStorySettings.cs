@@ -228,6 +228,7 @@ namespace SuccessStory
         public bool SteamIsPrivate { get; set; } = false;
 
         public string Rpcs3InstallationFolder { get; set; } = string.Empty;
+        public List<Folder> Rpcs3InstallationFolders { get; set; } = new List<Folder>();
 
         public bool EnableRetroAchievementsView { get; set; } = false;
         public bool EnableOneGameView { get; set; } = true;
@@ -438,6 +439,7 @@ namespace SuccessStory
             Settings.RarityUltraRareColor = SuccessStorySettingsView.RarityUltraRareColor;
 
             Settings.LocalPath = SuccessStorySettingsView.LocalPath;
+            Settings.Rpcs3InstallationFolders = SuccessStorySettingsView.Rpcs3Path;
 
             Settings.CompletionStatus100Percent = SuccessStorySettingsView.completionStatus;
 

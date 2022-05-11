@@ -13,7 +13,6 @@ using System.Diagnostics;
 using SuccessStory.Services;
 using CommonPluginsShared.Models;
 using Playnite.SDK.Data;
-using CommonPlayniteShared;
 using System.Windows.Media;
 using Playnite.SDK.Models;
 using System.IO;
@@ -42,6 +41,7 @@ namespace SuccessStory.Views
         private ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
 
         public static List<Folder> LocalPath = new List<Folder>();
+        public static List<Folder> Rpcs3Path = new List<Folder>();
 
         private List<GameAchievements> IgnoredGames;
 
@@ -98,6 +98,13 @@ namespace SuccessStory.Views
 
             LocalPath = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.LocalPath);
             PART_ItemsControl.ItemsSource = LocalPath;
+
+            Rpcs3Path = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolders);
+            PART_ItemsRpcs3Folder.ItemsSource = Rpcs3Path;
+            if (Rpcs3Path.Count > 0)
+            {
+                PART_ItemsRpcs3Folder.Visibility = Visibility.Visible;
+            }
 
 
             // Set ignored game
@@ -394,6 +401,44 @@ namespace SuccessStory.Views
         {
             Hyperlink link = (Hyperlink)sender;
             Process.Start((string)link.Tag);
+        }
+        #endregion
+
+
+        #region RPCS3 folders
+        private void ButtonAddRpcs3Folder_Click(object sender, RoutedEventArgs e)
+        {
+            PART_ItemsRpcs3Folder.Visibility = Visibility.Visible;
+            PART_ItemsRpcs3Folder.ItemsSource = null;
+            Rpcs3Path.Add(new Folder { FolderPath = "" });
+            PART_ItemsRpcs3Folder.ItemsSource = Rpcs3Path;
+        }
+
+        private void ButtonSelectRpcs3Folder_Click(object sender, RoutedEventArgs e)
+        {
+            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
+
+            string SelectedFolder = PluginDatabase.PlayniteApi.Dialogs.SelectFolder();
+            if (!SelectedFolder.IsNullOrEmpty())
+            {
+                PART_ItemsRpcs3Folder.ItemsSource = null;
+                Rpcs3Path[indexFolder].FolderPath = SelectedFolder;
+                PART_ItemsRpcs3Folder.ItemsSource = Rpcs3Path;
+            }
+        }
+
+        private void ButtonRemoveRpcs3Folder_Click(object sender, RoutedEventArgs e)
+        {
+            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
+
+            PART_ItemsRpcs3Folder.ItemsSource = null;
+            Rpcs3Path.RemoveAt(indexFolder);
+            PART_ItemsRpcs3Folder.ItemsSource = Rpcs3Path;
+
+            if (Rpcs3Path.Count == 0)
+            {
+                PART_ItemsRpcs3Folder.Visibility = Visibility.Collapsed;
+            }
         }
         #endregion
     }

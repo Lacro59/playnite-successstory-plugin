@@ -188,30 +188,36 @@ namespace SuccessStory.Clients
         private List<string> FindTrophyGameFolder(Game game)
         {
             List<string> TrophyGameFolder = new List<string>();
-            string TrophyFolder = Path.Combine(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder, "trophy");
-            //string TempTrophyGameFolder = Directory.GetParent(game.InstallDirectory).FullName;
-            string GameTrophyFolder = Path.Combine(game.InstallDirectory, "..", "TROPDIR");
 
-            try
+            List<string> FoldersPath = new List<string> { PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder };
+            PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolders?.ForEach(x => FoldersPath.Add(x.FolderPath));
+
+            FoldersPath.ForEach(x =>
             {
-                if (Directory.Exists(GameTrophyFolder))
+                string TrophyFolder = Path.Combine(x, "trophy");
+                string GameTrophyFolder = Path.Combine(game.InstallDirectory, "..", "TROPDIR");
+
+                try
                 {
-                    Parallel.ForEach(Directory.EnumerateDirectories(GameTrophyFolder), (objectDirectory, state) =>
+                    if (Directory.Exists(GameTrophyFolder))
                     {
-                        DirectoryInfo di = new DirectoryInfo(objectDirectory);
-                        string NameFolder = di.Name;
-
-                        if (Directory.Exists(Path.Combine(TrophyFolder, NameFolder)))
+                        Parallel.ForEach(Directory.EnumerateDirectories(GameTrophyFolder), (objectDirectory, state) =>
                         {
-                            TrophyGameFolder.Add(Path.Combine(TrophyFolder, NameFolder));
-                        }
-                    });
+                            DirectoryInfo di = new DirectoryInfo(objectDirectory);
+                            string NameFolder = di.Name;
+
+                            if (Directory.Exists(Path.Combine(TrophyFolder, NameFolder)))
+                            {
+                                TrophyGameFolder.Add(Path.Combine(TrophyFolder, NameFolder));
+                            }
+                        });
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-            }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                }
+            });
 
             return TrophyGameFolder;
         }

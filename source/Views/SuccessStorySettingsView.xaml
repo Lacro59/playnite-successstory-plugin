@@ -346,7 +346,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableRpcs3Achievements}" Name="PART_EnableRpcs3Achievements" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableRpcs3Achievements}"></Label>
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableRpcs3Achievements}" />
                                     </CheckBox>
 
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
@@ -366,11 +366,61 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="10" />
                                             <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition Width="auto" />
                                         </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
 
                                         <Label Grid.Column="0" Content="{DynamicResource LOCSuccessStoryEnableRpcs3HomeFolder}" />
+                                        
                                         <TextBox Name="PART_Rpcs3Folder" Grid.Column="2" Text="{Binding Settings.Rpcs3InstallationFolder}" />
-                                        <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" Grid.ColumnSpan="2" />
+                                        <Button Grid.Column="4" Content="" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectFolder_Click" />
+                                        <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddRpcs3Folder_Click" 
+                                                Name="ButtonAddRpcs3Folder" Grid.Column="6"
+                                                IsEnabled="{Binding ElementName=PART_Rpcs3Folder, Path=Text, Converter={StaticResource StringNullOrEmptyToBoolConverter}}" />
+
+                                        <Grid Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="6">
+                                            <ItemsControl Name="PART_ItemsRpcs3Folder" AlternationCount="100" Margin="0,10,0,0" Visibility="Collapsed">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Margin="0,0,0,5">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="8" />
+                                                                <ColumnDefinition Width="auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="auto" />
+                                                                <RowDefinition Height="auto" />
+                                                            </Grid.RowDefinitions>
+
+                                                            <TextBox Text="{Binding FolderPath}" VerticalAlignment="Center" MinWidth="180" Grid.Column="0" />
+
+                                                            <Grid Grid.Column="2">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="auto" />
+                                                                    <ColumnDefinition Width="10" />
+                                                                    <ColumnDefinition Width="auto" />
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <Button Content="&#xe97e;" FontFamily="{DynamicResource CommonFont}" Click="ButtonSelectRpcs3Folder_Click" 
+                                                                        Name="ButtonSelectRpcs3Folder"                                                                
+                                                                        Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                        VerticalAlignment="Center" Grid.Column="0" />
+                                                                <Button Content="&#xe97f;" FontFamily="{DynamicResource CommonFont}" Click="ButtonRemoveRpcs3Folder_Click" 
+                                                                        Name="ButtonRemoveRpcs3Folder"
+                                                                        Tag="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
+                                                                        VerticalAlignment="Center" Grid.Column="2" />
+                                                            </Grid>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Grid>
+
                                     </Grid>
                                 </Border>
                             </Expander.Content>
