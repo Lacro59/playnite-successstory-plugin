@@ -375,8 +375,9 @@ namespace SuccessStory
             try
             {
                 string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                bool ShowHidden = PluginDatabase.PluginSettings.Settings.IncludeHiddenGames;
 
-                ListGames = PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted)
+                ListGames = PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted && (ShowHidden ? true : x.Hidden == false))
                                 .Select(x => new ListViewGames
                                 {
                                     Icon100Percent = x.Is100Percent ? Path.Combine(pluginFolder, "Resources\\badge.png") : string.Empty,

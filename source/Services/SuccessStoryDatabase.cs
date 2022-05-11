@@ -366,7 +366,8 @@ namespace SuccessStory.Services
 
                 try
                 {
-                    var db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted).ToList();
+                    bool ShowHidden = PluginSettings.Settings.IncludeHiddenGames;
+                    var db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
                     foreach (var item in db)
                     {
                         List<Achievements> temp = item.Value.Items;
@@ -590,8 +591,8 @@ namespace SuccessStory.Services
                 tempDataTotal.Add(new AchievementsGraphicsDataSources { source = tempSourcesLabels[i], value = 0 });
             }
 
-
-            db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted).ToList();
+            bool ShowHidden = PluginSettings.Settings.IncludeHiddenGames;
+            db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
             foreach (KeyValuePair<Guid, GameAchievements> item in db)
             {
                 try
@@ -681,7 +682,8 @@ namespace SuccessStory.Services
 
                 try
                 {
-                    var db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted).ToList();
+                    bool ShowHidden = PluginSettings.Settings.IncludeHiddenGames;
+                    var db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
                     foreach (var item in db)
                     {
                         List<Achievements> temp = item.Value.Items;
