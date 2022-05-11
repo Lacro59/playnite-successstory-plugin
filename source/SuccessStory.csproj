@@ -179,9 +179,6 @@
     <Compile Include="Models\AchRaretyStats.cs" />
     <Compile Include="Models\BattleNetSc2Ach.cs" />
     <Compile Include="Models\BattleNetSc2Profil.cs" />
-    <Compile Include="Models\EpicAchievementsData.cs" />
-    <Compile Include="Models\EpicAchievementsOwnedData.cs" />
-    <Compile Include="Models\EpicData.cs" />
     <Compile Include="Models\ExophaseSearchResult.cs" />
     <Compile Include="Models\GameStats.cs" />
     <Compile Include="Models\GenshinImpactAchievementData.cs" />
