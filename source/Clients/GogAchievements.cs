@@ -118,7 +118,6 @@ namespace SuccessStory.Clients
             }
         }
 
-
         public override bool IsConnected()
         {
             if (CachedIsConnectedResult == null)
@@ -137,6 +136,18 @@ namespace SuccessStory.Clients
         public override bool EnabledInSettings()
         {
             return PluginDatabase.PluginSettings.Settings.EnableGog;
+        }
+
+        public override void ResetCachedConfigurationValidationResult()
+        {
+            CachedConfigurationValidationResult = null;
+            GogAPI.ResetIsUserLoggedIn();
+        }
+
+        public override void ResetCachedIsConnectedResult()
+        {
+            CachedIsConnectedResult = null;
+            GogAPI.ResetIsUserLoggedIn();
         }
         #endregion
     }
