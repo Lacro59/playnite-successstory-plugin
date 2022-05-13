@@ -1037,10 +1037,15 @@ namespace SuccessStory.Services
         public override void RefreshNoLoader(Guid Id)
         {
             Game game = PlayniteApi.Database.Games.Get(Id);
-            logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
-
             GameAchievements loadedItem = Get(Id, true);
             GameAchievements webItem = null;
+
+            if (loadedItem?.IsIgnored ?? true)
+            {
+                return;
+            }
+
+            logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
 
             if (loadedItem.IsManual)
             {
@@ -1415,6 +1420,7 @@ namespace SuccessStory.Services
                 return;
             }
 
+            PlayniteDb = PlayniteDb.FindAll(x => !Get(x.Id, true).IsIgnored);
 
             if (OnlyMissing)
             {
