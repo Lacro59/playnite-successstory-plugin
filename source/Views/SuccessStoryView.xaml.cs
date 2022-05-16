@@ -40,7 +40,9 @@ namespace SuccessStory
         private ObservableCollection<ListViewGames> ListGames = new ObservableCollection<ListViewGames>();
         private List<string> SearchSources = new List<string>();
         private List<string> SearchStatus = new List<string>();
-        
+
+        private static Filters filters = null;
+
 
         public SuccessView(bool isRetroAchievements = false, Game GameSelected = null)
         {
@@ -320,6 +322,31 @@ namespace SuccessStory
                     ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
 
 
+                    if (filters != null)
+                    {
+                        PART_DatePicker.SelectedDate = filters.FilterDate;
+                        PART_FilteredGames.IsChecked = filters.FilteredGames;
+                        PART_FilterRange.UpperValue = filters.FilterRangeMax;
+                        PART_FilterRange.LowerValue = filters.FilterRangeMin;
+                        TextboxSearch.Text = filters.SearchText;
+
+                        SearchSources = filters.SearchSources;
+                        if (SearchSources.Count != 0)
+                        {
+                            FilterSource.Text = string.Join(", ", SearchSources);
+                        }
+
+                        SearchStatus = filters.SearchStatus;
+                        if (SearchStatus.Count != 0)
+                        {
+                            FilterStatus.Text = string.Join(", ", SearchStatus);
+                        }
+
+                        filters = null;
+                        Filter();
+                    }
+
+
                     PART_DataLoad.Visibility = Visibility.Hidden;
                     PART_Data.Visibility = Visibility.Visible;
                 }));
@@ -377,9 +404,29 @@ namespace SuccessStory
                 string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 bool ShowHidden = PluginDatabase.PluginSettings.Settings.IncludeHiddenGames;
 
+                RelayCommand<Guid> GoToGame = new RelayCommand<Guid>((Id) =>
+                {
+                    SuccessView.filters = new Filters
+                    {
+                        FilterDate = PART_DatePicker.SelectedDate,
+                        FilteredGames = (bool)PART_FilteredGames.IsChecked,
+                        FilterRangeMax = PART_FilterRange.UpperValue,
+                        FilterRangeMin = PART_FilterRange.LowerValue,
+                        SearchSources = SearchSources,
+                        SearchStatus = SearchStatus,
+                        SearchText = TextboxSearch.Text
+                    };
+
+                    API.Instance.MainView.SelectGame(Id);
+                    API.Instance.MainView.SwitchToLibraryView();
+                });
+
+
                 ListGames = PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted && (ShowHidden ? true : x.Hidden == false))
                                 .Select(x => new ListViewGames
                                 {
+                                    GoToGame = GoToGame,
+
                                     Icon100Percent = x.Is100Percent ? Path.Combine(pluginFolder, "Resources\\badge.png") : string.Empty,
                                     Id = x.Id.ToString(),
                                     Name = x.Name,
@@ -729,5 +776,17 @@ namespace SuccessStory
     {
         public string StatusName { get; set; }
         public bool IsCheck { get; set; }
+    }
+
+
+    public class Filters
+    {
+        public string SearchText { get; set; } = string.Empty;
+        public List<string> SearchSources { get; set; } = new List<string>();
+        public List<string> SearchStatus { get; set; } = new List<string>();
+        public double FilterRangeMin { get; set; } = 0;
+        public double FilterRangeMax { get; set; } = 100;
+        public DateTime? FilterDate { get; set; } = null; 
+        public bool FilteredGames { get; set; } = false; 
     }
 }

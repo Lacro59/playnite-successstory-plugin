@@ -11,7 +11,7 @@ namespace SuccessStory.Models
     /// </summary>
     public class ListViewGames
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private static SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
 
         public string Icon100Percent { get; set; }
@@ -49,22 +49,15 @@ namespace SuccessStory.Models
             }
         }
 
+        private RelayCommand<Guid> _GoToGame { get; set; } = PluginDatabase.GoToGame;
         [DontSerialize]
         public RelayCommand<Guid> GoToGame
         {
-            get
-            {
-                return PluginDatabase.GoToGame;
-            }
+            get => _GoToGame;
+            set => _GoToGame = value;
         }
 
         [DontSerialize]
-        public bool GameExist
-        {
-            get
-            {
-                return PluginDatabase.PlayniteApi.Database.Games.Get(GameId) != null;
-            }
-        }
+        public bool GameExist => PluginDatabase.PlayniteApi.Database.Games.Get(GameId) != null;
     }
 }
