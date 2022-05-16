@@ -193,3 +193,15 @@ Packages:
       - Added Guild Wars 2 achievements
       - Existing data retained when no realization is found
       - Limit RetroAchievements for supported console
+  - Version: 2.12
+    RequiredApiVersion: 6.2.2
+    ReleaseDate: 2022-05-16
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.12/playnite-successstory-plugin_2_12.pext
+    Changelog:
+      - Updated localizations
+      - Fixed minors bugs
+      - UI tweaks
+      - Fixed issue with hidden games
+      - Fixed issue with excluded games
+      - Fixed issue with Epic achievements (thanks to Jhanlon95)
+      - Filters are kept after a game click
