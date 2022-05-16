@@ -1382,6 +1382,11 @@ namespace SuccessStory.Clients
                     ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
 
                     dynamic dataByWeb = Serialization.FromJson<dynamic>(ResultWeb);
+                    if (dataByWeb == null)
+                    {
+                        logger.Warn($"No g_rgAchievements data");
+                        return Achievements;
+                    }
 
                     dynamic OpenData = dataByWeb["open"];
                     foreach (dynamic dd in OpenData)
