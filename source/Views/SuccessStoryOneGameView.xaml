@@ -120,6 +120,9 @@
 
                 <Label Grid.Row="0" Content="{DynamicResource LOCSuccessStoryAchStats}" FontSize="16" HorizontalAlignment="Center" />
 
+                <ToggleButton Name="PART_TbStats" Click="PART_TbStats_Click"
+                              HorizontalAlignment="Right" Content="&#xec7e;" FontFamily="{DynamicResource FontIcoFont}" />
+
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -191,7 +194,7 @@
                 </Grid>
             </Grid>
 
-            <Label Grid.Row="2" Content="{DynamicResource LOCSuccessStoryUserStats}" FontSize="16" HorizontalAlignment="Center" />
+            <Label Grid.Row="2" Name="PART_ScUserStats_Label" Content="{DynamicResource LOCSuccessStoryUserStats}" FontSize="16" HorizontalAlignment="Center" />
 
             <Grid Name="PART_ScUserStats_Contener" Grid.Row="4">
                 <controls:PluginUserStats Height="{Binding ElementName=PART_ScUserStats_Contener, Path=ActualHeight}"

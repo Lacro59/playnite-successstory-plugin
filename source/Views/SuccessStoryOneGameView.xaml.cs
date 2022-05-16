@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 
 namespace SuccessStory.Views
@@ -26,6 +27,9 @@ namespace SuccessStory.Views
 
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
         private ControlDataContext ControlDataContext = new ControlDataContext();
+
+        public const string UiAdd = "\uec3e";
+        public const string UiRemove = "\uec7e";
 
 
         public SuccessStoryOneGameView(Game GameContext)
@@ -58,10 +62,10 @@ namespace SuccessStory.Views
 
             if (gameAchievements.HasData)
             {
-                var AchCommon = gameAchievements.Common;
-                var AchNoCommon = gameAchievements.NoCommon;
-                var AchRare = gameAchievements.Rare;
-                var AchUltraRare = gameAchievements.UltraRare;
+                AchRaretyStats AchCommon = gameAchievements.Common;
+                AchRaretyStats AchNoCommon = gameAchievements.NoCommon;
+                AchRaretyStats AchRare = gameAchievements.Rare;
+                AchRaretyStats AchUltraRare = gameAchievements.UltraRare;
 
                 if (gameAchievements.EstimateTime == null || gameAchievements.EstimateTime.EstimateTimeMin == 0)
                 {
@@ -82,7 +86,7 @@ namespace SuccessStory.Views
                 PART_AchRareTotal.Content = AchRare.Total;
                 PART_AchUltraRareTotal.Content = AchUltraRare.Total;
 
-                var converter = new LocalDateTimeConverter();
+                LocalDateTimeConverter converter = new LocalDateTimeConverter();
                 PART_FirstUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
                 PART_LastUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
             }
@@ -90,6 +94,18 @@ namespace SuccessStory.Views
 
             ControlDataContext.GameContext = GameContext;
             ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
+
+
+            if (!gameAchievements.HasDataStats)
+            {
+                PART_ScUserStats_Label.Visibility = Visibility.Collapsed;
+                PART_TbStats.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                PART_TbStats.IsChecked = gameAchievements.ShowStats;
+                PART_TbStats_Click(PART_TbStats, null);
+            }
         }
 
 
@@ -102,6 +118,28 @@ namespace SuccessStory.Views
                     Process.Start((string)((Hyperlink)sender).Tag);
                 }
             }
+        }
+
+
+        private void PART_TbStats_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleButton Tb = sender as ToggleButton;
+            if ((bool)Tb.IsChecked)
+            {
+                PART_TbStats.Content = UiRemove;
+                PART_ScUserStats_Label.Visibility = Visibility.Visible;
+                PART_ScUserStats_Contener.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PART_TbStats.Content = UiAdd;
+                PART_ScUserStats_Label.Visibility = Visibility.Collapsed;
+                PART_ScUserStats_Contener.Visibility = Visibility.Collapsed;
+            }
+
+            GameAchievements gameAchievements = PluginDatabase.Get(ControlDataContext.GameContext, true);
+            gameAchievements.ShowStats = (bool)Tb.IsChecked;
+            PluginDatabase.Update(gameAchievements);
         }
     }
 

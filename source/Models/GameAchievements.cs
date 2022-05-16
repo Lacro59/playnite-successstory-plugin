@@ -18,34 +18,12 @@ namespace SuccessStory.Models
 
 
         private List<Achievements> _Items = new List<Achievements>();
-        public override List<Achievements> Items
-        {
-            get
-            {
-                return _Items;
-            }
-
-            set
-            {
-                _Items = value;
-                OnPropertyChanged();
-            }
-        }
+        public override List<Achievements> Items { get => _Items; set => SetValue(ref _Items, value); }
 
         private List<GameStats> _ItemsStats = new List<GameStats>();
-        public List<GameStats> ItemsStats
-        {
-            get
-            {
-                return _ItemsStats;
-            }
+        public List<GameStats> ItemsStats { get => _ItemsStats; set => SetValue(ref _ItemsStats, value); }
 
-            set
-            {
-                _ItemsStats = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool ShowStats { get; set; } = true;
 
 
         [DontSerialize]
@@ -191,47 +169,23 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
-        public ObservableCollection<Achievements> OrderItemsOnlyUnlocked
-        {
-            get
-            {
-                return OrderItems.Where(x => x.IsUnlock).ToObservable();
-            }
-        }
+        public ObservableCollection<Achievements> OrderItemsOnlyUnlocked => OrderItems.Where(x => x.IsUnlock).ToObservable();
 
         [DontSerialize]
-        public ObservableCollection<Achievements> OrderItemsOnlyLocked
-        {
-            get
-            {
-                return OrderItems.Where(x => !x.IsUnlock).ToObservable();
-            }
-        }
+        public ObservableCollection<Achievements> OrderItemsOnlyLocked => OrderItems.Where(x => !x.IsUnlock).ToObservable();
 
 
         /// <summary>
         /// Indicate if the game has stats data.
         /// </summary>
         [DontSerialize]
-        public virtual bool HasDataStats
-        {
-            get
-            {
-                return ItemsStats?.Count > 0;
-            }
-        }
+        public virtual bool HasDataStats => ItemsStats?.Count > 0;
 
         /// <summary>
         /// Indicate if the game has achievements.
         /// </summary>
         [DontSerialize]
-        public bool HasAchievements
-        {
-            get
-            {
-                return Items?.Count > 0;
-            }
-        }
+        public bool HasAchievements => Items?.Count > 0;
 
         /// <summary>
         /// Indicate if the game is a rom.
@@ -239,59 +193,28 @@ namespace SuccessStory.Models
         public bool IsEmulators { get; set; }
 
         [DontSerialize]
-        public bool Is100Percent
-        {
-            get
-            {
-                return Total == Unlocked;
-            }
-        }
+        public bool Is100Percent => Total == Unlocked;
 
         [DontSerialize]
-        public string SourceIcon
-        {
-            get
-            {
-                string SourceName = PlayniteTools.GetSourceName(Id);
-                return TransformIcon.Get(SourceName);
-            }
-        }
+        public string SourceIcon => TransformIcon.Get(PlayniteTools.GetSourceName(Id));
 
         /// <summary>
         /// Total achievements for the game.
         /// </summary>
         [DontSerialize]
-        public int Total
-        {
-            get
-            {
-                return Items.Count();
-            }
-        }
+        public int Total => Items.Count();
 
         /// <summary>
         /// Total unlocked achievements for the game.
         /// </summary>
         [DontSerialize]
-        public int Unlocked
-        {
-            get
-            {
-                return Items.FindAll(x => x.IsUnlock).Count;
-            }
-        }
+        public int Unlocked => Items.FindAll(x => x.IsUnlock).Count;
 
         /// <summary>
         /// Total locked achievements for the game.
         /// </summary>
         [DontSerialize]
-        public int Locked
-        {
-            get
-            {
-                return Items.FindAll(x => !x.IsUnlock).Count;
-            }
-        }
+        public int Locked => Items.FindAll(x => !x.IsUnlock).Count;
 
         /// <summary>
         /// Estimate time to unlock all achievements.
@@ -302,13 +225,7 @@ namespace SuccessStory.Models
         /// Percentage
         /// </summary>
         [DontSerialize]
-        public int Progression
-        {
-            get
-            {
-                return (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
-            }
-        }
+        public int Progression => (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
 
         /// <summary>
         /// Indicate if the achievements have added manualy.
@@ -330,7 +247,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                var RarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
+                double RarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
 
                 AchRaretyStats achRaretyStats = new AchRaretyStats
                 {
@@ -348,8 +265,8 @@ namespace SuccessStory.Models
         {
             get
             {
-                var RarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
-                var RarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
+                double RarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
+                double RarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
 
                 AchRaretyStats achRaretyStats = new AchRaretyStats
                 {
@@ -367,8 +284,8 @@ namespace SuccessStory.Models
         {
             get
             {
-                var RarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
-                var RarityUltraRare = PluginDatabase.PluginSettings.Settings.UseUltraRare ? 
+                double RarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
+                double RarityUltraRare = PluginDatabase.PluginSettings.Settings.UseUltraRare ? 
                                             PluginDatabase.PluginSettings.Settings.RarityUltraRare :
                                             0;
 
@@ -388,7 +305,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                var RarityUltraRare = PluginDatabase.PluginSettings.Settings.RarityUltraRare;
+                double RarityUltraRare = PluginDatabase.PluginSettings.Settings.RarityUltraRare;
 
                 AchRaretyStats achRaretyStats = new AchRaretyStats
                 {
