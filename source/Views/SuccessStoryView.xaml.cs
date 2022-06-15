@@ -21,6 +21,7 @@ using System.Threading;
 using System.Collections.ObjectModel;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Converters;
+ListGames = PluginDatabase.Database.Where(x => x.HasAchievements
 using System.Globalization;
 
 namespace SuccessStory
@@ -422,34 +423,35 @@ namespace SuccessStory
                 });
 
 
-                ListGames = PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted && (ShowHidden ? true : x.Hidden == false))
-                                .Select(x => new ListViewGames
-                                {
-                                    GoToGame = GoToGame,
+                ListGames = PluginDatabase.Database
+                    .Where(x => x.HasAchievements && !x.IsDeleted && (ShowHidden ? true : x.Hidden == false))
+                    .Select(x => new ListViewGames
+                    {
+                        GoToGame = GoToGame,
 
-                                    Icon100Percent = x.Is100Percent ? Path.Combine(pluginFolder, "Resources\\badge.png") : string.Empty,
-                                    Id = x.Id.ToString(),
-                                    Name = x.Name,
-                                    CompletionStatus = x.Game.CompletionStatus.Name,
-                                    Icon = !x.Icon.IsNullOrEmpty() ? PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon) : string.Empty,
-                                    LastActivity = x.LastActivity?.ToLocalTime(),
-                                    SourceName = PlayniteTools.GetSourceName(x.Id),
-                                    SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
-                                    ProgressionValue = x.Progression,
-                                    Total = x.Total,
-                                    TotalPercent = x.Progression + "%",
-                                    Unlocked = x.Unlocked,
-                                    IsManual = x.IsManual,
+                        Icon100Percent = x.Is100Percent ? Path.Combine(pluginFolder, "Resources\\badge.png") : string.Empty,
+                        Id = x.Id.ToString(),
+                        Name = x.Name,
+                        CompletionStatus = x.Game?.CompletionStatus?.Name ?? string.Empty,
+                        Icon = !x.Icon.IsNullOrEmpty() ? PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon) : string.Empty,
+                        LastActivity = x.LastActivity?.ToLocalTime(),
+                        SourceName = PlayniteTools.GetSourceName(x.Id),
+                        SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
+                        ProgressionValue = x.Progression,
+                        Total = x.Total,
+                        TotalPercent = x.Progression + "%",
+                        Unlocked = x.Unlocked,
+                        IsManual = x.IsManual,
 
-                                    FirstUnlock = x.FirstUnlock,
-                                    LastUnlock = x.LastUnlock,
-                                    DatesUnlock = x.DatesUnlock,
+                        FirstUnlock = x.FirstUnlock,
+                        LastUnlock = x.LastUnlock,
+                        DatesUnlock = x.DatesUnlock,
 
-                                    Common = x.Common,
-                                    NoCommon = x.NoCommon,
-                                    Rare = x.Rare,
-                                    UltraRare = x.UltraRare
-                                }).ToObservable();
+                        Common = x.Common,
+                        NoCommon = x.NoCommon,
+                        Rare = x.Rare,
+                        UltraRare = x.UltraRare
+                    }).ToObservable();
             }
             catch (Exception ex)
             {
