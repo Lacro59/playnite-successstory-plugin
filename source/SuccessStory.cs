@@ -27,6 +27,7 @@ using CommonPluginsShared.Extensions;
 using System.Diagnostics;
 using QuickSearch.SearchItems;
 using CommonPluginsStores.Steam;
+using SuccessStory.Clients;
 
 namespace SuccessStory
 {
@@ -1079,6 +1080,36 @@ namespace SuccessStory
             catch (Exception ex)
             {
                 Common.LogError(ex, false);
+            }
+
+
+            // Initialize list console for RA
+            if (PluginSettings.Settings.RaConsoleAssociateds?.Count == 0)
+            {
+                PluginSettings.Settings.RaConsoleAssociateds = new List<RaConsoleAssociated>();
+                RA_Consoles ra_Consoles = RetroAchievements.GetConsoleIDs();
+
+                ra_Consoles.ListConsoles.ForEach(x =>
+                {
+                    PluginSettings.Settings.RaConsoleAssociateds.Add(new RaConsoleAssociated
+                    {
+                        RaConsoleId = x.ID,
+                        RaConsoleName = x.Name,
+                        Platforms = new List<Models.Platform>()
+                    });
+                });
+
+                API.Instance.Database.Platforms.ForEach(x =>
+                {
+                    int RaConsoleId = RetroAchievements.FindConsole(x.Name);
+                    if (RaConsoleId != 0)
+                    {
+                        PluginSettings.Settings.RaConsoleAssociateds
+                            .Find(y => y.RaConsoleId == RaConsoleId).Platforms.Add(new Models.Platform { Id = x.Id, IsSelected = true });
+                    }
+                });
+
+                this.SavePluginSettings(PluginSettings.Settings);
             }
         }
 

@@ -12,7 +12,7 @@ namespace SuccessStory.Models
         public Games games { get; set; }
     }
 
-    public class Platform
+    public class ExophasePlatform
     {
         public int termTaxonomyId { get; set; }
         public int termId { get; set; }
@@ -39,7 +39,7 @@ namespace SuccessStory.Models
         public int total_points { get; set; }
         public string title { get; set; }
         public string environment_slug { get; set; }
-        public List<Platform> platforms { get; set; }
+        public List<ExophasePlatform> platforms { get; set; }
         public string endpoint_awards { get; set; }
         public Images images { get; set; }
     }

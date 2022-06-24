@@ -21,7 +21,6 @@ using System.Threading;
 using System.Collections.ObjectModel;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Converters;
-ListGames = PluginDatabase.Database.Where(x => x.HasAchievements
 using System.Globalization;
 
 namespace SuccessStory

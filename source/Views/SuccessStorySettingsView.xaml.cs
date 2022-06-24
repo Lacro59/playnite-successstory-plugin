@@ -31,6 +31,8 @@ namespace SuccessStory.Views
         public static SolidColorBrush RarityRareColor;
         public static SolidColorBrush RarityUltraRareColor;
 
+        public static List<RaConsoleAssociated> RaConsoleAssociateds;
+
         public static CompletionStatus completionStatus;
 
         private TextBlock tbControl;
@@ -125,6 +127,25 @@ namespace SuccessStory.Views
 
             PART_Time.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "time.png"));
             PART_Percent.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "percent.png"));
+
+
+            // Set RA console list
+            PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.ForEach(y => 
+            {
+                API.Instance.Database.Platforms.ForEach(x =>
+                {
+                    int RaConsoleId = RetroAchievements.FindConsole(x.Name);
+                    Models.Platform Finded = y.Platforms.Find(z => z.Id == x.Id);
+                    if (Finded == null)
+                    {
+                        y.Platforms.Add(new Models.Platform { Id = x.Id });
+                    }
+                });
+                y.Platforms = y.Platforms.OrderBy(z => z.Name).ToList();
+            });
+            PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.OrderBy(x => x.RaConsoleName).ToList();
+            PART_LbRaConsole.ItemsSource = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
+            RaConsoleAssociateds = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
         }
 
 
@@ -441,6 +462,17 @@ namespace SuccessStory.Views
             }
         }
         #endregion
+
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            RaConsoleAssociateds = (List<RaConsoleAssociated>)PART_LbRaConsole.ItemsSource;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            RaConsoleAssociateds = (List<RaConsoleAssociated>)PART_LbRaConsole.ItemsSource;
+        }
     }
 
 

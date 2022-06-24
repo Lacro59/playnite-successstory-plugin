@@ -192,6 +192,7 @@
     <Compile Include="Models\GameAchievements.cs" />
     <Compile Include="Models\PSN_NPWR_LIST.cs" />
     <Compile Include="Models\QuickSearchItemSource.cs" />
+    <Compile Include="Models\RaConsoleAssociated.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
     <Compile Include="Models\WowAchievementsData.cs" />

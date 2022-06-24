@@ -44,8 +44,8 @@ namespace SuccessStory.Clients
         public int GameId { get; set; } = 0;
 
 
-        private string GameNameAchievements = string.Empty;
-        private string UrlAchievements = string.Empty;
+        private string GameNameAchievements { get; set; } = string.Empty;
+        private string UrlAchievements { get; set; } = string.Empty;
 
 
         public RetroAchievements() : base("RetroAchievements")
@@ -169,7 +169,7 @@ namespace SuccessStory.Clients
 
 
         #region RetroAchievements
-        private static RA_Consoles GetConsoleIDs()
+        public static RA_Consoles GetConsoleIDs()
         {
             string Target = "API_GetConsoleIDs.php";
             string Url = string.Format(BaseUrl + Target + @"?z={0}&y={1}", User, Key);
@@ -416,7 +416,8 @@ namespace SuccessStory.Clients
 
             // Search id console for the game
             string PlatformName = game.Platforms.FirstOrDefault().Name;
-            int consoleID = FindConsole(PlatformName);
+            Guid PlatformId = game.Platforms.FirstOrDefault().Id;
+            int consoleID = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == PlatformId) != null)?.RaConsoleId ?? 0;
 
             // Search game id
             int gameID = 0;

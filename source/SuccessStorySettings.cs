@@ -6,7 +6,9 @@ using SuccessStory.Views;
 using CommonPluginsShared.Models;
 using System.Windows.Media;
 using System;
+using System.Linq;
 using Playnite.SDK.Models;
+using SuccessStory.Clients;
 
 namespace SuccessStory
 {
@@ -235,6 +237,7 @@ namespace SuccessStory
 
         public string RetroAchievementsUser { get; set; } = string.Empty;
         public string RetroAchievementsKey { get; set; } = string.Empty;
+        public List<RaConsoleAssociated> RaConsoleAssociateds { get; set; } = new List<RaConsoleAssociated>();
 
         public bool EnableLocal { get; set; } = false;
         public List<Folder> LocalPath { get; set; } = new List<Folder>();
@@ -442,6 +445,12 @@ namespace SuccessStory
             Settings.Rpcs3InstallationFolders = SuccessStorySettingsView.Rpcs3Path;
 
             Settings.CompletionStatus100Percent = SuccessStorySettingsView.completionStatus;
+
+            Settings.RaConsoleAssociateds = SuccessStorySettingsView.RaConsoleAssociateds;
+            Settings.RaConsoleAssociateds.ForEach(x => 
+            {
+                x.Platforms = x.Platforms.FindAll(y => y.IsSelected).ToList();
+            });
 
 
             Plugin.SavePluginSettings(Settings);
