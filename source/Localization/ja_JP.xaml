@@ -14,7 +14,7 @@
     <!-- MainView -->
 
     <sys:String x:Key="LOCSuccessStory">SuccessStory</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievements">Achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievements">実績</sys:String>
     <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroAchievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewGames">View the games achievements</sys:String>
@@ -65,19 +65,19 @@
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Show description in tooltip</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableSteam">Enable Steam achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableGog">Enable GOG achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableEpic">Enable Epic achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable Origin achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableXbox">Enable Xbox achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Enable RetroAchievements achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Enable RPCS3 achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnablePSN">PSN 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSteam">Steam 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGog">GOG 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEpic">Epic 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Origin 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableXbox">Xbox 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">RetroAchievements 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">RPCS3 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Enable manual achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Enable Overwatch achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Enable StarCraft II achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Enable World of Warcraft achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Enable Guild Wars 2 achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Overwatch 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">StarCraft II 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">World of Warcraft 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Guild Wars 2 実績を有効にする</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Disable API usage (Use when you don't have an API key)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Home user folder</sys:String>
@@ -208,7 +208,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
+    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Genshin Impact 実績を有効にする</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Add Genshin Impact</sys:String>
 
     
