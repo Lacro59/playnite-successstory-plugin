@@ -59,6 +59,13 @@ namespace SuccessStory.Clients
                         }).ToList();
                         gameAchievements.Items = AllAchievements;
                     }
+                    else
+                    {
+                        if (!GogAPI.IsUserLoggedIn)
+                        {
+                            ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
+                        }
+                    }
                     
                     // Set source link
                     if (gameAchievements.HasAchievements)
