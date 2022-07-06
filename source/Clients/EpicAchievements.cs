@@ -61,6 +61,13 @@ namespace SuccessStory.Clients
                         }).ToList();
                         gameAchievements.Items = AllAchievements;
                     }
+                    else
+                    {
+                        if (!EpicAPI.IsUserLoggedIn)
+                        {
+                            ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
+                        }
+                    }
 
                     // Set source link
                     if (gameAchievements.HasAchievements)
