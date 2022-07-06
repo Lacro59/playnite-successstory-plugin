@@ -9,7 +9,7 @@
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">الكأس المخفي</sys:String>
 
     <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarity for manual achievements</sys:String>
-    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Refresh estimate time for manual achievements</sys:String>
+    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">تحديث الوقت المقدر للإنجازات اليدوية</sys:String>
     
     <!-- MainView -->
 
