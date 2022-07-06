@@ -284,7 +284,7 @@ namespace SuccessStory.Services
 
             gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
 
-            if (!(bool)gameAchievements?.HasAchievements)
+            if (!(gameAchievements?.HasAchievements ?? false))
             {
                 logger.Info($"No achievements find for {game.Name} - {game.Id}");
             }
@@ -299,7 +299,7 @@ namespace SuccessStory.Services
 
         private GameAchievements SetEstimateTimeToUnlock(Game game, GameAchievements gameAchievements)
         {
-            if (game != null && gameAchievements.HasAchievements)
+            if (game != null && (gameAchievements?.HasAchievements ?? false))
             {
                 try
                 {
@@ -1081,7 +1081,7 @@ namespace SuccessStory.Services
             }
 
             bool mustUpdate = true;
-            if (!webItem.HasAchievements)
+            if (webItem != null && !webItem.HasAchievements)
             {
                 mustUpdate = !loadedItem.HasAchievements;
             }

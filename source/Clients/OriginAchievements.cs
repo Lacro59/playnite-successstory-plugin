@@ -46,6 +46,12 @@ namespace SuccessStory.Clients
                 try
                 {
                     GameInfos gameInfos = OriginAPI.GetGameInfos(game.GameId, null);
+                    if (gameInfos == null)
+                    {
+                        logger.Warn($"No gameInfos for {game.GameId}");
+                        return null;
+                    }
+
                     ObservableCollection<GameAchievement> originAchievements = OriginAPI.GetAchievements(gameInfos.Id2, OriginAPI.CurrentAccountInfos);
                     if (originAchievements?.Count > 0)
                     {
