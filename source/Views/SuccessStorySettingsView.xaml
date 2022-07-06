@@ -1519,6 +1519,8 @@
                                                     <RowDefinition Height="auto" />
                                                     <RowDefinition Height="10" />
                                                     <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="10" />
+                                                    <RowDefinition Height="auto" />
                                                 </Grid.RowDefinitions>
 
                                                 <Grid Grid.Column="0" Grid.Row="0">
@@ -1557,10 +1559,11 @@
                                                     <Label Content="{DynamicResource LOCCommonChartHideOptions}" />
                                                 </CheckBox>
 
-                                                <CheckBox Grid.Column="0" Grid.Row="8" IsChecked="{Binding Settings.EnableIntegrationChartAllPerdiod}">
+                                                <CheckBox Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="3" IsChecked="{Binding Settings.EnableIntegrationChartAllPerdiod}">
                                                     <Label Content="{DynamicResource LOCCommonChartAllPeriod}" />
                                                 </CheckBox>
-                                                <CheckBox Grid.Column="2" Grid.Row="8" IsChecked="{Binding Settings.EnableIntegrationChartCutPeriod}">
+
+                                                <CheckBox Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="3" IsChecked="{Binding Settings.EnableIntegrationChartCutPeriod}">
                                                     <Label Content="{DynamicResource LOCCommonChartCutPeriod}" />
                                                 </CheckBox>
                                             </Grid>
