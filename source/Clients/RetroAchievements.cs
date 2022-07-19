@@ -197,14 +197,17 @@ namespace SuccessStory.Clients
 
             if (!ResultWeb.IsNullOrEmpty())
             {
-                try
+                Serialization.TryFromJson<List<RA_Console>>(ResultWeb, out List<RA_Console> data);
+                resultObj.ListConsoles = data ?? new List<RA_Console>();
+
+                if (resultObj.ListConsoles?.Count == 0)
                 {
-                    resultObj.ListConsoles = Serialization.FromJson<List<RA_Console>>(ResultWeb);
-                    File.WriteAllText(fileConsoles, Serialization.ToJson(resultObj), Encoding.UTF8);
+                    Exception ex = new Exception($"Failed to parse {ResultWeb}");
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Common.LogError(ex, false, $"Failed to parse {ResultWeb}", true, PluginDatabase.PluginName);
+                    File.WriteAllText(fileConsoles, Serialization.ToJson(resultObj), Encoding.UTF8);
                 }
             }
 
