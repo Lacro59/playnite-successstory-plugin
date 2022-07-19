@@ -205,3 +205,17 @@ Packages:
       - Fixed issue with excluded games
       - Fixed issue with Epic achievements (thanks to Jhanlon95)
       - Filters are kept after a game click
+  - Version: 2.12.1
+    RequiredApiVersion: 6.2.2
+    ReleaseDate: 2022-07-19
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.12.1/playnite-successstory-plugin_2_12.1.pext
+    Changelog:
+      - Updated localizations
+      - UI tweaks
+      - Added missing icon for Genshin Impact
+      - Fixed minor issues
+      - Fixed minor issues with Origin
+      - Fixed minor issues with Steam
+      - Fixed minor issues with Epic
+      - Fixed minor issues with GOG
+      - Fixed minor issues with RetroAchievements
