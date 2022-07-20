@@ -221,7 +221,7 @@ Packages:
       - Fixed minor issues with RetroAchievements
   - Version: 2.12.2
     RequiredApiVersion: 6.2.2
-    ReleaseDate: 2022-07-19
+    ReleaseDate: 2022-07-20
     PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v2.12.2/playnite-successstory-plugin_2_12_2.pext
     Changelog:
       - Fixed minor issues with Epic url encoding (thanks to Jhanlon95)
