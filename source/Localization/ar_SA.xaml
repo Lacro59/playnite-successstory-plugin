@@ -2,13 +2,13 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="LOCSuccessStoryProgress">التقدّم</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEarned">Earned</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEarned">المُكتسب</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryManualAchievements">إنجازات يدوية</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">الكأس المخفي</sys:String>
 
-    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarity for manual achievements</sys:String>
+    <sys:String x:Key="LOCSsRefreshRaretyManual">تحديث نُدرة الإنجازات اليدوية</sys:String>
     <sys:String x:Key="LOCSsRefreshEstimateTimeManual">تحديث الوقت المقدر للإنجازات اليدوية</sys:String>
     
     <!-- MainView -->
@@ -17,13 +17,13 @@
     <sys:String x:Key="LOCSuccessStoryAchievements">الإنجازات</sys:String>
     <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryViewGames">View the games achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryViewGame">View the game achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGames">عرض إنجازات الألعاب</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGame">عرض إنجازات اللعبة</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnored">تجاهل اللع</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profile is not public</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">ملف تعريف Steam ليس عام</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam has not been correctly configured in settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key in settings menu for Steam Library</sys:String>
