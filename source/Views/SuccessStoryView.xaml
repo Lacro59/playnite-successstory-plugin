@@ -476,7 +476,7 @@
                                 </lvc:CartesianChart.ChartLegend>
 
                                 <lvc:CartesianChart.DataTooltip>
-                                    <livechartscommon:CustomerToolTipForSingle />
+                                    <livechartscommon:CustomerToolTipForSingle TextFontFamily="{DynamicResource CommonFont}" />
                                 </lvc:CartesianChart.DataTooltip>
 
                                 <lvc:CartesianChart.AxisX>
@@ -516,7 +516,7 @@
                                 </lvc:CartesianChart.DataTooltip>
 
                                 <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Name="AchievementsMonthX" ShowLabels="True" FontFamily="{DynamicResource CommonFont}" LabelsRotation="172">
+                                    <lvc:Axis Name="AchievementsMonthX" ShowLabels="True" LabelsRotation="172">
                                         <lvc:Axis.Separator>
                                             <lvc:Separator Step="1" />
                                         </lvc:Axis.Separator>
