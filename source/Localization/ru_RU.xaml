@@ -204,7 +204,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- ListViewGames -->
 
-    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Прогре</sys:String>
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Прогрес</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">Все достижения разблокированные по месяцам</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">Все достижения разблокированные по дням</sys:String>
