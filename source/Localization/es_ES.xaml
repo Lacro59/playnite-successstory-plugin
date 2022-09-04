@@ -153,7 +153,7 @@
     <sys:String x:Key="LOCSuccessStoryRarityConfig">Configuración de rareza</sys:String>
     <sys:String x:Key="LOCSuccessStoryUseUltraRare">Utilizar logros ultra raros</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryEnableImageCache">Habilitar cach'e de imágenes de logros</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableImageCache">Habilitar caché de imágenes de logros *</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Proceso de no bloqueo que puede aumentar el uso de la memoria un poco cuando solo almacena en caché.
 Especialmente útil para los logros de Xbox con sus imágenes grandes que se reducen cuando el almacenan en caché.</sys:String>
 
