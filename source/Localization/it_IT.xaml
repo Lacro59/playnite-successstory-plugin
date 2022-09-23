@@ -150,7 +150,7 @@
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Ripristina e scarica gli obiettivi dei giochi installati. (Usalo se ci sono problemi con gli obiettivi)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Ripristina e scarica gli obiettivi di tutti i giochi. (Usalo se ci sono problemi con gli obiettivi)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryRarityConfig">Configurazione della rarit</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarityConfig">Configurazione della rarità</sys:String>
     <sys:String x:Key="LOCSuccessStoryUseUltraRare">Usa obiettivi ultra rari</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryEnableImageCache">Abilita la memorizzazione nella cache delle immagini degli obiettivi *</sys:String>
@@ -193,7 +193,7 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
     <sys:String x:Key="LOCSuccessStoryGameInformation">Informazioni</sys:String>
 
 
-    <sys:String x:Key="LOCSuccessStoryRarety">Rarit</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarety">Rarità</sys:String>
     <sys:String x:Key="LOCSuccessStoryDateUnlocked">Data di sblocco</sys:String>
 
     <!-- ListViewGames -->
