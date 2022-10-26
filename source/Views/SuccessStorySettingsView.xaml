@@ -1637,13 +1637,20 @@
                                                     <RowDefinition Height="auto" />
                                                     <RowDefinition Height="10" />
                                                     <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="10" />
+                                                    <RowDefinition Height="auto" />
                                                 </Grid.RowDefinitions>
 
                                                 <Grid Grid.Column="0">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="auto" />
+                                                        <ColumnDefinition Width="150" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="10" />
+                                                        <RowDefinition Height="auto" />
+                                                    </Grid.RowDefinitions>
 
                                                     <Label Content="{DynamicResource LOCHeight}" Grid.Column="0" />
                                                     <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationListHeight}" 
@@ -1665,7 +1672,23 @@
                                                     <Label Grid.Column="2" Content="{Binding ElementName=sColCount, Path=Value}" HorizontalAlignment="Center" />
                                                 </Grid>
 
-                                                <interfaces:SettingsOrderAchievement Grid.Row="2" Grid.ColumnSpan="2" UsedGroupBy="True"
+                                                <Grid Grid.Row="2" Grid.Column="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="150" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="10" />
+                                                        <RowDefinition Height="auto" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <Label Content="{DynamicResource LOCGameIconTitle}" Grid.Column="0" />
+                                                    <playnitecontrols:NumericBox LongValue="{Binding Settings.IntegrationListIconHeight}" 
+                                                                             Width="40" Grid.Column="1" TextAlignment="Center" />
+                                                </Grid>
+                                                
+                                                <interfaces:SettingsOrderAchievement Grid.Row="4" Grid.ColumnSpan="2" UsedGroupBy="True"
                                                                                      OrderAchievement="{Binding Settings.IntegrationListOrderAchievement}" />
                                             </Grid>
                                         </Border>

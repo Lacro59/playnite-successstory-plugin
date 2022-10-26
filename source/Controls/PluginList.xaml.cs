@@ -234,10 +234,12 @@ namespace SuccessStory.Controls
         {
             bool IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationList;
             double Height = PluginDatabase.PluginSettings.Settings.IntegrationListHeight;
+            double IconHeight = PluginDatabase.PluginSettings.Settings.IntegrationListIconHeight;
             if (IgnoreSettings)
             {
                 IsActivated = true;
                 Height = double.NaN;
+                IconHeight = 48;
             }
 
             int ColDefinied = PluginDatabase.PluginSettings.Settings.IntegrationListColCount;
@@ -249,6 +251,7 @@ namespace SuccessStory.Controls
 
             ControlDataContext.IsActivated = IsActivated;
             ControlDataContext.Height = Height;
+            ControlDataContext.IconHeight = IconHeight;
 
             ControlDataContext.ItemSize = new Size(300, 65);
             ControlDataContext.ColDefinied = ColDefinied;
@@ -578,6 +581,9 @@ namespace SuccessStory.Controls
 
         private double _Height;
         public double Height { get => _Height; set => SetValue(ref _Height, value); }
+
+        private double _IconHeight;
+        public double IconHeight { get => _IconHeight; set => SetValue(ref _IconHeight, value); }
 
         private Size _ItemSize;
         public Size ItemSize { get => _ItemSize; set => SetValue(ref _ItemSize, value); }

@@ -78,6 +78,7 @@
                                     BubblingScrollEvents="True" Style="{StaticResource {x:Type ListBox}}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" 
                                     ItemsSource="{Binding ItemsSource}"
+                                    Tag="{Binding IconHeight}"
                                     Width="{Binding ElementName=PART_GridContener, Path=ActualWidth}"
                                     Height="{Binding ElementName=PART_GridContener, Path=ActualHeight}">
                 
@@ -114,12 +115,13 @@
                     <DataTemplate>
                         <Grid Margin="0,5" Name="PART_Grid" d:DesignWidth="400">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="58" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,5,0,0">
-                                <customs:AchievementImage Width="48" Height="48"
+                                <customs:AchievementImage Width="{Binding ElementName=lbAchievements, Path=Tag}" 
+                                                          Height="{Binding ElementName=lbAchievements, Path=Tag}"
                                                           Icon="{Binding Icon, IsAsync=True}"
                                                           IsLocked="{Binding IsUnlock, Converter={StaticResource InvertedBoolenConverter}}"
                                                           IconCustom="{Binding IconCustom}"

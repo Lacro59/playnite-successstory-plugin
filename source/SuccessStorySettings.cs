@@ -197,6 +197,7 @@ namespace SuccessStory
         }
 
         public double IntegrationListHeight { get; set; } = 200;
+        public double IntegrationListIconHeight { get; set; } = 48;
         public int IntegrationListColCount { get; set; } = 1;
 
 
