@@ -22,7 +22,6 @@ namespace SuccessStory.Clients
         public static string XboxUrlSearch = @"https://www.trueachievements.com/searchresults.aspx?search={0}";
         public static string SteamUrlSearch = @"https://truesteamachievements.com/searchresults.aspx?search={0}";
 
-
         public enum OriginData
         {
             Steam, Xbox
@@ -56,7 +55,13 @@ namespace SuccessStory.Clients
 
             try
             {
-                string WebData = Web.DownloadStringData(Url).GetAwaiter().GetResult();
+                string WebData = string.Empty;
+                using (var WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                {
+                    WebViewOffscreen.NavigateAndWait(Url);
+                    WebData = WebViewOffscreen.GetPageSource();
+                }
+
                 if (WebData.IsNullOrEmpty())
                 {
                     logger.Warn($"No data from {Url}");
@@ -144,7 +149,13 @@ namespace SuccessStory.Clients
 
             try
             {
-                string WebData = Web.DownloadStringData(UrlTrueAchievement).GetAwaiter().GetResult();
+                string WebData = string.Empty;
+                using (var WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                {
+                    WebViewOffscreen.NavigateAndWait(UrlTrueAchievement);
+                    WebData = WebViewOffscreen.GetPageSource();
+                }
+
                 if (WebData.IsNullOrEmpty())
                 {
                     logger.Warn($"No data from {UrlTrueAchievement}");
@@ -174,7 +185,10 @@ namespace SuccessStory.Clients
 
                     if (Title != null && Title == "Estimated time to unlock all achievements")
                     {
-                        string EstimateTime = SearchElement.InnerHtml.Replace("<i class=\"fa fa-hourglass-end\"></i>", string.Empty).Trim();
+                        string EstimateTime = SearchElement.InnerHtml
+                            .Replace("<i class=\"fa fa-hourglass-end\"></i>", string.Empty)
+                            .Replace("<i class=\"fa fa-clock-o\"></i>", string.Empty)
+                            .Trim();
 
                         int EstimateTimeMin = 0;
                         int EstimateTimeMax = 0;
