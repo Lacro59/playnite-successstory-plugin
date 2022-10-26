@@ -1,43 +1,43 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSuccessStoryProgress">Progress</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEarned">Earned</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgress">Framgang</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEarned">Opptjent</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryManualAchievements">Manual Achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryManualAchievements">Manuelle prestasjoner</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Skjult Trofé</sys:String>
 
-    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarity for manual achievements</sys:String>
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Oppdater sjeldenhet for manuelle prestasjoner</sys:String>
     <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Oppdater beregnet tid for manuelle prestasjoner</sys:String>
     
     <!-- MainView -->
 
     <sys:String x:Key="LOCSuccessStory">SuccessStory</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievements">Achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievements">Prestasjoner</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroPrestasjoner</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryViewGames">View the games achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryViewGame">View the game achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGames">Se spillets prestasjoner</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGame">Vis spillprestasjonene</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnored">Ignored the game</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnored">Spillet blir oversett</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotIgnored">Spillet blir ikke oversett</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profile is not public</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam has not been correctly configured in settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key in settings menu for Steam Library</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user in settings menu for Steam Library</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG has not been correctly configured in settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam-profil er ikke offentlig</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam er aktivert i SuccessStory men biblioteksutvidelsen er deaktivert i Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam er ikke riktig konfigurert i innstillingene</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Steam-konfigurasjon og/eller API-nøkkel mangler i innstillingsmenyen for Steam-biblioteket</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Ingen Steam-bruker i innstillingsmenyen for Steam-biblioteket</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam-bruker er ikke godkjent</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG er aktivert i SuccessStory men biblioteksutvidelsen er deaktivert i Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG-bruker er ikke godkjent</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG er ikke riktig konfigurert i innstillingene</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN er aktivert i SuccessStory men biblioteksutvidelsen er deaktivert i Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN-bruker er ikke godkjent</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin er aktivert i SuccessStory men biblioteksutvidelsen er deaktivert i Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin-bruker er ikke godkjent</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox er aktivert i SuccessStory men biblioteksutvidelsen er deaktivert i Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox-bruker er ikke godkjent</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements has not been correctly configured in settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 has not been correctly configured in settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>

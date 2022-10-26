@@ -180,7 +180,7 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <sys:String x:Key="LOCSsTimeToUnlock">Temps pour tout débloquer</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryCommon">Commun</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNoCommon">Non commun</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">Peu commun</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
     <sys:String x:Key="LOCSuccessStoryUltraRare">Ultra-rare</sys:String>
 
@@ -189,8 +189,8 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <!-- UI -->
 
     <sys:String x:Key="LOCSuccessStoryFilterSource">Filtrer par source</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Progression global des succès</sys:String>
-    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Progression des succès des jeux lancés</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Progression globale des succès</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Progression pour les jeux déjà lancés</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Informations</sys:String>
 
 
