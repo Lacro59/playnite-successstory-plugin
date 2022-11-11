@@ -482,7 +482,7 @@ namespace SuccessStory.Clients
                                             if (line.Contains("HaveAchievedTime="))
                                             {
                                                 sTimeUnlock = line.Replace("HaveAchievedTime=", string.Empty);
-                                                timeUnlock = BitConverter.ToInt32(StringToByteArray(line.Replace("HaveAchievedTime=", string.Empty)), 0);
+                                                timeUnlock = Int32.Parse(sTimeUnlock);
                                             }
                                         }
 
