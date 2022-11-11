@@ -47,6 +47,8 @@ namespace SuccessStory.Clients
             AchievementsDirectories.Add("%PUBLIC%\\Documents\\Steam\\CODEX");
             AchievementsDirectories.Add("%appdata%\\Steam\\CODEX");
 
+            AchievementsDirectories.Add("%DOCUMENTS%\\VALVE");
+
             AchievementsDirectories.Add("%appdata%\\Goldberg SteamEmu Saves");
             AchievementsDirectories.Add("%appdata%\\SmartSteamEmu");
             AchievementsDirectories.Add("%DOCUMENTS%\\DARKSiDERS");
@@ -442,6 +444,74 @@ namespace SuccessStory.Clients
 
                             break;
 
+                        case ("%documents%\\valve"):
+                            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\VALVE\\{SteamId}\\ALI213\\Stats\\Achievements.Bin"))
+                            {
+                                string line;
+                                string Name = string.Empty;
+                                bool State = false;
+                                string sTimeUnlock = string.Empty;
+                                int timeUnlock = 0;
+                                DateTime? DateUnlocked = null;
+
+                                string pathFile = (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\VALVE\\{SteamId}\\ALI213\\Stats\\Achievements.Bin");
+                                StreamReader file = new StreamReader(pathFile);
+                                while ((line = file.ReadLine()) != null)
+                                {
+                                    // Achievement name
+                                    if (line.IndexOf("[") > -1)
+                                    {
+                                        Name = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
+                                        State = false;
+                                        timeUnlock = 0;
+                                        DateUnlocked = null;
+                                    }
+                                    
+
+                                    if (Name != "Steam")
+                                    {
+                                        // State
+                                        if (line.ToLower() == "haveachieved=1")
+                                        {
+                                            State = true;
+                                        }
+
+                                        // Unlock
+                                        if (line.IndexOf("HaveAchievedTime") > -1 && line.ToLower() != "haveachievedtime=0000000000")
+                                        {
+                                            if (line.Contains("HaveAchievedTime="))
+                                            {
+                                                sTimeUnlock = line.Replace("HaveAchievedTime=", string.Empty);
+                                                timeUnlock = BitConverter.ToInt32(StringToByteArray(line.Replace("HaveAchievedTime=", string.Empty)), 0);
+                                            }
+                                        }
+
+                                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+
+                                        // End Achievement
+                                        if (timeUnlock != 0 && State)
+                                        {
+                                            ReturnAchievements.Add(new Achievements
+                                            {
+                                                ApiName = Name,
+                                                Name = string.Empty,
+                                                Description = string.Empty,
+                                                UrlUnlocked = string.Empty,
+                                                UrlLocked = string.Empty,
+                                                DateUnlocked = DateUnlocked
+                                            });
+
+                                            Name = string.Empty;
+                                            State = false;
+                                            timeUnlock = 0;
+                                            DateUnlocked = null;
+                                        }
+                                    }
+                                }
+                            }
+
+                            break;
+
                         case ("%appdata%\\goldberg steamemu saves"):
                             if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.json"))
                             {
@@ -693,8 +763,6 @@ namespace SuccessStory.Clients
                         case "%localappdata%\\skidrow":
                             logger.Warn($"No treatment for {DirAchivements}");
                             break;
-
-                        
 
                         default:
                             if (ReturnAchievements.Count == 0)
