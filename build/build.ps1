@@ -1,6 +1,7 @@
 param(
 	[string]$ConfigurationName, 
-	[string]$OutDir
+	[string]$OutDir,
+	[string]$SolutionDir 
 )
 
 
@@ -33,14 +34,38 @@ $ToolboxPath = (Join-Path $PlaynitePath "toolbox.exe")
 $OutDirPath = (Join-Path $OutDir "..")
 
 
-if ($ConfigurationName -eq "release") 
+$Version = ""
+foreach($Line in Get-Content (Join-Path $SolutionDir  "extension.yaml")) 
+{
+    if($Line -imatch "Version:")
+	{
+        $Version = $Line
+    }
+}
+
+
+$Manifest = (Join-Path $SolutionDir  "..\manifest\Lacro59_ScreenshotsVisualizer.yaml")
+$Result = Get-Content $Manifest
+if($Result -imatch $Version)
 {
 	if (Test-Path $ToolboxPath)
 	{
-		& $ToolboxPath "pack" $OutDir $OutDirPath
+		$Result = & $ToolboxPath "verify" "installer" $Manifest
+		if($Result -imatch "Installer manifest passed verification")
+		{		
+			& $ToolboxPath "pack" $OutDir $OutDirPath	
+		}
+		else 
+		{
+			echo $Result
+		}		
 	}
 	else 
 	{
-		Write-Error "toolbox.exe not find."
+		echo "toolbox.exe not find."
 	}	
+}
+else
+{
+    echo "Manifest not contains actual version"
 }
