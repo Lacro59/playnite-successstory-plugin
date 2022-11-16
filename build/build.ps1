@@ -50,10 +50,12 @@ if($Result -imatch $Version)
 {
 	if (Test-Path $ToolboxPath)
 	{
+		& $ToolboxPath "pack" $OutDir $OutDirPath
+		
 		$Result = & $ToolboxPath "verify" "installer" $Manifest
 		if($Result -imatch "Installer manifest passed verification")
 		{		
-			& $ToolboxPath "pack" $OutDir $OutDirPath	
+				
 		}
 		else 
 		{
