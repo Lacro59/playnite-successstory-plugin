@@ -155,7 +155,7 @@
                                                     <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Stadia">
                                                         <Setter Property="Background" Value="#cd2640" />
                                                     </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Origin">
+                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="EA app">
                                                         <Setter Property="Background" Value="#f56c2d" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Blizzard">

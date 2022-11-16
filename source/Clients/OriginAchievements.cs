@@ -30,7 +30,7 @@ namespace SuccessStory.Clients
         }
 
 
-        public OriginAchievements() : base("Origin", CodeLang.GetOriginLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language), CodeLang.GetOriginLangCountry(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public OriginAchievements() : base("EA", CodeLang.GetOriginLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language), CodeLang.GetOriginLangCountry(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
             OriginAPI.SetLanguage(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
         }

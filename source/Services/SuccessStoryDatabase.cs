@@ -473,7 +473,7 @@ namespace SuccessStory.Services
                     }
                     if (PluginSettings.Settings.EnableOrigin)
                     {
-                        tempSourcesLabels.Add("Origin");
+                        tempSourcesLabels.Add("EA app");
                     }
                     if (PluginSettings.Settings.EnableXbox)
                     {
@@ -529,7 +529,7 @@ namespace SuccessStory.Services
                 }
                 if (PluginSettings.Settings.EnableOrigin)
                 {
-                    tempSourcesLabels.Add("Origin");
+                    tempSourcesLabels.Add("EA app");
                 }
                 if (PluginSettings.Settings.EnableXbox)
                 {

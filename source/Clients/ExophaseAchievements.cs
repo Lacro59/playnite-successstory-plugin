@@ -388,7 +388,7 @@ namespace SuccessStory.Clients
                 case Services.SuccessStoryDatabase.AchievementSource.GOG:
                     return exophaseGame.Platforms.Contains("GOG", StringComparer.InvariantCultureIgnoreCase);
                 case Services.SuccessStoryDatabase.AchievementSource.Origin:
-                    return exophaseGame.Platforms.Contains("Origin", StringComparer.InvariantCultureIgnoreCase);
+                    return exophaseGame.Platforms.Contains("Electronic Arts", StringComparer.InvariantCultureIgnoreCase);
                 case Services.SuccessStoryDatabase.AchievementSource.RetroAchievements:
                     return exophaseGame.Platforms.Contains("Retro", StringComparer.InvariantCultureIgnoreCase);
                 case Services.SuccessStoryDatabase.AchievementSource.Overwatch:
