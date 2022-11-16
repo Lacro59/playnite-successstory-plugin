@@ -34,13 +34,11 @@ namespace SuccessStory.Clients
             set => _steamApi = value;
         }
 
-        private List<string> AchievementsDirectories = new List<string>();
+        private List<string> AchievementsDirectories { get; set; } = new List<string>();
         private int SteamId { get; set; } = 0;
 
-        private string Hyphenate(string str, int pos)
-        {
-            return String.Join("-", Regex.Split(str, @"(?<=\G.{" + pos + "})(?!$)"));
-        }
+        private string Hyphenate(string str, int pos) => String.Join("-", Regex.Split(str, @"(?<=\G.{" + pos + "})(?!$)"));
+
 
         public SteamEmulators(List<Folder> LocalFolders) : base("SteamEmulators")
         {

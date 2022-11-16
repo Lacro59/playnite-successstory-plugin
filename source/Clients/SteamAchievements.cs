@@ -52,13 +52,13 @@ namespace SuccessStory.Clients
         private static string SteamApiKey { get; set; } = string.Empty;
         private static string SteamUser { get; set; } = string.Empty;
 
-        private const string UrlProfil = @"https://steamcommunity.com/my/profile";
-        private const string UrlProfilById = @"https://steamcommunity.com/profiles/{0}/stats/{1}?tab=achievements&l={2}";
-        private const string UrlProfilByName = @"https://steamcommunity.com/id/{0}/stats/{1}?tab=achievements&l={2}";
+        private static string UrlProfil         => @"https://steamcommunity.com/my/profile";
+        private static string UrlProfilById     => @"https://steamcommunity.com/profiles/{0}/stats/{1}?tab=achievements&l={2}";
+        private static string UrlProfilByName   => @"https://steamcommunity.com/id/{0}/stats/{1}?tab=achievements&l={2}";
 
-        private const string UrlAchievements = @"https://steamcommunity.com/stats/{0}/achievements/?l={1}";
+        private static string UrlAchievements   => @"https://steamcommunity.com/stats/{0}/achievements/?l={1}";
 
-        private const string UrlSearch = @"https://store.steampowered.com/search/?term={0}";
+        private static string UrlSearch         => @"https://store.steampowered.com/search/?term={0}";
 
 
         public SteamAchievements() : base("Steam", CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
