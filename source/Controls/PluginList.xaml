@@ -72,8 +72,8 @@
                 <TabItem MaxWidth="200" Visibility="Collapsed" />
             </TabControl>
         </Grid>
-        
-        <Grid Name="PART_GridContener" Grid.Row="2">
+
+        <Grid Name="PART_GridContener" Grid.Row="2" Tag="{Binding ShowHiddenDescription}">
             <controls:ListBoxExtend x:Name="lbAchievements" SizeChanged="LbAchievements_SizeChanged"
                                     BubblingScrollEvents="True" Style="{StaticResource {x:Type ListBox}}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" 
@@ -178,9 +178,7 @@
                                     </Grid>
                                 </Grid>
 
-                                <TextBlock Grid.Row="1" Text="{Binding Description, FallbackValue='This is a description.'}" 
-                                           VerticalAlignment="Top"
-                                           TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}">
+                                <TextBlock Grid.Row="1" VerticalAlignment="Top" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}">
                                     <TextBlock.Width>
                                         <MultiBinding Converter="{StaticResource ValueOperationConverter}" ConverterParameter="-">
                                             <Binding ElementName="PART_GridContener" Path="ActualWidth" />
@@ -191,6 +189,20 @@
                                             </Binding>
                                         </MultiBinding>
                                     </TextBlock.Width>
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Text" Value="{Binding Description, FallbackValue='This is a description.'}" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding ElementName=PART_GridContener, Path=Tag}" Value="False" />
+                                                        <Condition Binding="{Binding IsHidden}" Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Text" Value="{DynamicResource LOCSuccessStoryHiddenAchievement}" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
                                 </TextBlock>
                             </Grid>
                         </Grid>

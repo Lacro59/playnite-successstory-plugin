@@ -35,6 +35,8 @@ namespace SuccessStory
         public bool EnableTag { get; set; } = false;
         public bool AutoImport { get; set; } = true;
 
+        public bool ShowHiddenDescription { get; set; } = false;
+
         public bool Auto100PercentCompleted { get; set; } = false;
         public CompletionStatus CompletionStatus100Percent { get; set; }
 
