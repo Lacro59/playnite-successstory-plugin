@@ -10,9 +10,9 @@ namespace SuccessStory.Clients
 {
     class GenshinImpactAchievements : GenericAchievements
     {
-        private readonly string UrlTextMap = "https://github.com/Dimbreath/GenshinData/raw/master/TextMap/TextMap{0}.json";
-        private readonly string UrlAchievementsCategory = "https://raw.githubusercontent.com/Dimbreath/GenshinData/master/ExcelBinOutput/AchievementGoalExcelConfigData.json";
-        private readonly string UrlAchievements = "https://raw.githubusercontent.com/Dimbreath/GenshinData/master/ExcelBinOutput/AchievementExcelConfigData.json";
+        private static string UrlTextMap                => @"https://raw.githubusercontent.com/theBowja/GenshinData-1/master/TextMap/TextMap{0}.json";
+        private static string UrlAchievementsCategory   => @"https://raw.githubusercontent.com/theBowja/GenshinData-1/master/ExcelBinOutput/AchievementGoalExcelConfigData.json";
+        private static string UrlAchievements           => @"https://raw.githubusercontent.com/theBowja/GenshinData-1/master/ExcelBinOutput/AchievementExcelConfigData.json";
 
         public GenshinImpactAchievements() : base("GenshinImpact", CodeLang.GetGenshinLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
@@ -29,13 +29,25 @@ namespace SuccessStory.Clients
             {
                 string Url = string.Format(UrlTextMap, LocalLang.ToUpper());
                 string TextMapString = Web.DownloadStringData(Url).GetAwaiter().GetResult();
-                dynamic TextMap = Serialization.FromJson<dynamic>(TextMapString);
+                Serialization.TryFromJson(TextMapString, out dynamic TextMap);
+                if (TextMap == null)
+                {
+                    throw new Exception($"No data from {Url}");
+                }
 
                 string AchievementsString = Web.DownloadStringData(UrlAchievements).GetAwaiter().GetResult();
-                List<GenshinImpactAchievementData> GenshinImpactAchievements = Serialization.FromJson<List<GenshinImpactAchievementData>>(AchievementsString);
+                Serialization.TryFromJson(AchievementsString, out List<GenshinImpactAchievementData> GenshinImpactAchievements);
+                if (GenshinImpactAchievements == null)
+                {
+                    throw new Exception($"No data from {UrlAchievements}");
+                }
 
                 string AchievementsCategoryString = Web.DownloadStringData(UrlAchievementsCategory).GetAwaiter().GetResult();
-                List<GenshinImpactAchievementsCategory> GenshinImpactAchievementsCategory = Serialization.FromJson<List<GenshinImpactAchievementsCategory>>(AchievementsCategoryString);
+                Serialization.TryFromJson(AchievementsCategoryString, out List<GenshinImpactAchievementsCategory> GenshinImpactAchievementsCategory);
+                if (GenshinImpactAchievementsCategory == null)
+                {
+                    throw new Exception($"No data from {UrlAchievementsCategory}");
+                }
 
                 GenshinImpactAchievements.ForEach(x => 
                 {
@@ -63,7 +75,7 @@ namespace SuccessStory.Clients
                     {
                         GameName = "Genshin Impact",
                         Name = "GitHub",
-                        Url = "https://github.com/Dimbreath/GenshinData"
+                        Url = "https://github.com/theBowja/GenshinData-1"
                     };
                 });
             }
