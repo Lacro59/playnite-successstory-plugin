@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using CommonPluginsShared.Extensions;
+using Playnite.SDK;
 
 namespace SuccessStory.Clients
 {
@@ -196,6 +197,10 @@ namespace SuccessStory.Clients
             {
                 string TrophyFolder = Path.Combine(x, "trophy");
                 string GameTrophyFolder = Path.Combine(game.InstallDirectory, "..", "TROPDIR");
+                GameTrophyFolder = API.Instance.ExpandGameVariables(game, GameTrophyFolder);
+
+                logger.Info($"TrophyFolder: {TrophyFolder}");
+                logger.Info($"GameTrophyFolder: {GameTrophyFolder}");
 
                 try
                 {
