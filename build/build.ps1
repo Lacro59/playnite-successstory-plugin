@@ -34,40 +34,45 @@ $ToolboxPath = (Join-Path $PlaynitePath "toolbox.exe")
 $OutDirPath = (Join-Path $OutDir "..")
 
 
-$Version = ""
-foreach($Line in Get-Content (Join-Path $SolutionDir  "extension.yaml")) 
+if ($ConfigurationName -eq "release") 
 {
-    if($Line -imatch "Version:")
+	$Version = ""
+	foreach($Line in Get-Content (Join-Path $SolutionDir  "extension.yaml")) 
 	{
-        $Version = $Line
-    }
-}
+		if($Line -imatch "Version:")
+		{
+			$Version = $Line
+		}
+	}
 
+	$Manifest = (Join-Path $SolutionDir  "..\manifest\")
+	$YmlFile = Get-ChildItem -Path $Manifest -Filter *.yaml | Select-Object -First 1
+	$Manifest = (Join-Path $Manifest $YmlFile.Name)
 
-$Manifest = (Join-Path $SolutionDir  "..\manifest\Lacro59_ScreenshotsVisualizer.yaml")
-$Result = Get-Content $Manifest
-if($Result -imatch $Version)
-{
-	if (Test-Path $ToolboxPath)
+	$Result = Get-Content $Manifest
+	if($Result -imatch $Version)
 	{
-		& $ToolboxPath "pack" $OutDir $OutDirPath
+		if (Test-Path $ToolboxPath)
+		{
+			& $ToolboxPath "pack" $OutDir $OutDirPath
 		
-		$Result = & $ToolboxPath "verify" "installer" $Manifest
-		if($Result -imatch "Installer manifest passed verification")
-		{		
+			$Result = & $ToolboxPath "verify" "installer" $Manifest
+			if($Result -imatch "Installer manifest passed verification")
+			{		
 				
+			}
+			else 
+			{
+				echo $Result
+			}		
 		}
 		else 
 		{
-			echo $Result
-		}		
+			echo "toolbox.exe not find."
+		}	
 	}
-	else 
+	else
 	{
-		echo "toolbox.exe not find."
-	}	
-}
-else
-{
-    echo "Manifest not contains actual version"
+		echo "Manifest not contains actual version"
+	}
 }
