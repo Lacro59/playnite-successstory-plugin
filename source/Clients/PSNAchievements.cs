@@ -48,16 +48,15 @@ namespace SuccessStory.Clients
             set => _PsnAPI = value;
         }
 
-        private static string PsnDataPath;
+        private static string PsnDataPath { get; set; }
 
         public string CommunicationId { get; set; }
 
-        private const string UrlTrophiesDetails = @"https://m.np.playstation.net/api/trophy/v1/npCommunicationIds/{0}/trophyGroups/all/trophies";
-        private const string UrlTrophies = @"https://m.np.playstation.net/api/trophy/v1/users/me/npCommunicationIds/{0}/trophyGroups/all/trophies";
+        private static string UrlTrophiesDetails        => @"https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/{0}/trophyGroups/all/trophies";
+        private static string UrlTrophies               => @"https://m.np.playstation.com/api/trophy/v1/users/me/npCommunicationIds/{0}/trophyGroups/all/trophies";
+        private static string urlAllTrophies            => @"https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles";
+        private static string trophiesWithIdsMobileUrl  => @"https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?npTitleIds={0}";
 
-        private const string urlAllTrophies = @"https://m.np.playstation.net/api/trophy/v1/users/me/trophyTitles";
-
-        private const string trophiesWithIdsMobileUrl = @"https://m.np.playstation.net/api/trophy/v1/users/me/titles/trophyTitles?npTitleIds={0}";
 
         public PSNAchievements() : base("PSN", CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
@@ -205,7 +204,15 @@ namespace SuccessStory.Clients
             }
             else
             {
-                PsnAPI.CheckAuthentication().GetAwaiter().GetResult();
+                try
+                {
+                    PsnAPI.CheckAuthentication().GetAwaiter().GetResult();
+                }
+                catch (Exception ex)
+                {
+                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
+                    return false;
+                }
 
                 if (CachedConfigurationValidationResult == null)
                 {
