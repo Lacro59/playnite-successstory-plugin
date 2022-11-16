@@ -199,13 +199,7 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
-        public bool EnableRaretyIndicator
-        {
-            get
-            {
-                return PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
-            }
-        }
+        public bool EnableRaretyIndicator => PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
 
         [DontSerialize]
         public bool DisplayRaretyValue
@@ -266,25 +260,11 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
-        public bool IsUnlock
-        {
-            get
-            {
-                return !(DateUnlocked == default(DateTime) || DateUnlocked == null);
-            }
-        }
+        public bool IsUnlock => !(DateUnlocked == default(DateTime) || DateUnlocked == null);
 
         private bool isVisible = true;
         [DontSerialize]
-        public bool IsVisible
-        {
-            get => isVisible;
-            set
-            {
-                isVisible = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsVisible { get => isVisible; set => SetValue(ref isVisible, value); }
 
         [DontSerialize]
         public DateTime? DateWhenUnlocked
@@ -439,12 +419,6 @@ namespace SuccessStory.Models
         public double Value { get; set; }
 
         [DontSerialize]
-        public string Progression
-        {
-            get
-            {
-                return Value + " / " + Max;
-            }
-        }
+        public string Progression => Value + " / " + Max;
     }
 }

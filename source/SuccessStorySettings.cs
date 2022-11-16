@@ -386,15 +386,7 @@ namespace SuccessStory
         private SuccessStorySettings EditingClone { get; set; }
 
         private SuccessStorySettings _Settings;
-        public SuccessStorySettings Settings
-        {
-            get => _Settings;
-            set
-            {
-                _Settings = value;
-                OnPropertyChanged();
-            }
-        }
+        public SuccessStorySettings Settings { get => _Settings; set => SetValue(ref _Settings, value); }
 
 
         public SuccessStorySettingsViewModel(SuccessStory plugin)
