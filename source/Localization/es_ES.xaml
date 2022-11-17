@@ -23,6 +23,8 @@
     <sys:String x:Key="LOCSuccessStoryIgnored">Ignorado el juego</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">No se ha ignorado el juego</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Hidden achievement</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">El perfil de Steam no es público</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam está activado en SuccessStory pero la extensión de la biblioteca ha sido deshabilitada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam no se ha configurado correctamente en la configuración</sys:String>
@@ -34,8 +36,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG no se ha configurado correctamente en la configuración</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN está habilitado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">El usuario de PSN no está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin está habilitado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">El usuario de Origin no está autenticado</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox está activado en SuccessStory pero la extensión de la biblioteca ha sido deshabilitada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">El usuario de Xbox no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements no se han configurado correctamente en la configuración</sys:String>
@@ -69,7 +71,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar logros de Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar logros de GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Habilitar logros de Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Habilitar los logros de Origin</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable EA achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Habilitar logros de Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Habilitar logros de RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Habilitar logros de RPCS3</sys:String>
@@ -121,6 +123,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Mostrar el último logro en una línea</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vista de extensión</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Show hidden description when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Mostrar indicador de rareza en los logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Mostrar el valor de rareza con la imagen de logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Mostrar sólo los logros del juego seleccionado desde el menú del juego</sys:String>
