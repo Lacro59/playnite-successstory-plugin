@@ -23,6 +23,8 @@
     <sys:String x:Key="LOCSuccessStoryIgnored">Ignorer le jeu</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Ne pas ignorer le jeu</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Succès caché</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Profil Steam n'est pas public</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam n'a pas été correctement configuré dans les paramètres</sys:String>
@@ -34,8 +36,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Utilisateur PSN n'est pas connect</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Utilisateur Origin n'est pas connect</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Le support de l'application EA est activé danss SuccessStory mais son intégration Playnite est inactive</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">L'utilisateur EA n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox non authentifi</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements n'a pas été correctement configuré dans les paramètres</sys:String>
@@ -69,7 +71,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Activer les succès Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Activer les succès GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Activer les succès Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Activer les succès Origin</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Activer les succès EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Activer les succès Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Activer les succès RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Activer les succès RPCS3</sys:String>
@@ -121,6 +123,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Montrer le dernier succès sur une ligne</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vue de l'extension</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Afficher la description cachée même si le succès n'a pas été débloqué</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Afficher l'indicateur de rareté sur les succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Afficher la rareté sur l'image des succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Afficher uniquement les succès du jeu sélectionné dans le menu de jeu</sys:String>
