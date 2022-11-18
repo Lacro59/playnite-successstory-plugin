@@ -122,7 +122,7 @@ namespace SuccessStory.Models
         /// Indicates if there is no locked icon
         /// </summary>
         [DontSerialize]
-        public bool IsGray => IsUnlock ? IsUnlock : (UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
+        public bool IsGray => IsUnlock ? false : (UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
 
         [DontSerialize]
         public bool EnableRaretyIndicator => PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
