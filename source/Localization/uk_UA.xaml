@@ -23,6 +23,8 @@
     <sys:String x:Key="LOCSuccessStoryIgnored">Ігнорувати гру</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Не ігнорувати гру</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Приховане досягнення</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Профіль Steam не є публічним</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam неправильно налаштовано в налаштуваннях</sys:String>
@@ -34,8 +36,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG неправильно налаштовано в налаштуваннях</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Користувач PSN не автентифікований</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Користувач Origin не автентифікований</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Користувач EA не автентифікований</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Користувач Xbox не автентифікований</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements неправильно налаштовано в налаштуваннях</sys:String>
@@ -69,7 +71,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Увімкнути досягнення Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Увімкнути досягнення GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Увімкнути досягнення Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Увімкнути досягнення Origin</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Увімкнути досягнення EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Увімкнути досягнення Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Увімкнути досягнення RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Увімкнути досягнення RPCS3</sys:String>
@@ -121,6 +123,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Показувати останнє досягнення одним рядком</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Вигляд розширення</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Показувати прихований опис коли досягнення заблоковано</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Показувати індикатор рідкості на досягненні</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Показати значення рідкості із зображенням досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Відображати лише досягнення гри, вибраної з ігрового меню</sys:String>

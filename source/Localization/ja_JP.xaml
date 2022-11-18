@@ -23,6 +23,8 @@
     <sys:String x:Key="LOCSuccessStoryIgnored">Ignored the game</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Hidden achievement</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profile is not public</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam has not been correctly configured in settings</sys:String>
@@ -34,8 +36,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG has not been correctly configured in settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements has not been correctly configured in settings</sys:String>
@@ -69,7 +71,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Steam 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">GOG 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Epic 実績を有効にする</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Origin 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable EA achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Xbox 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">RetroAchievements 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">RPCS3 実績を有効にする</sys:String>
@@ -121,6 +123,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Show the lastest achievement on one line</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Extension view</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Show hidden description when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarity indicator on achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Show rarity value with achievements image</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the achievements of the game selected from the game menu</sys:String>

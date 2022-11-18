@@ -23,6 +23,8 @@
     <sys:String x:Key="LOCSuccessStoryIgnored">忽略此游戏</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">不忽略游戏</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Hidden achievement</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam 个人资料未公开</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">未在设置中正确配置 Steam</sys:String>
@@ -34,8 +36,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">未在设置中正确配置 GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN 用户未验证</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Origin 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Origin 用户未验证</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox 用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">未在设置中正确配置 RetroAchievements</sys:String>
@@ -69,7 +71,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">启用 Steam 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">启用 GOG 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">启用 Epic 成就</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">启用 Origin 成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable EA achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">启用 Xbox 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">启用 RetroAchievements 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">启用 RPCS3 成就</sys:String>
@@ -121,6 +123,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">在同一行显示上次成就</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">扩展视图</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Show hidden description when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">在成就上显示稀有度指示器</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">用成就图像显示稀有度值</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">仅显示从游戏菜单中选择的游戏成就</sys:String>
