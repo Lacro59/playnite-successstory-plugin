@@ -992,13 +992,76 @@ namespace SuccessStory
             }
 
 
+            // Cache images
+            if (PluginSettings.Settings.EnableImageCache)
+            {
+                CancellationToken ct = tokenSource.Token;
+                var TaskCacheImage = Task.Run(() =>
+                {
+                    // Wait Playnite & extension database are loaded
+                    System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
+                    System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+
+                    IEnumerable<GameAchievements> db = PluginDatabase.Database.Where(x => x.HasAchievements && !x.ImageIsCached);
+#if DEBUG
+                    Common.LogDebug(true, $"TaskCacheImage - {db.Count()} - Start");
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
+#endif
+                    db.ForEach(x =>
+                    {
+                        if (ct.IsCancellationRequested)
+                        {
+                            return;
+                        }
+
+                        x.Items.ForEach(y => 
+                        {
+                            if (ct.IsCancellationRequested)
+                            {
+                                return;
+                            }
+
+                            try 
+                            { 
+                                if (!y.ImageLockedIsCached)
+                                {
+                                    var a = y.ImageLocked;
+                                }
+                                if (!y.ImageLockedIsCached)
+                                {
+                                    var b = y.ImageUnlocked;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, true, $"Error on TaskCacheImage");
+                            }
+                        });
+                    });
+
+                    if (ct.IsCancellationRequested)
+                    {
+                        logger.Info($"TaskCacheImage - IsCancellationRequested");
+                        return;
+                    }
+
+#if DEBUG
+                    stopwatch.Stop();
+                    TimeSpan ts = stopwatch.Elapsed;
+                    Common.LogDebug(true, $"TaskCacheImage() - End - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+#endif
+                }, tokenSource.Token);
+            }
+
+
             // QuickSearch support
             try
             {
                 string icon = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "star.png");
 
-                var SsSubItemsAction = new SubItemsAction() { Action = () => { }, Name = "", CloseAfterExecute = false, SubItemSource = new QuickSearchItemSource() };
-                var SsCommand = new CommandItem(PluginDatabase.PluginName, new List<CommandAction>(), ResourceProvider.GetString("LOCSsQuickSearchDescription"), icon);
+                SubItemsAction SsSubItemsAction = new SubItemsAction() { Action = () => { }, Name = "", CloseAfterExecute = false, SubItemSource = new QuickSearchItemSource() };
+                CommandItem SsCommand = new CommandItem(PluginDatabase.PluginName, new List<CommandAction>(), ResourceProvider.GetString("LOCSsQuickSearchDescription"), icon);
                 SsCommand.Keys.Add(new CommandItemKey() { Key = "ss", Weight = 1 });
                 SsCommand.Actions.Add(SsSubItemsAction);
                 QuickSearch.QuickSearchSDK.AddCommand(SsCommand);

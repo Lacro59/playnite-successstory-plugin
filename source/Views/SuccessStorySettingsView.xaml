@@ -936,6 +936,8 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="30" />
@@ -944,11 +946,21 @@
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <CheckBox Name="cbAutoImport" Grid.Row="0" IsChecked="{Binding Settings.AutoImport}" Grid.ColumnSpan="3" >
+                            <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" IsChecked="{Binding Settings.EnableImageCache}" 
+                              VerticalAlignment="Center"
+                              ToolTip="{DynamicResource LOCSuccessStoryEnableImageCacheToolTip}"
+                              Command="{x:Static pcmd:Commands.RestartRequired}" 
+                              CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableImageCache}" />
+                            </CheckBox>
+                            <!--Button Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="0" HorizontalAlignment="Right" 
+                                Click="Button_Click_Cache" Content="{DynamicResource LOCSettingsClearWebCache}" /-->
+
+                            <CheckBox Name="cbAutoImport" Grid.Row="2" IsChecked="{Binding Settings.AutoImport}" Grid.ColumnSpan="3" >
                                 <Label Content="{DynamicResource LOCCommonAutoImport}" />
                             </CheckBox>
 
-                            <Grid Grid.ColumnSpan="3" Grid.Row="2">
+                            <Grid Grid.ColumnSpan="3" Grid.Row="4">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="10" />
@@ -1004,7 +1016,7 @@
                                 </Grid>
                             </Grid>
 
-                            <GroupBox Header="{DynamicResource LOCSuccessStoryIconLockedConfig}" Grid.ColumnSpan="3" Grid.Row="4">
+                            <GroupBox Header="{DynamicResource LOCSuccessStoryIconLockedConfig}" Grid.ColumnSpan="3" Grid.Row="6">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
@@ -1047,7 +1059,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="{DynamicResource LOCSuccessStoryRarityConfig}" Grid.ColumnSpan="3" Grid.Row="6">
+                            <GroupBox Header="{DynamicResource LOCSuccessStoryRarityConfig}" Grid.ColumnSpan="3" Grid.Row="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
@@ -1124,7 +1136,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="8" >
+                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="10" >
                                 <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />
                                 <Separator Margin="0,0,0,10" />
 

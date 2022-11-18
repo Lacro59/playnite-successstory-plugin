@@ -61,28 +61,28 @@ namespace SuccessStory.Models
             get
             {
                 string TempUrlUnlocked = UrlUnlocked;
-                if (TempUrlUnlocked?.IndexOf("rpcs3") > -1)
+                if (TempUrlUnlocked?.Contains("rpcs3", StringComparison.InvariantCultureIgnoreCase) ?? false)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, UrlUnlocked);
                     return TempUrlUnlocked;
                 }
-                if (TempUrlUnlocked?.IndexOf("hidden_trophy") > -1)
+                if (TempUrlUnlocked?.Contains("hidden_trophy", StringComparison.InvariantCultureIgnoreCase) ?? false)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
                     return TempUrlUnlocked;
                 }
-                if (TempUrlUnlocked?.IndexOf("GenshinImpact") > -1)
+                if (TempUrlUnlocked?.Contains("GenshinImpact", StringComparison.InvariantCultureIgnoreCase) ?? false)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
                     return TempUrlUnlocked;
                 }
-                if (TempUrlUnlocked?.IndexOf("default_icon") > -1)
+                if (TempUrlUnlocked?.Contains("default_icon", StringComparison.InvariantCultureIgnoreCase) ?? false)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
                     return TempUrlUnlocked;
                 }
 
-                return ImageSourceManagerPlugin.GetImagePath(UrlUnlocked);
+                return ImageSourceManagerPlugin.GetImagePath(UrlUnlocked, 256);
             }
         }
 
@@ -96,7 +96,7 @@ namespace SuccessStory.Models
             {
                 if (!UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked)
                 {
-                    return ImageSourceManagerPlugin.GetImagePath(UrlLocked);
+                    return ImageSourceManagerPlugin.GetImagePath(UrlLocked, 256);
                 }
                 else
                 {
@@ -104,6 +104,12 @@ namespace SuccessStory.Models
                 }
             }
         }
+
+
+        [DontSerialize]
+        public bool ImageUnlockedIsCached => HttpFileCachePlugin.FileWebIsCached(UrlUnlocked);
+        [DontSerialize]
+        public bool ImageLockedIsCached => HttpFileCachePlugin.FileWebIsCached(UrlLocked);
 
 
         /// <summary>

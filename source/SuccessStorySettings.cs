@@ -42,6 +42,7 @@ namespace SuccessStory
 
         // TEMP
         public bool PurgeImageCache { get; set; } = false;
+        public bool EnableImageCache { get; set; } = true;
         public bool IgnoreSettings { get; set; } = false;
 
         public bool EnableIntegrationInDescription { get; set; } = false;

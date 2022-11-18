@@ -326,24 +326,28 @@ namespace SuccessStory.Models
         public string CommunicationId { get; set; }
 
 
-        //[DontSerialize]
-        //public bool ImageIsCached
-        //{
-        //    get
-        //    {
-        //        if (!HasAchievements)
-        //        {
-        //            return true;
-        //        }
-        //
-        //        if (Items?.First()?.UrlUnlocked?.IndexOf("GenshinImpact") > -1)
-        //        {
-        //            return true;
-        //        }
-        //
-        //        return Items.Where(x => PlayniteTools.GetCacheFile(x.CacheUnlocked, PluginDatabase.PluginName).IsNullOrEmpty()).Count() == 0;
-        //    }
-        //}
+        [DontSerialize]
+        public bool ImageIsCached
+        {
+            get
+            {
+                if (!HasAchievements)
+                {
+                    return true;
+                }
+        
+                if (Items?.First()?.UrlUnlocked?.Contains("GenshinImpact", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                {
+                    return true;
+                }        
+                if (Items?.First()?.UrlUnlocked?.Contains("rpcs3", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                {
+                    return true;
+                }
+        
+                return !(Items.Where(x => x.ImageUnlockedIsCached && x.ImageLockedIsCached).Count() == 0);
+            }
+        }
 
 
         [DontSerialize]
