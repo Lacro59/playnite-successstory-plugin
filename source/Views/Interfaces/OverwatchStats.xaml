@@ -46,23 +46,23 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
-            <Image Grid.Column="0" Grid.Row="0" 
+            <controls:ImageAsync Grid.Column="0" Grid.Row="0" 
                    Source="{Binding Player.Portrait, FallbackValue='https://d15f34w2p8l1cc.cloudfront.net/overwatch/17042e76e79bafa3d5fb93207ccf4799722d5ea93ec3588107ee2f8d598db4fe.png'}" 
                    Stretch="Uniform" Height="60" Width="60" />
             <Label Grid.Column="2" Grid.Row="0" 
                    Content="{Binding Player.Name, FallbackValue='Generic Name'}" FontSize="50" />
             <Grid Grid.Column="4" Grid.Row="0" Grid.RowSpan="3">
-                <Image Source="{Binding Player.LevelFrame, FallbackValue='https://d15f34w2p8l1cc.cloudfront.net/overwatch/4d63c2aadf536e87c84bdb7157c7b688cffb286e17a5362d2fa5c5281f4fc2a2.png'}" 
-                       Stretch="Uniform" Height="120" Width="120" Margin="1,-19,0,0" VerticalAlignment="Top" />
+                <controls:ImageAsync Source="{Binding Player.LevelFrame, FallbackValue='https://d15f34w2p8l1cc.cloudfront.net/overwatch/4d63c2aadf536e87c84bdb7157c7b688cffb286e17a5362d2fa5c5281f4fc2a2.png'}" 
+                                     Stretch="Uniform" Height="120" Width="120" Margin="1,-19,0,0" VerticalAlignment="Top" />
                 <Grid Height="80" Width="60" VerticalAlignment="Top">
                     <Label Content="{Binding Player.Level, FallbackValue='30'}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Grid>
-                <Image Source="{Binding Player.LevelRank, FallbackValue='https://d15f34w2p8l1cc.cloudfront.net/overwatch/8de2fe5d938256a5725abe4b3655ee5e9067b7a1f4d5ff637d974eb9c2e4a1ea.png'}" 
-                       Stretch="Uniform" Height="60" Width="120" Margin="1,0,0,0" VerticalAlignment="Bottom" />
+                <controls:ImageAsync Source="{Binding Player.LevelRank, FallbackValue='https://d15f34w2p8l1cc.cloudfront.net/overwatch/8de2fe5d938256a5725abe4b3655ee5e9067b7a1f4d5ff637d974eb9c2e4a1ea.png'}" 
+                                     Stretch="Uniform" Height="60" Width="120" Margin="1,0,0,0" VerticalAlignment="Bottom" />
             </Grid>
             <Grid Grid.Column="5" Grid.Row="0" Grid.RowSpan="3">
-                <Image Source="{Binding Player.EndorsementFrame, FallbackValue='D:\\Github\\Lacro59\\playnite-successstory-plugin\\Resources\\Overwatch\\Endorsement_4.png'}" 
-                       Stretch="Uniform" Height="80" Width="80" Margin="3,0,0,0" VerticalAlignment="Top" />
+                <controls:ImageAsync Source="{Binding Player.EndorsementFrame, FallbackValue='D:\\Github\\Lacro59\\playnite-successstory-plugin\\Resources\\Overwatch\\Endorsement_4.png'}" 
+                                     Stretch="Uniform" Height="80" Width="80" Margin="3,0,0,0" VerticalAlignment="Top" />
                 <Grid Height="80" Width="60" VerticalAlignment="Top">
                     <Label Content="{Binding Player.Endorsement, FallbackValue='4'}" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </Grid>
@@ -122,8 +122,8 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Image Source="{Binding HeroImage, FallbackValue='https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000007A.png'}" 
-                                       Grid.Column="0" Stretch="Uniform" Height="40" Width="40" Margin="1,1,0,0" />
+                                <controls:ImageAsync Source="{Binding HeroImage, FallbackValue='https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000007A.png'}" 
+                                                     Grid.Column="0" Stretch="Uniform" Height="40" Width="40" Margin="1,1,0,0" />
                                 <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="2" Background="Transparent" CornerRadius="5" />
 
                                 <Grid Grid.Column="2" Name="PART_GridValue">
@@ -286,9 +286,9 @@
                                     </Rectangle.OpacityMask>
                                 </Rectangle>
 
-                                <Image Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant"
-                                       Visibility="{Binding IsUnlock, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                                       Source="{Binding Icon, IsAsync=True}">
+                                <controls:ImageAsync Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant"
+                                                     Visibility="{Binding IsUnlock, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                                                     Source="{Binding Icon, IsAsync=True}">
                                     <Image.Style>
                                         <Style TargetType="{x:Type Image}">
                                             <Style.Triggers>
@@ -302,7 +302,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Image.Style>
-                                </Image>
+                                </controls:ImageAsync>
                             </StackPanel>
 
                             <Grid Grid.Column="1" Margin="10,0,0,0">

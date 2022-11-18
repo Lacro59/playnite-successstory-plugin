@@ -40,7 +40,8 @@ namespace SuccessStory
         public bool Auto100PercentCompleted { get; set; } = false;
         public CompletionStatus CompletionStatus100Percent { get; set; }
 
-        public bool EnableImageCache { get; set; } = true;
+        // TEMP
+        public bool PurgeImageCache { get; set; } = false;
         public bool IgnoreSettings { get; set; } = false;
 
         public bool EnableIntegrationInDescription { get; set; } = false;

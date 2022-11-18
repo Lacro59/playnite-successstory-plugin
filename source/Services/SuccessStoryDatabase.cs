@@ -30,8 +30,8 @@ namespace SuccessStory.Services
 
         private bool _isRetroachievements { get; set; }
 
-        private static Dictionary<AchievementSource, GenericAchievements> _achievementProviders;
-        private static readonly object _achievementProvidersLock = new object();
+        private static Dictionary<AchievementSource, GenericAchievements> _achievementProviders { get; set; }
+        private static object _achievementProvidersLock => new object();
         internal static Dictionary<AchievementSource, GenericAchievements> AchievementProviders
         {
             get
@@ -971,7 +971,6 @@ namespace SuccessStory.Services
         /// <returns>true when achievements can be retrieved for the supplied game</returns>
         public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI playniteApi, SuccessStorySettings settings, Game game)
         {
-            
             AchievementSource achievementSource = GetAchievementSource(settings, game);
             if (!AchievementProviders.TryGetValue(achievementSource, out GenericAchievements achievementProvider))
             {

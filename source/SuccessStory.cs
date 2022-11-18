@@ -983,86 +983,12 @@ namespace SuccessStory
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
-            // Cache images
-            if (PluginSettings.Settings.EnableImageCache)
+            // Temp
+            if (!PluginSettings.Settings.PurgeImageCache) 
             {
-                CancellationToken ct = tokenSource.Token;
-                var TaskCacheImage = Task.Run(() =>
-                {
-                    // Wait Playnite & extension database are loaded
-                    System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
-                    System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
-
-                    var db = PluginDatabase.Database.Where(x => x.HasAchievements && !x.ImageIsCached);
-#if DEBUG
-                    Common.LogDebug(true, $"TaskCacheImage - {db.Count()} - Start");
-                    Stopwatch stopwatch = new Stopwatch();
-                    stopwatch.Start();
-#endif
-                    
-                    foreach (GameAchievements gameAchievements in db)
-                    {
-                        Common.LogDebug(true, $"TaskCacheImage - {gameAchievements.Name} - {gameAchievements.Items.Count}");
-                        foreach (var achievement in gameAchievements.Items)
-                        {
-                            while (TaskIsPaused)
-                            {
-                                Thread.Sleep(100); 
-                            }
-
-                            try
-                            {
-                                if (!achievement.UrlUnlocked.IsNullOrEmpty() && achievement.UrlUnlocked.Contains("rpcs3", StringComparison.InvariantCultureIgnoreCase) && PlayniteTools.GetCacheFile(achievement.CacheUnlocked, PluginDatabase.PluginName).IsNullOrEmpty())
-                                {
-                                    string PathFile = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, achievement.UrlUnlocked);
-                                    string PathImageFileName = Path.Combine(PlaynitePaths.DataCachePath, PluginDatabase.PluginName, achievement.CacheUnlocked);
-                                    if (File.Exists(PathFile))
-                                    {
-                                        FileSystem.CopyFile(PathFile, PathImageFileName);
-                                    }
-                                }
-
-                                if (!achievement.UrlLocked.IsNullOrEmpty() && PlayniteTools.GetCacheFile(achievement.CacheLocked, PluginDatabase.PluginName).IsNullOrEmpty())
-                                {
-                                    Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Locked)");
-                                    Web.DownloadFileImage(achievement.CacheLocked, achievement.UrlLocked, PlaynitePaths.DataCachePath, PluginDatabase.PluginName).GetAwaiter().GetResult();
-                                }
-
-                                if (ct.IsCancellationRequested)
-                                {
-                                    break;
-                                }
-                                
-                                if (PlayniteTools.GetCacheFile(achievement.CacheUnlocked, PluginDatabase.PluginName).IsNullOrEmpty())
-                                {
-                                    Common.LogDebug(true, $"TaskCacheImage.DownloadFileImage - {gameAchievements.Name} - GetCacheFile({achievement.Name}" + "_Unlocked)");
-                                    Web.DownloadFileImage(achievement.CacheUnlocked, achievement.UrlUnlocked, PlaynitePaths.DataCachePath, PluginDatabase.PluginName).GetAwaiter().GetResult();
-                                }
-
-                                if (ct.IsCancellationRequested)
-                                {
-                                    break;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Common.LogError(ex, true, $"Error on TaskCacheImage");
-                            }
-                        }
-
-                        if (ct.IsCancellationRequested)
-                        {
-                            logger.Info($"TaskCacheImage - IsCancellationRequested");
-                            break;
-                        }
-                    }
-
-#if DEBUG
-                    stopwatch.Stop();
-                    TimeSpan ts = stopwatch.Elapsed;
-                    Common.LogDebug(true, $"TaskCacheImage() - End - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
-#endif
-                }, tokenSource.Token);
+                PluginDatabase.ClearCache();
+                PluginSettings.Settings.PurgeImageCache = true;
+                this.SavePluginSettings(PluginSettings.Settings);
             }
 
 

@@ -374,12 +374,6 @@ namespace SuccessStory.Views
         }
 
 
-        private void Button_Click_Cache(object sender, RoutedEventArgs e)
-        {
-            SuccessStory.TaskIsPaused = true;
-            PluginDatabase.ClearCache();
-        }
-
         private void PART_CbCompletation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             completionStatus = (CompletionStatus)PART_CbCompletation.SelectedItem;

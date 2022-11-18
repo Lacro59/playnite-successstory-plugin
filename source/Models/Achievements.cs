@@ -6,13 +6,10 @@ using Playnite.SDK.Data;
 using CommonPluginsShared;
 using SuccessStory.Services;
 using CommonPluginsShared.Converters;
-using System.Net;
-using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Documents;
 using System.Globalization;
-using CommonPlayniteShared;
 
 namespace SuccessStory.Models
 {
@@ -21,7 +18,7 @@ namespace SuccessStory.Models
         private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
 
         private string _name;
-        public string Name { get { return _name; } set { _name = value?.Trim(); } }
+        public string Name { get =>_name; set => _name = value?.Trim(); }
         public string ApiName { get; set; } = string.Empty;
         public string Description { get; set; }
         public string UrlUnlocked { get; set; }
@@ -54,26 +51,7 @@ namespace SuccessStory.Models
 
         public string CategoryRpcs3 { get; set; } = string.Empty;
 
-        [DontSerialize]
-        public string CacheUnlocked
-        {
-            get
-            {
-                string ImageFileName = string.Empty;
 
-                if (!UrlUnlocked.IsNullOrEmpty())
-                {
-                    int maxLenght = (Name.Replace(" ", "").Length >= 10) ? 10 : Name.Replace(" ", "").Length;
-
-                    ImageFileName = GetNameFromUrl(UrlUnlocked);
-                    ImageFileName += "_" + Name.Replace(" ", "").Substring(0, maxLenght);
-                    ImageFileName = string.Concat(ImageFileName.Split(Path.GetInvalidFileNameChars()));
-                    ImageFileName += "_Unlocked.png";
-                }
-
-                return Regex.Replace(WebUtility.HtmlDecode(CommonPlayniteShared.Common.Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
-            }
-        }
         /// <summary>
         /// Image for unlocked achievement
         /// </summary>
@@ -82,17 +60,11 @@ namespace SuccessStory.Models
         {
             get
             {
-                var Options = new
-                {
-                    CachedFileIfMissing = true,
-                    Url = UrlUnlocked
-                };
-
                 string TempUrlUnlocked = UrlUnlocked;
                 if (TempUrlUnlocked?.IndexOf("rpcs3") > -1)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, UrlUnlocked);
-                    Options = null;
+                    return TempUrlUnlocked;
                 }
                 if (TempUrlUnlocked?.IndexOf("hidden_trophy") > -1)
                 {
@@ -110,35 +82,10 @@ namespace SuccessStory.Models
                     return TempUrlUnlocked;
                 }
 
-                string pathImageUnlocked = PlayniteTools.GetCacheFile(CacheUnlocked, PluginDatabase.PluginName, Options);
-                if (pathImageUnlocked.IsNullOrEmpty() && !File.Exists(pathImageUnlocked))
-                {
-                    pathImageUnlocked = TempUrlUnlocked;
-                }
-                return pathImageUnlocked;
+                return ImageSourceManagerPlugin.GetImagePath(UrlUnlocked);
             }
         }
 
-        [DontSerialize]
-        public string CacheLocked
-        {
-            get
-            {
-                string ImageFileName = string.Empty;
-
-                if (!UrlLocked.IsNullOrEmpty())
-                {
-                    int maxLenght = (Name.Replace(" ", "").Length >= 10) ? 10 : Name.Replace(" ", "").Length;
-
-                    ImageFileName = GetNameFromUrl(UrlLocked);
-                    ImageFileName += "_" + Name.Replace(" ", "").Substring(0, maxLenght);
-                    ImageFileName = string.Concat(ImageFileName.Split(Path.GetInvalidFileNameChars()));
-                    ImageFileName += "_Locked.png";
-                }
-
-                return Regex.Replace(WebUtility.HtmlDecode(CommonPlayniteShared.Common.Paths.GetSafePathName(ImageFileName)), @"[^\u0020-\u007E]", string.Empty);
-            }
-        }
         /// <summary>
         /// Image for locked achievement
         /// </summary>
@@ -149,18 +96,7 @@ namespace SuccessStory.Models
             {
                 if (!UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked)
                 {
-                    var Options = new
-                    {
-                        CachedFileIfMissing = true,
-                        Url = UrlLocked
-                    };
-
-                    string pathImageLocked = PlayniteTools.GetCacheFile(CacheLocked, PluginDatabase.PluginName, Options);
-                    if (pathImageLocked.IsNullOrEmpty() && !File.Exists(pathImageLocked))
-                    {
-                        pathImageLocked = UrlLocked;
-                    }
-                    return pathImageLocked;
+                    return ImageSourceManagerPlugin.GetImagePath(UrlLocked);
                 }
                 else
                 {
@@ -174,29 +110,13 @@ namespace SuccessStory.Models
         /// Get the icon according to the achievement state
         /// </summary>
         [DontSerialize]
-        public string Icon
-        {
-            get
-            {
-                return IsUnlock ? ImageUnlocked : ImageLocked;
-            }
-        }
+        public string Icon => IsUnlock ? ImageUnlocked : ImageLocked;
 
         /// <summary>
         /// Indicates if there is no locked icon
         /// </summary>
         [DontSerialize]
-        public bool IsGray
-        {
-            get
-            {
-                if (IsUnlock)
-                {
-                    return false;
-                }
-                return UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked;
-            }
-        }
+        public bool IsGray => IsUnlock ? IsUnlock : (UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
 
         [DontSerialize]
         public bool EnableRaretyIndicator => PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
@@ -308,84 +228,6 @@ namespace SuccessStory.Models
 
 
         public AchProgression Progression { get; set; }
-
-
-        private string GetNameFromUrl(string url)
-        {
-            string NameFromUrl = string.Empty;
-            List<string> urlSplited = url.Split('/').ToList();
-
-            int Length = 5;
-            if (url.Length > 10)
-            {
-                Length = 10;
-            }
-            if (url.Length > 15)
-            {
-                Length = 15;
-            }
-
-            if (url.IndexOf("epicgames.com") > -1)
-            {
-                NameFromUrl = "epic_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - Length).Replace(".png", string.Empty);
-            }
-
-            if (url.IndexOf(".playstation.") > -1)
-            {
-                NameFromUrl = "playstation_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - Length).Replace(".png", string.Empty);
-            }
-
-            if (url.IndexOf(".xboxlive.com") > -1)
-            {
-                NameFromUrl = "xbox_" + Name.Replace(" ", "") + "_" + url.Substring(url.Length - Length);
-            }
-
-            if (url.IndexOf("steamcommunity") > -1)
-            {
-                NameFromUrl = "steam_" + ApiName;
-                if (urlSplited.Count >= 8)
-                {
-                    NameFromUrl += "_" + urlSplited[7];
-                }
-            }
-
-            if (url.IndexOf(".gog.com") > -1)
-            {
-                NameFromUrl = "gog_" + ApiName;
-            }
-
-            if (url.IndexOf(".ea.com") > -1)
-            {
-                NameFromUrl = "ea_" + Name.Replace(" ", "");
-            }
-
-            if (url.IndexOf("retroachievements") > -1)
-            {
-                NameFromUrl = "ra_" + Name.Replace(" ", "");
-            }
-
-            if (url.IndexOf("exophase") > -1)
-            {
-                NameFromUrl = "exophase_" + Name.Replace(" ", "");
-            }
-
-            if (url.IndexOf("overwatch") > -1)
-            {
-                NameFromUrl = "overwatch_" + Name.Replace(" ", "");
-            }
-
-            if (url.IndexOf("starcraft2") > -1)
-            {
-                NameFromUrl = "starcraft2_" + Name.Replace(" ", "");
-            }
-
-            if (!url.Contains("http"))
-            {
-                return url;
-            }
-
-            return NameFromUrl;
-        }
 
 
         [DontSerialize]
