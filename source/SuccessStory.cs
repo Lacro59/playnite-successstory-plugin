@@ -1003,6 +1003,7 @@ namespace SuccessStory
                     System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
                     IEnumerable<GameAchievements> db = PluginDatabase.Database.Where(x => x.HasAchievements && !x.ImageIsCached);
+                    var aa = db.Count();
 #if DEBUG
                     Common.LogDebug(true, $"TaskCacheImage - {db.Count()} - Start");
                     Stopwatch stopwatch = new Stopwatch();
