@@ -84,6 +84,7 @@ namespace SuccessStory.Clients
             }
 
 
+            logger.Info($"GetAchievements() - IsLocal : {IsLocal}, IsManual : {IsManual}, EnableSteamWithoutWebApi: {PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi}, SteamIsPrivate: {PluginDatabase.PluginSettings.Settings.SteamIsPrivate}");
             if (!IsLocal)
             {
                 int.TryParse(game.GameId, out AppId);
@@ -145,7 +146,7 @@ namespace SuccessStory.Clients
 
                 if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
                 {
-                    logger.Warn($"Option without API key is enbaled");
+                    logger.Warn($"Option without API key is enabled");
                 }
                 else if (SteamApiKey.IsNullOrEmpty())
                 {
@@ -249,6 +250,7 @@ namespace SuccessStory.Clients
             }
 
 
+            logger.Info($"GetAchievements({AppId}) - IsLocal : {IsLocal}, IsManual : {IsManual}, EnableSteamWithoutWebApi: {PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi}, SteamIsPrivate: {PluginDatabase.PluginSettings.Settings.SteamIsPrivate}");
             if (IsLocal)
             {
                 Common.LogDebug(true, $"GetAchievementsLocal()");

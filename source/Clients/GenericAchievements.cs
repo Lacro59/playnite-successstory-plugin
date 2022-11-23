@@ -17,8 +17,8 @@ namespace SuccessStory.Clients
 {
     abstract class GenericAchievements
     {
-        internal static readonly ILogger logger = LogManager.GetLogger();
-        internal static readonly IResourceProvider resources = new ResourceProvider();
+        internal static ILogger logger => LogManager.GetLogger();
+        internal static IResourceProvider resources => new ResourceProvider();
 
         protected static IWebView _WebViewOffscreen;
         internal static IWebView WebViewOffscreen
@@ -38,7 +38,7 @@ namespace SuccessStory.Clients
             }
         }
 
-        internal static SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        internal static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
         protected bool? CachedConfigurationValidationResult { get; set; }
         protected bool? CachedIsConnectedResult { get; set; }
@@ -50,7 +50,7 @@ namespace SuccessStory.Clients
         protected string LastErrorId { get; set; }
         protected string LastErrorMessage { get; set; }
 
-        internal readonly string cookiesPath;
+        internal string cookiesPath { get; }
 
 
 

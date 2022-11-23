@@ -33,18 +33,16 @@ namespace SuccessStory
 {
     public class SuccessStory : PluginExtended<SuccessStorySettingsViewModel, SuccessStoryDatabase>
     {
-        public override Guid Id { get; } = Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
+        public override Guid Id => Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
-        internal TopPanelItem topPanelItem;
-        internal SuccessStoryViewSidebar successStoryViewSidebar;
-        internal SuccessStoryViewRaSidebar successStoryViewRaSidebar;
+        internal TopPanelItem topPanelItem { get; set; }
+        internal SuccessStoryViewSidebar successStoryViewSidebar { get; set; }
+        internal SuccessStoryViewRaSidebar successStoryViewRaSidebar { get; set; }
 
-        public static bool TaskIsPaused = false;
-        private CancellationTokenSource tokenSource = new CancellationTokenSource();
+        public static bool TaskIsPaused { get; set; } = false;
+        private CancellationTokenSource tokenSource => new CancellationTokenSource();
 
         public static bool IsFromMenu { get; set; } = false;
-
-        private OldToNew oldToNew;
 
 
         public SuccessStory(IPlayniteAPI api) : base(api)
@@ -65,9 +63,6 @@ namespace SuccessStory
             }
 
             PluginDatabase.InitializeClient(this);
-
-            // Old database
-            oldToNew = new OldToNew(this.GetPluginUserDataPath());
 
             // Custom theme button
             EventManager.RegisterClassHandler(typeof(Button), Button.ClickEvent, new RoutedEventHandler(OnCustomThemeButtonClick));
@@ -788,13 +783,7 @@ namespace SuccessStory
         #region Game event
         public override void OnGameSelected(OnGameSelectedEventArgs args)
         {
-            // TODO Old database
-            if (oldToNew.IsOld)
-            {
-                oldToNew.ConvertDB(PlayniteApi);
-            }
-
-            // TODO Sourcelink
+            // TODO Sourcelink - Removed for Playnite 11
             var sourceLinkNull = PluginDatabase.Database?.Select(x => x)
                                     .Where(x => x.SourcesLink == null && x.IsManual && x.HasAchievements && PlayniteApi.Database.Games.Get(x.Id) != null);
             if (sourceLinkNull?.Count() > 0)
@@ -854,7 +843,7 @@ namespace SuccessStory
                 }, globalProgressOptions);
             }
 
-            // TODO Moving cache
+            // TODO Moving cache - Removed for Playnite 11
             if (Directory.Exists(Path.Combine(PlaynitePaths.ImagesCachePath, PluginDatabase.PluginName)))
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
@@ -983,7 +972,7 @@ namespace SuccessStory
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
-            // Temp
+            // TODO - Removed for Playnite 11
             if (!PluginSettings.Settings.PurgeImageCache) 
             {
                 PluginDatabase.ClearCache();

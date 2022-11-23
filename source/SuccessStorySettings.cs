@@ -399,7 +399,7 @@ namespace SuccessStory
             Plugin = plugin;
 
             // Load saved settings.
-            var savedSettings = plugin.LoadPluginSettings<SuccessStorySettings>();
+            SuccessStorySettings savedSettings = plugin.LoadPluginSettings<SuccessStorySettings>();
 
             // LoadPluginSettings returns null if not saved data is available.
             if (savedSettings != null)

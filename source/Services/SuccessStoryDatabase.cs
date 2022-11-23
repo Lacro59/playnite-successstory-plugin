@@ -129,6 +129,7 @@ namespace SuccessStory.Services
 
         public GameAchievements RefreshManual(Game game)
         {
+            logger.Info($"RefreshManual({game?.Name} - {game?.Id})");
             GameAchievements gameAchievements = null;
 
             try
@@ -185,6 +186,7 @@ namespace SuccessStory.Services
 
         public GameAchievements RefreshGenshinImpact(Game game)
         {
+            logger.Info($"RefreshGenshinImpact({game?.Name} - {game?.Id})");
             GameAchievements gameAchievements = null;
 
             try

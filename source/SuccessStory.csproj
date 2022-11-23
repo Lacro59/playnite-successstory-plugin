@@ -237,7 +237,6 @@
       <DependentUpon>OptionsDownloadData.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\NDS.cs" />
-    <Compile Include="Services\OldToNew.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
