@@ -235,7 +235,7 @@ namespace SuccessStory.Services
         {
             Game game = PlayniteApi.Database.Games.Get(Id);
             GameAchievements gameAchievements = GetDefault(game);
-            AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
+            AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game, true);
 
             // Generate database only this source
             if (VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, game))
@@ -935,9 +935,9 @@ namespace SuccessStory.Services
             return AchievementSource.None;
         }
 
-        public static AchievementSource GetAchievementSource(SuccessStorySettings settings, Game game)
+        public static AchievementSource GetAchievementSource(SuccessStorySettings settings, Game game, bool ignoreSpecial = false)
         {
-            if (game.Name.IsEqual("Genshin Impact"))
+            if (game.Name.IsEqual("Genshin Impact") && !ignoreSpecial)
             {
                 return AchievementSource.GenshinImpact;
             }
