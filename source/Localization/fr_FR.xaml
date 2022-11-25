@@ -247,6 +247,18 @@ Voici la liste des commandes :</sys:String>
     <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">Cette commande recherche une liste de jeux avec un pourcentage de progression spécifique.</sys:String>
 
 
+    <!-- SuccessStorySearch -->
+
+    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
+    -min                Your PC has minimum requirements
+    -rec                Your PC has recommended requirements
+    -any                Your PC has minimum or recommended requirements
+    -np                 You didn't play the game
+    -fav                The game must be a favorite
+    -stores={n}     Filter by store name (ex:-stores=steam / -stores=steam,epic)</sys:String>
+
+
     <!-- SuccessStoryEditManual -->
 
     <sys:String x:Key="LOCSsOnlyLocked">Seulement verrouillé</sys:String>
