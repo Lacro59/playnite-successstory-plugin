@@ -238,6 +238,7 @@
     </Compile>
     <Compile Include="Services\NDS.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />
+    <Compile Include="Services\SuccessStorySearch.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
     <Compile Include="Views\Interfaces\OverwatchCareerStats.xaml.cs">

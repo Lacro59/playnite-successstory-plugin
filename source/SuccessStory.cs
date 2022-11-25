@@ -124,6 +124,12 @@ namespace SuccessStory
                 SourceName = PluginDatabase.PluginName,
                 SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
             });
+
+            //Playnite search integration
+            Searches = new List<SearchSupport>
+            {
+                new SearchSupport("ss", "SuccessStory", new SuccessStorySearch())
+            };
         }
 
 

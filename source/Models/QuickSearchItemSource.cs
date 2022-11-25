@@ -115,24 +115,6 @@ namespace SuccessStory.Models
             return item;
         }
 
-        private double GetElapsedSeconde(string value, string type)
-        {
-            switch (type.ToLower())
-            {
-                case "h":
-                    double h = double.Parse(value);
-                    return h * 3600;
-
-                case "min":
-                    double m = double.Parse(value);
-                    return m * 60;
-
-                case "s":
-                    return double.Parse(value);
-            }
-
-            return 0;
-        }
 
         private List<KeyValuePair<Guid, GameAchievements>> GetDb(ConcurrentDictionary<Guid, GameAchievements> db)
         {
@@ -165,10 +147,10 @@ namespace SuccessStory.Models
                         case ">":
                             try
                             {
-                                double s = GetElapsedSeconde(parameters[2], parameters[3]);
+                                double s = Tools.GetElapsedSeconde(parameters[2], parameters[3]);
                                 foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
-                                    if (data.Value.EstimateTime?.EstimateTimeMax >= s)
+                                    if (data.Value.EstimateTime?.EstimateTimeMax == 0 ? false : (data.Value.EstimateTime?.EstimateTimeMax * 3600) >= s)
                                     {
                                         search.Add(GetCommandItem(data.Value, query));
                                     }
@@ -180,10 +162,10 @@ namespace SuccessStory.Models
                         case "<":
                             try
                             {
-                                double s = GetElapsedSeconde(parameters[2], parameters[3]);
+                                double s = Tools.GetElapsedSeconde(parameters[2], parameters[3]);
                                 foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
-                                    if (data.Value.EstimateTime?.EstimateTimeMax <= s)
+                                    if (data.Value.EstimateTime?.EstimateTimeMax == 0 ? false : (data.Value.EstimateTime?.EstimateTimeMax * 3600) <= s)
                                     {
                                         search.Add(GetCommandItem(data.Value, query));
                                     }
@@ -207,11 +189,11 @@ namespace SuccessStory.Models
                         case "<>":
                             try
                             {
-                                double sMin = GetElapsedSeconde(parameters[1], parameters[2]);
-                                double sMax = GetElapsedSeconde(parameters[4], parameters[5]);
+                                double sMin = Tools.GetElapsedSeconde(parameters[1], parameters[2]);
+                                double sMax = Tools.GetElapsedSeconde(parameters[4], parameters[5]);
                                 foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
-                                    if (data.Value.EstimateTime?.EstimateTimeMax >= sMin && data.Value.EstimateTime?.EstimateTimeMax <= sMax)
+                                    if (data.Value.EstimateTime?.EstimateTimeMax == 0 ? false : (data.Value.EstimateTime?.EstimateTimeMax * 3600) >= sMin && (data.Value.EstimateTime?.EstimateTimeMax * 3600) <= sMax)
                                     {
                                         search.Add(GetCommandItem(data.Value, query));
                                     }
