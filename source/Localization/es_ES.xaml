@@ -246,6 +246,18 @@ Aquí está la lista de comandos:</sys:String>
     <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">Este comando busca una lista de juegos con un porcentaje específico desbloqueado de logros.</sys:String>
 
 
+    <!-- SuccessStorySearch -->
+
+    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
+    -min                Your PC has minimum requirements
+    -rec                Your PC has recommended requirements
+    -any                Your PC has minimum or recommended requirements
+    -np                 You didn't play the game
+    -fav                The game must be a favorite
+    -stores={n}     Filter by store name (ex:-stores=steam / -stores=steam,epic)</sys:String>
+
+
     <!-- SuccessStoryEditManual -->
 
     <sys:String x:Key="LOCSsOnlyLocked">Solo bloqueado</sys:String>
