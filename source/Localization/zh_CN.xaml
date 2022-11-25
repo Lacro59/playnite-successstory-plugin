@@ -246,6 +246,18 @@
     <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">此命令搜索具有所指定的已解锁成就百分比的游戏列表。</sys:String>
 
 
+    <!-- SuccessStorySearch -->
+
+    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
+    -min                Your PC has minimum requirements
+    -rec                Your PC has recommended requirements
+    -any                Your PC has minimum or recommended requirements
+    -np                 You didn't play the game
+    -fav                The game must be a favorite
+    -stores={n}     Filter by store name (ex:-stores=steam / -stores=steam,epic)</sys:String>
+
+
     <!-- SuccessStoryEditManual -->
 
     <sys:String x:Key="LOCSsOnlyLocked">仅锁定</sys:String>
