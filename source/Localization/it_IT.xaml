@@ -248,14 +248,14 @@ Ecco l'elenco dei comandi:</sys:String>
 
     <!-- SuccessStorySearch -->
 
-    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
-    -min                Your PC has minimum requirements
-    -rec                Your PC has recommended requirements
-    -any                Your PC has minimum or recommended requirements
-    -np                 You didn't play the game
-    -fav                The game must be a favorite
-    -stores={n}     Filter by store name (ex:-stores=steam / -stores=steam,epic)</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchDescription">Cerca sui dati di SuccessStory</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parametri:
+    -min Il tuo PC ha requisiti minimi
+    -rec Il tuo PC ha requisiti consigliati
+    -qualsiasi Il tuo PC ha requisiti minimi o consigliati
+    -np Non hai giocato il gioco
+    -fav Il gioco deve essere un preferito
+    -stores={n}     Filtra per nome negozio (ex:-stores=steam / -stores=steam, epic)</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
