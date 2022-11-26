@@ -248,14 +248,14 @@
 
     <!-- SuccessStorySearch -->
 
-    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
-    -min                Your PC has minimum requirements
-    -rec                Your PC has recommended requirements
-    -any                Your PC has minimum or recommended requirements
-    -np                 You didn't play the game
-    -fav                The game must be a favorite
-    -stores={n}     Filter by store name (ex:-stores=steam / -stores=steam,epic)</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchDescription">Пошук даних SuccessStory</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Параметри:
+    -min               Ваш ПК відповідає мінімальним вимогам
+    -rec                Ваш ПК відповідає рекомендованим вимогам
+    -any               Ваш ПК відповідає мінімальним і рекомендованим вимогам
+    -np                 Ви не грали в гру
+    -fav                Гра повинна бути в улюблених
+    -stores={n}   Фільтрувати за назвою магазину (наприклад:-stores=steam / -stores=steam,epic)</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
