@@ -38,6 +38,7 @@ namespace SuccessStory.Services
                 bool hasTime = false;
                 string paramsTime = string.Empty;
                 List<string> stores = new List<string>();
+                List<string> status = new List<string>();
 
                 args.SearchTerm.Split(' ').ForEach(x =>
                 {
@@ -60,6 +61,11 @@ namespace SuccessStory.Services
                     {
                         stores = x.Replace("-stores=", string.Empty, StringComparison.InvariantCultureIgnoreCase).Split(',').ToList();
                     }
+
+                    if (x.Contains("-status=", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        status = x.Replace("-status=", string.Empty, StringComparison.InvariantCultureIgnoreCase).Split(',').ToList();
+                    }
                 });
 
                 string SearchTerm = Regex.Replace(args.SearchTerm, @"-stores=(\w*,)*\w*", string.Empty, RegexOptions.IgnoreCase).Trim();
@@ -78,6 +84,7 @@ namespace SuccessStory.Services
                                 && (!hasPercent || SearchByPercent(x, paramsPercent))
                                 && (!hasTime || SearchByTime(x, paramsTime))
                                 && (stores.Count == 0 || stores.Any(y => x.Source?.Name?.Contains(y, StringComparison.InvariantCultureIgnoreCase) ?? false))
+                                && (status.Count == 0 || status.Any(y => x.Game?.CompletionStatus?.Name?.Contains(y, StringComparison.InvariantCultureIgnoreCase) ?? false))
                                 )
                     .ForEach(x =>
                     {
