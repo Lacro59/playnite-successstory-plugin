@@ -69,6 +69,7 @@ namespace SuccessStory.Services
                 });
 
                 string SearchTerm = Regex.Replace(args.SearchTerm, @"-stores=(\w*,)*\w*", string.Empty, RegexOptions.IgnoreCase).Trim();
+                SearchTerm = Regex.Replace(SearchTerm, @"-status=(\w*,)*\w*", string.Empty, RegexOptions.IgnoreCase).Trim();
                 SearchTerm = Regex.Replace(SearchTerm, @"-percent=(<|>|\w*<>)*\w*", string.Empty, RegexOptions.IgnoreCase).Trim();
                 SearchTerm = Regex.Replace(SearchTerm, @"-time=(<|>|\w*<>)*\w*", string.Empty, RegexOptions.IgnoreCase).Trim();
                 SearchTerm = Regex.Replace(SearchTerm, @"-\w*", string.Empty, RegexOptions.IgnoreCase).Trim();
