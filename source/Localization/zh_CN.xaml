@@ -250,12 +250,12 @@
 
     <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
     <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
-    -min                Your PC has minimum requirements
-    -rec                Your PC has recommended requirements
-    -any                Your PC has minimum or recommended requirements
-    -np                 You didn't play the game
-    -fav                The game must be a favorite
-    -stores={n}     Filter by store name (ex:-stores=steam / -stores=steam,epic)</sys:String>
+    -percent		Percent of progression (ex:-percent=50 / -percent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
+    -time		Time to full unlock (ex:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
+    -np		You didn't play the game
+    -fav		The game must be a favorite
+    -stores={n}	Filter by store name (ex:-stores=steam / -stores=steam,epic)
+    -status={n}	Filter by status name (ex:-status=played / -status=played,playing)</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
