@@ -23,7 +23,7 @@
     <sys:String x:Key="LOCSuccessStoryIgnored">Das Spiel ignoriert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Das Spiel nicht ignorieren</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Hidden achievement</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Versteckter Erfolg</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam Profil ist nicht öffentlich</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
@@ -123,7 +123,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Zeige die letzte Errungenschaft in einer Zeile</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Erweiterungsansicht</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Show hidden description when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Versteckte Beschreibung anzeigen, wenn die Errungenschaft gesperrt ist</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Seltenheitsanzeige bei Errungenschaften anzeigen</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Zeige Seltenheitswert mit dem Errungenschaft Bild</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Nur die Errungenschaften des Spiels aus dem Spielmenü anzeigen</sys:String>
@@ -249,13 +249,13 @@ Hier ist die Liste von Befehlen:</sys:String>
     <!-- SuccessStorySearch -->
 
     <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
-    -min                Your PC has minimum requirements
-    -rec                Your PC has recommended requirements
-    -any                Your PC has minimum or recommended requirements
-    -np                 You didn't play the game
-    -fav                The game must be a favorite
-    -stores={n}     Filter by store name (ex:-stores=steam / -stores=steam,epic)</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameter:
+    -percent Fortschritt in Prozent (ex:-percent=50 / -Prozent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
+    -time Zeit für komplette Freischaltung (ex:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
+    -np Du hast das Spiel nicht gespielt
+    -fav Das Spiel muss ein Favorit sein
+    -stores={n}	Filter nach Name des Stores (ex:-stores=Dampf/-stores=steam, -stores=steam,epic)
+    -status={n}	Filter nach Status (z.B.: -status=played / -status=played,playing)</sys:String>
 
 
     <!-- SuccessStoryEditManual -->

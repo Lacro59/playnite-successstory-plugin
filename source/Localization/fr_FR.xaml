@@ -30,24 +30,24 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Aucune configuration Steam et/ou clé d'API dans le menu des paramètres de la bibliothèque Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Aucun utilisateur Steam dans le menu des paramètres de la bibliothèque Steam</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">L'utilisateur Steam n'est pas authentifi</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">L'utilisateur Steam n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Utilisateur GOG n'est pas connect</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Utilisateur GOG n'est pas connecté</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Utilisateur PSN n'est pas connect</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Utilisateur PSN n'est pas connecté</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Le support de l'application EA est activé danss SuccessStory mais son intégration Playnite est inactive</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">L'utilisateur EA n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox non authentifi</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox non authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net est activé dans SuccessStory mais l'extension de bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">L'utilisateur de Battle.net n'est pas authentifi</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">L'utilisateur Overwatch de Battle.net n'est pas authentifi</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">L'utilisateur StarCraft II de Battle.net n'est pas authentifi</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">L'utilisateur de Battle.net n'est pas authentifié</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">L'utilisateur Overwatch de Battle.net n'est pas authentifié</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">L'utilisateur StarCraft II de Battle.net n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Utilisateur Epic n'est pas connect</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Utilisateur Epic n'est pas connecté</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 n'a pas été correctement configuré dans les paramètres</sys:String>
     
     <!-- SuccessStoreGameSelection -->
@@ -249,14 +249,14 @@ Voici la liste des commandes :</sys:String>
 
     <!-- SuccessStorySearch -->
 
-    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchDescription">Recherche sur les données de SuccessStory</sys:String>
     <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
-    -min                Your PC has minimum requirements
-    -rec                Your PC has recommended requirements
-    -any                Your PC has minimum or recommended requirements
-    -np                 You didn't play the game
-    -fav                The game must be a favorite
-    -stores={n}     Filter by store name (ex:-stores=steam / -stores=steam,epic)</sys:String>
+    -percent		Percent of progression (ex:-percent=50 / -percent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
+    -time		Time to full unlock (ex:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
+    -np		You didn't play the game
+    -fav		The game must be a favorite
+    -stores={n}	Filter by store name (ex:-stores=steam / -stores=steam,epic)
+    -status={n}	Filter by status name (ex:-status=played / -status=played,playing)</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
