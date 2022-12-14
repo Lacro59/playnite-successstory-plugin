@@ -467,7 +467,7 @@ namespace SuccessStory
 
                 if (PluginSettings.Settings.EnableManual && !GameMenu.Name.IsEqual("Genshin Impact"))
                 {
-                    if (!gameAchievements.HasData)
+                    if (!gameAchievements.HasData || !gameAchievements.IsManual)
                     {
                         gameMenuItems.Add(new GameMenuItem
                         {
