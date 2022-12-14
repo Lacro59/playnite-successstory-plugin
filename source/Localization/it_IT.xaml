@@ -249,13 +249,13 @@ Ecco l'elenco dei comandi:</sys:String>
     <!-- SuccessStorySearch -->
 
     <sys:String x:Key="LOCSuccessStorySearchDescription">Cerca sui dati di SuccessStory</sys:String>
-    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parametri:
-    -min Il tuo PC ha requisiti minimi
-    -rec Il tuo PC ha requisiti consigliati
-    -qualsiasi Il tuo PC ha requisiti minimi o consigliati
-    -np Non hai giocato il gioco
-    -fav Il gioco deve essere un preferito
-    -stores={n}     Filtra per nome negozio (ex:-stores=steam / -stores=steam, epic)</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
+    -percent		Percent of progression (ex:-percent=50 / -percent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
+    -time		Time to full unlock (ex:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
+    -np		You didn't play the game
+    -fav		The game must be a favorite
+    -stores={n}	Filter by store name (ex:-stores=steam / -stores=steam,epic)
+    -status={n}	Filter by status name (ex:-status=played / -status=played,playing)</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
