@@ -37,7 +37,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN está habilitado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">El usuario de PSN no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA está activado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">El usuario de EA no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox está activado en SuccessStory pero la extensión de la biblioteca ha sido deshabilitada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">El usuario de Xbox no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements no se han configurado correctamente en la configuración</sys:String>
@@ -71,7 +71,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar logros de Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar logros de GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Habilitar logros de Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable EA achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Habilitar logros de EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Habilitar logros de Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Habilitar logros de RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Habilitar logros de RPCS3</sys:String>
@@ -123,7 +123,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Mostrar el último logro en una línea</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vista de extensión</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Show hidden description when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Mostrar descripción oculta cuando el logro está bloqueado</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Mostrar indicador de rareza en los logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Mostrar el valor de rareza con la imagen de logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Mostrar sólo los logros del juego seleccionado desde el menú del juego</sys:String>
@@ -248,14 +248,14 @@ Aquí está la lista de comandos:</sys:String>
 
     <!-- SuccessStorySearch -->
 
-    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
-    -percent		Percent of progression (ex:-percent=50 / -percent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
-    -time		Time to full unlock (ex:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
-    -np		You didn't play the game
-    -fav		The game must be a favorite
-    -stores={n}	Filter by store name (ex:-stores=steam / -stores=steam,epic)
-    -status={n}	Filter by status name (ex:-status=played / -status=played,playing)</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchDescription">Buscar en datos de SuccessStory</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parámetros:
+    -percent		Porcentaje de progresión (ej:-percent=50 / -percent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
+    -time		Tiempo para desbloquear completamente (ex:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
+    -np		No haz jugado el juego
+    -fav		El juego debe ser un favorito
+    -stores={n}	Filtrar por nombre de la tienda (ej:-stores=steam / -stores=steam,epic)
+    -status={n}	Filtrar por nombre de estado (ej:-status=played / -status=played,playing)</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
