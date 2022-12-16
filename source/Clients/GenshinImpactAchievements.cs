@@ -10,9 +10,11 @@ namespace SuccessStory.Clients
 {
     class GenshinImpactAchievements : GenericAchievements
     {
-        private static string UrlTextMap                => @"https://raw.githubusercontent.com/theBowja/GenshinData-1/master/TextMap/TextMap{0}.json";
-        private static string UrlAchievementsCategory   => @"https://raw.githubusercontent.com/theBowja/GenshinData-1/master/ExcelBinOutput/AchievementGoalExcelConfigData.json";
-        private static string UrlAchievements           => @"https://raw.githubusercontent.com/theBowja/GenshinData-1/master/ExcelBinOutput/AchievementExcelConfigData.json";
+        private static string Url                       => @"https://raw.githubusercontent.com/theBowja/GenshinData-1/master/";
+        private static string UrlSource                 => @"https://github.com/theBowja/GenshinData-1";
+        private static string UrlTextMap                => Url + @"/TextMap/TextMap{0}.json";
+        private static string UrlAchievementsCategory   => Url + @"/ExcelBinOutput/AchievementGoalExcelConfigData.json";
+        private static string UrlAchievements           => Url + @"/ExcelBinOutput/AchievementExcelConfigData.json";
 
         public GenshinImpactAchievements() : base("GenshinImpact", CodeLang.GetGenshinLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
@@ -75,7 +77,7 @@ namespace SuccessStory.Clients
                     {
                         GameName = "Genshin Impact",
                         Name = "GitHub",
-                        Url = "https://github.com/theBowja/GenshinData-1"
+                        Url = UrlSource
                     };
                 });
             }
