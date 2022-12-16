@@ -233,3 +233,17 @@ Packages:
       - Playnite 10 only
       - Updated localizations
       - Fixed minor issues
+  - Version: 3.1
+    RequiredApiVersion: 6.7.0
+    ReleaseDate: 2022-12-16
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.1/playnite-successstory-plugin_3_1.pext
+    Changelog:
+      - Updated localizations
+      - Set Origin to EA
+      - Fixed minor issues
+      - Added an option to hide secret achievement when locked
+      - Updated Genshin Impact achievements
+      - Fixed RPCS3 achievements
+      - Fixed duplicate achievements icons
+      - Fixed many issue with RetroAchievements
+      - Added support for PlayniteSearch
