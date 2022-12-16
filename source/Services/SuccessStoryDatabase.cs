@@ -1029,14 +1029,6 @@ namespace SuccessStory.Services
             PluginSettings.Settings.ListAchievements = gameAchievements.Items;
         }
 
-        public override void Games_ItemUpdated(object sender, ItemUpdatedEventArgs<Game> e)
-        {
-            foreach (ItemUpdateEvent<Game> GameUpdated in e.UpdatedItems)
-            {
-                Database.SetGameInfo<Achievements>(PlayniteApi, GameUpdated.NewData.Id);
-            }
-        }
-
 
         public override void RefreshNoLoader(Guid Id)
         {
