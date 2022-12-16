@@ -976,7 +976,7 @@
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox IsChecked="{Binding Settings.Auto100PercentCompleted}" Name="PART_Auto100PErcent">
+                                    <CheckBox IsChecked="{Binding Settings.Auto100PercentCompleted}" Name="PART_Auto100PErcent" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableAuto100PercentCompleted}" />
                                     </CheckBox>
 
