@@ -147,11 +147,11 @@
 (A utiliser s'il y a des problèmes avec les succès)</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Télécharger les réalisations pour les jeux qui ont été importés au cours du mois dernier avec des données manquantes. (Utiliser si le nombre de premiers nombres est différent du nombre total)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Télécharger les succès pour les jeux installés avec des données manquantes. (Utiliser si le nombre de premier nombre est différent du nombre total de jeux)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Télécharger les succès pour les jeux installés avec des données manquantes. (Utiliser si le nombre de premier nombre est différent du nombre total de jeux)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Télécharger les succès pour les jeux installés avec des données manquantes (Utiliser si le nombre de premier nombre est différent du nombre total de jeux).</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Télécharger les succès pour les jeux installés avec des données manquantes (Utiliser si le nombre de premier nombre est différent du nombre total de jeux).</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Réinitialise et télécharge les succès des jeux qui ont été importés au cours du mois dernier. (À utiliser s'il y a un problème avec les réalisations)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Réinitialise et télécharge les succès des jeux installés. (Utiliser s'il y a un problème avec les réalisations)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Réinitialise et télécharge les succès des jeux installés (en cas de problème avec les succès).</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Réinitialise et télécharge les réalisations de tous les jeux. (Utiliser s'il y a un problème avec les accomplissements)</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRarityConfig">Configuration de la raret</sys:String>
@@ -163,7 +163,7 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">Liste des succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">Tri des succès</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Grouper par déverrouillé quand cela est possible</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Regrouper les succès débloqués</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Fonctionnalité à ajouter si le jeu possède des succès</sys:String>
 
