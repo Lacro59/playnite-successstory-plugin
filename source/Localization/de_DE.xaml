@@ -36,8 +36,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG wurde in den Einstellungen nicht richtig konfiguriert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN Benutzer ist nicht authentifiziert</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA user is not authenticated</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA-User ist nicht authentifiziert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox Benutzer ist nicht authentifiziert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements wurden in den Einstellungen nicht richtig konfiguriert</sys:String>
@@ -71,7 +71,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Steam Errungenschaften aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">GOG Erfolge aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Epic Errungenschaften aktivieren</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable EA achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOrigin">EA-Erfolge aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Xbox Erfolge aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">RetroAchievements Erfolge aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">RPCS3 Erfolge aktivieren</sys:String>
@@ -248,7 +248,7 @@ Hier ist die Liste von Befehlen:</sys:String>
 
     <!-- SuccessStorySearch -->
 
-    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchDescription">Suche in Erfolgs-Story-Daten</sys:String>
     <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameter:
     -percent Fortschritt in Prozent (ex:-percent=50 / -Prozent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
     -time Zeit für komplette Freischaltung (ex:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
