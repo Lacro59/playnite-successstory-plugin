@@ -10,8 +10,8 @@ namespace SuccessStory.Clients
 {
     class GenshinImpactAchievements : GenericAchievements
     {
-        private static string Url                       => @"https://raw.githubusercontent.com/theBowja/GenshinData-1/master/";
-        private static string UrlSource                 => @"https://github.com/theBowja/GenshinData-1";
+        private static string Url                       => @"https://raw.githubusercontent.com/Sycamore0/GenshinData/main/";
+        private static string UrlSource                 => @"https://github.com/Sycamore0/GenshinData";
         private static string UrlTextMap                => Url + @"/TextMap/TextMap{0}.json";
         private static string UrlAchievementsCategory   => Url + @"/ExcelBinOutput/AchievementGoalExcelConfigData.json";
         private static string UrlAchievements           => Url + @"/ExcelBinOutput/AchievementExcelConfigData.json";
