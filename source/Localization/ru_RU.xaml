@@ -28,7 +28,7 @@
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Профиль Steam не является публичным</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam подключен к Достижениям, но расширение библиотеки было отключено в Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam не был правильно настроен в настройка</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam не был правильно настроен в настройках</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Нет конфигурации Steam и/или API ключа в меню настроек библиотеки Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Нет пользователя Steam в меню настроек библиотеки Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Пользователь Steam не аутентифицирован</sys:String>
@@ -128,7 +128,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Показывать индикатор редкости у достижения</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Показывать значение редкости с изображением достижения</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Показывать только достижения игры, выбранные из меню игры</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Автоматически устанавливать полное завершение, когда все разблокировано</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Авт. устанавливать полное завершение, когда всё разблокировано</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">Список иг</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">Сортировка списка игр по умолчанию</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">График со всеми достижениями</sys:String>
@@ -187,10 +187,10 @@
 
     <sys:String x:Key="LOCSsTimeToUnlock">Время для полной разблокировки</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryCommon">Обычные</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNoCommon">Необычные</sys:String>
+    <sys:String x:Key="LOCSuccessStoryCommon">Обычное</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">Необычное</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Редкое</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">Очень редкий</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">Очень редкое</sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -207,13 +207,13 @@
 
     <!-- ListViewGames -->
 
-    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Прогрес</sys:String>
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Прогресс</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">Все достижения разблокированные по месяцам</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">Все достижения разблокированные по дням</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Достижения разблокированные по месяцам</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Разблокированные достижение по источникам</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Достижения разблокированные по дням</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Разблокированные достижения по месяцам</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Разблокированные достижения по источникам</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Разблокированные достижения по дням</sys:String>
 
     <!-- Genshin Impact -->
 
