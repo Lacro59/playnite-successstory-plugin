@@ -23,7 +23,7 @@
     <sys:String x:Key="LOCSuccessStoryIgnored">忽略此游戏</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">不忽略游戏</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Hidden achievement</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">隐藏成就</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam 个人资料未公开</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
