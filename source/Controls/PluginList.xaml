@@ -197,6 +197,7 @@
                                                     <MultiDataTrigger.Conditions>
                                                         <Condition Binding="{Binding ElementName=PART_GridContener, Path=Tag}" Value="False" />
                                                         <Condition Binding="{Binding IsHidden}" Value="True" />
+                                                        <Condition Binding="{Binding IsUnlock}" Value="False" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Text" Value="{DynamicResource LOCSuccessStoryHiddenAchievement}" />
                                                 </MultiDataTrigger>

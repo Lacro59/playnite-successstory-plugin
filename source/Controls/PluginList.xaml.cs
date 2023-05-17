@@ -80,43 +80,19 @@ namespace SuccessStory.Controls
                 case (OrderAchievementType.AchievementName):
                     NameIndex = 1;
                     PART_SortNameOrder.Content = NameIndex;
-
-                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
-                    {
-                        PART_SortName.Content = NameAsc;
-                    }
-                    else
-                    {
-                        PART_SortName.Content = NameDesc;
-                    }
+                    PART_SortName.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
                     break;
 
                 case (OrderAchievementType.AchievementDateUnlocked):
                     CalIndex = 1;
                     PART_SortCalOrder.Content = CalIndex;
-
-                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
-                    {
-                        PART_SortCal.Content = CalAsc;
-                    }
-                    else
-                    {
-                        PART_SortCal.Content = CalDesc;
-                    }
+                    PART_SortCal.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
                     break;
 
                 case (OrderAchievementType.AchievementRarety):
                     RarityIndex = 1;
                     PART_SortRarityOrder.Content = RarityIndex;
-
-                    if (orderAchievement.OrderTypeSecond == OrderType.Ascending)
-                    {
-                        PART_SortRarity.Content = RarityAsc;
-                    }
-                    else
-                    {
-                        PART_SortRarity.Content = RarityDesc;
-                    }
+                    PART_SortRarity.Content = orderAchievement.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
                     break;
             }
 
@@ -125,43 +101,19 @@ namespace SuccessStory.Controls
                 case (OrderAchievementType.AchievementName):
                     NameIndex = 2;
                     PART_SortNameOrder.Content = NameIndex;
-
-                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
-                    {
-                        PART_SortName.Content = NameAsc;
-                    }
-                    else
-                    {
-                        PART_SortName.Content = NameDesc;
-                    }
+                    PART_SortName.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
                     break;
 
                 case (OrderAchievementType.AchievementDateUnlocked):
                     CalIndex = 2;
                     PART_SortCalOrder.Content = CalIndex;
-
-                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
-                    {
-                        PART_SortCal.Content = CalAsc;
-                    }
-                    else
-                    {
-                        PART_SortCal.Content = CalDesc;
-                    }
+                    PART_SortCal.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
                     break;
 
                 case (OrderAchievementType.AchievementRarety):
                     RarityIndex = 2;
-                    PART_SortRarityOrder.Content = RarityIndex;                
-
-                    if (orderAchievement.OrderTypeSecond == OrderType.Ascending)
-                    {
-                        PART_SortRarity.Content = RarityAsc;
-                    }
-                    else
-                    {
-                        PART_SortRarity.Content = RarityDesc;
-                    }
+                    PART_SortRarityOrder.Content = RarityIndex;         
+                    PART_SortRarity.Content = orderAchievement.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
                     break;
             }
 
@@ -170,43 +122,19 @@ namespace SuccessStory.Controls
                 case (OrderAchievementType.AchievementName):
                     NameIndex = 3;
                     PART_SortNameOrder.Content = NameIndex;
-
-                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
-                    {
-                        PART_SortName.Content = NameAsc;
-                    }
-                    else
-                    {
-                        PART_SortName.Content = NameDesc;
-                    }
+                    PART_SortName.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
                     break;
 
                 case (OrderAchievementType.AchievementDateUnlocked):
                     CalIndex = 3;
                     PART_SortCalOrder.Content = CalIndex;
-
-                    if (orderAchievement.OrderTypeFirst == OrderType.Ascending)
-                    {
-                        PART_SortCal.Content = CalAsc;
-                    }
-                    else
-                    {
-                        PART_SortCal.Content = CalDesc;
-                    }
+                    PART_SortCal.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
                     break;
 
                 case (OrderAchievementType.AchievementRarety):
                     RarityIndex = 3;
                     PART_SortRarityOrder.Content = RarityIndex;
-
-                    if (orderAchievement.OrderTypeSecond == OrderType.Ascending)
-                    {
-                        PART_SortRarity.Content = RarityAsc;
-                    }
-                    else
-                    {
-                        PART_SortRarity.Content = RarityDesc;
-                    }
+                    PART_SortRarity.Content = orderAchievement.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
                     break;
             }
 
@@ -261,7 +189,7 @@ namespace SuccessStory.Controls
             ControlDataContext.ItemsSource = new ObservableCollection<Achievements>();
 
 
-            foreach (var item in PART_TabControl.Items)
+            foreach (object item in PART_TabControl.Items)
             {
                 ((TabItem)item).Visibility = Visibility.Collapsed;
                 ((TabItem)item).Header = string.Empty;
@@ -299,7 +227,7 @@ namespace SuccessStory.Controls
             else
             {
                 ControlDataContext.ItemsSource = gameAchievements.OrderItems;
-            }                                            
+            }
         }
 
 
