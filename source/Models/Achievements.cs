@@ -36,11 +36,7 @@ namespace SuccessStory.Models
             get
             {
                 string ImagePath = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", CategoryIcon);
-                if (File.Exists(ImagePath))
-                {
-                    return ImagePath;
-                }
-                return ImageSourceManagerPlugin.GetImagePath(CategoryIcon);
+                return File.Exists(ImagePath) ? ImagePath : ImageSourceManagerPlugin.GetImagePath(CategoryIcon);
             }
         }
 
@@ -90,20 +86,7 @@ namespace SuccessStory.Models
         /// Image for locked achievement
         /// </summary>
         [DontSerialize]
-        public string ImageLocked
-        {
-            get
-            {
-                if (!UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked)
-                {
-                    return ImageSourceManagerPlugin.GetImagePath(UrlLocked, 256);
-                }
-                else
-                {
-                    return ImageUnlocked;
-                }
-            }
-        }
+        public string ImageLocked => !UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked ? ImageSourceManagerPlugin.GetImagePath(UrlLocked, 256) : ImageUnlocked;                    
 
 
         [DontSerialize]
@@ -157,7 +140,7 @@ namespace SuccessStory.Models
 
                 if (DateUnlocked != null && DateUnlocked != default(DateTime) && DateUnlocked != new DateTime(1982, 12, 15, 0, 0, 0))
                 {
-                    var converter = new LocalDateTimeConverter();
+                    LocalDateTimeConverter converter = new LocalDateTimeConverter();
                     NameWithDateUnlock += " (" + converter.Convert(DateUnlocked, null, null, CultureInfo.CurrentCulture) + ")";
                 }
 
@@ -195,26 +178,8 @@ namespace SuccessStory.Models
         [DontSerialize]
         public DateTime? DateWhenUnlocked
         {
-            get
-            {
-                if (DateUnlocked == default(DateTime) || DateUnlocked == new DateTime(1982, 12, 15, 0, 0, 0, 0))
-                {
-                    return null;
-                }
-
-                return DateUnlocked;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    DateUnlocked = default(DateTime);
-                }
-                else
-                {
-                    DateUnlocked = value;
-                }
-            }
+            get => DateUnlocked == default(DateTime) || DateUnlocked == new DateTime(1982, 12, 15, 0, 0, 0, 0) ? null : DateUnlocked;
+            set => DateUnlocked = value == null ? (DateTime?)default(DateTime) : value;
         }
 
         [DontSerialize]
@@ -227,7 +192,7 @@ namespace SuccessStory.Models
                     return string.Empty;
                 }
 
-                var converter = new LocalDateTimeConverter();
+                LocalDateTimeConverter converter = new LocalDateTimeConverter();
                 return (string)converter.Convert(DateUnlocked, null, null, CultureInfo.CurrentCulture);
             }
         }
