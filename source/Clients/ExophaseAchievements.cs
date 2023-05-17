@@ -1,4 +1,5 @@
-﻿using AngleSharp.Dom.Html;
+﻿using AngleSharp.Dom;
+using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using CommonPlayniteShared.Common;
 using CommonPluginsShared;
@@ -42,7 +43,6 @@ namespace SuccessStory.Clients
 
         
 
-
         public ExophaseAchievements() : base("Exophase")
         {
 
@@ -72,7 +72,7 @@ namespace SuccessStory.Clients
                 IHtmlDocument htmlDocument = parser.Parse(DataExophase);
 
                 AllAchievements = new List<Achievements>();
-                var SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
+                IHtmlCollection<IElement> SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
 
                 if (SectionAchievements == null || SectionAchievements.Count() == 0)
                 {
@@ -84,9 +84,9 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    foreach (var Section in SectionAchievements)
+                    foreach (IElement Section in SectionAchievements)
                     {
-                        foreach (var SearchAchievements in Section.QuerySelectorAll("li"))
+                        foreach (IElement SearchAchievements in Section.QuerySelectorAll("li"))
                         {
                             try
                             {
@@ -175,7 +175,7 @@ namespace SuccessStory.Clients
             FileSystem.DeleteFile(cookiesPath);
             ResetCachedIsConnectedResult();
 
-            using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(600, 600))
+            using (IWebView WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(600, 600))
             {
                 WebView.LoadingChanged += (s, e) =>
                 {
@@ -221,7 +221,7 @@ namespace SuccessStory.Clients
 
                 ExophaseSearchResult exophaseScheachResult = Serialization.FromJson<ExophaseSearchResult>(StringJsonResult);
 
-                var ListExophase = exophaseScheachResult?.games?.list;
+                List<List> ListExophase = exophaseScheachResult?.games?.list;
                 if (ListExophase != null)
                 {
                     ListSearchGames = ListExophase.Select(x => new SearchResult
@@ -251,9 +251,9 @@ namespace SuccessStory.Clients
             if (sourceLinkName == "Exophase")
             {
                 return gameAchievements.SourcesLink.Url;
-            }                
+            }
 
-            var searchResults = SearchGame(gameAchievements.Name);
+            List<SearchResult> searchResults = SearchGame(gameAchievements.Name);
             if (searchResults.Count == 0)
             {
                 logger.Warn($"No game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
@@ -269,12 +269,12 @@ namespace SuccessStory.Clients
                     {
                         logger.Warn($"No game found for {Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value} in GetAchievementsPageUrl()");
                         return null;
-                    }                    
-                }                    
+                    }
+                }
             }
 
             string normalizedGameName = UsedSplit ? PlayniteTools.NormalizeGameName(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value) : PlayniteTools.NormalizeGameName(gameAchievements.Name);
-            var searchResult = searchResults.Find(x => PlayniteTools.NormalizeGameName(x.Name) == normalizedGameName && PlatformAndProviderMatch(x, gameAchievements, source));
+            SearchResult searchResult = searchResults.Find(x => PlayniteTools.NormalizeGameName(x.Name) == normalizedGameName && PlatformAndProviderMatch(x, gameAchievements, source));
 
             if (searchResult == null)
             {
@@ -308,10 +308,10 @@ namespace SuccessStory.Clients
 
                 exophaseAchievements.Items.ForEach(y =>
                 {
-                    var achievement = gameAchievements.Items.Find(x => x.Name.Equals(y.Name, StringComparison.InvariantCultureIgnoreCase));
+                    Achievements achievement = gameAchievements.Items.Find(x => x.Name.IsEqual(y.Name));
                     if (achievement == null)
                     {
-                        achievement = gameAchievements.Items.Find(x => x.ApiName.Equals(y.Name, StringComparison.InvariantCultureIgnoreCase));
+                        achievement = gameAchievements.Items.Find(x => x.ApiName.IsEqual(y.Name));
                     }
 
                     if (achievement != null)
@@ -351,10 +351,10 @@ namespace SuccessStory.Clients
 
                 exophaseAchievements.Items.ForEach(y => 
                 {
-                    var achievement = gameAchievements.Items.Find(x => x.Name.Equals(y.Name, StringComparison.InvariantCultureIgnoreCase));
+                    Achievements achievement = gameAchievements.Items.Find(x => x.Name.IsEqual(y.Name));
                     if (achievement == null)
                     {
-                        achievement = gameAchievements.Items.Find(x => x.ApiName.Equals(y.Name, StringComparison.InvariantCultureIgnoreCase));
+                        achievement = gameAchievements.Items.Find(x => x.ApiName.IsEqual(y.Name));
                     }
 
                     if (achievement != null)
@@ -424,23 +424,29 @@ namespace SuccessStory.Clients
 
         private static bool PlatformsMatch(SearchResult exophaseGame, GameAchievements playniteGame)
         {
-            foreach (var playnitePlatform in playniteGame.Platforms)
+            foreach (Playnite.SDK.Models.Platform playnitePlatform in playniteGame.Platforms)
             {
                 string[] exophasePlatformNames;
                 string sourceName = PluginDatabase.PlayniteApi.Database.Games.Get(playniteGame.Id).Source?.Name;
                 if (sourceName == "Xbox Game Pass")
                 {
                     if (!PlaynitePlatformSpecificationIdToExophasePlatformName.TryGetValue("xbox_game_pass", out exophasePlatformNames))
+                    {
                         continue;
+                    }
                 }
                 else
                 {
                     if (!PlaynitePlatformSpecificationIdToExophasePlatformName.TryGetValue(playnitePlatform.SpecificationId, out exophasePlatformNames))
+                    {
                         continue; //there are no natural matches between default Playnite platform name and Exophase platform name, so give up if it's not in the dictionary
+                    }
                 }
 
                 if (exophaseGame.Platforms.IntersectsExactlyWith(exophasePlatformNames))
+                {
                     return true;
+                }
             }
             return false;
         }

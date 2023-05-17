@@ -54,14 +54,12 @@ namespace SuccessStory.Clients
                     data = Web.DownloadStringData(UrlStarCraft2AchInfo, GetCookies()).GetAwaiter().GetResult();
                     BattleNetSc2Ach battleNetSc2Ach = Serialization.FromJson<BattleNetSc2Ach>(data);
 
-                    foreach (var earnedAchievement in battleNetSc2Profil.earnedAchievements)
+                    foreach (EarnedAchievement earnedAchievement in battleNetSc2Profil.earnedAchievements)
                     {
                         try
                         {
                             string ApiName = earnedAchievement.achievementId;
-
-                            var achievement = battleNetSc2Ach.achievements.Where(x => x.id == ApiName).FirstOrDefault();
-
+                            Achievement achievement = battleNetSc2Ach.achievements.Where(x => x.id == ApiName).FirstOrDefault();
                             string Name = achievement.title;
                             string Description = achievement.description;
                             string UrlImage = achievement.imageUrl;
@@ -70,8 +68,8 @@ namespace SuccessStory.Clients
 
                             DateTime DateUnlocked = (ElpasedTime == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(ElpasedTime).ToLocalTime();
 
-                            var cat = battleNetSc2Ach.categories.Where(x => x.id == achievement.categoryId).FirstOrDefault();
-                            var catParent = battleNetSc2Ach.categories.Where(x => x.id == cat.parentCategoryId).FirstOrDefault();
+                            Models.Category cat = battleNetSc2Ach.categories.Where(x => x.id == achievement.categoryId).FirstOrDefault();
+                            Models.Category catParent = battleNetSc2Ach.categories.Where(x => x.id == cat.parentCategoryId).FirstOrDefault();
 
                             string Category = cat.name;
                             string ParentCategory = catParent?.name;
