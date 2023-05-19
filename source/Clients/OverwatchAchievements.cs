@@ -496,11 +496,19 @@ namespace SuccessStory.Clients
                 {
                     using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(400, 600))
                     {
+                        WebView.LoadingChanged += (s, e) =>
+                        {
+                            string address = WebView.GetCurrentAddress();
+                            if (!address.Contains(UrlLogin) && !address.Contains(UrlOverwatchLogin))
+                            {
+                                ResetCachedConfigurationValidationResult();
+                                ResetCachedIsConnectedResult();
+                                WebView.Close();
+                            }
+                        };
+
                         WebView.Navigate(UrlOverwatchLogin);
                         WebView.OpenDialog();
-
-                        ResetCachedConfigurationValidationResult();
-                        ResetCachedIsConnectedResult();
                     }
                 }
             ));
