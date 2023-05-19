@@ -140,7 +140,7 @@ namespace SuccessStory.Clients
                 exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Starcraft2);
             }
 
-
+            gameAchievements.SetRaretyIndicator();
             return gameAchievements;
         }
 

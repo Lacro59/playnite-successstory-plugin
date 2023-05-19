@@ -128,7 +128,6 @@ namespace SuccessStory.Models
             }
         }
 
-        [DontSerialize]
         public bool NoRarety { get; set; } = false;
 
         [DontSerialize]

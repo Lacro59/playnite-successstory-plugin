@@ -234,6 +234,7 @@ namespace SuccessStory.Clients
                 exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
             }
 
+            gameAchievements.SetRaretyIndicator();
             return gameAchievements;
         }
 
@@ -332,6 +333,7 @@ namespace SuccessStory.Clients
                 exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
             }
 
+            gameAchievements.SetRaretyIndicator();
             return gameAchievements;
         }
 

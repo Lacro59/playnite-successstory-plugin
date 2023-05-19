@@ -116,7 +116,7 @@ namespace SuccessStory.Clients
                 exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Overwatch);
             }
 
-
+            gameAchievements.SetRaretyIndicator();
             return gameAchievements;
         }
 

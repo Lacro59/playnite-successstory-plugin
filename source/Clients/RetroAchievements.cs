@@ -128,6 +128,7 @@ namespace SuccessStory.Clients
                 };
             }
 
+            gameAchievements.SetRaretyIndicator();
             return gameAchievements;
         }
 

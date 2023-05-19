@@ -135,7 +135,8 @@ namespace SuccessStory.Clients
             {
                 ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
             }
-            
+
+            gameAchievements.SetRaretyIndicator();
             return gameAchievements;
         }
 
