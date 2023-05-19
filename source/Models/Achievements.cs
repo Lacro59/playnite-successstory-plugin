@@ -86,7 +86,20 @@ namespace SuccessStory.Models
         /// Image for locked achievement
         /// </summary>
         [DontSerialize]
-        public string ImageLocked => !UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked ? ImageSourceManagerPlugin.GetImagePath(UrlLocked, 256) : ImageUnlocked;                    
+        public string ImageLocked
+        {
+            get
+            {
+                if (UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75)
+                {
+                    return ImageUnlocked;
+                }
+                else
+                {
+                    return !UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked ? ImageSourceManagerPlugin.GetImagePath(UrlLocked, 256) : ImageUnlocked;
+                }
+            }
+        }
 
 
         [DontSerialize]
@@ -105,7 +118,28 @@ namespace SuccessStory.Models
         /// Indicates if there is no locked icon
         /// </summary>
         [DontSerialize]
-        public bool IsGray => IsUnlock ? false : (UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
+        //public bool IsGray => IsUnlock ? false : (UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
+        public bool IsGray
+        {
+            get
+            {
+                if (IsUnlock)
+                {
+                    return false;
+                }
+                else
+                {
+                    if (UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return (UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
+                    }
+                }
+            }
+        }
 
         [DontSerialize]
         public bool EnableRaretyIndicator => PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
