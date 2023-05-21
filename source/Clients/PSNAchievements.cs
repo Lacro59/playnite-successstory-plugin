@@ -152,7 +152,7 @@ namespace SuccessStory.Clients
                     foreach (Trophie trophie in trophiesDetails?.trophies)
                     {
                         Trophie trophieUser = trophies.trophies.Where(x => x.trophyId == trophie.trophyId).FirstOrDefault();
-                        float.TryParse(trophieUser?.trophyEarnedRate.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator), out float Percent);
+                        float.TryParse(trophieUser?.trophyEarnedRate, NumberStyles.Float, CultureInfo.InvariantCulture, out float Percent);
 
                         AllAchievements.Add(new Achievements
                         {
