@@ -90,7 +90,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                if (UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75)
+                if (UrlLocked != null && (UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75))
                 {
                     return ImageUnlocked;
                 }
@@ -129,7 +129,7 @@ namespace SuccessStory.Models
                 }
                 else
                 {
-                    if (UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75)
+                    if (UrlLocked != null && (UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75))
                     {
                         return true;
                     }

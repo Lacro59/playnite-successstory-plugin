@@ -127,25 +127,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clients\BattleNetAchievements.cs" />
-    <Compile Include="Clients\EpicAchievements.cs" />
-    <Compile Include="Clients\ExophaseAchievements.cs" />
-    <Compile Include="Clients\GenericAchievements.cs" />
-    <Compile Include="Clients\GenshinImpactAchievements.cs" />
-    <Compile Include="Clients\GuildWars2Achievements.cs" />
-    <Compile Include="Models\GenshinImpactAchievementsCategory.cs" />
-    <Compile Include="Clients\GogAchievements.cs" />
-    <Compile Include="Clients\OriginAchievements.cs" />
-    <Compile Include="Clients\OverwatchAchievements.cs" />
-    <Compile Include="Clients\PSNAchievements.cs" />
-    <Compile Include="Clients\RetroAchievements.cs" />
-    <Compile Include="Clients\Rpcs3Achievements.cs" />
-    <Compile Include="Clients\Starcraft2Achievements.cs" />
-    <Compile Include="Clients\SteamAchievements.cs" />
-    <Compile Include="Clients\SteamEmulators.cs" />
-    <Compile Include="Clients\TrueAchievements.cs" />
-    <Compile Include="Clients\WowAchievements.cs" />
-    <Compile Include="Clients\XboxAchievements.cs" />
     <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
       <DependentUpon>AchievementImage.xaml</DependentUpon>
     </Compile>
@@ -175,29 +156,6 @@
     </Compile>
     <Compile Include="Converters\Crc32.cs" />
     <Compile Include="Converters\SetColorConverter.cs" />
-    <Compile Include="Models\Achievements.cs" />
-    <Compile Include="Models\AchRaretyStats.cs" />
-    <Compile Include="Models\BattleNetSc2Ach.cs" />
-    <Compile Include="Models\BattleNetSc2Profil.cs" />
-    <Compile Include="Models\ExophaseSearchResult.cs" />
-    <Compile Include="Models\GameStats.cs" />
-    <Compile Include="Models\GenshinImpactAchievementData.cs" />
-    <Compile Include="Models\GW2Achievements.cs" />
-    <Compile Include="Models\GW2AchievementsGroups.cs" />
-    <Compile Include="Models\GW2OwnedAchievements.cs" />
-    <Compile Include="Models\ListAchievements.cs" />
-    <Compile Include="Models\ListAll.cs" />
-    <Compile Include="Models\ListGames.cs" />
-    <Compile Include="Models\ProgressionAchievements.cs" />
-    <Compile Include="Models\GameAchievements.cs" />
-    <Compile Include="Models\PSN_NPWR_LIST.cs" />
-    <Compile Include="Models\QuickSearchItemSource.cs" />
-    <Compile Include="Models\RaConsoleAssociated.cs" />
-    <Compile Include="Models\SearchResult.cs" />
-    <Compile Include="Models\SuccessStoryCollection.cs" />
-    <Compile Include="Models\WowAchievementsData.cs" />
-    <Compile Include="Models\CbData.cs" />
-    <Compile Include="Models\WowRegionResult.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml.cs">
       <DependentUpon>ComboBoxRemovable.xaml</DependentUpon>
     </Compile>
@@ -273,112 +231,7 @@
       <DependentUpon>SuccessStoryView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="extension.yaml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Localization\es_ES.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\fr_FR.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\LocSource.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Page Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <None Include="Localization\ru_RU.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\pl_PL.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\zh_CN.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\de_DE.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\en_US.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\it_IT.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\pt_BR.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\cs_CZ.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\fa_IR.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\fi_FI.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\hu_HU.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\ja_JP.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\no_NO.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\pt_PT.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\uk_UA.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Localization\zh_TW.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+  <ItemGroup> 
     <Page Include="Controls\Customs\AchievementImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -505,24 +358,252 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="playnite-plugincommon\CommonPluginsResources\CommonPluginsResources.csproj">
+      <Project>{4effe926-9c64-4750-a399-f344710edc09}</Project>
+      <Name>CommonPluginsResources</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup> <!-- \*. some lone files in source -->
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <None Include="extension.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\badge.png">
+  <ItemGroup> <!-- Compile Clients\* -->
+    <Compile Include="Clients\BattleNetAchievements.cs" />
+    <Compile Include="Clients\EpicAchievements.cs" />
+    <Compile Include="Clients\ExophaseAchievements.cs" />
+    <Compile Include="Clients\GenericAchievements.cs" />
+    <Compile Include="Clients\GenshinImpactAchievements.cs" />
+    <Compile Include="Clients\GuildWars2Achievements.cs" />
+    <Compile Include="Clients\GogAchievements.cs" />
+    <Compile Include="Clients\OriginAchievements.cs" />
+    <Compile Include="Clients\OverwatchAchievements.cs" />
+    <Compile Include="Clients\PSNAchievements.cs" />
+    <Compile Include="Clients\RetroAchievements.cs" />
+    <Compile Include="Clients\Rpcs3Achievements.cs" />
+    <Compile Include="Clients\Starcraft2Achievements.cs" />
+    <Compile Include="Clients\SteamAchievements.cs" />
+    <Compile Include="Clients\SteamEmulators.cs" />
+    <Compile Include="Clients\TrueAchievements.cs" />
+    <Compile Include="Clients\WowAchievements.cs" />
+    <Compile Include="Clients\XboxAchievements.cs" />
+  </ItemGroup>
+  <ItemGroup> <!-- Compile Models\* -->
+    <Compile Include="Models\GenshinImpactAchievementsCategory.cs" />
+    <Compile Include="Models\Achievements.cs" />
+    <Compile Include="Models\AchRaretyStats.cs" />
+    <Compile Include="Models\BattleNetSc2Ach.cs" />
+    <Compile Include="Models\BattleNetSc2Profil.cs" />
+    <Compile Include="Models\ExophaseSearchResult.cs" />
+    <Compile Include="Models\GameStats.cs" />
+    <Compile Include="Models\GenshinImpactAchievementData.cs" />
+    <Compile Include="Models\GW2Achievements.cs" />
+    <Compile Include="Models\GW2AchievementsGroups.cs" />
+    <Compile Include="Models\GW2OwnedAchievements.cs" />
+    <Compile Include="Models\ListAchievements.cs" />
+    <Compile Include="Models\ListAll.cs" />
+    <Compile Include="Models\ListGames.cs" />
+    <Compile Include="Models\ProgressionAchievements.cs" />
+    <Compile Include="Models\GameAchievements.cs" />
+    <Compile Include="Models\PSN_NPWR_LIST.cs" />
+    <Compile Include="Models\QuickSearchItemSource.cs" />
+    <Compile Include="Models\RaConsoleAssociated.cs" />
+    <Compile Include="Models\SearchResult.cs" />
+    <Compile Include="Models\SuccessStoryCollection.cs" />
+    <Compile Include="Models\WowAchievementsData.cs" />
+    <Compile Include="Models\CbData.cs" />
+    <Compile Include="Models\WowRegionResult.cs" />
+  </ItemGroup>
+  <ItemGroup> <!-- Localization\*.xaml -->
+    <None Include="Localization\es_ES.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\fr_FR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\LocSource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\ru_RU.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\pl_PL.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\zh_CN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\de_DE.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\en_US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\it_IT.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\pt_BR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\cs_CZ.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\fa_IR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\fi_FI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\hu_HU.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\ja_JP.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\no_NO.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\pt_PT.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\uk_UA.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\zh_TW.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup> <!-- Resources\*.dll -->
+    <None Include="Resources\QuickSearchSDK.Attributes.dll" />
+    <None Include="Resources\QuickSearchSDK.dll" />
+  </ItemGroup>
+  <ItemGroup> <!-- Resources\*.png -->
+    <None Include="Resources\badge.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\badge_bw.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\badge_flat.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\command-line.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\default_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\hidden_trophy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\percent.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\star.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\time.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup> <!-- Resources\Overwatch\* -->
+    <None Include="Resources\Overwatch\Endorsement_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup> <!-- Resources\GenshinImpact\* -->
+    <None Include="Resources\GenshinImpact\ac.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\GenshinImpact\ac_10.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -580,104 +661,16 @@
     <None Include="Resources\GenshinImpact\ac_28.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_3.png">
+    <None Include="Resources\GenshinImpact\ac_29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_30.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\GenshinImpact\ac_30.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\GenshinImpact\ac_31.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\GenshinImpact\ac_5.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\GenshinImpact\ac_6.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\GenshinImpact\ac_7.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\GenshinImpact\ac_8.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\GenshinImpact\ac_9.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\hidden_trophy.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="playnite-plugincommon\CommonPluginsResources\CommonPluginsResources.csproj">
-      <Project>{4effe926-9c64-4750-a399-f344710edc09}</Project>
-      <Name>CommonPluginsResources</Name>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Overwatch\Endorsement_1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Overwatch\Endorsement_2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Overwatch\Endorsement_3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Overwatch\Endorsement_4.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Overwatch\Endorsement_5.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\default_icon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\command-line.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\QuickSearchSDK.Attributes.dll" />
-    <None Include="Resources\QuickSearchSDK.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\star.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GenshinImpact\ac_1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\GenshinImpact\ac_2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\GenshinImpact\ac_4.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GenshinImpact\ac.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\percent.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\time.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GenshinImpact\ac_29.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\GenshinImpact\ac_32.png">
@@ -699,6 +692,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\GenshinImpact\ac_38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\ac_41.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
