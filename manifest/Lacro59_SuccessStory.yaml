@@ -258,3 +258,12 @@ Packages:
       - Fixed issue with hidden achievements description
       - Fixed issue with Starcraft 2 achievements
       - Fixed minor issues and crash
+  - Version: 3.1.2
+    RequiredApiVersion: 6.9.0
+    ReleaseDate: 2023-05-23
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.1.2/playnite-successstory-plugin_3_1_2.pext
+    Changelog:
+      - Fixed crash (thanks to Covkie)
+      - Fixed bad parsing of trophy earned for PSN (thanks to Damir Arh)
+      - Updated Genshin Impact Achievement Icons (thanks to Covkie)
+      - Fixed minor issues and crash
