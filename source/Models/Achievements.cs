@@ -131,18 +131,13 @@ namespace SuccessStory.Models
                     }
                     else
                     {
-                        if (UrlUnlocked.IsNullOrEmpty())
-                        {
-                            return false;
-                        }
-
                         if (UrlLocked != null && UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75)
                         {
                             return true;
                         }
                         else
                         {
-                            return UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked;
+                            return UrlLocked.IsNullOrEmpty() || !UrlUnlocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked;
                         }
                     }
                 }
