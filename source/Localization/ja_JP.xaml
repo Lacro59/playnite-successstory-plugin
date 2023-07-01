@@ -86,16 +86,16 @@
 
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Show separate view for RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDatabase">Database</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDatabase">データベース</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Download achievements data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Refresh data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Download missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Recent games with missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Recent games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllData">All games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllData">すべてのゲーム</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetAllData">All games with missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Installed games with missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Installed games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">インストール済みのゲーム</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">Progression with a progress bar</sys:String>
     
@@ -181,10 +181,10 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <sys:String x:Key="LOCSsTimeToUnlock">Time to full unlock</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">Ultra-rare</sys:String>
+    <sys:String x:Key="LOCSuccessStoryCommon">コモン</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">アンコモン</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare">レア</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">ウルトラレア</sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -227,7 +227,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- Wow -->
 
-    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
+    <sys:String x:Key="LOCSsWowRegion">地域</sys:String>
     <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
     <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
 
