@@ -73,34 +73,34 @@
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Epic başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOrigin">EA başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Xbox başarımlarını etkinleştir</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Enable RetroAchievements achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Enable RPCS3 achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Enable manual achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Enable Overwatch achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Enable StarCraft II achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Enable World of Warcraft achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Enable Guild Wars 2 achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">RetroAchievement başarılarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">RPCS3 başarılarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableManualAchievements">El ile girilen başarılarımları etkinleştir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Overwatch başarılarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">StarCraft II başarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">World of Warcraft başarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Guild Wars 2 başarımlarını etkinleştir</sys:String>
 
-    <sys:String x:Key="LOCSuccessStorySteamNoApi">Disable API usage (Use when you don't have an API key)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Home user folder</sys:String>
+    <sys:String x:Key="LOCSuccessStorySteamNoApi">API kullanımını devre dışı bırak (API anahtarınız yoksa kullanın)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Başlangıç kullanıcı klasörü</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Show separate view for RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">RetroAchievements için ayrı görünüm göster</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDatabase">Database</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetData">Download achievements data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshData">Refresh data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetMissing">Download missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetDataRecent">Recent games with missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Recent games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllData">All games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetAllData">All games with missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Installed games with missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Installed games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDatabase">Veritabanı</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetData">Başarım verilerini indir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshData">Veriyi yenile</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissing">Eksik verileri indir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecent">Eksik veri içeren son oyunlar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Son oyunlar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllData">Tüm oyunlar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllData">Eksik veri içeren tüm oyunlar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Eksik veri içeren kurulu oyunlar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Kurulu oyunlar</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">Progression with a progress bar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">İlerleme çubuğu ile ilerle</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Display achievements chart</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Display achievements list</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">Başarım grafiğini göster</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">Başarım listesini göster</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompact">Display the achievements list compact</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">Display the achievements progress bar</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">Display the summary of unlocked achievements</sys:String>
@@ -128,8 +128,8 @@
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Show rarity value with achievements image</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the achievements of the game selected from the game menu</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Automatically set the completation when all are unlocked</sys:String>
-    <sys:String x:Key="LOCSuccessStoryListGames">List games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Default game list sorting</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGames">Oyunları listele</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Varsayılan oyun listesi sıralaması</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Chart with all achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryListGamesFields">Game fields to be displayed:</sys:String>
@@ -160,9 +160,9 @@
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Non-blocking process which can increase memory usage a bit when caching only.
 Especially useful for Xbox achievements with their larges images which are reduced when caching.</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryListAchievements">List achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Achievements sorting</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Group by unlocked when possible</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListAchievements">Başarımları listele</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementSorting">Başarım sıralaması</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Mümkünse kilidi açık olarak gruplandır</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Feature to add if the game has achievements</sys:String>
 
@@ -173,63 +173,63 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- SuccessStoryOneGameView -->
 
-    <sys:String x:Key="LOCSuccessStoryFirstUnlock">First unlock</sys:String>
-    <sys:String x:Key="LOCSuccessStoryLastUnlock">Last unlock</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFirstUnlock">İlk kilidi açılan</sys:String>
+    <sys:String x:Key="LOCSuccessStoryLastUnlock">Son kilidi açılan</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryAchStats">Achievements statistics</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUserStats">User statistics</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchStats">Başarım istatistikleri</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUserStats">Kullanıcı istatistikleri</sys:String>
 
     <sys:String x:Key="LOCSsTimeToUnlock">Time to full unlock</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRare">Rare</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">Ultra-rare</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare">Nadir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">Aşırı nadir</sys:String>
 
     <!-- SuccessStoryView -->
 
     <!-- UI -->
 
-    <sys:String x:Key="LOCSuccessStoryFilterSource">Filter by source</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Global achievements progression</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterSource">Kaynağa göre filtrele</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGlobalProgression">Evrensel başarım ilerlemesi</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Achievements Progression of launched games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGameInformation">Information</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameInformation">Bilgi</sys:String>
 
 
-    <sys:String x:Key="LOCSuccessStoryRarety">Rarity</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDateUnlocked">Date unlocked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarety">Nadirlik</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDateUnlocked">Kilidin açıldığı tarih</sys:String>
 
     <!-- ListViewGames -->
 
-    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Progression</sys:String>
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">İlerleyiş</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">All achievements unlocked by month</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">All achievements unlocked by day</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Achievements unlocked by month</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Achievements unlocked by source</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Achievements unlocked by day</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">Aya göre açılan tüm başarımlar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">Güne göre açılan tüm başarımlar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitle">Aya göre açılan başarımlar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleSources">Kaynağa göre açılan başarımlar</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGraphicTitleDay">Güne göre açılan başarımlar</sys:String>
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
+    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Genshin Impact başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Add Genshin Impact</sys:String>
 
     
     <!-- Overwatch -->
 
-    <sys:String x:Key="LOCSsOverwatchQuickPlay">Quick Play</sys:String>
-    <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Competitive Play</sys:String>
+    <sys:String x:Key="LOCSsOverwatchQuickPlay">Hızlı Oyun</sys:String>
+    <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Rekabetçi Oyun</sys:String>
 
-    <sys:String x:Key="LOCSsOverwatchGamesWon">{0} games won</sys:String>
+    <sys:String x:Key="LOCSsOverwatchGamesWon">{0} oyun kazanıldı</sys:String>
     
     <sys:String x:Key="LOCSsOverwatchTopHero">Top Hero</sys:String>
-    <sys:String x:Key="LOCSsOverwatchCareerStats">Career Stats</sys:String>
+    <sys:String x:Key="LOCSsOverwatchCareerStats">Kariyer İstatistikleri</sys:String>
 
     <!-- Wow -->
 
-    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
+    <sys:String x:Key="LOCSsWowRegion">Bölge</sys:String>
     <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
-    <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">Karakter</sys:String>
 
     <!-- QuickSearch -->
 
@@ -260,7 +260,7 @@ Here is the list of commands:</sys:String>
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
-    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">Sadece kilitli</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">Açıklamayı aramaya dahil et</sys:String>
 
 </ResourceDictionary>
