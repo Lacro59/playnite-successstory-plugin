@@ -157,19 +157,19 @@
     <sys:String x:Key="LOCSuccessStoryUseUltraRare">Ultra nadir başarımları kullan</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryEnableImageCache">Başarımların görsellerini önbelleğe almayı etkinleştir *</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Non-blocking process which can increase memory usage a bit when caching only.
-Especially useful for Xbox achievements with their larges images which are reduced when caching.</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Sadece önbelleğe alınırken ve biraz bellek kullanımını arttırabilecek, engel olunmamış işlem.
+Özellikle, önbelleğe alınırken boyutu düşürülen büyük görselli Xbox başarımlarında faydalıdır.</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">Başarımları listele</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">Başarım sıralaması</sys:String>
     <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Mümkünse kilidi açık olarak gruplandır</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Feature to add if the game has achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Oyunda başarım varsa eklenecek özellik</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Locked icon configuration</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Added icon on locked achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Custom icon for locked achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Only when icon is missing</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconLockedConfig">Kilitli simge yapılandırması</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Kilitli başarımlara simge eklendi</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Kilitli başarımlar için kişisel simge</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Sadece simge eksik olduğunda</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
@@ -179,9 +179,9 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryAchStats">Başarım istatistikleri</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Kullanıcı istatistikleri</sys:String>
 
-    <sys:String x:Key="LOCSsTimeToUnlock">Time to full unlock</sys:String>
+    <sys:String x:Key="LOCSsTimeToUnlock">Tüm kilitleri açmak için süre</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryCommon">Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryCommon">Ortak</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Nadir</sys:String>
     <sys:String x:Key="LOCSuccessStoryUltraRare">Aşırı nadir</sys:String>
