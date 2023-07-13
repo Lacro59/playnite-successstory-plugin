@@ -182,7 +182,7 @@
     <sys:String x:Key="LOCSsTimeToUnlock">Tüm kilitleri açmak için süre</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryCommon">Ortak</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNoCommon">No-Common</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">Ortak olmayan</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Nadir</sys:String>
     <sys:String x:Key="LOCSuccessStoryUltraRare">Aşırı nadir</sys:String>
 
@@ -192,7 +192,7 @@
 
     <sys:String x:Key="LOCSuccessStoryFilterSource">Kaynağa göre filtrele</sys:String>
     <sys:String x:Key="LOCSuccessStoryGlobalProgression">Evrensel başarım ilerlemesi</sys:String>
-    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Achievements Progression of launched games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressionLaunched">Çalıştırılan oyunlar için Başarım İlerlemesi</sys:String>
     <sys:String x:Key="LOCSuccessStoryGameInformation">Bilgi</sys:String>
 
 
@@ -212,7 +212,7 @@
     <!-- Genshin Impact -->
 
     <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Genshin Impact başarımlarını etkinleştir</sys:String>
-    <sys:String x:Key="LOCAddGenshinImpact">Add Genshin Impact</sys:String>
+    <sys:String x:Key="LOCAddGenshinImpact">Genshin Impact ekle</sys:String>
 
     
     <!-- Overwatch -->
@@ -228,34 +228,34 @@
     <!-- Wow -->
 
     <sys:String x:Key="LOCSsWowRegion">Bölge</sys:String>
-    <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
+    <sys:String x:Key="LOCSsWowRealm">Diyar</sys:String>
     <sys:String x:Key="LOCSsWowCharacter">Karakter</sys:String>
 
     <!-- QuickSearch -->
 
-    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchByTime">Find by estimate time to full unlock</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchByPercent">Find by progression</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchDescription">BaşarıÖyküsü verisinde oyun ara</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">Tüm kilitleri açmak için tahmini süreye göre bul</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByPercent">İlerlemeye göre bul</sys:String>
     
-    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
-To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">Eklenti HızlıArama (QuickSearch) eklentisi işlevi kullanmaktadır.
+Bunu kullanmak için, &quot;successstory&quot; veya &quot;ss&quot; komutunu doğrulamalısınız.    
         
-Here is the list of commands:</sys:String>
+Komutlar şunlardır:</sys:String>
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">Bu komut, belirli tüm kilitleri açmak için belirli bir süre içeren oyunların listesini arar.</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">Bu komut, belirli bir yüzdelik oranda kilit açmayı içeren oyunların listesini arar.</sys:String>
 
 
     <!-- SuccessStorySearch -->
 
-    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
-    -percent		Percent of progression (ex:-percent=50 / -percent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
-    -time		Time to full unlock (ex:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
-    -np		You didn't play the game
-    -fav		The game must be a favorite
-    -stores={n}	Filter by store name (ex:-stores=steam / -stores=steam,epic)
-    -status={n}	Filter by status name (ex:-status=played / -status=played,playing)</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchDescription">BaşarıÖyküsü verisinde ara</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parametreler:
+    -percent		İlerleme yüzdesi (ör:-percent=50 / -percent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
+    -time		Tüm kilitleri açmak için süre (ör:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
+    -np		Oyunu henüz oynamadınız
+    -fav		Oyun mutlaka favori olarak işaretlenmelidir.
+    -stores={n}	Mağaza adıyla filtrele (ör:-stores=steam / -stores=steam,epic)
+    -status={n}	Durum adıyla filtrele (ör:-status=played / -status=played,playing)</sys:String>
 
 
     <!-- SuccessStoryEditManual -->
