@@ -8,8 +8,8 @@
     
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">隠されたトロフィー</sys:String>
 
-    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarity for manual achievements</sys:String>
-    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Refresh estimate time for manual achievements</sys:String>
+    <sys:String x:Key="LOCSsRefreshRaretyManual">手動実績のレア度を更新</sys:String>
+    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">手動実績の推定時間を更新</sys:String>
     
     <!-- MainView -->
 
@@ -17,8 +17,8 @@
     <sys:String x:Key="LOCSuccessStoryAchievements">実績</sys:String>
     <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryViewGames">ゲームの実績を表示</sys:String>
-    <sys:String x:Key="LOCSuccessStoryViewGame">ゲームの実績を表示</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGames">ゲームの実績を見る</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGame">ゲームの実績を見る</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnored">このゲームを無視する</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">このゲームを無視しない</sys:String>
@@ -63,7 +63,7 @@
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
 
-    <sys:String x:Key="LOSuccessStoryAddTagDescription">ゲームに全実績達成までの推定時間のタグを追加</sys:String>
+    <sys:String x:Key="LOSuccessStoryAddTagDescription">全実績解除までの推定時間があるゲームにタグを追加</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">ツールチップに説明を表示</sys:String>
 
@@ -107,28 +107,28 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">未解除の実績の概要を表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">ユーザーのゲーム統計を表示</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">Chart options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">グラフのオプション</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Number of days to display on chart</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">横軸にラベルを表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">縦軸にラベルを表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">達成状況バーのオプション</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowIndicator">実績の達成状況ラベルを表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">達成状況をパーセンテージで表示</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">Achievements list options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">実績リストのオプション</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactListOptions">Achievements list compact options</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Summary achievements options</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">最後にアンロックした実績を表示</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">最後に解除した実績を表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Show the lastest achievement on one line</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">拡張機能表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">未解除の実績の隠された説明を表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">実績にレア度を表示</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">実績画像にレア度を数値で表示</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">実績アイコンにレア度を数値で表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">ゲームメニューから選択したゲームの実績のみを表示</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">全実績達成時に自動的にプレイ状況を設定</sys:String>
-    <sys:String x:Key="LOCSuccessStoryListGames">List games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">全実績解除時に自動的にプレイ状況を設定</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGames">ゲームリスト</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">既定のゲームリストの並べ替え順</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Chart with all achievements</sys:String>
 
@@ -156,30 +156,30 @@
     <sys:String x:Key="LOCSuccessStoryRarityConfig">レア度の設定</sys:String>
     <sys:String x:Key="LOCSuccessStoryUseUltraRare">ウルトラレア実績を使用</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryEnableImageCache">実績画像のキャッシュを有効にする *</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableImageCache">実績アイコンのキャッシュを有効にする *</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Non-blocking process which can increase memory usage a bit when caching only.
 Especially useful for Xbox achievements with their larges images which are reduced when caching.</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">実績リスト</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">実績の並べ替え順</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">可能であればアンロック済みでグループ化</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">可能であれば解除済みでグループ化</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">ゲームに実績がある場合に追加する特徴</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIconLockedConfig">ロックアイコンの設定</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconAddOnImage">未解除の実績に追加するアイコン</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">未解除の実績のカスタムアイコン</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Only when icon is missing</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">アイコンがない場合のみ</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
-    <sys:String x:Key="LOCSuccessStoryFirstUnlock">最初のアンロック</sys:String>
-    <sys:String x:Key="LOCSuccessStoryLastUnlock">最後のアンロック</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFirstUnlock">最初の解除</sys:String>
+    <sys:String x:Key="LOCSuccessStoryLastUnlock">最後の解除</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryAchStats">実績の統計</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">ユーザーの統計</sys:String>
 
-    <sys:String x:Key="LOCSsTimeToUnlock">全実績達成までの時間</sys:String>
+    <sys:String x:Key="LOCSsTimeToUnlock">全実績解除までの時間</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryCommon">コモン</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">アンコモン</sys:String>
@@ -190,14 +190,14 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- UI -->
 
-    <sys:String x:Key="LOCSuccessStoryFilterSource">Filter by source</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterSource">ソースでフィルター</sys:String>
     <sys:String x:Key="LOCSuccessStoryGlobalProgression">全体の実績達成度</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">起動したゲームの実績達成度</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGameInformation">Information</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameInformation">情報</sys:String>
 
 
     <sys:String x:Key="LOCSuccessStoryRarety">レア度</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDateUnlocked">アンロックした日</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDateUnlocked">解除した日</sys:String>
 
     <!-- ListViewGames -->
 
@@ -233,22 +233,22 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- QuickSearch -->
 
-    <sys:String x:Key="LOCSsQuickSearchDescription">Search games on SuccessStory data</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchByTime">全実績達成までの推定時間で検索</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchDescription">SuccessStory データでゲームを検索</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchByTime">全実績解除までの推定時間で検索</sys:String>
     <sys:String x:Key="LOCSsQuickSearchByPercent">達成状況で検索</sys:String>
     
-    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">The plugin uses the functionality of the QuickSearch plugin.
-To use it, you must validate the &quot;successstory&quot; or &quot;ss&quot; command.    
-        
-Here is the list of commands:</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">このプラグインは QuickSearch プラグインの機能を利用しています。
+使用するには、「successstory」または「ss」コマンドを検証する必要があります。
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">This command searches for a list of games with a specific time to full unlock.</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">This command searches for a list of games with a specific percent unlocked.</sys:String>
+以下はコマンドのリストです:</sys:String>
+
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">このコマンドは、特定の全実績解除までの推定時間をもつゲームのリストを検索します。</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">このコマンドは、特定の実績解除率を持つゲームのリストを検索します。</sys:String>
 
 
     <!-- SuccessStorySearch -->
 
-    <sys:String x:Key="LOCSuccessStorySearchDescription">Search on SuccessStory data</sys:String>
+    <sys:String x:Key="LOCSuccessStorySearchDescription">SuccessStory データで検索</sys:String>
     <sys:String x:Key="LOCSuccessStorySearchHint" xml:space="preserve">Parameters:
     -percent		Percent of progression (ex:-percent=50 / -percent=&lt;50 / -percent=&gt;50 / -percent=10&lt;&gt;50)
     -time		Time to full unlock (ex:-time=5h / -time=&lt;50min / -time=&gt;50s / -time=10min&lt;&gt;5h)
@@ -260,7 +260,7 @@ Here is the list of commands:</sys:String>
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">Only locked</sys:String>
-    <sys:String x:Key="LOCSsIncludeDescription">Include the description in search</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">未解除のみ</sys:String>
+    <sys:String x:Key="LOCSsIncludeDescription">説明を検索に含める</sys:String>
 
 </ResourceDictionary>
