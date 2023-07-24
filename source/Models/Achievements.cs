@@ -77,6 +77,11 @@ namespace SuccessStory.Models
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
                     return TempUrlUnlocked;
                 }
+                if ((TempUrlUnlocked?.Contains("steamcdn-a.akamaihd.net", StringComparison.InvariantCultureIgnoreCase) ?? false) && TempUrlUnlocked.Length < 75)
+                {
+                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "default_icon.png");
+                    return TempUrlUnlocked;
+                }
 
                 return ImageSourceManagerPlugin.GetImagePath(UrlUnlocked, 256);
             }
@@ -90,14 +95,9 @@ namespace SuccessStory.Models
         {
             get
             {
-                if (UrlLocked != null && (UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75))
-                {
-                    return ImageUnlocked;
-                }
-                else
-                {
-                    return !UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked ? ImageSourceManagerPlugin.GetImagePath(UrlLocked, 256) : ImageUnlocked;
-                }
+                return UrlLocked != null && UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75
+                    ? ImageUnlocked
+                    : !UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked ? ImageSourceManagerPlugin.GetImagePath(UrlLocked, 256) : ImageUnlocked;
             }
         }
 
