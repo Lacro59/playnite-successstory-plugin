@@ -223,22 +223,22 @@ namespace SuccessStory.Clients
 
         private async Task<List<Achievements>> GetXboxAchievements(Game game, AuthorizationData authorizationData)
         {
-            var getAchievementMethods = new List<Func<Game, AuthorizationData, Task<List<Achievements>>>>
+            List<Func<Game, AuthorizationData, Task<List<Achievements>>>> getAchievementMethods = new List<Func<Game, AuthorizationData, Task<List<Achievements>>>>
             {
                 GetXboxOneAchievements,
                 GetXbox360Achievements
             };
 
-            if (game.Platforms.Any(p => p.SpecificationId == "xbox360"))
+            if (game.Platforms != null && game.Platforms.Any(p => p.SpecificationId == "xbox360"))
             {
                 getAchievementMethods.Reverse();
             }
 
-            foreach (var getAchievementsMethod in getAchievementMethods)
+            foreach (Func<Game, AuthorizationData, Task<List<Achievements>>> getAchievementsMethod in getAchievementMethods)
             {
                 try
-                { 
-                    var result = await getAchievementsMethod.Invoke(game, authorizationData);
+                {
+                    List<Achievements> result = await getAchievementsMethod.Invoke(game, authorizationData);
                     if (result != null && result.Any())
                     {
                         return result;
@@ -269,7 +269,9 @@ namespace SuccessStory.Clients
         private async Task<List<Achievements>> GetXboxOneAchievements(Game game, AuthorizationData authorizationData)
         {
             if (authorizationData is null)
+            {
                 throw new ArgumentNullException(nameof(authorizationData));
+            }
 
             string xuid = authorizationData.DisplayClaims.xui[0].xid;
 
@@ -284,7 +286,7 @@ namespace SuccessStory.Clients
                 logger.Warn($"{ClientName} - Bad request");
             }
 
-            var response = await GetSerializedContentFromUrl<XboxOneAchievementResponse>(url, authorizationData, "2");
+            XboxOneAchievementResponse response = await GetSerializedContentFromUrl<XboxOneAchievementResponse>(url, authorizationData, "2");
 
             List<XboxOneAchievement> relevantAchievements;
             if (titleId.IsNullOrEmpty())
@@ -297,7 +299,8 @@ namespace SuccessStory.Clients
                 relevantAchievements = response.achievements;
                 Common.LogDebug(true, $"Find with {titleId} & {game.GameId} for {game.Name} - {relevantAchievements.Count}");
             }
-            var achievements = relevantAchievements.Select(ConvertToAchievement).ToList();
+
+            List<Achievements> achievements = relevantAchievements.Select(ConvertToAchievement).ToList();
 
             return achievements;
         }
@@ -311,7 +314,9 @@ namespace SuccessStory.Clients
         private async Task<List<Achievements>> GetXbox360Achievements(Game game, AuthorizationData authorizationData)
         {
             if (authorizationData is null)
+            {
                 throw new ArgumentNullException(nameof(authorizationData));
+            }
 
             string xuid = authorizationData.DisplayClaims.xui[0].xid;
 
@@ -327,11 +332,11 @@ namespace SuccessStory.Clients
 
             // gets the player-unlocked achievements
             string unlockedAchievementsUrl = string.Format(AchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
-            var getUnlockedAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(unlockedAchievementsUrl, authorizationData, "1");
+            Task<Xbox360AchievementResponse> getUnlockedAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(unlockedAchievementsUrl, authorizationData, "1");
 
             // gets all of the game's achievements, but they're all marked as locked
             string allAchievementsUrl = string.Format(TitleAchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
-            var getAllAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(allAchievementsUrl, authorizationData, "1");
+            Task<Xbox360AchievementResponse> getAllAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(allAchievementsUrl, authorizationData, "1");
 
             await Task.WhenAll(getUnlockedAchievementsTask, getAllAchievementsTask);
 
@@ -339,12 +344,14 @@ namespace SuccessStory.Clients
             foreach (Xbox360Achievement a in getAllAchievementsTask.Result.achievements)
             {
                 if (mergedAchievements.ContainsKey(a.id))
+                {
                     continue;
+                }
 
                 mergedAchievements.Add(a.id, a);
             }
 
-            var achievements = mergedAchievements.Values.Select(ConvertToAchievement).ToList();
+            List<Achievements> achievements = mergedAchievements.Values.Select(ConvertToAchievement).ToList();
 
             return achievements;
         }
