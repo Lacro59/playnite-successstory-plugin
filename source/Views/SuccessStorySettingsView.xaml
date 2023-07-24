@@ -259,8 +259,10 @@
                             </Expander.Header>
                         </Expander>
 
-                        
-                        <Expander Grid.Row="12">
+
+                        <TextBlock Text="Currently unavailable" Foreground="Red"
+                                   Grid.Row="12" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,50,0" />
+                        <Expander Grid.Row="12" IsEnabled="False">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />

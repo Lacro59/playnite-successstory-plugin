@@ -58,7 +58,7 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
 
-
+            /*
             if (IsConfigured())
             {
                 // Load list console
@@ -112,7 +112,7 @@ namespace SuccessStory.Clients
             {
                 ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"));
             }
-
+            */
 
             gameAchievements.Items = AllAchievements;
 
