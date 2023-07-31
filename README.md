@@ -48,7 +48,7 @@ You can help to translate the extension to different languages via the project [
 
 ## Custom theme integration
 The extension contains elements that can fit into a custom theme.
-[More informations](https://github.com/Lacro59/playnite-successstory-plugin/wiki/Addition-in-a-custom-theme)
+[More information](https://github.com/Lacro59/playnite-successstory-plugin/wiki/Addition-in-a-custom-theme)
 
 ## More
 Remember to support [Playnite](https://www.patreon.com/playnite) and [Freepik](https://www.flaticon.com/authors/freepik).
