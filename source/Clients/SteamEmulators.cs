@@ -338,27 +338,30 @@ namespace SuccessStory.Clients
                     }
                     else if (startAchievement)
                     {
-                        string[] data = line.Split('=');
-                        Name = data[0].Trim();
-                        sTimeUnlock = data.Last().Trim();
-                        timeUnlock = int.Parse(sTimeUnlock.Replace("{unlocked = true, time = ", string.Empty).Replace("}", string.Empty));
-                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
-
-                        if (timeUnlock != 0)
+                        if (!line.Trim().IsNullOrEmpty())
                         {
-                            ReturnAchievements.Add(new Achievements
-                            {
-                                ApiName = Name,
-                                Name = string.Empty,
-                                Description = string.Empty,
-                                UrlUnlocked = string.Empty,
-                                UrlLocked = string.Empty,
-                                DateUnlocked = DateUnlocked
-                            });
+                            string[] data = line.Split('=');
+                            Name = data[0].Trim();
+                            sTimeUnlock = data.Last().Trim();
+                            timeUnlock = int.Parse(sTimeUnlock.Replace("{unlocked = true, time = ", string.Empty).Replace("}", string.Empty));
+                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
 
-                            Name = string.Empty;
-                            timeUnlock = 0;
-                            DateUnlocked = null;
+                            if (timeUnlock != 0)
+                            {
+                                ReturnAchievements.Add(new Achievements
+                                {
+                                    ApiName = Name,
+                                    Name = string.Empty,
+                                    Description = string.Empty,
+                                    UrlUnlocked = string.Empty,
+                                    UrlLocked = string.Empty,
+                                    DateUnlocked = DateUnlocked
+                                });
+
+                                Name = string.Empty;
+                                timeUnlock = 0;
+                                DateUnlocked = null;
+                            }
                         }
                     }
                 }
