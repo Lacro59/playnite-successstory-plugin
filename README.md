@@ -7,10 +7,10 @@
 [![GitHub](https://img.shields.io/github/license/Lacro59/playnite-successstory-plugin?cacheSeconds=50000)](https://github.com/Lacro59/playnite-successstory-plugin/blob/master/LICENSE)
 
 # playnite-successstory-plugin
-Extension for [Playnite](https://playnite.link).  
+Extension for [Playnite](https://playnite.link).
 
-## Informations
-The plugin gets localised (if exist) achievements or add manualy achievements.
+## Information
+The plugin gets localised achievements (if they exist) or manual achievements.
 
 <a href="https://github.com/Lacro59/playnite-successstory-plugin/blob/master/forum/main_01.jpg?raw=true">
   <picture>
@@ -34,22 +34,22 @@ The plugin gets localised (if exist) achievements or add manualy achievements.
 </a>
 
 With this plugin you can
-* add store's achievements or add manualy achievements
+* add a store's achievements or manual achievements
 * works for GOG, Steam, Origin, Xbox, Epic Games, RPCS3 and RetroAchievements
 * add tag with time to unlock all achievements
-* many user stats 
+* many user stats
   
-If the theme support function, you can:
+If the theme supports such functions, you can:
 * add plugin data in game list in "Details View" & "Grid View"
 * add plugin data in game details
 
 ## Translations
-You can help to translate the extensions do different languages via the project [Crowdin](https://crowdin.com/project/playnite-extensions) page.
+You can help to translate the extension to different languages via the project [Crowdin](https://crowdin.com/project/playnite-extensions) page.
 
 ## Custom theme integration
-The extension contains elements that can fit into a custom theme.  
-[More informations](https://github.com/Lacro59/playnite-successstory-plugin/wiki/Addition-in-a-custom-theme)
+The extension contains elements that can fit into a custom theme.
+[More information](https://github.com/Lacro59/playnite-successstory-plugin/wiki/Addition-in-a-custom-theme)
 
 ## More
-Remember to support [Playnite](https://www.patreon.com/playnite) and [Freepik](https://www.flaticon.com/authors/freepik).  
+Remember to support [Playnite](https://www.patreon.com/playnite) and [Freepik](https://www.flaticon.com/authors/freepik).
 <a href='https://ko-fi.com/lacro59'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
