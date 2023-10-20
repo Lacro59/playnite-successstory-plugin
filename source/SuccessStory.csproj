@@ -71,8 +71,8 @@
     <Reference Include="MoreLinq, Version=3.3.2.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>packages\morelinq.3.3.2\lib\net451\MoreLinq.dll</HintPath>
     </Reference>
-    <Reference Include="Playnite.SDK, Version=6.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\PlayniteSDK.6.9.0\lib\net462\Playnite.SDK.dll</HintPath>
+    <Reference Include="Playnite.SDK, Version=6.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\PlayniteSDK.6.10.0\lib\net462\Playnite.SDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -231,7 +231,7 @@
       <DependentUpon>SuccessStoryView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup> 
+  <ItemGroup>
     <Page Include="Controls\Customs\AchievementImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -367,7 +367,8 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup> <!-- \*. some lone files in source -->
+  <ItemGroup>
+    <!-- \*. some lone files in source -->
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -380,7 +381,8 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup> <!-- Compile Clients\* -->
+  <ItemGroup>
+    <!-- Compile Clients\* -->
     <Compile Include="Clients\BattleNetAchievements.cs" />
     <Compile Include="Clients\EpicAchievements.cs" />
     <Compile Include="Clients\ExophaseAchievements.cs" />
@@ -400,7 +402,8 @@
     <Compile Include="Clients\WowAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />
   </ItemGroup>
-  <ItemGroup> <!-- Compile Models\* -->
+  <ItemGroup>
+    <!-- Compile Models\* -->
     <Compile Include="Models\GenshinImpactAchievementsCategory.cs" />
     <Compile Include="Models\Achievements.cs" />
     <Compile Include="Models\AchRaretyStats.cs" />
@@ -426,7 +429,8 @@
     <Compile Include="Models\CbData.cs" />
     <Compile Include="Models\WowRegionResult.cs" />
   </ItemGroup>
-  <ItemGroup> <!-- Localization\*.xaml -->
+  <ItemGroup>
+    <!-- Localization\*.xaml -->
     <None Include="Localization\es_ES.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -523,11 +527,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup> <!-- Resources\*.dll -->
+  <ItemGroup>
+    <!-- Resources\*.dll -->
     <None Include="Resources\QuickSearchSDK.Attributes.dll" />
     <None Include="Resources\QuickSearchSDK.dll" />
   </ItemGroup>
-  <ItemGroup> <!-- Resources\*.png -->
+  <ItemGroup>
+    <!-- Resources\*.png -->
     <None Include="Resources\badge.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -556,7 +562,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup> <!-- Resources\Overwatch\* -->
+  <ItemGroup>
+    <!-- Resources\Overwatch\* -->
     <None Include="Resources\Overwatch\Endorsement_1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -573,7 +580,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup> <!-- Resources\GenshinImpact\* -->
+  <ItemGroup>
+    <!-- Resources\GenshinImpact\* -->
     <None Include="Resources\GenshinImpact\ac.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
