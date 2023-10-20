@@ -60,94 +60,37 @@ namespace SuccessStory
         public bool IconCustomOnlyMissing { get; set; } = true;
 
 
-        private bool _EnableIntegrationViewItem { get; set; } = true;
-        public bool EnableIntegrationViewItem
-        {
-            get => _EnableIntegrationViewItem;
-            set
-            {
-                _EnableIntegrationViewItem = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationViewItem = true;
+        public bool EnableIntegrationViewItem { get => _EnableIntegrationViewItem; set => SetValue(ref _EnableIntegrationViewItem, value); }
 
         public bool IntegrationViewItemWithProgressBar { get; set; } = false;
 
 
-        private bool _EnableIntegrationButton { get; set; } = true;
-        public bool EnableIntegrationButton
-        {
-            get => _EnableIntegrationButton;
-            set
-            {
-                _EnableIntegrationButton = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationButton = true;
+        public bool EnableIntegrationButton { get => _EnableIntegrationButton; set => SetValue(ref _EnableIntegrationButton, value); }
 
-        private bool _EnableIntegrationButtonDetails { get; set; } = false;
-        public bool EnableIntegrationButtonDetails
-        {
-            get => _EnableIntegrationButtonDetails;
-            set
-            {
-                _EnableIntegrationButtonDetails = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationButtonDetails = false;
+        public bool EnableIntegrationButtonDetails { get => _EnableIntegrationButtonDetails; set => SetValue(ref _EnableIntegrationButtonDetails, value); }
 
-
-        private bool _EnableIntegrationProgressBar { get; set; } = true;
-        public bool EnableIntegrationProgressBar
-        {
-            get => _EnableIntegrationProgressBar;
-            set
-            {
-                _EnableIntegrationProgressBar = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationProgressBar = true;
+        public bool EnableIntegrationProgressBar { get => _EnableIntegrationProgressBar; set => SetValue(ref _EnableIntegrationProgressBar, value); }
 
         public bool EnableIntegrationProgressBarIndicator { get; set; } = false;
         public bool EnableIntegrationProgressBarPercent { get; set; } = false;
 
 
-        private bool _EnableIntegrationCompact { get; set; } = true;
-        public bool EnableIntegrationCompact
-        {
-            get => _EnableIntegrationCompact;
-            set
-            {
-                _EnableIntegrationCompact = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationCompact = true;
+        public bool EnableIntegrationCompact { get => _EnableIntegrationCompact; set => SetValue(ref _EnableIntegrationCompact, value); }
 
         public double IntegrationCompactHeight { get; set; } = 48;
         public bool IntegrationCompactShowDescription { get; set; } = true;
 
 
-        private bool _EnableIntegrationCompactLocked { get; set; } = true;
-        public bool EnableIntegrationCompactLocked
-        {
-            get => _EnableIntegrationCompactLocked;
-            set
-            {
-                _EnableIntegrationCompactLocked = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationCompactLocked = true;
+        public bool EnableIntegrationCompactLocked { get => _EnableIntegrationCompactLocked; set => SetValue(ref _EnableIntegrationCompactLocked, value); }
 
-        private bool _EnableIntegrationCompactUnlocked { get; set; } = true;
-        public bool EnableIntegrationCompactUnlocked
-        {
-            get => _EnableIntegrationCompactUnlocked;
-            set
-            {
-                _EnableIntegrationCompactUnlocked = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationCompactUnlocked = true;
+        public bool EnableIntegrationCompactUnlocked { get => _EnableIntegrationCompactUnlocked; set => SetValue(ref _EnableIntegrationCompactUnlocked, value); }
 
         public double IntegrationCompactPartialHeight { get; set; } = 48;
         public bool IntegrationCompactPartialDisplayLastest { get; set; } = true;
@@ -155,16 +98,8 @@ namespace SuccessStory
         public bool IntegrationCompactPartialShowDescription { get; set; } = true;
 
 
-        private bool _EnableIntegrationChart { get; set; } = true;
-        public bool EnableIntegrationChart
-        {
-            get => _EnableIntegrationChart;
-            set
-            {
-                _EnableIntegrationChart = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationChart = true;
+        public bool EnableIntegrationChart { get => _EnableIntegrationChart; set => SetValue(ref _EnableIntegrationChart, value); }
 
         public double IntegrationChartHeight { get; set; } = 120;
         public bool EnableIntegrationAxisChart { get; set; } = true;
@@ -175,30 +110,14 @@ namespace SuccessStory
         public bool EnableIntegrationChartCutPeriod { get; set; } = false;
 
 
-        private bool _EnableIntegrationUserStats { get; set; } = true;
-        public bool EnableIntegrationUserStats
-        {
-            get => _EnableIntegrationUserStats;
-            set
-            {
-                _EnableIntegrationUserStats = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationUserStats = true;
+        public bool EnableIntegrationUserStats { get => _EnableIntegrationUserStats; set => SetValue(ref _EnableIntegrationUserStats, value); }
 
         public double IntegrationUserStatsHeight { get; set; } = 120;
 
 
-        private bool _EnableIntegrationList { get; set; } = true;
-        public bool EnableIntegrationList
-        {
-            get => _EnableIntegrationList;
-            set
-            {
-                _EnableIntegrationList = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool _EnableIntegrationList = true;
+        public bool EnableIntegrationList { get => _EnableIntegrationList; set => SetValue(ref _EnableIntegrationList, value); }
 
         public double IntegrationListHeight { get; set; } = 200;
         public double IntegrationListIconHeight { get; set; } = 48;
@@ -220,15 +139,7 @@ namespace SuccessStory
 
         public List<CbData> WowRegions { get; set; } = new List<CbData>();
         private List<CbData> _WowRealms = new List<CbData>();
-        public List<CbData> WowRealms
-        {
-            get => _WowRealms;
-            set
-            {
-                _WowRealms = value;
-                OnPropertyChanged();
-            }
-        }
+        public List<CbData> WowRealms { get => _WowRealms; set => SetValue(ref _WowRealms, value); }
         public string WowCharacter { get; set; } = "iryaël";
 
         public bool EnableSteamWithoutWebApi { get; set; } = false;

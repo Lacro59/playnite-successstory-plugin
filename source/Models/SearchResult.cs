@@ -13,12 +13,6 @@ namespace SuccessStory.Models
 
         public int AppId { get; set; }
 
-        public string PlatformsFirst
-        {
-            get
-            {
-                return Platforms?.FirstOrDefault();
-            }
-        }
+        public string PlatformsFirst => Platforms?.FirstOrDefault();
     }
 }

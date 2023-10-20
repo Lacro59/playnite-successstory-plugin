@@ -211,6 +211,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
+                    Common.LogError(ex, true);
                     ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
                     return false;
                 }

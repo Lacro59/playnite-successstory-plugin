@@ -41,22 +41,10 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
-        public RelayCommand<Guid> GoToGame
-        {
-            get
-            {
-                return PluginDatabase.GoToGame;
-            }
-        }
+        public RelayCommand<Guid> GoToGame => PluginDatabase.GoToGame;
 
         [DontSerialize]
-        public bool GameExist
-        {
-            get
-            {
-                return PluginDatabase.PlayniteApi.Database.Games.Get(GameId) != null;
-            }
-        }
+        public bool GameExist => PluginDatabase.PlayniteApi.Database.Games.Get(GameId) != null;
 
 
         public string AchIcon { get; set; }

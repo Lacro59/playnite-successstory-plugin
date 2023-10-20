@@ -155,7 +155,7 @@ namespace SuccessStory.Views
             return sbReturn.ToString();
         }
 
-        private async Task<List<SearchResult>> LoadData(string SearchElement, bool IsSteam, bool IsExophase)
+        private List<SearchResult> LoadData(string SearchElement, bool IsSteam, bool IsExophase)
         {
             var results = new List<SearchResult>();
 

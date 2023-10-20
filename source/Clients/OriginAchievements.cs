@@ -128,6 +128,7 @@ namespace SuccessStory.Clients
                 }
                 catch (Exception ex)
                 {
+                    Common.LogError(ex, true);
                     CachedIsConnectedResult = false;
                 }
             }
