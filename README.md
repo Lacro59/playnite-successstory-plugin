@@ -35,7 +35,7 @@ The plugin gets localised achievements (if they exist) or manual achievements.
 
 With this plugin you can
 * add a store's achievements or manual achievements
-* works for GOG, Steam, Origin, Xbox, Epic Games, RPCS3 and RetroAchievements
+* works for GOG, Steam, Origin, Xbox, Epic Games, RPCS3 and ~~RetroAchievements~~
 * add tag with time to unlock all achievements
 * many user stats
   
