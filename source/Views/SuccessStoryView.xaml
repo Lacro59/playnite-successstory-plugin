@@ -638,7 +638,7 @@
                                                           IsGray="{Binding AchIsGray}"
                                                           Percent="{Binding AchPercent}"
                                                           EnableRaretyIndicator="{Binding AchEnableRaretyIndicator}"
-                                                          DispalyRaretyValue="{Binding AchDisplayRaretyValue}" />
+                                                          DisplayRaretyValue="{Binding AchDisplayRaretyValue}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

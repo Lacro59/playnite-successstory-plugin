@@ -72,7 +72,7 @@
                                                       IsGray="{Binding IsGray}"
                                                       Percent="{Binding Percent}"
                                                       EnableRaretyIndicator="{Binding EnableRaretyIndicator}"
-                                                      DispalyRaretyValue="{Binding DisplayRaretyValue}" />
+                                                      DisplayRaretyValue="{Binding DisplayRaretyValue}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

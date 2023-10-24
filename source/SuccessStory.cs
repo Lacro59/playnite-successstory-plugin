@@ -992,6 +992,37 @@ namespace SuccessStory
                 this.SavePluginSettings(PluginSettings.Settings);
             }
 
+            // TODO TEMP
+            if (!PluginSettings.Settings.IsRaretyUpdate)
+            {
+                GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
+                    $"{PluginDatabase.PluginName} - {resources.GetString("LOCCommonProcessing")}",
+                    false
+                );
+                globalProgressOptions.IsIndeterminate = false;
+
+                PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                {
+                    try
+                    {
+                        SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                        PluginDatabase.Database.Items.ForEach(x => 
+                        {
+                            x.Value.SetRaretyIndicator();
+                            PluginDatabase.Database.SaveItemData(x.Value);
+                        });
+
+                        PluginSettings.Settings.IsRaretyUpdate = true;
+                        this.SavePluginSettings(PluginSettings.Settings);
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, true);
+                    }
+
+                }, globalProgressOptions);
+            }
+
 
             // Cache images
             if (PluginSettings.Settings.EnableImageCache)

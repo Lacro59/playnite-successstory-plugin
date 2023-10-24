@@ -75,7 +75,7 @@
             </TextBlock.Effect>
         </TextBlock>
 
-        <Grid VerticalAlignment="Bottom" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DispalyRaretyValue, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Grid VerticalAlignment="Bottom" Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DisplayRaretyValue, Converter={StaticResource BooleanToVisibilityConverter}}">
             <ProgressBar Height="12" Name="PART_ProgressBar" Maximum="100" />
             <Label Name="PART_Label"
                    ContentStringFormat=" {0}%"

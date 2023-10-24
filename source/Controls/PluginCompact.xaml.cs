@@ -163,7 +163,7 @@ namespace SuccessStory.Controls
                 achievementImage.Icon = ControlDataContext.LastestAchievement.Icon;
                 achievementImage.Percent = ControlDataContext.LastestAchievement.Percent;
                 achievementImage.EnableRaretyIndicator = ControlDataContext.LastestAchievement.EnableRaretyIndicator;
-                achievementImage.DispalyRaretyValue = ControlDataContext.LastestAchievement.DisplayRaretyValue;
+                achievementImage.DisplayRaretyValue = ControlDataContext.LastestAchievement.DisplayRaretyValue;
 
                 PART_AchievementImage.Children.Add(achievementImage);
 
@@ -306,7 +306,7 @@ namespace SuccessStory.Controls
                             achievementImage.Icon = AchievementsList[i].Icon;
                             achievementImage.Percent = AchievementsList[i].Percent;
                             achievementImage.EnableRaretyIndicator = AchievementsList[i].EnableRaretyIndicator;
-                            achievementImage.DispalyRaretyValue = AchievementsList[i].DisplayRaretyValue;
+                            achievementImage.DisplayRaretyValue = AchievementsList[i].DisplayRaretyValue;
                             achievementImage.IsLocked = !AchievementsList[i].IsUnlock;
                             achievementImage.IconCustom = AchievementsList[i].IconCustom;
                             achievementImage.IconText = AchievementsList[i].IconText;

@@ -125,21 +125,11 @@ namespace SuccessStory.Models
             {
                 try
                 {
-                    if (IsUnlock)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        if (UrlLocked != null && UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return UrlLocked.IsNullOrEmpty() || !UrlUnlocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked;
-                        }
-                    }
+                    return IsUnlock
+                        ? false
+                        : UrlLocked != null && UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75
+                            ? true
+                            : UrlLocked.IsNullOrEmpty() || !UrlUnlocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked;
                 }
                 catch (Exception ex)
                 {
@@ -157,16 +147,11 @@ namespace SuccessStory.Models
         {
             get
             {
-                if (NoRarety)
-                {
-                    return false;
-                }
-
-                if (!PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator)
-                {
-                    return PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
-                }
-                return PluginDatabase.PluginSettings.Settings.DisplayRarityValue;
+                return NoRarety
+                    ? false
+                    : !PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator
+                    ? PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator
+                    : PluginDatabase.PluginSettings.Settings.DisplayRarityValue;
             }
         }
 

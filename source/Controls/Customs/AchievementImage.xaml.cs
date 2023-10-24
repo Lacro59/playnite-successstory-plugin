@@ -74,16 +74,16 @@ namespace SuccessStory.Controls.Customs
             set => SetValue(EnableRaretyIndicatorProperty, value);
         }
 
-        public static readonly DependencyProperty DispalyRaretyValueProperty = DependencyProperty.Register(
-            nameof(DispalyRaretyValue),
+        public static readonly DependencyProperty DisplayRaretyValueProperty = DependencyProperty.Register(
+            nameof(DisplayRaretyValue),
             typeof(bool),
             typeof(AchievementImage),
             new FrameworkPropertyMetadata(true)
         );
-        public bool DispalyRaretyValue
+        public bool DisplayRaretyValue
         {
-            get => (bool)GetValue(DispalyRaretyValueProperty);
-            set => SetValue(DispalyRaretyValueProperty, value);
+            get => (bool)GetValue(DisplayRaretyValueProperty);
+            set => SetValue(DisplayRaretyValueProperty, value);
         }
 
         public static readonly DependencyProperty PercentProperty = DependencyProperty.Register(
