@@ -28,8 +28,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Il profilo Steam non è pubblico</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam è abilitato in SuccessStory ma l'estensione della libreria è stata disabilitata in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam non è stato attualmente configurato nelle impostazioni</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Nessuna configurazione di Steam e/o chiave API nel menu impostazioni della libreria di Steam</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Nessun utente Steam nel menu impostazioni della libreria di Steam</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">L'utente Steam non è autenticato</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG è abilitato in SuccessStory ma l'estensione della libreria è stata disabilitata in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">L'utente GOG non è autenticato</sys:String>
@@ -170,6 +170,8 @@ Particolarmente utile per le realizzazioni di Xbox con le loro immagini di grand
     <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Aggiunta icona per gli obiettivi bloccati</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Icona personalizzata per gli obiettivi bloccati</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Solo quando l'icona non è presente</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
