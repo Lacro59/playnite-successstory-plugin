@@ -28,8 +28,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">O perfil Steam não é público</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">A Steam está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">A Steam não foi ajustada corretamente nas configurações</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Nenhuma configuração Steam e/ou chave API no menu de configurações para a Biblioteca Steam</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Nenhum usuário Steam no menu de configurações para a Biblioteca Steam</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">O usuário da Steam não está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">A GOG está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">O usuário da GOG não está autenticado</sys:String>
@@ -170,6 +170,8 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
     <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Ícone adicionado em conquistas bloqueadas</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Ícone personalizado para conquistas bloqueadas</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Apenas quando o ícone estiver faltando</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
