@@ -86,9 +86,9 @@ namespace SuccessStory
                     Title = resources.GetString("LOCSuccessStoryViewGames"),
                     Activated = () =>
                     {
-                        var ViewExtension = new SuccessView();
+                        SuccessView ViewExtension = new SuccessView();
 
-                        var windowOptions = new WindowOptions
+                        WindowOptions windowOptions = new WindowOptions
                         {
                             ShowMinimizeButton = false,
                             ShowMaximizeButton = true,
@@ -1000,8 +1000,8 @@ namespace SuccessStory
                 Task TaskCacheImage = Task.Run(() =>
                 {
                     // Wait Playnite & extension database are loaded
-                    System.Threading.SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
-                    System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                    SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
+                    SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
                     IEnumerable<GameAchievements> db = PluginDatabase.Database.Where(x => x.HasAchievements && !x.ImageIsCached);
                     int aa = db.Count();

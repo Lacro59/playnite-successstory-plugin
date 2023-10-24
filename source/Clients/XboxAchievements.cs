@@ -87,7 +87,7 @@ namespace SuccessStory.Clients
                 {
                     GameName = game.Name,
                     Name = "Xbox",
-                    Url = $"https://account.xbox.com/en-US/GameInfoHub?titleid={GetTitleId(game)}&selectedTab=achievementsTab&activetab=main:mainTab2"
+                    Url = $"https://account.xbox.com/{LocalLang}/GameInfoHub?titleid={GetTitleId(game)}&selectedTab=achievementsTab&activetab=main:mainTab2"
                 };
             }
 
@@ -154,21 +154,20 @@ namespace SuccessStory.Clients
         #endregion
 
 
-        
         #region Xbox
         private string GetTitleId(Game game)
         {
             string titleId = string.Empty;
             if (game.GameId?.StartsWith("CONSOLE_") == true)
             {
-                var consoleGameIdParts = game.GameId.Split('_');
+                string[] consoleGameIdParts = game.GameId.Split('_');
                 titleId = consoleGameIdParts[1];
 
                 Common.LogDebug(true, $"{ClientName} - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
             }
             else if (!game.GameId.IsNullOrEmpty())
             {
-                var libTitle = XboxAccountClient.GetTitleInfo(game.GameId).Result;
+                TitleHistoryResponse.Title libTitle = XboxAccountClient.GetTitleInfo(game.GameId).Result;
                 titleId = libTitle.titleId;
 
                 Common.LogDebug(true, $"{ClientName} - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
@@ -180,12 +179,12 @@ namespace SuccessStory.Clients
         {
             Common.LogDebug(true, $"{ClientName} - url: {url}");
 
-            using (var client = new HttpClient())
+            using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", Web.UserAgent);
                 SetAuthenticationHeaders(client.DefaultRequestHeaders, authData, contractVersion);
 
-                var response = client.GetAsync(url).Result;
+                HttpResponseMessage response = client.GetAsync(url).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
