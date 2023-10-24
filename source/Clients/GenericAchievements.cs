@@ -12,6 +12,7 @@ using System.Text;
 using System.Security.Principal;
 using CommonPlayniteShared.Common;
 using static CommonPluginsShared.PlayniteTools;
+using Playnite.SDK.Plugins;
 
 namespace SuccessStory.Clients
 {
@@ -188,12 +189,11 @@ namespace SuccessStory.Clients
                 {
                     try
                     {
-                        var plugin = API.Instance.Addons.Plugins.Find(x => x.Id == PlayniteTools.GetPluginId(PluginSource));
+                        Plugin plugin = API.Instance.Addons.Plugins.Find(x => x.Id == PlayniteTools.GetPluginId(PluginSource));
                         if (plugin != null)
                         {
                             plugin.OpenSettingsView();
-
-                            foreach (var achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
+                            foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
                             {
                                 achievementProvider.ResetCachedConfigurationValidationResult();
                                 achievementProvider.ResetCachedIsConnectedResult();
@@ -218,7 +218,14 @@ namespace SuccessStory.Clients
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noconfig",
                 $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
-                () => PluginDatabase.Plugin.OpenSettingsView()
+                () => {
+                    PluginDatabase.Plugin.OpenSettingsView();
+                    foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
+                    {
+                        achievementProvider.ResetCachedConfigurationValidationResult();
+                        achievementProvider.ResetCachedIsConnectedResult();
+                    }
+                }
             ));
         }
 

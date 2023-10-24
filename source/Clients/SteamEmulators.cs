@@ -7,6 +7,7 @@ using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Converters;
 using SuccessStory.Models;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -193,6 +194,7 @@ namespace SuccessStory.Clients
         private List<Achievements> ReadAchievementsINI(string pathFile, List<Achievements> ReturnAchievements)
         {
             bool isType2 = false;
+            bool isType3 = false;
 
             try
             {
@@ -205,6 +207,11 @@ namespace SuccessStory.Clients
                         isType2 = true;
                         break;
                     }
+                    if (line.IsEqual("achieved=true"))
+                    {
+                        isType3 = true;
+                        break;
+                    }
                 }
                 file.Close();
             }
@@ -213,9 +220,13 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
-            if (!isType2)
+            if (!isType2 && !isType3)
             {
                 return ReadAchievementsINI_type1(pathFile, ReturnAchievements);
+            }
+            else if (isType3)
+            {
+                return ReadAchievementsINI_type3(pathFile, ReturnAchievements);
             }
             else
             {
@@ -287,6 +298,70 @@ namespace SuccessStory.Clients
 
                         DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
 
+                        // End Achievement
+                        if (timeUnlock != 0 && State)
+                        {
+                            ReturnAchievements.Add(new Achievements
+                            {
+                                ApiName = Name,
+                                Name = string.Empty,
+                                Description = string.Empty,
+                                UrlUnlocked = string.Empty,
+                                UrlLocked = string.Empty,
+                                DateUnlocked = DateUnlocked
+                            });
+
+                            Name = string.Empty;
+                            State = false;
+                            timeUnlock = 0;
+                            DateUnlocked = null;
+                        }
+                    }
+                }
+                file.Close();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+
+            return ReturnAchievements;
+        }
+
+        private List<Achievements> ReadAchievementsINI_type3(string pathFile, List<Achievements> ReturnAchievements)
+        {
+            try
+            {
+                string line;
+
+                string Name = string.Empty;
+                bool State = false;
+                string sTimeUnlock = string.Empty;
+                int timeUnlock = 0;
+                DateTime? DateUnlocked = null;
+
+                StreamReader file = new StreamReader(pathFile);
+                while ((line = file.ReadLine()) != null)
+                {
+                    // Achievement name
+                    if (line.IndexOf("[") > -1)
+                    {
+                        Name = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
+                        State = true;
+                        timeUnlock = 0;
+                        DateUnlocked = null;
+                    }
+
+                    // Unlock
+                    if (line.IndexOf("timestamp") > -1)
+                    {
+                        sTimeUnlock = line.Replace("timestamp=", string.Empty);
+                        timeUnlock = int.Parse(sTimeUnlock);
+                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+                    }
+
+                    if (line == string.Empty)
+                    {
                         // End Achievement
                         if (timeUnlock != 0 && State)
                         {
@@ -824,7 +899,7 @@ namespace SuccessStory.Clients
                                 Folder finded = PluginDatabase.PluginSettings.Settings.LocalPath.Find(x => x.FolderPath.IsEqual(DirAchivements));
                                 Guid.TryParse(finded?.GameId, out Guid GameId);
 
-                                if (File.Exists(DirAchivements + "\\user_stats.ini")) 
+                                if (File.Exists(DirAchivements + "\\user_stats.ini") && GameId != default && GameId == game.Id) 
                                 {
                                     ReturnAchievements = ReadAchievementsStatsINI(DirAchivements + "\\user_stats.ini", ReturnAchievements);
                                 }
@@ -842,7 +917,7 @@ namespace SuccessStory.Clients
                                             }
 
                                         }
-                                        else if (GameId != default(Guid) && GameId == game.Id && (finded?.HasGame ?? false))
+                                        else if (GameId != default && GameId == game.Id && (finded?.HasGame ?? false))
                                         {
                                             if (File.Exists(DirAchivements + $"\\stats\\achievements.ini"))
                                             {
@@ -851,6 +926,15 @@ namespace SuccessStory.Clients
                                                 if (File.Exists(DirAchivements + $"\\stats\\stats.ini"))
                                                 {
                                                     ReturnStats = ReadStatsINI(DirAchivements + $"\\stats\\stats.ini", ReturnStats);
+                                                }
+                                            }
+                                            if (File.Exists(DirAchivements + $"\\achievements.ini"))
+                                            {
+                                                ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\achievements.ini", ReturnAchievements);
+
+                                                if (File.Exists(DirAchivements + $"\\stats.ini"))
+                                                {
+                                                    ReturnStats = ReadStatsINI(DirAchivements + $"\\stats.ini", ReturnStats);
                                                 }
                                             }
                                         }
