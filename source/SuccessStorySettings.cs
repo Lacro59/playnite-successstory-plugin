@@ -191,6 +191,8 @@ namespace SuccessStory
         public OrderAchievement IntegrationListOrderAchievement { get; set; } = new OrderAchievement();
 
         public GameFeature AchievementFeature { get; set; } = null;
+
+        public bool UseLocalised { get; set; } = false;
         #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.

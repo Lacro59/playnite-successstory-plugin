@@ -1074,6 +1074,30 @@ namespace SuccessStory
             }
 
 
+            // Check Exophase if use localised achievements
+            if (PluginSettings.Settings.UseLocalised)
+            {
+                Task.Run(() =>
+                {
+                    ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+                    if (!exophaseAchievements.IsConnected())
+                    {
+                        Application.Current.Dispatcher?.BeginInvoke((Action)delegate
+                        {
+                            logger.Warn($"Exophase is disconnected");
+                            string message = string.Format(resources.GetString("LOCCommonStoresNoAuthenticate"), "Exophase");
+                            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                                $"{PluginDatabase.PluginName}-Exophase-disconnected",
+                                $"{PluginDatabase.PluginName}\r\n{message}",
+                                NotificationType.Error,
+                                () => PluginDatabase.Plugin.OpenSettingsView()
+                            ));
+                        });
+                    }
+                });
+            }
+
+
             // Initialize list console for RA
             if (PluginSettings.Settings.EnableRetroAchievements && PluginSettings.Settings.RaConsoleAssociateds?.Count == 0)
             {

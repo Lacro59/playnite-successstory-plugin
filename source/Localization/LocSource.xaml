@@ -170,6 +170,8 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Added icon on locked achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Custom icon for locked achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Only when icon is missing</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 

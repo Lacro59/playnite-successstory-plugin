@@ -1142,9 +1142,11 @@
                                 <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />
                                 <Separator Margin="0,0,0,10" />
 
+                                <CheckBox Margin="0,0,0,10" Content="{DynamicResource LOCSuccessStoryUseLocalised}" IsChecked="{Binding Settings.UseLocalised}" />
+
                                 <StackPanel Orientation="Horizontal" Height="40" VerticalAlignment="Top">
                                     <Button Name="btAuth" Content="{DynamicResource LOCCommonAuthenticateLabel}" HorizontalAlignment="Left" VerticalAlignment="Center"
-                                    Click="Button_Click" />
+                                            Click="Button_Click" />
                                     <Label Name="lIsAuth" Margin="20,0,0,0" VerticalAlignment="Center" />
                                 </StackPanel>
                             </StackPanel>

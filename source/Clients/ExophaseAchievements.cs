@@ -35,11 +35,11 @@ namespace SuccessStory.Clients
 
     class ExophaseAchievements : GenericAchievements
     {
-        private const string UrlExophaseSearch = @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
-        private const string UrlExophase = @"https://www.exophase.com";
-        private readonly string UrlExophaseLogin = $"{UrlExophase}/login";
-        private readonly string UrlExophaseLogout = $"{UrlExophase}/logout";
-        private readonly string UrlExophaseAccount = $"{UrlExophase}/account";
+        private string UrlExophaseSearch => @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
+        private string UrlExophase => @"https://www.exophase.com";
+        private string UrlExophaseLogin => $"{UrlExophase}/login";
+        private string UrlExophaseLogout => $"{UrlExophase}/logout";
+        private string UrlExophaseAccount => $"{UrlExophase}/account";
 
         
 
@@ -180,7 +180,7 @@ namespace SuccessStory.Clients
                 WebView.LoadingChanged += (s, e) =>
                 {
                     string address = WebView.GetCurrentAddress();
-                    if (address.Contains(UrlExophaseAccount) && !address.Contains(UrlExophaseLogout))
+                    if (address.StartsWith(UrlExophaseAccount, StringComparison.InvariantCultureIgnoreCase) && !address.StartsWith(UrlExophaseLogout, StringComparison.InvariantCultureIgnoreCase))
                     {
                         CachedIsConnectedResult = true;
                         WebView.Close();
@@ -192,7 +192,7 @@ namespace SuccessStory.Clients
                 WebView.OpenDialog();
             }
 
-            List<HttpCookie> httpCookies = Serialization.GetClone(WebViewOffscreen.GetCookies().Where(x => x.Domain.IsEqual(".exophase.com")).ToList());
+            List<HttpCookie> httpCookies = WebViewOffscreen.GetCookies().Where(x => x.Domain.IsEqual(".exophase.com")).ToList();
             SetCookies(httpCookies);
             WebViewOffscreen.DeleteDomainCookies(".exophase.com");
             WebViewOffscreen.Dispose();
@@ -201,7 +201,12 @@ namespace SuccessStory.Clients
         private bool GetIsUserLoggedIn()
         {
             string DataExophase = Web.DownloadStringData(UrlExophaseAccount, GetCookies()).GetAwaiter().GetResult();
-            return DataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
+            bool isConnected = DataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
+            if (isConnected)
+            {
+                SetCookies(GetCookies());
+            }
+            return isConnected;
         }
 
 

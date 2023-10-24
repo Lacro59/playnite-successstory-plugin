@@ -80,22 +80,17 @@ namespace SuccessStory.Views
                 case "ProgressionValue":
                     cbDefaultSorting.Text = resources.GetString("LOCSuccessStorylvGamesProgression");
                     break;
+                default:
+                    break;
             }
 
 
-            var task = Task.Run(() => CheckLogged())
+            Task task = Task.Run(() => CheckLogged())
                 .ContinueWith(antecedent =>
                 {
                     this.Dispatcher.Invoke(new Action(() => 
                     {
-                        if (antecedent.Result)
-                        {
-                            lIsAuth.Content = resources.GetString("LOCLoggedIn");
-                        }
-                        else
-                        {
-                            lIsAuth.Content = resources.GetString("LOCNotLoggedIn");
-                        }
+                        lIsAuth.Content = antecedent.Result ? resources.GetString("LOCCommonLoggedIn") : resources.GetString("LOCCommonNotLoggedIn");
                     }));
                 });
 
@@ -190,25 +185,18 @@ namespace SuccessStory.Views
         #region Exophase
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            lIsAuth.Content = resources.GetString("LOCLoginChecking");
+            lIsAuth.Content = resources.GetString("LOCCommonLoginChecking");
 
             try
             {
                 exophaseAchievements.Login();
 
-                var task = Task.Run(() => CheckLogged())
+                Task task = Task.Run(() => CheckLogged())
                     .ContinueWith(antecedent =>
                     {
                         this.Dispatcher.Invoke(new Action(() =>
                         {
-                            if (antecedent.Result)
-                            {
-                                lIsAuth.Content = resources.GetString("LOCLoggedIn");
-                            }
-                            else
-                            {
-                                lIsAuth.Content = resources.GetString("LOCNotLoggedIn");
-                            }
+                            lIsAuth.Content = antecedent.Result ? resources.GetString("LOCCommonLoggedIn") : resources.GetString("LOCCommonNotLoggedIn");
                         }));
                     });
             }
@@ -478,13 +466,14 @@ namespace SuccessStory.Views
         {
             foreach (object value in values)
             {
-                if ((value is bool) && (bool)value == false)
+                if ((value is bool bVal) && bVal == false)
                 {
                     return false;
                 }
             }
             return true;
         }
+
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
