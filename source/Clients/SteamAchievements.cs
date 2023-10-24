@@ -16,32 +16,20 @@ using SteamKit2;
 using System.Globalization;
 using CommonPlayniteShared.Common.Web;
 using System.Text.RegularExpressions;
-using CommonPluginsStores;
 using CommonPluginsShared.Models;
 using PlayniteTools = CommonPluginsShared.PlayniteTools;
 using CommonPluginsShared.Extensions;
 using System.Threading;
 using CommonPluginsStores.Steam;
 using CommonPluginsStores.Steam.Models;
+using CommonPlayniteShared.Common;
+using AngleSharp.Dom;
 
 namespace SuccessStory.Clients
 {
-    class SteamAchievements : GenericAchievements
+    public class SteamAchievements : GenericAchievements
     {
-        protected static SteamApi _steamApi;
-        internal static SteamApi steamApi
-        {
-            get
-            {
-                if (_steamApi == null)
-                {
-                    _steamApi = new SteamApi(PluginDatabase.PluginName);
-                }
-                return _steamApi;
-            }
-
-            set => _steamApi = value;
-        }
+        private readonly SteamApi SteamApi = SuccessStory.SteamApi;
 
         private IHtmlDocument HtmlDocument { get; set; } = null;
 
@@ -63,7 +51,8 @@ namespace SuccessStory.Clients
 
         public SteamAchievements() : base("Steam", CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
         {
-
+            // TODO TEMP
+            FileSystem.DeleteFile(cookiesPath);
         }
 
 
@@ -96,7 +85,7 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    VerifSteamUser();
+                    //VerifSteamUser();
                     if (SteamUser.IsNullOrEmpty())
                     {
                         logger.Warn("No Steam user");
@@ -126,7 +115,7 @@ namespace SuccessStory.Clients
                         {
                             gameAchievements.SourcesLink = new SourceLink
                             {
-                                GameName = steamApi.GetGameName(AppId),
+                                GameName = SteamApi.GetGameName(AppId),
                                 Name = "Steam",
                                 Url = string.Format(UrlProfilById, SteamId, AppId, LocalLang)
                             };
@@ -155,7 +144,7 @@ namespace SuccessStory.Clients
                 else
                 {
                     SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
-                    var temp = se.GetAchievementsLocal(game, SteamApiKey, 0, IsManual);
+                    GameAchievements temp = se.GetAchievementsLocal(game, SteamApiKey, 0, IsManual);
                     AppId = se.GetSteamId();
 
                     if (temp.Items.Count > 0)
@@ -182,7 +171,7 @@ namespace SuccessStory.Clients
                         {
                             gameAchievements.SourcesLink = new SourceLink
                             {
-                                GameName = steamApi.GetGameName(AppId),
+                                GameName = SteamApi.GetGameName(AppId),
                                 Name = "Steam",
                                 Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
                             };
@@ -291,7 +280,7 @@ namespace SuccessStory.Clients
                         // Set source link
                         gameAchievements.SourcesLink = new SourceLink
                         {
-                            GameName = steamApi.GetGameName(AppId),
+                            GameName = SteamApi.GetGameName(AppId),
                             Name = "Steam",
                             Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
                         };
@@ -376,7 +365,6 @@ namespace SuccessStory.Clients
                     }
 
 
-                    
                     if (CachedConfigurationValidationResult == null)
                     {
                         CachedConfigurationValidationResult = true;
@@ -402,10 +390,7 @@ namespace SuccessStory.Clients
             {
                 if (IsConfigured())
                 {
-                    string ProfileById = $"https://steamcommunity.com/profiles/{SteamId}";
-                    string ProfileByName = $"https://steamcommunity.com/id/{SteamUser}";
-
-                    CachedIsConnectedResult = IsProfileConnected(ProfileById) || IsProfileConnected(ProfileByName);
+                    CachedIsConnectedResult = SteamApi.IsUserLoggedIn;
                 }
             }
 
@@ -416,32 +401,23 @@ namespace SuccessStory.Clients
         {
             if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty() || SteamUser.IsNullOrEmpty())
             {
-                try
+                if (SteamApi.CurrentUser != null)
                 {
-                    if (File.Exists(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json"))
-                    {
-                        dynamic SteamConfig = Serialization.FromJsonFile<dynamic>(PluginDatabase.Paths.PluginUserDataPath + "\\..\\CB91DFC9-B977-43BF-8E70-55F46E410FAB\\config.json");
-                        SteamId = (string)SteamConfig["UserId"];
-                        SteamApiKey = (string)SteamConfig["ApiKey"];
-                        SteamUser = steamApi.GetSteamUsers()?.First()?.PersonaName;                       
-                    }
-                    else
-                    {
-                        ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
-                        return false;
-                    }
+                    SteamId = SteamApi.CurrentUser.SteamId.ToString();
+                    SteamApiKey = SteamApi.CurrentUser.ApiKey;
+                    SteamUser = SteamApi.CurrentUser.PersonaName;
                 }
-                catch (Exception ex)
+                else
                 {
-                    ShowNotificationPluginError(ex);
+                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
                     return false;
                 }
             }
 
-            SteamUserAndSteamIdByWeb();
+            //SteamUserAndSteamIdByWeb();
 
             if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
-            {                
+            {
                 if (SteamUser.IsNullOrEmpty())
                 {
                     ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig2"));
@@ -462,14 +438,7 @@ namespace SuccessStory.Clients
 
         public override bool EnabledInSettings()
         {
-            if (IsLocal)
-            {
-                return PluginDatabase.PluginSettings.Settings.EnableLocal;
-            }
-            else
-            {
-                return PluginDatabase.PluginSettings.Settings.EnableSteam;
-            }
+            return IsLocal ? PluginDatabase.PluginSettings.Settings.EnableLocal : PluginDatabase.PluginSettings.Settings.EnableSteam;
         }
         #endregion
 
@@ -505,10 +474,10 @@ namespace SuccessStory.Clients
                         break;
                     }
 
-                    var url = gameElem.GetAttribute("href");
-                    var title = gameElem.QuerySelector(".title").InnerHtml;
-                    var img = gameElem.QuerySelector(".search_capsule img").GetAttribute("src");
-                    var releaseDate = gameElem.QuerySelector(".search_released").InnerHtml;
+                    string url = gameElem.GetAttribute("href");
+                    string title = gameElem.QuerySelector(".title").InnerHtml;
+                    string img = gameElem.QuerySelector(".search_capsule img").GetAttribute("src");
+                    string releaseDate = gameElem.QuerySelector(".search_released").InnerHtml;
                     if (gameElem.HasAttribute("data-ds-packageid"))
                     {
                         continue;
@@ -533,7 +502,7 @@ namespace SuccessStory.Clients
                         DataSteamSearch = Web.DownloadStringData(string.Format(url, WebUtility.UrlEncode(Name))).GetAwaiter().GetResult();
                         IHtmlDocument htmlDocumentDetails = new HtmlParser().Parse(DataSteamSearch);
 
-                        var AchievementsInfo = htmlDocumentDetails.QuerySelector("#achievement_block .block_title");
+                        AngleSharp.Dom.IElement AchievementsInfo = htmlDocumentDetails.QuerySelector("#achievement_block .block_title");
                         if (AchievementsInfo != null)
                         {
                             int.TryParse(Regex.Replace(AchievementsInfo.InnerHtml, "[^0-9]", ""), out AchievementsCount);
@@ -568,7 +537,7 @@ namespace SuccessStory.Clients
         {
             if (SteamUser.IsNullOrEmpty() || SteamId.IsNullOrEmpty())
             {
-                List<HttpCookie> cookies = GetCookies();
+                List<HttpCookie> cookies = SteamApi.GetStoredCookies();
                 string ResultWeb = Web.DownloadStringData(UrlProfil, cookies).GetAwaiter().GetResult();
 
                 if (SteamUser.IsNullOrEmpty())
@@ -576,7 +545,7 @@ namespace SuccessStory.Clients
                     HtmlParser parser = new HtmlParser();
                     IHtmlDocument htmlDocument = parser.Parse(ResultWeb);
 
-                    var el = htmlDocument.QuerySelector(".actual_persona_name");
+                    IElement el = htmlDocument.QuerySelector(".actual_persona_name");
                     if (el != null)
                     {
                         SteamUser = el.InnerHtml;
@@ -657,7 +626,7 @@ namespace SuccessStory.Clients
                 IHtmlDocument HtmlDoc = new HtmlParser().Parse(ResultWeb);
 
                 //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
-                var gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
+                IElement gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
                 return gamesPageLink != null;
             }
             catch (WebException ex)
@@ -671,12 +640,12 @@ namespace SuccessStory.Clients
         {
             try
             {
-                List<HttpCookie> cookies = GetCookies();
+                List<HttpCookie> cookies = SteamApi.GetStoredCookies();
                 string ResultWeb = Web.DownloadStringData(profilePageUrl, cookies).GetAwaiter().GetResult();
 
                 //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
                 IHtmlDocument HtmlDoc = new HtmlParser().Parse(ResultWeb);
-                var gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
+                IElement gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
                 if (gamesPageLink != null)
                 {
                     return true;
@@ -731,7 +700,7 @@ namespace SuccessStory.Clients
 
                     if (UserStats != null && UserStats.Children != null)
                     {
-                        var UserStatsData = UserStats.Children.Find(x => x.Name == "stats");
+                        KeyValue UserStatsData = UserStats.Children.Find(x => x.Name == "stats");
                         if (UserStatsData != null)
                         {
                             foreach (KeyValue StatsData in UserStatsData.Children)
@@ -825,7 +794,7 @@ namespace SuccessStory.Clients
 
                     if (PlayerAchievements != null && PlayerAchievements.Children != null)
                     {
-                        var PlayerAchievementsData = PlayerAchievements.Children.Find(x => x.Name == "achievements");
+                        KeyValue PlayerAchievementsData = PlayerAchievements.Children.Find(x => x.Name == "achievements");
                         if (PlayerAchievementsData != null)
                         {
                             foreach (KeyValue AchievementsData in PlayerAchievementsData.Children)
@@ -933,11 +902,11 @@ namespace SuccessStory.Clients
 
                     try
                     {
-                        var availableGameStats = SchemaForGame.Children.Find(x => x.Name.IsEqual("availableGameStats"));
+                        KeyValue availableGameStats = SchemaForGame.Children.Find(x => x.Name.IsEqual("availableGameStats"));
 
                         if (availableGameStats != null)
                         {
-                            var stats = availableGameStats.Children.Find(x => x.Name.IsEqual("stats"));
+                            KeyValue stats = availableGameStats.Children.Find(x => x.Name.IsEqual("stats"));
 
                             if (stats != null)
                             {
@@ -1003,7 +972,7 @@ namespace SuccessStory.Clients
                     url = string.Format(UrlProfilById, SteamId, AppId, LocalLang);
                     try
                     {
-                        List<HttpCookie> cookies = GetCookies();
+                        List<HttpCookie> cookies = SteamApi.GetStoredCookies();
                         ResultWeb = Web.DownloadStringData(url, cookies).GetAwaiter().GetResult();
                     }
                     catch (WebException ex)
@@ -1017,7 +986,7 @@ namespace SuccessStory.Clients
                     url = string.Format(UrlProfilByName, SteamUser, AppId, LocalLang);
                     try
                     {
-                        List<HttpCookie> cookies = GetCookies();
+                        List<HttpCookie> cookies = SteamApi.GetStoredCookies();
                         ResultWeb = Web.DownloadStringData(url, cookies).GetAwaiter().GetResult();
                     }
                     catch (WebException ex)
@@ -1051,7 +1020,7 @@ namespace SuccessStory.Clients
             // Find the achievement description
             if (HtmlDocument != null)
             {
-                foreach (var achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
+                foreach (IElement achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
                 {
                     try
                     {
@@ -1168,7 +1137,7 @@ namespace SuccessStory.Clients
             // Find the achievement description
             if (HtmlDocument != null)
             {
-                foreach (var achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
+                foreach (IElement achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
                 {
                     try
                     {
@@ -1200,10 +1169,9 @@ namespace SuccessStory.Clients
         private List<Achievements> GetAchievementsByWeb(int AppId)
         {
             List<Achievements> achievements = new List<Achievements>();
-            string url = string.Empty;
 
             // Get data
-            url = string.Format(UrlProfilById, SteamId, AppId, LocalLang);
+            string url = string.Format(UrlProfilById, SteamId, AppId, LocalLang);
             achievements = GetAchievementsByWeb(achievements, url);
 
             if (achievements.Count == 0)
@@ -1218,11 +1186,10 @@ namespace SuccessStory.Clients
         private List<Achievements> GetAchievementsByWeb(List<Achievements> Achievements, string Url, bool isRetry = false)
         {
             string ResultWeb = string.Empty;
-
             try
             {
                 Url = Url + "&panorama=please";
-                List<HttpCookie> cookies = GetCookies();
+                List<HttpCookie> cookies = SteamApi.GetStoredCookies();
                 ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
                 //using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 //{
@@ -1353,7 +1320,7 @@ namespace SuccessStory.Clients
             try
             {
                 Url = Url + "&panorama=please";
-                List<HttpCookie> cookies = GetCookies();
+                List<HttpCookie> cookies = SteamApi.GetStoredCookies();
                 ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
                 //using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 //{
@@ -1429,7 +1396,7 @@ namespace SuccessStory.Clients
                             double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
                             double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
 
-                            var finded = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
+                            Achievements finded = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
                             if (finded != null)
                             {
                                 finded.Progression = new AchProgression
@@ -1462,7 +1429,7 @@ namespace SuccessStory.Clients
 
         public static SteamAchievements GetLocalSteamAchievementsProvider()
         {
-            var provider = new SteamAchievements();
+            SteamAchievements provider = new SteamAchievements();
             provider.SetLocal();
             return provider;
         }
@@ -1478,7 +1445,7 @@ namespace SuccessStory.Clients
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-nopublic",
                 $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
-                () => 
+                () =>
                 {
                     ResetCachedConfigurationValidationResult();
                     ResetCachedIsConnectedResult();

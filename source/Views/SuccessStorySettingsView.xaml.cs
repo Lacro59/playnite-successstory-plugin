@@ -54,6 +54,8 @@ namespace SuccessStory.Views
         {
             InitializeComponent();
 
+            SteamPanel.SteamApi = SuccessStory.SteamApi;
+
             PART_WowRegion.Text = PluginDatabase.PluginSettings.Settings.WowRegions.Find(x => x.IsSelected)?.Name;
             PART_WowRealm.Text = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Name;
 
@@ -125,8 +127,8 @@ namespace SuccessStory.Views
                 .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent?.Id);
 
 
-            PART_Time.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "time.png"));
-            PART_Percent.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "percent.png"));
+            //PART_Time.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "time.png"));
+            //PART_Percent.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "percent.png"));
 
 
             // Set RA console list

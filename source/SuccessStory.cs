@@ -35,6 +35,8 @@ namespace SuccessStory
     {
         public override Guid Id => Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
+        public static SteamApi SteamApi { get; set; }
+
         internal TopPanelItem topPanelItem { get; set; }
         internal SuccessStoryViewSidebar successStoryViewSidebar { get; set; }
         internal SuccessStoryViewRaSidebar successStoryViewRaSidebar { get; set; }
@@ -130,6 +132,10 @@ namespace SuccessStory
             {
                 new SearchSupport("ss", "SuccessStory", new SuccessStorySearch())
             };
+
+
+            SteamApi = new SteamApi(PluginDatabase.PluginName);
+            SteamApi.SetLanguage(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
         }
 
 

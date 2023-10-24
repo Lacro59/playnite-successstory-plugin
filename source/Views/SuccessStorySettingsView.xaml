@@ -12,7 +12,7 @@
              xmlns:SuccessStory="clr-namespace:SuccessStory"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:interfaces="clr-namespace:SuccessStory.Views.Interfaces"
+             xmlns:interfaces="clr-namespace:SuccessStory.Views.Interfaces" xmlns:Steam="clr-namespace:CommonPluginsControls.Stores.Steam"
              mc:Ignorable="d" d:DesignWidth="650"
              d:DataContext="{d:DesignInstance SuccessStory:SuccessStorySettingsViewModel, IsDesignTimeCreatable=True}">
 
@@ -1740,7 +1740,11 @@
                 </ListBox>
             </TabItem>
 
-            <TabItem Header="QuickSearch">
+            <TabItem Header="{DynamicResource LOCLibraries}">
+                <Steam:PanelView x:Name="SteamPanel" />
+            </TabItem>
+
+            <!--TabItem Header="QuickSearch">
                 <ScrollViewer Margin="0,10,0,0">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -1766,7 +1770,7 @@
                         <Image Grid.Row="8" Margin="100,0,0,0" Name="PART_Percent" HorizontalAlignment="Right" />
                     </Grid>
                 </ScrollViewer>
-            </TabItem>
+            </TabItem-->
         </TabControl>
     </Grid>
 </UserControl>

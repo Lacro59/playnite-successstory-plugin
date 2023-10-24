@@ -313,14 +313,7 @@ namespace SuccessStory
             SuccessStorySettings savedSettings = plugin.LoadPluginSettings<SuccessStorySettings>();
 
             // LoadPluginSettings returns null if not saved data is available.
-            if (savedSettings != null)
-            {
-                Settings = savedSettings;
-            }
-            else
-            {
-                Settings = new SuccessStorySettings();
-            }
+            Settings = savedSettings ?? new SuccessStorySettings();
 
             if (Settings.WowRegions?.Count == 0)
             {
@@ -359,6 +352,9 @@ namespace SuccessStory
             {
                 x.Platforms = x.Platforms.FindAll(y => y.IsSelected).ToList();
             });
+
+
+            SuccessStory.SteamApi.Save();
 
 
             Plugin.SavePluginSettings(Settings);

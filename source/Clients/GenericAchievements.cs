@@ -15,7 +15,7 @@ using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
-    abstract class GenericAchievements
+    public abstract class GenericAchievements
     {
         internal static ILogger logger => LogManager.GetLogger();
         internal static IResourceProvider resources => new ResourceProvider();
@@ -32,10 +32,7 @@ namespace SuccessStory.Clients
                 return _WebViewOffscreen;
             }
 
-            set
-            {
-                _WebViewOffscreen = value;
-            }
+            set => _WebViewOffscreen = value;
         }
 
         internal static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
