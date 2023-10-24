@@ -11,7 +11,7 @@ namespace SuccessStory.Clients
 {
     internal class WowAchievements : BattleNetAchievements
     {
-        private static string UrlWowGraphQL => @"https://worldofwarcraft.com/graphql";
+        private static string UrlWowGraphQL => @"https://worldofwarcraft.blizzard.com/graphql";
         private static string UrlWowBase    => @"https://worldofwarcraft.com/{0}/character/{1}/{2}/{3}/achievements/";
         private static string UrlWowBaseLocalised { get; set; }
 
