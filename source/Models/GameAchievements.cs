@@ -362,7 +362,7 @@ namespace SuccessStory.Models
 
         public void SetRaretyIndicator()
         {
-            bool NoRarety = Items.Where(x => x.Percent != 100).Count() == 0;
+            bool NoRarety = Items?.Where(x => x.Percent != 100)?.Count() == 0;
             if (NoRarety)
             {
                 Items.All(x => { x.NoRarety = true; return true; });

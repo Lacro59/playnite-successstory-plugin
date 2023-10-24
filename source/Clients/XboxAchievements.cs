@@ -28,21 +28,18 @@ namespace SuccessStory.Clients
                 if (_XboxAccountClient == null)
                 {
                     _XboxAccountClient = new XboxAccountClient(
-                        PluginDatabase.PlayniteApi, 
+                        PluginDatabase.PlayniteApi,
                         PluginDatabase.Paths.PluginUserDataPath + "\\..\\7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287"
                     );
                 }
                 return _XboxAccountClient;
             }
 
-            set
-            {
-                _XboxAccountClient = value;
-            }
+            set => _XboxAccountClient = value;
         }
 
-        private static readonly string AchievementsBaseUrl = @"https://achievements.xboxlive.com/users/xuid({0})/achievements";
-        private static readonly string TitleAchievementsBaseUrl = @"https://achievements.xboxlive.com/users/xuid({0})/titleachievements";
+        private static string AchievementsBaseUrl => @"https://achievements.xboxlive.com/users/xuid({0})/achievements";
+        private static string TitleAchievementsBaseUrl => @"https://achievements.xboxlive.com/users/xuid({0})/titleachievements";
 
 
         public XboxAchievements() : base("Xbox", CodeLang.GetXboxLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
@@ -60,7 +57,7 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    var authData = XboxAccountClient.GetSavedXstsTokens();
+                    AuthorizationData authData = XboxAccountClient.GetSavedXstsTokens();
                     if (authData == null)
                     {
                         ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
