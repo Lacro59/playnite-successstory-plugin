@@ -9,6 +9,8 @@ using System;
 using System.Linq;
 using Playnite.SDK.Models;
 using SuccessStory.Clients;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace SuccessStory
 {
@@ -321,6 +323,29 @@ namespace SuccessStory
             {
                 Settings.WowRegions = new List<CbData> { new CbData { Name = "us" }, new CbData { Name = "kr" }, new CbData { Name = "eu" }, new CbData { Name = "tw" } };
             }
+
+            // Set RA console list
+            Task.Run(() =>
+            {
+                Settings.RaConsoleAssociateds.ForEach(y =>
+                {
+                    API.Instance.Database.Platforms.ForEach(x =>
+                    {
+                        int RaConsoleId = RetroAchievements.FindConsole(x.Name);
+                        Models.Platform Finded = y.Platforms.Find(z => z.Id == x.Id);
+                        if (Finded == null)
+                        {
+                            y.Platforms.Add(new Models.Platform { Id = x.Id });
+                        }
+                    });
+                    y.Platforms = y.Platforms.OrderBy(z => z.Name).ToList();
+                });
+
+                Application.Current.Dispatcher?.BeginInvoke((Action)delegate
+                {
+                    Settings.RaConsoleAssociateds = Settings.RaConsoleAssociateds.OrderBy(x => x.RaConsoleName).ToList();
+                });
+            });
         }
 
         // Code executed when settings view is opened and user starts editing values.

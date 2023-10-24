@@ -127,20 +127,6 @@ namespace SuccessStory.Views
 
 
             // Set RA console list
-            PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.ForEach(y => 
-            {
-                API.Instance.Database.Platforms.ForEach(x =>
-                {
-                    int RaConsoleId = RetroAchievements.FindConsole(x.Name);
-                    Models.Platform Finded = y.Platforms.Find(z => z.Id == x.Id);
-                    if (Finded == null)
-                    {
-                        y.Platforms.Add(new Models.Platform { Id = x.Id });
-                    }
-                });
-                y.Platforms = y.Platforms.OrderBy(z => z.Name).ToList();
-            });
-            PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.OrderBy(x => x.RaConsoleName).ToList();
             PART_LbRaConsole.ItemsSource = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
             RaConsoleAssociateds = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
         }

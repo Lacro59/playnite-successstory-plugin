@@ -1101,30 +1101,37 @@ namespace SuccessStory
             // Initialize list console for RA
             if (PluginSettings.Settings.EnableRetroAchievements && PluginSettings.Settings.RaConsoleAssociateds?.Count == 0)
             {
-                PluginSettings.Settings.RaConsoleAssociateds = new List<RaConsoleAssociated>();
-                RA_Consoles ra_Consoles = RetroAchievements.GetConsoleIDs();
-
-                ra_Consoles.ListConsoles.ForEach(x =>
+                Task.Run(() =>
                 {
-                    PluginSettings.Settings.RaConsoleAssociateds.Add(new RaConsoleAssociated
+                    PluginSettings.Settings.RaConsoleAssociateds = new List<RaConsoleAssociated>();
+                    RA_Consoles ra_Consoles = RetroAchievements.GetConsoleIDs();
+
+                    ra_Consoles.ListConsoles.ForEach(x =>
                     {
-                        RaConsoleId = x.ID,
-                        RaConsoleName = x.Name,
-                        Platforms = new List<Models.Platform>()
+                        PluginSettings.Settings.RaConsoleAssociateds.Add(new RaConsoleAssociated
+                        {
+                            RaConsoleId = x.ID,
+                            RaConsoleName = x.Name,
+                            Platforms = new List<Models.Platform>()
+                        });
+                    });
+
+                    API.Instance.Database.Platforms.ForEach(x =>
+                    {
+                        int RaConsoleId = RetroAchievements.FindConsole(x.Name);
+                        if (RaConsoleId != 0)
+                        {
+                            PluginSettings.Settings.RaConsoleAssociateds
+                                .Find(y => y.RaConsoleId == RaConsoleId).Platforms.Add(new Models.Platform { Id = x.Id, IsSelected = true });
+                        }
+                    });
+
+
+                    Application.Current.Dispatcher?.BeginInvoke((Action)delegate
+                    {
+                        this.SavePluginSettings(PluginSettings.Settings);
                     });
                 });
-
-                API.Instance.Database.Platforms.ForEach(x =>
-                {
-                    int RaConsoleId = RetroAchievements.FindConsole(x.Name);
-                    if (RaConsoleId != 0)
-                    {
-                        PluginSettings.Settings.RaConsoleAssociateds
-                            .Find(y => y.RaConsoleId == RaConsoleId).Platforms.Add(new Models.Platform { Id = x.Id, IsSelected = true });
-                    }
-                });
-
-                this.SavePluginSettings(PluginSettings.Settings);
             }
         }
 
