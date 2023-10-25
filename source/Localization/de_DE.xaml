@@ -28,8 +28,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam Profil ist nicht öffentlich</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam wurde in den Einstellungen nicht richtig konfiguriert</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Keine Steam Konfiguration und/oder API Schlüssel im Einstellungsmenü für Steam-Bibliothek</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Kein Steam Benutzer in den Einstellungen für Steam Bibliothek</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam Benutzer ist nicht authentifiziert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG Benutzer ist nicht authentifiziert</sys:String>
@@ -170,6 +170,8 @@ Besonders nützlich für Xbox Errungenschaften mit ihren großen Bildern, die be
     <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Icon bei gesperrten Errungenschaften hinzugefügt</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Benutzerdefiniertes Icon für gesperrte Errungenschaften</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Nur wenn Icon fehlt</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 

@@ -28,8 +28,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam プロフィールが公開されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam は SuccessStory で有効になっていますが、Playnite でライブラリ拡張機能が無効になっています</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam の設定が正しく設定されていません</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Steam ライブラリの設定メニューで Steam の設定およびまたは API キーが正しく設定されていません</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Steam ライブラリの設定メニューで Steam ユーザーが設定されていません</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam ユーザーが認証されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG は SuccessStory で有効になっていますが、Playnite でライブラリ拡張機能が無効になっています</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG ユーザーが認証されていません</sys:String>
@@ -82,7 +82,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Guild Wars 2 実績を有効にする</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">API の使用を無効にする（API キーを持っていない場合に使用します）</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Home user folder</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">ホームユーザーフォルダ</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Show separate view for RetroAchievements</sys:String>
 
@@ -170,6 +170,8 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryIconAddOnImage">未解除の実績に追加するアイコン</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">未解除の実績のカスタムアイコン</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">アイコンがない場合のみ</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 

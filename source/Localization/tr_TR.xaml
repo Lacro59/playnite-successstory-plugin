@@ -28,8 +28,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profili herkese açık değil</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">BaşarıÖyküsü eklentisinde Steam etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam ayarlarda düzgün yapılandırılmamış</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Steam Kütüphanesindeki ayarlar menüsünde Steam yapılandırması ve/veya API anahtarı yok</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Steam Kütüphanesindeki ayarlar menüsünde Steam kullanıcısı yok</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">BaşarıÖyküsü eklentisinde GOG etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG kullanıcı kimliği doğrulanmadı</sys:String>
@@ -170,6 +170,8 @@
     <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Kilitli başarımlara simge eklendi</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Kilitli başarımlar için kişisel simge</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Sadece simge eksik olduğunda</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
