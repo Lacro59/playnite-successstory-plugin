@@ -9,10 +9,19 @@
                 <!--Playnite Resources-->
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/Constants.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/Common.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/Media.xaml" />
                 <!--Playnite Default localization-->
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/LocSource.xaml" />
-                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/ExtensionsLocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/AmazonLocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/BattleNetLocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/EpicLocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/GogLocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/HumbleLocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/ItchioLibrary.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/OriginLocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/RockstarLibrary.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/SteamLocSource.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/UplayLibrary.xaml" />
+                <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/XboxLocSource.xaml" />
                 <!--Default Controls-->
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/DefaultControls/Border.xaml" />
                 <ResourceDictionary Source="playnite-plugincommon/CommonPluginsResources/ResourcesPlaynite/DefaultControls/TextBlock.xaml" />
