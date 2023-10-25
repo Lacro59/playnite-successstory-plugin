@@ -28,8 +28,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam-profil er ikke offentlig</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam er aktivert i SuccessStory men biblioteksutvidelsen er deaktivert i Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam er ikke riktig konfigurert i innstillingene</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Steam-konfigurasjon og/eller API-nøkkel mangler i innstillingsmenyen for Steam-biblioteket</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Ingen Steam-bruker i innstillingsmenyen for Steam-biblioteket</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam-bruker er ikke godkjent</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG er aktivert i SuccessStory men biblioteksutvidelsen er deaktivert i Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG-bruker er ikke godkjent</sys:String>
@@ -170,6 +170,8 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryIconAddOnImage">Added icon on locked achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Custom icon for locked achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Only when icon is missing</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
