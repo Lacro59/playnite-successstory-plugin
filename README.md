@@ -47,7 +47,7 @@ If the theme supports such functions, you can:
 You can help to translate the extension to different languages via the project [Crowdin](https://crowdin.com/project/playnite-extensions) page.
 
 ## Custom theme integration
-The extension contains elements that can fit into a custom theme.
+The extension contains elements that can fit into a custom theme.  
 [More information](https://github.com/Lacro59/playnite-successstory-plugin/wiki/Addition-in-a-custom-theme)
 
 ## More
