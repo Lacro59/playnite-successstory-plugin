@@ -28,8 +28,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Профіль Steam не є публічним</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam неправильно налаштовано в налаштуваннях</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Немає конфігурації Steam та/або ключа API</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Користувача Steam не знайдено</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Користувач Steam не автентифікований</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Користувач GOG не автентифікований</sys:String>
@@ -171,7 +171,7 @@
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Власний значок для заблокованих досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Лише коли значок відсутній</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Використовувати локалізовані досягнення</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
