@@ -1,14 +1,18 @@
 ﻿Id: playnite-successstory-plugin
 Name: SuccessStory
 Author: Lacro59
-Version: 3.1.3
+Version: 3.1.4
 Module: SuccessStory.dll
 Type: GenericPlugin
 Icon: icon.png
 Links:
-  - Name: Forum
-    Url: https://playnite.link/forum/thread-275.html
   - Name: Github
     Url: https://github.com/Lacro59/playnite-successstory-plugin
+  - Name: Help and Troubleshooting
+    Url: https://github.com/Lacro59/playnite-successstory-plugin/wiki
+  - Name: Issues Tracker
+    Url: https://github.com/Lacro59/playnite-successstory-plugin/issues
   - Name: Translate
     Url: https://crowdin.com/project/playnite-extensions
+  - Name: Ko-fi (Tips and Donations)
+    Url: https://ko-fi.com/lacro59
