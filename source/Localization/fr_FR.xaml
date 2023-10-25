@@ -4,9 +4,9 @@
     <sys:String x:Key="LOCSuccessStoryProgress">Progression</sys:String>
     <sys:String x:Key="LOCSuccessStoryEarned">Gagnés</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryManualAchievements">Accomplissements manuels</sys:String>
+    <sys:String x:Key="LOCSuccessStoryManualAchievements">Succès manuels</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Trophée cach</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Trophée caché</sys:String>
 
     <sys:String x:Key="LOCSsRefreshRaretyManual">Rafraîchir le taux de rareté pour les succès manuels</sys:String>
     <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Rafraîchir l'estimation de temps pour les succès manuels</sys:String>
@@ -25,34 +25,34 @@
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Succès caché</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Profil Steam n'est pas public</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Le profil Steam n'est pas public</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam n'a pas été correctement configuré dans les paramètres</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Aucune configuration Steam et/ou clé API</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Pas d'utilisateur Steam trouvé</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">L'utilisateur Steam n'est pas authentifié</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Utilisateur GOG n'est pas connecté</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG n'a pas été correctement configuré dans les paramètres</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Utilisateur PSN n'est pas connecté</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Le support de l'application EA est activé danss SuccessStory mais son intégration Playnite est inactive</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">L'utilisateur EA n'est pas authentifié</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox non authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 n'a pas été correctement configuré dans les paramètres</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net est activé dans SuccessStory mais l'extension de bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">L'utilisateur de Battle.net n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">L'utilisateur Overwatch de Battle.net n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">L'utilisateur StarCraft II de Battle.net n'est pas authentifié</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic est activé dans SuccessStory mais l'extension de la bibliothèque a été désactivée dans Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Utilisateur Epic n'est pas connecté</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 n'a pas été correctement configuré dans les paramètres</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
-    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Nombre d'accomplissements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Nombre de succès</sys:String>
     
     
     <!-- SuccessStorySettingsView -->
@@ -61,7 +61,7 @@
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Jeux ignorés</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (uniquement pour avoir des réalisations localisées)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (uniquement pour avoir des succès localisés)</sys:String>
 
     <sys:String x:Key="LOSuccessStoryAddTagDescription">Ajouter un tag aux jeux avec le temps pour le déverrouillage complet</sys:String>
 
@@ -127,7 +127,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Afficher l'indicateur de rareté sur les succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Afficher la rareté sur l'image des succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Afficher uniquement les succès du jeu sélectionné dans le menu de jeu</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Définir automatiquement la complétion lorsque tous les éléments sont déverrouillés</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Définir automatiquement la complétion lorsque tous les succès sont déverrouillés</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">Liste de jeux</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">Tri par défaut de la liste des jeux</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Graphique avec tous les succès</sys:String>
@@ -143,22 +143,21 @@
     <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">La base de données des succès a bien été réinitialisées.</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">Télécharge les succès manquants.</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Mise à zéro et téléchargement des succès du magasin.
-(A utiliser s'il y a des problèmes avec les succès)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Réinitialise et télécharge les succès de tous les jeux à partir de cette source. (à utiliser s'il y a un problème avec les succès)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Télécharger les réalisations pour les jeux qui ont été importés au cours du mois dernier avec des données manquantes. (Utiliser si le nombre de premiers nombres est différent du nombre total)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Télécharger les succès pour les jeux installés avec des données manquantes (Utiliser si le nombre de premier nombre est différent du nombre total de jeux).</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Télécharger les succès pour les jeux installés avec des données manquantes (Utiliser si le nombre de premier nombre est différent du nombre total de jeux).</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Télécharge les succès des jeux importés au cours du mois dernier avec des données manquantes. (Utiliser si le premier nombre est différent du nombre total)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Télécharge les succès des jeux installés avec des données manquantes. (Utiliser si le premier nombre est différent du nombre total)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Télécharge les succès des jeux installés avec des données manquantes. (Utiliser si le premier nombre est différent du nombre total)</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Réinitialise et télécharge les succès des jeux qui ont été importés au cours du mois dernier. (À utiliser s'il y a un problème avec les réalisations)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Réinitialise et télécharge les succès des jeux installés (en cas de problème avec les succès).</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Réinitialise et télécharge les réalisations de tous les jeux. (Utiliser s'il y a un problème avec les accomplissements)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Réinitialise et télécharge les succès de tous les jeux. (Utiliser s'il y a un problème avec les succès)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryRarityConfig">Configuration de la raret</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUseUltraRare">Utilisez les succès ultra rares</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarityConfig">Configuration de la rareté</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseUltraRare">Utiliser les succès ultra-rares</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryEnableImageCache">Activer la mise en cache des images des succès *</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Processus expérimental non bloquant, qui peut augmenter un peu l'utilisation de la mémoire lors de la mise en cache seulement.
+    <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Processus non bloquant qui peut augmenter légèrement l'utilisation mémoire uniquement lors de la mise en cache.
 Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont réduites lors de la mise en cache.</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">Liste des succès</sys:String>
@@ -172,12 +171,12 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Icône personnalisée pour les succès verrouillés</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Seulement quand l'icône est manquante</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Utiliser les réalisations localisées</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
-    <sys:String x:Key="LOCSuccessStoryFirstUnlock">Premier déverrouillage</sys:String>
-    <sys:String x:Key="LOCSuccessStoryLastUnlock">Dernier déverrouillage</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFirstUnlock">Premier débloquer</sys:String>
+    <sys:String x:Key="LOCSuccessStoryLastUnlock">Dernier débloquer</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryAchStats">Statistiques des succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">Statistiques de l'utilisateur</sys:String>
@@ -263,7 +262,7 @@ Voici la liste des commandes :</sys:String>
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">Seulement verrouillé</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">Verrouillé seulement</sys:String>
     <sys:String x:Key="LOCSsIncludeDescription">Inclure la description dans la recherche</sys:String>
 
 </ResourceDictionary>
