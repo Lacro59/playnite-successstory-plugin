@@ -171,7 +171,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">未解除の実績のカスタムアイコン</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">アイコンがない場合のみ</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">ローカライズされた実績を使用する</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
