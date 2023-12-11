@@ -12,6 +12,14 @@ namespace SuccessStory.Models
         public int RaConsoleId { get; set; }
         public string RaConsoleName { get; set; }
         public List<Platform> Platforms { get; set; }
+        public string PlatformsString 
+        {
+            get
+            {
+                IEnumerable<Platform> data = Platforms?.Where(x => x.IsSelected);
+                return data != null && data.Count() > 0 ? (data.Select(x => x.Name)?.Aggregate((x, y) => x + ", " + y)) : string.Empty;
+            }
+        } 
     }
 
     public class Platform

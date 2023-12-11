@@ -259,10 +259,7 @@
                             </Expander.Header>
                         </Expander>
 
-
-                        <TextBlock Text="Currently unavailable" Foreground="Red"
-                                   Grid.Row="12" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,50,0" />
-                        <Expander Grid.Row="12" IsEnabled="False">
+                        <Expander Grid.Row="12">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -342,6 +339,7 @@
                                                             <ComboBox.ItemTemplate>
                                                                 <DataTemplate>
                                                                     <CheckBox IsChecked="{Binding IsSelected}" Content="{Binding Name}"
+                                                                              Tag="{Binding RaConsoleId}"
                                                                               Checked="CheckBox_Checked"
                                                                               Unchecked="CheckBox_Unchecked" />
                                                                 </DataTemplate>

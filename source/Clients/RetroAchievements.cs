@@ -15,6 +15,7 @@ using CommonPluginsShared.Models;
 using CommonPluginsShared.Extensions;
 using static CommonPluginsShared.PlayniteTools;
 using SuccessStory.Services;
+using System.Threading;
 
 namespace SuccessStory.Clients
 {
@@ -35,7 +36,7 @@ namespace SuccessStory.Clients
     // TODO API has been temporarily disabled
     class RetroAchievements : GenericAchievements
     {
-        //private static string BaseUrl           => @"https://retroachievements.org/API/";
+        private static string BaseUrl           => @"https://retroachievements.org/API/";
         private static string BaseUrlUnlocked   => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
         private static string BaseUrlLocked     => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
         private static string BaseMD5List       => @"http://retroachievements.org/dorequest.php?r=hashlibrary&c={0}";
@@ -61,7 +62,6 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
 
-            /*
             if (IsConfigured())
             {
                 // Load list console
@@ -115,7 +115,6 @@ namespace SuccessStory.Clients
             {
                 ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"));
             }
-            */
 
             gameAchievements.Items = AllAchievements;
 
@@ -175,19 +174,8 @@ namespace SuccessStory.Clients
         public static RA_Consoles GetConsoleIDs()
         {
             RA_Consoles resultObj = new RA_Consoles();
-            string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Consoles.json";
-            if (File.Exists(fileConsoles))
-            {
-                resultObj = Serialization.FromJsonFile<RA_Consoles>(fileConsoles);                
-            }
-
-            return resultObj;
-
-            /*
             string Target = "API_GetConsoleIDs.php";
             string Url = string.Format(BaseUrl + Target + @"?z={0}&y={1}", User, Key);
-
-            RA_Consoles resultObj = new RA_Consoles();
 
             string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Consoles.json";
             if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(3) > DateTime.Now)
@@ -225,26 +213,15 @@ namespace SuccessStory.Clients
             }
 
             return resultObj;
-            */
         }
 
         private List<RA_MD5List> GetMD5List(RA_Consoles rA_Consoles)
         {
             List<RA_MD5List> ListMD5 = new List<RA_MD5List>();
-            string fileMD5List = PluginDatabase.Paths.PluginUserDataPath + "\\RA_MD5List.json";
-            if (File.Exists(fileMD5List))
-            {
-                ListMD5 = Serialization.FromJsonFile<List<RA_MD5List>>(fileMD5List);
-            }
-
-            return ListMD5;
-
-            /*
-            List<RA_MD5List> ListMD5 = new List<RA_MD5List>();
 
             // Cache
             string fileMD5List = PluginDatabase.Paths.PluginUserDataPath + "\\RA_MD5List.json";
-            if (File.Exists(fileMD5List) && File.GetLastWriteTime(fileMD5List).AddDays(3) > DateTime.Now)
+            if (File.Exists(fileMD5List) && File.GetLastWriteTime(fileMD5List).AddDays(10) > DateTime.Now)
             {
                 ListMD5 = Serialization.FromJsonFile<List<RA_MD5List>>(fileMD5List);
                 return ListMD5;
@@ -254,14 +231,14 @@ namespace SuccessStory.Clients
             foreach (RA_Console rA_Console in rA_Consoles.ListConsoles)
             {
                 int ConsoleId = rA_Console.ID;
+                Thread.Sleep(1000);
 
                 try
                 {
-                    string ResultWeb = Web.DownloadStringData(string.Format(BaseMD5List, ConsoleId)).GetAwaiter().GetResult();
+                    string ResultWeb = Web.DownloadStringData(string.Format(BaseMD5List, ConsoleId)).GetAwaiter().GetResult();                    
                     if (!ResultWeb.Contains("\"MD5List\":[]"))
                     {
                         RA_MD5ListResponse ResultMD5List = Serialization.FromJson<RA_MD5ListResponse>(ResultWeb);
-
                         foreach (var obj in ResultMD5List.MD5List)
                         {
                             ListMD5.Add(new RA_MD5List { Id = (int)obj.Value, MD5 = obj.Name });
@@ -288,7 +265,6 @@ namespace SuccessStory.Clients
             }
 
             return ListMD5;
-            */
         }
 
 
@@ -826,17 +802,6 @@ namespace SuccessStory.Clients
 
         private RA_Games GetGameList(int consoleID)
         {
-            RA_Games resultObj = new RA_Games();
-            string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Games_" + consoleID + ".json";
-            if (File.Exists(fileConsoles))
-            {
-                resultObj = Serialization.FromJsonFile<RA_Games>(fileConsoles);
-
-            }
-
-            return resultObj;
-
-            /*
             string Target = "API_GetGameList.php";
             string url = string.Format(BaseUrl + Target + @"?z={0}&y={1}&i={2}", User, Key, consoleID);
 
@@ -870,16 +835,11 @@ namespace SuccessStory.Clients
             }
 
             return resultObj;
-            */
         }
 
 
         private List<Achievements> GetGameInfoAndUserProgress(int gameID)
         {
-            List<Achievements> Achievements = new List<Achievements>();
-            return Achievements;
-
-            /*
             List<Achievements> Achievements = new List<Achievements>();
 
             string Target = "API_GetGameInfoAndUserProgress.php";
@@ -905,9 +865,9 @@ namespace SuccessStory.Clients
 
                 if (resultObj["Achievements"] != null)
                 {
-                    foreach (var item in resultObj["Achievements"])
+                    foreach (dynamic item in resultObj["Achievements"])
                     {
-                        foreach (var it in item)
+                        foreach (dynamic it in item)
                         {
                             Achievements.Add(new Achievements
                             {
@@ -929,7 +889,6 @@ namespace SuccessStory.Clients
             }
 
             return Achievements;
-            */
         }
         #endregion
     }

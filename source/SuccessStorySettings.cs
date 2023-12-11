@@ -332,6 +332,7 @@ namespace SuccessStory
             // Set RA console list
             Task.Run(() =>
             {
+                System.Threading.SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
                 Settings.RaConsoleAssociateds.ForEach(y =>
                 {
                     API.Instance.Database.Platforms.ForEach(x =>
