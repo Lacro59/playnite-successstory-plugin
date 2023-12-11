@@ -46,6 +46,8 @@ namespace SuccessStory
 
         public static bool IsFromMenu { get; set; } = false;
 
+        private bool preventLibraryUpdatedOnStart { get; set; } = true;
+
 
         public SuccessStory(IPlayniteAPI api) : base(api)
         {
@@ -494,7 +496,7 @@ namespace SuccessStory
                             Description = resources.GetString("LOCEditGame"),
                             Action = (mainMenuItem) =>
                             {
-                                var ViewExtension = new SuccessStoryEditManual(GameMenu);
+                                SuccessStoryEditManual ViewExtension = new SuccessStoryEditManual(GameMenu);
                                 Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                                 windowExtension.ShowDialog();
                             }
@@ -506,7 +508,7 @@ namespace SuccessStory
                             Description = resources.GetString("LOCRemoveTitle"),
                             Action = (gameMenuItem) =>
                             {
-                                var TaskIntegrationUI = Task.Run(() =>
+                                Task TaskIntegrationUI = Task.Run(() =>
                                 {
                                     PluginDatabase.Remove(GameMenu);
                                 });
@@ -540,7 +542,7 @@ namespace SuccessStory
                                 Description = resources.GetString("LOCEditGame"),
                                 Action = (mainMenuItem) =>
                                 {
-                                    var ViewExtension = new SuccessStoryEditManual(GameMenu);
+                                    SuccessStoryEditManual ViewExtension = new SuccessStoryEditManual(GameMenu);
                                     Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
                                     windowExtension.ShowDialog();
                                 }
@@ -552,7 +554,7 @@ namespace SuccessStory
                                 Description = resources.GetString("LOCRemoveTitle"),
                                 Action = (gameMenuItem) =>
                                 {
-                                    var TaskIntegrationUI = Task.Run(() =>
+                                    Task TaskIntegrationUI = Task.Run(() =>
                                     {
                                         PluginDatabase.Remove(GameMenu);
                                     });
@@ -570,7 +572,7 @@ namespace SuccessStory
                         Description = resources.GetString("LOCCommonDeleteGameData"),
                         Action = (gameMenuItem) =>
                         {
-                            var TaskIntegrationUI = Task.Run(() =>
+                            Task TaskIntegrationUI = Task.Run(() =>
                             {
                                 PluginDatabase.Remove(GameMenu.Id);
                             });
@@ -632,19 +634,19 @@ namespace SuccessStory
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.IsViewOpen = true;
-                        var ViewExtension = new SuccessView();
+                        SuccessView ViewExtension = new SuccessView();
 
-                        var windowOptions = new WindowOptions
+                        WindowOptions windowOptions = new WindowOptions
                         {
                             ShowMinimizeButton = false,
                             ShowMaximizeButton = true,
                             ShowCloseButton = true,
+                            CanBeResizable = true,
                             Width = 1280,
                             Height = 740
                         };
 
                         Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
-                        windowExtension.ResizeMode = ResizeMode.CanResize;
                         windowExtension.ShowDialog();
                         PluginDatabase.IsViewOpen = false;
                     }
@@ -660,19 +662,22 @@ namespace SuccessStory
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.IsViewOpen = true;
-                        SuccessView ViewExtension = null;
-                        if (PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PluginDatabase.GameContext))
-                        {
-                            ViewExtension = new SuccessView(true, PluginDatabase.GameContext);
-                        }
-                        else
-                        {
-                            ViewExtension = new SuccessView(false, PluginDatabase.GameContext);
-                        }
-                        ViewExtension.Width = 1280;
-                        ViewExtension.Height = 740;
 
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                        SuccessView ViewExtension = PluginSettings.Settings.EnableRetroAchievementsView && PlayniteTools.IsGameEmulated(PluginDatabase.GameContext)
+                            ? new SuccessView(true, PluginDatabase.GameContext)
+                            : new SuccessView(false, PluginDatabase.GameContext);
+
+                        WindowOptions windowOptions = new WindowOptions
+                        {
+                            ShowMinimizeButton = false,
+                            ShowMaximizeButton = true,
+                            ShowCloseButton = true,
+                            CanBeResizable = true,
+                            Width = 1280,
+                            Height = 740
+                        };
+
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
                         windowExtension.ShowDialog();
                         PluginDatabase.IsViewOpen = false;
                     }
@@ -796,8 +801,10 @@ namespace SuccessStory
         public override void OnGameSelected(OnGameSelectedEventArgs args)
         {
             // TODO Sourcelink - Removed for Playnite 11
-            var sourceLinkNull = PluginDatabase.Database?.Select(x => x)
-                                    .Where(x => x.SourcesLink == null && x.IsManual && x.HasAchievements && PlayniteApi.Database.Games.Get(x.Id) != null);
+            IEnumerable<GameAchievements> sourceLinkNull = PluginDatabase.Database?
+                .Select(x => x)
+                .Where(x => x.SourcesLink == null && x.IsManual && x.HasAchievements && PlayniteApi.Database.Games.Get(x.Id) != null);
+
             if (sourceLinkNull?.Count() > 0)
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
@@ -984,6 +991,12 @@ namespace SuccessStory
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
+            Task.Run(() =>
+            {
+                Thread.Sleep(30000);
+                preventLibraryUpdatedOnStart = false;
+            });
+
             // TODO - Removed for Playnite 11
             if (!PluginSettings.Settings.PurgeImageCache)
             {
@@ -1177,7 +1190,7 @@ namespace SuccessStory
         // Add code to be executed when library is updated.
         public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args)
         {
-            if (PluginSettings.Settings.AutoImport)
+            if (PluginSettings.Settings.AutoImport && !preventLibraryUpdatedOnStart)
             {
                 List<Guid> PlayniteDb = PlayniteApi.Database.Games
                         .Where(x => x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload)
