@@ -923,12 +923,19 @@ namespace SuccessStory.Services
 
                 // TODO With the emulator migration problem emulator.BuiltInConfigId is null
                 // TODO emulator.BuiltInConfigId = "retroarch" is limited; other emulators has RA
-                string PlatformName = game.Platforms.FirstOrDefault().Name;
-                Guid PlatformId = game.Platforms.FirstOrDefault().Id;
-                int consoleID = settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == PlatformId) != null)?.RaConsoleId ?? 0;
-                if (settings.EnableRetroAchievements && consoleID != 0)
+                if (game.Platforms != null && game.Platforms.Count > 0)
                 {
-                    return AchievementSource.RetroAchievements;
+                    string PlatformName = game.Platforms.FirstOrDefault().Name;
+                    Guid PlatformId = game.Platforms.FirstOrDefault().Id;
+                    int consoleID = settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == PlatformId) != null)?.RaConsoleId ?? 0;
+                    if (settings.EnableRetroAchievements && consoleID != 0)
+                    {
+                        return AchievementSource.RetroAchievements;
+                    }
+                }
+                else
+                {
+                    logger.Warn($"No platform for {game.Name}");
                 }
             }
 
