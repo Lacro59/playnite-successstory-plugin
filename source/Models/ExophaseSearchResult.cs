@@ -58,7 +58,7 @@ namespace SuccessStory.Models
         public int found { get; set; }
         public object sort { get; set; }
         public object filters { get; set; }
-        public int pages { get; set; }
+        public double pages { get; set; }
         public List<List> list { get; set; }
         public Paging paging { get; set; }
     }
