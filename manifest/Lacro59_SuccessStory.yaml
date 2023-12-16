@@ -285,3 +285,12 @@ Packages:
       - Externalised Steam
       - Fixed WOW settings
       - Fixed minor issues and crash
+  - Version: 3.1.5
+    RequiredApiVersion: 6.10.0
+    ReleaseDate: 2023-10-25
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.1.5/playnite-successstory-plugin_3_1_5.pext
+    Changelog:
+      - Updated localizations
+      - Reactivated RetroAchievements
+      - Fixed bug with Exophase (thanks to Kyzan)
+      - Fixed many bugs
