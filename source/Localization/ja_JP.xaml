@@ -29,7 +29,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam は SuccessStory で有効になっていますが、Playnite でライブラリ拡張機能が無効になっています</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam の設定が正しく設定されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Steam ユーザーが見つかりません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam ユーザーが認証されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG は SuccessStory で有効になっていますが、Playnite でライブラリ拡張機能が無効になっています</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG ユーザーが認証されていません</sys:String>
@@ -108,7 +108,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">ユーザーのゲーム統計を表示</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">グラフのオプション</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">Number of days to display on chart</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">グラフに表示する日数</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabels">横軸にラベルを表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicShowLabelsOrdinates">縦軸にラベルを表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarOptions">達成状況バーのオプション</sys:String>
@@ -116,11 +116,11 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationProgressBarShowPercent">達成状況をパーセンテージで表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationListOptions">実績リストのオプション</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryAchievementsCompactListOptions">Achievements list compact options</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">Summary achievements options</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCompactListOptions">コンパクトな実績リストについてのオプション</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCompactOptions">実績の概要についてのオプション</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastest">最後に解除した実績を表示</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Show the lastest achievement on one line</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">最後に解除した実績を一つの行に表示</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">拡張機能表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">未解除の実績の隠された説明を表示</sys:String>
@@ -171,7 +171,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">未解除の実績のカスタムアイコン</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">アイコンがない場合のみ</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">ローカライズされた実績を使用する</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 

@@ -171,7 +171,7 @@ Particulièrement utile pour les succès Xbox avec leurs grandes images qui sont
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Icône personnalisée pour les succès verrouillés</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Seulement quand l'icône est manquante</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryUseLocalised">Utiliser les réalisations localisées</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Utiliser les succès traduits</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
