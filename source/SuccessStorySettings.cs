@@ -333,20 +333,6 @@ namespace SuccessStory
             Task.Run(() =>
             {
                 System.Threading.SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
-                Settings.RaConsoleAssociateds.ForEach(y =>
-                {
-                    API.Instance.Database.Platforms.ForEach(x =>
-                    {
-                        int RaConsoleId = RetroAchievements.FindConsole(x.Name);
-                        Models.Platform Finded = y.Platforms.Find(z => z.Id == x.Id);
-                        if (Finded == null)
-                        {
-                            y.Platforms.Add(new Models.Platform { Id = x.Id });
-                        }
-                    });
-                    y.Platforms = y.Platforms.OrderBy(z => z.Name).ToList();
-                });
-
                 Application.Current.Dispatcher?.BeginInvoke((Action)delegate
                 {
                     Settings.RaConsoleAssociateds = Settings.RaConsoleAssociateds.OrderBy(x => x.RaConsoleName).ToList();
@@ -381,9 +367,9 @@ namespace SuccessStory
             Settings.CompletionStatus100Percent = SuccessStorySettingsView.completionStatus;
 
             Settings.RaConsoleAssociateds = SuccessStorySettingsView.RaConsoleAssociateds;
-            Settings.RaConsoleAssociateds.ForEach(x => 
+            Settings.RaConsoleAssociateds.ForEach(x =>
             {
-                x.Platforms = x.Platforms.FindAll(y => y.IsSelected).ToList();
+                x.SetSelectable();
             });
 
 

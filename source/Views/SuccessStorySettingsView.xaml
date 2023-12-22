@@ -12,7 +12,9 @@
              xmlns:SuccessStory="clr-namespace:SuccessStory"
              xmlns:controls="clr-namespace:CommonPluginsControls.Controls"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:interfaces="clr-namespace:SuccessStory.Views.Interfaces" xmlns:Steam="clr-namespace:CommonPluginsControls.Stores.Steam"
+             xmlns:interfaces="clr-namespace:SuccessStory.Views.Interfaces" 
+             xmlns:Steam="clr-namespace:CommonPluginsControls.Stores.Steam" 
+             xmlns:pctrls="clr-namespace:CommonPlayniteShared.Controls"
              mc:Ignorable="d" d:DesignWidth="650"
              d:DataContext="{d:DesignInstance SuccessStory:SuccessStorySettingsViewModel, IsDesignTimeCreatable=True}">
 
@@ -329,22 +331,14 @@
                                                 <DataTemplate>
                                                     <Grid Margin="0,2">
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="0.5*" />
                                                             <ColumnDefinition Width="5" />
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
 
                                                         <Label Grid.Column="0" Content="{Binding RaConsoleName}" />
-                                                        <ComboBox Grid.Column="2" ItemsSource="{Binding Platforms}">
-                                                            <ComboBox.ItemTemplate>
-                                                                <DataTemplate>
-                                                                    <CheckBox IsChecked="{Binding IsSelected}" Content="{Binding Name}"
-                                                                              Tag="{Binding RaConsoleId}"
-                                                                              Checked="CheckBox_Checked"
-                                                                              Unchecked="CheckBox_Unchecked" />
-                                                                </DataTemplate>
-                                                            </ComboBox.ItemTemplate>
-                                                        </ComboBox>
+                                                        <playnitecontrols:DdItemListSelectionBox Grid.Column="2" ShowSearchBox="True"
+                                                                                                 IsThreeState="False" ItemsList="{Binding SelectablePlatforms}" />
                                                     </Grid>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>

@@ -39,7 +39,7 @@ namespace SuccessStory.Clients
         private static string BaseUrl           => @"https://retroachievements.org/API/";
         private static string BaseUrlUnlocked   => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
         private static string BaseUrlLocked     => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
-        private static string BaseMD5List       => @"http://retroachievements.org/dorequest.php?r=hashlibrary&c={0}";
+        private static string BaseMD5List       => @"https://retroachievements.org/dorequest.php?r=hashlibrary&c={0}";
 
         private static string User { get; set; } = PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
         private static string Key { get; set; } = PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
@@ -178,7 +178,7 @@ namespace SuccessStory.Clients
             string Url = string.Format(BaseUrl + Target + @"?z={0}&y={1}", User, Key);
 
             string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Consoles.json";
-            if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(3) > DateTime.Now)
+            if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(20) > DateTime.Now)
             {
                 resultObj = Serialization.FromJsonFile<RA_Consoles>(fileConsoles);
                 return resultObj;
@@ -221,7 +221,7 @@ namespace SuccessStory.Clients
 
             // Cache
             string fileMD5List = PluginDatabase.Paths.PluginUserDataPath + "\\RA_MD5List.json";
-            if (File.Exists(fileMD5List) && File.GetLastWriteTime(fileMD5List).AddDays(10) > DateTime.Now)
+            if (File.Exists(fileMD5List) && File.GetLastWriteTime(fileMD5List).AddDays(20) > DateTime.Now)
             {
                 ListMD5 = Serialization.FromJsonFile<List<RA_MD5List>>(fileMD5List);
                 return ListMD5;
@@ -808,7 +808,7 @@ namespace SuccessStory.Clients
             RA_Games resultObj = new RA_Games();
 
             string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Games_" + consoleID + ".json";
-            if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(3) > DateTime.Now)
+            if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(20) > DateTime.Now)
             {
                 resultObj = Serialization.FromJsonFile<RA_Games>(fileConsoles);
                 return resultObj;

@@ -1,4 +1,6 @@
 ﻿using Playnite.SDK;
+using Playnite.SDK.Data;
+using Playnite.SDK.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +14,18 @@ namespace SuccessStory.Models
         public int RaConsoleId { get; set; }
         public string RaConsoleName { get; set; }
         public List<Platform> Platforms { get; set; }
-        public string PlatformsString 
-        {
-            get
-            {
-                IEnumerable<Platform> data = Platforms?.Where(x => x.IsSelected);
-                return data != null && data.Count() > 0 ? (data.Select(x => x.Name)?.Aggregate((x, y) => x + ", " + y)) : string.Empty;
-            }
-        } 
-    }
+        [DontSerialize]
+        public SelectableDbItemList SelectablePlatforms { get; set; }
 
-    public class Platform
-    {
-        public Guid Id { get; set; }
-        public string Name => API.Instance.Database.Platforms?.Where(x => x.Id == Id)?.FirstOrDefault()?.Name ?? string.Empty;
-        public bool IsSelected { get; set; }
+
+        public void GetSelectable()
+        {
+            SelectablePlatforms = new SelectableDbItemList(API.Instance.Database.Platforms, Platforms?.Select(x => x.Id)?.ToList());
+        }
+
+        public void SetSelectable()
+        {
+            Platforms = API.Instance.Database.Platforms.Where(x => SelectablePlatforms.GetSelectedIds().Any(y => y == x.Id)).ToList();
+        }
     }
 }

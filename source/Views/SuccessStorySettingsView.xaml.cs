@@ -127,6 +127,10 @@ namespace SuccessStory.Views
 
 
             // Set RA console list
+            PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.ForEach(x =>
+            {
+                x.GetSelectable();
+            });
             PART_LbRaConsole.ItemsSource = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
             RaConsoleAssociateds = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
         }

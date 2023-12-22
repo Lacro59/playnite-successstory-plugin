@@ -1156,7 +1156,7 @@ namespace SuccessStory
                         {
                             RaConsoleId = x.ID,
                             RaConsoleName = x.Name,
-                            Platforms = new List<Models.Platform>()
+                            Platforms = new List<Platform>()
                         });
                     });
 
@@ -1165,8 +1165,7 @@ namespace SuccessStory
                         int RaConsoleId = RetroAchievements.FindConsole(x.Name);
                         if (RaConsoleId != 0)
                         {
-                            PluginSettings.Settings.RaConsoleAssociateds
-                                .Find(y => y.RaConsoleId == RaConsoleId).Platforms.Add(new Models.Platform { Id = x.Id, IsSelected = true });
+                            PluginSettings.Settings.RaConsoleAssociateds.Find(y => y.RaConsoleId == RaConsoleId).Platforms.Add(new Platform { Id = x.Id });
                         }
                     });
 
