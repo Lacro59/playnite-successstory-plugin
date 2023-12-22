@@ -337,8 +337,10 @@
                                                         </Grid.ColumnDefinitions>
 
                                                         <Label Grid.Column="0" Content="{Binding RaConsoleName}" />
-                                                        <playnitecontrols:DdItemListSelectionBox Grid.Column="2" ShowSearchBox="True"
-                                                                                                 IsThreeState="False" ItemsList="{Binding SelectablePlatforms}" />
+                                                        <Grid Grid.Column="2" Name="Grid_Cont">
+                                                            <playnitecontrols:DdItemListSelectionBox ShowSearchBox="True" Width="{Binding ElementName=Grid_Cont, Path=ActualWidth}"
+                                                                                                     IsThreeState="False" ItemsList="{Binding SelectablePlatforms}" />
+                                                        </Grid>
                                                     </Grid>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>

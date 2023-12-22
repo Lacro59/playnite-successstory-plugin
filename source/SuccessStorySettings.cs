@@ -330,14 +330,7 @@ namespace SuccessStory
             }
 
             // Set RA console list
-            Task.Run(() =>
-            {
-                System.Threading.SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
-                Application.Current.Dispatcher?.BeginInvoke((Action)delegate
-                {
-                    Settings.RaConsoleAssociateds = Settings.RaConsoleAssociateds.OrderBy(x => x.RaConsoleName).ToList();
-                });
-            });
+            Settings.RaConsoleAssociateds = Settings.RaConsoleAssociateds.OrderBy(x => x.RaConsoleName).ToList();
         }
 
         // Code executed when settings view is opened and user starts editing values.
@@ -383,7 +376,7 @@ namespace SuccessStory
             {
                 Plugin.topPanelItem.Visible = Settings.EnableIntegrationButtonHeader;
                 Plugin.successStoryViewSidebar.Visible = Settings.EnableIntegrationButtonSide;
-                Plugin.successStoryViewRaSidebar.Visible = (Settings.EnableIntegrationButtonSide && Settings.EnableRetroAchievementsView);
+                Plugin.successStoryViewRaSidebar.Visible = Settings.EnableIntegrationButtonSide && Settings.EnableRetroAchievementsView;
             }
 
             this.OnPropertyChanged();
