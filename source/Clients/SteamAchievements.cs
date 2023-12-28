@@ -35,7 +35,7 @@ namespace SuccessStory.Clients
 
         private bool IsLocal { get; set; } = false;
         private bool IsManual { get; set; } = false;
- 
+
         private static string SteamId { get; set; } = string.Empty;
         private static string SteamApiKey { get; set; } = string.Empty;
         private static string SteamUser { get; set; } = string.Empty;
@@ -956,7 +956,7 @@ namespace SuccessStory.Clients
 
 
         // TODO Use "profileurl" in "ISteamUser"
-        // TODO Utility after updated GetAchievementsByWeb() 
+        // TODO Utility after updated GetAchievementsByWeb()
         private string FindHiddenDescription(int AppId, string DisplayName, bool TryByName = false)
         {
             string url = string.Empty;
@@ -1259,44 +1259,44 @@ namespace SuccessStory.Clients
                         });
                     }
                 }
-                //else if (ResultWeb.IndexOf("achieveRow") > -1)
-                //{
-                //    Url = Url.Replace("&panorama=please", string.Empty).Replace($"l={LocalLang}", "l=english");
-                //    ResultWeb = Web.DownloadStringData(Url, GetCookies(), string.Empty, true).GetAwaiter().GetResult();
-                //    IHtmlDocument htmlDocument = new HtmlParser().Parse(ResultWeb);
-                //    var achieveRow_English = htmlDocument.QuerySelectorAll(".achieveRow");
-                //
-                //    htmlDocument = new HtmlParser().Parse(ResultWeb);
-                //    int idx = 0;
-                //    foreach(var el in htmlDocument.QuerySelectorAll(".achieveRow"))
-                //    {
-                //        string UrlUnlocked = el.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty;
-                //        string Name = el.QuerySelector(".achieveTxtHolder h3").GetAttribute("src");
-                //        string Description = el.QuerySelector(".achieveTxtHolder h5").GetAttribute("src");
-                //
-                //        DateTime DateUnlocked = default(DateTime);
-                //        string stringDateUnlocked = achieveRow_English[idx].QuerySelector(".achieveUnlockTime")?.InnerHtml ?? string.Empty;
-                //        if (!stringDateUnlocked.IsNullOrEmpty())
-                //        {
-                //            stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Trim();
-                //            DateTime.TryParseExact(stringDateUnlocked, "dd MMM, yyyy @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
-                //        }
-                //
-                //        Achievements.Add(new Achievements
-                //        {
-                //            Name = WebUtility.HtmlDecode(Name),
-                //            ApiName = string.Empty,
-                //            Description = WebUtility.HtmlDecode(Description),
-                //            UrlUnlocked = UrlUnlocked,
-                //            UrlLocked = string.Empty,
-                //            DateUnlocked = DateUnlocked,
-                //            IsHidden = false,
-                //            Percent = 100
-                //        });
-                //
-                //        idx++;
-                //    }
-                //}
+                else if (ResultWeb.IndexOf("achieveRow") > -1)
+                {
+                    Url = Url.Replace("&panorama=please", string.Empty).Replace($"l={LocalLang}", "l=english");
+                    ResultWeb = Web.DownloadStringData(Url, GetCookies(), string.Empty, true).GetAwaiter().GetResult();
+                    IHtmlDocument htmlDocument = new HtmlParser().Parse(ResultWeb);
+                    var achieveRow_English = htmlDocument.QuerySelectorAll(".achieveRow");
+
+                    htmlDocument = new HtmlParser().Parse(ResultWeb);
+                    int idx = 0;
+                    foreach (var el in htmlDocument.QuerySelectorAll(".achieveRow"))
+                    {
+                        string UrlUnlocked = el.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty;
+                        string Name = el.QuerySelector(".achieveTxtHolder h3").GetAttribute("src");
+                        string Description = el.QuerySelector(".achieveTxtHolder h5").GetAttribute("src");
+
+                        DateTime DateUnlocked = default(DateTime);
+                        string stringDateUnlocked = achieveRow_English[idx].QuerySelector(".achieveUnlockTime")?.InnerHtml ?? string.Empty;
+                        if (!stringDateUnlocked.IsNullOrEmpty())
+                        {
+                            stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Trim();
+                            DateTime.TryParseExact(stringDateUnlocked, "dd MMM, yyyy @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
+                        }
+
+                        Achievements.Add(new Achievements
+                        {
+                            Name = WebUtility.HtmlDecode(Name),
+                            ApiName = string.Empty,
+                            Description = WebUtility.HtmlDecode(Description),
+                            UrlUnlocked = UrlUnlocked,
+                            UrlLocked = string.Empty,
+                            DateUnlocked = DateUnlocked,
+                            IsHidden = false,
+                            Percent = 100
+                        });
+
+                        idx++;
+                    }
+                }
                 else
                 {
                     Common.LogDebug(true, $"No achievement data on {Url}");
