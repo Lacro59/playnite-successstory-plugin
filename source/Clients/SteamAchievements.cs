@@ -1288,9 +1288,9 @@ namespace SuccessStory.Clients
                         if (!stringDateUnlocked.IsNullOrEmpty())
                         {
                             stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Trim();
-                            if (!DateTime.TryParseExact(stringDateUnlocked, "dd MMM, yyyy @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked))
+                            if (!DateTime.TryParseExact(stringDateUnlocked, "d MMM, yyyy @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked))
                             {
-                                DateTime.TryParseExact(stringDateUnlocked, "dd MMM @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
+                                DateTime.TryParseExact(stringDateUnlocked, "d MMM @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
                             }
                         }
 
