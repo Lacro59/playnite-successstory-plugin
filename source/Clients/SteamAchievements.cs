@@ -1271,7 +1271,7 @@ namespace SuccessStory.Clients
                 else if (ResultWeb.IndexOf("achieveRow") > -1)
                 {
                     Url = Url.Replace("&panorama=please", string.Empty).Replace($"l={LocalLang}", "l=english");
-                    ResultWeb = Web.DownloadStringData(Url, GetCookies(), string.Empty, true).GetAwaiter().GetResult();
+                    ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
                     IHtmlDocument htmlDocument = new HtmlParser().Parse(ResultWeb);
                     var achieveRow_English = htmlDocument.QuerySelectorAll(".achieveRow");
 
