@@ -890,9 +890,14 @@ namespace SuccessStory.Clients
                     {
                         foreach (KeyValue AchievementsData in SchemaForGame.Children?.Find(x => x.Name == "availableGameStats").Children?.Find(x => x.Name == "achievements").Children)
                         {
-                            AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).IsHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
-                            AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlUnlocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
-                            AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlLocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
+                            Achievements achievement = AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name));
+
+                            if (achievement != null)
+                            {
+                                achievement.IsHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
+                                achievement.UrlUnlocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
+                                achievement.UrlLocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -1153,7 +1158,11 @@ namespace SuccessStory.Clients
                             Percent = float.Parse(achieveRow.QuerySelector(".achievePercent").InnerHtml.Replace("%", string.Empty).Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
                         }
 
-                        AllAchievements.Find(x => x.Name.IsEqual(Name)).Percent = Percent;
+                        var achievement = AllAchievements.Find(x => x.Name.IsEqual(Name));
+                        if (achievement != null)
+                        {
+                            achievement.Percent = Percent;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -1271,15 +1280,18 @@ namespace SuccessStory.Clients
                     foreach (var el in htmlDocument.QuerySelectorAll(".achieveRow"))
                     {
                         string UrlUnlocked = el.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty;
-                        string Name = el.QuerySelector(".achieveTxtHolder h3").GetAttribute("src");
-                        string Description = el.QuerySelector(".achieveTxtHolder h5").GetAttribute("src");
+                        string Name = el.QuerySelector(".achieveTxtHolder h3").InnerHtml;
+                        string Description = el.QuerySelector(".achieveTxtHolder h5").InnerHtml;
 
                         DateTime DateUnlocked = default(DateTime);
-                        string stringDateUnlocked = achieveRow_English[idx].QuerySelector(".achieveUnlockTime")?.InnerHtml ?? string.Empty;
+                        string stringDateUnlocked = achieveRow_English[idx].QuerySelector(".achieveUnlockTime")?.TextContent ?? string.Empty;
                         if (!stringDateUnlocked.IsNullOrEmpty())
                         {
                             stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Trim();
-                            DateTime.TryParseExact(stringDateUnlocked, "dd MMM, yyyy @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
+                            if (!DateTime.TryParseExact(stringDateUnlocked, "dd MMM, yyyy @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked))
+                            {
+                                DateTime.TryParseExact(stringDateUnlocked, "dd MMM @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
+                            }
                         }
 
                         Achievements.Add(new Achievements
