@@ -901,16 +901,32 @@ namespace SuccessStory.Clients
                                     || !string.IsNullOrEmpty(x.UrlUnlocked) && new Uri(x.UrlUnlocked).PathAndQuery.IsEqual(new Uri(icongray).PathAndQuery);
                             });
 
+                            var achievementName = AchievementsData.Children?.Find(x => x.Name.IsEqual("displayName")).Value;
+                            var isHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
+
                             if (achievement != null)
                             {
                                 if (string.IsNullOrEmpty(achievement.ApiName))
                                 {
                                     achievement.ApiName = AchievementsData.Name;
                                 }
-                                achievement.Name = AchievementsData.Children?.Find(x => x.Name.IsEqual("displayName")).Value;
-                                achievement.IsHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
+
+                                achievement.Name = achievementName;
+                                achievement.IsHidden = isHidden;
                                 achievement.UrlUnlocked = icon;
                                 achievement.UrlLocked = icongray;
+                            }
+                            else
+                            {
+                                AllAchievements.Add(new Achievements
+                                {
+                                    Name = achievementName,
+                                    ApiName = AchievementsData.Name,
+                                    UrlUnlocked = icon,
+                                    UrlLocked = icongray,
+                                    DateUnlocked = default(DateTime),
+                                    IsHidden = isHidden,
+                                });
                             }
                         }
                     }
@@ -1308,17 +1324,20 @@ namespace SuccessStory.Clients
                             }
                         }
 
-                        Achievements.Add(new Achievements
+                        if (!Name.EndsWith(" hidden achievements remaining"))
                         {
-                            Name = WebUtility.HtmlDecode(Name),
-                            ApiName = string.Empty,
-                            Description = WebUtility.HtmlDecode(Description),
-                            UrlUnlocked = UrlUnlocked,
-                            UrlLocked = string.Empty,
-                            DateUnlocked = DateUnlocked,
-                            IsHidden = false,
-                            Percent = 100
-                        });
+                            Achievements.Add(new Achievements
+                            {
+                                Name = WebUtility.HtmlDecode(Name),
+                                ApiName = string.Empty,
+                                Description = WebUtility.HtmlDecode(Description),
+                                UrlUnlocked = UrlUnlocked,
+                                UrlLocked = string.Empty,
+                                DateUnlocked = DateUnlocked,
+                                IsHidden = false,
+                                Percent = 100
+                            });
+                        }
 
                         idx++;
                     }
