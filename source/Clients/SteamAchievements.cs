@@ -890,13 +890,27 @@ namespace SuccessStory.Clients
                     {
                         foreach (KeyValue AchievementsData in SchemaForGame.Children?.Find(x => x.Name == "availableGameStats").Children?.Find(x => x.Name == "achievements").Children)
                         {
-                            Achievements achievement = AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name));
+                            var icon = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
+                            var icongray = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
+
+                            Achievements achievement;
+                            achievement = AllAchievements.Find(x =>
+                            {
+                                return x.ApiName.IsEqual(AchievementsData.Name)
+                                    || !string.IsNullOrEmpty(x.UrlUnlocked) && new Uri(x.UrlUnlocked).PathAndQuery.IsEqual(new Uri(icon).PathAndQuery)
+                                    || !string.IsNullOrEmpty(x.UrlUnlocked) && new Uri(x.UrlUnlocked).PathAndQuery.IsEqual(new Uri(icongray).PathAndQuery);
+                            });
 
                             if (achievement != null)
                             {
+                                if (string.IsNullOrEmpty(achievement.ApiName))
+                                {
+                                    achievement.ApiName = AchievementsData.Name;
+                                }
+                                achievement.Name = AchievementsData.Children?.Find(x => x.Name.IsEqual("displayName")).Value;
                                 achievement.IsHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
-                                achievement.UrlUnlocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
-                                achievement.UrlLocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
+                                achievement.UrlUnlocked = icon;
+                                achievement.UrlLocked = icongray;
                             }
                         }
                     }
