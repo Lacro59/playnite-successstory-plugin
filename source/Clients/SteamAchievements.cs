@@ -922,6 +922,7 @@ namespace SuccessStory.Clients
                                 {
                                     Name = achievementName,
                                     ApiName = AchievementsData.Name,
+                                    Description = AchievementsData.Children?.Find(x => x.Name.IsEqual("description"))?.Value,
                                     UrlUnlocked = icon,
                                     UrlLocked = icongray,
                                     DateUnlocked = default(DateTime),
