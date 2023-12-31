@@ -1193,6 +1193,22 @@ namespace SuccessStory.Clients
                         {
                             achievement.Percent = Percent;
                         }
+                        else
+                        {
+                            // locked hidden achievements aren't listed on user's achievement page
+                            AllAchievements.Add(new Achievements
+                            {
+                                Name = Name,
+                                ApiName = string.Empty,
+                                Description = WebUtility.HtmlDecode(achieveRow.QuerySelector("h5")?.InnerHtml?.Trim() ?? string.Empty),
+                                UrlUnlocked = achieveRow.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty,
+                                UrlLocked = achieveRow.QuerySelector(".compareImg img")?.GetAttribute("src") ?? string.Empty,
+                                DateUnlocked = default(DateTime),
+                                IsHidden = true,
+                                Percent = Percent
+                            });
+                        }
+
                     }
                     catch (Exception ex)
                     {
