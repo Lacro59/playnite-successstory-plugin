@@ -147,10 +147,7 @@ namespace SuccessStory
         public List<CbData> WowRegions { get; set; } = new List<CbData>();
         private List<CbData> _WowRealms = new List<CbData>();
         public List<CbData> WowRealms { get => _WowRealms; set => SetValue(ref _WowRealms, value); }
-        public string WowCharacter { get; set; } = "iryaël";
-
-        public bool EnableSteamWithoutWebApi { get; set; } = false;
-        public bool SteamIsPrivate { get; set; } = false;
+        public string WowCharacter { get; set; } = string.Empty;
 
         public string Rpcs3InstallationFolder { get; set; } = string.Empty;
         public List<Folder> Rpcs3InstallationFolders { get; set; } = new List<Folder>();
@@ -367,6 +364,11 @@ namespace SuccessStory
 
 
             SuccessStory.SteamApi.Save();
+            SuccessStory.SteamApi.CurrentUser = null;
+            if (Settings.EnableSteam)
+            {
+                _ = SuccessStory.SteamApi.CurrentUser;
+            }
 
 
             Plugin.SavePluginSettings(Settings);

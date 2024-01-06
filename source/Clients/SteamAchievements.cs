@@ -40,6 +40,10 @@ namespace SuccessStory.Clients
         private static string SteamApiKey { get; set; } = string.Empty;
         private static string SteamUser { get; set; } = string.Empty;
 
+        private static bool SteamIsPrivate { get; set; } = true;
+        private static bool HasApiKey => !SteamApiKey.IsNullOrEmpty();
+
+
         private static string UrlProfil         => @"https://steamcommunity.com/my/profile";
         private static string UrlProfilById     => @"https://steamcommunity.com/profiles/{0}/stats/{1}?tab=achievements&l={2}";
         private static string UrlProfilByName   => @"https://steamcommunity.com/id/{0}/stats/{1}?tab=achievements&l={2}";
@@ -53,6 +57,9 @@ namespace SuccessStory.Clients
         {
             // TODO TEMP
             FileSystem.DeleteFile(cookiesPath);
+
+            SteamApiKey = SteamApi.CurrentUser.ApiKey;
+            SteamIsPrivate = SteamApi.CurrentUser.IsPrivateAccount;
         }
 
 
@@ -73,12 +80,12 @@ namespace SuccessStory.Clients
             }
 
 
-            logger.Info($"GetAchievements() - IsLocal : {IsLocal}, IsManual : {IsManual}, EnableSteamWithoutWebApi: {PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi}, SteamIsPrivate: {PluginDatabase.PluginSettings.Settings.SteamIsPrivate}");
+            logger.Info($"GetAchievements() - IsLocal : {IsLocal}, IsManual : {IsManual}, HasApiKey: {HasApiKey}, SteamIsPrivate: {SteamIsPrivate}");
             if (!IsLocal)
             {
                 int.TryParse(game.GameId, out AppId);
 
-                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate)
+                if (SteamIsPrivate || !HasApiKey)
                 {
                     AllAchievements = GetAchievementsByWeb(AppId);
                     GetByWeb = true;
@@ -133,11 +140,7 @@ namespace SuccessStory.Clients
             {
                 Common.LogDebug(true, $"GetAchievementsLocal()");
 
-                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
-                {
-                    logger.Warn($"Option without API key is enabled");
-                }
-                else if (SteamApiKey.IsNullOrEmpty())
+                if (SteamApiKey.IsNullOrEmpty())
                 {
                     logger.Warn($"No Steam API key");
                 }
@@ -184,7 +187,7 @@ namespace SuccessStory.Clients
             // Set rarity
             if (gameAchievements.HasAchievements)
             {
-                if (!IsLocal && (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate))
+                if (!IsLocal && !HasApiKey)
                 {
                     try
                     {
@@ -240,16 +243,12 @@ namespace SuccessStory.Clients
             }
 
 
-            logger.Info($"GetAchievements({AppId}) - IsLocal : {IsLocal}, IsManual : {IsManual}, EnableSteamWithoutWebApi: {PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi}, SteamIsPrivate: {PluginDatabase.PluginSettings.Settings.SteamIsPrivate}");
+            logger.Info($"GetAchievements({AppId}) - IsLocal : {IsLocal}, IsManual : {IsManual}, HasApiKey: {HasApiKey}, SteamIsPrivate: {SteamIsPrivate}");
             if (IsLocal)
             {
                 Common.LogDebug(true, $"GetAchievementsLocal()");
 
-                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
-                {
-                    logger.Warn($"Option without API key is enbaled");
-                }
-                else if (SteamApiKey.IsNullOrEmpty())
+                if (SteamApiKey.IsNullOrEmpty())
                 {
                     logger.Warn($"No Steam API key");
                 }
@@ -291,7 +290,7 @@ namespace SuccessStory.Clients
             // Set rarity
             if (gameAchievements.HasAchievements)
             {
-                if (!IsLocal && (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi || PluginDatabase.PluginSettings.Settings.SteamIsPrivate))
+                if (!IsLocal && !HasApiKey)
                 {
                     try
                     {
@@ -347,17 +346,17 @@ namespace SuccessStory.Clients
                         CachedConfigurationValidationResult = false;
                     }
 
-                    if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !CheckIsPublic())
-                    {
-                        ShowNotificationPluginNoPublic(resources.GetString("LOCSuccessStoryNotificationsSteamPrivate"));
-                        CachedConfigurationValidationResult = false;
-                    }
+                    //if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !CheckIsPublic())
+                    //{
+                    //    ShowNotificationPluginNoPublic(resources.GetString("LOCSuccessStoryNotificationsSteamPrivate"));
+                    //    CachedConfigurationValidationResult = false;
+                    //}
 
-                    if (PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !IsConnected())
+                    if (SteamIsPrivate && !IsConnected())
                     {
                         ResetCachedIsConnectedResult();
                         Thread.Sleep(2000);
-                        if (PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !IsConnected())
+                        if (SteamIsPrivate && !IsConnected())
                         {
                             ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"), PlayniteTools.ExternalPlugin.SteamLibrary);
                             CachedConfigurationValidationResult = false;
@@ -416,7 +415,7 @@ namespace SuccessStory.Clients
 
             //SteamUserAndSteamIdByWeb();
 
-            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            if (!HasApiKey)
             {
                 if (SteamUser.IsNullOrEmpty())
                 {
@@ -486,7 +485,7 @@ namespace SuccessStory.Clients
                     int.TryParse(gameElem.GetAttribute("data-ds-appid"), out int gameId);
 
                     int AchievementsCount = 0;
-                    if (!PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi & IsConfigured())
+                    if (HasApiKey & IsConfigured())
                     {
                         if (gameId != 0)
                         {
@@ -573,7 +572,7 @@ namespace SuccessStory.Clients
 
         private void VerifSteamUser()
         {
-            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            if (!HasApiKey)
             {
                 return;
             }
@@ -681,14 +680,8 @@ namespace SuccessStory.Clients
         {
             List<GameStats> AllStats = new List<GameStats>();
 
-            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            if (!HasApiKey)
             {
-                return AllStats;
-            }
-
-            if (SteamApiKey.IsNullOrEmpty())
-            {
-                logger.Warn($"No Steam API key");
                 return AllStats;
             }
 
@@ -775,14 +768,8 @@ namespace SuccessStory.Clients
         {
             List<Achievements> AllAchievements = new List<Achievements>();
 
-            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            if (!HasApiKey)
             {
-                return AllAchievements;
-            }
-
-            if (SteamApiKey.IsNullOrEmpty())
-            {
-                logger.Warn($"No Steam API key");
                 return AllAchievements;
             }
 
@@ -871,14 +858,8 @@ namespace SuccessStory.Clients
         {
             try
             {
-                if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+                if (!HasApiKey)
                 {
-                    return Tuple.Create(AllAchievements, AllStats);
-                }
-
-                if (SteamApiKey.IsNullOrEmpty())
-                {
-                    logger.Warn($"No Steam API key");
                     return Tuple.Create(AllAchievements, AllStats);
                 }
 
@@ -888,11 +869,15 @@ namespace SuccessStory.Clients
 
                     try
                     {
-                        foreach (KeyValue AchievementsData in SchemaForGame.Children?.Find(x => x.Name == "availableGameStats").Children?.Find(x => x.Name == "achievements").Children)
+
+                        if (AllAchievements.FindAll(x => x.ApiName.IsNullOrEmpty()).Count() == 0)
                         {
-                            AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).IsHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
-                            AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlUnlocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
-                            AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlLocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
+                            foreach (KeyValue AchievementsData in SchemaForGame.Children?.Find(x => x.Name == "availableGameStats").Children?.Find(x => x.Name == "achievements").Children)
+                            {
+                                AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).IsHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
+                                AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlUnlocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
+                                AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlLocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -956,7 +941,7 @@ namespace SuccessStory.Clients
 
 
         // TODO Use "profileurl" in "ISteamUser"
-        // TODO Utility after updated GetAchievementsByWeb() 
+        // TODO Utility after updated GetAchievementsByWeb()
         private string FindHiddenDescription(int AppId, string DisplayName, bool TryByName = false)
         {
             string url = string.Empty;
@@ -1052,14 +1037,8 @@ namespace SuccessStory.Clients
 
         public List<Achievements> GetGlobalAchievementPercentagesForApp(int AppId, List<Achievements> AllAchievements)
         {
-            if (PluginDatabase.PluginSettings.Settings.EnableSteamWithoutWebApi)
+            if (!HasApiKey)
             {
-                return AllAchievements;
-            }
-
-            if (SteamApiKey.IsNullOrEmpty())
-            {
-                logger.Warn($"No Steam API key");
                 return AllAchievements;
             }
 
@@ -1188,28 +1167,9 @@ namespace SuccessStory.Clients
             string ResultWeb = string.Empty;
             try
             {
-                Url = Url + "&panorama=please";
+                Url += "&panorama=please";
                 List<HttpCookie> cookies = SteamApi.GetStoredCookies();
                 ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
-                //using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
-                //{
-                //    Url = Url + "&panorama=please";
-                //    WebViewOffscreen.NavigateAndWait(Url);
-                //    ResultWeb = WebViewOffscreen.GetPageSource();
-                //
-                //    string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
-                //    if (CurrentUrl != Url)
-                //    {
-                //        var urlParams = Url.Split('?').ToList();
-                //        if (urlParams.Count == 2)
-                //        {
-                //            Url = CurrentUrl + "?" + urlParams[1];
-                //        }
-                //
-                //        WebViewOffscreen.NavigateAndWait(Url);
-                //        ResultWeb = WebViewOffscreen.GetPageSource();
-                //    }
-                //}
 
                 if (ResultWeb.IndexOf("var g_rgAchievements = ") > -1)
                 {
@@ -1259,44 +1219,55 @@ namespace SuccessStory.Clients
                         });
                     }
                 }
-                //else if (ResultWeb.IndexOf("achieveRow") > -1)
-                //{
-                //    Url = Url.Replace("&panorama=please", string.Empty).Replace($"l={LocalLang}", "l=english");
-                //    ResultWeb = Web.DownloadStringData(Url, GetCookies(), string.Empty, true).GetAwaiter().GetResult();
-                //    IHtmlDocument htmlDocument = new HtmlParser().Parse(ResultWeb);
-                //    var achieveRow_English = htmlDocument.QuerySelectorAll(".achieveRow");
-                //
-                //    htmlDocument = new HtmlParser().Parse(ResultWeb);
-                //    int idx = 0;
-                //    foreach(var el in htmlDocument.QuerySelectorAll(".achieveRow"))
-                //    {
-                //        string UrlUnlocked = el.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty;
-                //        string Name = el.QuerySelector(".achieveTxtHolder h3").GetAttribute("src");
-                //        string Description = el.QuerySelector(".achieveTxtHolder h5").GetAttribute("src");
-                //
-                //        DateTime DateUnlocked = default(DateTime);
-                //        string stringDateUnlocked = achieveRow_English[idx].QuerySelector(".achieveUnlockTime")?.InnerHtml ?? string.Empty;
-                //        if (!stringDateUnlocked.IsNullOrEmpty())
-                //        {
-                //            stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Trim();
-                //            DateTime.TryParseExact(stringDateUnlocked, "dd MMM, yyyy @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
-                //        }
-                //
-                //        Achievements.Add(new Achievements
-                //        {
-                //            Name = WebUtility.HtmlDecode(Name),
-                //            ApiName = string.Empty,
-                //            Description = WebUtility.HtmlDecode(Description),
-                //            UrlUnlocked = UrlUnlocked,
-                //            UrlLocked = string.Empty,
-                //            DateUnlocked = DateUnlocked,
-                //            IsHidden = false,
-                //            Percent = 100
-                //        });
-                //
-                //        idx++;
-                //    }
-                //}
+                else if (ResultWeb.IndexOf("achieveRow") > -1)
+                {
+                    IHtmlDocument htmlDocument = new HtmlParser().Parse(ResultWeb);
+
+                    htmlDocument = new HtmlParser().Parse(ResultWeb);
+                    foreach (IElement el in htmlDocument.QuerySelectorAll(".achieveRow"))
+                    {
+                        string UrlUnlocked = el.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty;
+                        string Name = el.QuerySelector(".achieveTxtHolder h3").InnerHtml;
+                        string Description = el.QuerySelector(".achieveTxtHolder h5").InnerHtml;
+
+                        Achievements.Add(new Achievements
+                        {
+                            Name = WebUtility.HtmlDecode(Name),
+                            Description = WebUtility.HtmlDecode(Description),
+                            UrlUnlocked = UrlUnlocked,
+                            IsHidden = false,
+                            Percent = 100
+                        });
+                    }
+
+                    Url = Url.Replace("&panorama=please", string.Empty).Replace($"l={LocalLang}", "l=english");
+                    ResultWeb = Web.DownloadStringData(Url, GetCookies(), string.Empty, true).GetAwaiter().GetResult();
+                    htmlDocument = new HtmlParser().Parse(ResultWeb);
+                    IHtmlCollection<IElement> achieveRow_English = htmlDocument.QuerySelectorAll(".achieveRow");
+                
+                    htmlDocument = new HtmlParser().Parse(ResultWeb);
+                    int idx = 0;
+                    foreach(IElement el in htmlDocument.QuerySelectorAll(".achieveRow"))
+                    {
+                        DateTime DateUnlocked = default;
+                        string stringDateUnlocked = achieveRow_English[idx].QuerySelector(".achieveUnlockTime")?.InnerHtml ?? string.Empty;
+                        if (!stringDateUnlocked.IsNullOrEmpty())
+                        {
+                            stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Replace("<br>", string.Empty).Trim() + " -8";
+                            DateTime.TryParseExact(stringDateUnlocked, "dd MMM, yyyy @ h:mmtt z", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
+
+                            if (DateUnlocked == default)
+                            {
+                                DateTime.TryParseExact(stringDateUnlocked, "dd MMM @ h:mmtt z", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
+                            }
+
+                            DateUnlocked = DateUnlocked.ToLocalTime();
+                        }
+
+                        Achievements[idx].DateUnlocked = DateUnlocked.ToUniversalTime();
+                        idx++;
+                    }
+                }
                 else
                 {
                     Common.LogDebug(true, $"No achievement data on {Url}");
@@ -1319,28 +1290,9 @@ namespace SuccessStory.Clients
             string ResultWeb = string.Empty;
             try
             {
-                Url = Url + "&panorama=please";
+                Url += "&panorama=please";
                 List<HttpCookie> cookies = SteamApi.GetStoredCookies();
                 ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
-                //using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
-                //{
-                //    Url = Url + "&panorama=please";
-                //    WebViewOffscreen.NavigateAndWait(Url);
-                //    ResultWeb = WebViewOffscreen.GetPageSource();
-                //
-                //    string CurrentUrl = WebViewOffscreen.GetCurrentAddress();
-                //    if (CurrentUrl != Url)
-                //    {
-                //        var urlParams = Url.Split('?').ToList();
-                //        if (urlParams.Count == 2)
-                //        {
-                //            Url = CurrentUrl + "?" + urlParams[1];
-                //        }
-                //
-                //        WebViewOffscreen.NavigateAndWait(Url);
-                //        ResultWeb = WebViewOffscreen.GetPageSource();
-                //    }
-                //}
 
                 int index = ResultWeb.IndexOf("var g_rgAchievements = ");
                 if (index > -1)
@@ -1397,6 +1349,37 @@ namespace SuccessStory.Clients
                             double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
 
                             Achievements finded = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
+                            if (finded != null)
+                            {
+                                finded.Progression = new AchProgression
+                                {
+                                    Min = min,
+                                    Max = max,
+                                    Value = val,
+                                };
+                            }
+                        }
+                    }
+                }
+                else if (ResultWeb.IndexOf("achieveRow") > -1)
+                {
+                    IHtmlDocument htmlDocument = new HtmlParser().Parse(ResultWeb);
+
+                    htmlDocument = new HtmlParser().Parse(ResultWeb);
+                    foreach (IElement el in htmlDocument.QuerySelectorAll(".achieveRow"))
+                    {
+                        string UrlUnlocked = el.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty;
+                        string Name = el.QuerySelector(".achieveTxtHolder h3").InnerHtml;
+                        string Description = el.QuerySelector(".achieveTxtHolder h5").InnerHtml;
+
+                        foreach (IElement progress in el.QuerySelectorAll(".progressText"))
+                        {
+                            string[] data = progress.InnerHtml.Split('/');
+                            double min = 0;
+                            double.TryParse(data[1].Trim().Replace(",", string.Empty), out double max);
+                            double.TryParse(data[0].Trim().Replace(",", string.Empty), out double val);
+
+                            Achievements finded = Achievements.Find(x => x.Name.IsEqual(Name));
                             if (finded != null)
                             {
                                 finded.Progression = new AchProgression

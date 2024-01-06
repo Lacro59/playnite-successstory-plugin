@@ -67,7 +67,7 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
 
-                        <Expander Grid.Row="0">
+                        <Expander Grid.Row="0" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -96,29 +96,6 @@
                                             Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-Steam" />
                                 </Grid>
                             </Expander.Header>
-
-                            <Expander.Content>
-                                <Border IsEnabled="{Binding ElementName=PART_EnableSteam, Path=IsChecked}"
-				                            Margin="5" Padding="10"
-				                            BorderBrush="{DynamicResource PopupBorderBrush}"
-				                            BorderThickness="{DynamicResource PopupBorderThickness}">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="10" />
-                                            <RowDefinition Height="auto" />
-                                        </Grid.RowDefinitions>
-                                        
-                                        <CheckBox Grid.Row="2" IsChecked="{Binding Settings.EnableSteamWithoutWebApi}">
-                                            <Label Content="{DynamicResource LOCSuccessStorySteamNoApi}" />
-                                        </CheckBox>
-
-                                        <CheckBox Grid.Row="0" IsChecked="{Binding Settings.SteamIsPrivate}">
-                                            <Label Content="{DynamicResource LOCPrivateAccount}" />
-                                        </CheckBox>
-                                    </Grid>
-                                </Border>
-                            </Expander.Content>
                         </Expander>
 
                         <Expander Grid.Row="2" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">

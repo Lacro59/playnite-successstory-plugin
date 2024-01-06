@@ -134,10 +134,6 @@ namespace SuccessStory
             {
                 new SearchSupport("ss", "SuccessStory", new SuccessStorySearch())
             };
-
-
-            SteamApi = new SteamApi(PluginDatabase.PluginName);
-            SteamApi.SetLanguage(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
         }
 
 
@@ -991,6 +987,13 @@ namespace SuccessStory
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
+            SteamApi = new SteamApi(PluginDatabase.PluginName);
+            SteamApi.SetLanguage(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+            if (PluginDatabase.PluginSettings.Settings.EnableSteam)
+            {
+                _ = SteamApi.CurrentUser;
+            }
+
             Task.Run(() =>
             {
                 Thread.Sleep(30000);
@@ -1148,6 +1151,12 @@ namespace SuccessStory
                 Task.Run(() =>
                 {
                     RA_Consoles ra_Consoles = RetroAchievements.GetConsoleIDs();
+                    if (ra_Consoles?.ListConsoles == null)
+                    {
+                        Thread.Sleep(2000);
+                        ra_Consoles = RetroAchievements.GetConsoleIDs();
+                    }
+
                     ra_Consoles.ListConsoles.ForEach(x =>
                     {
                         if (!PluginSettings.Settings.RaConsoleAssociateds.Any(y => y.RaConsoleId == x.ID)) 
