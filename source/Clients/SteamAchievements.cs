@@ -255,7 +255,7 @@ namespace SuccessStory.Clients
                 else
                 {
                     SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
-                    var temp = se.GetAchievementsLocal(game, SteamApiKey, AppId, IsManual);
+                    GameAchievements temp = se.GetAchievementsLocal(game, SteamApiKey, AppId, IsManual);
 
                     if (temp.Items.Count > 0)
                     {
@@ -271,7 +271,6 @@ namespace SuccessStory.Clients
                                 DateUnlocked = temp.Items[i].DateUnlocked
                             });
                         }
-
 
                         gameAchievements.Items = AllAchievements;
 
@@ -874,9 +873,45 @@ namespace SuccessStory.Clients
                         {
                             foreach (KeyValue AchievementsData in SchemaForGame.Children?.Find(x => x.Name == "availableGameStats").Children?.Find(x => x.Name == "achievements").Children)
                             {
-                                AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).IsHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
-                                AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlUnlocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
-                                AllAchievements.Find(x => x.ApiName.IsEqual(AchievementsData.Name)).UrlLocked = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
+                                string icon = AchievementsData.Children?.Find(x => x.Name.IsEqual("icon")).Value;
+                                string icongray = AchievementsData.Children?.Find(x => x.Name.IsEqual("icongray")).Value;
+
+                                Achievements achievement;
+                                achievement = AllAchievements.Find(x =>
+                                {
+                                    return x.ApiName.IsEqual(AchievementsData.Name)
+                                        || !string.IsNullOrEmpty(x.UrlUnlocked) && new Uri(x.UrlUnlocked).PathAndQuery.IsEqual(new Uri(icon).PathAndQuery)
+                                        || !string.IsNullOrEmpty(x.UrlUnlocked) && new Uri(x.UrlUnlocked).PathAndQuery.IsEqual(new Uri(icongray).PathAndQuery);
+                                });
+
+                                string achievementName = AchievementsData.Children?.Find(x => x.Name.IsEqual("displayName")).Value;
+                                bool isHidden = AchievementsData.Children?.Find(x => x.Name.IsEqual("hidden")).Value == "1";
+
+                                if (achievement != null)
+                                {
+                                    if (string.IsNullOrEmpty(achievement.ApiName))
+                                    {
+                                        achievement.ApiName = AchievementsData.Name;
+                                    }
+
+                                    achievement.Name = achievementName;
+                                    achievement.IsHidden = isHidden;
+                                    achievement.UrlUnlocked = icon;
+                                    achievement.UrlLocked = icongray;
+                                }
+                                else
+                                {
+                                    AllAchievements.Add(new Achievements
+                                    {
+                                        Name = achievementName,
+                                        ApiName = AchievementsData.Name,
+                                        Description = AchievementsData.Children?.Find(x => x.Name.IsEqual("description"))?.Value ?? string.Empty,
+                                        UrlUnlocked = icon,
+                                        UrlLocked = icongray,
+                                        DateUnlocked = default(DateTime),
+                                        IsHidden = isHidden,
+                                    });
+                                }
                             }
                         }
                     }
@@ -1088,7 +1123,12 @@ namespace SuccessStory.Clients
                 url = string.Format(UrlAchievements, AppId, LocalLang);
                 try
                 {
-                    ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                    //ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
+                    using (IWebView WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                    {
+                        WebViewOffscreen.NavigateAndWait(url);
+                        ResultWeb = WebViewOffscreen.GetPageSource();
+                    }
                 }
                 catch (WebException ex)
                 {
@@ -1132,7 +1172,27 @@ namespace SuccessStory.Clients
                             Percent = float.Parse(achieveRow.QuerySelector(".achievePercent").InnerHtml.Replace("%", string.Empty).Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
                         }
 
-                        AllAchievements.Find(x => x.Name.IsEqual(Name)).Percent = Percent;
+                        //AllAchievements.Find(x => x.Name.IsEqual(Name)).Percent = Percent;
+                        Achievements achievement = AllAchievements.Find(x => x.Name.IsEqual(Name));
+                        if (achievement != null)
+                        {
+                            achievement.Percent = Percent;
+                        }
+                        else
+                        {
+                            // locked hidden achievements aren't listed on user's achievement page
+                            AllAchievements.Add(new Achievements
+                            {
+                                Name = Name,
+                                ApiName = string.Empty,
+                                Description = WebUtility.HtmlDecode(achieveRow.QuerySelector("div.achieveRow h5 span")?.InnerHtml?.Trim() ?? string.Empty),
+                                UrlUnlocked = achieveRow.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty,
+                                UrlLocked = achieveRow.QuerySelector(".compareImg img")?.GetAttribute("src") ?? string.Empty,
+                                DateUnlocked = default(DateTime),
+                                IsHidden = true,
+                                Percent = Percent
+                            });
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -1230,14 +1290,17 @@ namespace SuccessStory.Clients
                         string Name = el.QuerySelector(".achieveTxtHolder h3").InnerHtml;
                         string Description = el.QuerySelector(".achieveTxtHolder h5").InnerHtml;
 
-                        Achievements.Add(new Achievements
+                        if (el.QuerySelectorAll(".achieveHiddenBox").Count() == 0)
                         {
-                            Name = WebUtility.HtmlDecode(Name),
-                            Description = WebUtility.HtmlDecode(Description),
-                            UrlUnlocked = UrlUnlocked,
-                            IsHidden = false,
-                            Percent = 100
-                        });
+                            Achievements.Add(new Achievements
+                            {
+                                Name = WebUtility.HtmlDecode(Name),
+                                Description = WebUtility.HtmlDecode(Description),
+                                UrlUnlocked = UrlUnlocked,
+                                IsHidden = false,
+                                Percent = 100
+                            });
+                        }
                     }
 
                     Url = Url.Replace("&panorama=please", string.Empty).Replace($"l={LocalLang}", "l=english");
@@ -1264,7 +1327,10 @@ namespace SuccessStory.Clients
                             DateUnlocked = DateUnlocked.ToLocalTime();
                         }
 
-                        Achievements[idx].DateUnlocked = DateUnlocked.ToUniversalTime();
+                        if (el.QuerySelectorAll(".achieveHiddenBox").Count() == 0)
+                        {
+                            Achievements[idx].DateUnlocked = DateUnlocked.ToUniversalTime();
+                        }
                         idx++;
                     }
                 }
