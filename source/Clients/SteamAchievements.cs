@@ -1334,12 +1334,13 @@ namespace SuccessStory.Clients
                         string stringDateUnlocked = achieveRow_English[idx].QuerySelector(".achieveUnlockTime")?.TextContent ?? string.Empty;
                         if (!stringDateUnlocked.IsNullOrEmpty())
                         {
-                            stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Trim() + " -7";
-                            if (!DateTime.TryParseExact(stringDateUnlocked, "d MMM, yyyy @ h:mmtt z", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked))
+                            stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Trim();
+                            if (!DateTime.TryParseExact(stringDateUnlocked, "d MMM, yyyy @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked))
                             {
-                                DateTime.TryParseExact(stringDateUnlocked, "d MMM @ h:mmtt z", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
+                                DateTime.TryParseExact(stringDateUnlocked, "d MMM @ h:mmtt", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
                             }
                         }
+
                         if (!Name.EndsWith(" hidden achievements remaining"))
                         {
                             Achievements.Add(new Achievements
