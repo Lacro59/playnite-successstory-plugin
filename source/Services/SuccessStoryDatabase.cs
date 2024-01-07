@@ -1064,7 +1064,6 @@ namespace SuccessStory.Services
                 if (webItem != null)
                 {
                     webItem.IsManual = true;
-                    webItem = SetEstimateTimeToUnlock(game, webItem);
                     for (int i = 0; i < webItem.Items.Count; i++)
                     {
                         Achievements finded = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() ? true : x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));

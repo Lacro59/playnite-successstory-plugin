@@ -24,6 +24,8 @@ using CommonPluginsStores.Steam;
 using CommonPluginsStores.Steam.Models;
 using CommonPlayniteShared.Common;
 using AngleSharp.Dom;
+using CommonPluginsStores.Models;
+using System.Collections.ObjectModel;
 
 namespace SuccessStory.Clients
 {
@@ -79,154 +81,142 @@ namespace SuccessStory.Clients
                 return gameAchievements;
             }
 
-
             logger.Info($"GetAchievements() - IsLocal : {IsLocal}, IsManual : {IsManual}, HasApiKey: {HasApiKey}, SteamIsPrivate: {SteamIsPrivate}");
             if (!IsLocal)
             {
                 int.TryParse(game.GameId, out AppId);
 
-                if (SteamIsPrivate || !HasApiKey)
+                ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(game.GameId, SteamApi.CurrentAccountInfos);
+                if (steamAchievements?.Count > 0)
                 {
-                    AllAchievements = GetAchievementsByWeb(AppId);
-                    GetByWeb = true;
+                    logger.Info($"SteamApi.GetAchievements()");
+
+                    AllAchievements = steamAchievements.Select(x => new Achievements
+                    {
+                        ApiName = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        UrlUnlocked = x.UrlUnlocked,
+                        UrlLocked = x.UrlLocked,
+                        DateUnlocked = x.DateUnlocked,
+                        IsHidden = x.IsHidden,
+                        Percent = x.Percent
+                    }).ToList();
+                    gameAchievements.Items = AllAchievements;
                 }
                 else
                 {
-                    //VerifSteamUser();
-                    if (SteamUser.IsNullOrEmpty())
+                    logger.Info($"Old");
+
+                    if (SteamIsPrivate || !HasApiKey)
                     {
-                        logger.Warn("No Steam user");
+                        AllAchievements = GetAchievementsByWeb(AppId);
+                        GetByWeb = true;
+                    }
+                    else
+                    {
+                        //VerifSteamUser();
+                        if (SteamUser.IsNullOrEmpty())
+                        {
+                            logger.Warn("No Steam user");
+                        }
+
+                        AllAchievements = GetPlayerAchievements(AppId);
+                        AllStats = GetUsersStats(AppId);
                     }
 
-                    AllAchievements = GetPlayerAchievements(AppId);
-                    AllStats = GetUsersStats(AppId);
-                }
-
-                if (AllAchievements.Count > 0)
-                {
-                    Tuple<List<Achievements>, List<GameStats>> DataCompleted = GetSchemaForGame(AppId, AllAchievements, AllStats);
-
-                    bool IsOK = GetByWeb ? GetByWeb : Web.DownloadFileImageTest(AllAchievements[0].UrlLocked).GetAwaiter().GetResult();
-                    if (IsOK)
+                    if (AllAchievements.Count > 0)
                     {
-                        AllAchievements = DataCompleted.Item1;
-                        AllStats = DataCompleted.Item2;
+                        Tuple<List<Achievements>, List<GameStats>> DataCompleted = GetSchemaForGame(AppId, AllAchievements, AllStats);
 
-
-                        gameAchievements.Items = AllAchievements;
-                        gameAchievements.ItemsStats = AllStats;
-
-
-                        // Set source link
-                        if (gameAchievements.HasAchievements)
+                        bool IsOK = GetByWeb ? GetByWeb : Web.DownloadFileImageTest(AllAchievements[0].UrlLocked).GetAwaiter().GetResult();
+                        if (IsOK)
                         {
-                            gameAchievements.SourcesLink = new SourceLink
+                            AllAchievements = DataCompleted.Item1;
+                            AllStats = DataCompleted.Item2;
+
+
+                            gameAchievements.Items = AllAchievements;
+                            gameAchievements.ItemsStats = AllStats;
+
+
+                            // Set source link
+                            if (gameAchievements.HasAchievements)
                             {
-                                GameName = SteamApi.GetGameName(AppId),
-                                Name = "Steam",
-                                Url = string.Format(UrlProfilById, SteamId, AppId, LocalLang)
-                            };
+                                gameAchievements.SourcesLink = new SourceLink
+                                {
+                                    GameName = SteamApi.GetGameName(AppId),
+                                    Name = "Steam",
+                                    Url = string.Format(UrlProfilById, SteamId, AppId, LocalLang)
+                                };
+                            }
                         }
                     }
-                }
 
-                // Set progression
-                if (gameAchievements.HasAchievements)
-                {
-                    gameAchievements.Items = GetProgressionByWeb(gameAchievements.Items, string.Format(UrlProfilById, SteamId, AppId, LocalLang));
+                    // Set progression
+                    if (gameAchievements.HasAchievements)
+                    {
+                        gameAchievements.Items = GetProgressionByWeb(gameAchievements.Items, string.Format(UrlProfilById, SteamId, AppId, LocalLang));
+                    }
                 }
             }
             else
             {
-                Common.LogDebug(true, $"GetAchievementsLocal()");
-
-                if (SteamApiKey.IsNullOrEmpty())
+                if (IsManual)
                 {
-                    logger.Warn($"No Steam API key");
+                    AppId = SteamApi.GetAppId(game.Name);
+                    gameAchievements = GetManual(AppId, game);
                 }
-                else
+
+                if (!gameAchievements.HasAchievements)
                 {
-                    SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
-                    GameAchievements temp = se.GetAchievementsLocal(game, SteamApiKey, 0, IsManual);
-                    AppId = se.GetSteamId();
-
-                    if (temp.Items.Count > 0)
+                    if (SteamApiKey.IsNullOrEmpty())
                     {
-                        for (int i = 0; i < temp.Items.Count; i++)
+                        logger.Warn($"No Steam API key");
+                    }
+                    else
+                    {
+                        SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
+                        GameAchievements temp = se.GetAchievementsLocal(game, SteamApiKey, 0, IsManual);
+                        AppId = se.GetSteamId();
+
+                        if (temp.Items.Count > 0)
                         {
-                            AllAchievements.Add(new Achievements
+                            for (int i = 0; i < temp.Items.Count; i++)
                             {
-                                Name = temp.Items[i].Name,
-                                ApiName = temp.Items[i].ApiName,
-                                Description = temp.Items[i].Description,
-                                UrlUnlocked = temp.Items[i].UrlUnlocked,
-                                UrlLocked = temp.Items[i].UrlLocked,
-                                DateUnlocked = temp.Items[i].DateUnlocked
-                            });
-                        }
+                                AllAchievements.Add(new Achievements
+                                {
+                                    Name = temp.Items[i].Name,
+                                    ApiName = temp.Items[i].ApiName,
+                                    Description = temp.Items[i].Description,
+                                    UrlUnlocked = temp.Items[i].UrlUnlocked,
+                                    UrlLocked = temp.Items[i].UrlLocked,
+                                    DateUnlocked = temp.Items[i].DateUnlocked
+                                });
+                            }
 
-                        gameAchievements.Items = AllAchievements;
-                        gameAchievements.ItemsStats = temp.ItemsStats;
-
-
-                        // Set source link
-                        if (gameAchievements.HasAchievements)
-                        {
-                            gameAchievements.SourcesLink = new SourceLink
-                            {
-                                GameName = SteamApi.GetGameName(AppId),
-                                Name = "Steam",
-                                Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
-                            };
+                            gameAchievements.Items = AllAchievements;
+                            gameAchievements.ItemsStats = temp.ItemsStats;
                         }
                     }
                 }
-            }
 
-
-            // Set rarity
-            if (gameAchievements.HasAchievements)
-            {
-                if (!IsLocal && !HasApiKey)
+                // Set source link
+                if (gameAchievements.HasAchievements)
                 {
-                    try
+                    gameAchievements.SourcesLink = new SourceLink
                     {
-                        gameAchievements.Items = GetGlobalAchievementPercentagesForAppByWeb(AppId, gameAchievements.Items);
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        gameAchievements.Items = GetGlobalAchievementPercentagesForApp(AppId, gameAchievements.Items);
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
+                        GameName = SteamApi.GetGameName(AppId),
+                        Name = "Steam",
+                        Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
+                    };
                 }
             }
 
-            // Set missing description
-            if (gameAchievements.HasAchievements)
-            {
-                gameAchievements.Items.ForEach(x =>
-                {
-                    if (x.IsHidden && x.Description.IsNullOrEmpty())
-                    {
-                        x.Description = FindHiddenDescription(AppId, x.Name);
-                    }
-                });
-
-                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
-            }
-
+            gameAchievements = SetRarity(AppId, gameAchievements);
+            gameAchievements = SetMissingDescription(AppId, gameAchievements);
             gameAchievements.SetRaretyIndicator();
+
             return gameAchievements;
         }
 
@@ -235,19 +225,21 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
 
-
             // Get Steam configuration if exist.
             if (!IsConfigured())
             {
                 return gameAchievements;
             }
 
-
             logger.Info($"GetAchievements({AppId}) - IsLocal : {IsLocal}, IsManual : {IsManual}, HasApiKey: {HasApiKey}, SteamIsPrivate: {SteamIsPrivate}");
-            if (IsLocal)
-            {
-                Common.LogDebug(true, $"GetAchievementsLocal()");
 
+            if (IsManual)
+            {
+                gameAchievements = GetManual(AppId, game);
+            }
+
+            if (IsLocal && !gameAchievements.HasAchievements)
+            {
                 if (SteamApiKey.IsNullOrEmpty())
                 {
                     logger.Warn($"No Steam API key");
@@ -273,21 +265,63 @@ namespace SuccessStory.Clients
                         }
 
                         gameAchievements.Items = AllAchievements;
-
-
-                        // Set source link
-                        gameAchievements.SourcesLink = new SourceLink
-                        {
-                            GameName = SteamApi.GetGameName(AppId),
-                            Name = "Steam",
-                            Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
-                        };
                     }
                 }
             }
 
-            // Set rarity
+            // Set source link
             if (gameAchievements.HasAchievements)
+            {
+                gameAchievements.SourcesLink = new SourceLink
+                {
+                    GameName = SteamApi.GetGameName(AppId),
+                    Name = "Steam",
+                    Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
+                };
+            }
+
+            gameAchievements = SetRarity(AppId, gameAchievements);
+            gameAchievements = SetMissingDescription(AppId, gameAchievements);
+            gameAchievements.SetRaretyIndicator();
+
+            return gameAchievements;
+        }
+
+
+        private GameAchievements GetManual(int AppId, Game game)
+        {
+            GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
+            List<Achievements> AllAchievements = new List<Achievements>();
+
+            AppId = SteamApi.GetAppId(game.Name);
+            ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(AppId.ToString(), SteamApi.CurrentAccountInfos);
+            
+            if (steamAchievements?.Count > 0)
+            {
+                logger.Info($"SteamApi.GetAchievements()");
+
+                AllAchievements = steamAchievements.Select(x => new Achievements
+                {
+                    ApiName = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    UrlUnlocked = x.UrlUnlocked,
+                    UrlLocked = x.UrlLocked,
+                    DateUnlocked = x.DateUnlocked,
+                    IsHidden = x.IsHidden,
+                    Percent = x.Percent
+                }).ToList();
+                gameAchievements.Items = AllAchievements;
+                gameAchievements.IsManual = true;
+            }
+
+            return gameAchievements;
+        }
+
+
+        private GameAchievements SetRarity(int AppId, GameAchievements gameAchievements)
+        {
+            if (gameAchievements.HasAchievements && gameAchievements.Items?.Where(x => x.Percent != 100)?.Count() == 0)
             {
                 if (!IsLocal && !HasApiKey)
                 {
@@ -313,14 +347,25 @@ namespace SuccessStory.Clients
                 }
             }
 
-            // Set missing description
-            if (gameAchievements.HasAchievements)
+            return gameAchievements;
+        }
+
+        private GameAchievements SetMissingDescription(int AppId, GameAchievements gameAchievements)
+        {
+            if (gameAchievements.HasAchievements && gameAchievements.Items?.Where(x => !x.Description.IsNullOrEmpty())?.Count() == 0)
             {
+                gameAchievements.Items.ForEach(x =>
+                {
+                    if (x.IsHidden && x.Description.IsNullOrEmpty())
+                    {
+                        x.Description = FindHiddenDescription(AppId, x.Name);
+                    }
+                });
+
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
             }
 
-            gameAchievements.SetRaretyIndicator();
             return gameAchievements;
         }
 
@@ -528,150 +573,6 @@ namespace SuccessStory.Clients
             }
 
             return ListSearchGames;
-        }
-
-
-        private void SteamUserAndSteamIdByWeb()
-        {
-            if (SteamUser.IsNullOrEmpty() || SteamId.IsNullOrEmpty())
-            {
-                List<HttpCookie> cookies = SteamApi.GetStoredCookies();
-                string ResultWeb = Web.DownloadStringData(UrlProfil, cookies).GetAwaiter().GetResult();
-
-                if (SteamUser.IsNullOrEmpty())
-                {
-                    HtmlParser parser = new HtmlParser();
-                    IHtmlDocument htmlDocument = parser.Parse(ResultWeb);
-
-                    IElement el = htmlDocument.QuerySelector(".actual_persona_name");
-                    if (el != null)
-                    {
-                        SteamUser = el.InnerHtml;
-                    }
-                }
-
-                if (SteamId.IsNullOrEmpty())
-                {
-                    int index = ResultWeb.IndexOf("g_steamID = ");
-                    if (index > -1)
-                    {
-                        ResultWeb = ResultWeb.Substring(index + "g_steamID  = ".Length);
-
-                        index = ResultWeb.IndexOf("g_strLanguage =");
-                        ResultWeb = ResultWeb.Substring(0, index).Trim();
-
-                        ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
-
-                        SteamId = Regex.Replace(ResultWeb, @"[^\d]", string.Empty);
-                    }
-                }
-            }
-        }
-
-
-        private void VerifSteamUser()
-        {
-            if (!HasApiKey)
-            {
-                return;
-            }
-
-            if (SteamApiKey.IsNullOrEmpty())
-            {
-                logger.Warn($"No Steam API key");
-                return;
-            }
-
-            try
-            {
-                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUser", SteamApiKey))
-                {
-                    KeyValue PlayerSummaries = steamWebAPI.GetPlayerSummaries(steamids: SteamId);
-                    string personaname = (string)PlayerSummaries["players"]["player"].Children[0].Children.Find(x => x.Name == "personaname").Value;
-
-                    if (personaname != SteamUser)
-                    {
-                        logger.Warn($"Steam user is different {SteamUser} != {personaname}");
-                        SteamUser = personaname;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-            }
-        }
-
-
-        public bool CheckIsPublic()
-        {
-            if (IsConfigured())
-            {
-                string ProfileById = $"https://steamcommunity.com/profiles/{SteamId}";
-                string ProfileByName = $"https://steamcommunity.com/id/{SteamUser}";
-
-                return IsProfilePublic(ProfileById) || IsProfilePublic(ProfileByName);
-            }
-
-            return false;
-        }
-
-        private bool IsProfilePublic(string profilePageUrl)
-        {
-            try
-            {
-                string ResultWeb = HttpDownloader.DownloadString(profilePageUrl);
-                IHtmlDocument HtmlDoc = new HtmlParser().Parse(ResultWeb);
-
-                //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
-                IElement gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
-                return gamesPageLink != null;
-            }
-            catch (WebException ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                return false;
-            }
-        }
-
-        private bool IsProfileConnected(string profilePageUrl)
-        {
-            try
-            {
-                List<HttpCookie> cookies = SteamApi.GetStoredCookies();
-                string ResultWeb = Web.DownloadStringData(profilePageUrl, cookies).GetAwaiter().GetResult();
-
-                //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
-                IHtmlDocument HtmlDoc = new HtmlParser().Parse(ResultWeb);
-                IElement gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
-                if (gamesPageLink != null)
-                {
-                    return true;
-                }
-
-                using (IWebView WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
-                {
-                    WebViewOffscreen.NavigateAndWait(profilePageUrl);
-                    ResultWeb = WebViewOffscreen.GetPageSource();
-                    cookies = WebViewOffscreen.GetCookies()?.Where(x => x?.Domain?.Contains("steam") ?? false)?.ToList() ?? new List<HttpCookie>();
-                }
-
-                //this finds the Games link on the right side of the profile page. If that's public then so are achievements.
-                HtmlDoc = new HtmlParser().Parse(ResultWeb);
-                gamesPageLink = HtmlDoc.QuerySelector(@".profile_item_links a[href$=""/games/?tab=all""]");
-                if (gamesPageLink != null)
-                {
-                    SetCookies(cookies);
-                    return true;
-                }
-
-                return false;
-            }
-            catch (WebException ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                return false;
-            }
         }
 
 
