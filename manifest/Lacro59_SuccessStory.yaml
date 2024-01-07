@@ -294,3 +294,11 @@ Packages:
       - Reactivated RetroAchievements
       - Fixed bug with Exophase (thanks to Kyzan)
       - Fixed many bugs
+  - Version: 3.1.6
+    RequiredApiVersion: 6.10.0
+    ReleaseDate: 2024-01-07
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.1.6/playnite-successstory-plugin_3_1_6.pext
+    Changelog:
+      - Fixed RetroAchievements
+      - Fixed Steam
+      - Fixed Steam (thanks to damirarh & Kryeker)
