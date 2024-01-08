@@ -51,6 +51,9 @@ namespace SuccessStory
         // TODO TEMP
         public bool IsRaretyUpdate { get; set; } = false;
 
+        // TODO TEMP
+        public bool DeleteOldRaConsole { get; set; } = true;
+
 
         public bool EnableIntegrationInDescription { get; set; } = false;
         public bool EnableIntegrationInDescriptionWithToggle { get; set; } = false;

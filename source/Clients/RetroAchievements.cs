@@ -75,24 +75,10 @@ namespace SuccessStory.Clients
                     logger.Warn($"No ra_Consoles find");
                 }
 
-                // List MD5
-                List<RA_MD5List> ListMD5 = new List<RA_MD5List>();
-                try
-                {
-                    ListMD5 = GetMD5List(ra_Consoles);
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                }
-
                 // Game Id
                 if (GameId == 0)
                 {
-                    if (ListMD5.Count > 0)
-                    {
-                        GameId = GetGameIdByHash(game, ListMD5);
-                    }
+                    GameId = GetGameIdByHash(game, ra_Consoles);
 
                     if (GameId == 0)
                     {
@@ -213,58 +199,6 @@ namespace SuccessStory.Clients
             }
 
             return resultObj;
-        }
-
-        private List<RA_MD5List> GetMD5List(RA_Consoles rA_Consoles)
-        {
-            List<RA_MD5List> ListMD5 = new List<RA_MD5List>();
-
-            // Cache
-            string fileMD5List = PluginDatabase.Paths.PluginUserDataPath + "\\RA_MD5List.json";
-            if (File.Exists(fileMD5List) && File.GetLastWriteTime(fileMD5List).AddDays(20) > DateTime.Now)
-            {
-                ListMD5 = Serialization.FromJsonFile<List<RA_MD5List>>(fileMD5List);
-                return ListMD5;
-            }
-
-            // Web            
-            foreach (RA_Console rA_Console in rA_Consoles.ListConsoles)
-            {
-                int ConsoleId = rA_Console.ID;
-                Thread.Sleep(1000);
-
-                try
-                {
-                    string ResultWeb = Web.DownloadStringData(string.Format(BaseMD5List, ConsoleId)).GetAwaiter().GetResult();                    
-                    if (!ResultWeb.Contains("\"MD5List\":[]"))
-                    {
-                        RA_MD5ListResponse ResultMD5List = Serialization.FromJson<RA_MD5ListResponse>(ResultWeb);
-                        foreach (var obj in ResultMD5List.MD5List)
-                        {
-                            ListMD5.Add(new RA_MD5List { Id = (int)obj.Value, MD5 = obj.Name });
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, $"Error GetConsoleIDs({rA_Console.ID}, {rA_Console.Name})", true, PluginDatabase.PluginName);
-                }
-            }
-
-            // Save
-            if (ListMD5.Count > 0)
-            {
-                try
-                {
-                    File.WriteAllText(fileMD5List, Serialization.ToJson(ListMD5), Encoding.UTF8);
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, $"Failed to save ListMD5", true, PluginDatabase.PluginName);
-                }
-            }
-
-            return ListMD5;
         }
 
 
@@ -428,7 +362,7 @@ namespace SuccessStory.Clients
             if (consoleID != 0)
             {
                 RA_Games ra_Games = GetGameList(consoleID);
-                ra_Games.ListGames.Sort((x, y) => (y.Title).CompareTo(x.Title));
+                ra_Games.ListGames.Sort((x, y) => y.Title.CompareTo(x.Title));
 
                 foreach (RA_Game ra_Game in ra_Games.ListGames)
                 {
@@ -485,151 +419,175 @@ namespace SuccessStory.Clients
             return gameID;
         }
 
-        private int GetGameIdByHash(Game game, List<RA_MD5List> rA_MD5Lists)
+        private int GetGameIdByHash(Game game, RA_Consoles ra_Consoles)
         {
+            // Search id console for the game
+            string PlatformName = game.Platforms.FirstOrDefault().Name;
+            Guid PlatformId = game.Platforms.FirstOrDefault().Id;
+            int consoleID = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == PlatformId) != null)?.RaConsoleId ?? 0;
+
+            // Search game id
             int GameId = 0;
-            string HashMD5 = string.Empty;
-            RA_MD5List rA_MD5List = null;
-            string FilePath = PluginDatabase.PlayniteApi.ExpandGameVariables(game, game.Roms.FirstOrDefault().Path);
+            if (consoleID != 0)
+            {
+                RA_Games ra_Games = GetGameList(consoleID);
+                ra_Games.ListGames.Sort((x, y) => (y.Title).CompareTo(x.Title));
 
-            if (!File.Exists(FilePath))
-            {
-                return GameId;
-            }
+                string HashMD5 = string.Empty;
 
-            if (FilePath.Contains(".rar") && FilePath.Contains(".7z"))
-            {
-                return GameId;
-            }
-            if (FilePath.Contains(".zip"))
-            {
-                // Exclude for performance
-                FileInfo fi = new FileInfo(FilePath);
-                if (fi.Length > 50000000)
+                RA_MD5List rA_MD5List = null;
+                List<RA_MD5List> rA_MD5Lists = new List<RA_MD5List>();
+                ra_Games.ListGames.ForEach(x =>
                 {
+                    int Id = x.ID;
+                    x.Hashes.ForEach(y =>
+                    {
+                        rA_MD5Lists.Add(new RA_MD5List { Id = Id, MD5 = y });
+                    });
+                });
+
+                string FilePath = PluginDatabase.PlayniteApi.ExpandGameVariables(game, game.Roms.FirstOrDefault().Path);
+
+                if (!File.Exists(FilePath))
+                {
+                    return GameId;
+                }
+
+                if (FilePath.Contains(".rar") && FilePath.Contains(".7z"))
+                {
+                    return GameId;
+                }
+                if (FilePath.Contains(".zip"))
+                {
+                    // Exclude for performance
+                    FileInfo fi = new FileInfo(FilePath);
+                    if (fi.Length > 50000000)
+                    {
+                        return GameId;
+                    }
+                    else
+                    {
+                        FilePath = ZipFileManafeExtract(FilePath);
+                    }
+                }
+
+                if (!File.Exists(FilePath))
+                {
+                    logger.Warn($"No file found for RA hash - {FilePath}");
+                    ZipFileManafeRemove();
                     return GameId;
                 }
                 else
                 {
-                    FilePath = ZipFileManafeExtract(FilePath);
+                    // Exclude for performance
+                    FileInfo fi = new FileInfo(FilePath);
+                    if (fi.Length > 800000000)
+                    {
+                        logger.Warn($"Hash impossible - The file is too long - {FilePath}");
+                        return GameId;
+                    }
                 }
-            }
 
-            if (!File.Exists(FilePath))
-            {
-                logger.Warn($"No file found for RA hash - {FilePath}");
-                ZipFileManafeRemove();
-                return GameId;
-            }
-            else
-            {
-                // Exclude for performance
-                FileInfo fi = new FileInfo(FilePath);
-                if (fi.Length > 800000000)
+
+                string ext = Path.GetExtension(FilePath);
+
+                if (ext.IsEqual(".nds"))
                 {
-                    logger.Warn($"Hash impossible - The file is too long - {FilePath}");
-                    return GameId;
+                    HashMD5 = GetHash(FilePath, PlatformType.NDS);
+                    rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                    if (rA_MD5List != null)
+                    {
+                        ZipFileManafeRemove();
+                        logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                        return rA_MD5List.Id;
+                    }
+                    if (GameId == 0)
+                    {
+                        logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                    }
                 }
-            }
 
-
-            string ext = Path.GetExtension(FilePath);
-
-            if (ext.IsEqual(".nds"))
-            {
-                HashMD5 = GetHash(FilePath, PlatformType.NDS);
+                HashMD5 = GetHash(FilePath, PlatformType.All);
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
                     ZipFileManafeRemove();
-                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.All");
                     return rA_MD5List.Id;
                 }
                 if (GameId == 0)
                 {
-                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.All");
                 }
-            }
 
-            HashMD5 = GetHash(FilePath, PlatformType.All);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
-            if (rA_MD5List != null)
-            {
+                HashMD5 = GetHash(FilePath, PlatformType.SNES);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                if (rA_MD5List != null)
+                {
+                    ZipFileManafeRemove();
+                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    return rA_MD5List.Id;
+                }
+                if (GameId == 0)
+                {
+                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                }
+
+                HashMD5 = GetHash(FilePath, PlatformType.NES);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                if (rA_MD5List != null)
+                {
+                    ZipFileManafeRemove();
+                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    return rA_MD5List.Id;
+                }
+                if (GameId == 0)
+                {
+                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                }
+
+                HashMD5 = GetHash(FilePath, PlatformType.Arcade);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                if (rA_MD5List != null)
+                {
+                    ZipFileManafeRemove();
+                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    return rA_MD5List.Id;
+                }
+                if (GameId == 0)
+                {
+                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                }
+
+                HashMD5 = GetHash(FilePath, PlatformType.Famicom);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                if (rA_MD5List != null)
+                {
+                    ZipFileManafeRemove();
+                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    return rA_MD5List.Id;
+                }
+                if (GameId == 0)
+                {
+                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                }
+
+                HashMD5 = GetHash(FilePath, PlatformType.Sega_CD_Saturn);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                if (rA_MD5List != null)
+                {
+                    ZipFileManafeRemove();
+                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    return rA_MD5List.Id;
+                }
+                if (GameId == 0)
+                {
+                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                }
+
                 ZipFileManafeRemove();
-                logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.All");
-                return rA_MD5List.Id;
-            }
-            if (GameId == 0)
-            {
-                logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.All");
             }
 
-            HashMD5 = GetHash(FilePath, PlatformType.SNES);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
-            if (rA_MD5List != null)
-            {
-                ZipFileManafeRemove();
-                logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
-                return rA_MD5List.Id;
-            }
-            if (GameId == 0)
-            {
-                logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
-            }
-
-            HashMD5 = GetHash(FilePath, PlatformType.NES);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
-            if (rA_MD5List != null)
-            {
-                ZipFileManafeRemove();
-                logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
-                return rA_MD5List.Id;
-            }
-            if (GameId == 0)
-            {
-                logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
-            }
-
-            HashMD5 = GetHash(FilePath, PlatformType.Arcade);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
-            if (rA_MD5List != null)
-            {
-                ZipFileManafeRemove();
-                logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
-                return rA_MD5List.Id;
-            }
-            if (GameId == 0)
-            {
-                logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
-            }
-
-            HashMD5 = GetHash(FilePath, PlatformType.Famicom);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
-            if (rA_MD5List != null)
-            {
-                ZipFileManafeRemove();
-                logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
-                return rA_MD5List.Id;
-            }
-            if (GameId == 0)
-            {
-                logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
-            }
-
-            HashMD5 = GetHash(FilePath, PlatformType.Sega_CD_Saturn);
-            rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
-            if (rA_MD5List != null)
-            {
-                ZipFileManafeRemove();
-                logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
-                return rA_MD5List.Id;
-            }
-            if (GameId == 0)
-            {
-                logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
-            }
-
-            ZipFileManafeRemove();
             return GameId;
         }
 
@@ -803,7 +761,7 @@ namespace SuccessStory.Clients
         private RA_Games GetGameList(int consoleID)
         {
             string Target = "API_GetGameList.php";
-            string url = string.Format(BaseUrl + Target + @"?z={0}&y={1}&i={2}", User, Key, consoleID);
+            string url = string.Format(BaseUrl + Target + @"?z={0}&y={1}&i={2}&h=1", User, Key, consoleID);
 
             RA_Games resultObj = new RA_Games();
 
@@ -912,11 +870,17 @@ namespace SuccessStory.Clients
 
     public class RA_Game
     {
-        public int ID { get; set; }
         public string Title { get; set; }
+        public int ID { get; set; }
         public int ConsoleID { get; set; }
-        public string ImageIcon { get; set; }
         public string ConsoleName { get; set; }
+        public string ImageIcon { get; set; }
+        public int NumAchievements { get; set; }
+        public int NumLeaderboards { get; set; }
+        public int Points { get; set; }
+        public string DateModified { get; set; }
+        public int? ForumTopicID { get; set; }
+        public List<string> Hashes { get; set; }
     }
 
     public class RA_MD5ListResponse

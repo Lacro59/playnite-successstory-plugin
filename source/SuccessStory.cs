@@ -1009,6 +1009,21 @@ namespace SuccessStory
             }
 
             // TODO TEMP
+            string fileMD5List = PluginDatabase.Paths.PluginUserDataPath + "\\RA_MD5List.json";
+            FileSystem.DeleteFile(fileMD5List);
+            if (PluginSettings.Settings.DeleteOldRaConsole)
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Games_" + i + ".json";
+                    FileSystem.DeleteFile(fileConsoles);
+                }
+
+                PluginSettings.Settings.DeleteOldRaConsole = false;
+                this.SavePluginSettings(PluginSettings.Settings);
+            }
+
+            // TODO TEMP
             if (!PluginSettings.Settings.IsRaretyUpdate)
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
