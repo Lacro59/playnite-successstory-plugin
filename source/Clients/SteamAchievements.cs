@@ -402,7 +402,7 @@ namespace SuccessStory.Clients
                         Thread.Sleep(2000);
                         if (SteamIsPrivate && !IsConnected())
                         {
-                            ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"), PlayniteTools.ExternalPlugin.SteamLibrary);
+                            ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"), PlayniteTools.ExternalPlugin.SuccessStory);
                             CachedConfigurationValidationResult = false;
                         }
                     }
@@ -1205,7 +1205,7 @@ namespace SuccessStory.Clients
                     }
 
                     Url = Url.Replace("&panorama=please", string.Empty).Replace($"l={LocalLang}", "l=english");
-                    ResultWeb = Web.DownloadStringData(Url, GetCookies(), string.Empty, true).GetAwaiter().GetResult();
+                    ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
                     htmlDocument = new HtmlParser().Parse(ResultWeb);
                     IHtmlCollection<IElement> achieveRow_English = htmlDocument.QuerySelectorAll(".achieveRow");
                 
@@ -1214,18 +1214,11 @@ namespace SuccessStory.Clients
                     foreach(IElement el in htmlDocument.QuerySelectorAll(".achieveRow"))
                     {
                         DateTime DateUnlocked = default;
-                        string stringDateUnlocked = achieveRow_English[idx].QuerySelector(".achieveUnlockTime")?.InnerHtml ?? string.Empty;
+                        string stringDateUnlocked = el.QuerySelector(".achieveUnlockTime")?.InnerHtml ?? string.Empty;
                         if (!stringDateUnlocked.IsNullOrEmpty())
                         {
-                            stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Replace("<br>", string.Empty).Trim() + " -8";
-                            DateTime.TryParseExact(stringDateUnlocked, "dd MMM, yyyy @ h:mmtt z", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
-
-                            if (DateUnlocked == default)
-                            {
-                                DateTime.TryParseExact(stringDateUnlocked, "dd MMM @ h:mmtt z", new CultureInfo("en-US"), DateTimeStyles.None, out DateUnlocked);
-                            }
-
-                            DateUnlocked = DateUnlocked.ToLocalTime();
+                            stringDateUnlocked = stringDateUnlocked.Replace("Unlocked", string.Empty).Replace("<br>", string.Empty).Trim();
+                            DateTime.TryParseExact(stringDateUnlocked, new[] { "d MMM, yyyy @ h:mmtt", "d MMM @ h:mmtt" }, new CultureInfo("en-US"), DateTimeStyles.AssumeLocal, out DateUnlocked);
                         }
 
                         if (el.QuerySelectorAll(".achieveHiddenBox").Count() == 0)

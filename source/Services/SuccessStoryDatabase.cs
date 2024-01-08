@@ -292,7 +292,7 @@ namespace SuccessStory.Services
             }
             else
             {
-                logger.Info($"Find {gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
+                logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
             }
 
             return gameAchievements;
