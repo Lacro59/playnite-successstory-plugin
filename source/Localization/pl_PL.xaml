@@ -6,7 +6,7 @@
 
     <sys:String x:Key="LOCSuccessStoryManualAchievements">Ręczne osiągnięcia</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Ukryte trofeum</sys:String>
 
     <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarity for manual achievements</sys:String>
     <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Refresh estimate time for manual achievements</sys:String>
@@ -23,13 +23,13 @@
     <sys:String x:Key="LOCSuccessStoryIgnored">Ignored the game</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Hidden achievement</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Ukryte osiągnięcie</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Profil Steam nie jest publiczny</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam jest włączony w SuccessStory ale rozszerzenie biblioteki zostało wyłączone w Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam nie został poprawnie skonfigurowany w ustawieniach</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Brak konfiguracji Steam i/lub klucza API</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Nie znaleziono użytkownika Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG jest włączony w SuccessStory ale rozszerzenie biblioteki zostało wyłączone w Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Użytkownik GOG nie jest uwierzytelniony</sys:String>
