@@ -293,8 +293,11 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
 
-            AppId = SteamApi.GetAppId(game.Name);
-            ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(AppId.ToString(), SteamApi.CurrentAccountInfos);
+            if (AppId == 0)
+            {
+                AppId = SteamApi.GetAppId(game.Name);
+            }
+            ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(AppId.ToString(), null);
             
             if (steamAchievements?.Count > 0)
             {
