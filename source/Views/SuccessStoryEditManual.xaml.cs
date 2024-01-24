@@ -40,7 +40,7 @@ namespace SuccessStory.Views
         private bool viewFilter(object item)
         {
             bool b1 = SearchElement.Text.IsNullOrEmpty() ? true : (item as Achievements).Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
-            bool b2 = !(bool)PART_IncludeDescription.IsChecked ? true : (item as Achievements).Description.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
+            bool b2 = !(bool)PART_IncludeDescription.IsChecked ? true : (item as Achievements).Description?.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) ?? false;
             bool b3 = !(bool)PART_OnlyLocked.IsChecked ? true : !(item as Achievements).IsUnlock;
 
             return ((bool)PART_IncludeDescription.IsChecked ? (b1 || b2) : b1) && b3;
