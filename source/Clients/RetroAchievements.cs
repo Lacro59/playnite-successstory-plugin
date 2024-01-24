@@ -821,7 +821,7 @@ namespace SuccessStory.Clients
                 GameNameAchievements = (string)resultObj["Title"];
                 int NumDistinctPlayersCasual = resultObj["NumDistinctPlayersCasual"] == null ? 0 : (int)resultObj["NumDistinctPlayersCasual"];
 
-                if (resultObj["Achievements"] != null)
+                if (resultObj["Achievements"] != null && !ResultWeb.Contains("\"Achievements\":{}"))
                 {
                     foreach (dynamic item in resultObj["Achievements"])
                     {
@@ -833,7 +833,7 @@ namespace SuccessStory.Clients
                                 Description = (string)it["Description"],
                                 UrlLocked = string.Format(BaseUrlLocked, (string)it["BadgeName"]),
                                 UrlUnlocked = string.Format(BaseUrlUnlocked, (string)it["BadgeName"]),
-                                DateUnlocked = (it["DateEarned"] == null) ? default(DateTime) : Convert.ToDateTime((string)it["DateEarned"]),
+                                DateUnlocked = (it["DateEarned"] == null) ? default : Convert.ToDateTime((string)it["DateEarned"]),
                                 Percent = it["NumAwarded"] == null || (int)it["NumAwarded"] == 0 || NumDistinctPlayersCasual == 0 ? 100 : (int)it["NumAwarded"] * 100 / NumDistinctPlayersCasual
                             });
                         }
