@@ -91,15 +91,9 @@ namespace SuccessStory.Models
         /// Image for locked achievement
         /// </summary>
         [DontSerialize]
-        public string ImageLocked
-        {
-            get
-            {
-                return UrlLocked != null && UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75
+        public string ImageLocked => UrlLocked != null && UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75
                     ? ImageUnlocked
                     : !UrlLocked.IsNullOrEmpty() && UrlLocked != UrlUnlocked ? ImageSourceManagerPlugin.GetImagePath(UrlLocked, 256) : ImageUnlocked;
-            }
-        }
 
 
         [DontSerialize]
@@ -143,17 +137,11 @@ namespace SuccessStory.Models
         public bool EnableRaretyIndicator => PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
 
         [DontSerialize]
-        public bool DisplayRaretyValue
-        {
-            get
-            {
-                return NoRarety
+        public bool DisplayRaretyValue => NoRarety
                     ? false
                     : !PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator
                     ? PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator
                     : PluginDatabase.PluginSettings.Settings.DisplayRarityValue;
-            }
-        }
 
         public bool NoRarety { get; set; } = false;
 
@@ -163,13 +151,11 @@ namespace SuccessStory.Models
             get
             {
                 string NameWithDateUnlock = Name;
-
                 if (DateUnlocked != null && DateUnlocked != default(DateTime) && DateUnlocked != new DateTime(1982, 12, 15, 0, 0, 0))
                 {
                     LocalDateTimeConverter converter = new LocalDateTimeConverter();
                     NameWithDateUnlock += " (" + converter.Convert(DateUnlocked, null, null, CultureInfo.CurrentCulture) + ")";
                 }
-
                 return NameWithDateUnlock;
             }
         }

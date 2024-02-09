@@ -103,6 +103,7 @@ namespace SuccessStory.Clients
                         Percent = x.Percent
                     }).ToList();
                     gameAchievements.Items = AllAchievements;
+                    gameAchievements.ItemsStats = GetUsersStats(AppId);
                 }
                 else
                 {
@@ -152,12 +153,12 @@ namespace SuccessStory.Clients
                             }
                         }
                     }
+                }
 
-                    // Set progression
-                    if (gameAchievements.HasAchievements)
-                    {
-                        gameAchievements.Items = GetProgressionByWeb(gameAchievements.Items, string.Format(UrlProfilById, SteamId, AppId, LocalLang));
-                    }
+                // Set progression
+                if (gameAchievements.HasAchievements)
+                {
+                    gameAchievements.Items = GetProgressionByWeb(gameAchievements.Items, string.Format(UrlProfilById, SteamId, AppId, LocalLang));
                 }
             }
             else
@@ -1286,7 +1287,7 @@ namespace SuccessStory.Clients
                             double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
                             double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
 
-                            var finded = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
+                            Achievements finded = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
                             if (finded != null)
                             {
                                 finded.Progression = new AchProgression
