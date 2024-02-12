@@ -28,8 +28,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">El perfil de Steam no es público</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam está activado en SuccessStory pero la extensión de la biblioteca ha sido deshabilitada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam no se ha configurado correctamente en la configuración</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No hay configuración de Steam y/o clave API</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Usuario de Steam no encontrado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">El usuario de Steam no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG está activado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">El usuario de GOG no está autenticado</sys:String>
@@ -171,7 +171,7 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Icono personalizado para logros bloqueados</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Sólo cuando falta el icono</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Usar logros traducidos</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
