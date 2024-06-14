@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
+using CommonPlayniteShared.Common;
 
 namespace SuccessStory.Clients
 {
@@ -63,13 +64,13 @@ namespace SuccessStory.Clients
                     // Trophies details
                     XDocument TrophyDetailsXml = XDocument.Load(Path.Combine(TrophyDirectory, TrophyFileDetails));
 
-                    var GameName = TrophyDetailsXml.Descendants("title-name").FirstOrDefault().Value.Trim();
+                    string GameName = TrophyDetailsXml.Descendants("title-name").FirstOrDefault().Value.Trim();
 
                     foreach (XElement TrophyXml in TrophyDetailsXml.Descendants("trophy"))
                     {
                         Console.WriteLine(TrophyXml);
 
-                        int.TryParse(TrophyXml.Attribute("id").Value, out int TrophyDetailsId);
+                        _ = int.TryParse(TrophyXml.Attribute("id").Value, out int TrophyDetailsId);
                         string TrophyType = TrophyXml.Attribute("ttype").Value;
                         string Name = TrophyXml.Element("name").Value;
                         string Description = TrophyXml.Element("detail").Value;
@@ -107,7 +108,7 @@ namespace SuccessStory.Clients
                     string hex = Tools.ToHex(TrophyByte);
 
                     List<string> splitHex = hex.Split(new[] { "0000000600000060000000" }, StringSplitOptions.None).ToList();
-                    for (int i = (splitHex.Count - 1); i >= (splitHex.Count - TrophyCount); i--)
+                    for (int i = splitHex.Count - 1; i >= (splitHex.Count - TrophyCount); i--)
                     {
                         TrophyHexData.Add(splitHex[i]);
                     }
@@ -116,10 +117,10 @@ namespace SuccessStory.Clients
                     foreach (string HexData in TrophyHexData)
                     {
                         string stringHexId = HexData.Substring(0, 2);
-                        int Id = (int)Int64.Parse(stringHexId, System.Globalization.NumberStyles.HexNumber);
+                        int Id = (int)long.Parse(stringHexId, System.Globalization.NumberStyles.HexNumber);
 
                         string Unlocked = HexData.Substring(18, 8);
-                        bool IsUnlocked = (Unlocked == "00000001");
+                        bool IsUnlocked = Unlocked == "00000001";
 
                         // No unlock time
                         if (IsUnlocked)
@@ -175,7 +176,7 @@ namespace SuccessStory.Clients
                 Logger.Warn($"No RPCS3 trophy folder in {PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder}");
                 return false;
             }
-            
+
             return true;
         }
 
@@ -207,7 +208,7 @@ namespace SuccessStory.Clients
                 {
                     if (Directory.Exists(GameTrophyFolder))
                     {
-                        Parallel.ForEach(Directory.EnumerateDirectories(GameTrophyFolder), (objectDirectory, state) =>
+                        _ = Parallel.ForEach(Directory.EnumerateDirectories(GameTrophyFolder), (objectDirectory, state) =>
                         {
                             DirectoryInfo di = new DirectoryInfo(objectDirectory);
                             string NameFolder = di.Name;
@@ -234,14 +235,8 @@ namespace SuccessStory.Clients
             DirectoryInfo di = new DirectoryInfo(TrophyDirectory);
             string NameFolder = di.Name;
 
-            if (!Directory.Exists(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3")))
-            {
-                Directory.CreateDirectory(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3"));
-            }
-            if (!Directory.Exists(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder)))
-            {
-                Directory.CreateDirectory(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder));
-            }
+            FileSystem.CreateDirectory(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3"));
+            FileSystem.CreateDirectory(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder));
 
             try
             {
