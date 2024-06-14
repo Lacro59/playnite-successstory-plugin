@@ -70,37 +70,37 @@ namespace SuccessStory
         public bool IconCustomOnlyMissing { get; set; } = true;
 
 
-        private bool _EnableIntegrationViewItem = true;
-        public bool EnableIntegrationViewItem { get => _EnableIntegrationViewItem; set => SetValue(ref _EnableIntegrationViewItem, value); }
+        private bool enableIntegrationViewItem = true;
+        public bool EnableIntegrationViewItem { get => enableIntegrationViewItem; set => SetValue(ref enableIntegrationViewItem, value); }
 
         public bool IntegrationViewItemWithProgressBar { get; set; } = false;
 
 
-        private bool _EnableIntegrationButton = true;
-        public bool EnableIntegrationButton { get => _EnableIntegrationButton; set => SetValue(ref _EnableIntegrationButton, value); }
+        private bool enableIntegrationButton = true;
+        public bool EnableIntegrationButton { get => enableIntegrationButton; set => SetValue(ref enableIntegrationButton, value); }
 
-        private bool _EnableIntegrationButtonDetails = false;
-        public bool EnableIntegrationButtonDetails { get => _EnableIntegrationButtonDetails; set => SetValue(ref _EnableIntegrationButtonDetails, value); }
+        private bool enableIntegrationButtonDetails = false;
+        public bool EnableIntegrationButtonDetails { get => enableIntegrationButtonDetails; set => SetValue(ref enableIntegrationButtonDetails, value); }
 
-        private bool _EnableIntegrationProgressBar = true;
-        public bool EnableIntegrationProgressBar { get => _EnableIntegrationProgressBar; set => SetValue(ref _EnableIntegrationProgressBar, value); }
+        private bool enableIntegrationProgressBar = true;
+        public bool EnableIntegrationProgressBar { get => enableIntegrationProgressBar; set => SetValue(ref enableIntegrationProgressBar, value); }
 
         public bool EnableIntegrationProgressBarIndicator { get; set; } = false;
         public bool EnableIntegrationProgressBarPercent { get; set; } = false;
 
 
-        private bool _EnableIntegrationCompact = true;
-        public bool EnableIntegrationCompact { get => _EnableIntegrationCompact; set => SetValue(ref _EnableIntegrationCompact, value); }
+        private bool enableIntegrationCompact = true;
+        public bool EnableIntegrationCompact { get => enableIntegrationCompact; set => SetValue(ref enableIntegrationCompact, value); }
 
         public double IntegrationCompactHeight { get; set; } = 48;
         public bool IntegrationCompactShowDescription { get; set; } = true;
 
 
-        private bool _EnableIntegrationCompactLocked = true;
-        public bool EnableIntegrationCompactLocked { get => _EnableIntegrationCompactLocked; set => SetValue(ref _EnableIntegrationCompactLocked, value); }
+        private bool enableIntegrationCompactLocked = true;
+        public bool EnableIntegrationCompactLocked { get => enableIntegrationCompactLocked; set => SetValue(ref enableIntegrationCompactLocked, value); }
 
-        private bool _EnableIntegrationCompactUnlocked = true;
-        public bool EnableIntegrationCompactUnlocked { get => _EnableIntegrationCompactUnlocked; set => SetValue(ref _EnableIntegrationCompactUnlocked, value); }
+        private bool enableIntegrationCompactUnlocked = true;
+        public bool EnableIntegrationCompactUnlocked { get => enableIntegrationCompactUnlocked; set => SetValue(ref enableIntegrationCompactUnlocked, value); }
 
         public double IntegrationCompactPartialHeight { get; set; } = 48;
         public bool IntegrationCompactPartialDisplayLastest { get; set; } = true;
@@ -108,8 +108,8 @@ namespace SuccessStory
         public bool IntegrationCompactPartialShowDescription { get; set; } = true;
 
 
-        private bool _EnableIntegrationChart = true;
-        public bool EnableIntegrationChart { get => _EnableIntegrationChart; set => SetValue(ref _EnableIntegrationChart, value); }
+        private bool enableIntegrationChart = true;
+        public bool EnableIntegrationChart { get => enableIntegrationChart; set => SetValue(ref enableIntegrationChart, value); }
 
         public double IntegrationChartHeight { get; set; } = 120;
         public bool EnableIntegrationAxisChart { get; set; } = true;
@@ -120,14 +120,14 @@ namespace SuccessStory
         public bool EnableIntegrationChartCutPeriod { get; set; } = false;
 
 
-        private bool _EnableIntegrationUserStats = true;
-        public bool EnableIntegrationUserStats { get => _EnableIntegrationUserStats; set => SetValue(ref _EnableIntegrationUserStats, value); }
+        private bool enableIntegrationUserStats = true;
+        public bool EnableIntegrationUserStats { get => enableIntegrationUserStats; set => SetValue(ref enableIntegrationUserStats, value); }
 
         public double IntegrationUserStatsHeight { get; set; } = 120;
 
 
-        private bool _EnableIntegrationList = true;
-        public bool EnableIntegrationList { get => _EnableIntegrationList; set => SetValue(ref _EnableIntegrationList, value); }
+        private bool enableIntegrationList = true;
+        public bool EnableIntegrationList { get => enableIntegrationList; set => SetValue(ref enableIntegrationList, value); }
 
         public double IntegrationListHeight { get; set; } = 200;
         public double IntegrationListIconHeight { get; set; } = 48;
@@ -148,8 +148,8 @@ namespace SuccessStory
         public bool EnableWowAchievements { get; set; } = false;
 
         public List<CbData> WowRegions { get; set; } = new List<CbData>();
-        private List<CbData> _WowRealms = new List<CbData>();
-        public List<CbData> WowRealms { get => _WowRealms; set => SetValue(ref _WowRealms, value); }
+        private List<CbData> wowRealms = new List<CbData>();
+        public List<CbData> WowRealms { get => wowRealms; set => SetValue(ref wowRealms, value); }
         public string WowCharacter { get; set; } = string.Empty;
 
         public string Rpcs3InstallationFolder { get; set; } = string.Empty;
@@ -205,101 +205,37 @@ namespace SuccessStory
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
         #region Variables exposed
-        private bool _HasData { get; set; } = false;
+        private bool hasData = false;
         [DontSerialize]
-        public bool HasData
-        {
-            get => _HasData;
-            set
-            {
-                _HasData = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool HasData { get => hasData; set => SetValue(ref hasData, value); }
 
-        private bool _Is100Percent { get; set; } = false;
+        private bool is100Percent  = false;
         [DontSerialize]
-        public bool Is100Percent
-        {
-            get => _Is100Percent;
-            set
-            {
-                _Is100Percent = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool Is100Percent { get => is100Percent; set => SetValue(ref is100Percent, value); }
 
-        private int _Unlocked { get; set; } = 0;
+        private int unlocked = 0;
         [DontSerialize]
-        public int Unlocked
-        {
-            get => _Unlocked;
-            set
-            {
-                _Unlocked = value;
-                OnPropertyChanged();
-            }
-        }
+        public int Unlocked { get => unlocked; set => SetValue(ref unlocked, value); }
 
-        private int _Locked { get; set; } = 0;
+        private int locked = 0;
         [DontSerialize]
-        public int Locked
-        {
-            get => _Locked;
-            set
-            {
-                _Locked = value;
-                OnPropertyChanged();
-            }
-        }
+        public int Locked { get => locked; set => SetValue(ref locked, value); }
 
-        private int _Total { get; set; } = 0;
+        private int total  = 0;
         [DontSerialize]
-        public int Total
-        {
-            get => _Total;
-            set
-            {
-                _Total = value;
-                OnPropertyChanged();
-            }
-        }
+        public int Total { get => total; set => SetValue(ref total, value); }
 
-        private int _Percent { get; set; } = 0;
+        private int percent = 0;
         [DontSerialize]
-        public int Percent
-        {
-            get => _Percent;
-            set
-            {
-                _Percent = value;
-                OnPropertyChanged();
-            }
-        }
+        public int Percent { get => percent; set => SetValue(ref percent, value); }
 
-        private string _EstimateTimeToUnlock { get; set; } = string.Empty;
+        private string estimateTimeToUnlock = string.Empty;
         [DontSerialize]
-        public string EstimateTimeToUnlock
-        {
-            get => _EstimateTimeToUnlock;
-            set
-            {
-                _EstimateTimeToUnlock = value;
-                OnPropertyChanged();
-            }
-        }
+        public string EstimateTimeToUnlock { get => estimateTimeToUnlock; set => SetValue(ref estimateTimeToUnlock, value); }
 
-        private List<Achievements> _ListAchievements { get; set; } = new List<Achievements>();
+        private List<Achievements> listAchievements = new List<Achievements>();
         [DontSerialize]
-        public List<Achievements> ListAchievements
-        {
-            get => _ListAchievements;
-            set
-            {
-                _ListAchievements = value;
-                OnPropertyChanged();
-            }
-        }
+        public List<Achievements> ListAchievements { get => listAchievements; set => SetValue(ref listAchievements, value); }
         #endregion  
     }
 
@@ -309,8 +245,8 @@ namespace SuccessStory
         private readonly SuccessStory Plugin;
         private SuccessStorySettings EditingClone { get; set; }
 
-        private SuccessStorySettings _Settings;
-        public SuccessStorySettings Settings { get => _Settings; set => SetValue(ref _Settings, value); }
+        private SuccessStorySettings settings;
+        public SuccessStorySettings Settings { get => settings; set => SetValue(ref settings, value); }
 
 
         public SuccessStorySettingsViewModel(SuccessStory plugin)
@@ -379,9 +315,9 @@ namespace SuccessStory
 
             if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {
-                Plugin.topPanelItem.Visible = Settings.EnableIntegrationButtonHeader;
-                Plugin.successStoryViewSidebar.Visible = Settings.EnableIntegrationButtonSide;
-                Plugin.successStoryViewRaSidebar.Visible = Settings.EnableIntegrationButtonSide && Settings.EnableRetroAchievementsView;
+                Plugin.TopPanelItem.Visible = Settings.EnableIntegrationButtonHeader;
+                Plugin.SidebarItem.Visible = Settings.EnableIntegrationButtonSide;
+                Plugin.SidebarRaItem.Visible = Settings.EnableIntegrationButtonSide && Settings.EnableRetroAchievementsView;
             }
 
             this.OnPropertyChanged();

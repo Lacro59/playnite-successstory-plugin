@@ -173,7 +173,7 @@ namespace SuccessStory
                         if (PluginDatabase.PluginSettings.Settings.EnableManual)
                         {
                             icon = TransformIcon.Get("Manual Achievements") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
 
                             PluginDatabase.Database.Items.Where(x => x.Value.IsManual && !x.Value.IsEmulators).Select(x => PlayniteTools.GetSourceName(x.Value.Game)).Distinct()
                                     .ForEach(x => 
@@ -247,7 +247,7 @@ namespace SuccessStory
                     if (PluginDatabase.PluginSettings.Settings.EnableManual)
                     {
                         icon = TransformIcon.Get("Manual Achievements") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + resources.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = resources.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
+                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
 
                         PluginDatabase.Database.Items.Where(x => x.Value.IsManual).Select(x => PlayniteTools.GetSourceName(x.Value.Game)).Distinct()
                                 .ForEach(x =>
@@ -273,7 +273,7 @@ namespace SuccessStory
                 this.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                 {
                     GraphicTitle.Content = string.Empty;
-                    GraphicTitleALL.Content = resources.GetString("LOCSuccessStoryGraphicTitleALL");
+                    GraphicTitleALL.Content = ResourceProvider.GetString("LOCSuccessStoryGraphicTitleALL");
 
                     FilterSourceItems = FilterSourceItems.OrderBy(x => x.SourceNameShort).ToObservable();
                     successViewData.FilterSourceItems = FilterSourceItems;
@@ -432,7 +432,7 @@ namespace SuccessStory
                         Id = x.Id.ToString(),
                         Name = x.Name,
                         CompletionStatus = x.Game?.CompletionStatus?.Name ?? string.Empty,
-                        Icon = !x.Icon.IsNullOrEmpty() ? PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon) : string.Empty,
+                        Icon = !x.Icon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(x.Icon) : string.Empty,
                         LastActivity = x.LastActivity?.ToLocalTime(),
                         SourceName = PlayniteTools.GetSourceName(x.Id),
                         SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
@@ -473,7 +473,7 @@ namespace SuccessStory
                                 {
                                     Id = x.Id.ToString(),
                                     Name = x.Name,
-                                    Icon = !x.Icon.IsNullOrEmpty() ? PluginDatabase.PlayniteApi.Database.GetFullFilePath(x.Icon) : string.Empty,
+                                    Icon = !x.Icon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(x.Icon) : string.Empty,
                                     LastActivity = x.LastActivity?.ToLocalTime(),
                                     SourceName = PlayniteTools.GetSourceName(x.Id),
                                     SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
@@ -513,10 +513,10 @@ namespace SuccessStory
             ListViewGames GameSelected = (ListViewGames)((ListBox)sender).SelectedItem;
             if (GameSelected != null)
             {
-                GraphicTitle.Content = resources.GetString("LOCSuccessStoryGraphicTitleDay");
+                GraphicTitle.Content = ResourceProvider.GetString("LOCSuccessStoryGraphicTitleDay");
 
                 Guid GameId = Guid.Parse(GameSelected.Id);
-                successViewData.GameContext = PluginDatabase.PlayniteApi.Database.Games.Get(GameId);
+                successViewData.GameContext = API.Instance.Database.Games.Get(GameId);
             }
             else
             {
@@ -542,10 +542,10 @@ namespace SuccessStory
             }
 
             bool IsManual = false;
-            if (SearchSources.Contains(resources.GetString("LOCSuccessStoryManualAchievements")))
+            if (SearchSources.Contains(ResourceProvider.GetString("LOCSuccessStoryManualAchievements")))
             {
                 IsManual = true;
-                SearchSources.Remove(resources.GetString("LOCSuccessStoryManualAchievements"));
+                SearchSources.Remove(ResourceProvider.GetString("LOCSuccessStoryManualAchievements"));
             }
 
             successViewData.ListGames = ListGames.Where(x => CheckData(x, Min, Max, dateStart, dateEnd, IsManual, OnlyFilteredGames)).Distinct().ToObservable();

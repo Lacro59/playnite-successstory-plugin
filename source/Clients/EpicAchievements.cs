@@ -3,6 +3,7 @@ using CommonPluginsShared;
 using CommonPluginsShared.Extensions;
 using CommonPluginsStores.Epic;
 using CommonPluginsStores.Models;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using System;
@@ -15,25 +16,25 @@ namespace SuccessStory.Clients
 {
     class EpicAchievements : GenericAchievements
     {
-        protected static EpicApi _EpicAPI;
+        protected static EpicApi epicAPI;
         internal static EpicApi EpicAPI
         {
             get
             {
-                if (_EpicAPI == null)
+                if (epicAPI == null)
                 {
-                    _EpicAPI = new EpicApi(PluginDatabase.PluginName);
+                    epicAPI = new EpicApi(PluginDatabase.PluginName);
                 }
-                return _EpicAPI;
+                return epicAPI;
             }
 
-            set => _EpicAPI = value;
+            set => epicAPI = value;
         }
 
 
-        public EpicAchievements() : base("Epic", CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language), CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public EpicAchievements() : base("Epic", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language), CodeLang.GetGogLang(API.Instance.ApplicationSettings.Language))
         {
-            EpicAPI.SetLanguage(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+            EpicAPI.SetLanguage(API.Instance.ApplicationSettings.Language);
         }
 
 
@@ -65,7 +66,7 @@ namespace SuccessStory.Clients
                     {
                         if (!EpicAPI.IsUserLoggedIn)
                         {
-                            ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
+                            ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
                         }
                     }
 
@@ -83,7 +84,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
+                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
             }
 
             gameAchievements.SetRaretyIndicator();
@@ -96,7 +97,7 @@ namespace SuccessStory.Clients
         {
             if (PlayniteTools.IsDisabledPlaynitePlugins("EpicLibrary"))
             {
-                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsEpicDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicDisabled"));
                 return false;
             }
             else
@@ -107,7 +108,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
+                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)
@@ -166,7 +167,7 @@ namespace SuccessStory.Clients
                     ProductSlug = catalog?.productSlug?.Replace("/home", string.Empty);
                     if (ProductSlug.IsNullOrEmpty())
                     {
-                        logger.Warn($"No ProductSlug for {Name}");
+                        Logger.Warn($"No ProductSlug for {Name}");
                     }
                 }
             }

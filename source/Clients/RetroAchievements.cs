@@ -16,6 +16,7 @@ using CommonPluginsShared.Extensions;
 using static CommonPluginsShared.PlayniteTools;
 using SuccessStory.Services;
 using System.Threading;
+using Playnite.SDK;
 
 namespace SuccessStory.Clients
 {
@@ -36,10 +37,10 @@ namespace SuccessStory.Clients
     // TODO API has been temporarily disabled
     class RetroAchievements : GenericAchievements
     {
-        private static string BaseUrl           => @"https://retroachievements.org/API/";
-        private static string BaseUrlUnlocked   => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
-        private static string BaseUrlLocked     => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
-        private static string BaseMD5List       => @"https://retroachievements.org/dorequest.php?r=hashlibrary&c={0}";
+        private static string BaseUrl => @"https://retroachievements.org/API/";
+        private static string BaseUrlUnlocked => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
+        private static string BaseUrlLocked => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
+        private static string BaseMD5List => @"https://retroachievements.org/dorequest.php?r=hashlibrary&c={0}";
 
         private static string User { get; set; } = PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
         private static string Key { get; set; } = PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
@@ -72,7 +73,7 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    logger.Warn($"No ra_Consoles find");
+                    Logger.Warn($"No ra_Consoles find");
                 }
 
                 // Game Id
@@ -99,7 +100,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"));
+                ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"));
             }
 
             gameAchievements.Items = AllAchievements;
@@ -130,7 +131,7 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"), ExternalPlugin.None);
+                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"), ExternalPlugin.None);
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)
@@ -372,7 +373,7 @@ namespace SuccessStory.Clients
                     string normalizedPlayniteTitle = PlayniteTools.NormalizeGameName(GameName, true);
                     if (normalizedPlayniteTitle.IsEqual(normalizedRetroArchTitle))
                     {
-                        logger.Info($"Find for {GameName} [{ra_Game.ID}] / {retroArchTitle} with {PlatformName} in {consoleID}");
+                        Logger.Info($"Find for {GameName} [{ra_Game.ID}] / {retroArchTitle} with {PlatformName} in {consoleID}");
                         gameID = ra_Game.ID;
                         break;
                     }
@@ -384,7 +385,7 @@ namespace SuccessStory.Clients
                         {
                             if (GameName.IsEqual(TitleSplit) && gameID == 0)
                             {
-                                logger.Info($"Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
+                                Logger.Info($"Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
                                 gameID = ra_Game.ID;
                                 break;
                             }
@@ -398,7 +399,7 @@ namespace SuccessStory.Clients
                         {
                             if (GameName.IsEqual(TitleSplit) && gameID == 0)
                             {
-                                logger.Info($"Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
+                                Logger.Info($"Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
                                 gameID = ra_Game.ID;
                                 break;
                             }
@@ -408,12 +409,12 @@ namespace SuccessStory.Clients
             }
             else
             {
-                logger.Warn($"No console find for {GameName} with {PlatformName}");
+                Logger.Warn($"No console find for {GameName} with {PlatformName}");
             }
 
             if (gameID == 0)
             {
-                logger.Warn($"No game find for {GameName} with {PlatformName} in {consoleID}");
+                Logger.Warn($"No game find for {GameName} with {PlatformName} in {consoleID}");
             }
 
             return gameID;
@@ -446,7 +447,7 @@ namespace SuccessStory.Clients
                     });
                 });
 
-                string FilePath = PluginDatabase.PlayniteApi.ExpandGameVariables(game, game.Roms.FirstOrDefault().Path);
+                string FilePath = API.Instance.ExpandGameVariables(game, game.Roms.FirstOrDefault().Path);
 
                 if (!File.Exists(FilePath))
                 {
@@ -473,7 +474,7 @@ namespace SuccessStory.Clients
 
                 if (!File.Exists(FilePath))
                 {
-                    logger.Warn($"No file found for RA hash - {FilePath}");
+                    Logger.Warn($"No file found for RA hash - {FilePath}");
                     ZipFileManafeRemove();
                     return GameId;
                 }
@@ -483,7 +484,7 @@ namespace SuccessStory.Clients
                     FileInfo fi = new FileInfo(FilePath);
                     if (fi.Length > 800000000)
                     {
-                        logger.Warn($"Hash impossible - The file is too long - {FilePath}");
+                        Logger.Warn($"Hash impossible - The file is too long - {FilePath}");
                         return GameId;
                     }
                 }
@@ -498,12 +499,12 @@ namespace SuccessStory.Clients
                     if (rA_MD5List != null)
                     {
                         ZipFileManafeRemove();
-                        logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                        Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.NDS");
                         return rA_MD5List.Id;
                     }
                     if (GameId == 0)
                     {
-                        logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                        Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.NDS");
                     }
                 }
 
@@ -512,12 +513,12 @@ namespace SuccessStory.Clients
                 if (rA_MD5List != null)
                 {
                     ZipFileManafeRemove();
-                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.All");
+                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.All");
                     return rA_MD5List.Id;
                 }
                 if (GameId == 0)
                 {
-                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.All");
+                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.All");
                 }
 
                 HashMD5 = GetHash(FilePath, PlatformType.SNES);
@@ -525,12 +526,12 @@ namespace SuccessStory.Clients
                 if (rA_MD5List != null)
                 {
                     ZipFileManafeRemove();
-                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
                     return rA_MD5List.Id;
                 }
                 if (GameId == 0)
                 {
-                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
                 }
 
                 HashMD5 = GetHash(FilePath, PlatformType.NES);
@@ -538,12 +539,12 @@ namespace SuccessStory.Clients
                 if (rA_MD5List != null)
                 {
                     ZipFileManafeRemove();
-                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
                     return rA_MD5List.Id;
                 }
                 if (GameId == 0)
                 {
-                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
                 }
 
                 HashMD5 = GetHash(FilePath, PlatformType.Arcade);
@@ -551,12 +552,12 @@ namespace SuccessStory.Clients
                 if (rA_MD5List != null)
                 {
                     ZipFileManafeRemove();
-                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
                     return rA_MD5List.Id;
                 }
                 if (GameId == 0)
                 {
-                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
                 }
 
                 HashMD5 = GetHash(FilePath, PlatformType.Famicom);
@@ -564,12 +565,12 @@ namespace SuccessStory.Clients
                 if (rA_MD5List != null)
                 {
                     ZipFileManafeRemove();
-                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
                     return rA_MD5List.Id;
                 }
                 if (GameId == 0)
                 {
-                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
                 }
 
                 HashMD5 = GetHash(FilePath, PlatformType.Sega_CD_Saturn);
@@ -577,12 +578,12 @@ namespace SuccessStory.Clients
                 if (rA_MD5List != null)
                 {
                     ZipFileManafeRemove();
-                    logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
                     return rA_MD5List.Id;
                 }
                 if (GameId == 0)
                 {
-                    logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
                 }
 
                 ZipFileManafeRemove();

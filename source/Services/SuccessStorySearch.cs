@@ -18,9 +18,9 @@ namespace SuccessStory.Services
 
         public SuccessStorySearch()
         {
-            Description = resources.GetString("LOCSuccessStorySearchDescription");
+            Description = ResourceProvider.GetString("LOCSuccessStorySearchDescription");
             Label = PluginDatabase.PluginName;
-            Hint = resources.GetString("LOCSuccessStorySearchHint");
+            Hint = ResourceProvider.GetString("LOCSuccessStorySearchHint");
             Delay = 500;
         }
 
@@ -93,7 +93,7 @@ namespace SuccessStory.Services
 
                         if (isOK)
                         {
-                            searchItems.Add(new GameSearchItem(x.Game, resources.GetString("LOCGameSearchItemActionSwitchTo"), () => API.Instance.MainView.SelectGame(x.Game.Id)));
+                            searchItems.Add(new GameSearchItem(x.Game, ResourceProvider.GetString("LOCGameSearchItemActionSwitchTo"), () => API.Instance.MainView.SelectGame(x.Game.Id)));
                         }
                     });
 

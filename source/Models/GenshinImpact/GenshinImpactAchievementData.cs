@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SuccessStory.Models
+namespace SuccessStory.Models.GenshinImpact
 {
     public class GenshinImpactAchievementData
     {

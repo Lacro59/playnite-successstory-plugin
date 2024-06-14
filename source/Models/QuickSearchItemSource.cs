@@ -16,7 +16,7 @@ namespace SuccessStory.Models
 {
     public class QuickSearchItemSource : ISearchSubItemSource<string>
     {
-        private readonly SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
 
         public string Prefix => PluginDatabase.PluginName;
@@ -74,6 +74,9 @@ namespace SuccessStory.Models
 
                     case "percent":
                         return SearchByPercent(query);
+
+                    default:
+                        break;
                 }
             }
             return null;
@@ -101,7 +104,7 @@ namespace SuccessStory.Models
             string LastSession = data.LastActivity == null ? string.Empty : ResourceProvider.GetString("LOCLastPlayedLabel") + " " + dateSession;
             string infoEstimate = data.EstimateTime?.EstimateTime.IsNullOrEmpty() ?? true ? string.Empty : "  -  [" + data.EstimateTime?.EstimateTime + "]";
 
-            CommandItem item = new CommandItem(title, () => PluginDatabase.PlayniteApi.MainView.SelectGame(data.Id), "", null, icon)
+            CommandItem item = new CommandItem(title, () => API.Instance.MainView.SelectGame(data.Id), "", null, icon)
             {
                 IconChar = null,
                 BottomLeft = PlayniteTools.GetSourceName(data.Id),
@@ -118,7 +121,7 @@ namespace SuccessStory.Models
 
         private List<KeyValuePair<Guid, GameAchievements>> GetDb(ConcurrentDictionary<Guid, GameAchievements> db)
         {
-            return db.Where(x => PluginDatabase.PlayniteApi.Database.Games.Get(x.Key) != null && x.Value.HasAchievements).ToList();
+            return db.Where(x => API.Instance.Database.Games.Get(x.Key) != null && x.Value.HasAchievements).ToList();
         }
 
 
@@ -150,7 +153,7 @@ namespace SuccessStory.Models
                                 double s = Tools.GetElapsedSeconde(parameters[2], parameters[3]);
                                 foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
-                                    if (data.Value.EstimateTime?.EstimateTimeMax == 0 ? false : (data.Value.EstimateTime?.EstimateTimeMax * 3600) >= s)
+                                    if ((data.Value.EstimateTime?.EstimateTimeMax) != 0 && (data.Value.EstimateTime?.EstimateTimeMax * 3600) >= s)
                                     {
                                         search.Add(GetCommandItem(data.Value, query));
                                     }
@@ -165,13 +168,16 @@ namespace SuccessStory.Models
                                 double s = Tools.GetElapsedSeconde(parameters[2], parameters[3]);
                                 foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
-                                    if (data.Value.EstimateTime?.EstimateTimeMax == 0 ? false : (data.Value.EstimateTime?.EstimateTimeMax * 3600) <= s)
+                                    if ((data.Value.EstimateTime?.EstimateTimeMax) != 0 && (data.Value.EstimateTime?.EstimateTimeMax * 3600) <= s)
                                     {
                                         search.Add(GetCommandItem(data.Value, query));
                                     }
                                 }
                             }
                             catch { }
+                            break;
+
+                        default:
                             break;
                     }
 
@@ -193,13 +199,16 @@ namespace SuccessStory.Models
                                 double sMax = Tools.GetElapsedSeconde(parameters[4], parameters[5]);
                                 foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
-                                    if (data.Value.EstimateTime?.EstimateTimeMax == 0 ? false : (data.Value.EstimateTime?.EstimateTimeMax * 3600) >= sMin && (data.Value.EstimateTime?.EstimateTimeMax * 3600) <= sMax)
+                                    if ((data.Value.EstimateTime?.EstimateTimeMax) != 0 && (data.Value.EstimateTime?.EstimateTimeMax * 3600) >= sMin && (data.Value.EstimateTime?.EstimateTimeMax * 3600) <= sMax)
                                     {
                                         search.Add(GetCommandItem(data.Value, query));
                                     }
                                 }
                             }
                             catch { }
+                            break;
+
+                        default:
                             break;
                     }
 
@@ -225,7 +234,7 @@ namespace SuccessStory.Models
                         case ">":
                             try
                             {
-                                int.TryParse(parameters[2], out int percent);
+                                _ = int.TryParse(parameters[2], out int percent);
                                 foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
                                     if (data.Value.Progression >= percent)
@@ -240,7 +249,7 @@ namespace SuccessStory.Models
                         case "<":
                             try
                             {
-                                int.TryParse(parameters[2], out int percent);
+                                _ = int.TryParse(parameters[2], out int percent);
                                 foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
                                     if (data.Value.Progression <= percent)
@@ -250,6 +259,9 @@ namespace SuccessStory.Models
                                 }
                             }
                             catch { }
+                            break;
+
+                        default:
                             break;
                     }
 
@@ -267,8 +279,8 @@ namespace SuccessStory.Models
                         case "<>":
                             try
                             {
-                                int.TryParse(parameters[1], out int percentMin);
-                                int.TryParse(parameters[3], out int percentMax);
+                                _ = int.TryParse(parameters[1], out int percentMin);
+                                _ = int.TryParse(parameters[3], out int percentMax);
                                 foreach (KeyValuePair<Guid, GameAchievements> data in db)
                                 {
                                     if (data.Value.Progression >= percentMin && data.Value.Progression <= percentMax)
@@ -278,6 +290,9 @@ namespace SuccessStory.Models
                                 }
                             }
                             catch { }
+                            break;
+
+                        default:
                             break;
                     }
 

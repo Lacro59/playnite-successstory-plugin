@@ -8,18 +8,20 @@ using System.Linq;
 using MoreLinq;
 using System.Text;
 using System.Threading.Tasks;
+using Playnite.SDK;
+using SuccessStory.Models.GuildWars2;
 
 namespace SuccessStory.Clients
 {
     class GuildWars2Achievements : GenericAchievements
     {
-        private const string UrlApiOwnedAchievements = @"https://api.guildwars2.com/v2/account/achievements";
-        private const string UrlApiAchievementsList = @"https://api.guildwars2.com/v2/achievements";
-        private const string UrlApiAchievements = UrlApiAchievementsList + @"?ids={0}&lang={1}";
-        private const string UrlApiAchievementsGroups = @"https://api.guildwars2.com/v2/achievements/categories/";
+        private static string UrlApiOwnedAchievements => @"https://api.guildwars2.com/v2/account/achievements";
+        private static string UrlApiAchievementsList => @"https://api.guildwars2.com/v2/achievements";
+        private static string UrlApiAchievements => UrlApiAchievementsList + @"?ids={0}&lang={1}";
+        private static string UrlApiAchievementsGroups => @"https://api.guildwars2.com/v2/achievements/categories/";
 
 
-        public GuildWars2Achievements() : base("GuildWars2", CodeLang.GetOriginLangCountry(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public GuildWars2Achievements() : base("GuildWars2", CodeLang.GetOriginLangCountry(API.Instance.ApplicationSettings.Language))
         {
             
         }
@@ -66,10 +68,10 @@ namespace SuccessStory.Clients
                 });
                 gw2AchievementsGroups.Add(new GW2AchievementsGroups 
                 { 
-                    id = 0,
-                    name = "none",
-                    order = 0,
-                    icon = "default_icon.png"
+                    Id = 0,
+                    Name = "none",
+                    Order = 0,
+                    Icon = "default_icon.png"
                 });
 
                 // List owned achievements
@@ -106,60 +108,60 @@ namespace SuccessStory.Clients
                     // Set achievements
                     gw2AchievementsAll.ForEach(x => 
                     {
-                        if (x.id == 4202)
+                        if (x.Id == 4202)
                         {
 
                         }
 
                         Achievements ach = new Achievements
                         {
-                            ApiName = x.id.ToString(),
-                            Name = x.name,
-                            Description = x.description,
+                            ApiName = x.Id.ToString(),
+                            Name = x.Name,
+                            Description = x.Description,
                             DateUnlocked = default(DateTime)
                         };
 
-                        var gwCategory = gw2AchievementsGroups.Find(y => y.achievements?.Contains(x.id) ?? false);
+                        var gwCategory = gw2AchievementsGroups.Find(y => y.Achievements?.Contains(x.Id) ?? false);
                         if (gwCategory != null)
                         {
-                            int CategoryOrder = gwCategory.order;
-                            string Category = gwCategory.name;
-                            string CategoryIcon = gwCategory.icon;
+                            int CategoryOrder = gwCategory.Order;
+                            string Category = gwCategory.Name;
+                            string CategoryIcon = gwCategory.Icon;
 
-                            ach.UrlUnlocked = gwCategory.icon;
+                            ach.UrlUnlocked = gwCategory.Icon;
                             ach.CategoryOrder = CategoryOrder;
                             ach.CategoryIcon = CategoryIcon;
                             ach.Category = Category;
                         }
                         else
                         {
-                            gwCategory = gw2AchievementsGroups.Find(y => y.id == 0);
+                            gwCategory = gw2AchievementsGroups.Find(y => y.Id == 0);
 
-                            int CategoryOrder = gwCategory.order;
-                            string Category = gwCategory.name;
-                            string CategoryIcon = gwCategory.icon;
+                            int CategoryOrder = gwCategory.Order;
+                            string Category = gwCategory.Name;
+                            string CategoryIcon = gwCategory.Icon;
 
-                            ach.UrlUnlocked = gwCategory.icon;
+                            ach.UrlUnlocked = gwCategory.Icon;
                             ach.CategoryOrder = CategoryOrder;
                             ach.CategoryIcon = CategoryIcon;
                             ach.Category = Category;
                         }
 
-                        GW2OwnedAchievements gw2Owned = gw2OwnedAchievements.Find(y => y.id == x.id);
+                        GW2OwnedAchievements gw2Owned = gw2OwnedAchievements.Find(y => y.Id == x.Id);
                         if (gw2Owned != null)
                         {
-                            if (gw2Owned.done)
+                            if (gw2Owned.Done)
                             {
                                 ach.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
                             }
                             else
                             {
-                                if (gw2Owned.current != gw2Owned.max)
+                                if (gw2Owned.Current != gw2Owned.Max)
                                 {
                                     ach.Progression = new AchProgression
                                     {
-                                        Max = gw2Owned.max,
-                                        Value = gw2Owned.current
+                                        Max = gw2Owned.Max,
+                                        Value = gw2Owned.Current
                                     };
                                 }
                             }
@@ -170,7 +172,7 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsGw2BadConfig"));
+                    ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsGw2BadConfig"));
                 }
             }
             catch (Exception ex)

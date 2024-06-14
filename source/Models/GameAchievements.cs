@@ -14,14 +14,14 @@ namespace SuccessStory.Models
 {
     public class GameAchievements : PluginDataBaseGame<Achievements>
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
 
-        private List<Achievements> _Items = new List<Achievements>();
-        public override List<Achievements> Items { get => _Items; set => SetValue(ref _Items, value); }
+        private List<Achievements> items = new List<Achievements>();
+        public override List<Achievements> Items { get => items; set => SetValue(ref items, value); }
 
-        private List<GameStats> _ItemsStats = new List<GameStats>();
-        public List<GameStats> ItemsStats { get => _ItemsStats; set => SetValue(ref _ItemsStats, value); }
+        private List<GameStats> itemsStats = new List<GameStats>();
+        public List<GameStats> ItemsStats { get => itemsStats; set => SetValue(ref itemsStats, value); }
 
         public bool ShowStats { get; set; } = true;
 
@@ -63,7 +63,7 @@ namespace SuccessStory.Models
                                 : OrderedItems?.ThenByDescending(x => x.DateUnlocked) ?? OrderItems.OrderByDescending(x => x.DateUnlocked);
                             break;
 
-                        case (OrderAchievementType.AchievementRarety):
+                        case OrderAchievementType.AchievementRarety:
                             OrderedItems = orderAchievement.OrderTypeFirst == OrderType.Ascending
                                 ? OrderedItems?.ThenBy(x => x.Percent) ?? OrderItems.OrderBy(x => x.Percent)
                                 : OrderedItems?.ThenByDescending(x => x.Percent) ?? OrderItems.OrderByDescending(x => x.Percent);
@@ -299,16 +299,16 @@ namespace SuccessStory.Models
                 {
                     return true;
                 }
-        
+
                 if (Items?.First()?.UrlUnlocked?.Contains("GenshinImpact", StringComparison.InvariantCultureIgnoreCase) ?? false)
                 {
                     return true;
-                }        
+                }
                 if (Items?.First()?.UrlUnlocked?.Contains("rpcs3", StringComparison.InvariantCultureIgnoreCase) ?? false)
                 {
                     return true;
                 }
-        
+
                 return !(Items.Where(x => x.ImageUnlockedIsCached && x.ImageLockedIsCached).Count() == 0);
             }
         }
@@ -331,7 +331,7 @@ namespace SuccessStory.Models
                 bool NoRarety = Items?.Where(x => x.Percent != 100)?.Count() == 0;
                 if (NoRarety)
                 {
-                    Items.All(x => { x.NoRarety = true; return true; });
+                    _ = Items.All(x => { x.NoRarety = true; return true; });
                 }
             }
         }

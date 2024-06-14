@@ -15,10 +15,10 @@ namespace SuccessStory.Models
 {
     public class Achievements : ObservableObject
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
-        private string _name;
-        public string Name { get =>_name; set => _name = value?.Trim(); }
+        private string name;
+        public string Name { get => name; set => name = value?.Trim(); }
         public string ApiName { get; set; } = string.Empty;
         public string Description { get; set; }
         public string UrlUnlocked { get; set; }

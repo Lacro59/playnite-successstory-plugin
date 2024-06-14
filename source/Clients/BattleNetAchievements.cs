@@ -7,14 +7,14 @@ namespace SuccessStory.Clients
 {
     abstract class BattleNetAchievements : GenericAchievements
     {
-        protected string UrlOauth2      => @"https://account.blizzard.com:443/oauth2/authorization/account-settings";
-        protected string UrlApiStatus   => @"https://account.blizzard.com/api/";
-        protected string UrlLogin       => @"https://account.battle.net/login";
+        protected string UrlOauth2 => @"https://account.blizzard.com:443/oauth2/authorization/account-settings";
+        protected string UrlApiStatus => @"https://account.blizzard.com/api/";
+        protected string UrlLogin => @"https://account.battle.net/login";
 
 
         public BattleNetAchievements(string ClientName, string LocalLang = "", string LocalLangShort = "") : base(ClientName, LocalLang, LocalLangShort)
         {
-            
+
         }
 
 

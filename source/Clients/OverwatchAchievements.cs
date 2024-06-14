@@ -19,12 +19,12 @@ namespace SuccessStory.Clients
 {
     internal class OverwatchAchievements : BattleNetAchievements
     {
-        private const string UrlOverwatchProfil = @"https://playoverwatch.com";
-        private string UrlOverwatchLogin = $"{UrlOverwatchProfil}/login";
-        private string UrlOverwatchProfilLocalised = $"{UrlOverwatchProfil}/" + "{0}";
+        private static string UrlOverwatchProfil => @"https://playoverwatch.com";
+        private static string UrlOverwatchLogin => $"{UrlOverwatchProfil}/login";
+        private static string UrlOverwatchProfilLocalised { get; set; } = $"{UrlOverwatchProfil}/" + "{0}";
 
-        private string UrlProfil = string.Empty;
-        private List<ColorElement> OverwatchColor = new List<ColorElement>
+        private string UrlProfil { get; set; } = string.Empty;
+        private List<ColorElement> OverwatchColor => new List<ColorElement>
         {
             new ColorElement { Name = "ow-ana-color", Color = "#9c978a" },
             new ColorElement { Name = "ow-ashe-color", Color = "#b3a05f" },
@@ -61,7 +61,7 @@ namespace SuccessStory.Clients
         };
 
 
-        public OverwatchAchievements() : base("Overwatch", CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public OverwatchAchievements() : base("Overwatch", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language))
         {
             UrlOverwatchProfilLocalised = string.Format(UrlOverwatchProfilLocalised, LocalLang);
         }
@@ -143,12 +143,12 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch"), ExternalPlugin.BattleNetLibrary);
+                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch"), ExternalPlugin.BattleNetLibrary);
                 }
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
+                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
             }
 
 
@@ -184,7 +184,7 @@ namespace SuccessStory.Clients
         {
             if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary"))
             {
-                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsBattleNetDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetDisabled"));
                 return false;
             }
 
@@ -194,7 +194,7 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
+                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)
@@ -213,7 +213,7 @@ namespace SuccessStory.Clients
                 CachedIsConnectedResult = false;
                 string data = string.Empty;
                 List<HttpCookie> cookies = null;
-                using (var WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
                     WebViewOffscreen.NavigateAndWait(UrlOverwatchProfil);
                     data = WebViewOffscreen.GetPageSource();
@@ -486,15 +486,15 @@ namespace SuccessStory.Clients
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate";
             LastErrorMessage = Message;
-            logger.Warn($"{ClientName} user is not authenticated");
+            Logger.Warn($"{ClientName} user is not authenticated");
 
-            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+            API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled",
                 $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
                 () =>
                 {
-                    using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(400, 600))
+                    using (var WebView = API.Instance.WebViews.CreateView(400, 600))
                     {
                         WebView.LoadingChanged += (s, e) =>
                         {

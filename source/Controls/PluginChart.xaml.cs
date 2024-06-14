@@ -5,6 +5,7 @@ using CommonPluginsShared.Interfaces;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
@@ -22,26 +23,22 @@ namespace SuccessStory.Controls
     /// </summary>
     public partial class PluginChart : PluginUserControlExtend
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase
-        {
-            get => PluginDatabase;
-            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-        }
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginChartDataContext ControlDataContext = new PluginChartDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginChartDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginChartDataContext)controlDataContext;
         }
 
 
         #region Properties
         public bool DisableAnimations
         {
-            get { return (bool)GetValue(DisableAnimationsProperty); }
-            set { SetValue(DisableAnimationsProperty, value); }
+            get => (bool)GetValue(DisableAnimationsProperty);
+            set => SetValue(DisableAnimationsProperty, value);
         }
 
         public static readonly DependencyProperty DisableAnimationsProperty = DependencyProperty.Register(
@@ -53,8 +50,8 @@ namespace SuccessStory.Controls
 
         public int LabelsRotation
         {
-            get { return (int)GetValue(LabelsRotationProperty); }
-            set { SetValue(LabelsRotationProperty, value); }
+            get => (int)GetValue(LabelsRotationProperty);
+            set => SetValue(LabelsRotationProperty, value);
         }
 
         public static readonly DependencyProperty LabelsRotationProperty = DependencyProperty.Register(
@@ -72,19 +69,19 @@ namespace SuccessStory.Controls
         public PluginChart()
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher?.BeginInvoke((Action)delegate
+               _ = Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
                     PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
 
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
@@ -92,7 +89,7 @@ namespace SuccessStory.Controls
             });
 
             //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
-            var customerVmMapper = Mappers.Xy<CustomerForSingle>()
+            CartesianMapper<CustomerForSingle> customerVmMapper = Mappers.Xy<CustomerForSingle>()
                 .X((value, index) => index)
                 .Y(value => value.Values);
 
@@ -108,7 +105,7 @@ namespace SuccessStory.Controls
             bool EnableAxisLabel = PluginDatabase.PluginSettings.Settings.EnableIntegrationAxisChart;
             bool EnableOrdinatesLabel = PluginDatabase.PluginSettings.Settings.EnableIntegrationOrdinatesChart;
             int CountAbscissa = PluginDatabase.PluginSettings.Settings.IntegrationChartCountAbscissa;
-            
+
             if (IgnoreSettings)
             {
                 IsActivated = true;
@@ -117,7 +114,7 @@ namespace SuccessStory.Controls
                 EnableOrdinatesLabel = true;
                 CountAbscissa = AxisLimit;
             }
-            
+
             ControlDataContext.IsActivated = IsActivated;
             ControlDataContext.ChartHeight = ChartHeight;
             ControlDataContext.EnableAxisLabel = EnableAxisLabel;
@@ -141,7 +138,7 @@ namespace SuccessStory.Controls
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
 
             AchievementsGraphicsDataCount GraphicsData = null;
-            bool CutPeriod = ControlDataContext.AllPeriod ? ControlDataContext.CutPeriod : false;
+            bool CutPeriod = ControlDataContext.AllPeriod && ControlDataContext.CutPeriod;
             if (ControlDataContext.AllPeriod)
             {
                 DateTime? DateMin = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Min();
@@ -189,9 +186,9 @@ namespace SuccessStory.Controls
             ControlDataContext.EnableAxisLabel = !(StatsGraphicsAchievementsLabels.Count() > 16 && ControlDataContext.AllPeriod);
 
             // TODO With OneGameView the GameContext pass at null
-            if (this.GameContext == null)
+            if (GameContext == null)
             {
-                this.GameContext = newContext;
+                GameContext = newContext;
             }
         }
 
@@ -220,43 +217,43 @@ namespace SuccessStory.Controls
 
     public class PluginChartDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private double _ChartHeight;
-        public double ChartHeight { get => _ChartHeight; set => SetValue(ref _ChartHeight, value); }
+        private double chartHeight;
+        public double ChartHeight { get => chartHeight; set => SetValue(ref chartHeight, value); }
 
-        private bool _EnableAxisLabel;
-        public bool EnableAxisLabel { get => _EnableAxisLabel; set => SetValue(ref _EnableAxisLabel, value); }
+        private bool enableAxisLabel;
+        public bool EnableAxisLabel { get => enableAxisLabel; set => SetValue(ref enableAxisLabel, value); }
 
-        private bool _EnableOrdinatesLabel;
-        public bool EnableOrdinatesLabel { get => _EnableOrdinatesLabel; set => SetValue(ref _EnableOrdinatesLabel, value); }
+        private bool enableOrdinatesLabel;
+        public bool EnableOrdinatesLabel { get => enableOrdinatesLabel; set => SetValue(ref enableOrdinatesLabel, value); }
 
-        private int _CountAbscissa;
-        public int CountAbscissa { get => _CountAbscissa; set => SetValue(ref _CountAbscissa, value); }
+        private int countAbscissa;
+        public int CountAbscissa { get => countAbscissa; set => SetValue(ref countAbscissa, value); }
 
-        private bool _HideChartOptions;
-        public bool HideChartOptions { get => _HideChartOptions; set => SetValue(ref _HideChartOptions, value); }
+        private bool hideChartOptions;
+        public bool HideChartOptions { get => hideChartOptions; set => SetValue(ref hideChartOptions, value); }
 
-        private bool _AllPeriod;
-        public bool AllPeriod { get => _AllPeriod; set => SetValue(ref _AllPeriod, value); }
+        private bool allPeriod;
+        public bool AllPeriod { get => allPeriod; set => SetValue(ref allPeriod, value); }
 
-        private bool _CutPeriod;
-        public bool CutPeriod { get => _CutPeriod; set => SetValue(ref _CutPeriod, value); }
+        private bool cutPeriod;
+        public bool CutPeriod { get => cutPeriod; set => SetValue(ref cutPeriod, value); }
 
-        private bool _CutEnabled;
-        public bool CutEnabled { get => _CutEnabled; set => SetValue(ref _CutEnabled, value); }
+        private bool cutEnabled;
+        public bool CutEnabled { get => cutEnabled; set => SetValue(ref cutEnabled, value); }
 
-        private SeriesCollection _Series;
-        public SeriesCollection Series { get => _Series; set => SetValue(ref _Series, value); }
+        private SeriesCollection series;
+        public SeriesCollection Series { get => series; set => SetValue(ref series, value); }
 
-        private IList<string> _Labels;
-        public IList<string> Labels { get => _Labels; set => SetValue(ref _Labels, value); }
+        private IList<string> labels;
+        public IList<string> Labels { get => labels; set => SetValue(ref labels, value); }
 
-        public int _LabelsRotation;
-        public int LabelsRotation { get => _LabelsRotation; set => SetValue(ref _LabelsRotation, value); }
+        public int labelsRotation;
+        public int LabelsRotation { get => labelsRotation; set => SetValue(ref labelsRotation, value); }
 
-        private Func<double, string> _Formatter;
-        public Func<double, string> Formatter { get => _Formatter; set => SetValue(ref _Formatter, value); }
+        private Func<double, string> formatter;
+        public Func<double, string> Formatter { get => formatter; set => SetValue(ref formatter, value); }
     }
 }

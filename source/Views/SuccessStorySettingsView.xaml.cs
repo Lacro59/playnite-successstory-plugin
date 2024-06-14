@@ -23,31 +23,29 @@ namespace SuccessStory.Views
 {
     public partial class SuccessStorySettingsView : UserControl
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
+        private static ILogger Logger => LogManager.GetLogger();
+
+        public static SolidColorBrush RarityUncommonColor { get; set; }
+        public static SolidColorBrush RarityRareColor { get; set; }
+        public static SolidColorBrush RarityUltraRareColor { get; set; }
+
+        public static List<RaConsoleAssociated> RaConsoleAssociateds { get; set; }
+
+        public static CompletionStatus completionStatus { get; set; }
+
+        private TextBlock tbControl { get; set; }
 
 
-        public static SolidColorBrush RarityUncommonColor;
-        public static SolidColorBrush RarityRareColor;
-        public static SolidColorBrush RarityUltraRareColor;
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
-        public static List<RaConsoleAssociated> RaConsoleAssociateds;
+        private ExophaseAchievements ExophaseAchievements => new ExophaseAchievements();
 
-        public static CompletionStatus completionStatus;
+        public static List<Folder> LocalPath { get; set; } = new List<Folder>();
+        public static List<Folder> Rpcs3Path { get; set; } = new List<Folder>();
 
-        private TextBlock tbControl;
+        private List<GameAchievements> IgnoredGames { get; set; }
 
-
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-
-        private ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-
-        public static List<Folder> LocalPath = new List<Folder>();
-        public static List<Folder> Rpcs3Path = new List<Folder>();
-
-        private List<GameAchievements> IgnoredGames;
-
-        public static bool WithoutMessage = false;
+        public static bool WithoutMessage { get; set; } = false;
 
 
         public SuccessStorySettingsView(SuccessStory plugin)
@@ -69,16 +67,16 @@ namespace SuccessStory.Views
             switch (PluginDatabase.PluginSettings.Settings.NameSorting)
             {
                 case "Name":
-                    cbDefaultSorting.Text = resources.GetString("LOCGameNameTitle");
+                    cbDefaultSorting.Text = ResourceProvider.GetString("LOCGameNameTitle");
                     break;
                 case "LastActivity":
-                    cbDefaultSorting.Text = resources.GetString("LOCLastPlayed");
+                    cbDefaultSorting.Text = ResourceProvider.GetString("LOCLastPlayed");
                     break;
                 case "SourceName":
-                    cbDefaultSorting.Text = resources.GetString("LOCSourceLabel");
+                    cbDefaultSorting.Text = ResourceProvider.GetString("LOCSourceLabel");
                     break;
                 case "ProgressionValue":
-                    cbDefaultSorting.Text = resources.GetString("LOCSuccessStorylvGamesProgression");
+                    cbDefaultSorting.Text = ResourceProvider.GetString("LOCSuccessStorylvGamesProgression");
                     break;
                 default:
                     break;
@@ -90,7 +88,7 @@ namespace SuccessStory.Views
                 {
                     this.Dispatcher.Invoke(new Action(() => 
                     {
-                        lIsAuth.Content = antecedent.Result ? resources.GetString("LOCCommonLoggedIn") : resources.GetString("LOCCommonNotLoggedIn");
+                        lIsAuth.Content = antecedent.Result ? ResourceProvider.GetString("LOCCommonLoggedIn") : ResourceProvider.GetString("LOCCommonNotLoggedIn");
                     }));
                 });
 
@@ -113,12 +111,12 @@ namespace SuccessStory.Views
 
 
             // List features
-            PART_FeatureAchievement.ItemsSource = PluginDatabase.PlayniteApi.Database.Features.OrderBy(x => x.Name);
+            PART_FeatureAchievement.ItemsSource = API.Instance.Database.Features.OrderBy(x => x.Name);
 
 
             // List completation
-            PART_CbCompletation.ItemsSource = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList();
-            PART_CbCompletation.SelectedIndex = PluginDatabase.PlayniteApi.Database.CompletionStatuses.ToList()
+            PART_CbCompletation.ItemsSource = API.Instance.Database.CompletionStatuses.ToList();
+            PART_CbCompletation.SelectedIndex = API.Instance.Database.CompletionStatuses.ToList()
                 .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent?.Id);
 
 
@@ -144,7 +142,7 @@ namespace SuccessStory.Views
 
         private void ButtonSelectFolder_Click(object sender, RoutedEventArgs e)
         {
-            string SelectedFolder = PluginDatabase.PlayniteApi.Dialogs.SelectFolder();
+            string SelectedFolder = API.Instance.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 PART_Rpcs3Folder.Text = SelectedFolder;
@@ -175,30 +173,30 @@ namespace SuccessStory.Views
         #region Exophase
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            lIsAuth.Content = resources.GetString("LOCCommonLoginChecking");
+            lIsAuth.Content = ResourceProvider.GetString("LOCCommonLoginChecking");
 
             try
             {
-                exophaseAchievements.Login();
+                ExophaseAchievements.Login();
 
                 Task task = Task.Run(() => CheckLogged())
                     .ContinueWith(antecedent =>
                     {
                         this.Dispatcher.Invoke(new Action(() =>
                         {
-                            lIsAuth.Content = antecedent.Result ? resources.GetString("LOCCommonLoggedIn") : resources.GetString("LOCCommonNotLoggedIn");
+                            lIsAuth.Content = antecedent.Result ? ResourceProvider.GetString("LOCCommonLoggedIn") : ResourceProvider.GetString("LOCCommonNotLoggedIn");
                         }));
                     });
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Failed to authenticate user.");
+                Logger.Error(ex, "Failed to authenticate user.");
             }
         }
 
         private bool CheckLogged()
         {
-            return exophaseAchievements.IsConnected();
+            return ExophaseAchievements.IsConnected();
         }
         #endregion
 
@@ -215,7 +213,7 @@ namespace SuccessStory.Views
         {
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
-            string SelectedFolder = PluginDatabase.PlayniteApi.Dialogs.SelectFolder();
+            string SelectedFolder = API.Instance.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 PART_ItemsControl.ItemsSource = null;
@@ -316,7 +314,7 @@ namespace SuccessStory.Views
             }
             else
             {
-                logger.Warn("One control is undefined");
+                Logger.Warn("One control is undefined");
             }
 
             PART_SelectorColor.Visibility = Visibility.Collapsed;
@@ -376,7 +374,7 @@ namespace SuccessStory.Views
 
         private void PART_AddCustomIcon_Click(object sender, RoutedEventArgs e)
         {
-            var result = PluginDatabase.PlayniteApi.Dialogs.SelectImagefile();
+            var result = API.Instance.Dialogs.SelectImagefile();
             if (!result.IsNullOrEmpty())
             {
                 try
@@ -413,7 +411,7 @@ namespace SuccessStory.Views
         {
             int indexFolder = int.Parse(((Button)sender).Tag.ToString());
 
-            string SelectedFolder = PluginDatabase.PlayniteApi.Dialogs.SelectFolder();
+            string SelectedFolder = API.Instance.Dialogs.SelectFolder();
             if (!SelectedFolder.IsNullOrEmpty())
             {
                 PART_ItemsRpcs3Folder.ItemsSource = null;
@@ -452,7 +450,7 @@ namespace SuccessStory.Views
 
     public class BooleanAndConverter : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             foreach (object value in values)
             {
@@ -464,7 +462,7 @@ namespace SuccessStory.Views
             return true;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
         }

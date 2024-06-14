@@ -18,22 +18,21 @@ namespace SuccessStory.Clients
 {
     public abstract class GenericAchievements
     {
-        internal static ILogger logger => LogManager.GetLogger();
-        internal static IResourceProvider resources => new ResourceProvider();
+        internal static ILogger Logger => LogManager.GetLogger();
 
-        protected static IWebView _WebViewOffscreen;
+        protected static IWebView webViewOffscreen;
         internal static IWebView WebViewOffscreen
         {
             get
             {
-                if (_WebViewOffscreen == null)
+                if (webViewOffscreen == null)
                 {
-                    _WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView();
+                    webViewOffscreen = API.Instance.WebViews.CreateOffscreenView();
                 }
-                return _WebViewOffscreen;
+                return webViewOffscreen;
             }
 
-            set => _WebViewOffscreen = value;
+            set => webViewOffscreen = value;
         }
 
         internal static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
@@ -48,7 +47,7 @@ namespace SuccessStory.Clients
         protected string LastErrorId { get; set; }
         protected string LastErrorMessage { get; set; }
 
-        internal string cookiesPath { get; }
+        internal string CookiesPath { get; }
 
 
 
@@ -59,7 +58,7 @@ namespace SuccessStory.Clients
             this.LocalLang = LocalLang;
             this.LocalLangShort = LocalLangShort;
 
-            cookiesPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, CommonPlayniteShared.Common.Paths.GetSafePathName($"{ClientName}.json"));
+            CookiesPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, CommonPlayniteShared.Common.Paths.GetSafePathName($"{ClientName}.json"));
         }
 
 
@@ -71,7 +70,7 @@ namespace SuccessStory.Clients
         /// <returns></returns>
         public GameAchievements GetAchievements(Guid Id)
         {
-            Game game = PluginDatabase.PlayniteApi.Database.Games.Get(Id);
+            Game game = API.Instance.Database.Games.Get(Id);
             if (game == null)
             {
                 return new GameAchievements();
@@ -130,13 +129,13 @@ namespace SuccessStory.Clients
         #region Cookies
         internal List<HttpCookie> GetCookies()
         {
-            if (File.Exists(cookiesPath))
+            if (File.Exists(CookiesPath))
             {
                 try
                 {
                     return Serialization.FromJson<List<HttpCookie>>(
                         Encryption.DecryptFromFile(
-                            cookiesPath,
+                            CookiesPath,
                             Encoding.UTF8,
                             WindowsIdentity.GetCurrent().User.Value));
                 }
@@ -151,9 +150,9 @@ namespace SuccessStory.Clients
 
         internal void SetCookies(List<HttpCookie> httpCookies)
         {
-            FileSystem.CreateDirectory(Path.GetDirectoryName(cookiesPath));
+            FileSystem.CreateDirectory(Path.GetDirectoryName(CookiesPath));
             Encryption.EncryptToFile(
-                cookiesPath,
+                CookiesPath,
                 Serialization.ToJson(httpCookies),
                 Encoding.UTF8,
                 WindowsIdentity.GetCurrent().User.Value);
@@ -166,9 +165,9 @@ namespace SuccessStory.Clients
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled";
             LastErrorMessage = Message;
-            logger.Warn($"{ClientName} is enable then disabled in Playnite");
+            Logger.Warn($"{ClientName} is enable then disabled in Playnite");
 
-            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+            API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled",
                 $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error
@@ -179,9 +178,9 @@ namespace SuccessStory.Clients
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate";
             LastErrorMessage = Message;
-            logger.Warn($"{ClientName} user is not authenticated");
+            Logger.Warn($"{ClientName} user is not authenticated");
 
-            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+            API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate",
                 $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
@@ -212,9 +211,9 @@ namespace SuccessStory.Clients
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noconfig";
             LastErrorMessage = Message;
-            logger.Warn($"{ClientName} is not configured");
+            Logger.Warn($"{ClientName} is not configured");
 
-            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+            API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noconfig",
                 $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
@@ -244,7 +243,7 @@ namespace SuccessStory.Clients
         {
             if (!LastErrorMessage.IsNullOrEmpty())
             {
-                PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                API.Instance.Notifications.Add(new NotificationMessage(
                     LastErrorId,
                     $"{PluginDatabase.PluginName}\r\n{LastErrorMessage}",
                     NotificationType.Error

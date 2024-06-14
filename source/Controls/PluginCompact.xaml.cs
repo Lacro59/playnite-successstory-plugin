@@ -19,6 +19,7 @@ using SuccessStory.Controls.Customs;
 using CommonPluginsShared.Converters;
 using System.Globalization;
 using CommonPluginsShared.Extensions;
+using Playnite.SDK;
 
 namespace SuccessStory.Controls
 {
@@ -27,26 +28,22 @@ namespace SuccessStory.Controls
     /// </summary>
     public partial class PluginCompact : PluginUserControlExtend
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase
-        {
-            get => PluginDatabase;
-            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-        }
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginCompactDataContext ControlDataContext = new PluginCompactDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginCompactDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginCompactDataContext)controlDataContext;
         }
 
 
         #region Properties
         public bool IsUnlocked
         {
-            get { return (bool)GetValue(IsUnlockedProperty); }
-            set { SetValue(IsUnlockedProperty, value); }
+            get => (bool)GetValue(IsUnlockedProperty);
+            set => SetValue(IsUnlockedProperty, value);
         }
 
         public static readonly DependencyProperty IsUnlockedProperty = DependencyProperty.Register(
@@ -60,19 +57,19 @@ namespace SuccessStory.Controls
         public PluginCompact()
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher?.BeginInvoke((Action)delegate
+                _ = Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
                     PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
 
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
@@ -99,9 +96,8 @@ namespace SuccessStory.Controls
 
 
             // With PlayerActivities
-            if (this.Tag is DateTime)
+            if (Tag is DateTime)
             {
-                IsActivated = true;
                 ControlDataContext.DisplayLastest = false;
                 ControlDataContext.Height = 48;
             }
@@ -115,14 +111,7 @@ namespace SuccessStory.Controls
                 ControlDataContext.DisplayLastest = false;
             }
 
-            if (ControlDataContext.DisplayLastest)
-            {
-                PART_DisplayLastest.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                PART_DisplayLastest.Visibility = Visibility.Collapsed;
-            }
+            PART_DisplayLastest.Visibility = ControlDataContext.DisplayLastest ? Visibility.Visible : Visibility.Collapsed;
 
             PART_ScCompactView.Children.Clear();
             PART_ScCompactView.ColumnDefinitions.Clear();
@@ -151,7 +140,7 @@ namespace SuccessStory.Controls
             PART_AchievementImage.Children.Clear();
             if (IsUnlocked && ListAchievements.Count > 0 && ControlDataContext.DisplayLastest)
             {
-                ControlDataContext.LastestAchievement = ListAchievements.Where(x => x.DateUnlocked == ListAchievements.Max(y => y.DateUnlocked)).FirstOrDefault();
+                ControlDataContext.LastestAchievement = ListAchievements.FirstOrDefault(x => x.DateUnlocked == ListAchievements.Max(y => y.DateUnlocked));
 
                 int index = ListAchievements.FindIndex(x => x == ControlDataContext.LastestAchievement);
                 ListAchievements.RemoveAt(index);
@@ -165,7 +154,7 @@ namespace SuccessStory.Controls
                 achievementImage.EnableRaretyIndicator = ControlDataContext.LastestAchievement.EnableRaretyIndicator;
                 achievementImage.DisplayRaretyValue = ControlDataContext.LastestAchievement.DisplayRaretyValue;
 
-                PART_AchievementImage.Children.Add(achievementImage);
+                _ = PART_AchievementImage.Children.Add(achievementImage);
 
                 PART_LastestAchievementName.Text = ControlDataContext.LastestAchievement.Name;
                 PART_LastestAchievementNameToolTip.Content = ControlDataContext.LastestAchievement.Name;
@@ -207,14 +196,9 @@ namespace SuccessStory.Controls
                 textBlock.Foreground,
                 VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
-            if (formattedText.Width > textBlock.DesiredSize.Width)
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
-            }
+            ((ToolTip)((TextBlock)sender).ToolTip).Visibility = formattedText.Width > textBlock.DesiredSize.Width
+                ? Visibility.Visible 
+                : Visibility.Hidden;
         }
 
         private void PART_ScCompactView_IsLoaded(object sender, RoutedEventArgs e)
@@ -245,24 +229,18 @@ namespace SuccessStory.Controls
                 Grid.SetRow(PART_DisplayLastest, 0);
             }
 
-            if (ControlDataContext.DisplayLastest && !ControlDataContext.OneLine)
-            {
-                PART_LineSeparator.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                PART_LineSeparator.Visibility = Visibility.Collapsed;
-            }
+            PART_LineSeparator.Visibility = ControlDataContext.DisplayLastest && !ControlDataContext.OneLine 
+                ? Visibility.Visible 
+                : Visibility.Collapsed;
 
 
-            var AchievementsList = ControlDataContext.ItemsSource;
-            
-            
+            ObservableCollection<Achievements> AchievementsList = ControlDataContext.ItemsSource;
+
             // With PlayerActivities
-            if (this.Tag is DateTime)
+            if (Tag is DateTime)
             {
                 AchievementsList = AchievementsList
-                    .Where(x => x.DateUnlocked?.ToLocalTime().ToString("yyyy-MM--dd").IsEqual(((DateTime)this.Tag).ToString("yyyy-MM--dd")) ?? false)
+                    .Where(x => x.DateUnlocked?.ToLocalTime().ToString("yyyy-MM--dd").IsEqual(((DateTime)Tag).ToString("yyyy-MM--dd")) ?? false)
                     .ToObservable();
             }
 
@@ -278,8 +256,10 @@ namespace SuccessStory.Controls
             {
                 for (int i = 0; i < nbGrid; i++)
                 {
-                    ColumnDefinition gridCol = new ColumnDefinition();
-                    gridCol.Width = new GridLength(1, GridUnitType.Star);
+                    ColumnDefinition gridCol = new ColumnDefinition
+                    {
+                        Width = new GridLength(1, GridUnitType.Star)
+                    };
                     PART_ScCompactView.ColumnDefinitions.Add(gridCol);
 
                     if (i < AchievementsList.Count)
@@ -311,7 +291,7 @@ namespace SuccessStory.Controls
                             achievementImage.IconCustom = AchievementsList[i].IconCustom;
                             achievementImage.IconText = AchievementsList[i].IconText;
 
-                            PART_ScCompactView.Children.Add(achievementImage);
+                            _ = PART_ScCompactView.Children.Add(achievementImage);
                         }
                         else
                         {
@@ -322,7 +302,7 @@ namespace SuccessStory.Controls
                             lb.HorizontalAlignment = HorizontalAlignment.Center;
                             lb.SetValue(Grid.ColumnProperty, i);
 
-                            PART_ScCompactView.Children.Add(lb);
+                            _ = PART_ScCompactView.Children.Add(lb);
                         }
                     }
                 }
@@ -345,22 +325,22 @@ namespace SuccessStory.Controls
 
     public class PluginCompactDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private double _Height;
-        public double Height { get => _Height; set => SetValue(ref _Height, value); }
+        private double height;
+        public double Height { get => height; set => SetValue(ref height, value); }
 
-        private bool _DisplayLastest;
-        public bool DisplayLastest { get => _DisplayLastest; set => SetValue(ref _DisplayLastest, value); }
+        private bool displayLastest;
+        public bool DisplayLastest { get => displayLastest; set => SetValue(ref displayLastest, value); }
 
-        private bool _OneLine;
-        public bool OneLine { get => _OneLine; set => SetValue(ref _OneLine, value); }
+        private bool oneLine;
+        public bool OneLine { get => oneLine; set => SetValue(ref oneLine, value); }
 
-        private ObservableCollection<Achievements> _ItemsSource;
-        public ObservableCollection<Achievements> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
+        private ObservableCollection<Achievements> itemsSource;
+        public ObservableCollection<Achievements> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
 
-        private Achievements _LastestAchievement;
-        public Achievements LastestAchievement { get => _LastestAchievement; set => SetValue(ref _LastestAchievement, value); }
+        private Achievements lastestAchievement;
+        public Achievements LastestAchievement { get => lastestAchievement; set => SetValue(ref lastestAchievement, value); }
     }
 }

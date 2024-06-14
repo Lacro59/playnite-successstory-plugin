@@ -204,6 +204,9 @@
     <Compile Include="Services\NDS.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />
     <Compile Include="Services\SuccessStorySearch.cs" />
+    <Compile Include="Services\SuccessStoryTopPanelItem.cs" />
+    <Compile Include="Services\SuccessStoryViewRaSidebar.cs" />
+    <Compile Include="Services\SucessStoryViewSidebar.cs" />
     <Compile Include="SuccessStory.cs" />
     <Compile Include="SuccessStorySettings.cs" />
     <Compile Include="Views\Interfaces\OverwatchCareerStats.xaml.cs">
@@ -514,17 +517,17 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Compile Models\* -->
-    <Compile Include="Models\GenshinImpactAchievementsCategory.cs" />
+    <Compile Include="Models\GenshinImpact\GenshinImpactAchievementsCategory.cs" />
     <Compile Include="Models\Achievements.cs" />
     <Compile Include="Models\AchRaretyStats.cs" />
-    <Compile Include="Models\BattleNetSc2Ach.cs" />
-    <Compile Include="Models\BattleNetSc2Profil.cs" />
+    <Compile Include="Models\StarCraft2\BattleNetSc2Ach.cs" />
+    <Compile Include="Models\StarCraft2\BattleNetSc2Profil.cs" />
     <Compile Include="Models\ExophaseSearchResult.cs" />
     <Compile Include="Models\GameStats.cs" />
-    <Compile Include="Models\GenshinImpactAchievementData.cs" />
-    <Compile Include="Models\GW2Achievements.cs" />
-    <Compile Include="Models\GW2AchievementsGroups.cs" />
-    <Compile Include="Models\GW2OwnedAchievements.cs" />
+    <Compile Include="Models\GenshinImpact\GenshinImpactAchievementData.cs" />
+    <Compile Include="Models\GuildWars2\GW2Achievements.cs" />
+    <Compile Include="Models\GuildWars2\GW2AchievementsGroups.cs" />
+    <Compile Include="Models\GuildWars2\GW2OwnedAchievements.cs" />
     <Compile Include="Models\ListAchievements.cs" />
     <Compile Include="Models\ListAll.cs" />
     <Compile Include="Models\ListGames.cs" />
@@ -535,9 +538,9 @@
     <Compile Include="Models\RaConsoleAssociated.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SuccessStoryCollection.cs" />
-    <Compile Include="Models\WowAchievementsData.cs" />
+    <Compile Include="Models\Wow\WowAchievementsData.cs" />
     <Compile Include="Models\CbData.cs" />
-    <Compile Include="Models\WowRegionResult.cs" />
+    <Compile Include="Models\Wow\WowRegionResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <!-- Localization\*.xaml -->

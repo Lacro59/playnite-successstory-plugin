@@ -27,16 +27,13 @@ namespace SuccessStory.Views.Interfaces
     /// </summary>
     public partial class OverwatchStats : UserControl
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private GameAchievements GameAchievements { get; set; }
 
-        private GameAchievements gameAchievements;
-
-        private List<GameStats> gameStats = new List<GameStats>();
-        private List<GameStats> gameStatsTopHero = new List<GameStats>();
-        private List<GameStats> gameStatsCareer = new List<GameStats>();
+        private List<GameStats> GameStats { get; set; } = new List<GameStats>();
+        private List<GameStats> GameStatsTopHero { get; set; } = new List<GameStats>();
+        private List<GameStats> GameStatsCareer { get; set; } = new List<GameStats>();
 
         public enum OverWatchMode
         {
@@ -96,23 +93,23 @@ namespace SuccessStory.Views.Interfaces
 
             try
             {
-                gameStats = new List<GameStats>();
-                gameAchievements = PluginDatabase.Get(GameContext, true);
+                GameStats = new List<GameStats>();
+                GameAchievements = PluginDatabase.Get(GameContext, true);
 
                 switch (DataMode)
                 {
                     case OverWatchMode.QuickPlay:
-                        gameStats = Serialization.GetClone(gameAchievements.ItemsStats.Where(x => x.Mode?.IsEqual("quickplay") ?? false).ToList());
+                        GameStats = Serialization.GetClone(GameAchievements.ItemsStats.Where(x => x.Mode?.IsEqual("quickplay") ?? false).ToList());
                         break;
 
                     case OverWatchMode.CompetitivePlay:
-                        gameStats = Serialization.GetClone(gameAchievements.ItemsStats.Where(x => x.Mode?.IsEqual("competitive") ?? false).ToList());
+                        GameStats = Serialization.GetClone(GameAchievements.ItemsStats.Where(x => x.Mode?.IsEqual("competitive") ?? false).ToList());
                         break;
                 }
 
 
                 // Player info
-                int Endorsement = (int)gameAchievements.ItemsStats.Find(x => x.Name == "PlayerEndorsement").Value;
+                int Endorsement = (int)GameAchievements.ItemsStats.Find(x => x.Name == "PlayerEndorsement").Value;
                 string EndorsementFrame = string.Empty;
                 switch (Endorsement)
                 {
@@ -135,32 +132,32 @@ namespace SuccessStory.Views.Interfaces
 
                 Player player = new Player
                 {
-                    Name = gameAchievements.ItemsStats.Find(x => x.Name == "PlayerName").DisplayName,
-                    Portrait = gameAchievements.ItemsStats.Find(x => x.Name == "PlayerPortrait").ImageUrl,
+                    Name = GameAchievements.ItemsStats.Find(x => x.Name == "PlayerName").DisplayName,
+                    Portrait = GameAchievements.ItemsStats.Find(x => x.Name == "PlayerPortrait").ImageUrl,
 
-                    LevelFrame = gameAchievements.ItemsStats.Find(x => x.Name == "PlayerLevelFrame").ImageUrl,
-                    Level = (int)gameAchievements.ItemsStats.Find(x => x.Name == "PlayerLevel").Value,
-                    LevelRank = gameAchievements.ItemsStats.Find(x => x.Name == "PlayerLevelRank").ImageUrl,
+                    LevelFrame = GameAchievements.ItemsStats.Find(x => x.Name == "PlayerLevelFrame").ImageUrl,
+                    Level = (int)GameAchievements.ItemsStats.Find(x => x.Name == "PlayerLevel").Value,
+                    LevelRank = GameAchievements.ItemsStats.Find(x => x.Name == "PlayerLevelRank").ImageUrl,
 
                     EndorsementFrame = EndorsementFrame,
                     Endorsement = Endorsement,
 
-                    GamesWon = string.Format(resources.GetString("LOCSsOverwatchGamesWon"), (int)gameAchievements.ItemsStats.Find(x => x.Name == "MatchWin").Value)
+                    GamesWon = string.Format(ResourceProvider.GetString("LOCSsOverwatchGamesWon"), (int)GameAchievements.ItemsStats.Find(x => x.Name == "MatchWin").Value)
                 };
 
 
                 // Top hero
-                gameStatsTopHero = Serialization.GetClone(gameStats.Where(x => x.Category == "TopHero")).ToList();
-                List<string> ComboBoxTopHero = gameStatsTopHero.Select(x => x.CareerType).Distinct().ToList();
+                GameStatsTopHero = Serialization.GetClone(GameStats.Where(x => x.Category == "TopHero")).ToList();
+                List<string> ComboBoxTopHero = GameStatsTopHero.Select(x => x.CareerType).Distinct().ToList();
 
 
                 // Career stats
-                gameStatsCareer = Serialization.GetClone(gameStats.Where(x => x.Category == "CarrerStats")).ToList();
-                List<string> ComboBoxCareer = gameStatsCareer.Select(x => x.CareerType).Distinct().ToList();
+                GameStatsCareer = Serialization.GetClone(GameStats.Where(x => x.Category == "CarrerStats")).ToList();
+                List<string> ComboBoxCareer = GameStatsCareer.Select(x => x.CareerType).Distinct().ToList();
 
 
                 // Achievements
-                List<string> ComboBoxAchievements = gameAchievements.Items.Select(x => x.Category).Distinct().ToList();
+                List<string> ComboBoxAchievements = GameAchievements.Items.Select(x => x.Category).Distinct().ToList();
 
 
                 this.DataContext = null;
@@ -186,7 +183,7 @@ namespace SuccessStory.Views.Interfaces
 
         private void PART_TopHeroCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<GameStats> StatsTopHero = Serialization.GetClone(gameStatsTopHero.Where(x => x.CareerType == (string)PART_TopHeroCategory.SelectedItem)).ToList();
+            List<GameStats> StatsTopHero = Serialization.GetClone(GameStatsTopHero.Where(x => x.CareerType == (string)PART_TopHeroCategory.SelectedItem)).ToList();
             List<TopHero> TopHeroCategoryData = new List<TopHero>();
 
             double HeroMaxValue = 0;
@@ -217,7 +214,7 @@ namespace SuccessStory.Views.Interfaces
 
         private void PART_CareerCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<GameStats> StatsCareer = Serialization.GetClone(gameStatsCareer.Where(x => x.CareerType == (string)PART_CareerCategory.SelectedItem)).ToList();
+            List<GameStats> StatsCareer = Serialization.GetClone(GameStatsCareer.Where(x => x.CareerType == (string)PART_CareerCategory.SelectedItem)).ToList();
             List<string> ComboBoxCareer = StatsCareer.Select(x => x.SubCategory).Distinct().ToList();
             List<List<Career>> Careerdata = new List<List<Career>>();
 
@@ -246,7 +243,7 @@ namespace SuccessStory.Views.Interfaces
 
         private void PART_ComboBoxAchievements_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<Achievements> achievements = gameAchievements.Items.Where(x => x.Category == (string)PART_ComboBoxAchievements.SelectedItem).ToList();
+            List<Achievements> achievements = GameAchievements.Items.Where(x => x.Category == (string)PART_ComboBoxAchievements.SelectedItem).ToList();
 
             PART_AchievementsData.ItemsSource = null;
             PART_AchievementsData.Items.Clear();

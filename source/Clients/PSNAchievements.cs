@@ -1,4 +1,4 @@
-﻿using CommonPlayniteShared.PluginLibrary.PSNLibrary;
+﻿using CommonPlayniteShared.PluginLibrary.PSNLibrary.Services;
 using CommonPluginsShared;
 using CommonPluginsShared.Models;
 using CommonPluginsStores;
@@ -12,53 +12,54 @@ using System.Globalization;
 using CommonPluginsShared.Extensions;
 using CommonPlayniteShared.PluginLibrary.PSNLibrary.Models;
 using static CommonPluginsShared.PlayniteTools;
+using Playnite.SDK;
 
 namespace SuccessStory.Clients
 {
     // https://andshrew.github.io/PlayStation-Trophies/#/APIv2
     class PSNAchievements : GenericAchievements
     {
-        protected static PsnAllTrophies _PsnAllTrophies;
+        protected static PsnAllTrophies psnAllTrophies;
         internal static PsnAllTrophies PsnAllTrophies
         {
             get
             {
-                if (_PsnAllTrophies == null)
+                if (psnAllTrophies == null)
                 {
-                    _PsnAllTrophies = GetAllTrophies();
+                    psnAllTrophies = GetAllTrophies();
                 }
-                return _PsnAllTrophies;
+                return psnAllTrophies;
             }
 
-            set => _PsnAllTrophies = value;
+            set => psnAllTrophies = value;
         }
 
-        protected static PSNAccountClient _PsnAPI;
-        internal static PSNAccountClient PsnAPI
+        protected static PSNClient psnAPI;
+        internal static PSNClient PsnAPI
         {
             get
             {
-                if (_PsnAPI == null)
+                if (psnAPI == null)
                 {
-                    _PsnAPI = new PSNAccountClient(PluginDatabase.PlayniteApi, PsnDataPath);
+                    psnAPI = new PSNClient(PsnDataPath);
                 }
-                return _PsnAPI;
+                return psnAPI;
             }
 
-            set => _PsnAPI = value;
+            set => psnAPI = value;
         }
 
         private static string PsnDataPath { get; set; }
 
         public string CommunicationId { get; set; }
 
-        private static string UrlTrophiesDetails        => @"https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/{0}/trophyGroups/all/trophies";
-        private static string UrlTrophies               => @"https://m.np.playstation.com/api/trophy/v1/users/me/npCommunicationIds/{0}/trophyGroups/all/trophies";
-        private static string urlAllTrophies            => @"https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles";
-        private static string trophiesWithIdsMobileUrl  => @"https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?npTitleIds={0}";
+        private static string UrlTrophiesDetails => @"https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/{0}/trophyGroups/all/trophies";
+        private static string UrlTrophies => @"https://m.np.playstation.com/api/trophy/v1/users/me/npCommunicationIds/{0}/trophyGroups/all/trophies";
+        private static string UrlAllTrophies => @"https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles";
+        private static string TrophiesWithIdsMobileUrl => @"https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?npTitleIds={0}";
 
 
-        public PSNAchievements() : base("PSN", CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public PSNAchievements() : base("PSN", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language))
         {
             PsnDataPath = PluginDatabase.Paths.PluginUserDataPath + "\\..\\e4ac81cb-1b1a-4ec9-8639-9a9633989a71";
         }
@@ -94,7 +95,7 @@ namespace SuccessStory.Clients
                     {
                         try
                         {
-                            string UrlTrophiesMobile = string.Format(trophiesWithIdsMobileUrl, GameId);
+                            string UrlTrophiesMobile = string.Format(TrophiesWithIdsMobileUrl, GameId);
                             string WebTrophiesMobileResult = Web.DownloadStringData(UrlTrophiesMobile, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
                             TrophyTitlesWithIdsMobile titles_part = Serialization.FromJson<TrophyTitlesWithIdsMobile>(WebTrophiesMobileResult);
 
@@ -112,7 +113,7 @@ namespace SuccessStory.Clients
                                 }
                                 else
                                 {
-                                    logger.Warn($"No trohpies find for {game.Name} - {GameId}");
+                                    Logger.Warn($"No trohpies find for {game.Name} - {GameId}");
                                     gameAchievements.Items = AllAchievements;
                                     return gameAchievements;
                                 }
@@ -144,7 +145,7 @@ namespace SuccessStory.Clients
                     }
                     catch
                     {
-                        logger.Warn($"No trophiesDetails find for {game.Name} - {GameId}");
+                        Logger.Warn($"No trophiesDetails find for {game.Name} - {GameId}");
                         gameAchievements.Items = AllAchievements;
                         return gameAchievements;
                     }
@@ -156,7 +157,7 @@ namespace SuccessStory.Clients
 
                         AllAchievements.Add(new Achievements
                         {
-                            Name = trophie.trophyName.IsNullOrEmpty() ? resources.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
+                            Name = trophie.trophyName.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
                             Description = trophie.trophyDetail,
                             UrlUnlocked = trophie.trophyIconUrl.IsNullOrEmpty() ? "hidden_trophy.png" : trophie.trophyIconUrl,
                             DateUnlocked = (trophieUser?.earnedDateTime == null) ? default(DateTime) : trophieUser.earnedDateTime,
@@ -173,7 +174,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
+                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
             }
 
 
@@ -200,7 +201,7 @@ namespace SuccessStory.Clients
         {
             if (CommonPluginsShared.PlayniteTools.IsDisabledPlaynitePlugins("PSNLibrary"))
             {
-                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsPsnDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsPsnDisabled"));
                 return false;
             }
             else
@@ -212,7 +213,7 @@ namespace SuccessStory.Clients
                 catch (Exception ex)
                 {
                     Common.LogError(ex, true);
-                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
+                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
                     return false;
                 }
 
@@ -222,7 +223,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
+                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)
@@ -259,10 +260,10 @@ namespace SuccessStory.Clients
 
             try
             {
-                string WebResult = Web.DownloadStringData(urlAllTrophies, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
+                string WebResult = Web.DownloadStringData(UrlAllTrophies, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
                 psnAllTrophies = Serialization.FromJson<PsnAllTrophies>(WebResult);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }

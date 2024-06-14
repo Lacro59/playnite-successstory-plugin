@@ -1,6 +1,7 @@
 ﻿using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
@@ -17,37 +18,33 @@ namespace SuccessStory.Controls
     /// </summary>
     public partial class PluginCompactList : PluginUserControlExtend
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase
-        {
-            get => PluginDatabase;
-            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-        }
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginCompactListDataContext ControlDataContext = new PluginCompactListDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginCompactListDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginCompactListDataContext)controlDataContext;
         }
 
 
         public PluginCompactList()
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher?.BeginInvoke((Action)delegate
+                _ = Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
                     PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
 
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
@@ -77,16 +74,16 @@ namespace SuccessStory.Controls
 
     public class PluginCompactListDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private double _Height;
-        public double Height { get => _Height; set => SetValue(ref _Height, value); }
+        private double height;
+        public double Height { get => height; set => SetValue(ref height, value); }
 
-        private double _PictureHeight;
-        public double PictureHeight { get => _PictureHeight; set => SetValue(ref _PictureHeight, value); }
+        private double pictureHeight;
+        public double PictureHeight { get => pictureHeight; set => SetValue(ref pictureHeight, value); }
 
-        private ObservableCollection<Achievements> _ItemsSource;
-        public ObservableCollection<Achievements> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
+        private ObservableCollection<Achievements> itemsSource;
+        public ObservableCollection<Achievements> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
     }
 }

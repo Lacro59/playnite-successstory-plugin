@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using CommonPluginsShared;
+using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
+using SuccessStory.Models.GenshinImpact;
 
 namespace SuccessStory.Clients
 {
-    class GenshinImpactAchievements : GenericAchievements
+    public class GenshinImpactAchievements : GenericAchievements
     {
-        private static string Url                       => @"https://raw.githubusercontent.com/Sycamore0/GenshinData/main/";
-        private static string UrlSource                 => @"https://github.com/Sycamore0/GenshinData";
-        private static string UrlTextMap                => Url + @"/TextMap/TextMap{0}.json";
-        private static string UrlAchievementsCategory   => Url + @"/ExcelBinOutput/AchievementGoalExcelConfigData.json";
-        private static string UrlAchievements           => Url + @"/ExcelBinOutput/AchievementExcelConfigData.json";
+        private static string Url => @"https://raw.githubusercontent.com/Sycamore0/GenshinData/main/";
+        private static string UrlSource => @"https://github.com/Sycamore0/GenshinData";
+        private static string UrlTextMap => Url + @"/TextMap/TextMap{0}.json";
+        private static string UrlAchievementsCategory => Url + @"/ExcelBinOutput/AchievementGoalExcelConfigData.json";
+        private static string UrlAchievements => Url + @"/ExcelBinOutput/AchievementExcelConfigData.json";
 
-        public GenshinImpactAchievements() : base("GenshinImpact", CodeLang.GetGenshinLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public GenshinImpactAchievements() : base("GenshinImpact", CodeLang.GetGenshinLang(API.Instance.ApplicationSettings.Language))
         {
 
         }
@@ -31,21 +33,21 @@ namespace SuccessStory.Clients
             {
                 string Url = string.Format(UrlTextMap, LocalLang.ToUpper());
                 string TextMapString = Web.DownloadStringData(Url).GetAwaiter().GetResult();
-                Serialization.TryFromJson(TextMapString, out dynamic TextMap);
+                _ = Serialization.TryFromJson(TextMapString, out dynamic TextMap);
                 if (TextMap == null)
                 {
                     throw new Exception($"No data from {Url}");
                 }
 
                 string AchievementsString = Web.DownloadStringData(UrlAchievements).GetAwaiter().GetResult();
-                Serialization.TryFromJson(AchievementsString, out List<GenshinImpactAchievementData> GenshinImpactAchievements);
+                _ = Serialization.TryFromJson(AchievementsString, out List<GenshinImpactAchievementData> GenshinImpactAchievements);
                 if (GenshinImpactAchievements == null)
                 {
                     throw new Exception($"No data from {UrlAchievements}");
                 }
 
                 string AchievementsCategoryString = Web.DownloadStringData(UrlAchievementsCategory).GetAwaiter().GetResult();
-                Serialization.TryFromJson(AchievementsCategoryString, out List<GenshinImpactAchievementsCategory> GenshinImpactAchievementsCategory);
+                _ = Serialization.TryFromJson(AchievementsCategoryString, out List<GenshinImpactAchievementsCategory> GenshinImpactAchievementsCategory);
                 if (GenshinImpactAchievementsCategory == null)
                 {
                     throw new Exception($"No data from {UrlAchievementsCategory}");

@@ -7,6 +7,7 @@ using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
+using SuccessStory.Models.StarCraft2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +18,17 @@ namespace SuccessStory.Clients
 {
     internal class Starcraft2Achievements : BattleNetAchievements
     {
-        private string UserSc2Id = string.Empty;
+        private string UserSc2Id { get; set; } = string.Empty;
 
-        private const string UrlStarCraft2 = @"https://starcraft2.com/";
-        private const string UrlStarCraft2Login = @"https://starcraft2.com/login";
-        private const string UrlStarCraft2ProfilInfo = @"https://starcraft2.com/api/sc2/profile/{2}/1/{0}?locale={1}";
-        private const string UrlStarCraft2AchInfo = @"https://starcraft2.com/api/sc2/static/profile/2?locale={0}";
+        private static string UrlStarCraft2 => @"https://starcraft2.com";
+        private static string UrlStarCraft2Login => UrlStarCraft2 + @"/login";
+        private static string UrlStarCraft2ProfilInfo => UrlStarCraft2 + @"/api/sc2/profile/{2}/1/{0}?locale={1}";
+        private static string UrlStarCraft2AchInfo => UrlStarCraft2 + @"/api/sc2/static/profile/2?locale={0}";
 
         private string UrlProfil = string.Empty;
 
 
-        public Starcraft2Achievements() : base("Starcraft 2", PluginDatabase.PlayniteApi.ApplicationSettings.Language)
+        public Starcraft2Achievements() : base("Starcraft 2", API.Instance.ApplicationSettings.Language)
         {
 
         }
@@ -44,15 +45,15 @@ namespace SuccessStory.Clients
                 if (!UrlProfil.IsNullOrEmpty())
                 {
                     string region = "0";
-                    if(UrlProfil.IndexOf("profile/1/1") > -1)
+                    if (UrlProfil.IndexOf("profile/1/1") > -1)
                     {
                         region = "1";
                     }
-                    if(UrlProfil.IndexOf("profile/2/1") > -1)
+                    if (UrlProfil.IndexOf("profile/2/1") > -1)
                     {
                         region = "2";
                     }
-                    if(UrlProfil.IndexOf("profile/3/1") > -1)
+                    if (UrlProfil.IndexOf("profile/3/1") > -1)
                     {
                         region = "3";
                     }
@@ -73,20 +74,20 @@ namespace SuccessStory.Clients
                         try
                         {
                             string ApiName = earnedAchievement.achievementId;
-                            Achievement achievement = battleNetSc2Ach.achievements.Where(x => x.id == ApiName).FirstOrDefault();
-                            string Name = achievement.title;
-                            string Description = achievement.description;
-                            string UrlImage = achievement.imageUrl;
+                            Achievement achievement = battleNetSc2Ach.Achievements.FirstOrDefault(x => x.Id == ApiName);
+                            string Name = achievement.Title;
+                            string Description = achievement.Description;
+                            string UrlImage = achievement.ImageUrl;
 
                             int.TryParse(earnedAchievement.completionDate, out int ElpasedTime);
 
-                            DateTime DateUnlocked = (ElpasedTime == 0) ? default(DateTime) : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(ElpasedTime).ToLocalTime();
+                            DateTime DateUnlocked = (ElpasedTime == 0) ? default : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(ElpasedTime).ToLocalTime();
 
-                            Models.Category cat = battleNetSc2Ach.categories.Where(x => x.id == achievement.categoryId).FirstOrDefault();
-                            Models.Category catParent = battleNetSc2Ach.categories.Where(x => x.id == cat.parentCategoryId).FirstOrDefault();
+                            Models.StarCraft2.Category cat = battleNetSc2Ach.Categories.FirstOrDefault(x => x.Id == achievement.CategoryId);
+                            Models.StarCraft2.Category catParent = battleNetSc2Ach.Categories.FirstOrDefault(x => x.Id == cat.ParentCategoryId);
 
-                            string Category = cat.name;
-                            string ParentCategory = catParent?.name;
+                            string Category = cat.Name;
+                            string ParentCategory = catParent?.Name;
 
 
                             AllAchievements.Add(new Achievements
@@ -109,12 +110,12 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2"), ExternalPlugin.BattleNetLibrary);
+                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2"), ExternalPlugin.BattleNetLibrary);
                 }
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
+                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
             }
 
             gameAchievements.Items = AllAchievements;
@@ -150,7 +151,7 @@ namespace SuccessStory.Clients
         {
             if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary"))
             {
-                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsBattleNetDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetDisabled"));
                 return false;
             }
 
@@ -160,7 +161,7 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
+                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticate"), ExternalPlugin.BattleNetLibrary);
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)
@@ -179,7 +180,7 @@ namespace SuccessStory.Clients
                 CachedIsConnectedResult = false;
                 string data = string.Empty;
                 List<HttpCookie> cookies = null;
-                using (var WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
                     WebViewOffscreen.NavigateAndWait(UrlStarCraft2Login);
                     data = WebViewOffscreen.GetPageSource();
@@ -221,15 +222,15 @@ namespace SuccessStory.Clients
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate";
             LastErrorMessage = Message;
-            logger.Warn($"{ClientName} user is not authenticated");
+            Logger.Warn($"{ClientName} user is not authenticated");
 
-            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+            API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled",
                 $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,
                 () =>
                 {
-                    using (var WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(400, 600))
+                    using (var WebView = API.Instance.WebViews.CreateView(400, 600))
                     {
                         WebView.LoadingChanged += (s, e) =>
                         {

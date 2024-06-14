@@ -1,6 +1,7 @@
 ﻿using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
@@ -16,37 +17,33 @@ namespace SuccessStory.Controls
     /// </summary>
     public partial class PluginViewItem : PluginUserControlExtend
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase
-        {
-            get => PluginDatabase;
-            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-        }
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginViewItemDataContext ControlDataContext = new PluginViewItemDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginViewItemDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginViewItemDataContext)controlDataContext;
         }
 
 
         public PluginViewItem()
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher?.BeginInvoke((Action)delegate
+                _ = Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
                     PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
 
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
@@ -79,19 +76,19 @@ namespace SuccessStory.Controls
 
     public class PluginViewItemDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private bool _IntegrationViewItemWithProgressBar;
-        public bool IntegrationViewItemWithProgressBar { get => _IntegrationViewItemWithProgressBar; set => SetValue(ref _IntegrationViewItemWithProgressBar, value); }
+        private bool integrationViewItemWithProgressBar;
+        public bool IntegrationViewItemWithProgressBar { get => integrationViewItemWithProgressBar; set => SetValue(ref integrationViewItemWithProgressBar, value); }
 
-        private string _LabelContent;
-        public string LabelContent { get => _LabelContent; set => SetValue(ref _LabelContent, value); }
+        private string labelContent;
+        public string LabelContent { get => labelContent; set => SetValue(ref labelContent, value); }
 
-        private double _Unlocked;
-        public double Unlocked { get => _Unlocked; set => SetValue(ref _Unlocked, value); }
+        private double unlocked;
+        public double Unlocked { get => unlocked; set => SetValue(ref unlocked, value); }
 
-        private double _Total;
-        public double Total { get => _Total; set => SetValue(ref _Total, value); }
+        private double total;
+        public double Total { get => total; set => SetValue(ref total, value); }
     }
 }

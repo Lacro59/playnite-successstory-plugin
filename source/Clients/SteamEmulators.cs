@@ -15,31 +15,34 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using Playnite.SDK;
 
 namespace SuccessStory.Clients
 {
     class SteamEmulators : GenericAchievements
     {
-        protected static SteamApi _steamApi;
-        internal static SteamApi steamApi
+        protected static SteamApi steamApi;
+        internal static SteamApi SteamApi
         {
             get
             {
-                if (_steamApi == null)
+                if (steamApi == null)
                 {
-                    _steamApi = new SteamApi(PluginDatabase.PluginName);
+                    steamApi = new SteamApi(PluginDatabase.PluginName);
                 }
-                return _steamApi;
+                return steamApi;
             }
 
-            set => _steamApi = value;
+            set => steamApi = value;
         }
 
         private List<string> AchievementsDirectories { get; set; } = new List<string>();
         private int SteamId { get; set; } = 0;
 
-        private string Hyphenate(string str, int pos) => string.Join("-", Regex.Split(str, @"(?<=\G.{" + pos + "})(?!$)"));
-
+        private string Hyphenate(string str, int pos)
+        {
+            return string.Join("-", Regex.Split(str, @"(?<=\G.{" + pos + "})(?!$)"));
+        }
 
         public SteamEmulators(List<Folder> LocalFolders) : base("SteamEmulators")
         {
@@ -104,7 +107,7 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             GameAchievements gameAchievementsCached = SuccessStory.PluginDatabase.Get(game, true);
 
-            this.SteamId = SteamId != 0 ? SteamId : steamApi.GetAppId(game.Name);
+            this.SteamId = SteamId != 0 ? SteamId : SteamApi.GetAppId(game.Name);
             SteamEmulatorData data = Get(game, this.SteamId, apiKey, IsManual);
 
             if (gameAchievementsCached == null)
@@ -157,7 +160,7 @@ namespace SuccessStory.Clients
                     // Achievement name
                     if (!line.IsEqual("[Stats]"))
                     {
-                        var data = line.Split('=');
+                        string[] data = line.Split('=');
                         if (data.Count() > 1 && !data[0].IsNullOrEmpty() && !data[0].IsEqual("STACount"))
                         {
                             Name = data[0];
@@ -167,7 +170,7 @@ namespace SuccessStory.Clients
                             }
                             catch
                             {
-                                double.TryParse(data[1], out Value);
+                                _ = double.TryParse(data[1], out Value);
                             }
 
                             gameStats.Add(new GameStats
@@ -710,9 +713,9 @@ namespace SuccessStory.Clients
 
                                 if (stats.Count != header)
                                 {
-                                    logger.Error("Invalid File");
+                                    Logger.Error("Invalid File");
                                 }
-                                string language = CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+                                string language = CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language);
                                 string site = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}", apiKey, SteamId, language);
 
                                 string Results = string.Empty;
@@ -724,7 +727,7 @@ namespace SuccessStory.Clients
                                 {
                                     if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
                                     {
-                                        var resp = (HttpWebResponse)ex.Response;
+                                        HttpWebResponse resp = (HttpWebResponse)ex.Response;
                                         switch (resp.StatusCode)
                                         {
                                             case HttpStatusCode.BadRequest: // HTTP 400
@@ -750,17 +753,20 @@ namespace SuccessStory.Clients
                                             string achname = resultItems[i]["name"];
                                             byte[] bn = Encoding.ASCII.GetBytes(achname);
                                             string hash = string.Empty;
-                                            foreach (byte b in crc.ComputeHash(bn)) hash += b.ToString("x2").ToUpper();
+                                            foreach (byte b in crc.ComputeHash(bn))
+                                            {
+                                                hash += b.ToString("x2").ToUpper();
+                                            }
                                             hash = Hyphenate(hash, 2);
                                             achnames.Add(hash, achname);
-                                        }    
+                                        }
                                     }
                                     catch
                                     {
-                                        logger.Error($"Error getting achievement names");
+                                        Logger.Error($"Error getting achievement names");
                                     }
                                 }
-                                
+
                                 for (int i = 0; i < stats.Count; i++)
                                 {
                                     try
@@ -769,7 +775,7 @@ namespace SuccessStory.Clients
                                         Array.Reverse(namebyte);
                                         Buffer.BlockCopy(stats[i], 8, datebyte, 0, 4);
                                         Name = BitConverter.ToString(namebyte);
-                                        
+
                                         if (achnames.ContainsKey(Name))
                                         {
                                             Name = achnames[Name];
@@ -792,12 +798,12 @@ namespace SuccessStory.Clients
                                         }
                                         else
                                         {
-                                            logger.Warn($"No matches found for crc in stats.bin.");
+                                            Logger.Warn($"No matches found for crc in stats.bin.");
                                         }
                                     }
                                     catch
                                     {
-                                        logger.Error($"Stats.bin file format incorrect for SSE");
+                                        Logger.Error($"Stats.bin file format incorrect for SSE");
                                     }
 
                                     Array.Clear(namebyte, 0, namebyte.Length);
@@ -811,7 +817,7 @@ namespace SuccessStory.Clients
                             string skidrowfile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\SKIDROW\\{SteamId}\\SteamEmu\\UserStats\\achiev.ini";
                             string darksidersfile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\DARKSiDERS\\{SteamId}\\SteamEmu\\UserStats\\achiev.ini";
                             string emu = "";
-                            
+
                             if (File.Exists(skidrowfile))
                             {
                                 emu = skidrowfile;
@@ -823,7 +829,7 @@ namespace SuccessStory.Clients
 
                             if (!(emu == ""))
                             {
-                                logger.Warn($"File found at {emu}");
+                                Logger.Warn($"File found at {emu}");
                                 string line;
                                 string Name = string.Empty;
                                 DateTime? DateUnlocked = null;
@@ -890,7 +896,7 @@ namespace SuccessStory.Clients
                             break;
 
                         case "%localappdata%\\skidrow":
-                            logger.Warn($"No treatment for {DirAchivements}");
+                            Logger.Warn($"No treatment for {DirAchivements}");
                             break;
 
                         default:
@@ -949,7 +955,7 @@ namespace SuccessStory.Clients
                                         int index = DataPath.FindIndex(x => x.IsEqual("steamemu"));
                                         string GameName = DataPath[index - 1];
 
-                                        int TempSteamId = steamApi.GetAppId(GameName);
+                                        int TempSteamId = SteamApi.GetAppId(GameName);
                                         if (TempSteamId == SteamId)
                                         {
                                             ReturnAchievements = GetSteamEmu(DirAchivements);
@@ -965,14 +971,14 @@ namespace SuccessStory.Clients
 
                 if (ReturnAchievements == new List<Achievements>())
                 {
-                    logger.Warn($"No data for {SteamId}");
+                    Logger.Warn($"No data for {SteamId}");
                     return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };
                 }
             }
 
             #region Get details achievements & stats
             // List details acheviements
-            string lang = CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+            string lang = CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language);
             string url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}", apiKey, SteamId, lang);
 
             string ResultWeb = string.Empty;

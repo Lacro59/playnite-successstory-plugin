@@ -15,34 +15,35 @@ using CommonPluginsShared.Models;
 using CommonPlayniteShared.PluginLibrary.XboxLibrary;
 using CommonPluginsShared.Extensions;
 using static CommonPluginsShared.PlayniteTools;
+using CommonPlayniteShared.PluginLibrary.XboxLibrary.Services;
 
 namespace SuccessStory.Clients
 {
     class XboxAchievements : GenericAchievements
     {
-        protected static XboxAccountClient _XboxAccountClient;
+        protected static XboxAccountClient xboxAccountClient;
         internal static XboxAccountClient XboxAccountClient
         {
             get
             {
-                if (_XboxAccountClient == null)
+                if (xboxAccountClient == null)
                 {
-                    _XboxAccountClient = new XboxAccountClient(
-                        PluginDatabase.PlayniteApi,
-                        PluginDatabase.Paths.PluginUserDataPath + "\\..\\7e4fbb5e-2ae3-48d4-8ba0-6b30e7a4e287"
+                    xboxAccountClient = new XboxAccountClient(
+                        API.Instance,
+                        PluginDatabase.Paths.PluginUserDataPath + "\\..\\" + PlayniteTools.GetPluginId(ExternalPlugin.XboxLibrary)
                     );
                 }
-                return _XboxAccountClient;
+                return xboxAccountClient;
             }
 
-            set => _XboxAccountClient = value;
+            set => xboxAccountClient = value;
         }
 
         private static string AchievementsBaseUrl => @"https://achievements.xboxlive.com/users/xuid({0})/achievements";
         private static string TitleAchievementsBaseUrl => @"https://achievements.xboxlive.com/users/xuid({0})/titleachievements";
 
 
-        public XboxAchievements() : base("Xbox", CodeLang.GetXboxLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public XboxAchievements() : base("Xbox", CodeLang.GetXboxLang(API.Instance.ApplicationSettings.Language))
         {
 
         }
@@ -60,7 +61,7 @@ namespace SuccessStory.Clients
                     AuthorizationData authData = XboxAccountClient.GetSavedXstsTokens();
                     if (authData == null)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
+                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
                         return gameAchievements;
                     }
 
@@ -73,7 +74,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
+                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
             }
 
 
@@ -108,7 +109,7 @@ namespace SuccessStory.Clients
         {
             if (PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary"))
             {
-                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsXboxDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxDisabled"));
                 return false;
             }
             else
@@ -119,7 +120,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
+                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)
@@ -189,19 +190,19 @@ namespace SuccessStory.Clients
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
                     {
-                        logger.Warn($"{ClientName} - User is not authenticated - {response.StatusCode}");
-                        PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                        Logger.Warn($"{ClientName} - User is not authenticated - {response.StatusCode}");
+                        API.Instance.Notifications.Add(new NotificationMessage(
                             $"{PluginDatabase.PluginName}-Xbox-notAuthenticate",
-                            $"{PluginDatabase.PluginName}\r\n{resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
+                            $"{PluginDatabase.PluginName}\r\n{ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate")}",
                             NotificationType.Error
                         ));
                     }
                     else
                     {
-                        logger.Warn($"{ClientName} - Error on GetXboxAchievements() - {response.StatusCode}");
-                        PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                        Logger.Warn($"{ClientName} - Error on GetXboxAchievements() - {response.StatusCode}");
+                        API.Instance.Notifications.Add(new NotificationMessage(
                             $"{PluginDatabase.PluginName}-Xbox-webError",
-                            $"{PluginDatabase.PluginName}\r\nXbox achievements: {resources.GetString("LOCImportError")}",
+                            $"{PluginDatabase.PluginName}\r\nXbox achievements: {ResourceProvider.GetString("LOCImportError")}",
                             NotificationType.Error
                         ));
                     }
@@ -244,7 +245,7 @@ namespace SuccessStory.Clients
                 {
                     if (ex.Message.Contains("User is not authenticated", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
+                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
                     }
                     else
                     {
@@ -279,7 +280,7 @@ namespace SuccessStory.Clients
             if (titleId.IsNullOrEmpty())
             {
                 url = string.Format(AchievementsBaseUrl, xuid) + "?maxItems=10000";
-                logger.Warn($"{ClientName} - Bad request");
+                Logger.Warn($"{ClientName} - Bad request");
             }
 
             XboxOneAchievementResponse response = await GetSerializedContentFromUrl<XboxOneAchievementResponse>(url, authorizationData, "2");

@@ -37,9 +37,11 @@ namespace SuccessStory
 
         public static SteamApi SteamApi { get; set; }
 
-        internal TopPanelItem topPanelItem { get; set; }
-        internal SuccessStoryViewSidebar successStoryViewSidebar { get; set; }
-        internal SuccessStoryViewRaSidebar successStoryViewRaSidebar { get; set; }
+        internal TopPanelItem TopPanelItem { get; set; }
+        internal SidebarItem SidebarItem { get; set; }
+        internal SidebarItem SidebarRaItem { get; set; }
+        internal SidebarItemControl SidebarItemControl { get; set; }
+        internal SidebarItemControl SidebarRaItemControl { get; set; }
 
         public static bool TaskIsPaused { get; set; } = false;
         private CancellationTokenSource tokenSource => new CancellationTokenSource();
@@ -77,38 +79,9 @@ namespace SuccessStory
             // Initialize top & side bar
             if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {
-                topPanelItem = new TopPanelItem()
-                {
-                    Icon = new TextBlock
-                    {
-                        Text = "\ue820",
-                        FontSize = 22,
-                        FontFamily = resources.GetResource("FontIcoFont") as FontFamily
-                    },
-                    Title = resources.GetString("LOCSuccessStoryViewGames"),
-                    Activated = () =>
-                    {
-                        SuccessView ViewExtension = new SuccessView();
-
-                        WindowOptions windowOptions = new WindowOptions
-                        {
-                            ShowMinimizeButton = false,
-                            ShowMaximizeButton = true,
-                            ShowCloseButton = true,
-                            Width = 1280,
-                            Height = 740
-                        };
-
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
-                        windowExtension.ResizeMode = ResizeMode.CanResize;
-                        windowExtension.ShowDialog();
-                        PluginDatabase.IsViewOpen = false;
-                    },
-                    Visible = PluginSettings.Settings.EnableIntegrationButtonHeader
-                };
-
-                successStoryViewSidebar = new SuccessStoryViewSidebar(this);
-                successStoryViewRaSidebar = new SuccessStoryViewRaSidebar(this);
+                TopPanelItem = new SuccessStoryTopPanelItem(this);
+                SidebarItem = new SuccessStoryViewSidebar(this);
+                SidebarRaItem = new SuccessStoryViewRaSidebar(this);
             }
 
             // Custom elements integration
@@ -129,7 +102,7 @@ namespace SuccessStory
                 SettingsRoot = $"{nameof(PluginSettings)}.{nameof(PluginSettings.Settings)}"
             });
 
-            //Playnite search integration
+            // Playnite search integration
             Searches = new List<SearchSupport>
             {
                 new SearchSupport("ss", "SuccessStory", new SuccessStorySearch())
@@ -194,7 +167,7 @@ namespace SuccessStory
                     }
 
 
-                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
+                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
                     if (windowOptions.ShowMaximizeButton)
                     {
                         windowExtension.ResizeMode = ResizeMode.CanResize;
@@ -237,7 +210,7 @@ namespace SuccessStory
         // Button on top panel
         public override IEnumerable<TopPanelItem> GetTopPanelItems()
         {
-            yield return topPanelItem;
+            yield return TopPanelItem;
         }
 
         // List custom controls
@@ -291,59 +264,12 @@ namespace SuccessStory
             return null;
         }
 
-        // SidebarItem
-        public class SuccessStoryViewSidebar : SidebarItem
-        {
-            public SuccessStoryViewSidebar(SuccessStory plugin)
-            {
-                Type = SiderbarItemType.View;
-                Title = resources.GetString("LOCSuccessStoryAchievements");
-                Icon = new TextBlock
-                {
-                    Text = "\ue820",
-                    FontFamily = resources.GetResource("FontIcoFont") as FontFamily
-                };
-                Opened = () =>
-                {
-                    SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
-                    sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryAchievements"));
-                    sidebarItemControl.AddContent(new SuccessView());
-
-                    return sidebarItemControl;
-                };
-                Visible = plugin.PluginSettings.Settings.EnableIntegrationButtonSide;
-            }
-        }
-
-        public class SuccessStoryViewRaSidebar : SidebarItem
-        {
-            public SuccessStoryViewRaSidebar(SuccessStory plugin)
-            {
-                Type = SiderbarItemType.View;
-                Title = resources.GetString("LOCSuccessStoryRetroAchievements");
-                Icon = new TextBlock
-                {
-                    Text = "\ue910",
-                    FontFamily = resources.GetResource("CommonFont") as FontFamily
-                };
-                Opened = () =>
-                {
-                    SidebarItemControl sidebarItemControl = new SidebarItemControl(PluginDatabase.PlayniteApi);
-                    sidebarItemControl.SetTitle(resources.GetString("LOCSuccessStoryRetroAchievements"));
-                    sidebarItemControl.AddContent(new SuccessView(true));
-
-                    return sidebarItemControl;
-                };
-                Visible = (plugin.PluginSettings.Settings.EnableIntegrationButtonSide && plugin.PluginSettings.Settings.EnableRetroAchievementsView);
-            }
-        }
-
         public override IEnumerable<SidebarItem> GetSidebarItems()
         {
             return new List<SidebarItem>
             {
-                successStoryViewSidebar,
-                successStoryViewRaSidebar
+                SidebarItem,
+                SidebarRaItem
             };
         }
         #endregion
@@ -373,8 +299,8 @@ namespace SuccessStory
                         // TODO: disable when selecting multiple games?
                         gameMenuItems.Add(new GameMenuItem
                         {
-                            MenuSection = resources.GetString("LOCSuccessStory"),
-                            Description = resources.GetString("LOCSuccessStoryViewGame"),
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCSuccessStoryViewGame"),
                             Action = (gameMenuItem) =>
                             {
                                 dynamic ViewExtension = null;
@@ -416,7 +342,7 @@ namespace SuccessStory
                                     ViewExtension = new SuccessView(false, GameMenu);
                                 }
 
-                                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
+                                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
                                 if (windowOptions.ShowMaximizeButton)
                                 {
                                     windowExtension.ResizeMode = ResizeMode.CanResize;
@@ -428,7 +354,7 @@ namespace SuccessStory
 
                         gameMenuItems.Add(new GameMenuItem
                         {
-                            MenuSection = resources.GetString("LOCSuccessStory"),
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
                             Description = "-"
                         });
                     }
@@ -437,8 +363,8 @@ namespace SuccessStory
                     {
                         gameMenuItems.Add(new GameMenuItem
                         {
-                            MenuSection = resources.GetString("LOCSuccessStory"),
-                            Description = resources.GetString("LOCCommonRefreshGameData"),
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCCommonRefreshGameData"),
                             Action = (gameMenuItem) =>
                             {
                                 IsFromMenu = true;
@@ -459,8 +385,8 @@ namespace SuccessStory
                     {
                         gameMenuItems.Add(new GameMenuItem
                         {
-                            MenuSection = resources.GetString("LOCSuccessStory"),
-                            Description = resources.GetString("LOCSuccessStoryIgnored"),
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCSuccessStoryIgnored"),
                             Action = (mainMenuItem) =>
                             {
                                 PluginDatabase.SetIgnored(gameAchievements);
@@ -475,8 +401,8 @@ namespace SuccessStory
                     {
                         gameMenuItems.Add(new GameMenuItem
                         {
-                            MenuSection = resources.GetString("LOCSuccessStory"),
-                            Description = resources.GetString("LOCAddTitle"),
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCAddTitle"),
                             Action = (mainMenuItem) =>
                             {
                                 PluginDatabase.Remove(GameMenu);
@@ -488,20 +414,20 @@ namespace SuccessStory
                     {
                         gameMenuItems.Add(new GameMenuItem
                         {
-                            MenuSection = resources.GetString("LOCSuccessStory"),
-                            Description = resources.GetString("LOCEditGame"),
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCEditGame"),
                             Action = (mainMenuItem) =>
                             {
                                 SuccessStoryEditManual ViewExtension = new SuccessStoryEditManual(GameMenu);
-                                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension);
                                 windowExtension.ShowDialog();
                             }
                         });
 
                         gameMenuItems.Add(new GameMenuItem
                         {
-                            MenuSection = resources.GetString("LOCSuccessStory"),
-                            Description = resources.GetString("LOCRemoveTitle"),
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCRemoveTitle"),
                             Action = (gameMenuItem) =>
                             {
                                 Task TaskIntegrationUI = Task.Run(() =>
@@ -521,8 +447,8 @@ namespace SuccessStory
                         {
                             gameMenuItems.Add(new GameMenuItem
                             {
-                                MenuSection = resources.GetString("LOCSuccessStory"),
-                                Description = resources.GetString("LOCAddGenshinImpact"),
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCAddGenshinImpact"),
                                 Action = (mainMenuItem) =>
                                 {
                                     PluginDatabase.Remove(GameMenu);
@@ -534,20 +460,20 @@ namespace SuccessStory
                         {
                             gameMenuItems.Add(new GameMenuItem
                             {
-                                MenuSection = resources.GetString("LOCSuccessStory"),
-                                Description = resources.GetString("LOCEditGame"),
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCEditGame"),
                                 Action = (mainMenuItem) =>
                                 {
                                     SuccessStoryEditManual ViewExtension = new SuccessStoryEditManual(GameMenu);
-                                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension);
                                     windowExtension.ShowDialog();
                                 }
                             });
 
                             gameMenuItems.Add(new GameMenuItem
                             {
-                                MenuSection = resources.GetString("LOCSuccessStory"),
-                                Description = resources.GetString("LOCRemoveTitle"),
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCRemoveTitle"),
                                 Action = (gameMenuItem) =>
                                 {
                                     Task TaskIntegrationUI = Task.Run(() =>
@@ -564,8 +490,8 @@ namespace SuccessStory
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
-                        MenuSection = resources.GetString("LOCSuccessStory"),
-                        Description = resources.GetString("LOCCommonDeleteGameData"),
+                        MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                        Description = ResourceProvider.GetString("LOCCommonDeleteGameData"),
                         Action = (gameMenuItem) =>
                         {
                             Task TaskIntegrationUI = Task.Run(() =>
@@ -582,8 +508,8 @@ namespace SuccessStory
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
-                        MenuSection = resources.GetString("LOCSuccessStory"),
-                        Description = resources.GetString("LOCSuccessStoryNotIgnored"),
+                        MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                        Description = ResourceProvider.GetString("LOCSuccessStoryNotIgnored"),
                         Action = (mainMenuItem) =>
                         {
                             PluginDatabase.SetIgnored(gameAchievements);
@@ -595,12 +521,12 @@ namespace SuccessStory
 #if DEBUG
             gameMenuItems.Add(new GameMenuItem
             {
-                MenuSection = resources.GetString("LOCSuccessStory"),
+                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
                 Description = "-"
             });
             gameMenuItems.Add(new GameMenuItem
             {
-                MenuSection = resources.GetString("LOCSuccessStory"),
+                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
                 Description = "Test",
                 Action = (mainMenuItem) =>
                 {
@@ -625,8 +551,8 @@ namespace SuccessStory
                 // Show list achievements for all games
                 new MainMenuItem
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCSuccessStoryViewGames"),
+                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                    Description = ResourceProvider.GetString("LOCSuccessStoryViewGames"),
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.IsViewOpen = true;
@@ -642,7 +568,7 @@ namespace SuccessStory
                             Height = 740
                         };
 
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
                         windowExtension.ShowDialog();
                         PluginDatabase.IsViewOpen = false;
                     }
@@ -653,8 +579,8 @@ namespace SuccessStory
             {
                 mainMenuItems.Add(new MainMenuItem
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCSuccessStoryViewGames") + " - RetroAchievements",
+                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                    Description = ResourceProvider.GetString("LOCSuccessStoryViewGames") + " - RetroAchievements",
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.IsViewOpen = true;
@@ -673,7 +599,7 @@ namespace SuccessStory
                             Height = 740
                         };
 
-                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
+                        Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
                         windowExtension.ShowDialog();
                         PluginDatabase.IsViewOpen = false;
                     }
@@ -682,15 +608,15 @@ namespace SuccessStory
 
             mainMenuItems.Add(new MainMenuItem
             {
-                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
                 Description = "-"
             });
 
             // Download missing data for all game in database
             mainMenuItems.Add(new MainMenuItem
             {
-                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                Description = resources.GetString("LOCCommonDownloadPluginData"),
+                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                Description = ResourceProvider.GetString("LOCCommonDownloadPluginData"),
                 Action = (mainMenuItem) =>
                 {
                     IsFromMenu = true;
@@ -703,15 +629,15 @@ namespace SuccessStory
             {
                 mainMenuItems.Add(new MainMenuItem
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
                     Description = "-"
                 });
 
                 // Refresh rarity data for manual achievements
                 mainMenuItems.Add(new MainMenuItem
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCSsRefreshRaretyManual"),
+                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                    Description = ResourceProvider.GetString("LOCSsRefreshRaretyManual"),
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.RefreshRarety();
@@ -721,8 +647,8 @@ namespace SuccessStory
                 // Refresh estimate time data for manual achievements
                 mainMenuItems.Add(new MainMenuItem
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCSsRefreshEstimateTimeManual"),
+                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                    Description = ResourceProvider.GetString("LOCSsRefreshEstimateTimeManual"),
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.RefreshEstimateTime();
@@ -734,15 +660,15 @@ namespace SuccessStory
             {
                 mainMenuItems.Add(new MainMenuItem
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
                     Description = "-"
                 });
 
                 // Add tag for selected game in database if data exists
                 mainMenuItems.Add(new MainMenuItem
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonAddTPlugin"),
+                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                    Description = ResourceProvider.GetString("LOCCommonAddTPlugin"),
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.AddTagSelectData();
@@ -751,8 +677,8 @@ namespace SuccessStory
                 // Add tag for all games
                 mainMenuItems.Add(new MainMenuItem
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonAddAllTags"),
+                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                    Description = ResourceProvider.GetString("LOCCommonAddAllTags"),
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.AddTagAllGame();
@@ -761,8 +687,8 @@ namespace SuccessStory
                 // Remove tag for all game in database
                 mainMenuItems.Add(new MainMenuItem
                 {
-                    MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
-                    Description = resources.GetString("LOCCommonRemoveAllTags"),
+                    MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                    Description = ResourceProvider.GetString("LOCCommonRemoveAllTags"),
                     Action = (mainMenuItem) =>
                     {
                         PluginDatabase.RemoveTagAllGame();
@@ -774,12 +700,12 @@ namespace SuccessStory
 #if DEBUG
             mainMenuItems.Add(new MainMenuItem
             {
-                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
                 Description = "-"
             });
             mainMenuItems.Add(new MainMenuItem
             {
-                MenuSection = MenuInExtensions + resources.GetString("LOCSuccessStory"),
+                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
                 Description = "Test",
                 Action = (mainMenuItem) =>
                 {
@@ -799,7 +725,7 @@ namespace SuccessStory
             // TODO Sourcelink - Removed for Playnite 11
             IEnumerable<GameAchievements> sourceLinkNull = PluginDatabase.Database?
                 .Select(x => x)
-                .Where(x => x.SourcesLink == null && x.IsManual && x.HasAchievements && PlayniteApi.Database.Games.Get(x.Id) != null);
+                .Where(x => x.SourcesLink == null && x.IsManual && x.HasAchievements && API.Instance.Database.Games.Get(x.Id) != null);
 
             if (sourceLinkNull?.Count() > 0)
             {
@@ -809,7 +735,7 @@ namespace SuccessStory
                 );
                 globalProgressOptions.IsIndeterminate = true;
 
-                PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
                 {
                     SteamApi steamApi = new SteamApi(PluginDatabase.PluginName);
 
@@ -817,7 +743,7 @@ namespace SuccessStory
                     {
                         try
                         {
-                            Game game = PlayniteApi.Database.Games.Get(gameAchievements.Id);
+                            Game game = API.Instance.Database.Games.Get(gameAchievements.Id);
                             if (game == null)
                             {
                                 break;
@@ -867,7 +793,7 @@ namespace SuccessStory
                 );
                 globalProgressOptions.IsIndeterminate = true;
 
-                PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
                 {
                     try
                     {
@@ -945,7 +871,7 @@ namespace SuccessStory
             {
                 string SourceName = PlayniteTools.GetSourceName(args.Game);
                 string GameName = args.Game.Name;
-                bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(this, PlayniteApi, PluginSettings.Settings, args.Game);
+                bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(PluginSettings.Settings, args.Game);
                 GameAchievements gameAchievements = PluginDatabase.Get(args.Game, true);
 
                 IsFromMenu = false;
@@ -965,7 +891,7 @@ namespace SuccessStory
                                 if (gameAchievements.HasAchievements && gameAchievements.Is100Percent)
                                 {
                                     args.Game.CompletionStatusId = PluginSettings.Settings.CompletionStatus100Percent.Id;
-                                    PlayniteApi.Database.Games.Update(args.Game);
+                                    API.Instance.Database.Games.Update(args.Game);
                                 }
                             }
                         }
@@ -988,7 +914,7 @@ namespace SuccessStory
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
             SteamApi = new SteamApi(PluginDatabase.PluginName);
-            SteamApi.SetLanguage(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+            SteamApi.SetLanguage(API.Instance.ApplicationSettings.Language);
             if (PluginDatabase.PluginSettings.Settings.EnableSteam)
             {
                 _ = SteamApi.CurrentUser;
@@ -1027,12 +953,12 @@ namespace SuccessStory
             if (!PluginSettings.Settings.IsRaretyUpdate)
             {
                 GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                    $"{PluginDatabase.PluginName} - {resources.GetString("LOCCommonProcessing")}",
+                    $"{PluginDatabase.PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}",
                     false
                 );
                 globalProgressOptions.IsIndeterminate = false;
 
-                PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
                 {
                     try
                     {
@@ -1062,7 +988,7 @@ namespace SuccessStory
                 Task TaskCacheImage = Task.Run(() =>
                 {
                     // Wait Playnite & extension database are loaded
-                    SpinWait.SpinUntil(() => PlayniteApi.Database.IsOpen, -1);
+                    SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
                     SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
                     IEnumerable<GameAchievements> db = PluginDatabase.Database.Where(x => x.HasAchievements && !x.ImageIsCached);
@@ -1106,7 +1032,7 @@ namespace SuccessStory
 
                     if (ct.IsCancellationRequested)
                     {
-                        logger.Info($"TaskCacheImage - IsCancellationRequested");
+                        Logger.Info($"TaskCacheImage - IsCancellationRequested");
                         return;
                     }
 
@@ -1146,9 +1072,9 @@ namespace SuccessStory
                     {
                         Application.Current.Dispatcher?.BeginInvoke((Action)delegate
                         {
-                            logger.Warn($"Exophase is disconnected");
-                            string message = string.Format(resources.GetString("LOCCommonStoresNoAuthenticate"), "Exophase");
-                            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                            Logger.Warn($"Exophase is disconnected");
+                            string message = string.Format(ResourceProvider.GetString("LOCCommonStoresNoAuthenticate"), "Exophase");
+                            API.Instance.Notifications.Add(new NotificationMessage(
                                 $"{PluginDatabase.PluginName}-Exophase-disconnected",
                                 $"{PluginDatabase.PluginName}\r\n{message}",
                                 NotificationType.Error,
@@ -1217,7 +1143,7 @@ namespace SuccessStory
         {
             if (PluginSettings.Settings.AutoImport && !preventLibraryUpdatedOnStart)
             {
-                List<Guid> PlayniteDb = PlayniteApi.Database.Games
+                List<Guid> PlayniteDb = API.Instance.Database.Games
                         .Where(x => x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload)
                         .Select(x => x.Id).ToList();
 

@@ -22,11 +22,8 @@ namespace SuccessStory.Views
     /// </summary>
     public partial class SuccessStoryOneGameView : UserControl
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
-
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        private ControlDataContext ControlDataContext = new ControlDataContext();
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        private ControlDataContext ControlDataContext => new ControlDataContext();
 
         public const string UiAdd = "\uec3e";
         public const string UiRemove = "\uec7e";
@@ -41,7 +38,7 @@ namespace SuccessStory.Views
             // Cover
             if (!GameContext.CoverImage.IsNullOrEmpty())
             {
-                string CoverImage = PluginDatabase.PlayniteApi.Database.GetFullFilePath(GameContext.CoverImage);
+                string CoverImage = API.Instance.Database.GetFullFilePath(GameContext.CoverImage);
                 PART_ImageCover.Source = BitmapExtensions.BitmapFromFile(CoverImage);
             }
 

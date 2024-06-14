@@ -8,30 +8,31 @@ using CommonPluginsStores.Gog;
 using System.Collections.ObjectModel;
 using CommonPluginsStores.Models;
 using System.Collections.Generic;
+using Playnite.SDK;
 
 namespace SuccessStory.Clients
 {    
     class GogAchievements : GenericAchievements
     {
-        protected static GogApi _GogAPI;
+        protected static GogApi gogAPI;
         internal static GogApi GogAPI
         {
             get
             {
-                if (_GogAPI == null)
+                if (gogAPI == null)
                 {
-                    _GogAPI = new GogApi(PluginDatabase.PluginName);
+                    gogAPI = new GogApi(PluginDatabase.PluginName);
                 }
-                return _GogAPI;
+                return gogAPI;
             }
 
-            set => _GogAPI = value;
+            set => gogAPI = value;
         }
 
 
-        public GogAchievements() : base("GOG", CodeLang.GetGogLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public GogAchievements() : base("GOG", CodeLang.GetGogLang(API.Instance.ApplicationSettings.Language))
         {
-            GogAPI.SetLanguage(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+            GogAPI.SetLanguage(API.Instance.ApplicationSettings.Language);
         }
 
 
@@ -63,7 +64,7 @@ namespace SuccessStory.Clients
                     {
                         if (!GogAPI.IsUserLoggedIn)
                         {
-                            ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
+                            ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
                         }
                     }
                     
@@ -81,7 +82,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
+                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
             }
 
             gameAchievements.SetRaretyIndicator();
@@ -94,7 +95,7 @@ namespace SuccessStory.Clients
         {
             if (PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary"))
             {
-                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsGogDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogDisabled"));
                 return false;
             }
             else
@@ -105,7 +106,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
+                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
                     }
                     else
                     {
@@ -113,7 +114,7 @@ namespace SuccessStory.Clients
 
                         if (!(bool)CachedConfigurationValidationResult)
                         {
-                            ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsGogBadConfig"));
+                            ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogBadConfig"));
                         }
                     }
                 }

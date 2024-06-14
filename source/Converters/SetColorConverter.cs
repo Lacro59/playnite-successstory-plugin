@@ -12,7 +12,7 @@ namespace SuccessStory.Converters
 {
     public class SetColorConverter : IValueConverter
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -23,7 +23,7 @@ namespace SuccessStory.Converters
                 return null;
             }
 
-            double.TryParse(value.ToString(), out double valueDouble);
+            _ = double.TryParse(value.ToString(), out double valueDouble);
 
             if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityUltraRare && PluginDatabase.PluginSettings.Settings.UseUltraRare)
             {
@@ -43,10 +43,12 @@ namespace SuccessStory.Converters
                 return null;
             }
 
-            Color newColor = new Color();
-            newColor.ScR = (float)color.R / 255;
-            newColor.ScG = (float)color.G / 255;
-            newColor.ScB = (float)color.B / 255;
+            Color newColor = new Color
+            {
+                ScR = (float)color.R / 255,
+                ScG = (float)color.G / 255,
+                ScB = (float)color.B / 255
+            };
 
             return newColor;
 

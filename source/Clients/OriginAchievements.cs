@@ -9,30 +9,31 @@ using CommonPluginsStores.Origin;
 using System.Collections.ObjectModel;
 using CommonPluginsStores.Models;
 using System.Linq;
+using Playnite.SDK;
 
 namespace SuccessStory.Clients
 {
     class OriginAchievements : GenericAchievements
     {
-        protected static OriginApi _OriginAPI;
+        protected static OriginApi originAPI;
         internal static OriginApi OriginAPI
         {
             get
             {
-                if (_OriginAPI == null)
+                if (originAPI == null)
                 {
-                    _OriginAPI = new OriginApi(PluginDatabase.PluginName);
+                    originAPI = new OriginApi(PluginDatabase.PluginName);
                 }
-                return _OriginAPI;
+                return originAPI;
             }
 
-            set => _OriginAPI = value;
+            set => originAPI = value;
         }
 
 
-        public OriginAchievements() : base("EA", CodeLang.GetOriginLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language), CodeLang.GetOriginLangCountry(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public OriginAchievements() : base("EA", CodeLang.GetOriginLang(API.Instance.ApplicationSettings.Language), CodeLang.GetOriginLangCountry(API.Instance.ApplicationSettings.Language))
         {
-            OriginAPI.SetLanguage(PluginDatabase.PlayniteApi.ApplicationSettings.Language);
+            OriginAPI.SetLanguage(API.Instance.ApplicationSettings.Language);
         }
 
 
@@ -48,7 +49,7 @@ namespace SuccessStory.Clients
                     GameInfos gameInfos = OriginAPI.GetGameInfos(game.GameId, null);
                     if (gameInfos == null)
                     {
-                        logger.Warn($"No gameInfos for {game.GameId}");
+                        Logger.Warn($"No gameInfos for {game.GameId}");
                         return null;
                     }
 
@@ -82,7 +83,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"), ExternalPlugin.OriginLibrary);
+                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"), ExternalPlugin.OriginLibrary);
             }
 
             gameAchievements.SetRaretyIndicator();
@@ -95,7 +96,7 @@ namespace SuccessStory.Clients
         {
             if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary"))
             {
-                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsOriginDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsOriginDisabled"));
                 return false;
             }
             else
@@ -106,7 +107,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"), ExternalPlugin.OriginLibrary);
+                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsOriginNoAuthenticate"), ExternalPlugin.OriginLibrary);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)

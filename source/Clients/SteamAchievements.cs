@@ -31,13 +31,13 @@ namespace SuccessStory.Clients
 {
     public class SteamAchievements : GenericAchievements
     {
-        private readonly SteamApi SteamApi = SuccessStory.SteamApi;
+        private SteamApi SteamApi => SuccessStory.SteamApi;
 
         private IHtmlDocument HtmlDocument { get; set; } = null;
 
         private bool IsLocal { get; set; } = false;
         private bool IsManual { get; set; } = false;
- 
+
         private static string SteamId { get; set; } = string.Empty;
         private static string SteamApiKey { get; set; } = string.Empty;
         private static string SteamUser { get; set; } = string.Empty;
@@ -46,19 +46,19 @@ namespace SuccessStory.Clients
         private static bool HasApiKey => !SteamApiKey.IsNullOrEmpty();
 
 
-        private static string UrlProfil         => @"https://steamcommunity.com/my/profile";
-        private static string UrlProfilById     => @"https://steamcommunity.com/profiles/{0}/stats/{1}?tab=achievements&l={2}";
-        private static string UrlProfilByName   => @"https://steamcommunity.com/id/{0}/stats/{1}?tab=achievements&l={2}";
+        private static string UrlProfil => @"https://steamcommunity.com/my/profile";
+        private static string UrlProfilById => @"https://steamcommunity.com/profiles/{0}/stats/{1}?tab=achievements&l={2}";
+        private static string UrlProfilByName => @"https://steamcommunity.com/id/{0}/stats/{1}?tab=achievements&l={2}";
 
-        private static string UrlAchievements   => @"https://steamcommunity.com/stats/{0}/achievements/?l={1}";
+        private static string UrlAchievements => @"https://steamcommunity.com/stats/{0}/achievements/?l={1}";
 
-        private static string UrlSearch         => @"https://store.steampowered.com/search/?term={0}";
+        private static string UrlSearch => @"https://store.steampowered.com/search/?term={0}";
 
 
-        public SteamAchievements() : base("Steam", CodeLang.GetSteamLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public SteamAchievements() : base("Steam", CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language))
         {
             // TODO TEMP
-            FileSystem.DeleteFile(cookiesPath);
+            FileSystem.DeleteFile(CookiesPath);
 
             SteamApiKey = SteamApi.CurrentUser.ApiKey;
             SteamIsPrivate = SteamApi.CurrentUser.IsPrivateAccount;
@@ -81,7 +81,7 @@ namespace SuccessStory.Clients
                 return gameAchievements;
             }
 
-            logger.Info($"GetAchievements() - IsLocal : {IsLocal}, IsManual : {IsManual}, HasApiKey: {HasApiKey}, SteamIsPrivate: {SteamIsPrivate}");
+            Logger.Info($"GetAchievements() - IsLocal : {IsLocal}, IsManual : {IsManual}, HasApiKey: {HasApiKey}, SteamIsPrivate: {SteamIsPrivate}");
             if (!IsLocal)
             {
                 int.TryParse(game.GameId, out AppId);
@@ -89,7 +89,7 @@ namespace SuccessStory.Clients
                 ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(game.GameId, SteamApi.CurrentAccountInfos);
                 if (steamAchievements?.Count > 0)
                 {
-                    logger.Info($"SteamApi.GetAchievements()");
+                    Logger.Info($"SteamApi.GetAchievements()");
 
                     AllAchievements = steamAchievements.Select(x => new Achievements
                     {
@@ -107,7 +107,7 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    logger.Info($"Old");
+                    Logger.Info($"Old");
 
                     if (SteamIsPrivate || !HasApiKey)
                     {
@@ -119,7 +119,7 @@ namespace SuccessStory.Clients
                         //VerifSteamUser();
                         if (SteamUser.IsNullOrEmpty())
                         {
-                            logger.Warn("No Steam user");
+                            Logger.Warn("No Steam user");
                         }
 
                         AllAchievements = GetPlayerAchievements(AppId);
@@ -173,7 +173,7 @@ namespace SuccessStory.Clients
                 {
                     if (SteamApiKey.IsNullOrEmpty())
                     {
-                        logger.Warn($"No Steam API key");
+                        Logger.Warn($"No Steam API key");
                     }
                     else
                     {
@@ -232,7 +232,7 @@ namespace SuccessStory.Clients
                 return gameAchievements;
             }
 
-            logger.Info($"GetAchievements({AppId}) - IsLocal : {IsLocal}, IsManual : {IsManual}, HasApiKey: {HasApiKey}, SteamIsPrivate: {SteamIsPrivate}");
+            Logger.Info($"GetAchievements({AppId}) - IsLocal : {IsLocal}, IsManual : {IsManual}, HasApiKey: {HasApiKey}, SteamIsPrivate: {SteamIsPrivate}");
 
             if (IsManual)
             {
@@ -243,7 +243,7 @@ namespace SuccessStory.Clients
             {
                 if (SteamApiKey.IsNullOrEmpty())
                 {
-                    logger.Warn($"No Steam API key");
+                    Logger.Warn($"No Steam API key");
                 }
                 else
                 {
@@ -299,10 +299,10 @@ namespace SuccessStory.Clients
                 AppId = SteamApi.GetAppId(game.Name);
             }
             ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(AppId.ToString(), null);
-            
+
             if (steamAchievements?.Count > 0)
             {
-                logger.Info($"SteamApi.GetAchievements()");
+                Logger.Info($"SteamApi.GetAchievements()");
 
                 AllAchievements = steamAchievements.Select(x => new Achievements
                 {
@@ -381,7 +381,7 @@ namespace SuccessStory.Clients
         {
             if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary"))
             {
-                ShowNotificationPluginDisable(resources.GetString("LOCSuccessStoryNotificationsSteamDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamDisabled"));
                 return false;
             }
             else
@@ -390,13 +390,13 @@ namespace SuccessStory.Clients
                 {
                     if (!IsConfigured())
                     {
-                        ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig"));
+                        ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamBadConfig"));
                         CachedConfigurationValidationResult = false;
                     }
 
                     //if (!PluginDatabase.PluginSettings.Settings.SteamIsPrivate && !CheckIsPublic())
                     //{
-                    //    ShowNotificationPluginNoPublic(resources.GetString("LOCSuccessStoryNotificationsSteamPrivate"));
+                    //    ShowNotificationPluginNoPublic(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamPrivate"));
                     //    CachedConfigurationValidationResult = false;
                     //}
 
@@ -406,7 +406,7 @@ namespace SuccessStory.Clients
                         Thread.Sleep(2000);
                         if (SteamIsPrivate && !IsConnected())
                         {
-                            ShowNotificationPluginNoAuthenticate(resources.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"), PlayniteTools.ExternalPlugin.SuccessStory);
+                            ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"), PlayniteTools.ExternalPlugin.SuccessStory);
                             CachedConfigurationValidationResult = false;
                         }
                     }
@@ -456,7 +456,7 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
+                    ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
                     return false;
                 }
             }
@@ -467,7 +467,7 @@ namespace SuccessStory.Clients
             {
                 if (SteamUser.IsNullOrEmpty())
                 {
-                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig2"));
+                    ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamBadConfig2"));
                     return false;
                 }
             }
@@ -475,7 +475,7 @@ namespace SuccessStory.Clients
             {
                 if (SteamId.IsNullOrEmpty() || SteamApiKey.IsNullOrEmpty())
                 {
-                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
+                    ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamBadConfig1"));
                     return false;
                 }
             }
@@ -620,7 +620,7 @@ namespace SuccessStory.Clients
             //{
             //    if (wex.StatusCode == HttpStatusCode.Forbidden)
             //    {
-            //        _PlayniteApi.Notifications.Add(new NotificationMessage(
+            //        _API.Instance.Notifications.Add(new NotificationMessage(
             //            $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
             //            $"{PluginDatabase.PluginName} - Steam profil is private",
             //            NotificationType.Error
@@ -640,13 +640,13 @@ namespace SuccessStory.Clients
                     {
                         if (response.StatusCode == HttpStatusCode.Forbidden)
                         {
-                            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                            API.Instance.Notifications.Add(new NotificationMessage(
                                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
-                                $"{PluginDatabase.PluginName}\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
+                                $"{PluginDatabase.PluginName}\r\n{ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                                 NotificationType.Error,
                                 () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                             ));
-                            logger.Warn("Steam profil is private");
+                            Logger.Warn("Steam profil is private");
 
                             // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
                             Common.LogError(ex, false, $"Error on GetUsersStats({SteamId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
@@ -710,7 +710,7 @@ namespace SuccessStory.Clients
             //{
             //    if (wex.StatusCode == HttpStatusCode.Forbidden)
             //    {
-            //        _PlayniteApi.Notifications.Add(new NotificationMessage(
+            //        _API.Instance.Notifications.Add(new NotificationMessage(
             //            $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
             //            $"{PluginDatabase.PluginName} - Steam profil is private",
             //            NotificationType.Error
@@ -730,13 +730,13 @@ namespace SuccessStory.Clients
                     {
                         if (response.StatusCode == HttpStatusCode.Forbidden)
                         {
-                            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+                            API.Instance.Notifications.Add(new NotificationMessage(
                                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
-                                $"{PluginDatabase.PluginName}\r\n{resources.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
+                                $"{PluginDatabase.PluginName}\r\n{ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
                                 NotificationType.Error,
                                 () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
                             ));
-                            logger.Warn("Steam profil is private");
+                            Logger.Warn("Steam profil is private");
 
                             // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
                             Common.LogError(ex, false, $"Error on GetPlayerAchievements({SteamId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
@@ -857,12 +857,12 @@ namespace SuccessStory.Clients
                             }
                             else
                             {
-                                logger.Info($"No Steam stats for {AppId}");
+                                Logger.Info($"No Steam stats for {AppId}");
                             }
                         }
                         else
                         {
-                            logger.Info($"No Steam stats for {AppId}");
+                            Logger.Info($"No Steam stats for {AppId}");
                         }
                     }
                     catch (Exception ex)
@@ -1000,7 +1000,7 @@ namespace SuccessStory.Clients
                         }
                         else
                         {
-                            logger.Warn($"not find for {AppId} - ApiName: {ApiName} - Percent: {Percent}");
+                            Logger.Warn($"not find for {AppId} - ApiName: {ApiName} - Percent: {Percent}");
                         }
                     }
                 }
@@ -1212,10 +1212,10 @@ namespace SuccessStory.Clients
                     ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
                     htmlDocument = new HtmlParser().Parse(ResultWeb);
                     IHtmlCollection<IElement> achieveRow_English = htmlDocument.QuerySelectorAll(".achieveRow");
-                
+
                     htmlDocument = new HtmlParser().Parse(ResultWeb);
                     int idx = 0;
-                    foreach(IElement el in htmlDocument.QuerySelectorAll(".achieveRow"))
+                    foreach (IElement el in htmlDocument.QuerySelectorAll(".achieveRow"))
                     {
                         DateTime DateUnlocked = default;
                         string stringDateUnlocked = el.QuerySelector(".achieveUnlockTime")?.InnerHtml ?? string.Empty;
@@ -1271,7 +1271,7 @@ namespace SuccessStory.Clients
                     dynamic dataByWeb = Serialization.FromJson<dynamic>(ResultWeb);
                     if (dataByWeb == null)
                     {
-                        logger.Warn($"No g_rgAchievements data");
+                        Logger.Warn($"No g_rgAchievements data");
                         return Achievements;
                     }
 
@@ -1386,9 +1386,9 @@ namespace SuccessStory.Clients
         #region Errors
         public virtual void ShowNotificationPluginNoPublic(string Message)
         {
-            logger.Warn($"{ClientName} user is not public");
+            Logger.Warn($"{ClientName} user is not public");
 
-            PluginDatabase.PlayniteApi.Notifications.Add(new NotificationMessage(
+            API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-nopublic",
                 $"{PluginDatabase.PluginName}\r\n{Message}",
                 NotificationType.Error,

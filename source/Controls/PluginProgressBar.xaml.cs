@@ -2,6 +2,7 @@
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Interfaces;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
@@ -19,37 +20,33 @@ namespace SuccessStory.Controls
     /// </summary>
     public partial class PluginProgressBar : PluginUserControlExtend
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase
-        {
-            get => PluginDatabase;
-            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-        }
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginProgressBarDataContext ControlDataContext = new PluginProgressBarDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginProgressBarDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginProgressBarDataContext)controlDataContext;
         }
 
 
         public PluginProgressBar()
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher?.BeginInvoke((Action)delegate
+                _ = Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
                     PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
 
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
@@ -102,25 +99,25 @@ namespace SuccessStory.Controls
 
     public class PluginProgressBarDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private bool _IntegrationShowProgressBarIndicator;
-        public bool IntegrationShowProgressBarIndicator { get => _IntegrationShowProgressBarIndicator; set => SetValue(ref _IntegrationShowProgressBarIndicator, value); }
+        private bool integrationShowProgressBarIndicator;
+        public bool IntegrationShowProgressBarIndicator { get => integrationShowProgressBarIndicator; set => SetValue(ref integrationShowProgressBarIndicator, value); }
 
-        private bool _IntegrationShowProgressBarPercent;
-        public bool IntegrationShowProgressBarPercent { get => _IntegrationShowProgressBarPercent; set => SetValue(ref _IntegrationShowProgressBarPercent, value); }
+        private bool integrationShowProgressBarPercent;
+        public bool IntegrationShowProgressBarPercent { get => integrationShowProgressBarPercent; set => SetValue(ref integrationShowProgressBarPercent, value); }
 
-        private double _Percent;
-        public double Percent { get => _Percent; set => SetValue(ref _Percent, value); }
+        private double percent;
+        public double Percent { get => percent; set => SetValue(ref percent, value); }
 
-        private double _Value;
-        public double Value { get => _Value; set => SetValue(ref _Value, value); }
+        private double value;
+        public double Value { get => value; set => SetValue(ref this.value, value); }
 
-        private double _Maximum;
-        public double Maximum { get => _Maximum; set => SetValue(ref _Maximum, value); }
+        private double maximum;
+        public double Maximum { get => maximum; set => SetValue(ref maximum, value); }
 
-        private string _LabelContent;
-        public string LabelContent { get => _LabelContent; set => SetValue(ref _LabelContent, value); }
+        private string labelContent;
+        public string LabelContent { get => labelContent; set => SetValue(ref labelContent, value); }
     }
 }

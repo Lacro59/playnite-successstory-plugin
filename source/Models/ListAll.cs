@@ -13,7 +13,7 @@ namespace SuccessStory.Models
     /// </summary>
     public class ListAll
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
 
         public string Id { get; set; }
@@ -35,7 +35,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                Guid.TryParse(Id, out Guid result);
+                _ = Guid.TryParse(Id, out Guid result);
                 return result;
             }
         }
@@ -44,7 +44,7 @@ namespace SuccessStory.Models
         public RelayCommand<Guid> GoToGame => PluginDatabase.GoToGame;
 
         [DontSerialize]
-        public bool GameExist => PluginDatabase.PlayniteApi.Database.Games.Get(GameId) != null;
+        public bool GameExist => API.Instance.Database.Games.Get(GameId) != null;
 
 
         public string AchIcon { get; set; }
@@ -63,7 +63,7 @@ namespace SuccessStory.Models
 
                 if (AchDateUnlock != null && AchDateUnlock != default(DateTime) && AchDateUnlock != new DateTime(1982, 12, 15, 0, 0, 0))
                 {
-                    var converter = new LocalDateTimeConverter();
+                    LocalDateTimeConverter converter = new LocalDateTimeConverter();
                     NameWithDateUnlock += " (" + converter.Convert(AchDateUnlock, null, null, CultureInfo.CurrentCulture) + ")";
                 }
 

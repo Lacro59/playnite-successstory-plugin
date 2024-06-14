@@ -1,8 +1,10 @@
 ﻿using CommonPluginsShared;
 using CommonPluginsShared.Models;
+using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
+using SuccessStory.Models.Wow;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -12,26 +14,26 @@ namespace SuccessStory.Clients
     internal class WowAchievements : BattleNetAchievements
     {
         private static string UrlWowGraphQL => @"https://worldofwarcraft.blizzard.com/graphql";
-        private static string UrlWowBase    => @"https://worldofwarcraft.com/{0}/character/{1}/{2}/{3}/achievements/";
+        private static string UrlWowBase => @"https://worldofwarcraft.com/{0}/character/{1}/{2}/{3}/achievements/";
         private static string UrlWowBaseLocalised { get; set; }
 
         private List<string> Urls { get; set; } = new List<string>();
-        private string UrlWowAchCharacter           => "character/model.json";
-        private string UrlWowAchPvp                 => "player-vs-player/model.json";
-        private string UrlWowAchQuests              => "quests/model.json";
-        private string UrlWowAchExploration         => "exploration/model.json";
-        private string UrlWowAchWorlEvents          => "world-events/model.json";
-        private string UrlWowAchDungeonsRaids       => "dungeons-raids/model.json";
-        private string UrlWowAchProfessions         => "professions/model.json";
-        private string UrlWowAchReputation          => "reputation/model.json";
-        private string UrlWowAchPetBattles          => "pet-battles/model.json";
-        private string UrlWowAchCollections         => "collections/model.json";
-        private string UrlWowAchExpansionFeatures   => "expansion-features/model.json";
-        private string UrlWowAchFeatsStrength       => "feats-of-strength/model.json";
-        private string UrlWowAchLegacy              => "legacy/model.json";
+        private string UrlWowAchCharacter => "character/model.json";
+        private string UrlWowAchPvp => "player-vs-player/model.json";
+        private string UrlWowAchQuests => "quests/model.json";
+        private string UrlWowAchExploration => "exploration/model.json";
+        private string UrlWowAchWorlEvents => "world-events/model.json";
+        private string UrlWowAchDungeonsRaids => "dungeons-raids/model.json";
+        private string UrlWowAchProfessions => "professions/model.json";
+        private string UrlWowAchReputation => "reputation/model.json";
+        private string UrlWowAchPetBattles => "pet-battles/model.json";
+        private string UrlWowAchCollections => "collections/model.json";
+        private string UrlWowAchExpansionFeatures => "expansion-features/model.json";
+        private string UrlWowAchFeatsStrength => "feats-of-strength/model.json";
+        private string UrlWowAchLegacy => "legacy/model.json";
 
 
-        public WowAchievements() : base("Wow", CodeLang.GetEpicLang(PluginDatabase.PlayniteApi.ApplicationSettings.Language))
+        public WowAchievements() : base("Wow", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language))
         {
 
         }
@@ -62,25 +64,25 @@ namespace SuccessStory.Clients
                 {
                     urlFinal = UrlWowBaseLocalised + url;
                     string data = Web.DownloadStringData(urlFinal).GetAwaiter().GetResult();
-                    Serialization.TryFromJson(data, out WowAchievementsData wowAchievementsData);
-                    Serialization.TryFromJson(Serialization.ToJson(wowAchievementsData?.subcategories), out dynamic subcategories);
+                    _ = Serialization.TryFromJson(data, out WowAchievementsData wowAchievementsData);
+                    _ = Serialization.TryFromJson(Serialization.ToJson(wowAchievementsData?.Subcategories), out dynamic subcategories);
 
                     if (subcategories != null)
                     {
-                        foreach (var subItems in subcategories)
+                        foreach (dynamic subItems in subcategories)
                         {
                             Serialization.TryFromJson(Serialization.ToJson(subItems?.Value), out SubcategoriesItem subcategoriesItem);
-                            if (subcategoriesItem?.achievements != null)
+                            if (subcategoriesItem?.Achievements != null)
                             {
-                                foreach (WowAchievement wowAchievement in subcategoriesItem.achievements)
+                                foreach (Achievement achievement in subcategoriesItem.Achievements)
                                 {
                                     AllAchievements.Add(new Achievements
                                     {
-                                        Name = wowAchievement.name,
-                                        Description = wowAchievement.description,
-                                        UrlUnlocked = wowAchievement.icon.url,
+                                        Name = achievement.Name,
+                                        Description = achievement.Description,
+                                        UrlUnlocked = achievement.Icon.Url,
                                         UrlLocked = string.Empty,
-                                        DateUnlocked = wowAchievement.time == null ? default(DateTime) : ((DateTime)wowAchievement.time).ToLocalTime()
+                                        DateUnlocked = achievement.Time == null ? default : achievement.Time.ToLocalTime()
                                     });
                                 }
                             }
@@ -133,8 +135,8 @@ namespace SuccessStory.Clients
             string realm = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Slug;
             string character = PluginDatabase.PluginSettings.Settings.WowCharacter;
 
-            return (PluginDatabase.PluginSettings.Settings.EnableWowAchievements 
-                && !region.IsNullOrEmpty() && !realm.IsNullOrEmpty() && !character.IsNullOrEmpty());
+            return PluginDatabase.PluginSettings.Settings.EnableWowAchievements
+                && !region.IsNullOrEmpty() && !realm.IsNullOrEmpty() && !character.IsNullOrEmpty();
         }
         #endregion
 
@@ -149,9 +151,9 @@ namespace SuccessStory.Clients
                 string payload = "{\"operationName\":\"GetRealmStatusData\",\"variables\":{\"input\":{\"compoundRegionGameVersionSlug\":\"" + Region + "\"}},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"c40d282bc48d4d686417f39ba896174eea212d3b86ba8bacd6cdf452b9111554\"}}}";
                 string result = Web.PostStringDataPayload(UrlWowGraphQL, payload).GetAwaiter().GetResult();
                 WowRegionResult wowRegionResult = Serialization.FromJson<WowRegionResult>(result);
-                foreach(Realm realm in wowRegionResult.data.Realms)
+                foreach (Realm realm in wowRegionResult.Data.Realms)
                 {
-                    CbDatas.Add(new CbData { Name = realm.name, Slug = realm.slug });
+                    CbDatas.Add(new CbData { Name = realm.Name, Slug = realm.Slug });
                 }
             }
             catch (Exception ex)

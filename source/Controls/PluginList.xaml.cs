@@ -1,7 +1,10 @@
 ﻿using CommonPluginsControls.Controls;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
+using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Interfaces;
+using MoreLinq;
+using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
@@ -10,12 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using MoreLinq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using CommonPluginsShared.Extensions;
 
 namespace SuccessStory.Controls
 {
@@ -24,35 +24,31 @@ namespace SuccessStory.Controls
     /// </summary>
     public partial class PluginList : PluginUserControlExtend
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase
-        {
-            get => PluginDatabase;
-            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-        }
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginListDataContext ControlDataContext = new PluginListDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginListDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginListDataContext)controlDataContext;
         }
 
-        private readonly string NameAsc = "\uea64";
-        private readonly string NameDesc = "\uea67";
-        private readonly string CalAsc = "\uea65";
-        private readonly string CalDesc = "\uea66";
-        private readonly string RarityAsc = "\uea68";
-        private readonly string RarityDesc = "\uea69";
+        private string NameAsc => "\uea64";
+        private string NameDesc => "\uea67";
+        private string CalAsc => "\uea65";
+        private string CalDesc => "\uea66";
+        private string RarityAsc => "\uea68";
+        private string RarityDesc => "\uea69";
 
-        private int NameIndex = 1;
-        private int CalIndex = 2;
-        private int RarityIndex = 3;
+        private int NameIndex { get; set; } = 1;
+        private int CalIndex { get; set; } = 2;
+        private int RarityIndex { get; set; } = 3;
 
-        private string GameName = string.Empty;
-        private OrderAchievement orderAchievement;
+        private string GameName { get; set; } = string.Empty;
+        private OrderAchievement OrderAchievement { get; set; }
 
-        private string CategoryName;
+        private string CategoryName { get; set; }
 
 
         #region Properties
@@ -70,86 +66,95 @@ namespace SuccessStory.Controls
         public PluginList()
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
-            orderAchievement = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement);
-            PART_SortGroupBy.IsChecked = orderAchievement.OrderGroupByUnlocked;
+            OrderAchievement = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement);
+            PART_SortGroupBy.IsChecked = OrderAchievement.OrderGroupByUnlocked;
 
-            switch (orderAchievement.OrderAchievementTypeFirst)
+            switch (OrderAchievement.OrderAchievementTypeFirst)
             {
-                case (OrderAchievementType.AchievementName):
+                case OrderAchievementType.AchievementName:
                     NameIndex = 1;
                     PART_SortNameOrder.Content = NameIndex;
-                    PART_SortName.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
+                    PART_SortName.Content = OrderAchievement.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
                     break;
 
-                case (OrderAchievementType.AchievementDateUnlocked):
+                case OrderAchievementType.AchievementDateUnlocked:
                     CalIndex = 1;
                     PART_SortCalOrder.Content = CalIndex;
-                    PART_SortCal.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
+                    PART_SortCal.Content = OrderAchievement.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
                     break;
 
-                case (OrderAchievementType.AchievementRarety):
+                case OrderAchievementType.AchievementRarety:
                     RarityIndex = 1;
                     PART_SortRarityOrder.Content = RarityIndex;
-                    PART_SortRarity.Content = orderAchievement.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
+                    PART_SortRarity.Content = OrderAchievement.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
+                    break;
+
+                default:
                     break;
             }
 
-            switch (orderAchievement.OrderAchievementTypeSecond)
+            switch (OrderAchievement.OrderAchievementTypeSecond)
             {
-                case (OrderAchievementType.AchievementName):
+                case OrderAchievementType.AchievementName:
                     NameIndex = 2;
                     PART_SortNameOrder.Content = NameIndex;
-                    PART_SortName.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
+                    PART_SortName.Content = OrderAchievement.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
                     break;
 
-                case (OrderAchievementType.AchievementDateUnlocked):
+                case OrderAchievementType.AchievementDateUnlocked:
                     CalIndex = 2;
                     PART_SortCalOrder.Content = CalIndex;
-                    PART_SortCal.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
+                    PART_SortCal.Content = OrderAchievement.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
                     break;
 
-                case (OrderAchievementType.AchievementRarety):
+                case OrderAchievementType.AchievementRarety:
                     RarityIndex = 2;
-                    PART_SortRarityOrder.Content = RarityIndex;         
-                    PART_SortRarity.Content = orderAchievement.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
+                    PART_SortRarityOrder.Content = RarityIndex;
+                    PART_SortRarity.Content = OrderAchievement.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
+                    break;
+
+                default:
                     break;
             }
 
-            switch (orderAchievement.OrderAchievementTypeThird)
+            switch (OrderAchievement.OrderAchievementTypeThird)
             {
-                case (OrderAchievementType.AchievementName):
+                case OrderAchievementType.AchievementName:
                     NameIndex = 3;
                     PART_SortNameOrder.Content = NameIndex;
-                    PART_SortName.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
+                    PART_SortName.Content = OrderAchievement.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
                     break;
 
-                case (OrderAchievementType.AchievementDateUnlocked):
+                case OrderAchievementType.AchievementDateUnlocked:
                     CalIndex = 3;
                     PART_SortCalOrder.Content = CalIndex;
-                    PART_SortCal.Content = orderAchievement.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
+                    PART_SortCal.Content = OrderAchievement.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
                     break;
 
-                case (OrderAchievementType.AchievementRarety):
+                case OrderAchievementType.AchievementRarety:
                     RarityIndex = 3;
                     PART_SortRarityOrder.Content = RarityIndex;
-                    PART_SortRarity.Content = orderAchievement.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
+                    PART_SortRarity.Content = OrderAchievement.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
+                    break;
+
+                default:
                     break;
             }
 
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher?.BeginInvoke((Action)delegate
+                _ = Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
                     PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
 
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
@@ -204,7 +209,7 @@ namespace SuccessStory.Controls
         {
             if (UsedCategory)
             {
-                SetDataCategory(this.CategoryName);
+                SetDataCategory(CategoryName);
                 return;
             }
 
@@ -214,7 +219,7 @@ namespace SuccessStory.Controls
             if (!gameAchievements.Items.FirstOrDefault().CategoryRpcs3.IsNullOrEmpty())
             {
                 List<string> Categories = gameAchievements.Items.Select(x => x.CategoryRpcs3).Distinct().ToList();
-                Categories.ForEach((x, idx) => 
+                Categories.ForEach((x, idx) =>
                 {
                     ((TabItem)PART_TabControl.Items[idx]).Header = new TextBlockTrimmed { Text = x };
                     ((TabItem)PART_TabControl.Items[idx]).Visibility = Visibility.Visible;
@@ -240,7 +245,7 @@ namespace SuccessStory.Controls
             }
 
             GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
-            gameAchievements.orderAchievement = orderAchievement;
+            gameAchievements.orderAchievement = OrderAchievement;
 
             ObservableCollection<Achievements> achievements = gameAchievements.OrderItems.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
             ControlDataContext.ItemsSource = achievements;
@@ -249,15 +254,15 @@ namespace SuccessStory.Controls
 
         #region Events
         private void LbAchievements_SizeChanged(object sender, SizeChangedEventArgs e)
-        {           
+        {
             if (ControlDataContext != null)
             {
                 double Width = lbAchievements.ActualWidth / ControlDataContext.ColDefinied;
                 Width = Width > 10 ? Width : 11;
 
                 ControlDataContext.ItemSize = new Size(Width - 10, 65);
-                this.DataContext = null;
-                this.DataContext = ControlDataContext;
+                DataContext = null;
+                DataContext = ControlDataContext;
             }
         }
 
@@ -338,7 +343,7 @@ namespace SuccessStory.Controls
             SetOrder(GameName);
         }
 
-        
+    
         private void ChangeIndex()
         {
             NameIndex++;
@@ -366,123 +371,75 @@ namespace SuccessStory.Controls
 
         private void SetOrder(string GameName = "")
         {
-            orderAchievement.OrderGroupByUnlocked = (bool)PART_SortGroupBy.IsChecked;
+            OrderAchievement.OrderGroupByUnlocked = (bool)PART_SortGroupBy.IsChecked;
 
-            switch(NameIndex)
+            switch (NameIndex)
             {
                 case 1:
-                    orderAchievement.OrderAchievementTypeFirst = OrderAchievementType.AchievementName;
-                    if (PART_SortName.Content.ToString() == NameAsc)
-                    {
-                        orderAchievement.OrderTypeFirst = OrderType.Ascending;
-                    }
-                    else
-                    {
-                        orderAchievement.OrderTypeFirst = OrderType.Descending;
-                    }
+                    OrderAchievement.OrderAchievementTypeFirst = OrderAchievementType.AchievementName;
+                    OrderAchievement.OrderTypeFirst = PART_SortName.Content.ToString() == NameAsc ? OrderType.Ascending : OrderType.Descending;
                     break;
+
                 case 2:
-                    orderAchievement.OrderAchievementTypeSecond = OrderAchievementType.AchievementName;
-                    if (PART_SortName.Content.ToString() == NameAsc)
-                    {
-                        orderAchievement.OrderTypeSecond = OrderType.Ascending;
-                    }
-                    else
-                    {
-                        orderAchievement.OrderTypeSecond = OrderType.Descending;
-                    }
+                    OrderAchievement.OrderAchievementTypeSecond = OrderAchievementType.AchievementName;
+                    OrderAchievement.OrderTypeSecond = PART_SortName.Content.ToString() == NameAsc ? OrderType.Ascending : OrderType.Descending;
                     break;
+
                 case 3:
-                    orderAchievement.OrderAchievementTypeThird = OrderAchievementType.AchievementName;
-                    if (PART_SortName.Content.ToString() == NameAsc)
-                    {
-                        orderAchievement.OrderTypeThird = OrderType.Ascending;
-                    }
-                    else
-                    {
-                        orderAchievement.OrderTypeThird = OrderType.Descending;
-                    }
+                    OrderAchievement.OrderAchievementTypeThird = OrderAchievementType.AchievementName;
+                    OrderAchievement.OrderTypeThird = PART_SortName.Content.ToString() == NameAsc ? OrderType.Ascending : OrderType.Descending;
+                    break;
+
+                default:
                     break;
             }
 
             switch (CalIndex)
             {
                 case 1:
-                    orderAchievement.OrderAchievementTypeFirst = OrderAchievementType.AchievementDateUnlocked;
-                    if (PART_SortCal.Content.ToString() == CalAsc)
-                    {
-                        orderAchievement.OrderTypeFirst = OrderType.Ascending;
-                    }
-                    else
-                    {
-                        orderAchievement.OrderTypeFirst = OrderType.Descending;
-                    }
+                    OrderAchievement.OrderAchievementTypeFirst = OrderAchievementType.AchievementDateUnlocked;
+                    OrderAchievement.OrderTypeFirst = PART_SortCal.Content.ToString() == CalAsc ? OrderType.Ascending : OrderType.Descending;
                     break;
+
                 case 2:
-                    orderAchievement.OrderAchievementTypeSecond = OrderAchievementType.AchievementDateUnlocked;
-                    if (PART_SortCal.Content.ToString() == CalAsc)
-                    {
-                        orderAchievement.OrderTypeSecond = OrderType.Ascending;
-                    }
-                    else
-                    {
-                        orderAchievement.OrderTypeSecond = OrderType.Descending;
-                    }
+                    OrderAchievement.OrderAchievementTypeSecond = OrderAchievementType.AchievementDateUnlocked;
+                    OrderAchievement.OrderTypeSecond = PART_SortCal.Content.ToString() == CalAsc ? OrderType.Ascending : OrderType.Descending;
                     break;
+
                 case 3:
-                    orderAchievement.OrderAchievementTypeThird = OrderAchievementType.AchievementDateUnlocked;
-                    if (PART_SortCal.Content.ToString() == CalAsc)
-                    {
-                        orderAchievement.OrderTypeThird = OrderType.Ascending;
-                    }
-                    else
-                    {
-                        orderAchievement.OrderTypeThird = OrderType.Descending;
-                    }
+                    OrderAchievement.OrderAchievementTypeThird = OrderAchievementType.AchievementDateUnlocked;
+                    OrderAchievement.OrderTypeThird = PART_SortCal.Content.ToString() == CalAsc ? OrderType.Ascending : OrderType.Descending;
+                    break;
+
+                default:
                     break;
             }
 
             switch (RarityIndex)
             {
                 case 1:
-                    orderAchievement.OrderAchievementTypeFirst = OrderAchievementType.AchievementRarety;
-                    if (PART_SortRarity.Content.ToString() == RarityAsc)
-                    {
-                        orderAchievement.OrderTypeFirst = OrderType.Ascending;
-                    }
-                    else
-                    {
-                        orderAchievement.OrderTypeFirst = OrderType.Descending;
-                    }
+                    OrderAchievement.OrderAchievementTypeFirst = OrderAchievementType.AchievementRarety;
+                    OrderAchievement.OrderTypeFirst = PART_SortRarity.Content.ToString() == RarityAsc ? OrderType.Ascending : OrderType.Descending;
                     break;
+
                 case 2:
-                    orderAchievement.OrderAchievementTypeSecond = OrderAchievementType.AchievementRarety;
-                    if (PART_SortRarity.Content.ToString() == RarityAsc)
-                    {
-                        orderAchievement.OrderTypeSecond = OrderType.Ascending;
-                    }
-                    else
-                    {
-                        orderAchievement.OrderTypeSecond = OrderType.Descending;
-                    }
+                    OrderAchievement.OrderAchievementTypeSecond = OrderAchievementType.AchievementRarety;
+                    OrderAchievement.OrderTypeSecond = PART_SortRarity.Content.ToString() == RarityAsc ? OrderType.Ascending : OrderType.Descending;
                     break;
+
                 case 3:
-                    orderAchievement.OrderAchievementTypeThird = OrderAchievementType.AchievementRarety;
-                    if (PART_SortRarity.Content.ToString() == RarityAsc)
-                    {
-                        orderAchievement.OrderTypeThird = OrderType.Ascending;
-                    }
-                    else
-                    {
-                        orderAchievement.OrderTypeThird = OrderType.Descending;
-                    }
+                    OrderAchievement.OrderAchievementTypeThird = OrderAchievementType.AchievementRarety;
+                    OrderAchievement.OrderTypeThird = PART_SortRarity.Content.ToString() == RarityAsc ? OrderType.Ascending : OrderType.Descending;
+                    break;
+
+                default:
                     break;
             }
 
             if (GameContext != null)
             {
                 GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
-                gameAchievements.orderAchievement = orderAchievement;
+                gameAchievements.orderAchievement = OrderAchievement;
 
                 ObservableCollection<Achievements> achievements = gameAchievements.OrderItems;
                 if (!CategoryName.IsNullOrEmpty())
@@ -490,14 +447,9 @@ namespace SuccessStory.Controls
                     achievements = achievements.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
                 }
 
-                if (GameName.IsNullOrEmpty())
-                {
-                    ControlDataContext.ItemsSource = achievements;
-                }
-                else
-                {
-                    ControlDataContext.ItemsSource = achievements.Where(x => x.CategoryRpcs3.IsEqual(GameName)).ToObservable();
-                }
+                ControlDataContext.ItemsSource = GameName.IsNullOrEmpty()
+                    ? achievements
+                    : achievements.Where(x => x.CategoryRpcs3.IsEqual(GameName)).ToObservable();
             }
         }
         #endregion
@@ -506,25 +458,25 @@ namespace SuccessStory.Controls
 
     public class PluginListDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private bool _ShowHiddenDescription;
-        public bool ShowHiddenDescription { get => _ShowHiddenDescription; set => SetValue(ref _ShowHiddenDescription, value); }
+        private bool showHiddenDescription;
+        public bool ShowHiddenDescription { get => showHiddenDescription; set => SetValue(ref showHiddenDescription, value); }
 
-        private double _Height;
-        public double Height { get => _Height; set => SetValue(ref _Height, value); }
+        private double height;
+        public double Height { get => height; set => SetValue(ref height, value); }
 
-        private double _IconHeight;
-        public double IconHeight { get => _IconHeight; set => SetValue(ref _IconHeight, value); }
+        private double iconHeight;
+        public double IconHeight { get => iconHeight; set => SetValue(ref iconHeight, value); }
 
-        private Size _ItemSize;
-        public Size ItemSize { get => _ItemSize; set => SetValue(ref _ItemSize, value); }
+        private Size itemSize;
+        public Size ItemSize { get => itemSize; set => SetValue(ref itemSize, value); }
 
-        private int _ColDefinied;
-        public int ColDefinied { get => _ColDefinied; set => SetValue(ref _ColDefinied, value); }
+        private int colDefinied;
+        public int ColDefinied { get => colDefinied; set => SetValue(ref colDefinied, value); }
 
-        private ObservableCollection<Achievements> _ItemsSource;
-        public ObservableCollection<Achievements> ItemsSource { get => _ItemsSource; set => SetValue(ref _ItemsSource, value); }
+        private ObservableCollection<Achievements> itemsSource;
+        public ObservableCollection<Achievements> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
     }
 }

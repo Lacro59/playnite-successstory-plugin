@@ -36,7 +36,7 @@ namespace SuccessStory.Clients
                 // Directory control
                 if (TrophyDirectories.Count == 0)
                 {
-                    logger.Warn($"No Trophy directoy found for {game.Name}");
+                    Logger.Warn($"No Trophy directoy found for {game.Name}");
                     return gameAchievements;
                 }
 
@@ -46,12 +46,12 @@ namespace SuccessStory.Clients
 
                     if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFile)))
                     {
-                        logger.Warn($"File {TrophyFile} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFile)}");
+                        Logger.Warn($"File {TrophyFile} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFile)}");
                         continue;
                     }
                     if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFileDetails)))
                     {
-                        logger.Warn($"File {TrophyFileDetails} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFileDetails)}");
+                        Logger.Warn($"File {TrophyFileDetails} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFileDetails)}");
                         continue;
                     }
 
@@ -133,7 +133,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
+                ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
             }
 
             gameAchievements.SetRaretyIndicator();
@@ -150,7 +150,7 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoConfiguration(resources.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
+                    ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)
@@ -166,13 +166,13 @@ namespace SuccessStory.Clients
         {
             if (PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder.IsNullOrEmpty())
             {
-                logger.Warn("No RPCS3 configured folder");
+                Logger.Warn("No RPCS3 configured folder");
                 return false;
             }
 
             if (!Directory.Exists(Path.Combine(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder, "trophy")))
             {
-                logger.Warn($"No RPCS3 trophy folder in {PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder}");
+                Logger.Warn($"No RPCS3 trophy folder in {PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder}");
                 return false;
             }
             
@@ -200,8 +200,8 @@ namespace SuccessStory.Clients
                 string GameTrophyFolder = Path.Combine(game.InstallDirectory, "..", "TROPDIR");
                 GameTrophyFolder = API.Instance.ExpandGameVariables(game, GameTrophyFolder);
 
-                logger.Info($"TrophyFolder: {TrophyFolder}");
-                logger.Info($"GameTrophyFolder: {GameTrophyFolder}");
+                Logger.Info($"TrophyFolder: {TrophyFolder}");
+                Logger.Info($"GameTrophyFolder: {GameTrophyFolder}");
 
                 try
                 {

@@ -26,21 +26,21 @@ namespace SuccessStory.Services
 {
     public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettingsViewModel, SuccessStoryCollection, GameAchievements, Achievements>
     {
-        public SuccessStory Plugin;
+        public SuccessStory Plugin { get; set; }
 
-        private bool _isRetroachievements { get; set; }
+        private bool IsRetroachievements { get; set; }
 
-        private static Dictionary<AchievementSource, GenericAchievements> _achievementProviders { get; set; }
-        private static object _achievementProvidersLock => new object();
+        private static Dictionary<AchievementSource, GenericAchievements> achievementProviders { get; set; }
+        private static object achievementProvidersLock => new object();
         internal static Dictionary<AchievementSource, GenericAchievements> AchievementProviders
         {
             get
             {
-                lock (_achievementProvidersLock)
+                lock (achievementProvidersLock)
                 {
-                    if (_achievementProviders == null)
+                    if (achievementProviders == null)
                     {
-                        _achievementProviders = new Dictionary<AchievementSource, GenericAchievements> {
+                        achievementProviders = new Dictionary<AchievementSource, GenericAchievements> {
                             { AchievementSource.GOG, new GogAchievements() },
                             { AchievementSource.Epic, new EpicAchievements() },
                             { AchievementSource.Origin, new OriginAchievements() },
@@ -58,19 +58,19 @@ namespace SuccessStory.Services
                         };
                     }
                 }
-                return _achievementProviders;
+                return achievementProviders;
             }
         }
 
-        public SuccessStoryDatabase(IPlayniteAPI PlayniteApi, SuccessStorySettingsViewModel PluginSettings, string PluginUserDataPath) : base(PlayniteApi, PluginSettings, "SuccessStory", PluginUserDataPath)
+        public SuccessStoryDatabase(SuccessStorySettingsViewModel PluginSettings, string PluginUserDataPath) : base(PluginSettings, "SuccessStory", PluginUserDataPath)
         {
             TagBefore = "[SS]";
         }
 
 
-        public void InitializeClient(SuccessStory Plugin)
+        public void InitializeClient(SuccessStory plugin)
         {
-            this.Plugin = Plugin;
+            Plugin = plugin;
         }
 
 
@@ -82,13 +82,13 @@ namespace SuccessStory.Services
                 stopWatch.Start();
 
                 Database = new SuccessStoryCollection(Paths.PluginDatabasePath);
-                Database.SetGameInfo<Achievements>(PlayniteApi);
+                Database.SetGameInfo<Achievements>();
 
                 DeleteDataWithDeletedGame();
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                TrueAchievements.Logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
             }
             catch (Exception ex)
             {
@@ -107,7 +107,7 @@ namespace SuccessStory.Services
                 GameAchievements gameAchievements = GetDefault(game);
 
                 SuccessStoreGameSelection ViewExtension = new SuccessStoreGameSelection(game);
-                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, resources.GetString("LOCSuccessStory"), ViewExtension);
+                Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension);
                 windowExtension.ShowDialog();
 
                 if (ViewExtension.gameAchievements != null)
@@ -119,7 +119,7 @@ namespace SuccessStory.Services
                 gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
                 AddOrUpdate(gameAchievements);
 
-                Common.LogDebug(true, $"GetManual({game.Id.ToString()}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
+                Common.LogDebug(true, $"GetManual({game.Id}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
             }
             catch (Exception ex)
             {
@@ -129,7 +129,7 @@ namespace SuccessStory.Services
 
         public GameAchievements RefreshManual(Game game)
         {
-            logger.Info($"RefreshManual({game?.Name} - {game?.Id})");
+            TrueAchievements.Logger.Info($"RefreshManual({game?.Name} - {game?.Id})");
             GameAchievements gameAchievements = null;
 
             try
@@ -186,7 +186,7 @@ namespace SuccessStory.Services
 
         public GameAchievements RefreshGenshinImpact(Game game)
         {
-            logger.Info($"RefreshGenshinImpact({game?.Name} - {game?.Id})");
+            TrueAchievements.Logger.Info($"RefreshGenshinImpact({game?.Name} - {game?.Id})");
             GameAchievements gameAchievements = null;
 
             try
@@ -207,7 +207,7 @@ namespace SuccessStory.Services
         public override GameAchievements Get(Guid Id, bool OnlyCache = false, bool Force = false)
         {
             GameAchievements gameAchievements = base.GetOnlyCache(Id);
-            Game game = PlayniteApi.Database.Games.Get(Id);
+            Game game = API.Instance.Database.Games.Get(Id);
 
             // Get from web
             if ((gameAchievements == null && !OnlyCache) || Force)
@@ -233,18 +233,18 @@ namespace SuccessStory.Services
         /// <param name="game"></param>
         public override GameAchievements GetWeb(Guid Id)
         {
-            Game game = PlayniteApi.Database.Games.Get(Id);
+            Game game = API.Instance.Database.Games.Get(Id);
             GameAchievements gameAchievements = GetDefault(game);
             AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game, true);
 
             // Generate database only this source
-            if (VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, game))
+            if (VerifToAddOrShow(PluginSettings.Settings, game))
             {
                 GenericAchievements achievementProvider = AchievementProviders[achievementSource];
                 RetroAchievements retroAchievementsProvider = achievementProvider as RetroAchievements;
                 PSNAchievements psnAchievementsProvider = achievementProvider as PSNAchievements;
 
-                logger.Info($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id}");
+                TrueAchievements.Logger.Info($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id}");
 
                 if (retroAchievementsProvider != null && !SuccessStory.IsFromMenu)
                 {
@@ -288,11 +288,11 @@ namespace SuccessStory.Services
 
             if (!(gameAchievements?.HasAchievements ?? false))
             {
-                logger.Info($"No achievements find for {game.Name} - {game.Id}");
+                TrueAchievements.Logger.Info($"No achievements find for {game.Name} - {game.Id}");
             }
             else
             {
-                logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
+                TrueAchievements.Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
             }
 
             return gameAchievements;
@@ -452,7 +452,7 @@ namespace SuccessStory.Services
             if (PluginSettings.Settings.EnableRetroAchievementsView && PluginSettings.Settings.EnableRetroAchievements)
             {
                 //TODO: _isRetroachievements this is never set
-                if (_isRetroachievements)
+                if (IsRetroachievements)
                 {
                     if (PluginSettings.Settings.EnableRetroAchievements)
                     {
@@ -505,7 +505,7 @@ namespace SuccessStory.Services
                             var ListSources = db.Select(x => x.Value.SourceId).Distinct();
                             foreach (var Source in ListSources)
                             {
-                                var gameSource = PlayniteApi.Database.Sources.Get(Source);
+                                var gameSource = API.Instance.Database.Sources.Get(Source);
                                 if (gameSource != null)
                                 {
                                     tempSourcesLabels.Add(gameSource.Name);
@@ -567,7 +567,7 @@ namespace SuccessStory.Services
                         {
                             if (Source != default(Guid))
                             {
-                                GameSource gameSource = PlayniteApi.Database.Sources.Get(Source);
+                                GameSource gameSource = API.Instance.Database.Sources.Get(Source);
                                 if (gameSource != null)
                                 {
                                     tempSourcesLabels.Add(gameSource.Name);
@@ -935,7 +935,7 @@ namespace SuccessStory.Services
                 }
                 else
                 {
-                    logger.Warn($"No platform for {game.Name}");
+                    TrueAchievements.Logger.Warn($"No platform for {game.Name}");
                 }
             }
 
@@ -973,12 +973,10 @@ namespace SuccessStory.Services
         /// <summary>
         /// Validate achievement configuration for the service this game is linked to
         /// </summary>
-        /// <param name="plugin"></param>
-        /// <param name="playniteApi"></param>
         /// <param name="settings"></param>
         /// <param name="game"></param>
         /// <returns>true when achievements can be retrieved for the supplied game</returns>
-        public static bool VerifToAddOrShow(SuccessStory plugin, IPlayniteAPI playniteApi, SuccessStorySettings settings, Game game)
+        public static bool VerifToAddOrShow(SuccessStorySettings settings, Game game)
         {
             AchievementSource achievementSource = GetAchievementSource(settings, game);
             if (!AchievementProviders.TryGetValue(achievementSource, out GenericAchievements achievementProvider))
@@ -1004,7 +1002,7 @@ namespace SuccessStory.Services
         {
             if (game == null)
             {
-                logger.Warn("game null in SetThemesResources()");
+                TrueAchievements.Logger.Warn("game null in SetThemesResources()");
                 return;
             }
 
@@ -1039,7 +1037,7 @@ namespace SuccessStory.Services
 
         public override void RefreshNoLoader(Guid Id)
         {
-            Game game = PlayniteApi.Database.Games.Get(Id);
+            Game game = API.Instance.Database.Games.Get(Id);
             GameAchievements loadedItem = Get(Id, true);
             GameAchievements webItem = null;
 
@@ -1048,7 +1046,7 @@ namespace SuccessStory.Services
                 return;
             }
 
-            logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
+            TrueAchievements.Logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
 
             if (loadedItem.IsManual)
             {
@@ -1104,12 +1102,12 @@ namespace SuccessStory.Services
         public override void Refresh(List<Guid> Ids)
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCCommonProcessing")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}",
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -1125,11 +1123,11 @@ namespace SuccessStory.Services
                         break;
                     }
 
-                    Game game = PlayniteApi.Database.Games.Get(Id);
+                    Game game = API.Instance.Database.Games.Get(Id);
                     string SourceName = PlayniteTools.GetSourceName(game);
                     var achievementSource = GetAchievementSource(PluginSettings.Settings, game);
                     string GameName = game.Name;
-                    bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(Plugin, PlayniteApi, PluginSettings.Settings, game);
+                    bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(PluginSettings.Settings, game);
                     GameAchievements gameAchievements = Get(game, true);
 
                     if (!gameAchievements.IsIgnored && VerifToAddOrShow)
@@ -1148,13 +1146,13 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
+                TrueAchievements.Logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
         }
 
         public override void ActionAfterRefresh(GameAchievements item)
         {
-            Game game = PlayniteApi.Database.Games.Get(item.Id);
+            Game game = API.Instance.Database.Games.Get(item.Id);
             if ((item?.HasAchievements ?? false) && PluginSettings.Settings.AchievementFeature != null)
             {
                 if (game.FeatureIds != null)
@@ -1165,7 +1163,7 @@ namespace SuccessStory.Services
                 {
                     game.FeatureIds = new List<Guid> { PluginSettings.Settings.AchievementFeature.Id };
                 }
-                PlayniteApi.Database.Games.Update(game);
+                API.Instance.Database.Games.Update(game);
             }
         }
 
@@ -1173,12 +1171,12 @@ namespace SuccessStory.Services
         public void RefreshRarety()
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCCommonProcessing")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}",
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -1193,7 +1191,7 @@ namespace SuccessStory.Services
 
                 foreach (GameAchievements gameAchievements in db)
                 {
-                    logger.Info($"RefreshRarety({gameAchievements.Name})");
+                    TrueAchievements.Logger.Info($"RefreshRarety({gameAchievements.Name})");
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
                         CancelText = " canceled";
@@ -1213,7 +1211,7 @@ namespace SuccessStory.Services
                                 }
                                 else
                                 {
-                                    logger.Warn($"No Steam config");
+                                    TrueAchievements.Logger.Warn($"No Steam config");
                                 }
                             }
                             break;
@@ -1221,7 +1219,7 @@ namespace SuccessStory.Services
                             exophaseAchievements.SetRarety(gameAchievements, AchievementSource.Local);
                             break;
                         default:
-                            logger.Warn($"No sourcesLink for {gameAchievements.Name}");
+                            TrueAchievements.Logger.Warn($"No sourcesLink for {gameAchievements.Name}");
                             break;
                     }
 
@@ -1231,19 +1229,19 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
+                TrueAchievements.Logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
             }, globalProgressOptions);
         }
 
         public void RefreshEstimateTime()
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCCommonProcessing")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}",
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -1258,7 +1256,7 @@ namespace SuccessStory.Services
 
                 foreach (GameAchievements gameAchievements in db)
                 {
-                    logger.Info($"RefreshEstimateTime({gameAchievements.Name})");
+                    TrueAchievements.Logger.Info($"RefreshEstimateTime({gameAchievements.Name})");
 
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
@@ -1266,7 +1264,7 @@ namespace SuccessStory.Services
                         break;
                     }
 
-                    Game game = PlayniteApi.Database.Games.Get(gameAchievements.Id);
+                    Game game = API.Instance.Database.Games.Get(gameAchievements.Id);
                     GameAchievements gameAchievementsNew = Serialization.GetClone(gameAchievements);
                     gameAchievementsNew = SetEstimateTimeToUnlock(game, gameAchievements);
                     AddOrUpdate(gameAchievementsNew);
@@ -1276,7 +1274,7 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
+                TrueAchievements.Logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
             }, globalProgressOptions);
         }
 
@@ -1313,7 +1311,7 @@ namespace SuccessStory.Services
                         {
                             Application.Current.Dispatcher?.Invoke(() =>
                             {
-                                PlayniteApi.Database.Games.Update(game);
+                                API.Instance.Database.Games.Update(game);
                                 game.OnPropertyChanged();
                             }, DispatcherPriority.Send);
                         }
@@ -1321,7 +1319,7 @@ namespace SuccessStory.Services
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, $"Tag insert error with {game.Name}", true, PluginName, string.Format(resources.GetString("LOCCommonNotificationTagError"), game.Name));
+                    Common.LogError(ex, false, $"Tag insert error with {game.Name}", true, PluginName, string.Format(ResourceProvider.GetString("LOCCommonNotificationTagError"), game.Name));
                 }
             }
         }
@@ -1333,55 +1331,55 @@ namespace SuccessStory.Services
             {
                 if (EstimateTimeMax <= 1)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon0to1")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon0to1")}");
                 }
                 if (EstimateTimeMax <= 6)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon1to5")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon1to5")}");
                 }
                 if (EstimateTimeMax <= 10)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon5to10")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon5to10")}");
                 }
                 if (EstimateTimeMax <= 20)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon10to20")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon10to20")}");
                 }
                 if (EstimateTimeMax <= 30)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon20to30")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon20to30")}");
                 }
                 if (EstimateTimeMax <= 40)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon30to40")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon30to40")}");
                 }
                 if (EstimateTimeMax <= 50)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon40to50")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon40to50")}");
                 }
                 if (EstimateTimeMax <= 60)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon50to60")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon50to60")}");
                 }
                 if (EstimateTimeMax <= 70)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon60to70")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon60to70")}");
                 }
                 if (EstimateTimeMax <= 80)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon70to80")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon70to80")}");
                 }
                 if (EstimateTimeMax <= 90)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon80to90")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon80to90")}");
                 }
                 if (EstimateTimeMax <= 100)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon90to100")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon90to100")}");
                 }
                 if (EstimateTimeMax > 100)
                 {
-                    return CheckTagExist($"{resources.GetString("LOCCommon100plus")}");
+                    return CheckTagExist($"{ResourceProvider.GetString("LOCCommon100plus")}");
                 }
             }
 
@@ -1410,8 +1408,8 @@ namespace SuccessStory.Services
 
         public override void GetSelectData()
         {
-            OptionsDownloadData View = new OptionsDownloadData(PlayniteApi);
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PlayniteApi, PluginName + " - " + resources.GetString("LOCCommonSelectData"), View);
+            OptionsDownloadData View = new OptionsDownloadData();
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginName + " - " + ResourceProvider.GetString("LOCCommonSelectData"), View);
             windowExtension.ShowDialog();
 
             List<Game> PlayniteDb = View.GetFilteredGames();
@@ -1435,12 +1433,12 @@ namespace SuccessStory.Services
             }
 
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {resources.GetString("LOCCommonGettingData")}",
+                $"{PluginName} - {ResourceProvider.GetString("LOCCommonGettingData")}",
                 true
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            PlayniteApi.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 try
                 {
@@ -1474,7 +1472,7 @@ namespace SuccessStory.Services
 
                     stopWatch.Stop();
                     TimeSpan ts = stopWatch.Elapsed;
-                    logger.Info($"Task GetSelectData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)PlayniteDb.Count()} items");
+                    TrueAchievements.Logger.Info($"Task GetSelectData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)PlayniteDb.Count()} items");
                 }
                 catch (Exception ex)
                 {
@@ -1497,7 +1495,7 @@ namespace SuccessStory.Services
                 foreach (var item in db)
                 {
                     GameAchievements GameAchievements = item.Value;
-                    if (PlayniteApi.Database.Games.Get(item.Key) != null)
+                    if (API.Instance.Database.Games.Get(item.Key) != null)
                     {
                         Total += GameAchievements.Total;
                         Locked += GameAchievements.Locked;
@@ -1505,7 +1503,7 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
+                        TrueAchievements.Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
                     }
                 }
 
@@ -1535,7 +1533,7 @@ namespace SuccessStory.Services
                 foreach (var item in db)
                 {
                     GameAchievements GameAchievements = item.Value;
-                    if (PlayniteApi.Database.Games.Get(item.Key) != null)
+                    if (API.Instance.Database.Games.Get(item.Key) != null)
                     {
                         Total += GameAchievements.Total;
                         Locked += GameAchievements.Locked;
@@ -1543,7 +1541,7 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
+                        TrueAchievements.Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
                     }
                 }
             }
@@ -1573,10 +1571,10 @@ namespace SuccessStory.Services
                 foreach (var item in db)
                 {
                     Guid Id = item.Key;
-                    Game Game = PlayniteApi.Database.Games.Get(Id);
+                    Game Game = API.Instance.Database.Games.Get(Id);
                     GameAchievements GameAchievements = item.Value;
 
-                    if (PlayniteApi.Database.Games.Get(item.Key) != null)
+                    if (API.Instance.Database.Games.Get(item.Key) != null)
                     {
                         Total += GameAchievements.Total;
                         Locked += GameAchievements.Locked;
@@ -1584,7 +1582,7 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
+                        TrueAchievements.Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
                     }
                 }
             }

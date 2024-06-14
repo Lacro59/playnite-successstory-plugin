@@ -3,6 +3,7 @@ using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Interfaces;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Services;
@@ -20,37 +21,33 @@ namespace SuccessStory.Controls
     /// </summary>
     public partial class PluginButton : PluginUserControlExtend
     {
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        internal override IPluginDatabase _PluginDatabase
-        {
-            get => PluginDatabase;
-            set => PluginDatabase = (SuccessStoryDatabase)_PluginDatabase;
-        }
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        internal override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginButtonDataContext ControlDataContext = new PluginButtonDataContext();
-        internal override IDataContext _ControlDataContext
+        internal override IDataContext controlDataContext
         {
             get => ControlDataContext;
-            set => ControlDataContext = (PluginButtonDataContext)_ControlDataContext;
+            set => ControlDataContext = (PluginButtonDataContext)controlDataContext;
         }
 
 
         public PluginButton()
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 // Wait extension database are loaded
-                System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                _ = System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
-                this.Dispatcher?.BeginInvoke((Action)delegate
+                _ = Dispatcher?.BeginInvoke((Action)delegate
                 {
                     PluginDatabase.PluginSettings.PropertyChanged += PluginSettings_PropertyChanged;
                     PluginDatabase.Database.ItemUpdated += Database_ItemUpdated;
                     PluginDatabase.Database.ItemCollectionChanged += Database_ItemCollectionChanged;
-                    PluginDatabase.PlayniteApi.Database.Games.ItemUpdated += Games_ItemUpdated;
+                    API.Instance.Database.Games.ItemUpdated += Games_ItemUpdated;
 
                     // Apply settings
                     PluginSettings_PropertyChanged(null, null);
@@ -85,7 +82,7 @@ namespace SuccessStory.Controls
         #region Events
         private void PART_PluginButton_Click(object sender, RoutedEventArgs e)
         {
-            dynamic ViewExtension = null;
+            dynamic ViewExtension;
             if (PluginDatabase.GameContext.Name.IsEqual("overwatch") && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
             {
                 ViewExtension = new SuccessStoryOverwatchView(PluginDatabase.GameContext);
@@ -103,8 +100,8 @@ namespace SuccessStory.Controls
                 ViewExtension = new SuccessStoryOneGameView(PluginDatabase.GameContext);
             }
 
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginDatabase.PlayniteApi, resources.GetString("LOCSuccessStoryAchievements"), ViewExtension);
-            windowExtension.ShowDialog();
+            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStoryAchievements"), ViewExtension);
+            _ = windowExtension.ShowDialog();
         }
         #endregion
     }
@@ -112,22 +109,22 @@ namespace SuccessStory.Controls
 
     public class PluginButtonDataContext : ObservableObject, IDataContext
     {
-        private bool _IsActivated;
-        public bool IsActivated { get => _IsActivated; set => SetValue(ref _IsActivated, value); }
+        private bool isActivated;
+        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 
-        private bool _DisplayDetails = true;
-        public bool DisplayDetails { get => _DisplayDetails; set => SetValue(ref _DisplayDetails, value); }
+        private bool displayDetails = true;
+        public bool DisplayDetails { get => displayDetails; set => SetValue(ref displayDetails, value); }
 
-        private bool _Is100Percent;
-        public bool Is100Percent { get => _Is100Percent; set => SetValue(ref _Is100Percent, value); }
+        private bool is100Percent;
+        public bool Is100Percent { get => is100Percent; set => SetValue(ref is100Percent, value); }
 
-        private string _LabelContent = "15/23";
-        public string LabelContent { get => _LabelContent; set => SetValue(ref _LabelContent, value); }
+        private string labelContent = "15/23";
+        public string LabelContent { get => labelContent; set => SetValue(ref labelContent, value); }
 
-        private int _Value;
-        public int Value { get => _Value; set => SetValue(ref _Value, value); }
+        private int value;
+        public int Value { get => value; set => SetValue(ref this.value, value); }
 
-        private int _Maximum;
-        public int Maximum { get => _Maximum; set => SetValue(ref _Maximum, value); }
+        private int maximum;
+        public int Maximum { get => maximum; set => SetValue(ref maximum, value); }
     }
 }

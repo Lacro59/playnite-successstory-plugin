@@ -76,7 +76,7 @@ namespace SuccessStory.Clients
 
                 if (SectionAchievements == null || SectionAchievements.Count() == 0)
                 {
-                    logger.Warn($"Problem with {searchResult.Url}");
+                    Logger.Warn($"Problem with {searchResult.Url}");
                     if (!IsRetry)
                     {
                         return GetAchievements(game, searchResult, true);
@@ -172,10 +172,10 @@ namespace SuccessStory.Clients
         #region Exophase
         public void Login()
         {
-            FileSystem.DeleteFile(cookiesPath);
+            FileSystem.DeleteFile(CookiesPath);
             ResetCachedIsConnectedResult();
 
-            using (IWebView WebView = PluginDatabase.PlayniteApi.WebViews.CreateView(600, 600))
+            using (IWebView WebView = API.Instance.WebViews.CreateView(600, 600))
             {
                 WebView.LoadingChanged += (s, e) =>
                 {
@@ -220,7 +220,7 @@ namespace SuccessStory.Clients
                 string StringJsonResult = Web.DownloadStringData(UrlSearch).GetAwaiter().GetResult();
                 if (StringJsonResult == "{\"success\":true,\"games\":false}")
                 {
-                    logger.Warn($"No Exophase result for {Name}");
+                    Logger.Warn($"No Exophase result for {Name}");
                     return ListSearchGames;
                 }
 
@@ -261,18 +261,18 @@ namespace SuccessStory.Clients
             List<SearchResult> searchResults = SearchGame(gameAchievements.Name);
             if (searchResults.Count == 0)
             {
-                logger.Warn($"No game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
+                Logger.Warn($"No game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
 
                 searchResults = SearchGame(PlayniteTools.NormalizeGameName(gameAchievements.Name));
                 if (searchResults.Count == 0)
                 {
-                    logger.Warn($"No game found for {PlayniteTools.NormalizeGameName(gameAchievements.Name)} in GetAchievementsPageUrl()");
+                    Logger.Warn($"No game found for {PlayniteTools.NormalizeGameName(gameAchievements.Name)} in GetAchievementsPageUrl()");
 
                     searchResults = SearchGame(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value);
                     UsedSplit = true;
                     if (searchResults.Count == 0)
                     {
-                        logger.Warn($"No game found for {Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value} in GetAchievementsPageUrl()");
+                        Logger.Warn($"No game found for {Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value} in GetAchievementsPageUrl()");
                         return null;
                     }
                 }
@@ -283,7 +283,7 @@ namespace SuccessStory.Clients
 
             if (searchResult == null)
             {
-                logger.Warn($"No matching game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
+                Logger.Warn($"No matching game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
             }
 
             return searchResult?.Url;
@@ -300,14 +300,14 @@ namespace SuccessStory.Clients
             string achievementsUrl = GetAchievementsPageUrl(gameAchievements, source);
             if (achievementsUrl.IsNullOrEmpty())
             {
-                logger.Warn($"No Exophase (rarity) url find for {gameAchievements.Name} - {gameAchievements.Id}");
+                Logger.Warn($"No Exophase (rarity) url find for {gameAchievements.Name} - {gameAchievements.Id}");
                 return;
             }
 
             try
             {
                 GameAchievements exophaseAchievements = GetAchievements(
-                    PluginDatabase.PlayniteApi.Database.Games.Get(gameAchievements.Id),
+                    API.Instance.Database.Games.Get(gameAchievements.Id),
                     achievementsUrl
                 );
 
@@ -325,7 +325,7 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        logger.Warn($"No Exophase (rarity) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
+                        Logger.Warn($"No Exophase (rarity) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
                     }
                 });
 
@@ -343,14 +343,14 @@ namespace SuccessStory.Clients
             string achievementsUrl = GetAchievementsPageUrl(gameAchievements, source);
             if (achievementsUrl.IsNullOrEmpty())
             {
-                logger.Warn($"No Exophase (description) url find for {gameAchievements.Name} - {gameAchievements.Id}");
+                Logger.Warn($"No Exophase (description) url find for {gameAchievements.Name} - {gameAchievements.Id}");
                 return;
             }
 
             try
             {
                 GameAchievements exophaseAchievements = GetAchievements(
-                    PluginDatabase.PlayniteApi.Database.Games.Get(gameAchievements.Id),
+                    API.Instance.Database.Games.Get(gameAchievements.Id),
                     achievementsUrl
                 );
 
@@ -371,7 +371,7 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        logger.Warn($"No Exophase (description) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
+                        Logger.Warn($"No Exophase (description) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
                     }
                 });
 
@@ -432,7 +432,7 @@ namespace SuccessStory.Clients
             foreach (Playnite.SDK.Models.Platform playnitePlatform in playniteGame.Platforms)
             {
                 string[] exophasePlatformNames;
-                string sourceName = PluginDatabase.PlayniteApi.Database.Games.Get(playniteGame.Id).Source?.Name;
+                string sourceName = API.Instance.Database.Games.Get(playniteGame.Id).Source?.Name;
                 if (sourceName == "Xbox Game Pass")
                 {
                     if (!PlaynitePlatformSpecificationIdToExophasePlatformName.TryGetValue("xbox_game_pass", out exophasePlatformNames))

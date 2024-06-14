@@ -15,12 +15,12 @@ namespace SuccessStory.Clients
 {
     class TrueAchievements
     {
-        internal static readonly ILogger logger = LogManager.GetLogger();
+        internal static ILogger Logger => LogManager.GetLogger();
 
-        private static SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
-        public static string XboxUrlSearch = @"https://www.trueachievements.com/searchresults.aspx?search={0}";
-        public static string SteamUrlSearch = @"https://truesteamachievements.com/searchresults.aspx?search={0}";
+        public static string XboxUrlSearch => @"https://www.trueachievements.com/searchresults.aspx?search={0}";
+        public static string SteamUrlSearch => @"https://truesteamachievements.com/searchresults.aspx?search={0}";
 
         public enum OriginData
         {
@@ -56,7 +56,7 @@ namespace SuccessStory.Clients
             try
             {
                 string WebData = string.Empty;
-                using (var WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
                     WebViewOffscreen.NavigateAndWait(Url);
                     WebData = WebViewOffscreen.GetPageSource();
@@ -64,7 +64,7 @@ namespace SuccessStory.Clients
 
                 if (WebData.IsNullOrEmpty())
                 {
-                    logger.Warn($"No data from {Url}");
+                    Logger.Warn($"No data from {Url}");
                     return ListSearchGames;
                 }
 
@@ -143,14 +143,14 @@ namespace SuccessStory.Clients
 
             if (UrlTrueAchievement.IsNullOrEmpty())
             {
-                logger.Warn($"No url for GetEstimateTimeToUnlock()");
+                Logger.Warn($"No url for GetEstimateTimeToUnlock()");
                 return EstimateTimeToUnlock;
             }
 
             try
             {
                 string WebData = string.Empty;
-                using (var WebViewOffscreen = PluginDatabase.PlayniteApi.WebViews.CreateOffscreenView())
+                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
                     WebViewOffscreen.NavigateAndWait(UrlTrueAchievement);
                     WebData = WebViewOffscreen.GetPageSource();
@@ -158,7 +158,7 @@ namespace SuccessStory.Clients
 
                 if (WebData.IsNullOrEmpty())
                 {
-                    logger.Warn($"No data from {UrlTrueAchievement}");
+                    Logger.Warn($"No data from {UrlTrueAchievement}");
                     return EstimateTimeToUnlock;
                 }
 
