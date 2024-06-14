@@ -110,9 +110,9 @@ namespace SuccessStory.Services
                 Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension);
                 windowExtension.ShowDialog();
 
-                if (ViewExtension.gameAchievements != null)
+                if (ViewExtension.GameAchievements != null)
                 {
-                    gameAchievements = ViewExtension.gameAchievements;
+                    gameAchievements = ViewExtension.GameAchievements;
                     gameAchievements.IsManual = true;
                 }
 

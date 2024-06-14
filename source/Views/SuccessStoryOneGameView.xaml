@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views"
+             xmlns:pcmd="clr-namespace:CommonPlayniteShared.Commands"
              xmlns:controls="clr-namespace:SuccessStory.Controls"
-             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
+             xmlns:converters="clr-namespace:CommonPlayniteShared.Converters" 
+             d:DataContext="{d:DesignInstance Type=local:ControlDataContext, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" Height="700" Width="1100">
 
     <UserControl.Resources>
@@ -33,6 +35,7 @@
             </Grid.ColumnDefinitions>
 
             <Image Name="PART_ImageCover" Height="250" StretchDirection="Both" Stretch="Uniform"
+                   Source="{Binding CoverImage}"
                    VerticalAlignment="Center" HorizontalAlignment="Center"
                    Grid.Column="0" RenderOptions.BitmapScalingMode="Fant" />
 
@@ -60,31 +63,25 @@
                                FontSize="{DynamicResource FontSizeLargest}" TextWrapping="Wrap"
                                Foreground="{DynamicResource TextBrush}" />
 
-                    <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal"
-                                Visibility="{Binding ElementName=PART_FirstUnlock, Path=Text, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
-                        <TextBlock Text="{DynamicResource LOCSuccessStoryFirstUnlock}" 
-                                   Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+                    <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" Visibility="{Binding FirstUnlock, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
+                        <TextBlock Text="{DynamicResource LOCSuccessStoryFirstUnlock}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
 
-                        <TextBlock Name="PART_FirstUnlock" Margin="20,0,0,0" Text="xx/xx/xxxx xx:xx:xx"
-                                   Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Margin="20,0,0,0" Text="{Binding FirstUnlock}" Foreground="{DynamicResource TextBrush}" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal"
-                                Visibility="{Binding ElementName=PART_LastUnlock, Path=Text, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
-                        <TextBlock Text="{DynamicResource LOCSuccessStoryLastUnlock}" 
-                                   Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+                                Visibility="{Binding LastUnlock, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
+                        <TextBlock Text="{DynamicResource LOCSuccessStoryLastUnlock}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
 
-                        <TextBlock Name="PART_LastUnlock" Margin="20,0,0,0" Text="xx/xx/xxxx xx:xx:xx"
-                                   Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Margin="20,0,0,0" Text="{Binding LastUnlock}" Foreground="{DynamicResource TextBrush}" />
                     </StackPanel>
 
-                    <StackPanel Name="PART_TimeToUnlockContener" Grid.Column="2" Grid.Row="2"
+                    <StackPanel Grid.Column="2" Grid.Row="2"
+                                Visibility="{Binding EstimateTime, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}"
                                 HorizontalAlignment="Right" Orientation="Horizontal">
-                        <TextBlock Text="{DynamicResource LOCSsTimeToUnlock}" 
-                                   Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
-                    
-                        <TextBlock Name="PART_TimeToUnlock" Margin="20,0,0,0" Text="xx:xx:xx"
-                                   Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Text="{DynamicResource LOCSsTimeToUnlock}" Foreground="{DynamicResource TextBrush}" FontWeight="Bold" />
+
+                        <TextBlock Margin="20,0,0,0" Text="{Binding EstimateTime}" Foreground="{DynamicResource TextBrush}" />
                     </StackPanel>
                 </Grid>
 
@@ -120,83 +117,44 @@
 
                 <Label Grid.Row="0" Content="{DynamicResource LOCSuccessStoryAchStats}" FontSize="16" HorizontalAlignment="Center" />
 
-                <ToggleButton Name="PART_TbStats" Click="PART_TbStats_Click"
-                              HorizontalAlignment="Right" Content="&#xec7e;" FontFamily="{DynamicResource FontIcoFont}" />
+                <DockPanel Grid.Row="2">
+                    <StackPanel DockPanel.Dock="Left">
+                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                            <Label Content="&#127942;" Margin="0,0,5,0" />
+                            <Label Content="{DynamicResource LOCSuccessStoryCommon}" />
+                        </StackPanel>
 
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
+                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                            <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityUncommonColor}" />
+                            <Label Content="{DynamicResource LOCSuccessStoryNoCommon}" />
+                        </StackPanel>
 
-                    <StackPanel Grid.Column="0" Grid.Row="0"  Orientation="Horizontal">
-                        <Label Content="&#127942;" Margin="0,0,5,0" />
-                        <Label Content="{DynamicResource LOCSuccessStoryCommon}" />
+                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                            <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityRareColor}" />
+                            <Label Content="{DynamicResource LOCSuccessStoryRare}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityUltraRareColor}" />
+                            <Label Content="{DynamicResource LOCSuccessStoryUltraRare}" />
+                        </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="0" Grid.Row="2"  Orientation="Horizontal">
-                        <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityUncommonColor}" />
-                        <Label Content="{DynamicResource LOCSuccessStoryNoCommon}" />
+                    <StackPanel DockPanel.Dock="Right">
+                        <Label Content="{Binding AchCommon.Stats}" Margin="0,10,0,0" />
+                        <Label Content="{Binding AchNoCommon.Stats}" Margin="0,10,0,0" />
+                        <Label Content="{Binding AchRare.Stats}" Margin="0,10,0,0" />
+                        <Label Content="{Binding AchRare.Stats}" Margin="0,10,0,0" Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </StackPanel>
 
-                    <StackPanel Grid.Column="0" Grid.Row="4"  Orientation="Horizontal">
-                        <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityRareColor}" />
-                        <Label Content="{DynamicResource LOCSuccessStoryRare}" />
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="0" Grid.Row="5"  Orientation="Horizontal" Margin="0,10,0,0" 
-                                Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityUltraRareColor}" />
-                        <Label Content="{DynamicResource LOCSuccessStoryUltraRare}" />
-                    </StackPanel>
-
-                    <Grid Grid.Column="2" Grid.RowSpan="6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="15" />
-                            <ColumnDefinition Width="auto" SharedSizeGroup="RaretyTotal" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-
-                        <Label Grid.Column="0" Grid.Row="0" Name="PART_AchCommon" Content="xxxx" HorizontalAlignment="Right" />
-                        <Label Grid.Column="0" Grid.Row="2" Name="PART_AchNoCommon" Content="xxxx" HorizontalAlignment="Right" />
-                        <Label Grid.Column="0" Grid.Row="4" Name="PART_AchRare" Content="xxxx" HorizontalAlignment="Right" />
-                        <Label Grid.Column="0" Grid.Row="5" Name="PART_AchUltraRare" Content="xxxx" HorizontalAlignment="Right" 
-                               Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,10,0,0" />
-
-                        <Label Grid.Column="1" Grid.Row="0" Content="/" HorizontalAlignment="Center" />
-                        <Label Grid.Column="1" Grid.Row="2" Content="/" HorizontalAlignment="Center" />
-                        <Label Grid.Column="1" Grid.Row="4" Content="/" HorizontalAlignment="Center" />
-                        <Label Grid.Column="1" Grid.Row="5" Content="/" HorizontalAlignment="Center" 
-                               Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,10,0,0" />
-
-                        <Label Grid.Column="2" Grid.Row="0" Name="PART_AchCommonTotal" Content="xxxx" HorizontalAlignment="Right" />
-                        <Label Grid.Column="2" Grid.Row="2" Name="PART_AchNoCommonTotal" Content="xxxx" HorizontalAlignment="Right" />
-                        <Label Grid.Column="2" Grid.Row="4" Name="PART_AchRareTotal" Content="xxxx" HorizontalAlignment="Right" />
-                        <Label Grid.Column="2" Grid.Row="5" Name="PART_AchUltraRareTotal" Content="xxxx" HorizontalAlignment="Right" 
-                               Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,10,0,0" />
-                    </Grid>
-                </Grid>
+                    <StackPanel></StackPanel>
+                </DockPanel>
             </Grid>
 
-            <Label Grid.Row="2" Name="PART_ScUserStats_Label" Content="{DynamicResource LOCSuccessStoryUserStats}" FontSize="16" HorizontalAlignment="Center" />
+            <Label Grid.Row="2" Content="{DynamicResource LOCSuccessStoryUserStats}" FontSize="16" HorizontalAlignment="Center"
+                   Visibility="{Binding HasDataStats, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-            <Grid Name="PART_ScUserStats_Contener" Grid.Row="4">
+            <Grid Grid.Row="4" Visibility="{Binding HasDataStats, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <controls:PluginUserStats Height="{Binding ElementName=PART_ScUserStats_Contener, Path=ActualHeight}"
                                           IgnoreSettings="True" 
                                           GameContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.GameContext}" />
@@ -211,9 +169,11 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Content="{DynamicResource LOCSourceLabel}" Grid.Column="0" FontSize="8" />
-                <TextBlock Grid.Column="2" VerticalAlignment="Center" FontSize="8" Name="PART_Link">
-                    <Hyperlink Name="PART_SourceLink" Click="PART_SourceLink_Click">
-                        <TextBlock Name="PART_SourceLabel" FontSize="8" Text="a test source" />
+                <TextBlock Grid.Column="2" VerticalAlignment="Center" FontSize="8" ToolTip="{Binding SourceLink}">
+                    <Hyperlink NavigateUri="{Binding SourceLink}" FontSize="8"
+                               Command="{x:Static pcmd:GlobalCommands.NavigateUrlCommand}"
+                               CommandParameter="{Binding NavigateUri, RelativeSource={RelativeSource Self}}">
+                        <Run Text="{Binding SourceLabel}" />
                     </Hyperlink>
                 </TextBlock>
             </Grid>

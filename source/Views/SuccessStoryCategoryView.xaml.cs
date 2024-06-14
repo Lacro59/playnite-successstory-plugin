@@ -27,23 +27,23 @@ namespace SuccessStory.Views
     public partial class SuccessStoryCategoryView : UserControl
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-        private ControlDataContext ControlDataContext => new ControlDataContext();
+        private ControlDataContext ControlDataContext { get; set; } = new ControlDataContext();
 
 
-        public SuccessStoryCategoryView(Game GameContext)
+        public SuccessStoryCategoryView(Game game)
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
 
             // Cover
-            if (!GameContext.CoverImage.IsNullOrEmpty())
+            if (!game.CoverImage.IsNullOrEmpty())
             {
-                string CoverImage = API.Instance.Database.GetFullFilePath(GameContext.CoverImage);
+                string CoverImage = API.Instance.Database.GetFullFilePath(game.CoverImage);
                 PART_ImageCover.Source = BitmapExtensions.BitmapFromFile(CoverImage);
             }
 
-            GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
+            GameAchievements gameAchievements = PluginDatabase.Get(game, true);
 
             if (gameAchievements.HasData)
             {
@@ -56,7 +56,7 @@ namespace SuccessStory.Views
                     PART_TimeToUnlock.Text = gameAchievements.EstimateTime.EstimateTime;
                 }
 
-                var converter = new LocalDateTimeConverter();
+                LocalDateTimeConverter converter = new LocalDateTimeConverter();
                 PART_FirstUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
                 PART_LastUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
 
@@ -84,7 +84,7 @@ namespace SuccessStory.Views
                 PART_SourceLink.Tag = gameAchievements.SourcesLink.Url;
             }
 
-            ControlDataContext.GameContext = GameContext;
+            ControlDataContext.GameContext = game;
             ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
         }
 
@@ -95,7 +95,7 @@ namespace SuccessStory.Views
             {
                 if (!((string)((Hyperlink)sender).Tag).IsNullOrEmpty())
                 {
-                    Process.Start((string)((Hyperlink)sender).Tag);
+                    _ = Process.Start((string)((Hyperlink)sender).Tag);
                 }
             }
         }

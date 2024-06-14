@@ -293,7 +293,7 @@ namespace SuccessStory
             Settings.LocalPath = SuccessStorySettingsView.LocalPath;
             Settings.Rpcs3InstallationFolders = SuccessStorySettingsView.Rpcs3Path;
 
-            Settings.CompletionStatus100Percent = SuccessStorySettingsView.completionStatus;
+            Settings.CompletionStatus100Percent = SuccessStorySettingsView.CompletionStatus;
 
             Settings.RaConsoleAssociateds = SuccessStorySettingsView.RaConsoleAssociateds;
             Settings.RaConsoleAssociateds.ForEach(x =>

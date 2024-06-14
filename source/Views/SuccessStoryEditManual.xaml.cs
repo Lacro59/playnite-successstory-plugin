@@ -29,19 +29,16 @@ namespace SuccessStory.Views
     /// </summary>
     public partial class SuccessStoryEditManual : UserControl
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        private GameAchievements GameAchievements { get; set; }
 
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        private GameAchievements gameAchievements;
+        private ObservableCollection<Achievements> ListAchievements { get; set; } = new ObservableCollection<Achievements>();
 
-        private ObservableCollection<Achievements> ListAchievements = new ObservableCollection<Achievements>();
-
-        private bool viewFilter(object item)
+        private bool ViewFilter(object item)
         {
-            bool b1 = SearchElement.Text.IsNullOrEmpty() ? true : (item as Achievements).Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
-            bool b2 = !(bool)PART_IncludeDescription.IsChecked ? true : (item as Achievements).Description?.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) ?? false;
-            bool b3 = !(bool)PART_OnlyLocked.IsChecked ? true : !(item as Achievements).IsUnlock;
+            bool b1 = SearchElement.Text.IsNullOrEmpty() || (item as Achievements).Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
+            bool b2 = !(bool)PART_IncludeDescription.IsChecked || ((item as Achievements).Description?.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) ?? false);
+            bool b3 = !(bool)PART_OnlyLocked.IsChecked || !(item as Achievements).IsUnlock;
 
             return ((bool)PART_IncludeDescription.IsChecked ? (b1 || b2) : b1) && b3;
         }
@@ -51,19 +48,19 @@ namespace SuccessStory.Views
         {
             InitializeComponent();
 
-            gameAchievements = PluginDatabase.Get(game, true);
-            LoadData(game);
+            GameAchievements = PluginDatabase.Get(game, true);
+            LoadData();
         }
 
-        private void LoadData(Game GameSelected)
+        private void LoadData()
         {
-            ListAchievements = Serialization.GetClone(gameAchievements.Items).ToObservable();
+            ListAchievements = Serialization.GetClone(GameAchievements.Items).ToObservable();
 
             ListAchievements = ListAchievements.OrderBy(x => x.Name).ToObservable();
             lbAchievements.ItemsSource = ListAchievements;
 
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource);
-            view.Filter = viewFilter;
+            view.Filter = ViewFilter;
 
             Filter();
         }
@@ -74,16 +71,15 @@ namespace SuccessStory.Views
             int RowDefinied = (int)lbAchievements.Height / 70;
             int ColDefinied = 1;
 
-            this.DataContext = new
+            DataContext = new
             {
                 ColDefinied,
                 RowDefinied
             };
         }
 
-        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
-            string Text = ((TextBlock)sender).Text;
             TextBlock textBlock = (TextBlock)sender;
 
             Typeface typeface = new Typeface(
@@ -101,14 +97,7 @@ namespace SuccessStory.Views
                 textBlock.Foreground,
                 VisualTreeHelper.GetDpi(this).PixelsPerDip);
 
-            if (formattedText.Width > textBlock.DesiredSize.Width)
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ((ToolTip)((TextBlock)sender).ToolTip).Visibility = Visibility.Hidden;
-            }
+            ((ToolTip)((TextBlock)sender).ToolTip).Visibility = formattedText.Width > textBlock.DesiredSize.Width ? Visibility.Visible : Visibility.Hidden;
         }
 
 
@@ -124,16 +113,13 @@ namespace SuccessStory.Views
                     checkBox.IsChecked = true;
                 }
             }
-            catch
-            {
-
-            }
+            catch { }
         }
 
         private void PART_CbUnlock_Click(object sender, RoutedEventArgs e)
         {
             try
-            {                
+            {
                 CheckBox checkBox = sender as CheckBox;
                 int index = int.Parse(checkBox.Tag.ToString());
                 if ((bool)checkBox.IsChecked)
@@ -150,24 +136,21 @@ namespace SuccessStory.Views
                     ((Achievements)lbAchievements.Items[index]).DateUnlocked = default(DateTime);
                 }
             }
-            catch
-            {
-
-            }
+            catch { }
         }
 
 
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
         {
-            ((Window)this.Parent).Close();
+            ((Window)Parent).Close();
         }
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
-            gameAchievements.Items = ((ObservableCollection<Achievements>)lbAchievements.ItemsSource).ToList();
-            PluginDatabase.Update(gameAchievements);
+            GameAchievements.Items = ((ObservableCollection<Achievements>)lbAchievements.ItemsSource).ToList();
+            PluginDatabase.Update(GameAchievements);
 
-            ((Window)this.Parent).Close();
+            ((Window)Parent).Close();
         }
 
 
@@ -180,8 +163,8 @@ namespace SuccessStory.Views
             }
 
             CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource).Refresh();
-        } 
-    
+        }
+
         private void SearchElement_TextChanged(object sender, TextChangedEventArgs e)
         {
             Filter();

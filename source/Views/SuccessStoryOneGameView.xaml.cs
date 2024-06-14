@@ -23,156 +23,104 @@ namespace SuccessStory.Views
     public partial class SuccessStoryOneGameView : UserControl
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-        private ControlDataContext ControlDataContext => new ControlDataContext();
+        private ControlDataContext ControlDataContext { get; set; } = new ControlDataContext();
 
-        public const string UiAdd = "\uec3e";
-        public const string UiRemove = "\uec7e";
+        public string UiAdd => "\uec3e";
+        public string UiRemove => "\uec7e";
 
 
         public SuccessStoryOneGameView(Game GameContext)
         {
             InitializeComponent();
-            this.DataContext = ControlDataContext;
+            DataContext = ControlDataContext;
 
 
             // Cover
             if (!GameContext.CoverImage.IsNullOrEmpty())
             {
-                string CoverImage = API.Instance.Database.GetFullFilePath(GameContext.CoverImage);
-                PART_ImageCover.Source = BitmapExtensions.BitmapFromFile(CoverImage);
+                ControlDataContext.CoverImage = API.Instance.Database.GetFullFilePath(GameContext.CoverImage);
             }
 
             GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
             if (gameAchievements.SourcesLink != null)
             {
-                PART_SourceLabel.Text = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
-                PART_SourceLink.Tag = gameAchievements.SourcesLink.Url;
-                PART_Link.ToolTip = gameAchievements.SourcesLink.Url;
+                ControlDataContext.SourceLabel = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
+                ControlDataContext.SourceLink = gameAchievements.SourcesLink.Url;
             }
             else
             {
-                PART_SourceLabel.Text = string.Empty;
-                PART_SourceLabel.Tag = string.Empty;
-                PART_Link.ToolTip = string.Empty;
+                ControlDataContext.SourceLabel = string.Empty;
+                ControlDataContext.SourceLink = string.Empty;
             }
 
 
             if (gameAchievements.HasData)
             {
-                AchRaretyStats AchCommon = gameAchievements.Common;
-                AchRaretyStats AchNoCommon = gameAchievements.NoCommon;
-                AchRaretyStats AchRare = gameAchievements.Rare;
-                AchRaretyStats AchUltraRare = gameAchievements.UltraRare;
+                ControlDataContext.AchCommon = gameAchievements.Common;
+                ControlDataContext.AchNoCommon = gameAchievements.NoCommon;
+                ControlDataContext.AchRare = gameAchievements.Rare;
+                ControlDataContext.AchUltraRare = gameAchievements.UltraRare;
 
-                if (gameAchievements.EstimateTime == null || gameAchievements.EstimateTime.EstimateTimeMin == 0)
-                {
-                    PART_TimeToUnlockContener.Visibility = Visibility.Collapsed;
-                }
-                else
-                { 
-                    PART_TimeToUnlock.Text = gameAchievements.EstimateTime.EstimateTime;
-                }
-
-                PART_AchCommon.Content = AchCommon.UnLocked;
-                PART_AchNoCommon.Content = AchNoCommon.UnLocked;
-                PART_AchRare.Content = AchRare.UnLocked;            
-                PART_AchUltraRare.Content = AchUltraRare.UnLocked;            
-
-                PART_AchCommonTotal.Content = AchCommon.Total;
-                PART_AchNoCommonTotal.Content = AchNoCommon.Total;
-                PART_AchRareTotal.Content = AchRare.Total;
-                PART_AchUltraRareTotal.Content = AchUltraRare.Total;
+                ControlDataContext.EstimateTime = gameAchievements.EstimateTime.EstimateTime;
 
                 LocalDateTimeConverter converter = new LocalDateTimeConverter();
-                PART_FirstUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
-                PART_LastUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
+                ControlDataContext.FirstUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
+                ControlDataContext.LastUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
             }
 
 
             ControlDataContext.GameContext = GameContext;
             ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
 
-
-            if (!gameAchievements.HasDataStats)
-            {
-                PART_ScUserStats_Label.Visibility = Visibility.Collapsed;
-                PART_TbStats.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                PART_TbStats.IsChecked = gameAchievements.ShowStats;
-                PART_TbStats_Click(PART_TbStats, null);
-            }
-        }
-
-
-        private void PART_SourceLink_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (((Hyperlink)sender).Tag is string)
-            {
-                if (!((string)((Hyperlink)sender).Tag).IsNullOrEmpty())
-                {
-                    Process.Start((string)((Hyperlink)sender).Tag);
-                }
-            }
-        }
-
-
-        private void PART_TbStats_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton Tb = sender as ToggleButton;
-            if ((bool)Tb.IsChecked)
-            {
-                PART_TbStats.Content = UiRemove;
-                PART_ScUserStats_Label.Visibility = Visibility.Visible;
-                PART_ScUserStats_Contener.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                PART_TbStats.Content = UiAdd;
-                PART_ScUserStats_Label.Visibility = Visibility.Collapsed;
-                PART_ScUserStats_Contener.Visibility = Visibility.Collapsed;
-            }
-
-            GameAchievements gameAchievements = PluginDatabase.Get(ControlDataContext.GameContext, true);
-            gameAchievements.ShowStats = (bool)Tb.IsChecked;
-            PluginDatabase.Update(gameAchievements);
+            ControlDataContext.HasDataStats = gameAchievements.HasDataStats;
         }
     }
 
 
     public class ControlDataContext : ObservableObject
     {
-        private Game _GameContext { get; set; }
-        public Game GameContext
-        {
-            get => _GameContext;
-            set
-            {
-                if (value?.Equals(_GameContext) == true)
-                {
-                    return;
-                }
+        private SuccessStorySettings settings;
+        public SuccessStorySettings Settings { get => settings; set => SetValue(ref settings, value); }
 
-                _GameContext = value;
-                OnPropertyChanged();
-            }
-        }
 
-        private SuccessStorySettings _Settings { get; set; }
-        public SuccessStorySettings Settings
-        {
-            get => _Settings;
-            set
-            {
-                if (value?.Equals(_Settings) == true)
-                {
-                    return;
-                }
+        private string uiStatsBt = "\uec3e";
+        public string UiStatsBt { get => uiStatsBt; set => SetValue(ref uiStatsBt, value); }
 
-                _Settings = value;
-                OnPropertyChanged();
-            }
-        }
+        private bool hasDataStats = true;
+        public bool HasDataStats { get => hasDataStats; set => SetValue(ref hasDataStats, value); }
+
+
+        private Game gameContext;
+        public Game GameContext { get => gameContext; set => SetValue(ref gameContext, value); }
+
+        private string coverImage;
+        public string CoverImage { get => coverImage; set => SetValue(ref coverImage, value); }
+
+        private string sourceLabel = "Source Label";
+        public string SourceLabel { get => sourceLabel; set => SetValue(ref sourceLabel, value); }
+
+        private string sourceLink;
+        public string SourceLink { get => sourceLink; set => SetValue(ref sourceLink, value); }
+
+        private AchRaretyStats achCommon = new AchRaretyStats();
+        public AchRaretyStats AchCommon { get => achCommon; set => SetValue(ref achCommon, value); }
+
+        private AchRaretyStats achNoCommon = new AchRaretyStats();
+        public AchRaretyStats AchNoCommon { get => achNoCommon; set => SetValue(ref achNoCommon, value); }
+
+        private AchRaretyStats achRare = new AchRaretyStats();
+        public AchRaretyStats AchRare { get => achRare; set => SetValue(ref achRare, value); }
+
+        private AchRaretyStats achUltraRare = new AchRaretyStats();
+        public AchRaretyStats AchUltraRare { get => achUltraRare; set => SetValue(ref achUltraRare, value); }
+
+        private string firstUnlock = "xxxx-xx-xx xx:xx:xx";
+        public string FirstUnlock { get => firstUnlock; set => SetValue(ref firstUnlock, value); }
+
+        private string lastUnlock = "xxxx-xx-xx xx:xx:xx";
+        public string LastUnlock { get => lastUnlock; set => SetValue(ref lastUnlock, value); }
+
+        private string estimateTime = "20-30h";
+        public string EstimateTime { get => estimateTime; set => SetValue(ref estimateTime, value); }
     }
 }

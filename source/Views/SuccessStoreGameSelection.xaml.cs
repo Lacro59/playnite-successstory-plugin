@@ -29,23 +29,20 @@ namespace SuccessStory.Views
     /// </summary>
     public partial class SuccessStoreGameSelection : UserControl
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        public GameAchievements GameAchievements { get; set; } = null;
+        private Game GameContext { get; set; }
 
-        public GameAchievements gameAchievements = null;
-        private Game game;
-
-        private SteamAchievements steamAchievements = new SteamAchievements();
-        private ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
+        private SteamAchievements SteamAchievements { get; set; } = new SteamAchievements();
+        private ExophaseAchievements ExophaseAchievements { get; set; } = new ExophaseAchievements();
 
 
         public SuccessStoreGameSelection(Game game)
         {
-            this.game = game;
-
             InitializeComponent();
+
+            GameContext = game;
 
             PART_DataLoadWishlist.Visibility = Visibility.Collapsed;
             PART_GridData.IsEnabled = true;
@@ -64,7 +61,7 @@ namespace SuccessStory.Views
 
         private void BtCancel_Click(object sender, RoutedEventArgs e)
         {
-            ((Window)this.Parent).Close();
+            ((Window)Parent).Close();
         }
 
         private void BtOk_Click(object sender, RoutedEventArgs e)
@@ -73,17 +70,17 @@ namespace SuccessStory.Views
 
             if ((bool)rbSteam.IsChecked)
             {
-                steamAchievements.SetLocal();
-                steamAchievements.SetManual();
-                gameAchievements = steamAchievements.GetAchievements(game, searchResult.AppId);
+                SteamAchievements.SetLocal();
+                SteamAchievements.SetManual();
+                GameAchievements = SteamAchievements.GetAchievements(GameContext, searchResult.AppId);
             }
 
             if ((bool)rbExophase.IsChecked)
             {
-                gameAchievements = exophaseAchievements.GetAchievements(game, searchResult);
+                GameAchievements = ExophaseAchievements.GetAchievements(GameContext, searchResult);
             }
 
-            ((Window)this.Parent).Close();
+            ((Window)Parent).Close();
         }
 
 
@@ -102,9 +99,9 @@ namespace SuccessStory.Views
             SearchElements();
         }
 
-        private void SearchElement_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void SearchElement_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 ButtonSearch_Click(null, null);
             }
@@ -113,8 +110,8 @@ namespace SuccessStory.Views
 
         private void SearchElements()
         {
-            bool IsSteam = (rbSteam != null) ? (bool)rbSteam.IsChecked : false; ;
-            bool IsExophase = (rbExophase != null) ? (bool)rbExophase.IsChecked : false;
+            bool IsSteam = (rbSteam != null) && (bool)rbSteam.IsChecked;
+            bool IsExophase = (rbExophase != null) && (bool)rbExophase.IsChecked;
 
             if (SearchElement == null || SearchElement.Text.IsNullOrEmpty())
             {
@@ -127,10 +124,11 @@ namespace SuccessStory.Views
             string gameSearch = RemoveAccents(SearchElement.Text);
 
             lbSelectable.ItemsSource = null;
-            Task task = Task.Run(() => LoadData(gameSearch, IsSteam, IsExophase))
+            _ = Task.Run(() => LoadData(gameSearch, IsSteam, IsExophase))
                 .ContinueWith(antecedent =>
                 {
-                    this.Dispatcher.Invoke(new Action(() => {
+                    Dispatcher.Invoke(new Action(() =>
+                    {
                         if (antecedent.Result != null)
                         {
                             lbSelectable.ItemsSource = antecedent.Result;
@@ -146,29 +144,31 @@ namespace SuccessStory.Views
         private string RemoveAccents(string text)
         {
             StringBuilder sbReturn = new StringBuilder();
-            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+            char[] arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
             foreach (char letter in arrayText)
             {
                 if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
-                    sbReturn.Append(letter);
+                {
+                    _ = sbReturn.Append(letter);
+                }
             }
             return sbReturn.ToString();
         }
 
         private List<SearchResult> LoadData(string SearchElement, bool IsSteam, bool IsExophase)
         {
-            var results = new List<SearchResult>();
+            List<SearchResult> results = new List<SearchResult>();
 
             try
             {
                 if (IsSteam)
                 {
-                    results = steamAchievements.SearchGame(SearchElement);
+                    results = SteamAchievements.SearchGame(SearchElement);
                 }
 
                 if (IsExophase)
                 {
-                    results = exophaseAchievements.SearchGame(SearchElement);
+                    results = ExophaseAchievements.SearchGame(SearchElement);
                 }
             }
             catch (Exception ex)
@@ -184,7 +184,7 @@ namespace SuccessStory.Views
         {
             try
             {
-                Process.Start((string)((FrameworkElement)sender).Tag);
+                _ = Process.Start((string)((FrameworkElement)sender).Tag);
             }
             catch (Exception ex)
             {

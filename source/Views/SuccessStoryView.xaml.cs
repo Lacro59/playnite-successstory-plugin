@@ -30,26 +30,23 @@ namespace SuccessStory
     /// </summary>
     public partial class SuccessView : UserControl
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        private SuccessViewData SuccessViewData { get; set; } = new SuccessViewData();
 
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-        private SuccessViewData successViewData = new SuccessViewData();
+        private ObservableCollection<ListSource> FilterSourceItems { get; set; } = new ObservableCollection<ListSource>();
+        private ObservableCollection<ListViewGames> ListGames { get; set; } = new ObservableCollection<ListViewGames>();
+        private List<string> SearchSources { get; set; } = new List<string>();
+        private List<string> SearchStatus { get; set; } = new List<string>();
 
-        private ObservableCollection<ListSource> FilterSourceItems = new ObservableCollection<ListSource>();
-        private ObservableCollection<ListViewGames> ListGames = new ObservableCollection<ListViewGames>();
-        private List<string> SearchSources = new List<string>();
-        private List<string> SearchStatus = new List<string>();
-
-        private static Filters filters = null;
+        private static Filters Filters { get; set; } = null;
 
 
         public SuccessView(bool isRetroAchievements = false, Game GameSelected = null)
         {
             InitializeComponent();
 
-            successViewData.Settings = PluginDatabase.PluginSettings.Settings;
-            DataContext = successViewData;
+            SuccessViewData.Settings = PluginDatabase.PluginSettings.Settings;
+            DataContext = SuccessViewData;
 
             if (PluginDatabase.PluginSettings.Settings.UseUltraRare)
             {
@@ -100,7 +97,7 @@ namespace SuccessStory
             PART_DataLoad.Visibility = Visibility.Visible;
             PART_Data.Visibility = Visibility.Hidden;
 
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 GetListGame();
                 GetListAll();
@@ -176,7 +173,7 @@ namespace SuccessStory
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
 
                             PluginDatabase.Database.Items.Where(x => x.Value.IsManual && !x.Value.IsEmulators).Select(x => PlayniteTools.GetSourceName(x.Value.Game)).Distinct()
-                                    .ForEach(x => 
+                                    .ForEach(x =>
                                     {
                                         icon = TransformIcon.Get(x) + " ";
 
@@ -268,89 +265,89 @@ namespace SuccessStory
                     }
                 }
             })
-            .ContinueWith(antecedent =>
-            {
-                this.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
-                {
-                    GraphicTitle.Content = string.Empty;
-                    GraphicTitleALL.Content = ResourceProvider.GetString("LOCSuccessStoryGraphicTitleALL");
+             .ContinueWith(antecedent =>
+             {
+                 this.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                 {
+                     GraphicTitle.Content = string.Empty;
+                     GraphicTitleALL.Content = ResourceProvider.GetString("LOCSuccessStoryGraphicTitleALL");
 
-                    FilterSourceItems = FilterSourceItems.OrderBy(x => x.SourceNameShort).ToObservable();
-                    successViewData.FilterSourceItems = FilterSourceItems;
+                     FilterSourceItems = FilterSourceItems.OrderBy(x => x.SourceNameShort).ToObservable();
+                     SuccessViewData.FilterSourceItems = FilterSourceItems;
 
-                    successViewData.ListGames = ListGames;
-                    successViewData.TotalFoundCount = ListGames.Count;
-                    ListviewGames.Sorting();
+                     SuccessViewData.ListGames = ListGames;
+                     SuccessViewData.TotalFoundCount = ListGames.Count;
+                     ListviewGames.Sorting();
 
-                    PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
-                    PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
-                    PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
-                    PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
-
-
-                    if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements && isRetroAchievements)
-                    {
-                        PART_GraphicBySource.Visibility = Visibility.Collapsed;
-                        Grid.SetColumn(PART_GraphicAllUnlocked, 0);
-                        Grid.SetColumnSpan(PART_GraphicAllUnlocked, 3);
-                    }
+                     PART_TotalCommun.Content = SuccessViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
+                     PART_TotalNoCommun.Content = SuccessViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+                     PART_TotalRare.Content = SuccessViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+                     PART_TotalUltraRare.Content = SuccessViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
 
 
-                    successViewData.ProgressionGlobalCountValue = ProgressionGlobal.Unlocked;
-                    successViewData.ProgressionGlobalCountMax = ProgressionGlobal.Total;
-                    successViewData.ProgressionGlobal = ProgressionGlobal.Progression + "%";
+                     if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements && isRetroAchievements)
+                     {
+                         PART_GraphicBySource.Visibility = Visibility.Collapsed;
+                         Grid.SetColumn(PART_GraphicAllUnlocked, 0);
+                         Grid.SetColumnSpan(PART_GraphicAllUnlocked, 3);
+                     }
 
-                    successViewData.ProgressionLaunchedCountValue = ProgressionLaunched.Unlocked;
-                    successViewData.ProgressionLaunchedCountMax = ProgressionLaunched.Total;
-                    successViewData.ProgressionLaunched = ProgressionLaunched.Progression + "%";
+
+                     SuccessViewData.ProgressionGlobalCountValue = ProgressionGlobal.Unlocked;
+                     SuccessViewData.ProgressionGlobalCountMax = ProgressionGlobal.Total;
+                     SuccessViewData.ProgressionGlobal = ProgressionGlobal.Progression + "%";
+
+                     SuccessViewData.ProgressionLaunchedCountValue = ProgressionLaunched.Unlocked;
+                     SuccessViewData.ProgressionLaunchedCountMax = ProgressionLaunched.Total;
+                     SuccessViewData.ProgressionLaunched = ProgressionLaunched.Progression + "%";
 
 
-                    StatsGraphicAchievementsSeries.Add(new LineSeries
-                    {
-                        Title = string.Empty,
-                        Values = GraphicsData.Series
-                    });
-                    AchievementsMonth.Series = StatsGraphicAchievementsSeries;
-                    AchievementsMonthX.Labels = StatsGraphicsAchievementsLabels;
+                     StatsGraphicAchievementsSeries.Add(new LineSeries
+                     {
+                         Title = string.Empty,
+                         Values = GraphicsData.Series
+                     });
+                     AchievementsMonth.Series = StatsGraphicAchievementsSeries;
+                     AchievementsMonthX.Labels = StatsGraphicsAchievementsLabels;
 
 
                     // Set game selected
                     if (GameSelected != null)
-                    {
-                        ListviewGames.SelectedIndex = ListGames.IndexOf(ListGames.Where(x => x.Name == GameSelected.Name).FirstOrDefault());
-                    }
-                    ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
+                     {
+                         ListviewGames.SelectedIndex = ListGames.IndexOf(ListGames.Where(x => x.Name == GameSelected.Name).FirstOrDefault());
+                     }
+                     ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
 
 
-                    if (filters != null)
-                    {
-                        PART_DatePicker.SelectedDate = filters.FilterDate;
-                        PART_FilteredGames.IsChecked = filters.FilteredGames;
-                        PART_FilterRange.UpperValue = filters.FilterRangeMax;
-                        PART_FilterRange.LowerValue = filters.FilterRangeMin;
-                        TextboxSearch.Text = filters.SearchText;
+                     if (Filters != null)
+                     {
+                         PART_DatePicker.SelectedDate = Filters.FilterDate;
+                         PART_FilteredGames.IsChecked = Filters.FilteredGames;
+                         PART_FilterRange.UpperValue = Filters.FilterRangeMax;
+                         PART_FilterRange.LowerValue = Filters.FilterRangeMin;
+                         TextboxSearch.Text = Filters.SearchText;
 
-                        SearchSources = filters.SearchSources;
-                        if (SearchSources.Count != 0)
-                        {
-                            FilterSource.Text = string.Join(", ", SearchSources);
-                        }
+                         SearchSources = Filters.SearchSources;
+                         if (SearchSources.Count != 0)
+                         {
+                             FilterSource.Text = string.Join(", ", SearchSources);
+                         }
 
-                        SearchStatus = filters.SearchStatus;
-                        if (SearchStatus.Count != 0)
-                        {
-                            FilterStatus.Text = string.Join(", ", SearchStatus);
-                        }
+                         SearchStatus = Filters.SearchStatus;
+                         if (SearchStatus.Count != 0)
+                         {
+                             FilterStatus.Text = string.Join(", ", SearchStatus);
+                         }
 
-                        filters = null;
-                        Filter();
-                    }
+                         Filters = null;
+                         Filter();
+                     }
 
 
-                    PART_DataLoad.Visibility = Visibility.Hidden;
-                    PART_Data.Visibility = Visibility.Visible;
-                }));
-            });
+                     PART_DataLoad.Visibility = Visibility.Hidden;
+                     PART_Data.Visibility = Visibility.Visible;
+                 }));
+             });
 
 
             if (!PluginDatabase.PluginSettings.Settings.DisplayChart)
@@ -365,7 +362,7 @@ namespace SuccessStory
             }
 
 
-            successViewData.FilterStatusItems = API.Instance.Database.CompletionStatuses.Select(x => new ListStatus { StatusName = x.Name }).ToObservable();
+            SuccessViewData.FilterStatusItems = API.Instance.Database.CompletionStatuses.Select(x => new ListStatus { StatusName = x.Name }).ToObservable();
         }
 
         private void SetGraphicsAchievementsSources()
@@ -406,7 +403,7 @@ namespace SuccessStory
 
                 RelayCommand<Guid> GoToGame = new RelayCommand<Guid>((Id) =>
                 {
-                    SuccessView.filters = new Filters
+                    SuccessView.Filters = new Filters
                     {
                         FilterDate = PART_DatePicker.SelectedDate,
                         FilteredGames = (bool)PART_FilteredGames.IsChecked,
@@ -467,7 +464,7 @@ namespace SuccessStory
                 PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted)
                         .ForEach(x =>
                         {
-                            x.Items.Where(y => y.IsUnlock).ForEach(y => 
+                            x.Items.Where(y => y.IsUnlock).ForEach(y =>
                             {
                                 ListAll.Add(new ListAll
                                 {
@@ -495,7 +492,7 @@ namespace SuccessStory
                             });
                         });
 
-                successViewData.ListAll = ListAll;
+                SuccessViewData.ListAll = ListAll;
             }
             catch (Exception ex)
             {
@@ -516,11 +513,11 @@ namespace SuccessStory
                 GraphicTitle.Content = ResourceProvider.GetString("LOCSuccessStoryGraphicTitleDay");
 
                 Guid GameId = Guid.Parse(GameSelected.Id);
-                successViewData.GameContext = API.Instance.Database.Games.Get(GameId);
+                SuccessViewData.GameContext = API.Instance.Database.Games.Get(GameId);
             }
             else
             {
-                successViewData.GameContext = null;
+                SuccessViewData.GameContext = null;
             }
         }
 
@@ -548,16 +545,16 @@ namespace SuccessStory
                 SearchSources.Remove(ResourceProvider.GetString("LOCSuccessStoryManualAchievements"));
             }
 
-            successViewData.ListGames = ListGames.Where(x => CheckData(x, Min, Max, dateStart, dateEnd, IsManual, OnlyFilteredGames)).Distinct().ToObservable();
+            SuccessViewData.ListGames = ListGames.Where(x => CheckData(x, Min, Max, dateStart, dateEnd, IsManual, OnlyFilteredGames)).Distinct().ToObservable();
 
-            successViewData.TotalFoundCount = successViewData.ListGames.Count;
+            SuccessViewData.TotalFoundCount = SuccessViewData.ListGames.Count;
             ListviewGames.Sorting();
             ListviewGames.SelectedIndex = -1;
 
-            PART_TotalCommun.Content = successViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
-            PART_TotalNoCommun.Content = successViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
-            PART_TotalRare.Content = successViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
-            PART_TotalUltraRare.Content = successViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
+            PART_TotalCommun.Content = SuccessViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
+            PART_TotalNoCommun.Content = SuccessViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+            PART_TotalRare.Content = SuccessViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+            PART_TotalUltraRare.Content = SuccessViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
         }
 
         private bool CheckData(ListViewGames listViewGames, double Min, double Max, DateTime dateStart, DateTime dateEnd, bool IsManual, bool OnlyFilteredGames)
@@ -673,96 +670,44 @@ namespace SuccessStory
 
     public class SuccessViewData : ObservableObject
     {
-        private ObservableCollection<ListViewGames> _ListGames = new ObservableCollection<ListViewGames>();
-        public ObservableCollection<ListViewGames> ListGames
-        {
-            get => _ListGames;
-            set => SetValue(ref _ListGames, value);
-        }
+        private ObservableCollection<ListViewGames> listGames = new ObservableCollection<ListViewGames>();
+        public ObservableCollection<ListViewGames> ListGames { get => listGames; set => SetValue(ref listGames, value); }
 
-        private ObservableCollection<ListAll> _ListAll = new ObservableCollection<ListAll>();
-        public ObservableCollection<ListAll> ListAll
-        {
-            get => _ListAll; 
-            set => SetValue(ref _ListAll, value);
-        }
+        private ObservableCollection<ListAll> listAll = new ObservableCollection<ListAll>();
+        public ObservableCollection<ListAll> ListAll { get => listAll; set => SetValue(ref listAll, value); }
 
-        private ObservableCollection<ListSource> _FilterSourceItems = new ObservableCollection<ListSource>();
-        public ObservableCollection<ListSource> FilterSourceItems
-        {
-            get => _FilterSourceItems;
-            set => SetValue(ref _FilterSourceItems, value);
-        }
+        private ObservableCollection<ListSource> filterSourceItems = new ObservableCollection<ListSource>();
+        public ObservableCollection<ListSource> FilterSourceItems { get => filterSourceItems; set => SetValue(ref filterSourceItems, value); }
 
-        private ObservableCollection<ListStatus> _FilterStatusItems = new ObservableCollection<ListStatus>();
-        public ObservableCollection<ListStatus> FilterStatusItems
-        {
-            get => _FilterStatusItems;
-            set => SetValue(ref _FilterStatusItems, value);
-        }
+        private ObservableCollection<ListStatus> filterStatusItems = new ObservableCollection<ListStatus>();
+        public ObservableCollection<ListStatus> FilterStatusItems { get => filterStatusItems; set => SetValue(ref filterStatusItems, value); }
 
-        private int _TotalFoundCount = 100;
-        public int TotalFoundCount
-        {
-            get => _TotalFoundCount;
-            set => SetValue(ref _TotalFoundCount, value);
-        }
+        private int totalFoundCount = 100;
+        public int TotalFoundCount { get => totalFoundCount; set => SetValue(ref totalFoundCount, value); }
 
-        private int _ProgressionGlobalCountValue = 20;
-        public int ProgressionGlobalCountValue
-        {
-            get => _ProgressionGlobalCountValue;
-            set => SetValue(ref _ProgressionGlobalCountValue, value);
-        }
+        private int progressionGlobalCountValue = 20;
+        public int ProgressionGlobalCountValue { get => progressionGlobalCountValue; set => SetValue(ref progressionGlobalCountValue, value); }
 
-        private int _ProgressionGlobalCountMax= 100;
-        public int ProgressionGlobalCountMax
-        {
-            get => _ProgressionGlobalCountMax;
-            set => SetValue(ref _ProgressionGlobalCountMax, value);
-        }
+        private int progressionGlobalCountMax = 100;
+        public int ProgressionGlobalCountMax { get => progressionGlobalCountMax; set => SetValue(ref progressionGlobalCountMax, value); }
 
-        private string _ProgressionGlobal = "20%";
-        public string ProgressionGlobal
-        {
-            get => _ProgressionGlobal;
-            set => SetValue(ref _ProgressionGlobal, value);
-        }
+        private string progressionGlobal = "20%";
+        public string ProgressionGlobal { get => progressionGlobal; set => SetValue(ref progressionGlobal, value); }
 
-        private int _ProgressionLaunchedCountValue = 40;
-        public int ProgressionLaunchedCountValue
-        {
-            get => _ProgressionLaunchedCountValue;
-            set => SetValue(ref _ProgressionLaunchedCountValue, value);
-        }
+        private int progressionLaunchedCountValue = 40;
+        public int ProgressionLaunchedCountValue { get => progressionLaunchedCountValue; set => SetValue(ref progressionLaunchedCountValue, value); }
 
-        private int _ProgressionLaunchedCountMax = 100;
-        public int ProgressionLaunchedCountMax
-        {
-            get => _ProgressionLaunchedCountMax;
-            set => SetValue(ref _ProgressionLaunchedCountMax, value);
-        }
+        private int progressionLaunchedCountMax = 100;
+        public int ProgressionLaunchedCountMax { get => progressionLaunchedCountMax; set => SetValue(ref progressionLaunchedCountMax, value); }
 
-        private string _ProgressionLaunched = "40%";
-        public string ProgressionLaunched
-        {
-            get => _ProgressionLaunched;
-            set => SetValue(ref _ProgressionLaunched, value);
-        }
+        private string progressionLaunched = "40%";
+        public string ProgressionLaunched { get => progressionLaunched; set => SetValue(ref progressionLaunched, value); }
 
-        private Game _GameContext;
-        public Game GameContext
-        {
-            get => _GameContext;
-            set => SetValue(ref _GameContext, value);
-        }
+        private Game gameContext;
+        public Game GameContext { get => gameContext; set => SetValue(ref gameContext, value); }
 
-        private SuccessStorySettings _Settings;
-        public SuccessStorySettings Settings
-        {
-            get => _Settings;
-            set => SetValue(ref _Settings, value);
-        }
+        private SuccessStorySettings settings;
+        public SuccessStorySettings Settings { get => settings; set => SetValue(ref settings, value); }
     }
 
 
@@ -787,7 +732,7 @@ namespace SuccessStory
         public List<string> SearchStatus { get; set; } = new List<string>();
         public double FilterRangeMin { get; set; } = 0;
         public double FilterRangeMax { get; set; } = 100;
-        public DateTime? FilterDate { get; set; } = null; 
-        public bool FilteredGames { get; set; } = false; 
+        public DateTime? FilterDate { get; set; } = null;
+        public bool FilteredGames { get; set; } = false;
     }
 }

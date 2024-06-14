@@ -23,19 +23,13 @@ namespace SuccessStory.Views
     /// </summary>
     public partial class SuccessStoryOverwatchView : UserControl
     {
-        private static readonly ILogger logger = LogManager.GetLogger();
-        private static IResourceProvider resources = new ResourceProvider();
-
-        private SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
-
-
-        public SuccessStoryOverwatchView(Game GameContext)
+        public SuccessStoryOverwatchView(Game game)
         {
             InitializeComponent();
 
-            this.DataContext = new
+            DataContext = new
             {
-                GameContext = GameContext
+                GameContext = game
             };
         }
     }

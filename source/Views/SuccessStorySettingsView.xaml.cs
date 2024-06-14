@@ -31,14 +31,14 @@ namespace SuccessStory.Views
 
         public static List<RaConsoleAssociated> RaConsoleAssociateds { get; set; }
 
-        public static CompletionStatus completionStatus { get; set; }
+        public static CompletionStatus CompletionStatus { get; set; }
 
-        private TextBlock tbControl { get; set; }
+        private TextBlock TbControl { get; set; }
 
 
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
-        private ExophaseAchievements ExophaseAchievements => new ExophaseAchievements();
+        private ExophaseAchievements ExophaseAchievements { get; set; } = new ExophaseAchievements();
 
         public static List<Folder> LocalPath { get; set; } = new List<Folder>();
         public static List<Folder> Rpcs3Path { get; set; } = new List<Folder>();
@@ -83,10 +83,10 @@ namespace SuccessStory.Views
             }
 
 
-            Task task = Task.Run(() => CheckLogged())
+            _ = Task.Run(() => CheckLogged())
                 .ContinueWith(antecedent =>
                 {
-                    this.Dispatcher.Invoke(new Action(() => 
+                    Dispatcher.Invoke(new Action(() =>
                     {
                         lIsAuth.Content = antecedent.Result ? ResourceProvider.GetString("LOCCommonLoggedIn") : ResourceProvider.GetString("LOCCommonNotLoggedIn");
                     }));
@@ -238,11 +238,11 @@ namespace SuccessStory.Views
         {
             try
             {
-                tbControl = ((StackPanel)((FrameworkElement)sender).Parent).Children.OfType<TextBlock>().FirstOrDefault();
+                TbControl = ((StackPanel)((FrameworkElement)sender).Parent).Children.OfType<TextBlock>().FirstOrDefault();
                 
-                if (tbControl.Background is SolidColorBrush)
+                if (TbControl.Background is SolidColorBrush)
                 {
-                    Color color = ((SolidColorBrush)tbControl.Background).Color;
+                    Color color = ((SolidColorBrush)TbControl.Background).Color;
                     PART_SelectorColorPicker.SetColors(color);
                 }
                 
@@ -289,14 +289,14 @@ namespace SuccessStory.Views
         {
             Color color = default(Color);
 
-            if (tbControl != null)
+            if (TbControl != null)
             {
                 if (PART_SelectorColorPicker.IsSimpleColor)
                 {
                     color = PART_SelectorColorPicker.SimpleColor;
-                    tbControl.Background = new SolidColorBrush(color);
+                    TbControl.Background = new SolidColorBrush(color);
 
-                    switch ((string)tbControl.Tag)
+                    switch ((string)TbControl.Tag)
                     {
                         case "1":
                             RarityUncommonColor = new SolidColorBrush(color);
@@ -354,7 +354,7 @@ namespace SuccessStory.Views
 
         private void PART_CbCompletation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            completionStatus = (CompletionStatus)PART_CbCompletation.SelectedItem;
+            CompletionStatus = (CompletionStatus)PART_CbCompletation.SelectedItem;
         }
 
 
