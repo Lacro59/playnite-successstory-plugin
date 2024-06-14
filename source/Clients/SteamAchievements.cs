@@ -60,8 +60,8 @@ namespace SuccessStory.Clients
             // TODO TEMP
             FileSystem.DeleteFile(CookiesPath);
 
-            SteamApiKey = SteamApi.CurrentUser.ApiKey;
-            SteamIsPrivate = SteamApi.CurrentUser.IsPrivateAccount;
+            SteamApiKey = SteamApi?.CurrentUser?.ApiKey;
+            SteamIsPrivate = SteamApi?.CurrentUser?.IsPrivateAccount ?? true;
         }
 
 

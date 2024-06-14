@@ -13,7 +13,6 @@ using System.IO.Compression;
 using System.Threading.Tasks;
 using CommonPluginsShared.Models;
 using CommonPluginsShared.Extensions;
-using static CommonPluginsShared.PlayniteTools;
 using SuccessStory.Services;
 using System.Threading;
 using Playnite.SDK;
@@ -131,7 +130,7 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"), ExternalPlugin.None);
+                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"), PlayniteTools.ExternalPlugin.None);
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)
@@ -432,7 +431,7 @@ namespace SuccessStory.Clients
             if (consoleID != 0)
             {
                 RA_Games ra_Games = GetGameList(consoleID);
-                ra_Games.ListGames.Sort((x, y) => (y.Title).CompareTo(x.Title));
+                ra_Games.ListGames.Sort((x, y) => y.Title.CompareTo(x.Title));
 
                 string HashMD5 = string.Empty;
 
@@ -447,7 +446,7 @@ namespace SuccessStory.Clients
                     });
                 });
 
-                string FilePath = API.Instance.ExpandGameVariables(game, game.Roms.FirstOrDefault().Path);
+                string FilePath = API.Instance.ExpandGameVariables(game, game.Roms.FirstOrDefault().Path, PlayniteTools.GetGameEmulator(game)?.InstallDir);
 
                 if (!File.Exists(FilePath))
                 {

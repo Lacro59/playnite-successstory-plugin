@@ -199,10 +199,10 @@ namespace SuccessStory.Clients
             {
                 string TrophyFolder = Path.Combine(x, "trophy");
                 string GameTrophyFolder = Path.Combine(game.InstallDirectory, "..", "TROPDIR");
-                GameTrophyFolder = API.Instance.ExpandGameVariables(game, GameTrophyFolder);
+                GameTrophyFolder = API.Instance.ExpandGameVariables(game, GameTrophyFolder, PlayniteTools.GetGameEmulator(game)?.InstallDir);
 
-                Logger.Info($"TrophyFolder: {TrophyFolder}");
-                Logger.Info($"GameTrophyFolder: {GameTrophyFolder}");
+                Common.LogDebug(true, $"TrophyFolder: {TrophyFolder}");
+                Common.LogDebug(true, $"GameTrophyFolder: {GameTrophyFolder}");
 
                 try
                 {
