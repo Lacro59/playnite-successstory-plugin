@@ -1714,7 +1714,9 @@
             </TabItem>
 
             <TabItem Header="{DynamicResource LOCLibraries}">
-                <Steam:PanelView x:Name="SteamPanel" />
+                <Steam:PanelView x:Name="SteamPanel"
+                                 UseApi="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.SteamApiSettings.UseApi, Mode=TwoWay}" 
+                                 UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.SteamApiSettings.UseAuth, Mode=TwoWay}" />
             </TabItem>
 
             <!--TabItem Header="QuickSearch">

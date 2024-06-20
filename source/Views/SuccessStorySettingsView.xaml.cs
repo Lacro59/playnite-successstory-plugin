@@ -52,7 +52,7 @@ namespace SuccessStory.Views
         {
             InitializeComponent();
 
-            SteamPanel.SteamApi = SuccessStory.SteamApi;
+            SteamPanel.StoreApi = SuccessStory.SteamApi;
 
             PART_WowRegion.Text = PluginDatabase.PluginSettings.Settings.WowRegions.Find(x => x.IsSelected)?.Name;
             PART_WowRealm.Text = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Name;
@@ -153,7 +153,7 @@ namespace SuccessStory.Views
 
         private void Button_Click_Wiki(object sender, RoutedEventArgs e)
         {
-            Process.Start((string)((FrameworkElement)sender).Tag);
+            _ = Process.Start((string)((FrameworkElement)sender).Tag);
         }
 
 

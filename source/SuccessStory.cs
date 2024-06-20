@@ -913,11 +913,12 @@ namespace SuccessStory
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
+            // StoreAPI intialization
             SteamApi = new SteamApi(PluginDatabase.PluginName);
             SteamApi.SetLanguage(API.Instance.ApplicationSettings.Language);
             if (PluginDatabase.PluginSettings.Settings.EnableSteam)
             {
-                _ = SteamApi.CurrentUser;
+                _ = SteamApi.CurrentAccountInfos;
             }
 
             Task.Run(() =>

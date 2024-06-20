@@ -21,7 +21,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
         <converters1:SetColorConverter x:Key="SetColorConverter" />
-        <convertersshared:InvertedBoolenConverter x:Key="InvertedBoolenConverter" />
+        <converters:InvertedBoolenConverter x:Key="InvertedBoolenConverter" />
         <converters:StringNullOrEmptyToBoolConverter x:Key="StringNullOrEmptyToBoolConverter" />
         <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
     </controls:PluginUserControlExtend.Resources>

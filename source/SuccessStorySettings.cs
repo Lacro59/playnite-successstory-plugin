@@ -200,6 +200,8 @@ namespace SuccessStory
         public GameFeature AchievementFeature { get; set; } = null;
 
         public bool UseLocalised { get; set; } = false;
+
+        public SteamApiSettings SteamApiSettings { get; set; } = new SteamApiSettings();
         #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
@@ -302,11 +304,13 @@ namespace SuccessStory
             });
 
 
-            SuccessStory.SteamApi.Save();
-            SuccessStory.SteamApi.CurrentUser = null;
+            // TODO
+            // StoreAPI intialization
+            SuccessStory.SteamApi.SaveCurrentUser();
+            SuccessStory.SteamApi.CurrentAccountInfos = null;
             if (Settings.EnableSteam)
             {
-                _ = SuccessStory.SteamApi.CurrentUser;
+                _ = SuccessStory.SteamApi.CurrentAccountInfos;
             }
 
 
@@ -320,7 +324,7 @@ namespace SuccessStory
                 Plugin.SidebarRaItem.Visible = Settings.EnableIntegrationButtonSide && Settings.EnableRetroAchievementsView;
             }
 
-            this.OnPropertyChanged();
+            OnPropertyChanged();
         }
 
         // Code execute when user decides to confirm changes made since BeginEdit was called.
@@ -343,5 +347,11 @@ namespace SuccessStory
         public OrderType OrderTypeSecond { get; set; } = OrderType.Ascending;
         public OrderType OrderTypeThird { get; set; } = OrderType.Descending;
         public bool OrderGroupByUnlocked { get; set; } = false;
+    }
+
+    public class SteamApiSettings
+    {
+        public bool UseApi { get; set; } = false;
+        public bool UseAuth { get; set; } = false;
     }
 }
