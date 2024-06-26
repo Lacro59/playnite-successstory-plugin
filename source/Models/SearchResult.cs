@@ -11,7 +11,7 @@ namespace SuccessStory.Models
         public List<string> Platforms { get; set; }
         public int AchievementsCount { get; set; }
 
-        public int AppId { get; set; }
+        public uint AppId { get; set; }
 
         public string PlatformsFirst => Platforms?.FirstOrDefault();
     }

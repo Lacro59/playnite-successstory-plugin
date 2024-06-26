@@ -16,33 +16,32 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Playnite.SDK;
+using System.Collections.ObjectModel;
+using CommonPluginsStores.Models;
+using CommonPluginsStores.Steam.Models.SteamKit;
 
 namespace SuccessStory.Clients
 {
-    class SteamEmulators : GenericAchievements
+    public class SteamEmulators : GenericAchievements
     {
-        protected static SteamApi steamApi;
-        internal static SteamApi SteamApi
-        {
-            get
-            {
-                if (steamApi == null)
-                {
-                    steamApi = new SteamApi(PluginDatabase.PluginName);
-                }
-                return steamApi;
-            }
-
-            set => steamApi = value;
-        }
+        private SteamApi SteamApi => SuccessStory.SteamApi;
 
         private List<string> AchievementsDirectories { get; set; } = new List<string>();
-        private int SteamId { get; set; } = 0;
+        private uint AppId { get; set; } = 0;
 
         private string Hyphenate(string str, int pos)
         {
             return string.Join("-", Regex.Split(str, @"(?<=\G.{" + pos + "})(?!$)"));
         }
+
+        private static byte[] StringToByteArray(string hex)
+        {
+            return Enumerable.Range(0, hex.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+                             .ToArray();
+        }
+
 
         public SteamEmulators(List<Folder> LocalFolders) : base("SteamEmulators")
         {
@@ -87,28 +86,21 @@ namespace SuccessStory.Clients
         #endregion
 
 
-        public int GetSteamId()
+        public uint GetAppId()
         {
-            return SteamId;
+            return AppId;
         }
 
 
         #region SteamEmulator
-        public static byte[] StringToByteArray(string hex)
-        {
-            return Enumerable.Range(0, hex.Length)
-                             .Where(x => x % 2 == 0)
-                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-                             .ToArray();
-        }
 
-        public GameAchievements GetAchievementsLocal(Game game, string apiKey, int SteamId = 0, bool IsManual = false)
+        public GameAchievements GetAchievementsLocal(Game game, string apiKey, uint steamId = 0, bool isManual = false)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             GameAchievements gameAchievementsCached = SuccessStory.PluginDatabase.Get(game, true);
 
-            this.SteamId = SteamId != 0 ? SteamId : SteamApi.GetAppId(game.Name);
-            SteamEmulatorData data = Get(game, this.SteamId, apiKey, IsManual);
+            AppId = steamId != 0 ? steamId : SteamApi.GetAppId(game.Name);
+            SteamEmulatorData data = Get(game, AppId, apiKey, isManual);
 
             if (gameAchievementsCached == null)
             {
@@ -331,6 +323,61 @@ namespace SuccessStory.Clients
             return ReturnAchievements;
         }
 
+        private List<Achievements> ReadAchievementsINI_type2(string pathFile, List<Achievements> ReturnAchievements)
+        {
+            try
+            {
+                string line;
+                bool startAchievement = false;
+
+                string Name = string.Empty;
+                string sTimeUnlock = string.Empty;
+                int timeUnlock = 0;
+                DateTime? DateUnlocked = null;
+
+                StreamReader file = new StreamReader(pathFile);
+                while ((line = file.ReadLine()) != null)
+                {
+                    if (line.IsEqual("[Time]"))
+                    {
+                        startAchievement = true;
+                    }
+                    else if (startAchievement)
+                    {
+                        var data = line.Split('=');
+                        Name = data[0];
+                        sTimeUnlock = data[1];
+                        timeUnlock = BitConverter.ToInt32(StringToByteArray(sTimeUnlock), 0);
+                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+
+                        if (timeUnlock != 0)
+                        {
+                            ReturnAchievements.Add(new Achievements
+                            {
+                                ApiName = Name,
+                                Name = string.Empty,
+                                Description = string.Empty,
+                                UrlUnlocked = string.Empty,
+                                UrlLocked = string.Empty,
+                                DateUnlocked = DateUnlocked
+                            });
+
+                            Name = string.Empty;
+                            timeUnlock = 0;
+                            DateUnlocked = null;
+                        }
+                    }
+                }
+                file.Close();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+
+            return ReturnAchievements;
+        }
+
         private List<Achievements> ReadAchievementsINI_type3(string pathFile, List<Achievements> ReturnAchievements)
         {
             try
@@ -453,171 +500,48 @@ namespace SuccessStory.Clients
             return ReturnAchievements;
         }
 
-        private List<Achievements> ReadAchievementsINI_type2(string pathFile, List<Achievements> ReturnAchievements)
-        {
-            try
-            {
-                string line;
-                bool startAchievement = false;
 
-                string Name = string.Empty;
-                string sTimeUnlock = string.Empty;
-                int timeUnlock = 0;
-                DateTime? DateUnlocked = null;
-
-                StreamReader file = new StreamReader(pathFile);
-                while ((line = file.ReadLine()) != null)
-                {
-                    if (line.IsEqual("[Time]"))
-                    {
-                        startAchievement = true;
-                    }
-                    else if (startAchievement)
-                    {
-                        var data = line.Split('=');
-                        Name = data[0];
-                        sTimeUnlock = data[1];
-                        timeUnlock = BitConverter.ToInt32(StringToByteArray(sTimeUnlock), 0);
-                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
-
-                        if (timeUnlock != 0)
-                        {
-                            ReturnAchievements.Add(new Achievements
-                            {
-                                ApiName = Name,
-                                Name = string.Empty,
-                                Description = string.Empty,
-                                UrlUnlocked = string.Empty,
-                                UrlLocked = string.Empty,
-                                DateUnlocked = DateUnlocked
-                            });
-
-                            Name = string.Empty;
-                            timeUnlock = 0;
-                            DateUnlocked = null;
-                        }
-                    }
-                }
-                file.Close();
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-            }
-
-            return ReturnAchievements;
-        }
-
-
-        private SteamEmulatorData Get(Game game, int SteamId, string apiKey, bool IsManual)
+        private SteamEmulatorData Get(Game game, uint appId, string apiKey, bool isManual)
         {
             List<Achievements> ReturnAchievements = new List<Achievements>();
             List<GameStats> ReturnStats = new List<GameStats>();
 
-            if (!IsManual)
+            try
             {
-                // Search data local
-                foreach (string DirAchivements in AchievementsDirectories)
+                #region Get local achievements
+                if (!isManual)
                 {
-                    switch (DirAchivements.ToLower())
+                    // Search data local
+                    foreach (string DirAchivements in AchievementsDirectories)
                     {
-                        case "%public%\\documents\\steam\\codex":
-                        case "%appdata%\\steam\\codex":
-                            if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.ini"))
-                            {
-                                string line;
-
-                                string Name = string.Empty;
-                                DateTime? DateUnlocked = null;
-
-                                StreamReader file = new StreamReader(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.ini");
-                                while ((line = file.ReadLine()) != null)
+                        switch (DirAchivements.ToLower())
+                        {
+                            case "%public%\\documents\\steam\\codex":
+                            case "%appdata%\\steam\\codex":
+                                if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{appId}\\achievements.ini"))
                                 {
-                                    // Achievement name
-                                    if (line.IndexOf("[") > -1)
-                                    {
-                                        Name = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
-                                    }
+                                    string line;
 
-                                    // Achievement UnlockTime
-                                    if (line.IndexOf("UnlockTime") > -1 && line.ToLower() != "unlocktime=0")
-                                    {
-                                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(line.Replace("UnlockTime=", string.Empty))).ToLocalTime();
-                                    }
+                                    string Name = string.Empty;
+                                    DateTime? DateUnlocked = null;
 
-                                    // End Achievement
-                                    if (line.Trim() == string.Empty && DateUnlocked != null)
+                                    StreamReader file = new StreamReader(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{appId}\\achievements.ini");
+                                    while ((line = file.ReadLine()) != null)
                                     {
-                                        ReturnAchievements.Add(new Achievements
+                                        // Achievement name
+                                        if (line.IndexOf("[") > -1)
                                         {
-                                            ApiName = Name,
-                                            Name = string.Empty,
-                                            Description = string.Empty,
-                                            UrlUnlocked = string.Empty,
-                                            UrlLocked = string.Empty,
-                                            DateUnlocked = DateUnlocked
-                                        });
-
-                                        Name = string.Empty;
-                                        DateUnlocked = null;
-                                    }
-                                }
-                                file.Close();
-                            }
-
-                            if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\stats.ini"))
-                            {
-                                ReturnStats = ReadStatsINI(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\stats.ini", ReturnStats);
-                            }
-
-                            break;
-
-                        case "%documents%\\valve":
-                            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\VALVE\\{SteamId}\\ALI213\\Stats\\Achievements.Bin"))
-                            {
-                                string line;
-                                string Name = string.Empty;
-                                bool State = false;
-                                string sTimeUnlock = string.Empty;
-                                int timeUnlock = 0;
-                                DateTime? DateUnlocked = null;
-
-                                string pathFile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\VALVE\\{SteamId}\\ALI213\\Stats\\Achievements.Bin";
-                                StreamReader file = new StreamReader(pathFile);
-
-                                while ((line = file.ReadLine()) != null)
-                                {
-                                    // Achievement name
-                                    if (line.IndexOf("[") > -1)
-                                    {
-                                        Name = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
-                                        State = false;
-                                        timeUnlock = 0;
-                                        DateUnlocked = null;
-                                    }
-
-                                    if (Name != "Steam")
-                                    {
-                                        // State
-                                        if (line.ToLower() == "haveachieved=1")
-                                        {
-                                            State = true;
+                                            Name = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
                                         }
 
-                                        // Unlock
-                                        if (line.IndexOf("HaveAchievedTime") > -1 && line.ToLower() != "haveachievedtime=0000000000")
+                                        // Achievement UnlockTime
+                                        if (line.IndexOf("UnlockTime") > -1 && line.ToLower() != "unlocktime=0")
                                         {
-                                            if (line.Contains("HaveAchievedTime="))
-                                            {
-                                                sTimeUnlock = line.Replace("HaveAchievedTime=", string.Empty);
-                                                timeUnlock = Int32.Parse(sTimeUnlock);
-                                            }
+                                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(line.Replace("UnlockTime=", string.Empty))).ToLocalTime();
                                         }
-
-                                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
 
                                         // End Achievement
-                                        if (timeUnlock != 0 && State)
+                                        if (line.Trim() == string.Empty && DateUnlocked != null)
                                         {
                                             ReturnAchievements.Add(new Achievements
                                             {
@@ -630,229 +554,65 @@ namespace SuccessStory.Clients
                                             });
 
                                             Name = string.Empty;
+                                            DateUnlocked = null;
+                                        }
+                                    }
+                                    file.Close();
+                                }
+
+                                if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{appId}\\stats.ini"))
+                                {
+                                    ReturnStats = ReadStatsINI(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{appId}\\stats.ini", ReturnStats);
+                                }
+
+                                break;
+
+                            case "%documents%\\valve":
+                                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\VALVE\\{appId}\\ALI213\\Stats\\Achievements.Bin"))
+                                {
+                                    string line;
+                                    string Name = string.Empty;
+                                    bool State = false;
+                                    string sTimeUnlock = string.Empty;
+                                    int timeUnlock = 0;
+                                    DateTime? DateUnlocked = null;
+
+                                    string pathFile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\VALVE\\{appId}\\ALI213\\Stats\\Achievements.Bin";
+                                    StreamReader file = new StreamReader(pathFile);
+
+                                    while ((line = file.ReadLine()) != null)
+                                    {
+                                        // Achievement name
+                                        if (line.IndexOf("[") > -1)
+                                        {
+                                            Name = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
                                             State = false;
                                             timeUnlock = 0;
                                             DateUnlocked = null;
                                         }
-                                    }
-                                }
-                            }
 
-                            break;
-
-                        case "%appdata%\\goldberg steamemu saves":
-                            if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.json"))
-                            {
-                                string Name = string.Empty;
-                                DateTime? DateUnlocked = null;
-
-                                string jsonText = File.ReadAllText(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\achievements.json");
-                                foreach (dynamic achievement in Serialization.FromJson<dynamic>(jsonText))
-                                {
-                                    Name = achievement.Path;
-
-                                    dynamic elements = achievement.First;
-                                    dynamic unlockedTimeToken = elements.SelectToken("earned_time");
-
-                                    if (unlockedTimeToken.Value > 0)
-                                    {
-                                        DateUnlocked = new DateTime(1970, 1, 1).AddSeconds(unlockedTimeToken.Value);
-                                    }
-
-                                    if (Name != string.Empty && DateUnlocked != null)
-                                    {
-                                        ReturnAchievements.Add(new Achievements
+                                        if (Name != "Steam")
                                         {
-                                            ApiName = Name,
-                                            Name = string.Empty,
-                                            Description = string.Empty,
-                                            UrlUnlocked = string.Empty,
-                                            UrlLocked = string.Empty,
-                                            DateUnlocked = DateUnlocked
-                                        });
-
-                                        Name = string.Empty;
-                                        DateUnlocked = null;
-                                    }
-                                }
-                            }
-
-                            break;
-
-                        case "%appdata%\\smartsteamemu":
-                            if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\stats.bin"))
-                            {
-                                string Name = string.Empty;
-                                int header = 0;
-                                byte[] headerbyte = new byte[4];
-                                byte[] statbyte = new byte[24];
-                                byte[] namebyte = new byte[4];
-                                byte[] datebyte = new byte[4];
-                                Dictionary<string, string> achnames = new Dictionary<string, string>();
-                                List<byte[]> stats = new List<byte[]>();
-                                DateTime? DateUnlocked = null;
-                                int statcount = 0;
-                                Crc32 crc = new Crc32();
-
-                                byte[] allData = File.ReadAllBytes(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{SteamId}\\stats.bin");
-                                statcount = (allData.Length - 4) / 24;
-
-                                //logger.Warn($"Count of achievements unlocked is {statcount}.");
-                                Buffer.BlockCopy(allData, 0, headerbyte, 0, 4);
-                                //Array.Reverse(headerbyte);
-                                header = BitConverter.ToInt32(headerbyte, 0);
-                                //logger.Warn($"header was found as {header}");
-                                allData = allData.Skip(4).Take(allData.Length - 4).ToArray();
-
-                                for (int c = 24, j = 0; j < statcount; j++)
-                                {
-                                    //Buffer.BlockCopy(allData, i, statbyte, 0, 24);
-                                    stats.Add(allData.Take(c).ToArray());
-                                    allData = allData.Skip(c).Take(allData.Length - c).ToArray();
-                                }
-
-                                if (stats.Count != header)
-                                {
-                                    Logger.Error("Invalid File");
-                                }
-                                string language = CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language);
-                                string site = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}", apiKey, SteamId, language);
-
-                                string Results = string.Empty;
-                                try
-                                {
-                                    Results = Web.DownloadStringData(site).GetAwaiter().GetResult();
-                                }
-                                catch (WebException ex)
-                                {
-                                    if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                                    {
-                                        HttpWebResponse resp = (HttpWebResponse)ex.Response;
-                                        switch (resp.StatusCode)
-                                        {
-                                            case HttpStatusCode.BadRequest: // HTTP 400
-                                                break;
-                                            case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                                                break;
-                                            default:
-                                                Common.LogError(ex, false, $"Failed to load from {site}", true, PluginDatabase.PluginName);
-                                                break;
-                                        }
-                                    }
-                                }
-
-                                if (Results != string.Empty && Results.Length > 50)
-                                {
-                                    dynamic resultObj = Serialization.FromJson<dynamic>(Results);
-                                    dynamic resultItems = null;
-                                    try
-                                    {
-                                        resultItems = resultObj["game"]?["availableGameStats"]?["achievements"];
-                                        for (int i = 0; i < resultItems?.Count; i++)
-                                        {
-                                            string achname = resultItems[i]["name"];
-                                            byte[] bn = Encoding.ASCII.GetBytes(achname);
-                                            string hash = string.Empty;
-                                            foreach (byte b in crc.ComputeHash(bn))
+                                            // State
+                                            if (line.ToLower() == "haveachieved=1")
                                             {
-                                                hash += b.ToString("x2").ToUpper();
+                                                State = true;
                                             }
-                                            hash = Hyphenate(hash, 2);
-                                            achnames.Add(hash, achname);
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        Logger.Error($"Error getting achievement names");
-                                    }
-                                }
 
-                                for (int i = 0; i < stats.Count; i++)
-                                {
-                                    try
-                                    {
-                                        Buffer.BlockCopy(stats[i], 0, namebyte, 0, 4);
-                                        Array.Reverse(namebyte);
-                                        Buffer.BlockCopy(stats[i], 8, datebyte, 0, 4);
-                                        Name = BitConverter.ToString(namebyte);
-
-                                        if (achnames.ContainsKey(Name))
-                                        {
-                                            Name = achnames[Name];
-                                            int Date = BitConverter.ToInt32(datebyte, 0);
-                                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(Date).ToLocalTime();
-                                            if (Name != string.Empty && DateUnlocked != null)
+                                            // Unlock
+                                            if (line.IndexOf("HaveAchievedTime") > -1 && line.ToLower() != "haveachievedtime=0000000000")
                                             {
-                                                ReturnAchievements.Add(new Achievements
+                                                if (line.Contains("HaveAchievedTime="))
                                                 {
-                                                    ApiName = Name,
-                                                    Name = string.Empty,
-                                                    Description = string.Empty,
-                                                    UrlUnlocked = string.Empty,
-                                                    UrlLocked = string.Empty,
-                                                    DateUnlocked = DateUnlocked
-                                                });
+                                                    sTimeUnlock = line.Replace("HaveAchievedTime=", string.Empty);
+                                                    timeUnlock = Int32.Parse(sTimeUnlock);
+                                                }
                                             }
-                                            Name = string.Empty;
-                                            DateUnlocked = null;
-                                        }
-                                        else
-                                        {
-                                            Logger.Warn($"No matches found for crc in stats.bin.");
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        Logger.Error($"Stats.bin file format incorrect for SSE");
-                                    }
 
-                                    Array.Clear(namebyte, 0, namebyte.Length);
-                                    Array.Clear(datebyte, 0, datebyte.Length);
-                                }
-                            }
-                            break;
+                                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
 
-                        case "%documents%\\skidrow":
-                        case "%documents%\\darksiders":
-                            string skidrowfile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\SKIDROW\\{SteamId}\\SteamEmu\\UserStats\\achiev.ini";
-                            string darksidersfile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\DARKSiDERS\\{SteamId}\\SteamEmu\\UserStats\\achiev.ini";
-                            string emu = "";
-
-                            if (File.Exists(skidrowfile))
-                            {
-                                emu = skidrowfile;
-                            }
-                            else if (File.Exists(darksidersfile))
-                            {
-                                emu = darksidersfile;
-                            }
-
-                            if (!(emu == ""))
-                            {
-                                Logger.Warn($"File found at {emu}");
-                                string line;
-                                string Name = string.Empty;
-                                DateTime? DateUnlocked = null;
-                                List<List<string>> achlist = new List<List<string>>();
-                                StreamReader r = new StreamReader(emu);
-
-                                while ((line = r.ReadLine()) != null)
-                                {
-                                    // Achievement Name
-                                    if (line.IndexOf("[AchievementsUnlockTimes]") > -1)
-                                    {
-                                        string nextline = r.ReadLine();
-                                        while (nextline.IndexOf("[") == -1)
-                                        {
-                                            achlist.Add(new List<string>(nextline.Split('=')));
-                                            nextline = r.ReadLine();
-                                        }
-
-                                        foreach (List<string> l in achlist)
-                                        {
-                                            Name = l[0];
-                                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(l[1])).ToLocalTime();
-                                            if (Name != string.Empty && DateUnlocked != null)
+                                            // End Achievement
+                                            if (timeUnlock != 0 && State)
                                             {
                                                 ReturnAchievements.Add(new Achievements
                                                 {
@@ -865,238 +625,438 @@ namespace SuccessStory.Clients
                                                 });
 
                                                 Name = string.Empty;
+                                                State = false;
+                                                timeUnlock = 0;
                                                 DateUnlocked = null;
                                             }
                                         }
                                     }
                                 }
-                                r.Close();
-                            }
 
-                            break;
+                                break;
 
-                        case "%programdata%\\steam":
-                            if (Directory.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Steam")))
-                            {
-                                string[] dirsUsers = Directory.GetDirectories(Environment.ExpandEnvironmentVariables("%ProgramData%\\Steam"));
-                                foreach (string dirUser in dirsUsers)
+                            case "%appdata%\\goldberg steamemu saves":
+                                if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{appId}\\achievements.json"))
                                 {
-                                    if (File.Exists(dirUser + $"\\{SteamId}\\stats\\achievements.ini"))
+                                    string Name = string.Empty;
+                                    DateTime? DateUnlocked = null;
+
+                                    string jsonText = File.ReadAllText(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{appId}\\achievements.json");
+                                    foreach (dynamic achievement in Serialization.FromJson<dynamic>(jsonText))
                                     {
-                                        ReturnAchievements = ReadAchievementsINI(dirUser + $"\\{SteamId}\\stats\\achievements.ini", ReturnAchievements);
-                                    }
+                                        Name = achievement.Path;
 
-                                    if (File.Exists(dirUser + $"\\{SteamId}\\stats\\stats.ini"))
-                                    {
-                                        ReturnStats = ReadStatsINI(dirUser + $"\\{SteamId}\\stats\\stats.ini", ReturnStats);
-                                    }
-                                }
-                            }
+                                        dynamic elements = achievement.First;
+                                        dynamic unlockedTimeToken = elements.SelectToken("earned_time");
 
-                            break;
-
-                        case "%localappdata%\\skidrow":
-                            Logger.Warn($"No treatment for {DirAchivements}");
-                            break;
-
-                        default:
-                            if (ReturnAchievements.Count == 0)
-                            {
-                                Folder finded = PluginDatabase.PluginSettings.Settings.LocalPath.Find(x => x.FolderPath.IsEqual(DirAchivements));
-                                Guid.TryParse(finded?.GameId, out Guid GameId);
-
-                                if (File.Exists(DirAchivements + "\\user_stats.ini") && GameId != default && GameId == game.Id) 
-                                {
-                                    ReturnAchievements = ReadAchievementsStatsINI(DirAchivements + "\\user_stats.ini", ReturnAchievements);
-                                }
-                                else 
-                                {
-                                    if (!DirAchivements.Contains("steamemu", StringComparison.InvariantCultureIgnoreCase))
-                                    {
-                                        if (File.Exists(DirAchivements + $"\\{SteamId}\\stats\\achievements.ini"))
+                                        if (unlockedTimeToken.Value > 0)
                                         {
-                                            ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\{SteamId}\\stats\\achievements.ini", ReturnAchievements);
-
-                                            if (File.Exists(DirAchivements + $"\\{SteamId}\\stats\\stats.ini"))
-                                            {
-                                                ReturnStats = ReadStatsINI(DirAchivements + $"\\{SteamId}\\stats\\stats.ini", ReturnStats);
-                                            }
-
+                                            DateUnlocked = new DateTime(1970, 1, 1).AddSeconds(unlockedTimeToken.Value);
                                         }
-                                        else if (GameId != default && GameId == game.Id && (finded?.HasGame ?? false))
-                                        {
-                                            if (File.Exists(DirAchivements + $"\\stats\\achievements.ini"))
-                                            {
-                                                ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\stats\\achievements.ini", ReturnAchievements);
 
-                                                if (File.Exists(DirAchivements + $"\\stats\\stats.ini"))
+                                        if (Name != string.Empty && DateUnlocked != null)
+                                        {
+                                            ReturnAchievements.Add(new Achievements
+                                            {
+                                                ApiName = Name,
+                                                Name = string.Empty,
+                                                Description = string.Empty,
+                                                UrlUnlocked = string.Empty,
+                                                UrlLocked = string.Empty,
+                                                DateUnlocked = DateUnlocked
+                                            });
+
+                                            Name = string.Empty;
+                                            DateUnlocked = null;
+                                        }
+                                    }
+                                }
+
+                                break;
+
+                            case "%appdata%\\smartsteamemu":
+                                if (File.Exists(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{appId}\\stats.bin"))
+                                {
+                                    string Name = string.Empty;
+                                    int header = 0;
+                                    byte[] headerbyte = new byte[4];
+                                    byte[] statbyte = new byte[24];
+                                    byte[] namebyte = new byte[4];
+                                    byte[] datebyte = new byte[4];
+                                    Dictionary<string, string> achnames = new Dictionary<string, string>();
+                                    List<byte[]> stats = new List<byte[]>();
+                                    DateTime? DateUnlocked = null;
+                                    int statcount = 0;
+                                    Crc32 crc = new Crc32();
+
+                                    byte[] allData = File.ReadAllBytes(Environment.ExpandEnvironmentVariables(DirAchivements) + $"\\{appId}\\stats.bin");
+                                    statcount = (allData.Length - 4) / 24;
+
+                                    //logger.Warn($"Count of achievements unlocked is {statcount}.");
+                                    Buffer.BlockCopy(allData, 0, headerbyte, 0, 4);
+                                    //Array.Reverse(headerbyte);
+                                    header = BitConverter.ToInt32(headerbyte, 0);
+                                    //logger.Warn($"header was found as {header}");
+                                    allData = allData.Skip(4).Take(allData.Length - 4).ToArray();
+
+                                    for (int c = 24, j = 0; j < statcount; j++)
+                                    {
+                                        //Buffer.BlockCopy(allData, i, statbyte, 0, 24);
+                                        stats.Add(allData.Take(c).ToArray());
+                                        allData = allData.Skip(c).Take(allData.Length - c).ToArray();
+                                    }
+
+                                    if (stats.Count != header)
+                                    {
+                                        Logger.Error("Invalid File");
+                                    }
+                                    string language = CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language);
+                                    string site = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}", apiKey, appId, language);
+
+                                    string Results = string.Empty;
+                                    try
+                                    {
+                                        Results = Web.DownloadStringData(site).GetAwaiter().GetResult();
+                                    }
+                                    catch (WebException ex)
+                                    {
+                                        if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
+                                        {
+                                            HttpWebResponse resp = (HttpWebResponse)ex.Response;
+                                            switch (resp.StatusCode)
+                                            {
+                                                case HttpStatusCode.BadRequest: // HTTP 400
+                                                    break;
+                                                case HttpStatusCode.ServiceUnavailable: // HTTP 503
+                                                    break;
+                                                default:
+                                                    Common.LogError(ex, false, $"Failed to load from {site}", true, PluginDatabase.PluginName);
+                                                    break;
+                                            }
+                                        }
+                                    }
+
+                                    if (Results != string.Empty && Results.Length > 50)
+                                    {
+                                        dynamic resultObj = Serialization.FromJson<dynamic>(Results);
+                                        dynamic resultItems = null;
+                                        try
+                                        {
+                                            resultItems = resultObj["game"]?["availableGameStats"]?["achievements"];
+                                            for (int i = 0; i < resultItems?.Count; i++)
+                                            {
+                                                string achname = resultItems[i]["name"];
+                                                byte[] bn = Encoding.ASCII.GetBytes(achname);
+                                                string hash = string.Empty;
+                                                foreach (byte b in crc.ComputeHash(bn))
                                                 {
-                                                    ReturnStats = ReadStatsINI(DirAchivements + $"\\stats\\stats.ini", ReturnStats);
+                                                    hash += b.ToString("x2").ToUpper();
+                                                }
+                                                hash = Hyphenate(hash, 2);
+                                                achnames.Add(hash, achname);
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            Logger.Error($"Error getting achievement names");
+                                        }
+                                    }
+
+                                    for (int i = 0; i < stats.Count; i++)
+                                    {
+                                        try
+                                        {
+                                            Buffer.BlockCopy(stats[i], 0, namebyte, 0, 4);
+                                            Array.Reverse(namebyte);
+                                            Buffer.BlockCopy(stats[i], 8, datebyte, 0, 4);
+                                            Name = BitConverter.ToString(namebyte);
+
+                                            if (achnames.ContainsKey(Name))
+                                            {
+                                                Name = achnames[Name];
+                                                int Date = BitConverter.ToInt32(datebyte, 0);
+                                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(Date).ToLocalTime();
+                                                if (Name != string.Empty && DateUnlocked != null)
+                                                {
+                                                    ReturnAchievements.Add(new Achievements
+                                                    {
+                                                        ApiName = Name,
+                                                        Name = string.Empty,
+                                                        Description = string.Empty,
+                                                        UrlUnlocked = string.Empty,
+                                                        UrlLocked = string.Empty,
+                                                        DateUnlocked = DateUnlocked
+                                                    });
+                                                }
+                                                Name = string.Empty;
+                                                DateUnlocked = null;
+                                            }
+                                            else
+                                            {
+                                                Logger.Warn($"No matches found for crc in stats.bin.");
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            Logger.Error($"Stats.bin file format incorrect for SSE");
+                                        }
+
+                                        Array.Clear(namebyte, 0, namebyte.Length);
+                                        Array.Clear(datebyte, 0, datebyte.Length);
+                                    }
+                                }
+                                break;
+
+                            case "%documents%\\skidrow":
+                            case "%documents%\\darksiders":
+                                string skidrowfile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\SKIDROW\\{appId}\\SteamEmu\\UserStats\\achiev.ini";
+                                string darksidersfile = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + $"\\DARKSiDERS\\{appId}\\SteamEmu\\UserStats\\achiev.ini";
+                                string emu = "";
+
+                                if (File.Exists(skidrowfile))
+                                {
+                                    emu = skidrowfile;
+                                }
+                                else if (File.Exists(darksidersfile))
+                                {
+                                    emu = darksidersfile;
+                                }
+
+                                if (!(emu == ""))
+                                {
+                                    Logger.Warn($"File found at {emu}");
+                                    string line;
+                                    string Name = string.Empty;
+                                    DateTime? DateUnlocked = null;
+                                    List<List<string>> achlist = new List<List<string>>();
+                                    StreamReader r = new StreamReader(emu);
+
+                                    while ((line = r.ReadLine()) != null)
+                                    {
+                                        // Achievement Name
+                                        if (line.IndexOf("[AchievementsUnlockTimes]") > -1)
+                                        {
+                                            string nextline = r.ReadLine();
+                                            while (nextline.IndexOf("[") == -1)
+                                            {
+                                                achlist.Add(new List<string>(nextline.Split('=')));
+                                                nextline = r.ReadLine();
+                                            }
+
+                                            foreach (List<string> l in achlist)
+                                            {
+                                                Name = l[0];
+                                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(l[1])).ToLocalTime();
+                                                if (Name != string.Empty && DateUnlocked != null)
+                                                {
+                                                    ReturnAchievements.Add(new Achievements
+                                                    {
+                                                        ApiName = Name,
+                                                        Name = string.Empty,
+                                                        Description = string.Empty,
+                                                        UrlUnlocked = string.Empty,
+                                                        UrlLocked = string.Empty,
+                                                        DateUnlocked = DateUnlocked
+                                                    });
+
+                                                    Name = string.Empty;
+                                                    DateUnlocked = null;
                                                 }
                                             }
-                                            if (File.Exists(DirAchivements + $"\\achievements.ini"))
-                                            {
-                                                ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\achievements.ini", ReturnAchievements);
+                                        }
+                                    }
+                                    r.Close();
+                                }
 
-                                                if (File.Exists(DirAchivements + $"\\stats.ini"))
+                                break;
+
+                            case "%programdata%\\steam":
+                                if (Directory.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Steam")))
+                                {
+                                    string[] dirsUsers = Directory.GetDirectories(Environment.ExpandEnvironmentVariables("%ProgramData%\\Steam"));
+                                    foreach (string dirUser in dirsUsers)
+                                    {
+                                        if (File.Exists(dirUser + $"\\{appId}\\stats\\achievements.ini"))
+                                        {
+                                            ReturnAchievements = ReadAchievementsINI(dirUser + $"\\{appId}\\stats\\achievements.ini", ReturnAchievements);
+                                        }
+
+                                        if (File.Exists(dirUser + $"\\{appId}\\stats\\stats.ini"))
+                                        {
+                                            ReturnStats = ReadStatsINI(dirUser + $"\\{appId}\\stats\\stats.ini", ReturnStats);
+                                        }
+                                    }
+                                }
+
+                                break;
+
+                            case "%localappdata%\\skidrow":
+                                Logger.Warn($"No treatment for {DirAchivements}");
+                                break;
+
+                            default:
+                                if (ReturnAchievements.Count == 0)
+                                {
+                                    Folder finded = PluginDatabase.PluginSettings.Settings.LocalPath.Find(x => x.FolderPath.IsEqual(DirAchivements));
+                                    Guid.TryParse(finded?.GameId, out Guid GameId);
+
+                                    if (File.Exists(DirAchivements + "\\user_stats.ini") && GameId != default && GameId == game.Id)
+                                    {
+                                        ReturnAchievements = ReadAchievementsStatsINI(DirAchivements + "\\user_stats.ini", ReturnAchievements);
+                                    }
+                                    else
+                                    {
+                                        if (!DirAchivements.Contains("steamemu", StringComparison.InvariantCultureIgnoreCase))
+                                        {
+                                            if (File.Exists(DirAchivements + $"\\{appId}\\stats\\achievements.ini"))
+                                            {
+                                                ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\{appId}\\stats\\achievements.ini", ReturnAchievements);
+
+                                                if (File.Exists(DirAchivements + $"\\{appId}\\stats\\stats.ini"))
                                                 {
-                                                    ReturnStats = ReadStatsINI(DirAchivements + $"\\stats.ini", ReturnStats);
+                                                    ReturnStats = ReadStatsINI(DirAchivements + $"\\{appId}\\stats\\stats.ini", ReturnStats);
                                                 }
+
+                                            }
+                                            else if (GameId != default && GameId == game.Id && (finded?.HasGame ?? false))
+                                            {
+                                                if (File.Exists(DirAchivements + $"\\stats\\achievements.ini"))
+                                                {
+                                                    ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\stats\\achievements.ini", ReturnAchievements);
+
+                                                    if (File.Exists(DirAchivements + $"\\stats\\stats.ini"))
+                                                    {
+                                                        ReturnStats = ReadStatsINI(DirAchivements + $"\\stats\\stats.ini", ReturnStats);
+                                                    }
+                                                }
+                                                if (File.Exists(DirAchivements + $"\\achievements.ini"))
+                                                {
+                                                    ReturnAchievements = ReadAchievementsINI(DirAchivements + $"\\achievements.ini", ReturnAchievements);
+
+                                                    if (File.Exists(DirAchivements + $"\\stats.ini"))
+                                                    {
+                                                        ReturnStats = ReadStatsINI(DirAchivements + $"\\stats.ini", ReturnStats);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                ReturnAchievements = GetSteamEmu(DirAchivements + $"\\{appId}\\SteamEmu");
                                             }
                                         }
                                         else
                                         {
-                                            ReturnAchievements = GetSteamEmu(DirAchivements + $"\\{SteamId}\\SteamEmu");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        List<string> DataPath = DirAchivements.Split('\\').ToList();
-                                        int index = DataPath.FindIndex(x => x.IsEqual("steamemu"));
-                                        string GameName = DataPath[index - 1];
+                                            List<string> DataPath = DirAchivements.Split('\\').ToList();
+                                            int index = DataPath.FindIndex(x => x.IsEqual("steamemu"));
+                                            string GameName = DataPath[index - 1];
 
-                                        int TempSteamId = SteamApi.GetAppId(GameName);
-                                        if (TempSteamId == SteamId)
-                                        {
-                                            ReturnAchievements = GetSteamEmu(DirAchivements);
+                                            uint TempSteamId = SteamApi.GetAppId(GameName);
+                                            if (TempSteamId == appId)
+                                            {
+                                                ReturnAchievements = GetSteamEmu(DirAchivements);
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            break;
+                                break;
+                        }
                     }
-                }
 
-                Common.LogDebug(true, $"{Serialization.ToJson(ReturnAchievements)}");
+                    Common.LogDebug(true, $"{Serialization.ToJson(ReturnAchievements)}");
 
-                if (ReturnAchievements == new List<Achievements>())
-                {
-                    Logger.Warn($"No data for {SteamId}");
-                    return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };
-                }
-            }
-
-            #region Get details achievements & stats
-            // List details acheviements
-            string lang = CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language);
-            string url = string.Format(@"https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key={0}&appid={1}&l={2}", apiKey, SteamId, lang);
-
-            string ResultWeb = string.Empty;
-            try
-            {
-                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
-            }
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null)
-                {
-                    HttpWebResponse resp = (HttpWebResponse)ex.Response;
-                    switch (resp.StatusCode)
+                    if (ReturnAchievements == new List<Achievements>())
                     {
-                        case HttpStatusCode.BadRequest: // HTTP 400
-                            break;
-                        case HttpStatusCode.ServiceUnavailable: // HTTP 503
-                            break;
-                        default:
-                            Common.LogError(ex, false, $"Failed to load from {url}", true, PluginDatabase.PluginName);
-                            break;
+                        Logger.Warn($"No data for {appId}");
+                        return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };
                     }
-                    return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };
                 }
-            }
+                #endregion
 
-            if (ResultWeb != string.Empty && ResultWeb.Length > 50)
-            {
-                dynamic resultObj = Serialization.FromJson<dynamic>(ResultWeb);
-                dynamic resultItems = null;
-                dynamic resultItemsStats = null;
-
-                try
+                #region Get achievements
+                ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievementsSchema(appId);
+                steamAchievements?.ForEach(x =>
                 {
-                    resultItems = resultObj["game"]?["availableGameStats"]?["achievements"];
-                    resultItemsStats = resultObj["game"]?["availableGameStats"]?["stats"];
+                    bool isFind = false;
+                    for (int j = 0; j < ReturnAchievements.Count; j++)
+                    {
+                        if (ReturnAchievements[j].ApiName.IsEqual(x.Id))
+                        {
+                            Achievements temp = new Achievements
+                            {
+                                ApiName = x.Id,
+                                Name = x.Name,
+                                Description = x.Description,
+                                UrlUnlocked = x.UrlUnlocked,
+                                UrlLocked = x.UrlLocked,
+                                DateUnlocked = x.DateUnlocked
+                            };
 
-                    for (int i = 0; i < resultItems?.Count; i++)
+                            isFind = true;
+                            ReturnAchievements[j] = temp;
+                            j = ReturnAchievements.Count;
+                        }
+                    }
+
+                    if (!isFind)
+                    {
+                        ReturnAchievements.Add(new Achievements
+                        {
+                            ApiName = x.Id,
+                            Name = x.Name,
+                            Description = x.Description,
+                            UrlUnlocked = x.UrlUnlocked,
+                            UrlLocked = x.UrlLocked,
+                            DateUnlocked = default
+                        });
+                    }
+                });
+                #endregion
+
+                #region Get stats
+                if (ReturnStats.Count > 0 && !apiKey.IsNullOrEmpty())
+                {
+                    SteamSchema steamSchema = SteamKit.GetSchemaForGame(apiKey, appId, CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language));
+                    steamSchema?.Stats?.ForEach(x =>
                     {
                         bool isFind = false;
-                        for (int j = 0; j < ReturnAchievements.Count; j++)
+                        for (int j = 0; j < ReturnStats.Count; j++)
                         {
-                            if (ReturnAchievements[j].ApiName.IsEqual(((string)resultItems[i]["name"])))
+                            if (ReturnStats[j].Name.IsEqual(x.Name))
                             {
-                                Achievements temp = new Achievements
+                                GameStats temp = new GameStats
                                 {
-                                    ApiName = (string)resultItems[i]["name"],
-                                    Name = (string)resultItems[i]["displayName"],
-                                    Description = (string)resultItems[i]["description"],
-                                    UrlUnlocked = (string)resultItems[i]["icon"],
-                                    UrlLocked = (string)resultItems[i]["icongray"],
-                                    DateUnlocked = ReturnAchievements[j].DateUnlocked
+                                    Name = x.Name,
+                                    Value = ReturnStats[j].Value
                                 };
 
                                 isFind = true;
-                                ReturnAchievements[j] = temp;
-                                j = ReturnAchievements.Count;
+                                ReturnStats[j] = temp;
+                                j = ReturnStats.Count;
                             }
                         }
 
                         if (!isFind)
                         {
-                            ReturnAchievements.Add(new Achievements
+                            ReturnStats.Add(new GameStats
                             {
-                                ApiName = (string)resultItems[i]["name"],
-                                Name = (string)resultItems[i]["displayName"],
-                                Description = (string)resultItems[i]["description"],
-                                UrlUnlocked = (string)resultItems[i]["icon"],
-                                UrlLocked = (string)resultItems[i]["icongray"],
-                                DateUnlocked = default(DateTime)
+                                Name = x.Name,
+                                Value = x.DefaultValue
                             });
                         }
-                    }
-
-                    if (ReturnStats.Count > 0)
-                    {
-                        for (int i = 0; i < resultItemsStats?.Count; i++)
-                        {
-                            bool isFind = false;
-                            for (int j = 0; j < ReturnStats.Count; j++)
-                            {
-                                if (ReturnStats[j].Name.IsEqual(((string)resultItemsStats[i]["name"])))
-                                {
-                                    GameStats temp = new GameStats
-                                    {
-                                        Name = (string)resultItemsStats[i]["name"],
-                                        Value = ReturnStats[j].Value
-                                    };
-
-                                    isFind = true;
-                                    ReturnStats[j] = temp;
-                                    j = ReturnStats.Count;
-                                }
-                            }
-
-                            if (!isFind)
-                            {
-                                ReturnStats.Add(new GameStats
-                                {
-                                    Name = (string)resultItemsStats[i]["name"],
-                                    Value = 0
-                                });
-                            }
-                        }
-                    }
+                    });
                 }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, true, $"Failed to parse");
-                    return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };
-                }
+                #endregion
+
+                // Delete empty (SteamEmu)
+                ReturnAchievements = ReturnAchievements.Select(x => x).Where(x => !string.IsNullOrEmpty(x.UrlLocked)).ToList();
+
+                return new SteamEmulatorData { Achievements = ReturnAchievements, Stats = ReturnStats };
             }
-            #endregion
-
-            // Delete empty (SteamEmu)
-            ReturnAchievements = ReturnAchievements.Select(x => x).Where(x => !string.IsNullOrEmpty(x.UrlLocked)).ToList();
-
-            return new SteamEmulatorData { Achievements = ReturnAchievements, Stats = ReturnStats };
+            catch (Exception ex)
+            {
+                Common.LogError(ex, true, $"Failed to parse");
+                return new SteamEmulatorData { Achievements = new List<Achievements>(), Stats = new List<GameStats>() };
+            }
         }
 
 

@@ -30,13 +30,13 @@ namespace SuccessStory.Services
 
         private bool IsRetroachievements { get; set; }
 
-        private static Dictionary<AchievementSource, GenericAchievements> achievementProviders { get; set; }
-        private static object achievementProvidersLock => new object();
+        private static object AchievementProvidersLock => new object();
+        private static Dictionary<AchievementSource, GenericAchievements> achievementProviders;
         internal static Dictionary<AchievementSource, GenericAchievements> AchievementProviders
         {
             get
             {
-                lock (achievementProvidersLock)
+                lock (AchievementProvidersLock)
                 {
                     if (achievementProviders == null)
                     {
@@ -140,12 +140,13 @@ namespace SuccessStory.Services
                     if (gameAchievements.SourcesLink?.Name.IsEqual("steam") ?? false)
                     {
                         string str = gameAchievements.SourcesLink?.Url.Replace("https://steamcommunity.com/stats/", string.Empty).Replace("/achievements", string.Empty);
-                        int.TryParse(str, out int AppId);
-
-                        SteamAchievements steamAchievements = new SteamAchievements();
-                        steamAchievements.SetLocal();
-                        steamAchievements.SetManual();
-                        gameAchievements = steamAchievements.GetAchievements(game, AppId);
+                        if (uint.TryParse(str, out uint AppId))
+                        {
+                            SteamAchievements steamAchievements = new SteamAchievements();
+                            steamAchievements.SetLocal();
+                            steamAchievements.SetManual();
+                            gameAchievements = steamAchievements.GetAchievements(game, AppId);
+                        }
                     }
                     else if (gameAchievements.SourcesLink?.Name.IsEqual("exophase") ?? false)
                     {
@@ -1202,8 +1203,7 @@ namespace SuccessStory.Services
                     switch (SourceName)
                     {
                         case "steam":
-                            int.TryParse(Regex.Match(gameAchievements.SourcesLink.Url, @"\d+").Value, out int AppId);
-                            if (AppId != 0)
+                            if (uint.TryParse(Regex.Match(gameAchievements.SourcesLink.Url, @"\d+").Value, out uint AppId))
                             {
                                 if (SteamConfig)
                                 {
@@ -1215,9 +1215,11 @@ namespace SuccessStory.Services
                                 }
                             }
                             break;
+
                         case "exophase":
                             exophaseAchievements.SetRarety(gameAchievements, AchievementSource.Local);
                             break;
+
                         default:
                             TrueAchievements.Logger.Warn($"No sourcesLink for {gameAchievements.Name}");
                             break;

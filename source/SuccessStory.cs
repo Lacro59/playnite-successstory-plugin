@@ -753,7 +753,7 @@ namespace SuccessStory
 
                             if (gameAchievements.IsManual)
                             {
-                                int AppId = steamApi.GetAppId(gameAchievements.Name);
+                                uint AppId = steamApi.GetAppId(gameAchievements.Name);
 
                                 if (AppId != 0)
                                 {
