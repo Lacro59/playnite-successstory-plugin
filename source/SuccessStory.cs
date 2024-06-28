@@ -28,6 +28,7 @@ using System.Diagnostics;
 using QuickSearch.SearchItems;
 using CommonPluginsStores.Steam;
 using SuccessStory.Clients;
+using SuccessStory.Models.RetroAchievements;
 
 namespace SuccessStory
 {
@@ -1092,16 +1093,16 @@ namespace SuccessStory
             {
                 Task.Run(() =>
                 {
-                    RA_Consoles ra_Consoles = RetroAchievements.GetConsoleIDs();
-                    if (ra_Consoles?.ListConsoles == null)
+                    List<RaConsole> ra_Consoles = RetroAchievements.GetConsoleIDs();
+                    if (ra_Consoles == null)
                     {
                         Thread.Sleep(2000);
                         ra_Consoles = RetroAchievements.GetConsoleIDs();
                     }
 
-                    ra_Consoles.ListConsoles.ForEach(x =>
+                    ra_Consoles.ForEach(x =>
                     {
-                        if (!PluginSettings.Settings.RaConsoleAssociateds.Any(y => y.RaConsoleId == x.ID)) 
+                        if (!PluginSettings.Settings.RaConsoleAssociateds.Any(y => y.RaConsoleId == x.ID))
                         {
                             // Add new RaConsole
                             PluginSettings.Settings.RaConsoleAssociateds.Add(new RaConsoleAssociated
@@ -1114,8 +1115,8 @@ namespace SuccessStory
                             // Search and add platform
                             API.Instance.Database.Platforms.ForEach(z =>
                             {
-                                int RaConsoleId = RetroAchievements.FindConsole(x.Name);
-                                if (RaConsoleId != 0)
+                                int RaConsoleId = RetroAchievements.FindConsole(z.Name);
+                                if (RaConsoleId == x.ID)
                                 {
                                     PluginSettings.Settings.RaConsoleAssociateds.Find(y => y.RaConsoleId == RaConsoleId).Platforms.Add(new Platform { Id = z.Id });
                                 }
@@ -1123,9 +1124,11 @@ namespace SuccessStory
                         }
                     });
 
+                    PluginSettings.Settings.RaConsoleAssociateds = PluginSettings.Settings.RaConsoleAssociateds.OrderBy(x => x.RaConsoleName).ToList();
+
                     Application.Current.Dispatcher?.BeginInvoke((Action)delegate
                     {
-                        this.SavePluginSettings(PluginSettings.Settings);
+                        SavePluginSettings(PluginSettings.Settings);
                     });
                 });
             }

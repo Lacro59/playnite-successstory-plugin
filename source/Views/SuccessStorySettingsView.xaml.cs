@@ -120,10 +120,6 @@ namespace SuccessStory.Views
                 .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent?.Id);
 
 
-            //PART_Time.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "time.png"));
-            //PART_Percent.Source = BitmapExtensions.BitmapFromFile(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "percent.png"));
-
-
             // Set RA console list
             PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.ForEach(x =>
             {
@@ -434,23 +430,12 @@ namespace SuccessStory.Views
             }
         }
         #endregion
-
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            RaConsoleAssociateds = (List<RaConsoleAssociated>)PART_LbRaConsole.ItemsSource;
-        }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            RaConsoleAssociateds = (List<RaConsoleAssociated>)PART_LbRaConsole.ItemsSource;
-        }
     }
 
 
     public class BooleanAndConverter : IMultiValueConverter
     {
-        public object Convert(object[] values, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             foreach (object value in values)
             {
@@ -462,7 +447,7 @@ namespace SuccessStory.Views
             return true;
         }
 
-        public object[] ConvertBack(object value, System.Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotSupportedException("BooleanAndConverter is a OneWay converter.");
         }

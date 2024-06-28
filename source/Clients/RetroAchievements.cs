@@ -16,33 +16,23 @@ using CommonPluginsShared.Extensions;
 using SuccessStory.Services;
 using System.Threading;
 using Playnite.SDK;
+using SuccessStory.Models.RetroAchievements;
 
 namespace SuccessStory.Clients
 {
-    public enum PlatformType
-    {
-        All,
-        SNES,
-        Sega_CD_Saturn,
-        NES,
-        Famicom,
-        Arcade,
-        NDS
-    }
-
-
     // https://github.com/KrystianLesniak/retroachievements-api-net
     // https://github.com/RetroAchievements/retroachievements-api-js/issues/46
     // TODO API has been temporarily disabled
-    class RetroAchievements : GenericAchievements
+    public class RetroAchievements : GenericAchievements
     {
+        #region Url
         private static string BaseUrl => @"https://retroachievements.org/API/";
         private static string BaseUrlUnlocked => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
         private static string BaseUrlLocked => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
-        private static string BaseMD5List => @"https://retroachievements.org/dorequest.php?r=hashlibrary&c={0}";
+        #endregion
 
-        private static string User { get; set; } = PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
-        private static string Key { get; set; } = PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
+        private static string User => PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
+        private static string Key => PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
 
         public int GameId { get; set; } = 0;
 
@@ -64,25 +54,14 @@ namespace SuccessStory.Clients
 
             if (IsConfigured())
             {
-                // Load list console
-                RA_Consoles ra_Consoles = GetConsoleIDs();
-                if (ra_Consoles != null && ra_Consoles != new RA_Consoles())
-                {
-                    ra_Consoles.ListConsoles.Sort((x, y) => (y.Name).CompareTo(x.Name));
-                }
-                else
-                {
-                    Logger.Warn($"No ra_Consoles find");
-                }
-
                 // Game Id
                 if (GameId == 0)
                 {
-                    GameId = GetGameIdByHash(game, ra_Consoles);
+                    GameId = GetGameIdByHash(game);
 
                     if (GameId == 0)
                     {
-                        GameId = GetGameIdByName(game, ra_Consoles);
+                        GameId = GetGameIdByName(game);
                     }
                 }
 
@@ -143,9 +122,6 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
-            User = PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
-            Key = PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
-
             return User != string.Empty && Key != string.Empty;
         }
 
@@ -157,16 +133,15 @@ namespace SuccessStory.Clients
 
 
         #region RetroAchievements
-        public static RA_Consoles GetConsoleIDs()
+        public static List<RaConsole> GetConsoleIDs()
         {
-            RA_Consoles resultObj = new RA_Consoles();
+            List<RaConsole> resultObj = new List<RaConsole>();
             string Target = "API_GetConsoleIDs.php";
             string Url = string.Format(BaseUrl + Target + @"?z={0}&y={1}", User, Key);
 
             string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Consoles.json";
-            if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(20) > DateTime.Now)
+            if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(5) > DateTime.Now && Serialization.TryFromJsonFile(fileConsoles, out resultObj))
             {
-                resultObj = Serialization.FromJsonFile<RA_Consoles>(fileConsoles);
                 return resultObj;
             }
 
@@ -184,10 +159,10 @@ namespace SuccessStory.Clients
 
             if (!ResultWeb.IsNullOrEmpty())
             {
-                Serialization.TryFromJson<List<RA_Console>>(ResultWeb, out List<RA_Console> data);
-                resultObj.ListConsoles = data ?? new List<RA_Console>();
+                _ = Serialization.TryFromJson(ResultWeb, out List<RaConsole> data);
+                resultObj = data ?? new List<RaConsole>();
 
-                if (resultObj.ListConsoles?.Count == 0)
+                if (resultObj?.Count == 0)
                 {
                     Exception ex = new Exception($"Failed to parse {ResultWeb}");
                     Common.LogError(ex, false, true, PluginDatabase.PluginName);
@@ -204,7 +179,7 @@ namespace SuccessStory.Clients
 
         public static int FindConsole(string PlatformName)
         {
-            RA_Consoles ra_Consoles = GetConsoleIDs();
+            List<RaConsole> ra_Consoles = GetConsoleIDs();
             int consoleID = 0;
 
             #region Normalize
@@ -338,7 +313,7 @@ namespace SuccessStory.Clients
             }
             #endregion
 
-            RA_Console FindConsole = ra_Consoles.ListConsoles.Find(x => PlatformName.IsEqual(x.Name));
+            RaConsole FindConsole = ra_Consoles.Find(x => PlatformName.IsEqual(x.Name));
             if (FindConsole != null)
             {
                 consoleID = FindConsole.ID;
@@ -348,7 +323,7 @@ namespace SuccessStory.Clients
         }
 
 
-        private int GetGameIdByName(Game game, RA_Consoles ra_Consoles)
+        private int GetGameIdByName(Game game)
         {
             string GameName = game.Name;
 
@@ -361,10 +336,10 @@ namespace SuccessStory.Clients
             int gameID = 0;
             if (consoleID != 0)
             {
-                RA_Games ra_Games = GetGameList(consoleID);
-                ra_Games.ListGames.Sort((x, y) => y.Title.CompareTo(x.Title));
+                List<RaGame> ra_Games = GetGameList(consoleID);
+                ra_Games.Sort((x, y) => y.Title.CompareTo(x.Title));
 
-                foreach (RA_Game ra_Game in ra_Games.ListGames)
+                foreach (RaGame ra_Game in ra_Games)
                 {
                     string retroArchTitle = ra_Game.Title;
                     //TODO: Decide if editions should be removed here
@@ -419,7 +394,7 @@ namespace SuccessStory.Clients
             return gameID;
         }
 
-        private int GetGameIdByHash(Game game, RA_Consoles ra_Consoles)
+        private int GetGameIdByHash(Game game)
         {
             // Search id console for the game
             string PlatformName = game.Platforms.FirstOrDefault().Name;
@@ -430,19 +405,19 @@ namespace SuccessStory.Clients
             int GameId = 0;
             if (consoleID != 0)
             {
-                RA_Games ra_Games = GetGameList(consoleID);
-                ra_Games.ListGames.Sort((x, y) => y.Title.CompareTo(x.Title));
+                List<RaGame> ra_Games = GetGameList(consoleID);
+                ra_Games.Sort((x, y) => y.Title.CompareTo(x.Title));
 
                 string HashMD5 = string.Empty;
 
-                RA_MD5List rA_MD5List = null;
-                List<RA_MD5List> rA_MD5Lists = new List<RA_MD5List>();
-                ra_Games.ListGames.ForEach(x =>
+                RaMd5List rA_MD5List = null;
+                List<RaMd5List> rA_MD5Lists = new List<RaMd5List>();
+                ra_Games.ForEach(x =>
                 {
                     int Id = x.ID;
                     x.Hashes.ForEach(y =>
                     {
-                        rA_MD5Lists.Add(new RA_MD5List { Id = Id, MD5 = y });
+                        rA_MD5Lists.Add(new RaMd5List { Id = Id, MD5 = y });
                     });
                 });
 
@@ -493,7 +468,7 @@ namespace SuccessStory.Clients
 
                 if (ext.IsEqual(".nds"))
                 {
-                    HashMD5 = GetHash(FilePath, PlatformType.NDS);
+                    HashMD5 = GetHash(FilePath, RaPlatformType.NDS);
                     rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                     if (rA_MD5List != null)
                     {
@@ -507,7 +482,7 @@ namespace SuccessStory.Clients
                     }
                 }
 
-                HashMD5 = GetHash(FilePath, PlatformType.All);
+                HashMD5 = GetHash(FilePath, RaPlatformType.All);
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
@@ -520,7 +495,7 @@ namespace SuccessStory.Clients
                     Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.All");
                 }
 
-                HashMD5 = GetHash(FilePath, PlatformType.SNES);
+                HashMD5 = GetHash(FilePath, RaPlatformType.SNES);
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
@@ -533,7 +508,7 @@ namespace SuccessStory.Clients
                     Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
                 }
 
-                HashMD5 = GetHash(FilePath, PlatformType.NES);
+                HashMD5 = GetHash(FilePath, RaPlatformType.NES);
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
@@ -546,7 +521,7 @@ namespace SuccessStory.Clients
                     Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
                 }
 
-                HashMD5 = GetHash(FilePath, PlatformType.Arcade);
+                HashMD5 = GetHash(FilePath, RaPlatformType.Arcade);
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
@@ -559,7 +534,7 @@ namespace SuccessStory.Clients
                     Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
                 }
 
-                HashMD5 = GetHash(FilePath, PlatformType.Famicom);
+                HashMD5 = GetHash(FilePath, RaPlatformType.Famicom);
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
@@ -572,7 +547,7 @@ namespace SuccessStory.Clients
                     Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
                 }
 
-                HashMD5 = GetHash(FilePath, PlatformType.Sega_CD_Saturn);
+                HashMD5 = GetHash(FilePath, RaPlatformType.Sega_CD_Saturn);
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
@@ -591,7 +566,7 @@ namespace SuccessStory.Clients
             return GameId;
         }
 
-        private string GetHash(string FilePath, PlatformType platformType)
+        private string GetHash(string FilePath, RaPlatformType platformType)
         {
             try
             {
@@ -600,7 +575,7 @@ namespace SuccessStory.Clients
 
                 byte[] byteSequenceFinal = byteSequence;
 
-                if (platformType == PlatformType.NDS)
+                if (platformType == RaPlatformType.NDS)
                 {
                     try
                     {
@@ -613,7 +588,7 @@ namespace SuccessStory.Clients
                     }
                 }
 
-                if (platformType == PlatformType.SNES)
+                if (platformType == RaPlatformType.SNES)
                 {
                     try
                     {
@@ -633,7 +608,7 @@ namespace SuccessStory.Clients
                     }
                 }
 
-                if (platformType == PlatformType.NES)
+                if (platformType == RaPlatformType.NES)
                 {
                     try
                     {
@@ -656,7 +631,7 @@ namespace SuccessStory.Clients
                     }
                 }
 
-                if (platformType == PlatformType.Famicom)
+                if (platformType == RaPlatformType.Famicom)
                 {
                     try
                     {
@@ -679,7 +654,7 @@ namespace SuccessStory.Clients
                     }
                 }
 
-                if (platformType == PlatformType.Sega_CD_Saturn)
+                if (platformType == RaPlatformType.Sega_CD_Saturn)
                 {
                     try
                     {
@@ -692,7 +667,7 @@ namespace SuccessStory.Clients
                     }
                 }
 
-                if (platformType == PlatformType.Arcade)
+                if (platformType == RaPlatformType.Arcade)
                 {
                     try
                     {
@@ -718,7 +693,7 @@ namespace SuccessStory.Clients
         {
             try
             {
-                using (var md5 = MD5.Create())
+                using (MD5 md5 = MD5.Create())
                 {
                     byte[] md5Byte = md5.ComputeHash(byteSequence);
                     return BitConverter.ToString(md5Byte).Replace("-", "").ToLowerInvariant();
@@ -740,7 +715,7 @@ namespace SuccessStory.Clients
             ZipFile.ExtractToDirectory(FilePath, extractPath);
 
             string FilePathReturn = string.Empty;
-            Parallel.ForEach(Directory.EnumerateFiles(extractPath, "*.*", SearchOption.AllDirectories), (objectFile) =>
+            _ = Parallel.ForEach(Directory.EnumerateFiles(extractPath, "*.*", SearchOption.AllDirectories), (objectFile) =>
             {
                 FilePathReturn = objectFile;
             });
@@ -758,17 +733,16 @@ namespace SuccessStory.Clients
         }
 
 
-        private RA_Games GetGameList(int consoleID)
+        private List<RaGame> GetGameList(int consoleID)
         {
             string Target = "API_GetGameList.php";
             string url = string.Format(BaseUrl + Target + @"?z={0}&y={1}&i={2}&h=1", User, Key, consoleID);
 
-            RA_Games resultObj = new RA_Games();
+            List<RaGame> resultObj = new List<RaGame>();
 
             string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Games_" + consoleID + ".json";
-            if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(20) > DateTime.Now)
+            if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(5) > DateTime.Now && Serialization.TryFromJsonFile(fileConsoles, out resultObj))
             {
-                resultObj = Serialization.FromJsonFile<RA_Games>(fileConsoles);
                 return resultObj;
             }
 
@@ -784,7 +758,7 @@ namespace SuccessStory.Clients
 
             try
             {
-                resultObj.ListGames = Serialization.FromJson<List<RA_Game>>(ResultWeb);
+                resultObj = Serialization.FromJson<List<RaGame>>(ResultWeb);
                 File.WriteAllText(fileConsoles, Serialization.ToJson(resultObj), Encoding.UTF8);
             }
             catch (Exception ex)
@@ -803,7 +777,7 @@ namespace SuccessStory.Clients
             string Target = "API_GetGameInfoAndUserProgress.php";
             UrlAchievements = string.Format(BaseUrl + Target + @"?z={0}&y={1}&u={0}&g={2}", User, Key, gameID);
 
-            string ResultWeb = string.Empty;
+            string ResultWeb;
             try
             {
                 ResultWeb = Web.DownloadStringData(UrlAchievements).GetAwaiter().GetResult();
@@ -849,49 +823,5 @@ namespace SuccessStory.Clients
             return Achievements;
         }
         #endregion
-    }
-
-
-    public class RA_Consoles
-    {
-        public List<RA_Console> ListConsoles { get; set; }
-    }
-
-    public class RA_Console
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class RA_Games
-    {
-        public List<RA_Game> ListGames { get; set; }
-    }
-
-    public class RA_Game
-    {
-        public string Title { get; set; }
-        public int ID { get; set; }
-        public int ConsoleID { get; set; }
-        public string ConsoleName { get; set; }
-        public string ImageIcon { get; set; }
-        public int NumAchievements { get; set; }
-        public int NumLeaderboards { get; set; }
-        public int Points { get; set; }
-        public string DateModified { get; set; }
-        public int? ForumTopicID { get; set; }
-        public List<string> Hashes { get; set; }
-    }
-
-    public class RA_MD5ListResponse
-    {
-        public bool Success { get; set; }
-        public dynamic MD5List { get; set; }
-    }
-
-    public class RA_MD5List
-    {
-        public string MD5 { get; set; }
-        public int Id { get; set; }
     }
 }
