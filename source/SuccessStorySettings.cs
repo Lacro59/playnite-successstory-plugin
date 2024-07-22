@@ -8,9 +8,6 @@ using System.Windows.Media;
 using System;
 using System.Linq;
 using Playnite.SDK.Models;
-using SuccessStory.Clients;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace SuccessStory
 {
@@ -37,8 +34,8 @@ namespace SuccessStory
         public bool EnableTag { get; set; } = false;
         public bool AutoImport { get; set; } = true;
 
-        public bool ShowHiddenIcon { get; set; } = true;
-        public bool ShowHiddenTitle { get; set; } = true;
+        public bool ShowHiddenIcon { get; set; } = false;
+        public bool ShowHiddenTitle { get; set; } = false;
         public bool ShowHiddenDescription { get; set; } = false;
 
         public bool Auto100PercentCompleted { get; set; } = false;
