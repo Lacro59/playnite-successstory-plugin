@@ -10,7 +10,8 @@
         xmlns:convertersshared="clr-namespace:CommonPluginsShared.Converters"
         xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
         xmlns:converters1="clr-namespace:SuccessStory.Converters"
-        xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
+        xmlns:customs="clr-namespace:SuccessStory.Controls.Customs" 
+        xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
         mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="100"
         d:DataContext="{d:DesignInstance Type=local:PluginCompactListDataContext, IsDesignTimeCreatable=True}"
         MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
@@ -20,7 +21,6 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <converters1:SetColorConverter x:Key="SetColorConverter" />
         <converters:InvertedBoolenConverter x:Key="InvertedBoolenConverter" />
         <converters:StringNullOrEmptyToBoolConverter x:Key="StringNullOrEmptyToBoolConverter" />
         <convertersshared:ImageToGrayConverter x:Key="ImageToGrayConverter" />
@@ -63,6 +63,25 @@
                 <DataTemplate>
                     <Grid>
                         <StackPanel ToolTip="{Binding AchToolTipCompactList}" Margin="2">
+                            <StackPanel.Style>
+                                <Style TargetType="{x:Type StackPanel}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenIcon}" Value="False" />
+                                                <Condition Binding="{Binding IsHidden}" Value="True" />
+                                                <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <BlurEffect Radius="4.0" KernelType="Box" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
                             <customs:AchievementImage Width="{Binding ElementName=PART_GridContener, Path=Tag}"
                                                       Height="{Binding ElementName=PART_GridContener, Path=Tag}"
                                                       Icon="{Binding Icon, IsAsync=True}"

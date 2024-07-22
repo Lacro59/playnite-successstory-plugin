@@ -776,28 +776,51 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
-                                <RowDefinition Height="10" />
-                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
-                            <CheckBox Grid.Row="0" IsChecked="{Binding Settings.ShowHiddenDescription}">
-                                <Label Content="{DynamicResource LOCSuccessStoryShowHiddenDescription}" />
-                            </CheckBox>
-
-                            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.EnableRaretyIndicator}" Name="PART_EnableRarity">
+                            <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableRaretyIndicator}" Name="PART_EnableRarity">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableRaretyIndicator}" />
                             </CheckBox>
 
-                            <CheckBox Grid.Row="4" Margin="50,0,0,0" IsChecked="{Binding Settings.DisplayRarityValue}"
+                            <CheckBox Grid.Row="2" Margin="50,0,0,0" IsChecked="{Binding Settings.DisplayRarityValue}"
                                       IsEnabled="{Binding ElementName=PART_EnableRarity, Path=IsChecked}">
                                 <Label Content="{DynamicResource LOCSuccessStoryDisplayRarityValue}" />
                             </CheckBox>
 
-                            <CheckBox Grid.Row="6" IsChecked="{Binding Settings.EnableOneGameView}">
+                            <CheckBox Grid.Row="4" IsChecked="{Binding Settings.EnableOneGameView}">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableOneGameView}" />
                             </CheckBox>
                         </Grid>
 
+                        <Label Content="{DynamicResource LOCSuccessStoryHiddenAchievement}" Margin="0,30,0,0" />
+                        <Separator Margin="0,0,0,10" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <CheckBox Grid.Row="0" IsChecked="{Binding Settings.ShowHiddenIcon}">
+                                <Label Content="{DynamicResource LOCSuccessStoryShowHiddenIcon}" />
+                            </CheckBox>
+
+                            <CheckBox Grid.Row="2" IsChecked="{Binding Settings.ShowHiddenTitle}">
+                                <Label Content="{DynamicResource LOCSuccessStoryShowHiddenTitle}" />
+                            </CheckBox>
+
+                            <CheckBox Grid.Row="4" IsChecked="{Binding Settings.ShowHiddenDescription}">
+                                <Label Content="{DynamicResource LOCSuccessStoryShowHiddenDescription}" />
+                            </CheckBox>
+                        </Grid>
 
                         <Label Content="{DynamicResource LOCSuccessStoryListGames}" Margin="0,30,0,0" />
                         <Separator Margin="0,0,0,10" />

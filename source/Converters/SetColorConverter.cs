@@ -1,4 +1,5 @@
-﻿using SuccessStory.Services;
+﻿using CommonPluginsShared;
+using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,42 +17,49 @@ namespace SuccessStory.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Color color = Brushes.Transparent.Color;
-
-            if (value == null)
+            try
             {
+                Color color = Brushes.Transparent.Color;
+
+                if (value == null)
+                {
+                    return null;
+                }
+
+                _ = double.TryParse(value.ToString(), out double valueDouble);
+
+                if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityUltraRare && PluginDatabase.PluginSettings.Settings.UseUltraRare)
+                {
+                    return PluginDatabase.PluginSettings.Settings.RarityUltraRareColor.Color;
+                }
+
+                if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityRare)
+                {
+                    return PluginDatabase.PluginSettings.Settings.RarityRareColor.Color;
+                }
+                if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityUncommon)
+                {
+                    return PluginDatabase.PluginSettings.Settings.RarityUncommonColor.Color;
+                }
+                if (valueDouble > PluginDatabase.PluginSettings.Settings.RarityUncommon)
+                {
+                    return null;
+                }
+
+                Color newColor = new Color
+                {
+                    ScR = (float)color.R / 255,
+                    ScG = (float)color.G / 255,
+                    ScB = (float)color.B / 255
+                };
+
+                return newColor;
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false);
                 return null;
             }
-
-            _ = double.TryParse(value.ToString(), out double valueDouble);
-
-            if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityUltraRare && PluginDatabase.PluginSettings.Settings.UseUltraRare)
-            {
-                return PluginDatabase.PluginSettings.Settings.RarityUltraRareColor.Color;
-            }
-
-            if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityRare)
-            {
-                return PluginDatabase.PluginSettings.Settings.RarityRareColor.Color;
-            }
-            if (valueDouble <= PluginDatabase.PluginSettings.Settings.RarityUncommon)
-            {
-                return PluginDatabase.PluginSettings.Settings.RarityUncommonColor.Color;
-            }
-            if (valueDouble > PluginDatabase.PluginSettings.Settings.RarityUncommon)
-            {
-                return null;
-            }
-
-            Color newColor = new Color
-            {
-                ScR = (float)color.R / 255,
-                ScG = (float)color.G / 255,
-                ScB = (float)color.B / 255
-            };
-
-            return newColor;
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

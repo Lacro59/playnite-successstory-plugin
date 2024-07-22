@@ -166,6 +166,8 @@ namespace SuccessStory.Controls
         public override void SetDefaultDataContext()
         {
             bool IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationList;
+            bool ShowHiddenIcon = PluginDatabase.PluginSettings.Settings.ShowHiddenIcon;
+            bool ShowHiddenTitle = PluginDatabase.PluginSettings.Settings.ShowHiddenTitle;
             bool ShowHiddenDescription = PluginDatabase.PluginSettings.Settings.ShowHiddenDescription;
             double Height = PluginDatabase.PluginSettings.Settings.IntegrationListHeight;
             double IconHeight = PluginDatabase.PluginSettings.Settings.IntegrationListIconHeight;
@@ -184,6 +186,8 @@ namespace SuccessStory.Controls
 
 
             ControlDataContext.IsActivated = IsActivated;
+            ControlDataContext.ShowHiddenIcon = ShowHiddenIcon;
+            ControlDataContext.ShowHiddenTitle = ShowHiddenTitle;
             ControlDataContext.ShowHiddenDescription = ShowHiddenDescription;
             ControlDataContext.Height = Height;
             ControlDataContext.IconHeight = IconHeight;
@@ -460,6 +464,12 @@ namespace SuccessStory.Controls
     {
         private bool isActivated;
         public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
+
+        private bool showHiddenIcon;
+        public bool ShowHiddenIcon { get => showHiddenIcon; set => SetValue(ref showHiddenIcon, value); }
+
+        private bool showHiddenTitle;
+        public bool ShowHiddenTitle { get => showHiddenTitle; set => SetValue(ref showHiddenTitle, value); }
 
         private bool showHiddenDescription;
         public bool ShowHiddenDescription { get => showHiddenDescription; set => SetValue(ref showHiddenDescription, value); }

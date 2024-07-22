@@ -23,7 +23,6 @@
         <converters:InvertedBooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <convertersshared:LocalDateTimeConverter x:Key="LocalDateTimeConverter" />
-        <converters1:SetColorConverter x:Key="SetColorConverter" />
         <convertersshared:ValueOperationConverter x:Key="ValueOperationConverter" />
         <converters:InvertedBoolenConverter x:Key="InvertedBoolenConverter" />
     </controls:PluginUserControlExtend.Resources>
@@ -73,7 +72,7 @@
             </TabControl>
         </Grid>
 
-        <Grid Name="PART_GridContener" Grid.Row="2" Tag="{Binding ShowHiddenDescription}">
+        <Grid Name="PART_GridContener" Grid.Row="2">
             <controls:ListBoxExtend x:Name="lbAchievements" SizeChanged="LbAchievements_SizeChanged"
                                     BubblingScrollEvents="True" Style="{StaticResource {x:Type ListBox}}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" 
@@ -120,6 +119,25 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,5,0,0">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenIcon}" Value="False" />
+                                                    <Condition Binding="{Binding IsHidden}" Value="True" />
+                                                    <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <BlurEffect Radius="4.0" KernelType="Box" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+
                                 <customs:AchievementImage Width="{Binding ElementName=lbAchievements, Path=Tag}" 
                                                           Height="{Binding ElementName=lbAchievements, Path=Tag}"
                                                           Icon="{Binding Icon, IsAsync=True}"
@@ -149,7 +167,26 @@
                                         <ColumnDefinition Width="10" />
                                     </Grid.ColumnDefinitions>
 
-                                    <controls1:TextBlockTrimmed  Grid.Column="0" Text="{Binding Name, FallbackValue='Game Name'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis" />
+                                    <controls1:TextBlockTrimmed Grid.Column="0" Text="{Binding Name, FallbackValue='Achievement Title'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenTitle}" Value="False" />
+                                                            <Condition Binding="{Binding IsHidden}" Value="True" />
+                                                            <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <BlurEffect Radius="4.0" KernelType="Box" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </controls1:TextBlockTrimmed>
 
                                     <Grid Grid.Column="1">
                                         <TextBlock TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
@@ -178,7 +215,8 @@
                                     </Grid>
                                 </Grid>
 
-                                <TextBlock Grid.Row="1" VerticalAlignment="Top" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}">
+                                <TextBlock Grid.Row="1" VerticalAlignment="Top" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}"
+                                           Text="{Binding Description, FallbackValue='Achievement Description'}">
                                     <TextBlock.Width>
                                         <MultiBinding Converter="{StaticResource ValueOperationConverter}" ConverterParameter="-">
                                             <Binding ElementName="PART_GridContener" Path="ActualWidth" />
@@ -191,15 +229,18 @@
                                     </TextBlock.Width>
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Text" Value="{Binding Description, FallbackValue='This is a description.'}" />
                                             <Style.Triggers>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding ElementName=PART_GridContener, Path=Tag}" Value="False" />
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenDescription}" Value="False" />
                                                         <Condition Binding="{Binding IsHidden}" Value="True" />
                                                         <Condition Binding="{Binding IsUnlock}" Value="False" />
                                                     </MultiDataTrigger.Conditions>
-                                                    <Setter Property="Text" Value="{DynamicResource LOCSuccessStoryHiddenAchievement}" />
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <BlurEffect Radius="4.0" KernelType="Box" />
+                                                        </Setter.Value>
+                                                    </Setter>
                                                 </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>

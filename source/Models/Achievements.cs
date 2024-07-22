@@ -10,6 +10,8 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Documents;
 using System.Globalization;
+using CommonPluginsControls.Controls;
+using System.Windows.Media.Effects;
 
 namespace SuccessStory.Models
 {
@@ -161,22 +163,88 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
-        public TextBlock AchToolTipCompactList
+        public object AchToolTipCompactList
         {
             get
             {
-                TextBlock tooltip = new TextBlock();
-                tooltip.Inlines.Add(new Run(NameWithDateUnlock)
+                StackPanel stackPanel = new StackPanel();
+
+                TextBlockTrimmed textBlockTrimmed = new TextBlockTrimmed
                 {
+                    Text = NameWithDateUnlock,
                     FontWeight = FontWeights.Bold
-                });
+                };
+                if (!IsUnlock && IsHidden && !PluginDatabase.PluginSettings.Settings.ShowHiddenTitle)
+                {
+                    textBlockTrimmed.Effect = new BlurEffect
+                    {
+                        Radius = 4,
+                        KernelType = KernelType.Box
+                    };
+                }
+                _ = stackPanel.Children.Add(textBlockTrimmed);
+
                 if (PluginDatabase.PluginSettings.Settings.IntegrationCompactShowDescription)
                 {
-                    tooltip.Inlines.Add(new LineBreak());
-                    tooltip.Inlines.Add(new Run(Description));
+                    TextBlock textBlock = new TextBlock
+                    {
+                        Text = Description
+                    };
+                    if (!IsUnlock && IsHidden && !PluginDatabase.PluginSettings.Settings.ShowHiddenDescription)
+                    {
+                        textBlock.Effect = new BlurEffect
+                        {
+                            Radius = 4,
+                            KernelType = KernelType.Box
+                        };
+                    }
+                    _ = stackPanel.Children.Add(textBlock);
                 }
 
-                return tooltip;
+                return stackPanel;
+            }
+        }
+
+        [DontSerialize]
+        public object AchToolTipCompactPartial
+        {
+            get
+            {
+                StackPanel stackPanel = new StackPanel();
+
+                TextBlockTrimmed textBlockTrimmed = new TextBlockTrimmed
+                {
+                    Text = NameWithDateUnlock,
+                    FontWeight = FontWeights.Bold
+                };
+                if (!IsUnlock && IsHidden && !PluginDatabase.PluginSettings.Settings.ShowHiddenTitle)
+                {
+                    textBlockTrimmed.Effect = new BlurEffect
+                    {
+                        Radius = 4,
+                        KernelType = KernelType.Box
+                    };
+                }
+                _ = stackPanel.Children.Add(textBlockTrimmed);
+
+                if (PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialShowDescription)
+                {
+                    TextBlock textBlock = new TextBlock
+                    {
+                        Text = Description
+                    };
+                    if (!IsUnlock && IsHidden && !PluginDatabase.PluginSettings.Settings.ShowHiddenDescription)
+                    {
+                        textBlock.Effect = new BlurEffect
+                        {
+                            Radius = 4,
+                            KernelType = KernelType.Box
+                        };
+                    }
+                    _ = stackPanel.Children.Add(textBlock);
+                }
+
+                return stackPanel;
             }
         }
 

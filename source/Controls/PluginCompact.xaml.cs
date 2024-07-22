@@ -20,6 +20,7 @@ using CommonPluginsShared.Converters;
 using System.Globalization;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
+using System.Windows.Media.Effects;
 
 namespace SuccessStory.Controls
 {
@@ -87,6 +88,7 @@ namespace SuccessStory.Controls
             }
 
             ControlDataContext.IsActivated = IsActivated;
+            ControlDataContext.ShowHiddenIcon = PluginDatabase.PluginSettings.Settings.ShowHiddenIcon;
             ControlDataContext.DisplayLastest = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastest;
             ControlDataContext.OneLine = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastestOneLine;
             ControlDataContext.Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialHeight;
@@ -145,14 +147,16 @@ namespace SuccessStory.Controls
                 int index = ListAchievements.FindIndex(x => x == ControlDataContext.LastestAchievement);
                 ListAchievements.RemoveAt(index);
 
-                AchievementImage achievementImage = new AchievementImage();
-                achievementImage.Width = ControlDataContext.Height;
-                achievementImage.Height = ControlDataContext.Height;
-                achievementImage.IsGray = false;
-                achievementImage.Icon = ControlDataContext.LastestAchievement.Icon;
-                achievementImage.Percent = ControlDataContext.LastestAchievement.Percent;
-                achievementImage.EnableRaretyIndicator = ControlDataContext.LastestAchievement.EnableRaretyIndicator;
-                achievementImage.DisplayRaretyValue = ControlDataContext.LastestAchievement.DisplayRaretyValue;
+                AchievementImage achievementImage = new AchievementImage
+                {
+                    Width = ControlDataContext.Height,
+                    Height = ControlDataContext.Height,
+                    IsGray = false,
+                    Icon = ControlDataContext.LastestAchievement.Icon,
+                    Percent = ControlDataContext.LastestAchievement.Percent,
+                    EnableRaretyIndicator = ControlDataContext.LastestAchievement.EnableRaretyIndicator,
+                    DisplayRaretyValue = ControlDataContext.LastestAchievement.DisplayRaretyValue
+                };
 
                 _ = PART_AchievementImage.Children.Add(achievementImage);
 
@@ -266,40 +270,50 @@ namespace SuccessStory.Controls
                     {
                         if (i < nbGrid - 1)
                         {
-                            TextBlock tooltip = new TextBlock();
-                            tooltip.Inlines.Add(new Run(AchievementsList[i].NameWithDateUnlock)
+                            AchievementImage achievementImage = new AchievementImage
                             {
-                                FontWeight = FontWeights.Bold
-                            });
-                            if (PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialShowDescription)
+                                Width = ControlDataContext.Height,
+                                Height = ControlDataContext.Height,
+                                ToolTip = AchievementsList[i].AchToolTipCompactPartial,
+                                IsGray = AchievementsList[i].IsGray,
+                                Icon = AchievementsList[i].Icon,
+                                Percent = AchievementsList[i].Percent,
+                                EnableRaretyIndicator = AchievementsList[i].EnableRaretyIndicator,
+                                DisplayRaretyValue = AchievementsList[i].DisplayRaretyValue,
+                                IsLocked = !AchievementsList[i].IsUnlock,
+                                IconCustom = AchievementsList[i].IconCustom,
+                                IconText = AchievementsList[i].IconText
+                            };
+
+                            if (!AchievementsList[i].IsUnlock && AchievementsList[i].IsHidden && !PluginDatabase.PluginSettings.Settings.ShowHiddenIcon)
                             {
-                                tooltip.Inlines.Add(new LineBreak());
-                                tooltip.Inlines.Add(new Run(AchievementsList[i].Description));
+                                StackPanel stackPanel = new StackPanel
+                                {
+                                    Effect = new BlurEffect
+                                    {
+                                        Radius = 4,
+                                        KernelType = KernelType.Box
+                                    }
+                                };
+                                _ = stackPanel.Children.Add(achievementImage);
+                                stackPanel.SetValue(Grid.ColumnProperty, i);
+                                _ = PART_ScCompactView.Children.Add(stackPanel);
                             }
-
-                            AchievementImage achievementImage = new AchievementImage();
-                            achievementImage.Width = ControlDataContext.Height;
-                            achievementImage.Height = ControlDataContext.Height;
-                            achievementImage.ToolTip = tooltip;
-                            achievementImage.SetValue(Grid.ColumnProperty, i);
-                            achievementImage.IsGray = AchievementsList[i].IsGray;
-                            achievementImage.Icon = AchievementsList[i].Icon;
-                            achievementImage.Percent = AchievementsList[i].Percent;
-                            achievementImage.EnableRaretyIndicator = AchievementsList[i].EnableRaretyIndicator;
-                            achievementImage.DisplayRaretyValue = AchievementsList[i].DisplayRaretyValue;
-                            achievementImage.IsLocked = !AchievementsList[i].IsUnlock;
-                            achievementImage.IconCustom = AchievementsList[i].IconCustom;
-                            achievementImage.IconText = AchievementsList[i].IconText;
-
-                            _ = PART_ScCompactView.Children.Add(achievementImage);
+                            else
+                            {
+                                achievementImage.SetValue(Grid.ColumnProperty, i);
+                                _ = PART_ScCompactView.Children.Add(achievementImage);
+                            }
                         }
                         else
                         {
-                            Label lb = new Label();
-                            lb.FontSize = 16;
-                            lb.Content = $"+{AchievementsList.Count - i}";
-                            lb.VerticalAlignment = VerticalAlignment.Center;
-                            lb.HorizontalAlignment = HorizontalAlignment.Center;
+                            Label lb = new Label
+                            {
+                                FontSize = 16,
+                                Content = $"+{AchievementsList.Count - i}",
+                                VerticalAlignment = VerticalAlignment.Center,
+                                HorizontalAlignment = HorizontalAlignment.Center
+                            };
                             lb.SetValue(Grid.ColumnProperty, i);
 
                             _ = PART_ScCompactView.Children.Add(lb);
@@ -327,6 +341,9 @@ namespace SuccessStory.Controls
     {
         private bool isActivated;
         public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
+
+        private bool showHiddenIcon;
+        public bool ShowHiddenIcon { get => showHiddenIcon; set => SetValue(ref showHiddenIcon, value); }
 
         private double height;
         public double Height { get => height; set => SetValue(ref height, value); }

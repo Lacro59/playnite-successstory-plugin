@@ -17,7 +17,7 @@ namespace SuccessStory.Controls.Customs
     /// </summary>
     public partial class AchievementImage : UserControl
     {
-        private static SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
         internal Storyboard PART_ColorEffect;
         internal Storyboard PART_ColorEffectUltraRare;
