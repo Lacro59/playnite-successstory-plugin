@@ -129,7 +129,7 @@ namespace SuccessStory.Services
 
         public GameAchievements RefreshManual(Game game)
         {
-            TrueAchievements.Logger.Info($"RefreshManual({game?.Name} - {game?.Id})");
+            TrueAchievements.Logger.Info($"RefreshManual({game?.Name} - {game?.Id} - {game?.Source?.Name})");
             GameAchievements gameAchievements = null;
 
             try
@@ -159,7 +159,7 @@ namespace SuccessStory.Services
                         gameAchievements = exophaseAchievements.GetAchievements(game, searchResult);
                     }
 
-                    Common.LogDebug(true, $"RefreshManual({game.Id.ToString()}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
+                    Common.LogDebug(true, $"RefreshManual({game.Id}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
                 }
             }
             catch (Exception ex)
@@ -236,7 +236,7 @@ namespace SuccessStory.Services
         {
             Game game = API.Instance.Database.Games.Get(Id);
             GameAchievements gameAchievements = GetDefault(game);
-            AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game, true);
+            AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
 
             // Generate database only this source
             if (VerifToAddOrShow(PluginSettings.Settings, game))
@@ -589,9 +589,9 @@ namespace SuccessStory.Services
             for (int i = 0; i < tempSourcesLabels.Count; i++)
             {
                 GraphicsAchievementsLabels[i] = TransformIcon.Get(tempSourcesLabels[i]);
-                tempDataLocked.Add(new AchievementsGraphicsDataSources { source = tempSourcesLabels[i], value = 0 });
-                tempDataUnlocked.Add(new AchievementsGraphicsDataSources { source = tempSourcesLabels[i], value = 0 });
-                tempDataTotal.Add(new AchievementsGraphicsDataSources { source = tempSourcesLabels[i], value = 0 });
+                tempDataLocked.Add(new AchievementsGraphicsDataSources { Source = tempSourcesLabels[i], Value = 0 });
+                tempDataUnlocked.Add(new AchievementsGraphicsDataSources { Source = tempSourcesLabels[i], Value = 0 });
+                tempDataTotal.Add(new AchievementsGraphicsDataSources { Source = tempSourcesLabels[i], Value = 0 });
             }
 
             bool ShowHidden = PluginSettings.Settings.IncludeHiddenGames;
@@ -605,16 +605,16 @@ namespace SuccessStory.Services
                     {
                         for (int i = 0; i < tempDataUnlocked.Count; i++)
                         {
-                            if (tempDataUnlocked[i].source.Contains(SourceName, StringComparison.InvariantCultureIgnoreCase))
+                            if (tempDataUnlocked[i].Source.Contains(SourceName, StringComparison.InvariantCultureIgnoreCase))
                             {
-                                tempDataTotal[i].value += 1;
+                                tempDataTotal[i].Value += 1;
                                 if (achievements.DateUnlocked != default(DateTime))
                                 {
-                                    tempDataUnlocked[i].value += 1;
+                                    tempDataUnlocked[i].Value += 1;
                                 }
                                 if (achievements.DateUnlocked == default(DateTime))
                                 {
-                                    tempDataLocked[i].value += 1;
+                                    tempDataLocked[i].Value += 1;
                                 }
                             }
                         }
@@ -633,18 +633,18 @@ namespace SuccessStory.Services
             {
                 SourceAchievementsSeriesUnlocked.Add(new CustomerForSingle
                 {
-                    Name = TransformIcon.Get(tempDataUnlocked[i].source),
-                    Values = tempDataUnlocked[i].value
+                    Name = TransformIcon.Get(tempDataUnlocked[i].Source),
+                    Values = tempDataUnlocked[i].Value
                 });
                 SourceAchievementsSeriesLocked.Add(new CustomerForSingle
                 {
-                    Name = TransformIcon.Get(tempDataLocked[i].source),
-                    Values = tempDataLocked[i].value
+                    Name = TransformIcon.Get(tempDataLocked[i].Source),
+                    Values = tempDataLocked[i].Value
                 });
                 SourceAchievementsSeriesTotal.Add(new CustomerForSingle
                 {
-                    Name = TransformIcon.Get(tempDataTotal[i].source),
-                    Values = tempDataTotal[i].value
+                    Name = TransformIcon.Get(tempDataTotal[i].Source),
+                    Values = tempDataTotal[i].Value
                 });
             }
 
@@ -1047,25 +1047,18 @@ namespace SuccessStory.Services
                 return;
             }
 
-            TrueAchievements.Logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
+            TrueAchievements.Logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id} - {game.Source?.Name})");
 
             if (loadedItem.IsManual)
             {
-                if (game.Name.IsEqual("Genshin Impact"))
-                {
-                    webItem = RefreshGenshinImpact(game);
-                }
-                else
-                {
-                    webItem = RefreshManual(game);
-                }
+                webItem = game.Name.IsEqual("Genshin Impact") ? RefreshGenshinImpact(game) : RefreshManual(game);
 
                 if (webItem != null)
                 {
                     webItem.IsManual = true;
                     for (int i = 0; i < webItem.Items.Count; i++)
                     {
-                        Achievements finded = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() ? true : x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
+                        Achievements finded = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() || x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
                         if (finded != null)
                         {
                             webItem.Items[i].DateUnlocked = finded.DateUnlocked;
@@ -1108,7 +1101,7 @@ namespace SuccessStory.Services
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -1126,7 +1119,7 @@ namespace SuccessStory.Services
 
                     Game game = API.Instance.Database.Games.Get(Id);
                     string SourceName = PlayniteTools.GetSourceName(game);
-                    var achievementSource = GetAchievementSource(PluginSettings.Settings, game);
+                    AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
                     string GameName = game.Name;
                     bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(PluginSettings.Settings, game);
                     GameAchievements gameAchievements = Get(game, true);
@@ -1158,7 +1151,7 @@ namespace SuccessStory.Services
             {
                 if (game.FeatureIds != null)
                 {
-                    game.FeatureIds.AddMissing(PluginSettings.Settings.AchievementFeature.Id);
+                    _ = game.FeatureIds.AddMissing(PluginSettings.Settings.AchievementFeature.Id);
                 }
                 else
                 {
@@ -1177,7 +1170,7 @@ namespace SuccessStory.Services
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -1221,7 +1214,7 @@ namespace SuccessStory.Services
                             break;
 
                         default:
-                            TrueAchievements.Logger.Warn($"No sourcesLink for {gameAchievements.Name}");
+                            TrueAchievements.Logger.Warn($"No sourcesLink for {gameAchievements.Name} with {SourceName}");
                             break;
                     }
 
@@ -1243,7 +1236,7 @@ namespace SuccessStory.Services
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
@@ -1394,7 +1387,7 @@ namespace SuccessStory.Services
         {
             if (!gameAchievements.IsIgnored)
             {
-                Remove(gameAchievements.Id);
+                _ = Remove(gameAchievements.Id);
                 GameAchievements pluginData = Get(gameAchievements.Id, true);
                 pluginData.IsIgnored = true;
                 AddOrUpdate(pluginData);
@@ -1412,7 +1405,7 @@ namespace SuccessStory.Services
         {
             OptionsDownloadData View = new OptionsDownloadData();
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginName + " - " + ResourceProvider.GetString("LOCCommonSelectData"), View);
-            windowExtension.ShowDialog();
+            _ = windowExtension.ShowDialog();
 
             List<Game> PlayniteDb = View.GetFilteredGames();
             bool OnlyMissing = View.GetOnlyMissing();
@@ -1440,7 +1433,7 @@ namespace SuccessStory.Services
             );
             globalProgressOptions.IsIndeterminate = false;
 
-            API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
                 try
                 {
@@ -1494,7 +1487,7 @@ namespace SuccessStory.Services
             try
             {
                 List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.HasAchievements).ToList();
-                foreach (var item in db)
+                foreach (KeyValuePair<Guid, GameAchievements> item in db)
                 {
                     GameAchievements GameAchievements = item.Value;
                     if (API.Instance.Database.Games.Get(item.Key) != null)
@@ -1532,7 +1525,7 @@ namespace SuccessStory.Services
             try
             {
                 List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.Playtime > 0 && x.Value.HasAchievements).ToList();
-                foreach (var item in db)
+                foreach (KeyValuePair<Guid, GameAchievements> item in db)
                 {
                     GameAchievements GameAchievements = item.Value;
                     if (API.Instance.Database.Games.Get(item.Key) != null)
@@ -1584,7 +1577,7 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        TrueAchievements.Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
+                        TrueAchievements.Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id}");
                     }
                 }
             }
@@ -1619,7 +1612,7 @@ namespace SuccessStory.Services
 
     public class AchievementsGraphicsDataSources
     {
-        public string source { get; set; }
-        public int value { get; set; }
+        public string Source { get; set; }
+        public int Value { get; set; }
     }
 }

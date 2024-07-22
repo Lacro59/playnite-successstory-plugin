@@ -156,6 +156,7 @@
     </Compile>
     <Compile Include="Converters\Crc32.cs" />
     <Compile Include="Converters\SetColorConverter.cs" />
+    <Compile Include="Models\GenshinImpact\PaimonMoeAchievements.cs" />
     <Compile Include="Models\RetroAchievements\RaConsole.cs" />
     <Compile Include="Models\RetroAchievements\RaGame.cs" />
     <Compile Include="Models\RetroAchievements\RaMd5List.cs" />
@@ -702,130 +703,159 @@
     <None Include="Resources\GenshinImpact\ac.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_1.png">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GenshinImpact\0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_2.png">
+    <None Include="Resources\GenshinImpact\1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_3.png">
+    <None Include="Resources\GenshinImpact\10.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_4.png">
+    <None Include="Resources\GenshinImpact\11.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_5.png">
+    <None Include="Resources\GenshinImpact\12.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_6.png">
+    <None Include="Resources\GenshinImpact\13.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_7.png">
+    <None Include="Resources\GenshinImpact\14.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_8.png">
+    <None Include="Resources\GenshinImpact\15.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_9.png">
+    <None Include="Resources\GenshinImpact\16.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_10.png">
+    <None Include="Resources\GenshinImpact\17.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_11.png">
+    <None Include="Resources\GenshinImpact\18.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_12.png">
+    <None Include="Resources\GenshinImpact\19.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_13.png">
+    <None Include="Resources\GenshinImpact\2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_14.png">
+    <None Include="Resources\GenshinImpact\20.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_15.png">
+    <None Include="Resources\GenshinImpact\21.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_16.png">
+    <None Include="Resources\GenshinImpact\22.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_17.png">
+    <None Include="Resources\GenshinImpact\23.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_18.png">
+    <None Include="Resources\GenshinImpact\24.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_19.png">
+    <None Include="Resources\GenshinImpact\25.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_20.png">
+    <None Include="Resources\GenshinImpact\26.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_21.png">
+    <None Include="Resources\GenshinImpact\27.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_22.png">
+    <None Include="Resources\GenshinImpact\28.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_23.png">
+    <None Include="Resources\GenshinImpact\29.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_24.png">
+    <None Include="Resources\GenshinImpact\3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_25.png">
+    <None Include="Resources\GenshinImpact\30.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_26.png">
+    <None Include="Resources\GenshinImpact\31.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_27.png">
+    <None Include="Resources\GenshinImpact\32.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_28.png">
+    <None Include="Resources\GenshinImpact\33.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_29.png">
+    <None Include="Resources\GenshinImpact\34.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_30.png">
+    <None Include="Resources\GenshinImpact\35.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_30.png">
+    <None Include="Resources\GenshinImpact\36.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_31.png">
+    <None Include="Resources\GenshinImpact\37.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_32.png">
+    <None Include="Resources\GenshinImpact\38.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_33.png">
+    <None Include="Resources\GenshinImpact\39.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_34.png">
+    <None Include="Resources\GenshinImpact\4.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_35.png">
+    <None Include="Resources\GenshinImpact\40.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_36.png">
+    <None Include="Resources\GenshinImpact\41.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_37.png">
+    <None Include="Resources\GenshinImpact\42.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_38.png">
+    <None Include="Resources\GenshinImpact\43.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_39.png">
+    <None Include="Resources\GenshinImpact\44.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_40.png">
+    <None Include="Resources\GenshinImpact\45.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\GenshinImpact\ac_41.png">
+    <None Include="Resources\GenshinImpact\46.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\47.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\49.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\50.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

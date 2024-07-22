@@ -18,6 +18,12 @@ namespace SuccessStory.Clients
         private static string UrlAchievementsCategory => Url + @"/ExcelBinOutput/AchievementGoalExcelConfigData.json";
         private static string UrlAchievements => Url + @"/ExcelBinOutput/AchievementExcelConfigData.json";
 
+
+        private static string PaimonMoe_Url => "https://raw.githubusercontent.com/MadeBaruna/paimon-moe/main";
+        private static string PaimonMoe_UrlSource => "https://github.com//MadeBaruna/paimon-moe";
+        private static string PaimonMoe_UrlAchievements => PaimonMoe_Url + "/src/data/achievement/{0}.json";
+
+
         public GenshinImpactAchievements() : base("GenshinImpact", CodeLang.GetGenshinLang(API.Instance.ApplicationSettings.Language))
         {
 
@@ -31,6 +37,64 @@ namespace SuccessStory.Clients
 
             try
             {
+                string Url = string.Format(PaimonMoe_UrlAchievements, LocalLang.ToLower());
+                string TextMapString = Web.DownloadStringData(Url).GetAwaiter().GetResult();
+                _ = Serialization.TryFromJson(TextMapString, out dynamic TextMap);
+                if (TextMap == null)
+                {
+                    Url = string.Format(PaimonMoe_UrlAchievements, "en");
+                    TextMapString = Web.DownloadStringData(Url).GetAwaiter().GetResult();
+                    _ = Serialization.TryFromJson(TextMapString, out TextMap);
+                    if (TextMap == null)
+                    {
+                        throw new Exception($"No data from {Url}");
+                    }
+                }
+
+                for (int i = 0; i < 80; i++)
+                {
+                    string map = Serialization.ToJson(TextMap[i.ToString()]);
+                    if (Serialization.TryFromJson(map, out Data data) && data != null)
+                    {
+                        int CategoryOrder = data.Order;
+                        string Category = data.Name;
+                        string CategoryIcon = string.Format("GenshinImpact\\{0}.png", CategoryOrder - 1);
+
+
+                        string ach = Serialization.ToJson(data.Achievements);
+                        ach = "[" + ach.Replace("[{", "{").Replace("}]", "}") + "]";
+                        ach = ach.Replace("[[", "[").Replace("]]", "]");
+                        if (Serialization.TryFromJson(ach, out List<GenshinAchievement> genshinAchievements))
+                        {
+                            genshinAchievements.ForEach(x =>
+                            {
+                                AllAchievements.Add(new Achievements
+                                {
+                                    ApiName = x.Id.ToString(),
+                                    Name = x.Name,
+                                    Description = x.Desc,
+                                    UrlUnlocked = "GenshinImpact\\ac.png",
+
+                                    CategoryOrder = CategoryOrder,
+                                    CategoryIcon = CategoryIcon,
+                                    Category = Category,
+
+                                    DateUnlocked = default(DateTime)
+                                });
+                            });
+                        }
+                    }
+                }
+
+                gameAchievements.IsManual = true;
+                gameAchievements.SourcesLink = new CommonPluginsShared.Models.SourceLink
+                {
+                    GameName = "Genshin Impact",
+                    Name = "GitHub",
+                    Url = PaimonMoe_UrlSource
+                };
+
+                /*
                 string Url = string.Format(UrlTextMap, LocalLang.ToUpper());
                 string TextMapString = Web.DownloadStringData(Url).GetAwaiter().GetResult();
                 _ = Serialization.TryFromJson(TextMapString, out dynamic TextMap);
@@ -82,6 +146,7 @@ namespace SuccessStory.Clients
                         Url = UrlSource
                     };
                 });
+                */
             }
             catch (Exception ex)
             {
