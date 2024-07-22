@@ -245,13 +245,12 @@ namespace SuccessStory.Services
                 RetroAchievements retroAchievementsProvider = achievementProvider as RetroAchievements;
                 PSNAchievements psnAchievementsProvider = achievementProvider as PSNAchievements;
 
-                TrueAchievements.Logger.Info($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id}");
+                TrueAchievements.Logger.Info($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id} - {game?.Source?.Name}");
 
-                if (retroAchievementsProvider != null && !SuccessStory.IsFromMenu)
+                GameAchievements TEMPgameAchievements = Get(game, true);
+
+                if (retroAchievementsProvider != null && (!SuccessStory.IsFromMenu || TEMPgameAchievements.RAgameID != 0))
                 {
-                    // use a chached RetroAchievements game ID to skip retrieving that if possible
-                    // TODO: store this with the game somehow so we don't need to get this from the achievements object
-                    GameAchievements TEMPgameAchievements = Get(game, true);
                     ((RetroAchievements)achievementProvider).GameId = TEMPgameAchievements.RAgameID;
                 }
                 else if (retroAchievementsProvider != null)
@@ -260,9 +259,8 @@ namespace SuccessStory.Services
                 }
 
 
-                if (psnAchievementsProvider != null && !SuccessStory.IsFromMenu)
+                if (psnAchievementsProvider != null && (!SuccessStory.IsFromMenu || !TEMPgameAchievements.CommunicationId.IsNullOrEmpty()))
                 {
-                    GameAchievements TEMPgameAchievements = Get(game, true);
                     ((PSNAchievements)achievementProvider).CommunicationId = TEMPgameAchievements.CommunicationId;
                 }
                 else if (psnAchievementsProvider != null)

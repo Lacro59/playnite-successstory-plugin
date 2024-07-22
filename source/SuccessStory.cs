@@ -45,11 +45,11 @@ namespace SuccessStory
         internal SidebarItemControl SidebarRaItemControl { get; set; }
 
         public static bool TaskIsPaused { get; set; } = false;
-        private CancellationTokenSource tokenSource => new CancellationTokenSource();
+        private CancellationTokenSource TokenSource => new CancellationTokenSource();
 
         public static bool IsFromMenu { get; set; } = false;
 
-        private bool preventLibraryUpdatedOnStart { get; set; } = true;
+        private bool PreventLibraryUpdatedOnStart { get; set; } = true;
 
 
         public SuccessStory(IPlayniteAPI api) : base(api)
@@ -284,7 +284,7 @@ namespace SuccessStory
             List<Guid> Ids = args.Games.Select(x => x.Id).ToList();
 
             // TODO: for multiple games, either check if any of them could have achievements, or just assume so
-            var achievementSource = SuccessStoryDatabase.GetAchievementSource(PluginSettings.Settings, GameMenu);
+            SuccessStoryDatabase.AchievementSource achievementSource = SuccessStoryDatabase.GetAchievementSource(PluginSettings.Settings, GameMenu);
             bool GameCouldHaveAchievements = achievementSource != SuccessStoryDatabase.AchievementSource.None;
             GameAchievements gameAchievements = PluginDatabase.Get(GameMenu, true);
 
@@ -307,7 +307,7 @@ namespace SuccessStory
                                 dynamic ViewExtension = null;
                                 PluginDatabase.IsViewOpen = true;
 
-                                var windowOptions = new WindowOptions
+                                WindowOptions windowOptions = new WindowOptions
                                 {
                                     ShowMinimizeButton = false,
                                     ShowMaximizeButton = true,
@@ -377,6 +377,24 @@ namespace SuccessStory
                                 else
                                 {
                                     PluginDatabase.Refresh(Ids);
+                                }
+                            }
+                        });
+                    }
+
+                    if (PluginSettings.Settings.EnableRetroAchievements && achievementSource == SuccessStoryDatabase.AchievementSource.RetroAchievements)
+                    {
+                        gameMenuItems.Add(new GameMenuItem
+                        {
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCSuccessStoryForceRetroAchievementsId"),
+                            Action = (gameMenuItem) =>
+                            {
+                                StringSelectionDialogResult stringSelectionDialogResult = API.Instance.Dialogs.SelectString("RetroAchievements", ResourceProvider.GetString("LOCSuccessStorySetRetroAchievementsId"), gameAchievements.RAgameID.ToString());
+                                if (stringSelectionDialogResult.Result && int.TryParse(stringSelectionDialogResult.SelectedString, out int RAgameID))
+                                {
+                                    gameAchievements.RAgameID = RAgameID;
+                                    PluginDatabase.Refresh(GameMenu.Id);
                                 }
                             }
                         });
@@ -736,7 +754,7 @@ namespace SuccessStory
                 );
                 globalProgressOptions.IsIndeterminate = true;
 
-                API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
                 {
                     SteamApi steamApi = new SteamApi(PluginDatabase.PluginName);
 
@@ -756,19 +774,14 @@ namespace SuccessStory
                             {
                                 uint AppId = steamApi.GetAppId(gameAchievements.Name);
 
-                                if (AppId != 0)
-                                {
-                                    gameAchievements.SourcesLink = new SourceLink
+                                gameAchievements.SourcesLink = AppId != 0
+                                    ? new SourceLink
                                     {
                                         GameName = steamApi.GetGameName(AppId),
                                         Name = "Steam",
                                         Url = $"https://steamcommunity.com/stats/{AppId}/achievements"
-                                    };
-                                }
-                                else
-                                {
-                                    gameAchievements.SourcesLink = null;
-                                }
+                                    }
+                                    : null;
                             }
                             else
                             {
@@ -794,7 +807,7 @@ namespace SuccessStory
                 );
                 globalProgressOptions.IsIndeterminate = true;
 
-                API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
                 {
                     try
                     {
@@ -817,11 +830,10 @@ namespace SuccessStory
                 }
                 else
                 {
-                    Task.Run(() =>
+                    _ = Task.Run(() =>
                     {
-                        System.Threading.SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
-
-                        Application.Current.Dispatcher.BeginInvoke((Action)delegate
+                        _ = SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                        _ = Application.Current.Dispatcher.BeginInvoke((Action)delegate
                         {
                             if (args.NewValue?.Count == 1)
                             {
@@ -868,7 +880,7 @@ namespace SuccessStory
             TaskIsPaused = false;
 
             // Refresh Achievements database for game played.
-            var TaskGameStopped = Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 string SourceName = PlayniteTools.GetSourceName(args.Game);
                 string GameName = args.Game.Name;
@@ -925,7 +937,7 @@ namespace SuccessStory
             Task.Run(() =>
             {
                 Thread.Sleep(30000);
-                preventLibraryUpdatedOnStart = false;
+                PreventLibraryUpdatedOnStart = false;
             });
 
             // TODO - Removed for Playnite 11
@@ -960,12 +972,12 @@ namespace SuccessStory
                 );
                 globalProgressOptions.IsIndeterminate = false;
 
-                API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+                _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
                 {
                     try
                     {
-                        SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
-                        PluginDatabase.Database.Items.ForEach(x => 
+                        _ = SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                        PluginDatabase.Database.Items.ForEach(x =>
                         {
                             x.Value.SetRaretyIndicator();
                             PluginDatabase.Database.SaveItemData(x.Value);
@@ -986,12 +998,12 @@ namespace SuccessStory
             // Cache images
             if (PluginSettings.Settings.EnableImageCache)
             {
-                CancellationToken ct = tokenSource.Token;
+                CancellationToken ct = TokenSource.Token;
                 Task TaskCacheImage = Task.Run(() =>
                 {
                     // Wait Playnite & extension database are loaded
-                    SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
-                    SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
+                    _ = SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
+                    _ = SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
 
                     IEnumerable<GameAchievements> db = PluginDatabase.Database.Where(x => x.HasAchievements && !x.ImageIsCached);
                     int aa = db.Count();
@@ -1043,7 +1055,7 @@ namespace SuccessStory
                     TimeSpan ts = stopwatch.Elapsed;
                     Common.LogDebug(true, $"TaskCacheImage() - End - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
 #endif
-                }, tokenSource.Token);
+                }, TokenSource.Token);
             }
 
 
@@ -1137,7 +1149,7 @@ namespace SuccessStory
         // Add code to be executed when Playnite is shutting down.
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
         {
-            tokenSource.Cancel();
+            TokenSource.Cancel();
         }
         #endregion
 
@@ -1145,7 +1157,7 @@ namespace SuccessStory
         // Add code to be executed when library is updated.
         public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args)
         {
-            if (PluginSettings.Settings.AutoImport && !preventLibraryUpdatedOnStart)
+            if (PluginSettings.Settings.AutoImport && !PreventLibraryUpdatedOnStart)
             {
                 List<Guid> PlayniteDb = API.Instance.Database.Games
                         .Where(x => x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload)
