@@ -897,22 +897,22 @@ namespace SuccessStory.Services
 
         private static AchievementSource GetAchievementSourceFromEmulator(SuccessStorySettings settings, Game game)
         {
+            AchievementSource achievementSource = AchievementSource.None;
+
             if (game.GameActions == null)
             {
-                return AchievementSource.None;
+                return achievementSource;
             }
 
             foreach (GameAction action in game.GameActions)
             {
-                if (!action.IsPlayAction || action.EmulatorId == Guid.Empty)
+                if (action.Type != GameActionType.Emulator)
                 {
                     continue;
                 }
-
-                Emulator emulator = API.Instance.Database.Emulators.FirstOrDefault(e => e.Id == action.EmulatorId);
-                if (emulator == null)
+                else
                 {
-                    continue;
+                    achievementSource = AchievementSource.RetroAchievements;
                 }
 
                 if (PlayniteTools.GameUseRpcs3(game) && settings.EnableRpcs3Achievements)
@@ -922,7 +922,7 @@ namespace SuccessStory.Services
 
                 // TODO With the emulator migration problem emulator.BuiltInConfigId is null
                 // TODO emulator.BuiltInConfigId = "retroarch" is limited; other emulators has RA
-                if (game.Platforms != null && game.Platforms.Count > 0)
+                if (game.Platforms?.Count > 0)
                 {
                     string PlatformName = game.Platforms.FirstOrDefault().Name;
                     Guid PlatformId = game.Platforms.FirstOrDefault().Id;
@@ -934,11 +934,11 @@ namespace SuccessStory.Services
                 }
                 else
                 {
-                    TrueAchievements.Logger.Warn($"No platform for {game.Name}");
+                    Logger.Warn($"No platform for {game.Name}");
                 }
             }
 
-            return AchievementSource.None;
+            return achievementSource;
         }
 
         public static AchievementSource GetAchievementSource(SuccessStorySettings settings, Game game, bool ignoreSpecial = false)
