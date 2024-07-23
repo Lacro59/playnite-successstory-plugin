@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using CommonPlayniteShared.Common;
+using System.Globalization;
 
 namespace SuccessStory.Clients
 {
@@ -68,21 +69,23 @@ namespace SuccessStory.Clients
 
                     foreach (XElement TrophyXml in TrophyDetailsXml.Descendants("trophy"))
                     {
-                        Console.WriteLine(TrophyXml);
-
                         _ = int.TryParse(TrophyXml.Attribute("id").Value, out int TrophyDetailsId);
                         string TrophyType = TrophyXml.Attribute("ttype").Value;
                         string Name = TrophyXml.Element("name").Value;
                         string Description = TrophyXml.Element("detail").Value;
 
                         int Percent = 100;
-                        if (TrophyType.IsEqual("s"))
+                        if (TrophyType.IsEqual("S"))
                         {
                             Percent = 30;
                         }
-                        if (TrophyType.IsEqual("g"))
+                        if (TrophyType.IsEqual("G"))
                         {
                             Percent = 10;
+                        }
+                        if (TrophyType.IsEqual("P"))
+                        {
+                            Percent = 5;
                         }
 
                         AllAchievements.Add(new Achievements
@@ -117,7 +120,7 @@ namespace SuccessStory.Clients
                     foreach (string HexData in TrophyHexData)
                     {
                         string stringHexId = HexData.Substring(0, 2);
-                        int Id = (int)long.Parse(stringHexId, System.Globalization.NumberStyles.HexNumber);
+                        int Id = (int)long.Parse(stringHexId, NumberStyles.HexNumber);
 
                         string Unlocked = HexData.Substring(18, 8);
                         bool IsUnlocked = Unlocked == "00000001";
@@ -125,7 +128,17 @@ namespace SuccessStory.Clients
                         // No unlock time
                         if (IsUnlocked)
                         {
-                            AllAchievements[Id].DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                            try
+                            {
+                                string dtHex = HexData.Substring(44, 14);
+                                DateTime dt = new DateTime(long.Parse(dtHex, NumberStyles.AllowHexSpecifier) * 10L);
+                                AllAchievements[Id].DateUnlocked = dt;
+                            }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, false, PluginDatabase.PluginName);
+                                AllAchievements[Id].DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                            }
                         }
                     }
 
