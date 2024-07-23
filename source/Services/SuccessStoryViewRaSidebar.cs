@@ -33,7 +33,7 @@ namespace SuccessStory.Services
 
                 return plugin.SidebarRaItemControl;
             };
-            Visible = (plugin.PluginSettings.Settings.EnableIntegrationButtonSide && plugin.PluginSettings.Settings.EnableRetroAchievementsView);
+            Visible = plugin.PluginSettings.Settings.EnableIntegrationButtonSide && plugin.PluginSettings.Settings.EnableRetroAchievementsView;
         }
     }
 }

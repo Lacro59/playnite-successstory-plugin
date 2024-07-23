@@ -12,8 +12,7 @@ namespace SuccessStory.Services
 {
     public class SuccessStorySearch : SearchContext
     {
-        private static IResourceProvider resources = new ResourceProvider();
-        private readonly SuccessStoryDatabase PluginDatabase = SuccessStory.PluginDatabase;
+        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
 
         public SuccessStorySearch()
@@ -54,8 +53,15 @@ namespace SuccessStory.Services
                         paramsTime = x.Replace("-time=", string.Empty);
                     }
 
-                    if (!hasNp) hasNp = x.IsEqual("-np");
-                    if (!hasFav) hasFav = x.IsEqual("-fav");
+                    if (!hasNp)
+                    {
+                        hasNp = x.IsEqual("-np");
+                    }
+
+                    if (!hasFav)
+                    {
+                        hasFav = x.IsEqual("-fav");
+                    }
 
                     if (x.Contains("-stores=", StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -124,7 +130,7 @@ namespace SuccessStory.Services
 
                     if (timeMin > -1 && timeMax > -1)
                     {
-                        return x.EstimateTime?.EstimateTimeMax == 0 ? false : (x.EstimateTime?.EstimateTimeMax * 3600) >= timeMin && (x.EstimateTime?.EstimateTimeMax * 3600) <= timeMax;
+                        return (x.EstimateTime?.EstimateTimeMax) != 0 && (x.EstimateTime?.EstimateTimeMax * 3600) >= timeMin && (x.EstimateTime?.EstimateTimeMax * 3600) <= timeMax;
                     }
                 }
             }
@@ -134,7 +140,7 @@ namespace SuccessStory.Services
 
                 if (time > -1)
                 {
-                    return x.EstimateTime?.EstimateTimeMax == 0 ? false : (x.EstimateTime?.EstimateTimeMax * 3600) <= time;
+                    return (x.EstimateTime?.EstimateTimeMax) != 0 && (x.EstimateTime?.EstimateTimeMax * 3600) <= time;
                 }
             }
             else if (query.Contains(">"))
@@ -143,7 +149,7 @@ namespace SuccessStory.Services
 
                 if (time > -1)
                 {
-                    return x.EstimateTime?.EstimateTimeMax == 0 ? false : (x.EstimateTime?.EstimateTimeMax * 3600) >= time;
+                    return (x.EstimateTime?.EstimateTimeMax) != 0 && (x.EstimateTime?.EstimateTimeMax * 3600) >= time;
                 }
             }
             else
@@ -152,7 +158,7 @@ namespace SuccessStory.Services
 
                 if (time > -1)
                 {
-                    return x.EstimateTime?.EstimateTimeMax == 0 ? false : (x.EstimateTime?.EstimateTimeMax * 3600) == time;
+                    return (x.EstimateTime?.EstimateTimeMax) != 0 && (x.EstimateTime?.EstimateTimeMax * 3600) == time;
                 }
             }
 

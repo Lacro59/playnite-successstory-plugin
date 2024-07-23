@@ -88,7 +88,7 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                TrueAchievements.Logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                Logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
             }
             catch (Exception ex)
             {
@@ -108,7 +108,7 @@ namespace SuccessStory.Services
 
                 SuccessStoreGameSelection ViewExtension = new SuccessStoreGameSelection(game);
                 Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension);
-                windowExtension.ShowDialog();
+                _ = windowExtension.ShowDialog();
 
                 if (ViewExtension.GameAchievements != null)
                 {
@@ -129,7 +129,7 @@ namespace SuccessStory.Services
 
         public GameAchievements RefreshManual(Game game)
         {
-            TrueAchievements.Logger.Info($"RefreshManual({game?.Name} - {game?.Id} - {game?.Source?.Name})");
+            Logger.Info($"RefreshManual({game?.Name} - {game?.Id} - {game?.Source?.Name})");
             GameAchievements gameAchievements = null;
 
             try
@@ -187,7 +187,7 @@ namespace SuccessStory.Services
 
         public GameAchievements RefreshGenshinImpact(Game game)
         {
-            TrueAchievements.Logger.Info($"RefreshGenshinImpact({game?.Name} - {game?.Id})");
+            Logger.Info($"RefreshGenshinImpact({game?.Name} - {game?.Id})");
             GameAchievements gameAchievements = null;
 
             try
@@ -245,7 +245,7 @@ namespace SuccessStory.Services
                 RetroAchievements retroAchievementsProvider = achievementProvider as RetroAchievements;
                 PSNAchievements psnAchievementsProvider = achievementProvider as PSNAchievements;
 
-                TrueAchievements.Logger.Info($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id} - {game?.Source?.Name}");
+                Logger.Info($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id} - {game?.Source?.Name}");
 
                 GameAchievements TEMPgameAchievements = Get(game, true);
 
@@ -287,11 +287,11 @@ namespace SuccessStory.Services
 
             if (!(gameAchievements?.HasAchievements ?? false))
             {
-                TrueAchievements.Logger.Info($"No achievements find for {game.Name} - {game.Id}");
+                Logger.Info($"No achievements find for {game.Name} - {game.Id}");
             }
             else
             {
-                TrueAchievements.Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
+                Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
             }
 
             return gameAchievements;
@@ -808,7 +808,7 @@ namespace SuccessStory.Services
             Starcraft2,
             Wow,
             GenshinImpact,
-            GuildWars2,
+            GuildWars2
         }
 
         private static AchievementSource GetAchievementSourceFromLibraryPlugin(SuccessStorySettings settings, Game game)
@@ -839,6 +839,7 @@ namespace SuccessStory.Services
                                 return AchievementSource.Overwatch;
                             }
                             break;
+
                         case "starcraft 2":
                         case "starcraft ii":
                             if (settings.EnableSc2Achievements)
@@ -846,6 +847,7 @@ namespace SuccessStory.Services
                                 return AchievementSource.Starcraft2;
                             }
                             break;
+
                         case "wow":
                         case "world of warcraft":
                             if (settings.EnableWowAchievements)
@@ -853,45 +855,85 @@ namespace SuccessStory.Services
                                 return AchievementSource.Wow;
                             }
                             break;
+
+                        default:
+                            break;
                     }
                     break;
+
                 case ExternalPlugin.GogLibrary:
                     if (settings.EnableGog)
                     {
                         return AchievementSource.GOG;
                     }
                     break;
+
                 case ExternalPlugin.EpicLibrary:
                     if (settings.EnableEpic)
                     {
                         return AchievementSource.Epic;
                     }
                     break;
+
                 case ExternalPlugin.OriginLibrary:
                     if (settings.EnableOrigin)
                     {
                         return AchievementSource.Origin;
                     }
                     break;
+
                 case ExternalPlugin.PSNLibrary:
                     if (settings.EnablePsn)
                     {
                         return AchievementSource.Playstation;
                     }
                     break;
+
                 case ExternalPlugin.SteamLibrary:
                     if (settings.EnableSteam)
                     {
                         return AchievementSource.Steam;
                     }
                     break;
+
                 case ExternalPlugin.XboxLibrary:
                     if (settings.EnableXbox)
                     {
                         return AchievementSource.Xbox;
                     }
                     break;
+
+                case ExternalPlugin.None:
+                    break;
+                case ExternalPlugin.IndiegalaLibrary:
+                    break;
+                case ExternalPlugin.AmazonGamesLibrary:
+                    break;
+                case ExternalPlugin.BethesdaLibrary:
+                    break;
+                case ExternalPlugin.HumbleLibrary:
+                    break;
+                case ExternalPlugin.ItchioLibrary:
+                    break;
+                case ExternalPlugin.RockstarLibrary:
+                    break;
+                case ExternalPlugin.TwitchLibrary:
+                    break;
+                case ExternalPlugin.OculusLibrary:
+                    break;
+                case ExternalPlugin.RiotLibrary:
+                    break;
+                case ExternalPlugin.UplayLibrary:
+                    break;
+                case ExternalPlugin.SuccessStory:
+                    break;
+                case ExternalPlugin.CheckDlc:
+                    break;
+
+                default:
+                    break;
             }
+
             return AchievementSource.None;
         }
 
@@ -1001,7 +1043,7 @@ namespace SuccessStory.Services
         {
             if (game == null)
             {
-                TrueAchievements.Logger.Warn("game null in SetThemesResources()");
+                Logger.Warn("game null in SetThemesResources()");
                 return;
             }
 
@@ -1045,7 +1087,7 @@ namespace SuccessStory.Services
                 return;
             }
 
-            TrueAchievements.Logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id} - {game.Source?.Name})");
+            Logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id} - {game.Source?.Name})");
 
             if (loadedItem.IsManual)
             {
@@ -1138,7 +1180,7 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                TrueAchievements.Logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
+                Logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
             }, globalProgressOptions);
         }
 
@@ -1183,7 +1225,7 @@ namespace SuccessStory.Services
 
                 foreach (GameAchievements gameAchievements in db)
                 {
-                    TrueAchievements.Logger.Info($"RefreshRarety({gameAchievements.Name})");
+                    Logger.Info($"RefreshRarety({gameAchievements.Name})");
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
                         CancelText = " canceled";
@@ -1202,7 +1244,7 @@ namespace SuccessStory.Services
                                 }
                                 else
                                 {
-                                    TrueAchievements.Logger.Warn($"No Steam config");
+                                    Logger.Warn($"No Steam config");
                                 }
                             }
                             break;
@@ -1212,7 +1254,7 @@ namespace SuccessStory.Services
                             break;
 
                         default:
-                            TrueAchievements.Logger.Warn($"No sourcesLink for {gameAchievements.Name} with {SourceName}");
+                            Logger.Warn($"No sourcesLink for {gameAchievements.Name} with {SourceName}");
                             break;
                     }
 
@@ -1222,7 +1264,7 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                TrueAchievements.Logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
+                Logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
             }, globalProgressOptions);
         }
 
@@ -1249,7 +1291,7 @@ namespace SuccessStory.Services
 
                 foreach (GameAchievements gameAchievements in db)
                 {
-                    TrueAchievements.Logger.Info($"RefreshEstimateTime({gameAchievements.Name})");
+                    Logger.Info($"RefreshEstimateTime({gameAchievements.Name})");
 
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
@@ -1267,7 +1309,7 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                TrueAchievements.Logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
+                Logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
             }, globalProgressOptions);
         }
 
@@ -1453,7 +1495,7 @@ namespace SuccessStory.Services
 
                         try
                         {
-                            Get(game, false, true);
+                            _ = Get(game, false, true);
                         }
                         catch (Exception ex)
                         {
@@ -1465,7 +1507,7 @@ namespace SuccessStory.Services
 
                     stopWatch.Stop();
                     TimeSpan ts = stopWatch.Elapsed;
-                    TrueAchievements.Logger.Info($"Task GetSelectData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)PlayniteDb.Count()} items");
+                    Logger.Info($"Task GetSelectData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)PlayniteDb.Count()} items");
                 }
                 catch (Exception ex)
                 {
@@ -1496,7 +1538,7 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        TrueAchievements.Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
+                        Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
                     }
                 }
 
@@ -1534,7 +1576,7 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        TrueAchievements.Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
+                        Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
                     }
                 }
             }
@@ -1561,7 +1603,7 @@ namespace SuccessStory.Services
             try
             {
                 List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.SourceId == GameSourceId).ToList();
-                foreach (var item in db)
+                foreach (KeyValuePair<Guid, GameAchievements> item in db)
                 {
                     Guid Id = item.Key;
                     Game Game = API.Instance.Database.Games.Get(Id);
@@ -1575,7 +1617,7 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        TrueAchievements.Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id}");
+                        Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id}");
                     }
                 }
             }

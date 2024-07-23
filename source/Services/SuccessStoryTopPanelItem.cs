@@ -38,7 +38,7 @@ namespace SuccessStory.Services
                 };
 
                 Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension, windowOptions);
-                windowExtension.ShowDialog();
+                _ = windowExtension.ShowDialog();
                 SuccessStory.PluginDatabase.IsViewOpen = false;
             };
             Visible = plugin.PluginSettings.Settings.EnableIntegrationButtonHeader;
