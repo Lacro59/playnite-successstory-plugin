@@ -13,6 +13,7 @@ using CommonPluginsShared.Extensions;
 using CommonPlayniteShared.PluginLibrary.PSNLibrary.Models;
 using static CommonPluginsShared.PlayniteTools;
 using Playnite.SDK;
+using SuccessStory.Models.PSN;
 
 namespace SuccessStory.Clients
 {
@@ -52,16 +53,19 @@ namespace SuccessStory.Clients
         private static string PsnDataPath { get; set; }
 
         public string CommunicationId { get; set; }
+        
 
-        private static string UrlTrophiesDetails => @"https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/{0}/trophyGroups/all/trophies";
-        private static string UrlTrophies => @"https://m.np.playstation.com/api/trophy/v1/users/me/npCommunicationIds/{0}/trophyGroups/all/trophies";
-        private static string UrlAllTrophies => @"https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles";
-        private static string TrophiesWithIdsMobileUrl => @"https://m.np.playstation.com/api/trophy/v1/users/me/titles/trophyTitles?npTitleIds={0}";
+        private static string urlBase => @"https://m.np.playstation.com/api/trophy/v1";
+        private static string UrlTrophiesDetails => urlBase + @"/npCommunicationIds/{0}/trophyGroups/all/trophies";
+        private static string UrlTrophies => urlBase + @"/users/me/npCommunicationIds/{0}/trophyGroups/all/trophies";
+        private static string UrlAllTrophies => urlBase + @"/users/me/trophyTitles";
+        private static string TrophiesWithIdsMobileUrl => urlBase + @"/users/me/titles/trophyTitles?npTitleIds={0}";
+        private static string UrlAllTrophyTitles => urlBase + @"/users/me/trophyTitles";
 
 
         public PSNAchievements() : base("PSN", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language))
         {
-            PsnDataPath = PluginDatabase.Paths.PluginUserDataPath + "\\..\\e4ac81cb-1b1a-4ec9-8639-9a9633989a71";
+            PsnDataPath = PluginDatabase.Paths.PluginUserDataPath + "\\..\\" + GetPluginId(ExternalPlugin.PSNLibrary);
         }
 
 
@@ -106,22 +110,30 @@ namespace SuccessStory.Clients
                             }
                             else
                             {
-                                TMP_GameId = GetNPWR(game.Name);
+                                TMP_GameId = GetNPWR_2(game.Name);
                                 if (!TMP_GameId.IsNullOrEmpty())
                                 {
                                     GameId = TMP_GameId;
                                 }
                                 else
                                 {
-                                    Logger.Warn($"No trohpies find for {game.Name} - {GameId}");
-                                    gameAchievements.Items = AllAchievements;
-                                    return gameAchievements;
+                                    TMP_GameId = GetNPWR(game.Name);
+                                    if (!TMP_GameId.IsNullOrEmpty())
+                                    {
+                                        GameId = TMP_GameId;
+                                    }
+                                    else
+                                    {
+                                        Logger.Warn($"No trohpies find for {game.Name} - {GameId}");
+                                        gameAchievements.Items = AllAchievements;
+                                        return gameAchievements;
+                                    }
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            Common.LogError(ex, false, $"Error on PSNAchievements with {GameId}", true, PluginDatabase.PluginName);
                         }
                     }
 
@@ -273,10 +285,30 @@ namespace SuccessStory.Clients
 
         public string GetNPWR(string Name)
         {
-            IEnumerable<PSN_NPWR> finded = PSN_NPWR_LIST.NPWR_LIST.Where(x => CommonPluginsShared.PlayniteTools.NormalizeGameName(x.Name).IsEqual(CommonPluginsShared.PlayniteTools.NormalizeGameName(Name)));
+            IEnumerable<PSN_NPWR> finded = PSN_NPWR_LIST.NPWR_LIST.Where(x => NormalizeGameName(x.Name).IsEqual(NormalizeGameName(Name)));
             if (finded?.Count() > 0)
             {
                 return finded.First().NPWR;
+            }
+
+            return string.Empty;
+        }
+
+        public string GetNPWR_2(string name)
+        {
+            try
+            {
+                string webResult = Web.DownloadStringData(UrlAllTrophyTitles, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
+                TropyTitlesResponse tropyTitlesResponse = Serialization.FromJson<TropyTitlesResponse>(webResult);
+                var finded = tropyTitlesResponse.TrophyTitles.FirstOrDefault(x => NormalizeGameName(x.TrophyTitleName).IsEqual(NormalizeGameName(name)));
+                if (finded != null)
+                {
+                    return finded.NpCommunicationId;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
             return string.Empty;
