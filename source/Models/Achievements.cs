@@ -249,7 +249,7 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
-        public bool IsUnlock => !(DateUnlocked == default(DateTime) || DateUnlocked == null);
+        public bool IsUnlock => !(DateUnlocked == default || DateUnlocked == null || DateUnlocked.ToString().Contains("0001"));
 
         private bool isVisible = true;
         [DontSerialize]

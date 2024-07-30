@@ -13,12 +13,13 @@ namespace SuccessStory.Clients
 {
     internal class WowAchievements : BattleNetAchievements
     {
+        #region Url
         private static string UrlWowGraphQL => @"https://worldofwarcraft.blizzard.com/graphql";
-        private static string UrlWowBase => @"https://worldofwarcraft.com/{0}/character/{1}/{2}/{3}/achievements/";
+        private static string UrlWowBase => @"https://worldofwarcraft.blizzard.com/{0}/character/{1}/{2}/{3}/achievements/";
         private static string UrlWowBaseLocalised { get; set; }
 
         private List<string> Urls { get; set; } = new List<string>();
-        private string UrlWowAchCharacter => "character/model.json";
+        private string UrlWowAchCharacter => "characters/model.json";
         private string UrlWowAchPvp => "player-vs-player/model.json";
         private string UrlWowAchQuests => "quests/model.json";
         private string UrlWowAchExploration => "exploration/model.json";
@@ -31,7 +32,7 @@ namespace SuccessStory.Clients
         private string UrlWowAchExpansionFeatures => "expansion-features/model.json";
         private string UrlWowAchFeatsStrength => "feats-of-strength/model.json";
         private string UrlWowAchLegacy => "legacy/model.json";
-
+        #endregion
 
         public WowAchievements() : base("Wow", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language))
         {
