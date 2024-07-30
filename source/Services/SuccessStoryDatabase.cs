@@ -152,6 +152,7 @@ namespace SuccessStory.Services
                     {
                         SearchResult searchResult = new SearchResult
                         {
+                            Name = gameAchievements.SourcesLink?.GameName,
                             Url = gameAchievements.SourcesLink?.Url
                         };
 

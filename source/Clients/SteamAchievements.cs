@@ -215,9 +215,15 @@ namespace SuccessStory.Clients
             // Set source link
             if (gameAchievements.HasAchievements)
             {
+                string gameName = SteamApi.GetGameName(appId);
+                if (gameName.IsNullOrEmpty())
+                {
+                    gameName = SteamApi.GetGameInfos(appId.ToString(), null)?.Name;
+                }
+
                 gameAchievements.SourcesLink = new SourceLink
                 {
-                    GameName = SteamApi.GetGameName(appId),
+                    GameName = gameName,
                     Name = "Steam",
                     Url = UrlBase + $"/stats/{appId}/achievements"
                 };

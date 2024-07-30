@@ -109,71 +109,7 @@
                                         <Label Grid.Column="2" Content="{Binding AchievementsCount}" VerticalAlignment="Center" />
                                     </Grid>
 
-                                    <Border Grid.Column="2" Width="120" BorderThickness="0" CornerRadius="5">
-                                        <Border.Style>
-                                            <Style TargetType="{x:Type Border}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Google Play">
-                                                        <Setter Property="Background" Value="#6bad50" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Steam">
-                                                        <Setter Property="Background" Value="#1b2838" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="PS3">
-                                                        <Setter Property="Background" Value="#296cc8" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="PS4">
-                                                        <Setter Property="Background" Value="#296cc8" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="PS5">
-                                                        <Setter Property="Background" Value="#296cc8" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="PS Vita">
-                                                        <Setter Property="Background" Value="#296cc8" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Retro">
-                                                        <Setter Property="Background" Value="#296cc8" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Xbox One">
-                                                        <Setter Property="Background" Value="#107c10" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Xbox 360">
-                                                        <Setter Property="Background" Value="#107c10" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Xbox Series">
-                                                        <Setter Property="Background" Value="#107c10" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Windows 8">
-                                                        <Setter Property="Background" Value="#107c10" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Windows 10">
-                                                        <Setter Property="Background" Value="#107c10" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="WP">
-                                                        <Setter Property="Background" Value="#107c10" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Stadia">
-                                                        <Setter Property="Background" Value="#cd2640" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="EA app">
-                                                        <Setter Property="Background" Value="#f56c2d" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Blizzard">
-                                                        <Setter Property="Background" Value="#01b2f1" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="GOG">
-                                                        <Setter Property="Background" Value="#5c2f74" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Ubisoft">
-                                                        <Setter Property="Background" Value="#0070ff" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding ElementName=PART_Label, Path=Content}" Value="Epic">
-                                                        <Setter Property="Background" Value="#333333" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
-
+                                    <Border Grid.Column="2" Width="120" BorderThickness="0" CornerRadius="5" Background="{Binding PlatformsFirstColor}">
                                         <Label Name="PART_Label" Content="{Binding PlatformsFirst, FallbackValue='Platform'}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                     </Border>
 

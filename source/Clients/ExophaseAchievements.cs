@@ -63,18 +63,20 @@ namespace SuccessStory.Clients
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
+            string gameName = string.Empty;
 
             try
             {
-                string DataExophase = Web.DownloadStringData(searchResult.Url, GetCookies()).GetAwaiter().GetResult();
+                string dataExophase = Web.DownloadStringData(searchResult.Url, GetCookies()).GetAwaiter().GetResult();
 
                 HtmlParser parser = new HtmlParser();
-                IHtmlDocument htmlDocument = parser.Parse(DataExophase);
+                IHtmlDocument htmlDocument = parser.Parse(dataExophase);
 
                 AllAchievements = new List<Achievements>();
-                IHtmlCollection<IElement> SectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
+                IHtmlCollection<IElement> sectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
+                gameName = htmlDocument.QuerySelector("h2.me-2 a")?.GetAttribute("title");
 
-                if (SectionAchievements == null || SectionAchievements.Count() == 0)
+                if (sectionAchievements == null || sectionAchievements.Count() == 0)
                 {
                     Logger.Warn($"Problem with {searchResult.Url}");
                     if (!IsRetry)
@@ -84,9 +86,9 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    foreach (IElement Section in SectionAchievements)
+                    foreach (IElement section in sectionAchievements)
                     {
-                        foreach (IElement SearchAchievements in Section.QuerySelectorAll("li"))
+                        foreach (IElement SearchAchievements in section.QuerySelectorAll("li"))
                         {
                             try
                             {
@@ -96,16 +98,16 @@ namespace SuccessStory.Clients
 
                                 float.TryParse(sFloat, out float Percent);
 
-                                string UrlUnlocked = SearchAchievements.QuerySelector("img").GetAttribute("src");
-                                string Name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
-                                string Description = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.award-description p").InnerHtml);
-                                bool IsHidden = SearchAchievements.GetAttribute("class").IndexOf("secret") > -1;
+                                string urlUnlocked = SearchAchievements.QuerySelector("img").GetAttribute("src");
+                                string name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
+                                string description = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.award-description p").InnerHtml);
+                                bool isHidden = SearchAchievements.GetAttribute("class").IndexOf("secret") > -1;
 
                                 AllAchievements.Add(new Achievements
                                 {
-                                    Name = Name,
-                                    UrlUnlocked = UrlUnlocked,
-                                    Description = Description,
+                                    Name = name,
+                                    UrlUnlocked = urlUnlocked,
+                                    Description = description,
                                     DateUnlocked = default(DateTime),
                                     Percent = Percent
                                 });
@@ -132,7 +134,7 @@ namespace SuccessStory.Clients
             {
                 gameAchievements.SourcesLink = new SourceLink
                 {
-                    GameName = searchResult.Name,
+                    GameName = searchResult.Name.IsNullOrEmpty() ? gameName : searchResult.Name,
                     Name = "Exophase",
                     Url = searchResult.Url
                 };
@@ -218,13 +220,11 @@ namespace SuccessStory.Clients
                 string UrlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
 
                 string StringJsonResult = Web.DownloadStringData(UrlSearch).GetAwaiter().GetResult();
-                if (StringJsonResult == "{\"success\":true,\"games\":false}")
+                if (!Serialization.TryFromJson(StringJsonResult, out ExophaseSearchResult exophaseScheachResult))
                 {
                     Logger.Warn($"No Exophase result for {Name}");
                     return ListSearchGames;
                 }
-
-                ExophaseSearchResult exophaseScheachResult = Serialization.FromJson<ExophaseSearchResult>(StringJsonResult);
 
                 List<List> ListExophase = exophaseScheachResult?.games?.list;
                 if (ListExophase != null)
@@ -233,7 +233,7 @@ namespace SuccessStory.Clients
                     {
                         Url = x.endpoint_awards,
                         Name = x.title,
-                        UrlImage = x.images.o,
+                        UrlImage = x.images.o ?? x.images.l ?? x.images.m,
                         Platforms = x.platforms.Select(p => p.name).ToList(),
                         AchievementsCount = x.total_awards
                     }).ToList();
