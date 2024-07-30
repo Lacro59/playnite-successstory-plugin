@@ -64,7 +64,9 @@ namespace SuccessStory.Clients
                         return null;
                     }
 
-                    ObservableCollection<GameAchievement> epicAchievements = EpicAPI.GetAchievements(productSlug, EpicAPI.CurrentAccountInfos);
+                    string nameSpace = EpicAPI.GetNameSpace(NormalizeGameName(game.Name), productSlug);
+
+                    ObservableCollection<GameAchievement> epicAchievements = EpicAPI.GetAchievements(nameSpace, EpicAPI.CurrentAccountInfos);
                     if (epicAchievements?.Count > 0)
                     {
                         AllAchievements = epicAchievements.Select(x => new Achievements
