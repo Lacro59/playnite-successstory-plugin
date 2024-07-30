@@ -47,7 +47,24 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    ObservableCollection<GameAchievement> epicAchievements = EpicAPI.GetAchievements(game.Name, EpicAPI.CurrentAccountInfos);
+                    string productSlug = string.Empty;
+                    game.Links?.ForEach(x =>
+                    {
+                        productSlug = EpicAPI.GetProductSlugByUrl(x.Url).IsNullOrEmpty() ? productSlug : EpicAPI.GetProductSlugByUrl(x.Url);
+                    });
+
+                    if (productSlug.IsNullOrEmpty())
+                    {
+                        productSlug = EpicAPI.GetProductSlug(PlayniteTools.NormalizeGameName(game.Name));
+                    }
+
+                    if (productSlug.IsNullOrEmpty())
+                    {
+                        Logger.Warn($"No ProductSlug for {game.Name}");
+                        return null;
+                    }
+
+                    ObservableCollection<GameAchievement> epicAchievements = EpicAPI.GetAchievements(productSlug, EpicAPI.CurrentAccountInfos);
                     if (epicAchievements?.Count > 0)
                     {
                         AllAchievements = epicAchievements.Select(x => new Achievements
@@ -73,7 +90,7 @@ namespace SuccessStory.Clients
                     // Set source link
                     if (gameAchievements.HasAchievements)
                     {
-                        gameAchievements.SourcesLink = EpicAPI.GetAchievementsSourceLink(game.Name, game.GameId, EpicAPI.CurrentAccountInfos);
+                        gameAchievements.SourcesLink = EpicAPI.GetAchievementsSourceLink(game.Name, productSlug, EpicAPI.CurrentAccountInfos);
                     }
                 }
                 catch (Exception ex)
