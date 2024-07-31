@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 
 namespace SuccessStory.Clients
 {
-    class TrueAchievements
+    public class TrueAchievements
     {
         internal static ILogger Logger => LogManager.GetLogger();
 

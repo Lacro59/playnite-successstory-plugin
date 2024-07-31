@@ -11,8 +11,8 @@ using System.Collections.Generic;
 using Playnite.SDK;
 
 namespace SuccessStory.Clients
-{    
-    class GogAchievements : GenericAchievements
+{
+    public class GogAchievements : GenericAchievements
     {
         protected static GogApi gogAPI;
         internal static GogApi GogAPI

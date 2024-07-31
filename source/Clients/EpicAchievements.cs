@@ -14,27 +14,14 @@ using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
-    class EpicAchievements : GenericAchievements
+    public class EpicAchievements : GenericAchievements
     {
-        protected static EpicApi epicAPI;
-        internal static EpicApi EpicAPI
-        {
-            get
-            {
-                if (epicAPI == null)
-                {
-                    epicAPI = new EpicApi(PluginDatabase.PluginName);
-                }
-                return epicAPI;
-            }
-
-            set => epicAPI = value;
-        }
+        private EpicApi EpicApi => SuccessStory.EpicApi;
 
 
         public EpicAchievements() : base("Epic", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language), CodeLang.GetGogLang(API.Instance.ApplicationSettings.Language))
         {
-            EpicAPI.SetLanguage(API.Instance.ApplicationSettings.Language);
+
         }
 
 
@@ -50,12 +37,12 @@ namespace SuccessStory.Clients
                     string productSlug = string.Empty;
                     game.Links?.ForEach(x =>
                     {
-                        productSlug = EpicAPI.GetProductSlugByUrl(x.Url).IsNullOrEmpty() ? productSlug : EpicAPI.GetProductSlugByUrl(x.Url);
+                        productSlug = EpicApi.GetProductSlugByUrl(x.Url).IsNullOrEmpty() ? productSlug : EpicApi.GetProductSlugByUrl(x.Url);
                     });
 
                     if (productSlug.IsNullOrEmpty())
                     {
-                        productSlug = EpicAPI.GetProductSlug(PlayniteTools.NormalizeGameName(game.Name));
+                        productSlug = EpicApi.GetProductSlug(PlayniteTools.NormalizeGameName(game.Name));
                     }
 
                     if (productSlug.IsNullOrEmpty())
@@ -64,9 +51,9 @@ namespace SuccessStory.Clients
                         return null;
                     }
 
-                    string nameSpace = EpicAPI.GetNameSpace(NormalizeGameName(game.Name), productSlug);
+                    string nameSpace = EpicApi.GetNameSpace(NormalizeGameName(game.Name), productSlug);
 
-                    ObservableCollection<GameAchievement> epicAchievements = EpicAPI.GetAchievements(nameSpace, EpicAPI.CurrentAccountInfos);
+                    ObservableCollection<GameAchievement> epicAchievements = EpicApi.GetAchievements(nameSpace, EpicApi.CurrentAccountInfos);
                     if (epicAchievements?.Count > 0)
                     {
                         AllAchievements = epicAchievements.Select(x => new Achievements
@@ -83,7 +70,7 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        if (!EpicAPI.IsUserLoggedIn)
+                        if (!EpicApi.IsUserLoggedIn)
                         {
                             ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
                         }
@@ -92,7 +79,7 @@ namespace SuccessStory.Clients
                     // Set source link
                     if (gameAchievements.HasAchievements)
                     {
-                        gameAchievements.SourcesLink = EpicAPI.GetAchievementsSourceLink(game.Name, productSlug, EpicAPI.CurrentAccountInfos);
+                        gameAchievements.SourcesLink = EpicApi.GetAchievementsSourceLink(game.Name, productSlug, EpicApi.CurrentAccountInfos);
                     }
                 }
                 catch (Exception ex)
@@ -143,7 +130,7 @@ namespace SuccessStory.Clients
         {
             if (CachedIsConnectedResult == null)
             {
-                CachedIsConnectedResult = EpicAPI.IsUserLoggedIn;
+                CachedIsConnectedResult = EpicApi.IsUserLoggedIn;
             }
 
             return (bool)CachedIsConnectedResult;
@@ -157,13 +144,13 @@ namespace SuccessStory.Clients
         public override void ResetCachedConfigurationValidationResult()
         {
             CachedConfigurationValidationResult = null;
-            EpicAPI.ResetIsUserLoggedIn();
+            EpicApi.ResetIsUserLoggedIn();
         }
 
         public override void ResetCachedIsConnectedResult()
         {
             CachedIsConnectedResult = null;
-            EpicAPI.ResetIsUserLoggedIn();
+            EpicApi.ResetIsUserLoggedIn();
         }
         #endregion
 

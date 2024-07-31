@@ -870,6 +870,7 @@ namespace SuccessStory.Services
                     break;
 
                 case ExternalPlugin.EpicLibrary:
+                case ExternalPlugin.LegendaryLibrary:
                     if (settings.EnableEpic)
                     {
                         return AchievementSource.Epic;
@@ -929,6 +930,8 @@ namespace SuccessStory.Services
                 case ExternalPlugin.SuccessStory:
                     break;
                 case ExternalPlugin.CheckDlc:
+                    break;
+                case ExternalPlugin.EmuLibrary:
                     break;
 
                 default:

@@ -13,7 +13,7 @@ using SuccessStory.Models.GuildWars2;
 
 namespace SuccessStory.Clients
 {
-    class GuildWars2Achievements : GenericAchievements
+    public class GuildWars2Achievements : GenericAchievements
     {
         private static string UrlApiOwnedAchievements => @"https://api.guildwars2.com/v2/account/achievements";
         private static string UrlApiAchievementsList => @"https://api.guildwars2.com/v2/achievements";

@@ -13,7 +13,7 @@ using Playnite.SDK;
 
 namespace SuccessStory.Clients
 {
-    class OriginAchievements : GenericAchievements
+    public class OriginAchievements : GenericAchievements
     {
         protected static OriginApi originAPI;
         internal static OriginApi OriginAPI

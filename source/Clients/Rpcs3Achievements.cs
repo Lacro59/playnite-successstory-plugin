@@ -14,7 +14,7 @@ using System.Globalization;
 
 namespace SuccessStory.Clients
 {
-    class Rpcs3Achievements : GenericAchievements
+    public class Rpcs3Achievements : GenericAchievements
     {
         public Rpcs3Achievements() : base("RPCS3")
         {

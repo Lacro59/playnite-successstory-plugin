@@ -19,7 +19,7 @@ using CommonPlayniteShared.PluginLibrary.XboxLibrary.Services;
 
 namespace SuccessStory.Clients
 {
-    class XboxAchievements : GenericAchievements
+    public class XboxAchievements : GenericAchievements
     {
         protected static XboxAccountClient xboxAccountClient;
         internal static XboxAccountClient XboxAccountClient

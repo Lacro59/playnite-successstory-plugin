@@ -18,7 +18,7 @@ using SuccessStory.Models.PSN;
 namespace SuccessStory.Clients
 {
     // https://andshrew.github.io/PlayStation-Trophies/#/APIv2
-    class PSNAchievements : GenericAchievements
+    public class PSNAchievements : GenericAchievements
     {
         protected static PsnAllTrophies psnAllTrophies;
         internal static PsnAllTrophies PsnAllTrophies

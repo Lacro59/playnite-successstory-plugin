@@ -14,6 +14,7 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:interfaces="clr-namespace:SuccessStory.Views.Interfaces" 
              xmlns:Steam="clr-namespace:CommonPluginsControls.Stores.Steam" 
+             xmlns:Epic="clr-namespace:CommonPluginsControls.Stores.Epic" 
              xmlns:pctrls="clr-namespace:CommonPlayniteShared.Controls"
              mc:Ignorable="d" d:DesignWidth="650"
              d:DataContext="{d:DesignInstance SuccessStory:SuccessStorySettingsViewModel, IsDesignTimeCreatable=True}">
@@ -89,7 +90,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableSteam}" Name="PART_EnableSteam" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableSteam}"></Label>
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableSteam}" />
                                     </CheckBox>
 
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
@@ -120,7 +121,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding Settings.EnableGog}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableGog}"></Label>
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableGog}" />
                                     </CheckBox>
                                 </Grid>
                             </Expander.Header>
@@ -148,7 +149,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding Settings.EnableOrigin}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableOrigin}"></Label>
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableOrigin}" />
                                     </CheckBox>
                                 </Grid>
                             </Expander.Header>
@@ -176,7 +177,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnableXbox}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableXbox}"></Label>
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableXbox}" />
                                     </CheckBox>
                                 </Grid>
                             </Expander.Header>
@@ -203,8 +204,8 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnableEpic}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableEpic}"></Label>
+                                    <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnableEpic, FallbackValue=True}" VerticalAlignment="Center" Name="PART_Epic">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableEpic}" />
                                     </CheckBox>
                                 </Grid>
                             </Expander.Header>
@@ -232,7 +233,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnablePsn}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnablePSN}"></Label>
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnablePSN}" />
                                     </CheckBox>
                                 </Grid>
                             </Expander.Header>
@@ -294,7 +295,7 @@
                                         </Grid.RowDefinitions>
 
                                         <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="7" IsChecked="{Binding Settings.EnableRetroAchievementsView}">
-                                            <Label Content="{DynamicResource LOCSuccessStoryEnableRetroAchievementsView}"></Label>
+                                            <Label Content="{DynamicResource LOCSuccessStoryEnableRetroAchievementsView}" />
                                         </CheckBox>
 
                                         <Label Grid.Column="0" Grid.Row="2" Content="{DynamicResource LOCCommonAccountName}" />
@@ -483,7 +484,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableSc2Achievements}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableSc2Achievements}"></Label>
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableSc2Achievements}" />
                                     </CheckBox>
 
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
@@ -515,7 +516,7 @@
 
                                     <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableWowAchievements}" 
                                               Name="PART_EnableWowchievements"  VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableWowAchievements}"></Label>
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableWowAchievements}" />
                                     </CheckBox>
 
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
@@ -596,7 +597,7 @@
                             <Expander.Header>
                                 <Grid>
                                     <CheckBox IsChecked="{Binding Settings.EnableGenshinImpact}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSsEnableGenshinImpactAchievements}"></Label>
+                                        <Label Content="{DynamicResource LOCSsEnableGenshinImpactAchievements}" />
                                     </CheckBox>
                                 </Grid>
                             </Expander.Header>
@@ -627,7 +628,7 @@
 
                                     <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableGuildWars2}" 
                                               Name="PART_EnableGw2chievements"  VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableGw2Achievements}"></Label>
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableGw2Achievements}" />
                                     </CheckBox>
 
                                     <Button Grid.Column="8" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}" HorizontalAlignment="Right"
@@ -663,7 +664,7 @@
 
                             <Expander.Header>
                                 <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableManual}" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOCSuccessStoryEnableManualAchievements}"></Label>
+                                    <Label Content="{DynamicResource LOCSuccessStoryEnableManualAchievements}" />
                                 </CheckBox>
                             </Expander.Header>
                         </Expander>
@@ -691,7 +692,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableLocal}" VerticalAlignment="Center">
-                                        <Label Content="Enable Local"></Label>
+                                        <Label Content="Enable Local" />
                                     </CheckBox>
                                     <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddLocalFolder_Click" 
                                             Name="ButtonAddLocalFolder" Grid.Column="8"
@@ -1737,9 +1738,14 @@
             </TabItem>
 
             <TabItem Header="{DynamicResource LOCLibraries}">
-                <Steam:PanelView x:Name="SteamPanel"
-                                 UseApi="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.SteamApiSettings.UseApi, Mode=TwoWay}" 
-                                 UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.SteamApiSettings.UseAuth, Mode=TwoWay}" />
+                <StackPanel Margin="10">
+                    <Steam:PanelView x:Name="SteamPanel" Margin="0,0,0,10"
+                                     UseApi="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.SteamApiSettings.UseApi, Mode=TwoWay}" 
+                                     UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.SteamApiSettings.UseAuth, Mode=TwoWay}" />
+
+                    <Epic:PanelView x:Name="EpicPanel" 
+                                    Visibility="{Binding ElementName=PART_Epic, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </StackPanel>
             </TabItem>
 
             <!--TabItem Header="QuickSearch">

@@ -33,7 +33,7 @@ namespace SuccessStory.Clients
     }
 
 
-    class ExophaseAchievements : GenericAchievements
+    public class ExophaseAchievements : GenericAchievements
     {
         private string UrlExophaseSearch => @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
         private string UrlExophase => @"https://www.exophase.com";

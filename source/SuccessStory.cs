@@ -29,6 +29,7 @@ using QuickSearch.SearchItems;
 using CommonPluginsStores.Steam;
 using SuccessStory.Clients;
 using SuccessStory.Models.RetroAchievements;
+using CommonPluginsStores.Epic;
 
 namespace SuccessStory
 {
@@ -37,6 +38,7 @@ namespace SuccessStory
         public override Guid Id => Guid.Parse("cebe6d32-8c46-4459-b993-5a5189d60788");
 
         public static SteamApi SteamApi { get; set; }
+        public static EpicApi EpicApi { get; set; }
 
         internal TopPanelItem TopPanelItem { get; set; }
         internal SidebarItem SidebarItem { get; set; }
@@ -933,6 +935,10 @@ namespace SuccessStory
             {
                 _ = SteamApi.CurrentAccountInfos;
             }
+
+            EpicApi = new EpicApi(PluginDatabase.PluginName);
+            EpicApi.SetLanguage(API.Instance.ApplicationSettings.Language);
+
 
             Task.Run(() =>
             {
