@@ -77,6 +77,22 @@ namespace SuccessStory.Clients
                 ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(game.GameId, SteamApi.CurrentAccountInfos);
                 if (steamAchievements?.Count > 0 && uint.TryParse(game.GameId, out appId))
                 {
+                    // Check private game
+                    if (steamAchievements.Count(x => !(x.DateUnlocked == default || x.DateUnlocked == null || x.DateUnlocked.ToString().Contains("0001"))) == 0)
+                    {
+                        bool gameIsPrivate = SteamApi.CheckGameIsPrivate(appId, SteamApi.CurrentAccountInfos);
+                        if (gameIsPrivate)
+                        {
+                            API.Instance.Notifications.Add(new NotificationMessage(
+                                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateGame-{game.GameId}",
+                                $"{PluginDatabase.PluginName}\r\n{string.Format(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamGamePrivate"), game.Name, ResourceProvider.GetString("LOCCommonIsPrivate"))}",
+                                NotificationType.Error,
+                                () => PlayniteTools.ShowPluginSettings(PlayniteTools.ExternalPlugin.SuccessStory)
+                            ));
+                            Logger.Warn($"Steam game is private - {game.Name} - {game.GameId}");
+                        }
+                    }
+
                     Logger.Info($"SteamApi.GetAchievements({game.Name}, {game.GameId})");
 
                     AllAchievements = steamAchievements.Select(x => new Achievements
