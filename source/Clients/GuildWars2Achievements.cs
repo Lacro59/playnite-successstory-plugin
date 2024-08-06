@@ -36,7 +36,7 @@ namespace SuccessStory.Clients
             {
                 // List achievements
                 string DataList = Web.DownloadStringData(UrlApiAchievementsList).GetAwaiter().GetResult();
-                Serialization.TryFromJson<List<int>>(DataList, out List<int> gw2AchievementsList);
+                Serialization.TryFromJson(DataList, out List<int> gw2AchievementsList);
 
                 if (gw2AchievementsList == null)
                 {
@@ -47,7 +47,7 @@ namespace SuccessStory.Clients
 
                 // List groups of achievements
                 string DataGroups = Web.DownloadStringData(UrlApiAchievementsGroups).GetAwaiter().GetResult();
-                Serialization.TryFromJson<List<int>>(DataGroups, out List<int> gw2AchievementsGroupsList);
+                Serialization.TryFromJson(DataGroups, out List<int> gw2AchievementsGroupsList);
 
                 if (gw2AchievementsGroupsList == null)
                 {
@@ -60,7 +60,7 @@ namespace SuccessStory.Clients
                 gw2AchievementsGroupsList.ForEach(x => 
                 {
                     string DataAchievementsGroups = Web.DownloadStringData(UrlApiAchievementsGroups + x).GetAwaiter().GetResult();
-                    Serialization.TryFromJson<GW2AchievementsGroups>(DataAchievementsGroups, out GW2AchievementsGroups data);
+                    Serialization.TryFromJson(DataAchievementsGroups, out GW2AchievementsGroups data);
                     if (data != null)
                     {
                         gw2AchievementsGroups.Add(data);
@@ -76,7 +76,7 @@ namespace SuccessStory.Clients
 
                 // List owned achievements
                 string DataOwned = Web.DownloadStringData(UrlApiOwnedAchievements, PluginDatabase.PluginSettings.Settings.GuildWars2ApiKey).GetAwaiter().GetResult();
-                Serialization.TryFromJson<List<GW2OwnedAchievements>>(DataOwned, out List<GW2OwnedAchievements> gw2OwnedAchievements);
+                Serialization.TryFromJson(DataOwned, out List<GW2OwnedAchievements> gw2OwnedAchievements);
                
                 if (gw2OwnedAchievements != null)
                 {
@@ -92,7 +92,7 @@ namespace SuccessStory.Clients
                             string idsString = string.Join(",", x);
                             url = string.Format(UrlApiAchievements, idsString, LocalLang);
                             string Data = Web.DownloadStringData(url).GetAwaiter().GetResult();
-                            Serialization.TryFromJson<List<GW2Achievements>>(Data, out List<GW2Achievements> gw2Achievements);
+                            Serialization.TryFromJson(Data, out List<GW2Achievements> gw2Achievements);
                             if (gw2Achievements != null)
                             {
                                 gw2Achievements.ForEach(z => gw2AchievementsAll.Add(z));
@@ -108,17 +108,12 @@ namespace SuccessStory.Clients
                     // Set achievements
                     gw2AchievementsAll.ForEach(x => 
                     {
-                        if (x.Id == 4202)
-                        {
-
-                        }
-
                         Achievements ach = new Achievements
                         {
                             ApiName = x.Id.ToString(),
                             Name = x.Name,
                             Description = x.Description,
-                            DateUnlocked = default(DateTime)
+                            DateUnlocked = default
                         };
 
                         var gwCategory = gw2AchievementsGroups.Find(y => y.Achievements?.Contains(x.Id) ?? false);
@@ -153,14 +148,25 @@ namespace SuccessStory.Clients
                             if (gw2Owned.Done)
                             {
                                 ach.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
-                            }
-                            else
-                            {
-                                if (gw2Owned.Current != gw2Owned.Max)
+                                ach.GamerScore = x.Tiers.FirstOrDefault(y => y.Count <= gw2Owned.Current).Points;
+
+                                if (gw2Owned.Current < x.Tiers.LastOrDefault().Count)
                                 {
                                     ach.Progression = new AchProgression
                                     {
-                                        Max = gw2Owned.Max,
+                                        Max = x.Tiers.LastOrDefault().Count,
+                                        Value = gw2Owned.Current
+                                    };
+                                }
+                            }
+                            else
+                            {
+                                ach.GamerScore = x.Tiers.LastOrDefault().Points;
+                                if (gw2Owned.Current != x.Tiers.LastOrDefault().Count)
+                                {
+                                    ach.Progression = new AchProgression
+                                    {
+                                        Max = x.Tiers.LastOrDefault().Count,
                                         Value = gw2Owned.Current
                                     };
                                 }

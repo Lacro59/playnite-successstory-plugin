@@ -777,6 +777,8 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
                             <CheckBox Grid.Row="0" IsChecked="{Binding Settings.EnableRaretyIndicator}" Name="PART_EnableRarity">
@@ -788,7 +790,11 @@
                                 <Label Content="{DynamicResource LOCSuccessStoryDisplayRarityValue}" />
                             </CheckBox>
 
-                            <CheckBox Grid.Row="4" IsChecked="{Binding Settings.EnableOneGameView}">
+                            <CheckBox Grid.Row="4" IsChecked="{Binding Settings.EnableGamerScore}">
+                                <Label Content="{DynamicResource LOCSuccessStoryEnableGamerScore}" />
+                            </CheckBox>
+
+                            <CheckBox Grid.Row="6" IsChecked="{Binding Settings.EnableOneGameView}">
                                 <Label Content="{DynamicResource LOCSuccessStoryEnableOneGameView}" />
                             </CheckBox>
                         </Grid>

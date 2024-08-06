@@ -61,6 +61,8 @@ namespace SuccessStory.Views
                 ControlDataContext.AchRare = gameAchievements.Rare;
                 ControlDataContext.AchUltraRare = gameAchievements.UltraRare;
 
+                ControlDataContext.TotalGamerScore = gameAchievements.TotalGamerScore;
+
                 ControlDataContext.EstimateTime = gameAchievements.EstimateTime.EstimateTime;
 
                 LocalDateTimeConverter converter = new LocalDateTimeConverter();
@@ -113,6 +115,9 @@ namespace SuccessStory.Views
 
         private AchRaretyStats achUltraRare = new AchRaretyStats();
         public AchRaretyStats AchUltraRare { get => achUltraRare; set => SetValue(ref achUltraRare, value); }
+
+        private float totalGamerScore = 0;
+        public float TotalGamerScore { get => totalGamerScore; set => SetValue(ref totalGamerScore, value); }
 
         private string firstUnlock = "xxxx-xx-xx xx:xx:xx";
         public string FirstUnlock { get => firstUnlock; set => SetValue(ref firstUnlock, value); }

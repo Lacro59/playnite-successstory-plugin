@@ -84,6 +84,11 @@ namespace SuccessStory
             {
                 lvGameProgression.Width = 0;
             }
+            if (!PluginDatabase.PluginSettings.Settings.EnableGamerScore)
+            {
+                lvTotalGamerScore.Width = 0;
+                lvGamerScore.Width = 0;
+            }
 
 
             ProgressionAchievements ProgressionGlobal = null;
@@ -436,6 +441,7 @@ namespace SuccessStory
                         ProgressionValue = x.Progression,
                         Total = x.Total,
                         TotalPercent = x.Progression + "%",
+                        TotalGamerScore = x.TotalGamerScore,
                         Unlocked = x.Unlocked,
                         IsManual = x.IsManual,
 
@@ -458,8 +464,6 @@ namespace SuccessStory
         {
             try
             {
-                string pluginFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
                 ObservableCollection<ListAll> ListAll = new ObservableCollection<ListAll>();
                 PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted)
                         .ForEach(x =>
@@ -479,6 +483,8 @@ namespace SuccessStory
                                     FirstUnlock = x.FirstUnlock,
                                     LastUnlock = x.LastUnlock,
                                     DatesUnlock = x.DatesUnlock,
+
+                                    Gamerscore = y.GamerScore,
 
                                     AchIcon = y.Icon,
                                     AchIsGray = y.IsGray,

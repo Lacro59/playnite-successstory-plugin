@@ -69,6 +69,8 @@ You must check "{1}" in plugin settings</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Show description in tooltip</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Enable Steam achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Enable GOG achievements</sys:String>

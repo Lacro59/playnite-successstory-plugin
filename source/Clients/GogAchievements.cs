@@ -56,7 +56,8 @@ namespace SuccessStory.Clients
                             UrlUnlocked = x.UrlUnlocked,
                             UrlLocked = x.UrlLocked,
                             DateUnlocked = x.DateUnlocked,
-                            Percent = x.Percent
+                            Percent = x.Percent,
+                            GamerScore = x.GamerScore
                         }).ToList();
                         gameAchievements.Items = AllAchievements;
                     }

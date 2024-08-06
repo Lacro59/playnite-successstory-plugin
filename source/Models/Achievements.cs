@@ -31,6 +31,7 @@ namespace SuccessStory.Models
         /// Rarity indicator
         /// </summary>
         public float Percent { get; set; } = 100;
+        public float GamerScore { get; set; } = 0;
 
         [DontSerialize]
         public string ImageCategoryIcon
@@ -258,8 +259,8 @@ namespace SuccessStory.Models
         [DontSerialize]
         public DateTime? DateWhenUnlocked
         {
-            get => DateUnlocked == default(DateTime) || DateUnlocked == new DateTime(1982, 12, 15, 0, 0, 0, 0) ? null : DateUnlocked;
-            set => DateUnlocked = value == null ? (DateTime?)default(DateTime) : value;
+            get => DateUnlocked == default || DateUnlocked.ToString().Contains("0001") || DateUnlocked == new DateTime(1982, 12, 15, 0, 0, 0, 0) ? null : DateUnlocked;
+            set => DateUnlocked = value == null ? default(DateTime) : value;
         }
 
         [DontSerialize]

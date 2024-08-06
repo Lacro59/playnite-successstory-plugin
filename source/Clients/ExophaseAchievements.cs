@@ -5,6 +5,7 @@ using CommonPlayniteShared.Common;
 using CommonPluginsShared;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Models;
+using CommonPluginsStores;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -67,7 +68,26 @@ namespace SuccessStory.Clients
 
             try
             {
-                string dataExophase = Web.DownloadStringData(searchResult.Url, GetCookies()).GetAwaiter().GetResult();
+                List<HttpCookie> cookies = null;
+                if (PluginDatabase.PluginSettings.Settings.UseLocalised)
+                {
+                    if (!IsConnected())
+                    {
+                        Logger.Warn($"Exophase is disconnected");
+                        string message = string.Format(ResourceProvider.GetString("LOCCommonStoresNoAuthenticate"), "Exophase");
+                        API.Instance.Notifications.Add(new NotificationMessage(
+                            $"{PluginDatabase.PluginName}-Exophase-disconnected",
+                            $"{PluginDatabase.PluginName}\r\n{message}",
+                            NotificationType.Error,
+                            () => PluginDatabase.Plugin.OpenSettingsView()
+                        ));
+                        gameAchievements.Items = AllAchievements;
+                        return gameAchievements;
+                    }
+                    cookies = GetCookies();
+                }
+
+                string dataExophase = Web.DownloadStringData(searchResult.Url, cookies).GetAwaiter().GetResult();
 
                 HtmlParser parser = new HtmlParser();
                 IHtmlDocument htmlDocument = parser.Parse(dataExophase);
@@ -96,7 +116,7 @@ namespace SuccessStory.Clients
                                     .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
                                     .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
-                                float.TryParse(sFloat, out float Percent);
+                                _ = float.TryParse(sFloat, out float Percent);
 
                                 string urlUnlocked = SearchAchievements.QuerySelector("img").GetAttribute("src");
                                 string name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
@@ -109,7 +129,8 @@ namespace SuccessStory.Clients
                                     UrlUnlocked = urlUnlocked,
                                     Description = description,
                                     DateUnlocked = default(DateTime),
-                                    Percent = Percent
+                                    Percent = Percent,
+                                    GamerScore = StoreApi.CalcGamerScore(Percent)
                                 });
                             }
                             catch (Exception ex)
@@ -191,7 +212,7 @@ namespace SuccessStory.Clients
 
                 WebView.DeleteDomainCookies(".exophase.com");
                 WebView.Navigate(UrlExophaseLogin);
-                WebView.OpenDialog();
+                _ = WebView.OpenDialog();
             }
 
             List<HttpCookie> httpCookies = WebViewOffscreen.GetCookies().Where(x => x.Domain.IsEqual(".exophase.com")).ToList();
@@ -263,10 +284,10 @@ namespace SuccessStory.Clients
             {
                 Logger.Warn($"No game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
 
-                searchResults = SearchGame(PlayniteTools.NormalizeGameName(gameAchievements.Name));
+                searchResults = SearchGame(CommonPluginsShared.PlayniteTools.NormalizeGameName(gameAchievements.Name));
                 if (searchResults.Count == 0)
                 {
-                    Logger.Warn($"No game found for {PlayniteTools.NormalizeGameName(gameAchievements.Name)} in GetAchievementsPageUrl()");
+                    Logger.Warn($"No game found for {CommonPluginsShared.PlayniteTools.NormalizeGameName(gameAchievements.Name)} in GetAchievementsPageUrl()");
 
                     searchResults = SearchGame(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value);
                     UsedSplit = true;
@@ -278,8 +299,8 @@ namespace SuccessStory.Clients
                 }
             }
 
-            string normalizedGameName = UsedSplit ? PlayniteTools.NormalizeGameName(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value) : PlayniteTools.NormalizeGameName(gameAchievements.Name);
-            SearchResult searchResult = searchResults.Find(x => PlayniteTools.NormalizeGameName(x.Name) == normalizedGameName && PlatformAndProviderMatch(x, gameAchievements, source));
+            string normalizedGameName = UsedSplit ? CommonPluginsShared.PlayniteTools.NormalizeGameName(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value) : CommonPluginsShared.PlayniteTools.NormalizeGameName(gameAchievements.Name);
+            SearchResult searchResult = searchResults.Find(x => CommonPluginsShared.PlayniteTools.NormalizeGameName(x.Name) == normalizedGameName && PlatformAndProviderMatch(x, gameAchievements, source));
 
             if (searchResult == null)
             {
@@ -322,6 +343,7 @@ namespace SuccessStory.Clients
                     if (achievement != null)
                     {
                         achievement.Percent = y.Percent;
+                        achievement.GamerScore = StoreApi.CalcGamerScore(y.Percent);
                     }
                     else
                     {

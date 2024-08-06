@@ -55,12 +55,12 @@ namespace SuccessStory.Clients
         public string CommunicationId { get; set; }
         
 
-        private static string urlBase => @"https://m.np.playstation.com/api/trophy/v1";
-        private static string UrlTrophiesDetails => urlBase + @"/npCommunicationIds/{0}/trophyGroups/all/trophies";
-        private static string UrlTrophies => urlBase + @"/users/me/npCommunicationIds/{0}/trophyGroups/all/trophies";
-        private static string UrlAllTrophies => urlBase + @"/users/me/trophyTitles";
-        private static string TrophiesWithIdsMobileUrl => urlBase + @"/users/me/titles/trophyTitles?npTitleIds={0}";
-        private static string UrlAllTrophyTitles => urlBase + @"/users/me/trophyTitles";
+        private static string UrlBase => @"https://m.np.playstation.com/api/trophy/v1";
+        private static string UrlTrophiesDetails => UrlBase + @"/npCommunicationIds/{0}/trophyGroups/all/trophies";
+        private static string UrlTrophies => UrlBase + @"/users/me/npCommunicationIds/{0}/trophyGroups/all/trophies";
+        private static string UrlAllTrophies => UrlBase + @"/users/me/trophyTitles";
+        private static string TrophiesWithIdsMobileUrl => UrlBase + @"/users/me/titles/trophyTitles?npTitleIds={0}";
+        private static string UrlAllTrophyTitles => UrlBase + @"/users/me/trophyTitles";
 
 
         public PSNAchievements() : base("PSN", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language))
@@ -167,13 +167,34 @@ namespace SuccessStory.Clients
                         Trophie trophieUser = trophies.trophies.Where(x => x.trophyId == trophie.trophyId).FirstOrDefault();
                         float.TryParse(trophieUser?.trophyEarnedRate, NumberStyles.Float, CultureInfo.InvariantCulture, out float Percent);
 
+                        float GamerScore = 0;
+                        switch (trophie.trophyType)
+                        {
+                            case "bronze":
+                                GamerScore = 15;
+                                break;
+                            case "silver":
+                                GamerScore = 30;
+                                break;
+                            case "gold":
+                                GamerScore = 90;
+                                break;
+                            case "platinum":
+                                GamerScore = 180;
+                                break;
+                            default:
+                                GamerScore = 15;
+                                break;
+                        }
+
                         AllAchievements.Add(new Achievements
                         {
                             Name = trophie.trophyName.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
                             Description = trophie.trophyDetail,
                             UrlUnlocked = trophie.trophyIconUrl.IsNullOrEmpty() ? "hidden_trophy.png" : trophie.trophyIconUrl,
                             DateUnlocked = (trophieUser?.earnedDateTime == null) ? default(DateTime) : trophieUser.earnedDateTime,
-                            Percent = Percent == 0 ? 100 : Percent
+                            Percent = Percent == 0 ? 100 : Percent,
+                            GamerScore = GamerScore
                         });
                     }
 

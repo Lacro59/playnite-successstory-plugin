@@ -244,7 +244,7 @@
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <Image HorizontalAlignment="Center" Height="32" VerticalAlignment="Center" Width="32" 
-                                                       Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}, IsAsync=True}" />
+                                                           Source="{Binding Icon, Converter={StaticResource DefaultIconConverter}, IsAsync=True}" />
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
@@ -282,7 +282,7 @@
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <Label Content="{Binding SourceIcon}" FontFamily="{DynamicResource CommonFont}" 
-                                                       HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="30" />
+                                                           HorizontalAlignment="Center" VerticalAlignment="Stretch" FontSize="30" />
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
@@ -347,6 +347,10 @@
                                                     </Grid>
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+
+                                        <GridViewColumn Width="110" DisplayMemberBinding="{Binding TotalGamerScore}" x:Name="lvTotalGamerScore">
+                                            <GridViewColumnHeader Content="Gamerscore" />
                                         </GridViewColumn>
                                     </GridView>
                                 </ListView.View>
@@ -663,6 +667,10 @@
 
                             <GridViewColumn Width="150" DisplayMemberBinding="{Binding AchDateUnlock, Converter={StaticResource LocalDateTimeConverter}}">
                                 <GridViewColumnHeader Content="{DynamicResource LOCSuccessStoryDateUnlocked}" />
+                            </GridViewColumn>
+
+                            <GridViewColumn Width="110" DisplayMemberBinding="{Binding Gamerscore}" x:Name="lvGamerScore">
+                                <GridViewColumnHeader Content="Gamerscore" />
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>

@@ -79,6 +79,8 @@ namespace SuccessStory.Clients
                                     CategoryIcon = CategoryIcon,
                                     Category = Category,
 
+                                    GamerScore = x.Reward,
+
                                     DateUnlocked = default(DateTime)
                                 });
                             });

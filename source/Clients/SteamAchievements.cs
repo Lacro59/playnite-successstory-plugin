@@ -104,11 +104,16 @@ namespace SuccessStory.Clients
                         UrlLocked = x.UrlLocked,
                         DateUnlocked = x.DateUnlocked,
                         IsHidden = x.IsHidden,
-                        Percent = x.Percent
+                        Percent = x.Percent,
+                        GamerScore = x.GamerScore
                     }).ToList();
 
                     gameAchievements.Items = AllAchievements;
-                    gameAchievements.ItemsStats = GetUsersStats(appId);
+                    gameAchievements.ItemsStats = SteamApi.GetUsersStats(appId, SteamApi.CurrentAccountInfos)?.Select(x => new GameStats
+                    {
+                        Name = x.Name,
+                        Value = double.Parse(x.Value)
+                    })?.ToList() ?? new List<GameStats>();
                 }
 
                 // Set source link
@@ -174,8 +179,8 @@ namespace SuccessStory.Clients
                 }
             }
 
-            gameAchievements = SetRarity(appId, gameAchievements);
-            gameAchievements = SetMissingDescription(appId, gameAchievements);
+            SetRarity(appId, gameAchievements);
+            //SetMissingDescription(appId, gameAchievements);
             gameAchievements.SetRaretyIndicator();
 
             return gameAchievements;
@@ -245,8 +250,8 @@ namespace SuccessStory.Clients
                 };
             }
 
-            gameAchievements = SetRarity(appId, gameAchievements);
-            gameAchievements = SetMissingDescription(appId, gameAchievements);
+            SetRarity(appId, gameAchievements);
+            //SetMissingDescription(appId, gameAchievements);
             gameAchievements.SetRaretyIndicator();
 
             return gameAchievements;
@@ -287,38 +292,25 @@ namespace SuccessStory.Clients
         }
 
 
-        private GameAchievements SetRarity(uint appId, GameAchievements gameAchievements)
+        public void SetRarity(uint appId, GameAchievements gameAchievements)
         {
-            if (gameAchievements.HasAchievements && gameAchievements.Items?.Where(x => x.Percent != 100)?.Count() == 0)
+            ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(appId.ToString(), null);
+            steamAchievements.ForEach(x =>
             {
-                if (!IsLocal && !SteamApi.CurrentAccountInfos.ApiKey.IsNullOrEmpty())
+                Achievements finded = gameAchievements.Items?.Find(y => y.ApiName.IsEqual(x.Id));
+                if (finded != null)
                 {
-                    try
-                    {
-                        gameAchievements.Items = GetGlobalAchievementPercentagesForAppByWeb(appId, gameAchievements.Items);
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
+                    finded.GamerScore = x.GamerScore;
                 }
                 else
                 {
-                    try
-                    {
-                        gameAchievements.Items = GetGlobalAchievementPercentagesForApp(appId, gameAchievements.Items);
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
-                }
-            }
 
-            return gameAchievements;
+                }
+            });
         }
 
-        private GameAchievements SetMissingDescription(uint appId, GameAchievements gameAchievements)
+        /*
+        private void SetMissingDescription(uint appId, GameAchievements gameAchievements)
         {
             if (gameAchievements.HasAchievements && gameAchievements.Items?.Where(x => !x.Description.IsNullOrEmpty())?.Count() == 0)
             {
@@ -333,10 +325,8 @@ namespace SuccessStory.Clients
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
             }
-
-            return gameAchievements;
         }
-
+        */
 
 
         #region Configuration
@@ -482,95 +472,7 @@ namespace SuccessStory.Clients
         }
 
 
-        private List<GameStats> GetUsersStats(uint AppId)
-        {
-            List<GameStats> AllStats = new List<GameStats>();
-
-            if (!SteamApi.CurrentAccountInfos.ApiKey.IsNullOrEmpty())
-            {
-                return AllStats;
-            }
-
-            try
-            {
-                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApi.CurrentAccountInfos.ApiKey))
-                {
-                    KeyValue UserStats = steamWebAPI.GetUserStatsForGame(steamid: SteamApi.CurrentAccountInfos.UserId, appid: AppId, l: LocalLang);
-
-                    if (UserStats != null && UserStats.Children != null)
-                    {
-                        KeyValue UserStatsData = UserStats.Children.Find(x => x.Name == "stats");
-                        if (UserStatsData != null)
-                        {
-                            foreach (KeyValue StatsData in UserStatsData.Children)
-                            {
-                                double.TryParse(StatsData.Children.First().Value.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out double ValueStats);
-
-                                AllStats.Add(new GameStats
-                                {
-                                    Name = StatsData.Name,
-                                    DisplayName = string.Empty,
-                                    Value = ValueStats
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-            // TODO With recent SteamKit
-            //catch (WebAPIRequestException wex)
-            //{
-            //    if (wex.StatusCode == HttpStatusCode.Forbidden)
-            //    {
-            //        _API.Instance.Notifications.Add(new NotificationMessage(
-            //            $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
-            //            $"{PluginDatabase.PluginName} - Steam profil is private",
-            //            NotificationType.Error
-            //        ));
-            //        logger.Warn("Steam profil is private");
-            //    }
-            //    else
-            //    {
-            //        Common.LogError(wex, false, $"Error on GetUsersStats({SteamApi.CurrentAccountInfos.UserId}, {AppId}, {LocalLang})");
-            //    }
-            //}
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError)
-                {
-                    if (ex.Response is HttpWebResponse response)
-                    {
-                        if (response.StatusCode == HttpStatusCode.Forbidden)
-                        {
-                            API.Instance.Notifications.Add(new NotificationMessage(
-                                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-PrivateProfil",
-                                $"{PluginDatabase.PluginName}\r\n{ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamPrivate")}",
-                                NotificationType.Error,
-                                () => Process.Start(@"https://steamcommunity.com/my/edit/settings")
-                            ));
-                            Logger.Warn("Steam profil is private");
-
-                            // TODO https://github.com/Lacro59/playnite-successstory-plugin/issues/76
-                            Common.LogError(ex, false, $"Error on GetUsersStats({SteamApi.CurrentAccountInfos.UserId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
-                        }
-                    }
-                    else
-                    {
-                        // no http status code available
-                        Common.LogError(ex, false, $"Error on GetUsersStats({SteamApi.CurrentAccountInfos.UserId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
-                    }
-                }
-                else
-                {
-                    // no http status code available
-                    Common.LogError(ex, false, $"Error on GetUsersStats({SteamApi.CurrentAccountInfos.UserId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
-                }
-            }
-
-            return AllStats;
-        }
-
-
+        /*
         // TODO Use "profileurl" in "ISteamUser"
         // TODO Utility after updated GetAchievementsByWeb()
         private string FindHiddenDescription(uint AppId, string DisplayName, bool TryByName = false)
@@ -664,141 +566,7 @@ namespace SuccessStory.Clients
 
             return string.Empty;
         }
-
-
-        public List<Achievements> GetGlobalAchievementPercentagesForApp(uint AppId, List<Achievements> AllAchievements)
-        {
-            if (!SteamApi.CurrentAccountInfos.ApiKey.IsNullOrEmpty())
-            {
-                return AllAchievements;
-            }
-
-            try
-            {
-                using (dynamic steamWebAPI = WebAPI.GetInterface("ISteamUserStats", SteamApi.CurrentAccountInfos.ApiKey))
-                {
-                    KeyValue GlobalAchievementPercentagesForApp = steamWebAPI.GetGlobalAchievementPercentagesForApp(gameid: AppId);
-                    foreach (KeyValue AchievementPercentagesData in GlobalAchievementPercentagesForApp["achievements"]["achievement"].Children)
-                    {
-                        string ApiName = AchievementPercentagesData.Children.Find(x => x.Name == "name")?.Value;
-                        float.TryParse(AchievementPercentagesData.Children.Find(x => x.Name == "percent")?.Value?.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator), out float Percent);
-
-                        Common.LogDebug(true, $"{AppId} - ApiName: {ApiName} - Percent: {Percent}");
-
-                        if (AllAchievements.Find(x => x.ApiName == ApiName) != null)
-                        {
-                            AllAchievements.Find(x => x.ApiName == ApiName).Percent = Percent;
-                        }
-                        else
-                        {
-                            Logger.Warn($"not find for {AppId} - ApiName: {ApiName} - Percent: {Percent}");
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, $"Error on GetGlobalAchievementPercentagesForApp({SteamApi.CurrentAccountInfos.UserId}, {AppId}, {LocalLang})", true, PluginDatabase.PluginName);
-            }
-
-            return AllAchievements;
-        }
-
-        private List<Achievements> GetGlobalAchievementPercentagesForAppByWeb(uint AppId, List<Achievements> AllAchievements)
-        {
-            string url = string.Empty;
-            string ResultWeb = string.Empty;
-            bool noData = true;
-            HtmlDocument = null;
-
-            // Get data
-            if (HtmlDocument == null)
-            {
-                Common.LogDebug(true, $"GetGlobalAchievementPercentagesForAppByWeb() for {SteamApi.CurrentAccountInfos.UserId} - {AppId}");
-
-                url = string.Format(UrlAchievements, AppId, LocalLang);
-                try
-                {
-                    //ResultWeb = HttpDownloader.DownloadString(url, Encoding.UTF8);
-                    using (IWebView WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
-                    {
-                        WebViewOffscreen.NavigateAndWait(url);
-                        ResultWeb = WebViewOffscreen.GetPageSource();
-                    }
-                }
-                catch (WebException ex)
-                {
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                }
-
-                if (!ResultWeb.IsNullOrEmpty())
-                {
-                    HtmlParser parser = new HtmlParser();
-                    HtmlDocument = parser.Parse(ResultWeb);
-
-                    if (HtmlDocument.QuerySelectorAll("div.achieveRow").Length != 0)
-                    {
-                        noData = false;
-                    }
-                }
-
-                if (noData)
-                {
-                    return AllAchievements;
-                }
-            }
-
-
-            // Find the achievement description
-            if (HtmlDocument != null)
-            {
-                foreach (IElement achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
-                {
-                    try
-                    {
-                        string Name = string.Empty;
-                        if (achieveRow.QuerySelector("h3") != null)
-                        {
-                            Name = WebUtility.HtmlDecode(achieveRow.QuerySelector("h3").InnerHtml.Trim());
-                        }
-
-                        float Percent = 0;
-                        if (achieveRow.QuerySelector(".achievePercent") != null)
-                        {
-                            Percent = float.Parse(achieveRow.QuerySelector(".achievePercent").InnerHtml.Replace("%", string.Empty).Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
-                        }
-
-                        //AllAchievements.Find(x => x.Name.IsEqual(Name)).Percent = Percent;
-                        Achievements achievement = AllAchievements.Find(x => x.Name.IsEqual(Name));
-                        if (achievement != null)
-                        {
-                            achievement.Percent = Percent;
-                        }
-                        else
-                        {
-                            // locked hidden achievements aren't listed on user's achievement page
-                            AllAchievements.Add(new Achievements
-                            {
-                                Name = Name,
-                                ApiName = string.Empty,
-                                Description = WebUtility.HtmlDecode(achieveRow.QuerySelector("div.achieveRow h5 span")?.InnerHtml?.Trim() ?? string.Empty),
-                                UrlUnlocked = achieveRow.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty,
-                                UrlLocked = achieveRow.QuerySelector(".compareImg img")?.GetAttribute("src") ?? string.Empty,
-                                DateUnlocked = default(DateTime),
-                                IsHidden = true,
-                                Percent = Percent
-                            });
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
-                }
-            }
-
-            return AllAchievements;
-        }
+        */
 
 
         private List<Achievements> GetProgressionByWeb(List<Achievements> Achievements, string Url, bool isRetry = false)
@@ -948,7 +716,7 @@ namespace SuccessStory.Clients
                 {
                     ResetCachedConfigurationValidationResult();
                     ResetCachedIsConnectedResult();
-                    PluginDatabase.Plugin.OpenSettingsView();
+                    _ = PluginDatabase.Plugin.OpenSettingsView();
                 }
             ));
         }

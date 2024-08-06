@@ -25,6 +25,7 @@ namespace SuccessStory.Models
         public int ProgressionValue { get; set; }
         public int Total { get; set; }
         public string TotalPercent { get; set; }
+        public float TotalGamerScore { get; set; }
         public int Unlocked { get; set; }
         public bool IsManual { get; set; }
 

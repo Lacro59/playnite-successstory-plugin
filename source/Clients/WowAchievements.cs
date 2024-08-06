@@ -83,7 +83,8 @@ namespace SuccessStory.Clients
                                         Description = achievement.Description,
                                         UrlUnlocked = achievement.Icon.Url,
                                         UrlLocked = string.Empty,
-                                        DateUnlocked = achievement.Time == null ? default : achievement.Time.ToLocalTime()
+                                        DateUnlocked = achievement.Time == null ? default : achievement.Time.ToLocalTime(),
+                                        GamerScore = achievement.Point
                                     });
                                 }
                             }

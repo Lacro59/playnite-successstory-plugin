@@ -75,17 +75,21 @@ namespace SuccessStory.Clients
                         string Description = TrophyXml.Element("detail").Value;
 
                         int Percent = 100;
+                        float GamerScore = 15;
                         if (TrophyType.IsEqual("S"))
                         {
                             Percent = 30;
+                            GamerScore = 30;
                         }
                         if (TrophyType.IsEqual("G"))
                         {
                             Percent = 10;
+                            GamerScore = 90;
                         }
                         if (TrophyType.IsEqual("P"))
                         {
                             Percent = 5;
+                            GamerScore = 180;
                         }
 
                         AllAchievements.Add(new Achievements
@@ -97,6 +101,7 @@ namespace SuccessStory.Clients
                             UrlLocked = string.Empty,
                             DateUnlocked = default(DateTime),
                             Percent = Percent,
+                            GamerScore = GamerScore,
 
                             CategoryRpcs3 = TrophyDirectories.Count > 1 ? GameName : null
                         });

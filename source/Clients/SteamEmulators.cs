@@ -988,7 +988,8 @@ namespace SuccessStory.Clients
                                 Description = x.Description,
                                 UrlUnlocked = x.UrlUnlocked,
                                 UrlLocked = x.UrlLocked,
-                                DateUnlocked = x.DateUnlocked
+                                DateUnlocked = x.DateUnlocked,
+                                GamerScore = x.GamerScore
                             };
 
                             isFind = true;

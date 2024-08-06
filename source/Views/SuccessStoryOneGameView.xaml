@@ -138,6 +138,11 @@
                             <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityUltraRareColor}" />
                             <Label Content="{DynamicResource LOCSuccessStoryUltraRare}" />
                         </StackPanel>
+
+                        <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Visibility="{Binding Settings.EnableGamerScore, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Label Content="&#xeacd;" FontFamily="{DynamicResource CommonFont}" Margin="0,0,10,0" />
+                            <Label Content="Gamerscore" />
+                        </StackPanel>
                     </StackPanel>
 
                     <StackPanel DockPanel.Dock="Right">
@@ -145,6 +150,7 @@
                         <Label Content="{Binding AchNoCommon.Stats}" Margin="0,10,0,0" />
                         <Label Content="{Binding AchRare.Stats}" Margin="0,10,0,0" />
                         <Label Content="{Binding AchRare.Stats}" Margin="0,10,0,0" Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <Label Content="{Binding TotalGamerScore}" Margin="0,10,0,0" Visibility="{Binding Settings.EnableGamerScore, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </StackPanel>
 
                     <StackPanel></StackPanel>

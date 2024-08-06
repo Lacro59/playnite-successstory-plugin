@@ -165,7 +165,9 @@ namespace SuccessStory.Controls
 
         public override void SetDefaultDataContext()
         {
+            ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
             bool IsActivated = PluginDatabase.PluginSettings.Settings.EnableIntegrationList;
+
             bool ShowHiddenIcon = PluginDatabase.PluginSettings.Settings.ShowHiddenIcon;
             bool ShowHiddenTitle = PluginDatabase.PluginSettings.Settings.ShowHiddenTitle;
             bool ShowHiddenDescription = PluginDatabase.PluginSettings.Settings.ShowHiddenDescription;
@@ -462,6 +464,9 @@ namespace SuccessStory.Controls
 
     public class PluginListDataContext : ObservableObject, IDataContext
     {
+        private SuccessStorySettings settings;
+        public SuccessStorySettings Settings { get => settings; set => SetValue(ref settings, value); }
+
         private bool isActivated;
         public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
 

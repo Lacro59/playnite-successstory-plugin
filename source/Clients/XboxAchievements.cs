@@ -16,6 +16,7 @@ using CommonPlayniteShared.PluginLibrary.XboxLibrary;
 using CommonPluginsShared.Extensions;
 using static CommonPluginsShared.PlayniteTools;
 using CommonPlayniteShared.PluginLibrary.XboxLibrary.Services;
+using SuccessStory.Models.Xbox;
 
 namespace SuccessStory.Clients
 {
@@ -298,7 +299,6 @@ namespace SuccessStory.Clients
             }
 
             List<Achievements> achievements = relevantAchievements.Select(ConvertToAchievement).ToList();
-
             return achievements;
         }
 
@@ -360,12 +360,13 @@ namespace SuccessStory.Clients
             {
                 ApiName = string.Empty,
                 Name = xboxAchievement.name,
-                Description = (xboxAchievement.progression.timeUnlocked == default(DateTime)) ? xboxAchievement.lockedDescription : xboxAchievement.description,
+                Description = (xboxAchievement.progression.timeUnlocked == default) ? xboxAchievement.lockedDescription : xboxAchievement.description,
                 IsHidden = xboxAchievement.isSecret,
                 Percent = 100,
                 DateUnlocked = xboxAchievement.progression.timeUnlocked,
                 UrlLocked = string.Empty,
                 UrlUnlocked = xboxAchievement.mediaAssets[0].url,
+                GamerScore = float.Parse(xboxAchievement.rewards?.FirstOrDefault(x => x.type.IsEqual("Gamerscore"))?.value ?? "0")
             };
         }
 
@@ -380,10 +381,10 @@ namespace SuccessStory.Clients
                 Description = unlocked ? xboxAchievement.lockedDescription : xboxAchievement.description,
                 IsHidden = xboxAchievement.isSecret,
                 Percent = 100,
-                DateUnlocked = unlocked ? xboxAchievement.timeUnlocked : default(DateTime),
+                DateUnlocked = unlocked ? xboxAchievement.timeUnlocked : default,
                 UrlLocked = string.Empty,
                 UrlUnlocked = $"https://image-ssl.xboxlive.com/global/t.{xboxAchievement.titleId:x}/ach/0/{xboxAchievement.imageId:x}",
-                
+                GamerScore = xboxAchievement.gamerscore
             };
         }
 
@@ -402,96 +403,4 @@ namespace SuccessStory.Clients
         }
         #endregion
     }
-
-
-    public class PagingInfo
-    {
-        public string continuationToken { get; set; }
-        public int totalRecords { get; set; }
-    }
-
-
-    #region Xbox One models
-    public class XboxOneAchievement
-    {
-        public string id { get; set; }
-        public string serviceConfigId { get; set; }
-        public string name { get; set; }
-        public List<TitleAssociations> titleAssociations { get; set; }
-        public string progressState { get; set; }
-        public Progression progression { get; set; }
-        public List<MediaAssets> mediaAssets { get; set; }
-        public List<string> platforms { get; set; }
-        public bool isSecret { get; set; }
-        public string description { get; set; }
-        public string lockedDescription { get; set; }
-        public string productId { get; set; }
-        public string achievementType { get; set; }
-        public string participationType { get; set; }
-    }
-
-    public class TitleAssociations
-    {
-        public string name { get; set; }
-        public int id { get; set; }
-    }
-
-    public class Progression
-    {
-        public List<Requirements> requirements { get; set; }
-        public DateTime timeUnlocked { get; set; }
-    }
-
-    public class Requirements
-    {
-        public string id { get; set; }
-        public string current { get; set; }
-        public string target { get; set; }
-        public string operationType { get; set; }
-        public string valueType { get; set; }
-        public string ruleParticipationType { get; set; }
-    }
-
-    public class MediaAssets
-    {
-        public string name { get; set; }
-        public string type { get; set; }
-        public string url { get; set; }
-    }
-
-    public class XboxOneAchievementResponse
-    {
-        public List<XboxOneAchievement> achievements { get; set; }
-        public PagingInfo pagingInfo { get; set; }
-    }
-    #endregion Xbox One models
-
-    #region Xbox 360 models
-    public class Xbox360Achievement
-    {
-        public int id { get; set; }
-        public int titleId { get; set; }
-        public string name { get; set; }
-        public long sequence { get; set; }
-        public int flags { get; set; }
-        public bool unlockedOnline { get; set; }
-        public bool unlocked { get; set; }
-        public bool isSecret { get; set; }
-        public int platform { get; set; }
-        public int gamerscore { get; set; }
-        public int imageId { get; set; }
-        public string description { get; set; }
-        public string lockedDescription { get; set; }
-        public int type { get; set; }
-        public bool isRevoked { get; set; }
-        public DateTime timeUnlocked { get; set; }
-    }
-
-    public class Xbox360AchievementResponse
-    {
-        public List<Xbox360Achievement> achievements { get; set; }
-        public PagingInfo pagingInfo { get; set; }
-        public DateTime version { get; set; }
-    }
-    #endregion Xbox 360 models
 }

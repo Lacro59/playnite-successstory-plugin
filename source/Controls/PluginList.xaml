@@ -13,10 +13,10 @@
         xmlns:converters1="clr-namespace:SuccessStory.Converters"
         xmlns:controls1="clr-namespace:CommonPluginsControls.Controls"
         xmlns:customs="clr-namespace:SuccessStory.Controls.Customs" 
-        mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="150"
+        mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:PluginListDataContext, IsDesignTimeCreatable=True}"
-        MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight}"
-        Height="{Binding Height}"
+        MinHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MinHeight, FallbackValue=400}"
+        Height="{Binding Height}" d:DesignWidth="600"
         MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=ContentControl}, Path=MaxHeight}">
 
     <controls:PluginUserControlExtend.Resources>
@@ -247,6 +247,12 @@
                                     </TextBlock.Style>
                                 </TextBlock>
                             </Grid>
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,5,5"
+                                        Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.EnableGamerScore, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Label Content="&#xeacd;" FontFamily="{DynamicResource CommonFont}" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding GamerScore}" Width="25" TextAlignment="Right" VerticalAlignment="Center" />
+                            </StackPanel>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

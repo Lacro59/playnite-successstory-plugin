@@ -32,6 +32,7 @@ namespace SuccessStory
         public DateTime LastAutoLibUpdateAssetsDownload { get; set; } = DateTime.Now;
 
         public bool EnableTag { get; set; } = false;
+        public bool EnableGamerScore { get; set; } = true;
         public bool AutoImport { get; set; } = true;
 
         public bool ShowHiddenIcon { get; set; } = false;

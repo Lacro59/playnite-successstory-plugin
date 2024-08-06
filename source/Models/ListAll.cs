@@ -29,6 +29,8 @@ namespace SuccessStory.Models
         public DateTime? LastUnlock { get; set; }
         public List<DateTime> DatesUnlock { get; set; }
 
+        public float Gamerscore { get; set; }
+
 
         [DontSerialize]
         public Guid GameId

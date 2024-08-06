@@ -25,6 +25,9 @@ namespace SuccessStory.Models
 
         public bool ShowStats { get; set; } = true;
 
+        [DontSerialize]
+        public float TotalGamerScore => Items?.Where(x => x.IsUnlock).Sum(x => x.GamerScore) ?? 0;
+
 
         [DontSerialize]
         public OrderAchievement orderAchievement;
