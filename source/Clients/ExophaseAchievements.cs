@@ -64,81 +64,49 @@ namespace SuccessStory.Clients
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> AllAchievements = new List<Achievements>();
-            string gameName = string.Empty;
 
             try
             {
-                List<HttpCookie> cookies = null;
-                if (PluginDatabase.PluginSettings.Settings.UseLocalised)
+                string dataExophaseLocalised = string.Empty;
+                string dataExophase = Web.DownloadStringData(searchResult.Url).GetAwaiter().GetResult();
+
+                if (PluginDatabase.PluginSettings.Settings.UseLocalised && !IsConnected())
                 {
-                    if (!IsConnected())
-                    {
-                        Logger.Warn($"Exophase is disconnected");
-                        string message = string.Format(ResourceProvider.GetString("LOCCommonStoresNoAuthenticate"), "Exophase");
-                        API.Instance.Notifications.Add(new NotificationMessage(
-                            $"{PluginDatabase.PluginName}-Exophase-disconnected",
-                            $"{PluginDatabase.PluginName}\r\n{message}",
-                            NotificationType.Error,
-                            () => PluginDatabase.Plugin.OpenSettingsView()
-                        ));
-                        gameAchievements.Items = AllAchievements;
-                        return gameAchievements;
-                    }
-                    cookies = GetCookies();
+                    Logger.Warn($"Exophase is disconnected");
+                    string message = string.Format(ResourceProvider.GetString("LOCCommonStoresNoAuthenticate"), "Exophase");
+                    API.Instance.Notifications.Add(new NotificationMessage(
+                        $"{PluginDatabase.PluginName}-Exophase-disconnected",
+                        $"{PluginDatabase.PluginName}\r\n{message}",
+                        NotificationType.Error,
+                        () => PluginDatabase.Plugin.OpenSettingsView()
+                    ));
                 }
-
-                string dataExophase = Web.DownloadStringData(searchResult.Url, cookies).GetAwaiter().GetResult();
-
-                HtmlParser parser = new HtmlParser();
-                IHtmlDocument htmlDocument = parser.Parse(dataExophase);
-
-                AllAchievements = new List<Achievements>();
-                IHtmlCollection<IElement> sectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
-                gameName = htmlDocument.QuerySelector("h2.me-2 a")?.GetAttribute("title");
-
-                if (sectionAchievements == null || sectionAchievements.Count() == 0)
+                else
                 {
                     Logger.Warn($"Problem with {searchResult.Url}");
                     if (!IsRetry)
                     {
                         return GetAchievements(game, searchResult, true);
                     }
+
+                    dataExophaseLocalised = Web.DownloadStringData(searchResult.Url, GetCookies()).GetAwaiter().GetResult();
                 }
-                else
+
+                List<Achievements> All = ParseData(dataExophase);
+                List<Achievements> AllLocalised = dataExophaseLocalised.IsNullOrEmpty() ? new List<Achievements>() : ParseData(dataExophaseLocalised);
+
+                for (int i = 0; i < All.Count; i++)
                 {
-                    foreach (IElement section in sectionAchievements)
+                    AllAchievements.Add(new Achievements 
                     {
-                        foreach (IElement SearchAchievements in section.QuerySelectorAll("li"))
-                        {
-                            try
-                            {
-                                string sFloat = SearchAchievements.GetAttribute("data-average")
-                                    .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
-                                    .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
-
-                                _ = float.TryParse(sFloat, out float Percent);
-
-                                string urlUnlocked = SearchAchievements.QuerySelector("img").GetAttribute("src");
-                                string name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
-                                string description = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.award-description p").InnerHtml);
-                                bool isHidden = SearchAchievements.GetAttribute("class").IndexOf("secret") > -1;
-
-                                AllAchievements.Add(new Achievements
-                                {
-                                    Name = name,
-                                    UrlUnlocked = urlUnlocked,
-                                    Description = description,
-                                    DateUnlocked = default(DateTime),
-                                    Percent = Percent,
-                                    GamerScore = StoreApi.CalcGamerScore(Percent)
-                                });
-                            }
-                            catch (Exception ex)
-                            {
-                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                            }
-                        }
-                    }
+                        Name = AllLocalised.Count > 0 ? AllLocalised[i].Name : All[i].Name,
+                        ApiName = All[i].Name,
+                        UrlUnlocked = All[i].UrlUnlocked,
+                        Description = AllLocalised.Count > 0 ? AllLocalised[i].Description : All[i].Description,
+                        DateUnlocked = All[i].DateUnlocked,
+                        Percent = All[i].Percent,
+                        GamerScore = All[i].GamerScore
+                    });
                 }
             }
             catch (Exception ex)
@@ -155,7 +123,7 @@ namespace SuccessStory.Clients
             {
                 gameAchievements.SourcesLink = new SourceLink
                 {
-                    GameName = searchResult.Name.IsNullOrEmpty() ? gameName : searchResult.Name,
+                    GameName = searchResult.Name.IsNullOrEmpty() ? searchResult.Name : searchResult.Name,
                     Name = "Exophase",
                     Url = searchResult.Url
                 };
@@ -334,66 +302,31 @@ namespace SuccessStory.Clients
 
                 exophaseAchievements.Items.ForEach(y =>
                 {
-                    Achievements achievement = gameAchievements.Items.Find(x => x.Name.IsEqual(y.Name));
+                    Achievements achievement = gameAchievements.Items.Find(x => x.ApiName.IsEqual(y.ApiName));
                     if (achievement == null)
                     {
-                        achievement = gameAchievements.Items.Find(x => x.ApiName.IsEqual(y.Name));
+                        achievement = gameAchievements.Items.Find(x => x.Name.IsEqual(y.Name));
+                        if (achievement == null)
+                        {
+                            achievement = gameAchievements.Items.Find(x => x.Name.IsEqual(y.ApiName));
+                        }
                     }
 
                     if (achievement != null)
                     {
+                        achievement.ApiName = y.ApiName;
                         achievement.Percent = y.Percent;
                         achievement.GamerScore = StoreApi.CalcGamerScore(y.Percent);
-                    }
-                    else
-                    {
-                        Logger.Warn($"No Exophase (rarity) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
-                    }
-                });
 
-                PluginDatabase.AddOrUpdate(gameAchievements);
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-            }
-        }
-
-
-        public void SetMissingDescription(GameAchievements gameAchievements, Services.SuccessStoryDatabase.AchievementSource source)
-        {
-            string achievementsUrl = GetAchievementsPageUrl(gameAchievements, source);
-            if (achievementsUrl.IsNullOrEmpty())
-            {
-                Logger.Warn($"No Exophase (description) url find for {gameAchievements.Name} - {gameAchievements.Id}");
-                return;
-            }
-
-            try
-            {
-                GameAchievements exophaseAchievements = GetAchievements(
-                    API.Instance.Database.Games.Get(gameAchievements.Id),
-                    achievementsUrl
-                );
-
-                exophaseAchievements.Items.ForEach(y => 
-                {
-                    Achievements achievement = gameAchievements.Items.Find(x => x.Name.IsEqual(y.Name));
-                    if (achievement == null)
-                    {
-                        achievement = gameAchievements.Items.Find(x => x.ApiName.IsEqual(y.Name));
-                    }
-
-                    if (achievement != null)
-                    {
-                        if (achievement.Description.IsNullOrEmpty())
+                        if (PluginDatabase.PluginSettings.Settings.UseLocalised && IsConnected())
                         {
+                            achievement.Name = y.Name;
                             achievement.Description = y.Description;
                         }
                     }
                     else
                     {
-                        Logger.Warn($"No Exophase (description) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
+                        Logger.Warn($"No Exophase (rarity) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
                     }
                 });
 
@@ -451,7 +384,7 @@ namespace SuccessStory.Clients
 
         private static bool PlatformsMatch(SearchResult exophaseGame, GameAchievements playniteGame)
         {
-            foreach (Playnite.SDK.Models.Platform playnitePlatform in playniteGame.Platforms)
+            foreach (Platform playnitePlatform in playniteGame.Platforms)
             {
                 string[] exophasePlatformNames;
                 string sourceName = API.Instance.Database.Games.Get(playniteGame.Id).Source?.Name;
@@ -478,5 +411,59 @@ namespace SuccessStory.Clients
             return false;
         }
         #endregion
+
+
+        private List<Achievements> ParseData(string data)
+        {
+            HtmlParser parser = new HtmlParser();
+            IHtmlDocument htmlDocument = parser.Parse(data);
+
+            List<Achievements> AllAchievements = new List<Achievements>();
+            IHtmlCollection<IElement> sectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
+            string gameName = htmlDocument.QuerySelector("h2.me-2 a")?.GetAttribute("title");
+
+            if (sectionAchievements == null || sectionAchievements.Count() == 0)
+            {
+                return null;
+            }
+            else
+            {
+                foreach (IElement section in sectionAchievements)
+                {
+                    foreach (IElement SearchAchievements in section.QuerySelectorAll("li"))
+                    {
+                        try
+                        {
+                            string sFloat = SearchAchievements.GetAttribute("data-average")
+                                .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+
+                            _ = float.TryParse(sFloat, out float Percent);
+
+                            string urlUnlocked = SearchAchievements.QuerySelector("img").GetAttribute("src");
+                            string name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
+                            string description = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.award-description p").InnerHtml);
+                            bool isHidden = SearchAchievements.GetAttribute("class").IndexOf("secret") > -1;
+
+                            AllAchievements.Add(new Achievements
+                            {
+                                Name = name,
+                                UrlUnlocked = urlUnlocked,
+                                Description = description,
+                                DateUnlocked = default(DateTime),
+                                Percent = Percent,
+                                GamerScore = StoreApi.CalcGamerScore(Percent)
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                        }
+                    }
+                }
+            }
+
+            return AllAchievements;
+        }
     }
 }
