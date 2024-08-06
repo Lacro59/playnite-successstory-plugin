@@ -227,6 +227,10 @@ namespace SuccessStory
         [DontSerialize]
         public int Total { get => total; set => SetValue(ref total, value); }
 
+        private int totalGamerScore  = 0;
+        [DontSerialize]
+        public int TotalGamerScore { get => totalGamerScore; set => SetValue(ref totalGamerScore, value); }
+
         private int percent = 0;
         [DontSerialize]
         public int Percent { get => percent; set => SetValue(ref percent, value); }
