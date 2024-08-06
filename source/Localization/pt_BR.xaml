@@ -20,8 +20,8 @@
     <sys:String x:Key="LOCSuccessStoryViewGames">Ver as conquistas dos jogos</sys:String>
     <sys:String x:Key="LOCSuccessStoryViewGame">Ver a conquista do jogo</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnored">Ignorado o jogo</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotIgnored">Não ignorado o jogo</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnored">Ignorar jogo</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotIgnored">Não ignorar jogo</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Conquista oculta</sys:String>
 
@@ -91,7 +91,7 @@
     <sys:String x:Key="LOCSuccessStoryRefreshData">Recarregar dados</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Baixar dados faltando</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Jogos recentes com dados faltando</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Partidas recentes</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Jogos recentes</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllData">Todos os jogos</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetAllData">Todos os jogos com dados faltando</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Jogos instalados com dados faltando</sys:String>
