@@ -80,6 +80,7 @@ namespace SuccessStory.Clients
                     // Check private game
                     if (steamAchievements.Count(x => !(x.DateUnlocked == default || x.DateUnlocked == null || x.DateUnlocked.ToString().Contains("0001"))) == 0)
                     {
+                        Logger.Info($"No unlocked achievement, check if the game is private - {game.Name} - {game.GameId}");
                         bool gameIsPrivate = SteamApi.CheckGameIsPrivate(appId, SteamApi.CurrentAccountInfos);
                         if (gameIsPrivate)
                         {
