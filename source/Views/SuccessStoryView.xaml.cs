@@ -328,6 +328,7 @@ namespace SuccessStory
                      {
                          PART_DatePicker.SelectedDate = Filters.FilterDate;
                          PART_FilteredGames.IsChecked = Filters.FilteredGames;
+                         PART_NoUnlockedGames.IsChecked = Filters.HideNoUnlocked;
                          PART_FilterRange.UpperValue = Filters.FilterRangeMax;
                          PART_FilterRange.LowerValue = Filters.FilterRangeMin;
                          TextboxSearch.Text = Filters.SearchText;
@@ -416,7 +417,8 @@ namespace SuccessStory
                         FilterRangeMin = PART_FilterRange.LowerValue,
                         SearchSources = SearchSources,
                         SearchStatus = SearchStatus,
-                        SearchText = TextboxSearch.Text
+                        SearchText = TextboxSearch.Text,
+                        HideNoUnlocked = (bool)PART_NoUnlockedGames.IsChecked
                     };
 
                     API.Instance.MainView.SelectGame(Id);
@@ -535,9 +537,10 @@ namespace SuccessStory
             double Max = PART_FilterRange.UpperValue;
 
             bool OnlyFilteredGames = (bool)PART_FilteredGames.IsChecked;
+            bool HideNoUnlocked = (bool)PART_NoUnlockedGames.IsChecked;
 
-            DateTime dateStart = default(DateTime);
-            DateTime dateEnd = default(DateTime);
+            DateTime dateStart = default;
+            DateTime dateEnd = default;
             if (!PART_TextDate.Text.IsNullOrEmpty())
             {
                 dateStart = (DateTime)PART_DatePicker.SelectedDate;
@@ -548,10 +551,10 @@ namespace SuccessStory
             if (SearchSources.Contains(ResourceProvider.GetString("LOCSuccessStoryManualAchievements")))
             {
                 IsManual = true;
-                SearchSources.Remove(ResourceProvider.GetString("LOCSuccessStoryManualAchievements"));
+                _ = SearchSources.Remove(ResourceProvider.GetString("LOCSuccessStoryManualAchievements"));
             }
 
-            SuccessViewData.ListGames = ListGames.Where(x => CheckData(x, Min, Max, dateStart, dateEnd, IsManual, OnlyFilteredGames)).Distinct().ToObservable();
+            SuccessViewData.ListGames = ListGames.Where(x => CheckData(x, Min, Max, dateStart, dateEnd, IsManual, OnlyFilteredGames, HideNoUnlocked)).Distinct().ToObservable();
 
             SuccessViewData.TotalFoundCount = SuccessViewData.ListGames.Count;
             ListviewGames.Sorting();
@@ -563,7 +566,7 @@ namespace SuccessStory
             PART_TotalUltraRare.Content = SuccessViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
         }
 
-        private bool CheckData(ListViewGames listViewGames, double Min, double Max, DateTime dateStart, DateTime dateEnd, bool IsManual, bool OnlyFilteredGames)
+        private bool CheckData(ListViewGames listViewGames, double Min, double Max, DateTime dateStart, DateTime dateEnd, bool IsManual, bool OnlyFilteredGames, bool hideNoUnlocked)
         {
             bool aa = listViewGames.ProgressionValue >= Min;
             bool bb = listViewGames.ProgressionValue <= Max;
@@ -573,9 +576,10 @@ namespace SuccessStory
             bool gg = IsManual ? listViewGames.IsManual : true;
             bool hh = OnlyFilteredGames ? API.Instance.MainView.FilteredGames.Find(y => y.Id.ToString().IsEqual(listViewGames.Id)) != null : true;
             bool ii = SearchStatus.Count != 0 ? SearchStatus.Contains(listViewGames.CompletionStatus, StringComparer.InvariantCultureIgnoreCase) : true;
+            bool ff = hideNoUnlocked ? listViewGames.Unlocked > 0 : true;
 
-            bool ff = aa && bb && cc && dd && ee && gg && hh && ii;
-            return ff;
+            bool zz = aa && bb && cc && dd && ee && gg && hh && ii && ff;
+            return zz;
         }
 
         private void TextboxSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -671,6 +675,11 @@ namespace SuccessStory
             Filter();
         }
         #endregion
+
+        private void PART_NoUnlockedGames_Click(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
     }
 
 
@@ -740,5 +749,6 @@ namespace SuccessStory
         public double FilterRangeMax { get; set; } = 100;
         public DateTime? FilterDate { get; set; } = null;
         public bool FilteredGames { get; set; } = false;
+        public bool HideNoUnlocked { get; set; } = false;
     }
 }
