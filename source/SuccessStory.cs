@@ -126,7 +126,7 @@ namespace SuccessStory
                     PluginDatabase.IsViewOpen = true;
                     dynamic ViewExtension = null;
 
-                    var windowOptions = new WindowOptions
+                    WindowOptions windowOptions = new WindowOptions
                     {
                         ShowMinimizeButton = false,
                         ShowMaximizeButton = true,
@@ -135,7 +135,7 @@ namespace SuccessStory
 
                     if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                     {
-                        if (PluginDatabase.GameContext.Name.IsEqual("overwatch") && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
+                        if ((PluginDatabase.GameContext.Name.IsEqual("overwatch") || PluginDatabase.GameContext.Name.IsEqual("overwatch 2")) && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
                         {
                             ViewExtension = new SuccessStoryOverwatchView(PluginDatabase.GameContext);
                         }
@@ -318,7 +318,7 @@ namespace SuccessStory
 
                                 if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                                 {
-                                    if (PluginDatabase.GameContext.Name.IsEqual("overwatch") && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
+                                    if ((PluginDatabase.GameContext.Name.IsEqual("overwatch") || PluginDatabase.GameContext.Name.IsEqual("overwatch 2")) && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
                                     {
                                         ViewExtension = new SuccessStoryOverwatchView(GameMenu);
                                     }

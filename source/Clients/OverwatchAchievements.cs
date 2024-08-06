@@ -1,9 +1,11 @@
-﻿using AngleSharp.Dom.Html;
+﻿using AngleSharp.Dom;
+using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using CommonPluginsShared;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Models;
 using Playnite.SDK;
+using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using System;
@@ -17,13 +19,14 @@ using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
+    // TODO KO
     internal class OverwatchAchievements : BattleNetAchievements
     {
         private static string UrlOverwatchProfil => @"https://playoverwatch.com";
         private static string UrlOverwatchLogin => $"{UrlOverwatchProfil}/login";
         private static string UrlOverwatchProfilLocalised { get; set; } = $"{UrlOverwatchProfil}/" + "{0}";
 
-        private string UrlProfil { get; set; } = string.Empty;
+        private string UrlProfil { get; set; } = @"https://overwatch.blizzard.com/career";
         private List<ColorElement> OverwatchColor => new List<ColorElement>
         {
             new ColorElement { Name = "ow-ana-color", Color = "#9c978a" },
@@ -90,18 +93,18 @@ namespace SuccessStory.Clients
                     IHtmlDocument htmlDocument = parser.Parse(data);
                     IHtmlDocument htmlDocumentEn = parser.Parse(dataEn);
 
-                    var SectionAchievements = htmlDocument.QuerySelector("#achievements-section");
+                    IElement SectionAchievements = htmlDocument.QuerySelector("#achievements-section");
 
-                    foreach (var SearchCategory in SectionAchievements.QuerySelectorAll("div.toggle-display"))
+                    foreach (IElement SearchCategory in SectionAchievements.QuerySelectorAll("div.toggle-display"))
                     {
                         string Category = SearchCategory.GetAttribute("data-category-id");
 
-                        foreach (var SearchAchievements in SearchCategory.QuerySelectorAll("div.achievement-card-container"))
+                        foreach (IElement SearchAchievements in SearchCategory.QuerySelectorAll("div.achievement-card-container"))
                         {
                             try
                             {
                                 string Id = SearchAchievements.QuerySelector("div.tooltip-handle").GetAttribute("data-tooltip");
-                                var dataApi = htmlDocumentEn.QuerySelector($"#{Id} h6.h5");
+                                IElement dataApi = htmlDocumentEn.QuerySelector($"#{Id} h6.h5");
                                 string ApiName = string.Empty;
                                 if (dataApi != null)
                                 {
@@ -158,7 +161,7 @@ namespace SuccessStory.Clients
 
             // Set source link
             if (gameAchievements.HasAchievements)
-            { 
+            {
                 gameAchievements.SourcesLink = new SourceLink
                 {
                     GameName = "Overwatch",
@@ -182,6 +185,8 @@ namespace SuccessStory.Clients
         #region Configuration
         public override bool ValidateConfiguration()
         {
+            return false;
+            /*
             if (PlayniteTools.IsDisabledPlaynitePlugins("BattleNetLibrary"))
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetDisabled"));
@@ -203,44 +208,41 @@ namespace SuccessStory.Clients
             }
 
             return (bool)CachedConfigurationValidationResult;
+            */
         }
 
 
         public override bool IsConnected()
         {
+            return false;
+            /*
             if (CachedIsConnectedResult == null)
             {
                 CachedIsConnectedResult = false;
                 string data = string.Empty;
                 List<HttpCookie> cookies = null;
-                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                using (IWebView WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
                     WebViewOffscreen.NavigateAndWait(UrlOverwatchProfil);
-                    data = WebViewOffscreen.GetPageSource();
+                    _ = WebViewOffscreen.GetPageSource();
 
-                    HtmlParser parser = new HtmlParser();
-                    IHtmlDocument htmlDocument = parser.Parse(data);
-
-                    foreach (var SearchElement in htmlDocument.QuerySelectorAll("a.ow-SiteNavLogin-profile"))
-                    {
-                        UrlProfil = SearchElement.GetAttribute("href");
-                    }
-
-                    if (!UrlProfil.IsNullOrEmpty())
-                    {
-                        CachedIsConnectedResult = true;
-
-                        cookies = WebViewOffscreen.GetCookies().Where(
+                    cookies = WebViewOffscreen.GetCookies().Where(
                             x => x.Domain.Contains("playoverwatch.com")
                                         || x.Domain.Contains("blizzard.com", StringComparison.OrdinalIgnoreCase)
                                         || x.Domain.Contains("battle.net", StringComparison.OrdinalIgnoreCase)
-                        ).ToList();
+                    ).ToList();
+
+                    data = Web.DownloadStringData("https://overwatch.blizzard.com/nav/authenticate/", cookies).GetAwaiter().GetResult();
+                    if (Serialization.TryFromJson(data, out BattleNetUser battleNetSc2User))
+                    {
+                        CachedIsConnectedResult = true;
                         SetCookies(cookies);
                     }
                 }
             }
 
             return (bool)CachedIsConnectedResult;
+            */
         }
 
         public override bool EnabledInSettings()

@@ -162,6 +162,9 @@
     <Compile Include="Models\RetroAchievements\RaGame.cs" />
     <Compile Include="Models\RetroAchievements\RaMd5List.cs" />
     <Compile Include="Models\RetroAchievements\RaPlatformType.cs" />
+    <Compile Include="Models\BattleNetSc2User.cs" />
+    <Compile Include="Models\Xbox\Xbox360Achievement.cs" />
+    <Compile Include="Models\Xbox\XboxOneAchievement.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml.cs">
       <DependentUpon>ComboBoxRemovable.xaml</DependentUpon>
     </Compile>

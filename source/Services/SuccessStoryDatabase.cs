@@ -748,7 +748,7 @@ namespace SuccessStory.Services
                         }
                         else
                         {
-                            Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
+                            Achievements.Sort((x, y) => (x.DateUnlocked == null ? default : (DateTime)x.DateUnlocked).CompareTo(x.DateUnlocked == null ? default : (DateTime)x.DateUnlocked));
                             DateTime TempDateTime = Achievements.Where(x => x.IsUnlock).Select(x => x.DateWhenUnlocked).Max()?.ToLocalTime() ?? DateTime.Now;
 
                             for (int i = limit; i >= 0; i--)
@@ -835,9 +835,11 @@ namespace SuccessStory.Services
                     switch (game.Name.ToLowerInvariant())
                     {
                         case "overwatch":
+                        case "overwatch 2":
                             if (settings.EnableOverwatchAchievements)
                             {
-                                return AchievementSource.Overwatch;
+                                return AchievementSource.None;
+                                //return AchievementSource.Overwatch;
                             }
                             break;
 
@@ -845,7 +847,8 @@ namespace SuccessStory.Services
                         case "starcraft ii":
                             if (settings.EnableSc2Achievements)
                             {
-                                return AchievementSource.Starcraft2;
+                                return AchievementSource.None;
+                                //return AchievementSource.Starcraft2;
                             }
                             break;
 
@@ -1240,16 +1243,13 @@ namespace SuccessStory.Services
                     switch (SourceName)
                     {
                         case "steam":
-                            if (uint.TryParse(Regex.Match(gameAchievements.SourcesLink.Url, @"\d+").Value, out uint AppId))
+                            if (uint.TryParse(Regex.Match(gameAchievements.SourcesLink.Url, @"\d+").Value, out uint appId))
                             {
-                                if (SteamConfig)
-                                {
-                                    gameAchievements.Items = steamAchievements.GetGlobalAchievementPercentagesForApp(AppId, gameAchievements.Items);
-                                }
-                                else
-                                {
-                                    Logger.Warn($"No Steam config");
-                                }
+                                steamAchievements.SetRarity(appId, gameAchievements);
+                            }
+                            else
+                            {
+                                Logger.Warn($"No Steam appId");
                             }
                             break;
 

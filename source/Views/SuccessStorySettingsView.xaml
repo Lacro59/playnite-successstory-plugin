@@ -452,7 +452,7 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableOverwatchAchievements}" VerticalAlignment="Center">
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsEnabled="false" IsChecked="{Binding Settings.EnableOverwatchAchievements}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableOverwatchAchievements}" />
                                     </CheckBox>
 
@@ -483,7 +483,7 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableSc2Achievements}" VerticalAlignment="Center">
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsEnabled="false" IsChecked="{Binding Settings.EnableSc2Achievements}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableSc2Achievements}" />
                                     </CheckBox>
 
