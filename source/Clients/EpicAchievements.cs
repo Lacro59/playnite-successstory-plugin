@@ -52,28 +52,34 @@ namespace SuccessStory.Clients
                     }
 
                     string nameSpace = EpicApi.GetNameSpace(NormalizeGameName(game.Name), productSlug);
-
-                    ObservableCollection<GameAchievement> epicAchievements = EpicApi.GetAchievements(nameSpace, EpicApi.CurrentAccountInfos);
-                    if (epicAchievements?.Count > 0)
+                    if (nameSpace.IsNullOrEmpty())
                     {
-                        AllAchievements = epicAchievements.Select(x => new Achievements
-                        {
-                            ApiName = x.Id,
-                            Name = x.Name,
-                            Description = x.Description,
-                            UrlUnlocked = x.UrlUnlocked,
-                            UrlLocked = x.UrlLocked,
-                            DateUnlocked = x.DateUnlocked,
-                            Percent = x.Percent,
-                            GamerScore = x.GamerScore
-                        }).ToList();
-                        gameAchievements.Items = AllAchievements;
+                        Logger.Warn($"No NameSpace for the Epic game {game.Name}");
                     }
                     else
                     {
-                        if (!EpicApi.IsUserLoggedIn)
+                        ObservableCollection<GameAchievement> epicAchievements = EpicApi.GetAchievements(nameSpace, EpicApi.CurrentAccountInfos);
+                        if (epicAchievements?.Count > 0)
                         {
-                            ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
+                            AllAchievements = epicAchievements.Select(x => new Achievements
+                            {
+                                ApiName = x.Id,
+                                Name = x.Name,
+                                Description = x.Description,
+                                UrlUnlocked = x.UrlUnlocked,
+                                UrlLocked = x.UrlLocked,
+                                DateUnlocked = x.DateUnlocked,
+                                Percent = x.Percent,
+                                GamerScore = x.GamerScore
+                            }).ToList();
+                            gameAchievements.Items = AllAchievements;
+                        }
+                        else
+                        {
+                            if (!EpicApi.IsUserLoggedIn)
+                            {
+                                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
+                            }
                         }
                     }
 
