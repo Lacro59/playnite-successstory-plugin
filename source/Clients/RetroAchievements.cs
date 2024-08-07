@@ -22,7 +22,7 @@ namespace SuccessStory.Clients
 {
     // https://github.com/KrystianLesniak/retroachievements-api-net
     // https://github.com/RetroAchievements/retroachievements-api-js/issues/46
-    // TODO API has been temporarily disabled
+    // https://docs.retroachievements.org/developer-docs/game-identification.html
     public class RetroAchievements : GenericAchievements
     {
         #region Url
@@ -35,6 +35,8 @@ namespace SuccessStory.Clients
         private static string Key => PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
 
         public int GameId { get; set; } = 0;
+
+        private static List<int> ConsoleExcludeHash => new List<int> { 2, 8, 12, 16, 21, 40, 47, 49, 76 };
 
 
         private string GameNameAchievements { get; set; } = string.Empty;
@@ -57,7 +59,11 @@ namespace SuccessStory.Clients
                 // Game Id
                 if (GameId == 0)
                 {
-                    GameId = GetGameIdByHash(game);
+                    int consoleID = GetConsoleId(game);
+                    if (ConsoleExcludeHash.FindAll(x => x == consoleID)?.Count == 0)
+                    {
+                        GameId = GetGameIdByHash(game);
+                    }
 
                     if (GameId == 0)
                     {
@@ -326,11 +332,10 @@ namespace SuccessStory.Clients
         private int GetGameIdByName(Game game)
         {
             string GameName = game.Name;
+            string PlatformName = game.Platforms.FirstOrDefault().Name;
 
             // Search id console for the game
-            string PlatformName = game.Platforms.FirstOrDefault().Name;
-            Guid PlatformId = game.Platforms.FirstOrDefault().Id;
-            int consoleID = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == PlatformId) != null)?.RaConsoleId ?? 0;
+            int consoleID = GetConsoleId(game);
 
             // Search game id
             int gameID = 0;
@@ -394,12 +399,18 @@ namespace SuccessStory.Clients
             return gameID;
         }
 
-        private int GetGameIdByHash(Game game)
+        private int GetConsoleId(Game game)
         {
-            // Search id console for the game
             string PlatformName = game.Platforms.FirstOrDefault().Name;
             Guid PlatformId = game.Platforms.FirstOrDefault().Id;
             int consoleID = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == PlatformId) != null)?.RaConsoleId ?? 0;
+            return consoleID;
+        }
+
+        private int GetGameIdByHash(Game game)
+        {
+            // Search id console for the game
+            int consoleID = GetConsoleId(game);
 
             // Search game id
             int GameId = 0;
