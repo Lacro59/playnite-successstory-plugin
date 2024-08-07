@@ -81,14 +81,8 @@ namespace SuccessStory.Clients
                         () => PluginDatabase.Plugin.OpenSettingsView()
                     ));
                 }
-                else
+                else if (PluginDatabase.PluginSettings.Settings.UseLocalised)
                 {
-                    Logger.Warn($"Problem with {searchResult.Url}");
-                    if (!IsRetry)
-                    {
-                        return GetAchievements(game, searchResult, true);
-                    }
-
                     dataExophaseLocalised = Web.DownloadStringData(searchResult.Url, GetCookies()).GetAwaiter().GetResult();
                 }
 

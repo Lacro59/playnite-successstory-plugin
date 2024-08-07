@@ -855,7 +855,7 @@ namespace SuccessStory
         // Add code to be executed when game is finished installing.
         public override void OnGameInstalled(OnGameInstalledEventArgs args)
         {
-
+            _ = PluginDatabase.RefreshData(args.Game);
         }
 
         // Add code to be executed when game is uninstalled.
@@ -880,46 +880,7 @@ namespace SuccessStory
         public override void OnGameStopped(OnGameStoppedEventArgs args)
         {
             TaskIsPaused = false;
-
-            // Refresh Achievements database for game played.
-            _ = Task.Run(() =>
-            {
-                string SourceName = PlayniteTools.GetSourceName(args.Game);
-                string GameName = args.Game.Name;
-                bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(PluginSettings.Settings, args.Game);
-                GameAchievements gameAchievements = PluginDatabase.Get(args.Game, true);
-
-                IsFromMenu = false;
-
-                if (!gameAchievements.IsIgnored)
-                {
-                    if (VerifToAddOrShow)
-                    {
-                        if (!gameAchievements.IsManual)
-                        {
-                            PluginDatabase.RefreshNoLoader(args.Game.Id);
-
-                            // Set to Beaten
-                            if (PluginSettings.Settings.CompletionStatus100Percent != null && PluginSettings.Settings.Auto100PercentCompleted)
-                            {
-                                gameAchievements = PluginDatabase.Get(args.Game, true);
-                                if (gameAchievements.HasAchievements && gameAchievements.Is100Percent)
-                                {
-                                    args.Game.CompletionStatusId = PluginSettings.Settings.CompletionStatus100Percent.Id;
-                                    API.Instance.Database.Games.Update(args.Game);
-                                }
-                            }
-                        }
-                    }
-                }
-
-
-                // refresh themes resources
-                if (args.Game.Id == PluginDatabase.GameContext.Id)
-                {
-                    PluginDatabase.SetThemesResources(PluginDatabase.GameContext);
-                }
-            });
+            _ = PluginDatabase.RefreshData(args.Game);
         }
         #endregion
 
@@ -945,6 +906,11 @@ namespace SuccessStory
                 Thread.Sleep(30000);
                 PreventLibraryUpdatedOnStart = false;
             });
+
+            if (PluginSettings.Settings.AutoImportOnInstalled)
+            {
+                _ = PluginDatabase.RefreshInstalled();
+            }
 
             // TODO - Removed for Playnite 11
             if (!PluginSettings.Settings.PurgeImageCache)
@@ -1165,8 +1131,13 @@ namespace SuccessStory
         {
             if (PluginSettings.Settings.AutoImport && !PreventLibraryUpdatedOnStart)
             {
-                List<Guid> PlayniteDb = API.Instance.Database.Games
-                        .Where(x => x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload)
+                List<Guid> PlayniteDb = new List<Guid>();
+                PlayniteDb = PluginDatabase.PluginSettings.Settings.AutoImportOnInstalled
+                    ? API.Instance.Database.Games
+                       .Where(x => (x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload) || x.IsInstalled)
+                       .Select(x => x.Id).ToList()
+                    : API.Instance.Database.Games
+                        .Where(x => (x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload))
                         .Select(x => x.Id).ToList();
 
                 PluginDatabase.Refresh(PlayniteDb);

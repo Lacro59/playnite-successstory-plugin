@@ -17,6 +17,7 @@ using SuccessStory.Services;
 using System.Threading;
 using Playnite.SDK;
 using SuccessStory.Models.RetroAchievements;
+using CommonPlayniteShared.Common;
 
 namespace SuccessStory.Clients
 {
@@ -720,10 +721,13 @@ namespace SuccessStory.Clients
 
         private string ZipFileManafeExtract(string FilePath)
         {
-            ZipFileManafeRemove();
-
             string extractPath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "tempZip");
-            ZipFile.ExtractToDirectory(FilePath, extractPath);
+            try
+            {
+                ZipFileManafeRemove();
+                ZipFile.ExtractToDirectory(FilePath, extractPath);
+            }
+            catch { }
 
             string FilePathReturn = string.Empty;
             _ = Parallel.ForEach(Directory.EnumerateFiles(extractPath, "*.*", SearchOption.AllDirectories), (objectFile) =>
@@ -737,10 +741,7 @@ namespace SuccessStory.Clients
         private void ZipFileManafeRemove()
         {
             string extractPath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "tempZip");
-            if (Directory.Exists(extractPath))
-            {
-                Directory.Delete(extractPath, true);
-            }
+            FileSystem.DeleteDirectory(extractPath);
         }
 
 

@@ -941,6 +941,8 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="10" />
                                 <RowDefinition Height="auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="auto" />
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="30" />
@@ -963,7 +965,11 @@
                                 <Label Content="{DynamicResource LOCCommonAutoImport}" />
                             </CheckBox>
 
-                            <Grid Grid.ColumnSpan="3" Grid.Row="4">
+                            <CheckBox Grid.Row="4" IsChecked="{Binding Settings.AutoImportOnInstalled}" Grid.ColumnSpan="3" >
+                                <Label Content="{DynamicResource LOCCommonAutoImportOnInstalled}" />
+                            </CheckBox>
+
+                            <Grid Grid.ColumnSpan="3" Grid.Row="6">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="10" />
@@ -1019,7 +1025,7 @@
                                 </Grid>
                             </Grid>
 
-                            <GroupBox Header="{DynamicResource LOCSuccessStoryIconLockedConfig}" Grid.ColumnSpan="3" Grid.Row="6">
+                            <GroupBox Header="{DynamicResource LOCSuccessStoryIconLockedConfig}" Grid.ColumnSpan="3" Grid.Row="8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
@@ -1062,7 +1068,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="{DynamicResource LOCSuccessStoryRarityConfig}" Grid.ColumnSpan="3" Grid.Row="8">
+                            <GroupBox Header="{DynamicResource LOCSuccessStoryRarityConfig}" Grid.ColumnSpan="3" Grid.Row="10">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto" />
@@ -1139,7 +1145,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="10" >
+                            <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="12" >
                                 <Label Content="{DynamicResource LOCSuccessStoryExophaseOnlyLocalised}" />
                                 <Separator Margin="0,0,0,10" />
 

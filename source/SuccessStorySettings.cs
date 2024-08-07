@@ -34,6 +34,7 @@ namespace SuccessStory
         public bool EnableTag { get; set; } = false;
         public bool EnableGamerScore { get; set; } = true;
         public bool AutoImport { get; set; } = true;
+        public bool AutoImportOnInstalled { get; set; } = true;
 
         public bool ShowHiddenIcon { get; set; } = false;
         public bool ShowHiddenTitle { get; set; } = false;

@@ -21,6 +21,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using static CommonPluginsShared.PlayniteTools;
 using CommonPluginsShared.Extensions;
+using System.Threading.Tasks;
 
 namespace SuccessStory.Services
 {
@@ -1082,6 +1083,40 @@ namespace SuccessStory.Services
             PluginSettings.Settings.Percent = gameAchievements.Progression;
             PluginSettings.Settings.EstimateTimeToUnlock = gameAchievements.EstimateTime?.EstimateTime;
             PluginSettings.Settings.ListAchievements = gameAchievements.Items;
+        }
+
+
+        public async Task RefreshData(Game game)
+        {
+            await Task.Run(() =>
+            {
+                string SourceName = GetSourceName(game);
+                string GameName = game.Name;
+                bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(PluginSettings.Settings, game);
+                GameAchievements gameAchievements = Get(game, true);
+
+                if (!gameAchievements.IsIgnored && VerifToAddOrShow)
+                {
+                    RefreshNoLoader(game.Id);
+
+                    // Set to Beaten
+                    if (PluginSettings.Settings.CompletionStatus100Percent != null && PluginSettings.Settings.Auto100PercentCompleted)
+                    {
+                        gameAchievements = Get(game, true);
+                        if (gameAchievements.HasAchievements && gameAchievements.Is100Percent)
+                        {
+                            game.CompletionStatusId = PluginSettings.Settings.CompletionStatus100Percent.Id;
+                            API.Instance.Database.Games.Update(game);
+                        }
+                    }
+                }
+
+                // refresh themes resources
+                if (game.Id == GameContext.Id)
+                {
+                    SetThemesResources(GameContext);
+                }
+            });
         }
 
 
