@@ -160,7 +160,15 @@ namespace SuccessStory.Clients
             FileSystem.DeleteFile(CookiesPath);
             ResetCachedIsConnectedResult();
 
-            using (IWebView WebView = API.Instance.WebViews.CreateView(600, 600))
+            WebViewSettings webViewSettings = new WebViewSettings
+            {
+                WindowWidth = 580,
+                WindowHeight = 700,
+                // This is needed otherwise captcha won't pass
+                UserAgent = Web.UserAgent
+            };
+
+            using (IWebView WebView = API.Instance.WebViews.CreateView(webViewSettings))
             {
                 WebView.LoadingChanged += (s, e) =>
                 {
