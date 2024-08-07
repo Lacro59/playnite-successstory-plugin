@@ -239,6 +239,11 @@ namespace SuccessStory.Services
             GameAchievements gameAchievements = GetDefault(game);
             AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
 
+            if (achievementSource == AchievementSource.None)
+            {
+                Logger.Warn($"No provider find for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
+            }
+
             // Generate database only this source
             if (VerifToAddOrShow(PluginSettings.Settings, game))
             {
@@ -246,7 +251,7 @@ namespace SuccessStory.Services
                 RetroAchievements retroAchievementsProvider = achievementProvider as RetroAchievements;
                 PSNAchievements psnAchievementsProvider = achievementProvider as PSNAchievements;
 
-                Logger.Info($"Used {achievementProvider?.ToString()} for {game?.Name} - {game?.Id} - {game?.Source?.Name}");
+                Logger.Info($"Used {achievementProvider} for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
 
                 GameAchievements TEMPgameAchievements = Get(game, true);
 
@@ -277,22 +282,17 @@ namespace SuccessStory.Services
                     gameAchievements.RAgameID = retroAchievementsProvider.GameId;
                 }
 
+                if (!(gameAchievements?.HasAchievements ?? false))
+                {
+                    Logger.Info($"No achievements find for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
+                }
+                else
+                {
+                    gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
+                    Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements find for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
+                }
+
                 Common.LogDebug(true, $"Achievements for {game.Name} - {achievementSource} - {Serialization.ToJson(gameAchievements)}");
-            }
-            else
-            {
-                Common.LogDebug(true, $"VerifToAddOrShow({game.Name}, {achievementSource}) - KO");
-            }
-
-            gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
-
-            if (!(gameAchievements?.HasAchievements ?? false))
-            {
-                Logger.Info($"No achievements find for {game.Name} - {game.Id}");
-            }
-            else
-            {
-                Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements find for {game.Name} - {game.Id}");
             }
 
             return gameAchievements;
@@ -369,8 +369,8 @@ namespace SuccessStory.Services
                 try
                 {
                     bool ShowHidden = PluginSettings.Settings.IncludeHiddenGames;
-                    var db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
-                    foreach (var item in db)
+                    List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
+                    foreach (KeyValuePair<Guid, GameAchievements> item in db)
                     {
                         List<Achievements> temp = item.Value.Items;
                         foreach (Achievements itemAchievements in temp)
@@ -502,10 +502,10 @@ namespace SuccessStory.Services
                     {
                         if (db != null && db.Count() > 0)
                         {
-                            var ListSources = db.Select(x => x.Value.SourceId).Distinct();
-                            foreach (var Source in ListSources)
+                            IEnumerable<Guid> ListSources = db.Select(x => x.Value.SourceId).Distinct();
+                            foreach (Guid Source in ListSources)
                             {
-                                var gameSource = API.Instance.Database.Sources.Get(Source);
+                                GameSource gameSource = API.Instance.Database.Sources.Get(Source);
                                 if (gameSource != null)
                                 {
                                     tempSourcesLabels.Add(gameSource.Name);
@@ -685,8 +685,8 @@ namespace SuccessStory.Services
                 try
                 {
                     bool ShowHidden = PluginSettings.Settings.IncludeHiddenGames;
-                    var db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
-                    foreach (var item in db)
+                    List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
+                    foreach (KeyValuePair<Guid, GameAchievements> item in db)
                     {
                         List<Achievements> temp = item.Value.Items;
                         foreach (Achievements itemAchievements in temp)
@@ -720,7 +720,7 @@ namespace SuccessStory.Services
                     {
                         if (CutPeriod)
                         {
-                            var groupedAchievements = Achievements
+                            IOrderedEnumerable<IGrouping<DateTime, Achievements>> groupedAchievements = Achievements
                                 .Where(a => a.IsUnlock && a.DateWhenUnlocked.HasValue)
                                 .GroupBy(a => a.DateWhenUnlocked.Value.ToLocalTime().Date)
                                 .OrderBy(g => g.Key);
@@ -1037,7 +1037,7 @@ namespace SuccessStory.Services
                 return achievementProvider.ValidateConfiguration();
             }
 
-            Common.LogDebug(true, $"VerifToAddOrShow() find no action for {achievementSource}");
+            Logger.Warn($"VerifToAddOrShow() find no action for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
             return false;
         }
         public bool VerifAchievementsLoad(Guid gameID)
