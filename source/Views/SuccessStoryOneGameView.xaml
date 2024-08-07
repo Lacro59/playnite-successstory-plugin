@@ -120,37 +120,37 @@
                 <DockPanel Grid.Row="2">
                     <StackPanel DockPanel.Dock="Left">
                         <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                            <Label Content="&#127942;" Margin="0,0,5,0" />
-                            <Label Content="{DynamicResource LOCSuccessStoryCommon}" />
+                            <TextBlock Text="&#127942;" Margin="0,0,5,0" TextAlignment="Center" Width="20" Style="{DynamicResource BaseTextBlockStyle}" />
+                            <TextBlock Text="{DynamicResource LOCSuccessStoryCommon}" Style="{DynamicResource BaseTextBlockStyle}" />
                         </StackPanel>
 
                         <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                            <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityUncommonColor}" />
-                            <Label Content="{DynamicResource LOCSuccessStoryNoCommon}" />
+                            <TextBlock Text="&#127942;" Margin="0,0,5,0" TextAlignment="Center" Width="20" Style="{DynamicResource BaseTextBlockStyle}" Foreground="{Binding Settings.RarityUncommonColor}" />
+                            <TextBlock Text="{DynamicResource LOCSuccessStoryNoCommon}" Style="{DynamicResource BaseTextBlockStyle}" />
                         </StackPanel>
 
                         <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                            <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityRareColor}" />
-                            <Label Content="{DynamicResource LOCSuccessStoryRare}" />
+                            <TextBlock Text="&#127942;" Margin="0,0,5,0" TextAlignment="Center" Width="20" Style="{DynamicResource BaseTextBlockStyle}" Foreground="{Binding Settings.RarityRareColor}" />
+                            <TextBlock Text="{DynamicResource LOCSuccessStoryRare}" Style="{DynamicResource BaseTextBlockStyle}" />
                         </StackPanel>
 
                         <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Label Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityUltraRareColor}" />
-                            <Label Content="{DynamicResource LOCSuccessStoryUltraRare}" />
+                            <TextBlock Text="&#127942;" Margin="0,0,5,0" TextAlignment="Center" Width="20" Style="{DynamicResource BaseTextBlockStyle}" Foreground="{Binding Settings.RarityUltraRareColor}" />
+                            <TextBlock Text="{DynamicResource LOCSuccessStoryUltraRare}" Style="{DynamicResource BaseTextBlockStyle}" />
                         </StackPanel>
 
                         <StackPanel Margin="0,10,0,0" Orientation="Horizontal" Visibility="{Binding Settings.EnableGamerScore, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Label Content="&#xeacd;" FontFamily="{DynamicResource CommonFont}" Margin="0,0,10,0" />
-                            <Label Content="Gamerscore" />
+                            <TextBlock Text="&#xeacd;" FontFamily="{DynamicResource CommonFont}" Margin="0,0,5,0" TextAlignment="Center" Width="20" Style="{DynamicResource BaseTextBlockStyle}" VerticalAlignment="Center" />
+                            <TextBlock Text="Gamerscore" Style="{DynamicResource BaseTextBlockStyle}" />
                         </StackPanel>
                     </StackPanel>
 
                     <StackPanel DockPanel.Dock="Right">
-                        <Label Content="{Binding AchCommon.Stats}" Margin="0,10,0,0" />
-                        <Label Content="{Binding AchNoCommon.Stats}" Margin="0,10,0,0" />
-                        <Label Content="{Binding AchRare.Stats}" Margin="0,10,0,0" />
-                        <Label Content="{Binding AchRare.Stats}" Margin="0,10,0,0" Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                        <Label Content="{Binding TotalGamerScore}" Margin="0,10,0,0" Visibility="{Binding Settings.EnableGamerScore, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <Label Content="{Binding AchCommon.Stats}" Margin="0,10,0,0" HorizontalAlignment="Center" />
+                        <Label Content="{Binding AchNoCommon.Stats}" Margin="0,10,0,0" HorizontalAlignment="Center" />
+                        <Label Content="{Binding AchRare.Stats}" Margin="0,10,0,0" HorizontalAlignment="Center" />
+                        <Label Content="{Binding AchUltraRare.Stats}" Margin="0,10,0,0" HorizontalAlignment="Center" Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <Label Content="{Binding TotalGamerScore}" Margin="0,10,0,0" HorizontalAlignment="Center" Visibility="{Binding Settings.EnableGamerScore, Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </StackPanel>
 
                     <StackPanel></StackPanel>

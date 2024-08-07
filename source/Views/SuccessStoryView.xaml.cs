@@ -48,10 +48,7 @@ namespace SuccessStory
             SuccessViewData.Settings = PluginDatabase.PluginSettings.Settings;
             DataContext = SuccessViewData;
 
-            if (PluginDatabase.PluginSettings.Settings.UseUltraRare)
-            {
-                lvGameRaretyCount.Width = 350;
-            }
+            lvGameRaretyCount.Width = PluginDatabase.PluginSettings.Settings.UseUltraRare ? 240 : 210;
 
 
             // sorting options

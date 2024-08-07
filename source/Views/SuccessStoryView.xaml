@@ -296,7 +296,7 @@
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
 
-                                        <GridViewColumn Width="250" x:Name="lvGameRaretyCount">
+                                        <GridViewColumn Width="240" x:Name="lvGameRaretyCount">
                                             <GridViewColumnHeader Content="{DynamicResource LOCSuccessStoryRarety}" Tag="noSort" />
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
@@ -304,17 +304,17 @@
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="auto" />
                                                             <ColumnDefinition Width="5" />
-                                                            <ColumnDefinition Width="40" />
+                                                            <ColumnDefinition Width="30" />
                                                             <ColumnDefinition Width="10" />
 
                                                             <ColumnDefinition Width="auto" />
                                                             <ColumnDefinition Width="5" />
-                                                            <ColumnDefinition Width="40" />
+                                                            <ColumnDefinition Width="30" />
                                                             <ColumnDefinition Width="10" />
 
                                                             <ColumnDefinition Width="auto" />
                                                             <ColumnDefinition Width="5" />
-                                                            <ColumnDefinition Width="40" />
+                                                            <ColumnDefinition Width="25" />
 
                                                             <ColumnDefinition Width="auto" />
                                                         </Grid.ColumnDefinitions>
@@ -332,10 +332,10 @@
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="auto" />
                                                                 <ColumnDefinition Width="5" />
-                                                                <ColumnDefinition Width="40" />
+                                                                <ColumnDefinition Width="25" />
                                                             </Grid.ColumnDefinitions>
 
-                                                            <Label Grid.Column="0" Content="&#127942;" Margin="40,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityUltraRareColor}" />
+                                                            <Label Grid.Column="0" Content="&#127942;" Margin="10,0,0,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityUltraRareColor}" />
                                                             <Label Grid.Column="2" Content="{Binding UltraRare.UnLocked}" HorizontalAlignment="Right" />
                                                         </Grid>
                                                     </Grid>
@@ -343,8 +343,16 @@
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
 
-                                        <GridViewColumn Width="110" DisplayMemberBinding="{Binding TotalGamerScore}" x:Name="lvTotalGamerScore">
-                                            <GridViewColumnHeader Content="Gamerscore" />
+                                        <GridViewColumn Width="0" DisplayMemberBinding="{Binding TotalGamerScore}">
+                                            <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="8" />
+                                        </GridViewColumn>
+                                        <GridViewColumn Width="110"  x:Name="lvTotalGamerScore">
+                                            <GridViewColumnHeader Content="Gamerscore" Tag="TotalGamerScore" />
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding TotalGamerScore}" TextAlignment="Right" />
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
                                     </GridView>
                                 </ListView.View>
@@ -355,16 +363,13 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="40" />
                                 <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{DynamicResource LOCCommonTotalFound}" 
-                                   VerticalAlignment="Center" />
-                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Name="PART_TotalFoundCount" 
-                                   Text="{Binding ListGames.Count}"
-                                   VerticalAlignment="Center" Width="40" TextAlignment="Right" />
+                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{DynamicResource LOCCommonTotalFound}" VerticalAlignment="Center" />
+                                <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Text="{Binding ListGames.Count}" VerticalAlignment="Center" Width="40" TextAlignment="Right" />
                             </StackPanel>
 
                             <Grid Grid.Column="3" HorizontalAlignment="Right">
@@ -390,28 +395,28 @@
 
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="5" />
-                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="25" />
 
                                         <ColumnDefinition Width="auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Label Grid.Column="0" Content="&#127942;" Margin="0,0,5,0" />
+                                    <Label Grid.Column="0" Content="&#127942;" />
                                     <Label Grid.Column="2" Name="PART_TotalCommun" HorizontalAlignment="Right" Content="32" />
 
-                                    <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityUncommonColor}" />
+                                    <Label Grid.Column="4" Content="&#127942;" Foreground="{Binding Settings.RarityUncommonColor}" />
                                     <Label Grid.Column="6" Name="PART_TotalNoCommun" HorizontalAlignment="Right" Content="11" />
 
-                                    <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding Settings.RarityRareColor}" />
+                                    <Label Grid.Column="8" Content="&#127942;" Foreground="{Binding Settings.RarityRareColor}" />
                                     <Label Grid.Column="10" Name="PART_TotalRare" HorizontalAlignment="Right" Content="2" />
 
                                     <Grid Grid.Column="11" Visibility="{Binding Settings.UseUltraRare, Converter={StaticResource BooleanToVisibilityConverter}}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto" />
                                             <ColumnDefinition Width="5" />
-                                            <ColumnDefinition Width="40" />
+                                            <ColumnDefinition Width="25" />
                                         </Grid.ColumnDefinitions>
 
-                                        <Label Grid.Column="0" Content="&#127942;" Margin="40,0,5,0" Foreground="{Binding Settings.RarityUltraRareColor}" />
+                                        <Label Grid.Column="0" Content="&#127942;" Foreground="{Binding Settings.RarityUltraRareColor}" Margin="10,0,0,0" />
                                         <Label Grid.Column="2" Name="PART_TotalUltraRare" HorizontalAlignment="Right" Content="2" />
                                     </Grid>
                                 </Grid>
@@ -663,8 +668,16 @@
                                 <GridViewColumnHeader Content="{DynamicResource LOCSuccessStoryDateUnlocked}" />
                             </GridViewColumn>
 
-                            <GridViewColumn Width="110" DisplayMemberBinding="{Binding Gamerscore}" x:Name="lvGamerScore">
-                                <GridViewColumnHeader Content="Gamerscore" />
+                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding Gamerscore}">
+                                <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="8" />
+                            </GridViewColumn>
+                            <GridViewColumn Width="110" x:Name="lvGamerScore">
+                                <GridViewColumnHeader Content="Gamerscore" Tag="Gamerscore" />
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Gamerscore}" TextAlignment="Right" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                         </GridView>
                     </ListView.View>
