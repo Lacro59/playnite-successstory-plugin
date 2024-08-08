@@ -21,6 +21,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TemperatureMeasurementTool;
 
 namespace SuccessStory.Views
 {
@@ -68,7 +69,7 @@ namespace SuccessStory.Views
 
         private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
         {
-            int RowDefinied = (int)lbAchievements.Height / 70;
+            int RowDefinied = (int)lbAchievements.Height / 80;
             int ColDefinied = 1;
 
             DataContext = new
@@ -106,11 +107,32 @@ namespace SuccessStory.Views
             try
             {
                 DatePicker datePicker = sender as DatePicker;
-
                 if (datePicker.SelectedDate != null)
                 {
+                    datePicker.Tag = true;
                     CheckBox checkBox = ((Grid)datePicker.Parent).FindName("PART_CbUnlock") as CheckBox;
                     checkBox.IsChecked = true;
+                }
+                else
+                {
+                    datePicker.Tag = false;
+                }
+            }
+            catch { }
+        }
+
+        private void PART_Time_TimeChanged(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TimePicker timePicker = sender as TimePicker;
+                int index = int.Parse(timePicker.Tag.ToString());
+                CheckBox checkBox = ((Grid)timePicker.Parent).FindName("PART_CbUnlock") as CheckBox;
+                if ((bool)checkBox.IsChecked)
+                {
+                    DateTime dt = (DateTime)((Achievements)lbAchievements.Items[index]).DateUnlocked;
+                    string[] dtTime = timePicker.GetValueAsString().Split(':');
+                    ((Achievements)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2])).ToUniversalTime();
                 }
             }
             catch { }
@@ -133,7 +155,7 @@ namespace SuccessStory.Views
                 {
                     DatePicker datePicker = ((Grid)checkBox.Parent).FindName("PART_DtUnlock") as DatePicker;
                     datePicker.SelectedDate = null;
-                    ((Achievements)lbAchievements.Items[index]).DateUnlocked = default(DateTime);
+                    ((Achievements)lbAchievements.Items[index]).DateUnlocked = default;
                 }
             }
             catch { }

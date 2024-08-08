@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="TemperatureMeasurementTool.TimePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Click="BtnUpHour_OnClick" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="&#xE70E;" FontSize="14" FontFamily="Segoe MDL2 Assets"   MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave"/>
+        <Button Click="BtnUpMinute_OnClick" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="&#xE70E;" FontSize="14" FontFamily="Segoe MDL2 Assets"  MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" />
+        <Button Click="BtnUpSeconde_OnClick" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="&#xE70E;" FontSize="14" FontFamily="Segoe MDL2 Assets"  MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave" />
+
+        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" Grid.Row="1" Grid.Column="0" Text="&#xED5A;" FontSize="14" FontFamily="Segoe MDL2 Assets"  VerticalAlignment="Center" Margin="2"/>
+
+        <TextBox Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=HourTime, FallbackValue=12}" 
+                 Grid.Row="1" Grid.Column="2" x:Name="Hour" HorizontalAlignment="Center"  PreviewMouseLeftButtonDown="Hour_OnPreviewMouseLeftButtonDown" GotKeyboardFocus="Hour_OnGotKeyboardFocus"  PreviewTextInput="Hour_OnPreviewTextInput" LostKeyboardFocus="Hour_OnLostKeyboardFocus" BorderThickness="0"  />
+        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" 
+                   Grid.Row="1" Grid.Column="3" Text=":" VerticalAlignment="Center" />
+        <TextBox Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=MinuteTime, FallbackValue=30}" 
+                 Grid.Row="1" Grid.Column="4" x:Name="Minute" HorizontalAlignment="Center" PreviewMouseLeftButtonDown="Minute_OnPreviewMouseLeftButtonDown" GotKeyboardFocus="Minute_OnGotKeyboardFocus" PreviewTextInput="Minute_OnPreviewTextInput" LostKeyboardFocus="Minute_OnLostKeyboardFocus" BorderThickness="0" />
+        <TextBlock Style="{DynamicResource BaseTextBlockStyle}" 
+                   Grid.Row="1" Grid.Column="5" Text=":" VerticalAlignment="Center" />
+        <TextBox Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=SecondTime, FallbackValue=30}"
+                 Grid.Row="1" Grid.Column="6" x:Name="Seconde" HorizontalAlignment="Center"  PreviewMouseLeftButtonDown="Seconde_OnPreviewMouseLeftButtonDown" GotKeyboardFocus="Seconde_OnGotKeyboardFocus" PreviewTextInput="Seconde_OnPreviewTextInput" LostKeyboardFocus="Seconde_OnLostKeyboardFocus" BorderThickness="0" />
+
+
+        <Button Grid.Row="2" Grid.Column="2" Click="BtnDownHour_OnClick" Content="&#xE70D;" FontSize="14" FontFamily="Segoe MDL2 Assets"  HorizontalAlignment="Center" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave"/>
+        <Button Grid.Row="2" Grid.Column="4" Click="BtnDownMinute_OnClick" Content="&#xE70D;" FontSize="14" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Center" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave"/>
+        <Button Grid.Row="2" Grid.Column="6" Click="BtnDownSeconde_OnClick" Content="&#xE70D;" FontSize="14" FontFamily="Segoe MDL2 Assets" HorizontalAlignment="Center" MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave"/>
+    </Grid>
+</UserControl>

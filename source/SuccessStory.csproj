@@ -154,6 +154,9 @@
     <Compile Include="Controls\PluginViewItem.xaml.cs">
       <DependentUpon>PluginViewItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TimePicker\TimePicker.xaml.cs">
+      <DependentUpon>TimePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\Crc32.cs" />
     <Compile Include="Converters\SetColorConverter.cs" />
     <Compile Include="Models\GenshinImpact\PaimonMoeAchievements.cs" />
@@ -386,6 +389,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Include="Controls\TimePicker\TimePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -260,7 +260,7 @@ namespace SuccessStory.Models
         public DateTime? DateWhenUnlocked
         {
             get => DateUnlocked == default || DateUnlocked.ToString().Contains("0001") || DateUnlocked == new DateTime(1982, 12, 15, 0, 0, 0, 0) ? null : DateUnlocked;
-            set => DateUnlocked = value == null ? default(DateTime) : value;
+            set => DateUnlocked = value == null ? default : value;
         }
 
         [DontSerialize]
