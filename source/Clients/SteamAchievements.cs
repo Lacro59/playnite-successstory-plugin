@@ -100,6 +100,9 @@ namespace SuccessStory.Clients
                     {
                         ApiName = x.Id,
                         Name = x.Name,
+                        CategoryIcon = x.CategoryIcon,
+                        CategoryOrder = x.CategoryOrder,
+                        Category = x.Category.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryBaseGame") : x.Category,
                         Description = x.Description,
                         UrlUnlocked = x.UrlUnlocked,
                         UrlLocked = x.UrlLocked,
@@ -113,7 +116,9 @@ namespace SuccessStory.Clients
                     gameAchievements.ItemsStats = SteamApi.GetUsersStats(appId, SteamApi.CurrentAccountInfos)?.Select(x => new GameStats
                     {
                         Name = x.Name,
-                        Value = double.Parse(x.Value)
+                        Value = double.Parse(x.Value
+                                .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
                     })?.ToList() ?? new List<GameStats>();
                 }
 

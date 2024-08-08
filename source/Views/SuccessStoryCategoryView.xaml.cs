@@ -66,7 +66,7 @@ namespace SuccessStory.Views
                     .DistinctBy(x => x.Category)
                     .Select(x => new CategoryAchievement
                     {
-                        CategoryIcon = x.ImageCategoryIcon,
+                        CategoryIcon = x.ImageCategoryIcon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(gameAchievements.Icon) : x.ImageCategoryIcon,
                         CategoryName = x.Category,
                         CategoryOrder = x.CategoryOrder,
                         Maximum = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count(),
@@ -74,7 +74,11 @@ namespace SuccessStory.Views
                         Progression = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() + " / " + gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count()
                     })
                     .OrderBy(x => x.CategoryOrder).ToList();
-                PART_ListCategory.ItemsSource = categories.Where(x => !x.CategoryName.IsNullOrEmpty()).ToList();
+
+                PART_ListCategory.ItemsSource = game.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.SteamLibrary)
+                    ? categories
+                    : categories.Where(x => !x.CategoryName.IsNullOrEmpty()).ToList();
+
                 PART_ListCategory.SelectedIndex = 0;
             }
 

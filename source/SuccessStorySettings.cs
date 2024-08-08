@@ -36,6 +36,8 @@ namespace SuccessStory
         public bool AutoImport { get; set; } = true;
         public bool AutoImportOnInstalled { get; set; } = true;
 
+        public bool SteamGroupData { get; set; } = true;
+
         public bool ShowHiddenIcon { get; set; } = false;
         public bool ShowHiddenTitle { get; set; } = false;
         public bool ShowHiddenDescription { get; set; } = false;

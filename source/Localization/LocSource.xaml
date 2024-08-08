@@ -63,6 +63,8 @@ You must check "{1}" in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressBar">Processing, please wait...</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Ignored games</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Group Steam achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
 
@@ -184,6 +186,8 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Base game</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">First unlock</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">Last unlock</sys:String>
     

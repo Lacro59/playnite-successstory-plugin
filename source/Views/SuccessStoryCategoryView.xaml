@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:SuccessStory.Views"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters"
              xmlns:controls="clr-namespace:SuccessStory.Controls"
-             xmlns:controls1="clr-namespace:CommonPluginsShared.Controls"
+             xmlns:controls1="clr-namespace:CommonPluginsShared.Controls" 
+             xmlns:controls2="clr-namespace:CommonPluginsControls.Controls"
              mc:Ignorable="d" Height="700" Width="1100">
 
     <UserControl.Resources>
@@ -102,9 +103,9 @@
                      SelectionChanged="PART_ListCategory_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0,5">
+                        <Grid Margin="5">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
@@ -114,10 +115,11 @@
                                 <RowDefinition Height="15" />
                             </Grid.RowDefinitions>
 
-                            <controls1:ImageAsync Width="48" Height="48" Source="{Binding CategoryIcon, IsAsync=True}" Grid.RowSpan="3"
+                            <controls1:ImageAsync MinWidth="48" Height="48" Source="{Binding CategoryIcon, IsAsync=True}" Grid.RowSpan="3"
                                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-                            <TextBlock Grid.Column="2" Text="{Binding CategoryName, FallbackValue='category'}" Width="350" TextTrimming="CharacterEllipsis" />
+                            <controls2:TextBlockTrimmed Grid.Column="2" Text="{Binding CategoryName, FallbackValue='category'}" TextTrimming="CharacterEllipsis"
+                                                        Width="250" HorizontalAlignment="Left" />
 
                             <Grid Grid.Row="2" Grid.Column="2" Width="220" HorizontalAlignment="Right">
                                 <ProgressBar Value="{Binding Value}" Maximum="{Binding Maximum}" />

@@ -97,7 +97,9 @@ namespace SuccessStory.Controls
             }
             else
             {
-                ViewExtension = new SuccessStoryOneGameView(PluginDatabase.GameContext);
+                ViewExtension = PluginDatabase.GameContext.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.SteamLibrary) && PluginDatabase.PluginSettings.Settings.SteamGroupData
+                    ? (dynamic)new SuccessStoryCategoryView(PluginDatabase.GameContext)
+                    : (dynamic)new SuccessStoryOneGameView(PluginDatabase.GameContext);
             }
 
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStoryAchievements"), ViewExtension);
