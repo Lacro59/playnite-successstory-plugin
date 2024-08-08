@@ -24,8 +24,11 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Не ігнорувати гру</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Приховане досягнення</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Профіль Steam не є публічним</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
+You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam неправильно налаштовано в налаштуваннях</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Немає конфігурації Steam та/або ключа API</sys:String>
@@ -67,6 +70,8 @@
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Показувати опис в підказці</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Увімкнути досягнення PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Увімкнути досягнення Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Увімкнути досягнення GOG</sys:String>
@@ -89,6 +94,8 @@
     <sys:String x:Key="LOCSuccessStoryDatabase">База даних</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Завантажити дані досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Оновити дані</sys:String>
+    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Завантажити відсутні дані</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Нещодавні ігри з відсутніми даними</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Нещодавні ігри</sys:String>
@@ -123,6 +130,8 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Показувати останнє досягнення одним рядком</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Вигляд розширення</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Показувати прихований опис коли досягнення заблоковано</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Показувати індикатор рідкості на досягненні</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Показати значення рідкості із зображенням досягнень</sys:String>
