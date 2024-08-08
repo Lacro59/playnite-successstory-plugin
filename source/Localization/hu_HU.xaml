@@ -24,8 +24,11 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Rejtett mérföldkövek</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profil nem nyilvános</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
+You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">A Steam engedélyezve van a SuccessStoryban, de a könyvtárbővítmény le van tiltva a Playnite-ban</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">A Steam nincs megfelelően beállítva a beállításokban</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Nincs Steam konfiguráció és/vagy API-kulcs</sys:String>
@@ -67,6 +70,8 @@
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Show description in tooltip</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Enable Steam achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Enable GOG achievements</sys:String>
@@ -89,6 +94,8 @@
     <sys:String x:Key="LOCSuccessStoryDatabase">Database</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Download achievements data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Refresh data</sys:String>
+    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Download missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Recent games with missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Recent games</sys:String>
@@ -123,6 +130,8 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Show the lastest achievement on one line</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Extension view</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Show hidden description when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarity indicator on achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Show rarity value with achievements image</sys:String>
