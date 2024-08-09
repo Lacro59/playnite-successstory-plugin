@@ -24,11 +24,11 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Ne pas ignorer le jeu</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Succès caché</sys:String>
-    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Cacher les jeux avec aucun succès débloqué</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Le profil Steam n'est pas public</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
-You must check &quot;{1}&quot; in plugin settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Le jeu Steam &quot;{0}&quot; est privé
+Vous devez sélectionner &quot;{1}&quot; dans la configuration du plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Aucune configuration Steam et/ou clé API</sys:String>
@@ -70,7 +70,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Afficher la description dans l'infobulle</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Afficher les Gamerscore</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Activer les succès PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Activer les succès Steam</sys:String>
@@ -94,8 +94,8 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryDatabase">Base de données</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Télécharger les succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Rafraichir les données</sys:String>
-    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
-    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
+    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Focer l'Id RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Définir un Id RetroAchievements valide</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Télécharger les données manquantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Jeux récents avec données manquantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Jeux récents</sys:String>
@@ -130,8 +130,8 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Montrer le dernier succès sur une ligne</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vue de l'extension</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Afficher les icons des succès cachés quand non débloqués</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Afficher les titres des succès cachés quand non débloqués</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Afficher la description cachée même si le succès n'a pas été débloqu</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Afficher l'indicateur de rareté sur les succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Afficher la rareté sur l'image des succès</sys:String>
