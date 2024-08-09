@@ -24,30 +24,33 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">不忽略游戏</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">隐藏成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam 个人资料未公开</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam 个人资料未公</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
+You must check &quot;{1}&quot; in plugin settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">未在设置中正确配置 Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam 用户未验证</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG 用户未验证</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam 用户未验</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG 用户未验</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">未在设置中正确配置 GOG</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN 用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox 用户未验证</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox 用户未验</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">未在设置中正确配置 RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">未在设置中正确配置 RPCS3</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net 用户未验证</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net 守望先锋用户未验证</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II 用户未验证</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic 用户未验证</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net 守望先锋用户未验</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II 用户未验</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic 已在功成名就中启用，但其库扩展未在 Playnite 中启</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic 用户未验</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">未在设置中正确配置 GuildWars 2</sys:String>
     
     <!-- SuccessStoreGameSelection -->
@@ -66,6 +69,8 @@
     <sys:String x:Key="LOSuccessStoryAddTagDescription">为游戏添加一个完全解锁用时的标签</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">在工具提示中显示描述</sys:String>
+
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnablePSN">启用 PSN 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">启用 Steam 成就</sys:String>
@@ -89,6 +94,8 @@
     <sys:String x:Key="LOCSuccessStoryDatabase">数据库</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">下载成就数据</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">刷新数据</sys:String>
+    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">下载缺失的数据</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">最近缺失数据的游戏</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">最近的游戏</sys:String>
@@ -97,11 +104,11 @@
     <sys:String x:Key="LOCSuccessStoryGetDataInstalled">缺失数据的已安装游戏</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">已安装的游戏</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">进度（用进度条）</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationViewItemWithProgressBar">进度（用进度条</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">显示成就图表</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">显示成就列表</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompact">显示紧凑的成就列表</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowGraphic">显示成就图</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievements">显示成就列</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompact">显示紧凑的成就列</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">显示成就进度条</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">显示已解锁成就的总结</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">显示未解锁成就的总结</sys:String>
@@ -123,22 +130,24 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">在同一行显示上次成就</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">扩展视图</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Show hidden description when achievement is locked</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">在成就上显示稀有度指示器</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">在成就上显示稀有度指示</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">用成就图像显示稀有度值</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">仅显示从游戏菜单中选择的游戏成就</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">全部解锁时自动设置完成状态</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">全部解锁时自动设置完成状</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">列出游戏</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">默认游戏列表排序</sys:String>
-    <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">所有成就的图表</sys:String>
+    <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">所有成就的图</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryListGamesFields">要显示的游戏字段：</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">100% 成就的图标</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGamesFields">要显示的游戏字段</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">100% 成就的图</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDisplayChart">在主插件视图中显示图表</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">在主插件视图中显示图</sys:String>
     <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">显示已隐藏游戏的成就</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">按月显示成就图表</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">按天显示成就图表</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">按月显示成就图</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">按天显示成就图</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">所选的成就数据库已重置。</sys:String>
 
@@ -162,31 +171,31 @@
 
     <sys:String x:Key="LOCSuccessStoryListAchievements">列出成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">成就排序</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">可用时按解锁分组</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">可用时按解锁分</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">若游戏有成就则添加的功能特色</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIconLockedConfig">锁定的图标配置</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">为未解锁成就添加的图标</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">自定义未解锁成就的图标</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconAddOnImage">为未解锁成就添加的图</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIconCustomLocked">自定义未解锁成就的图</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">仅当缺失图标时</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
-    <sys:String x:Key="LOCSuccessStoryFirstUnlock">首次解锁</sys:String>
-    <sys:String x:Key="LOCSuccessStoryLastUnlock">上次解锁</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFirstUnlock">首次解</sys:String>
+    <sys:String x:Key="LOCSuccessStoryLastUnlock">上次解</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryAchStats">成就统计</sys:String>
     <sys:String x:Key="LOCSuccessStoryUserStats">用户统计</sys:String>
 
     <sys:String x:Key="LOCSsTimeToUnlock">完全解锁需时</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryCommon">常见的</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNoCommon">不常见的</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRare">稀有</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">超稀有</sys:String>
+    <sys:String x:Key="LOCSuccessStoryCommon">常见</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNoCommon">不常见</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRare">稀</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">超稀</sys:String>
 
     <!-- SuccessStoryView -->
 
@@ -195,11 +204,11 @@
     <sys:String x:Key="LOCSuccessStoryFilterSource">根据来源过滤</sys:String>
     <sys:String x:Key="LOCSuccessStoryGlobalProgression">全局成就进度</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressionLaunched">已启动游戏的成就进度</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGameInformation">信息</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameInformation">信</sys:String>
 
 
     <sys:String x:Key="LOCSuccessStoryRarety">稀有度</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDateUnlocked">解锁日期</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDateUnlocked">解锁日</sys:String>
 
     <!-- ListViewGames -->
 
@@ -219,12 +228,12 @@
     
     <!-- Overwatch -->
 
-    <sys:String x:Key="LOCSsOverwatchQuickPlay">快速游玩</sys:String>
-    <sys:String x:Key="LOCSsOverwatchCompetitivePlay">竞技游玩</sys:String>
+    <sys:String x:Key="LOCSsOverwatchQuickPlay">快速游</sys:String>
+    <sys:String x:Key="LOCSsOverwatchCompetitivePlay">竞技游</sys:String>
 
     <sys:String x:Key="LOCSsOverwatchGamesWon">已赢游戏 {0} 次</sys:String>
     
-    <sys:String x:Key="LOCSsOverwatchTopHero">顶尖英雄</sys:String>
+    <sys:String x:Key="LOCSsOverwatchTopHero">顶尖英</sys:String>
     <sys:String x:Key="LOCSsOverwatchCareerStats">职业统计</sys:String>
 
     <!-- Wow -->
@@ -242,10 +251,10 @@
     <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">该插件使用 QuickSearch 插件的功能。
 要使用它，您必须使“successstory”或“ss”命令生效。
 
-这里是命令列表：</sys:String>
+这里是命令列表</sys:String>
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">此命令搜索具有所指定的全成就所需时间的游戏列表。</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">此命令搜索具有所指定的已解锁成就百分比的游戏列表。</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">此命令搜索具有所指定的全成就所需时间的游戏列</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">此命令搜索具有所指定的已解锁成就百分比的游戏列</sys:String>
 
 
     <!-- SuccessStorySearch -->
@@ -262,7 +271,7 @@
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">仅锁定</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">仅锁</sys:String>
     <sys:String x:Key="LOCSsIncludeDescription">在搜索中包含描述</sys:String>
 
 </ResourceDictionary>

@@ -24,12 +24,15 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">No se ha ignorado el juego</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Logro oculto</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">El perfil de Steam no es público</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
+You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam está activado en SuccessStory pero la extensión de la biblioteca ha sido deshabilitada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam no se ha configurado correctamente en la configuración</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No hay configuración de Steam y/o clave API</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Usuario de Steam no encontrado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">El usuario de Steam no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG está activado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">El usuario de GOG no está autenticado</sys:String>
@@ -67,6 +70,8 @@
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Mostrar descripción en globo de ayuda</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Habilitar logros de PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar logros de Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar logros de GOG</sys:String>
@@ -89,6 +94,8 @@
     <sys:String x:Key="LOCSuccessStoryDatabase">Base de datos</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Descargar datos de logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Actualizar datos</sys:String>
+    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Descargar datos faltantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Juegos recientes con datos faltantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Juegos recientes</sys:String>
@@ -123,6 +130,8 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Mostrar el último logro en una línea</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vista de extensión</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Mostrar descripción oculta cuando el logro está bloqueado</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Mostrar indicador de rareza en los logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Mostrar el valor de rareza con la imagen de logros</sys:String>
@@ -171,7 +180,7 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
     <sys:String x:Key="LOCSuccessStoryIconCustomLocked">Icono personalizado para logros bloqueados</sys:String>
     <sys:String x:Key="LOCSuccessStoryIconCustomOnlyMissing">Sólo cuando falta el icono</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryUseLocalised">Use localised achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseLocalised">Usar logros traducidos</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
