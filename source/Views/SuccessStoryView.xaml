@@ -15,7 +15,7 @@
              xmlns:Commonpluginsbehaviors="clr-namespace:CommonPluginsShared.Behaviors"
              xmlns:wpftk="clr-namespace:WpfToolkit.Controls;assembly=VirtualizingWrapPanel" 
              xmlns:customs="clr-namespace:SuccessStory.Controls.Customs"
-             mc:Ignorable="d" d:DesignHeight="740" d:DesignWidth="1280"
+             mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="1100"
              d:DataContext="{d:DesignInstance Type=local:SuccessViewData}">
 
     <UserControl.Resources>

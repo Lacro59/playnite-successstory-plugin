@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:SuccessStory.Controls"
              xmlns:converters="clr-namespace:CommonPlayniteShared.Converters" 
              d:DataContext="{d:DesignInstance Type=local:ControlDataContext, IsDesignTimeCreatable=True}"
-             mc:Ignorable="d" Height="700" Width="1100">
+             mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="1100">
 
     <UserControl.Resources>
         <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />

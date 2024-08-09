@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -60,12 +61,21 @@ namespace SuccessStory.Views
                 PART_FirstUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
                 PART_LastUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
 
+                // Adjustement
+                if (game.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.SteamLibrary))
+                {
+                    gameAchievements?.Items?.ForEach(x =>
+                    {
+                        x.Category = x.Category.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryBaseGame") : x.Category;
+                    });
+                }
 
                 // Category
                 List<CategoryAchievement> categories = gameAchievements.Items
                     .DistinctBy(x => x.Category)
                     .Select(x => new CategoryAchievement
                     {
+                        Icon100Percent = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() == gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count() ? Path.Combine(PluginDatabase.Paths.PluginPath, "Resources\\badge.png") : string.Empty,
                         CategoryIcon = x.ImageCategoryIcon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(gameAchievements.Icon) : x.ImageCategoryIcon,
                         CategoryName = x.Category,
                         CategoryOrder = x.CategoryOrder,
@@ -86,6 +96,22 @@ namespace SuccessStory.Views
             {
                 PART_SourceLabel.Text = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
                 PART_SourceLink.Tag = gameAchievements.SourcesLink.Url;
+            }
+
+            if (gameAchievements.HasData)
+            {
+                ControlDataContext.AchCommon = gameAchievements.Common;
+                ControlDataContext.AchNoCommon = gameAchievements.NoCommon;
+                ControlDataContext.AchRare = gameAchievements.Rare;
+                ControlDataContext.AchUltraRare = gameAchievements.UltraRare;
+
+                ControlDataContext.TotalGamerScore = gameAchievements.TotalGamerScore;
+
+                ControlDataContext.EstimateTime = gameAchievements.EstimateTime.EstimateTime;
+
+                LocalDateTimeConverter converter = new LocalDateTimeConverter();
+                ControlDataContext.FirstUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
+                ControlDataContext.LastUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
             }
 
             ControlDataContext.GameContext = game;
@@ -123,6 +149,7 @@ namespace SuccessStory.Views
 
     public class CategoryAchievement
     {
+        public string Icon100Percent { get; set; }
         public string CategoryIcon { get; set; }
         public string CategoryName { get; set; }
         public int CategoryOrder { get; set; }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory.Views"
              xmlns:interfaces="clr-namespace:SuccessStory.Views.Interfaces"
-             mc:Ignorable="d" Height="900" Width="1080">
+             mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="1100">
     
     <TabControl>
         <TabControl.Resources>
