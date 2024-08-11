@@ -8,11 +8,15 @@ using SuccessStory.Models.Wow;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
     internal class WowAchievements : BattleNetAchievements
     {
+        private static string Sha256Hash { get; set; }
+
         #region Url
         private static string UrlWowGraphQL => @"https://worldofwarcraft.blizzard.com/graphql";
         private static string UrlWowBase => @"https://worldofwarcraft.blizzard.com/{0}/character/{1}/{2}/{3}/achievements/";
@@ -150,7 +154,7 @@ namespace SuccessStory.Clients
 
             try
             {
-                string payload = "{\"operationName\":\"GetRealmStatusData\",\"variables\":{\"input\":{\"compoundRegionGameVersionSlug\":\"" + Region + "\"}},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"c40d282bc48d4d686417f39ba896174eea212d3b86ba8bacd6cdf452b9111554\"}}}";
+                string payload = "{\"operationName\":\"GetRealmStatusData\",\"variables\":{\"input\":{\"compoundRegionGameVersionSlug\":\"" + Region + "\"}},\"extensions\":{\"persistedQuery\":{\"version\":1,\"sha256Hash\":\"" + GetSha256Hash() + "\"}}}";
                 string result = Web.PostStringDataPayload(UrlWowGraphQL, payload).GetAwaiter().GetResult();
                 WowRegionResult wowRegionResult = Serialization.FromJson<WowRegionResult>(result);
                 foreach (Realm realm in wowRegionResult.Data.Realms)
@@ -164,6 +168,34 @@ namespace SuccessStory.Clients
             }
 
             return CbDatas;
+        }
+
+        private static string GetSha256Hash()
+        {
+            if (!Sha256Hash.IsNullOrEmpty())
+            {
+                return Sha256Hash;
+            }
+
+            try
+            {
+                string url = string.Format("https://worldofwarcraft.blizzard.com/game/status");
+                string response = Web.DownloadStringData(url).GetAwaiter().GetResult();
+
+                string js = Regex.Match(response, @"realm-status.\w*.js").Value;
+                if (!js.IsNullOrEmpty())
+                {
+                    url = $"https://assets.worldofwarcraft.blizzard.com/static/{js}";
+                    response = Web.DownloadStringData(url).GetAwaiter().GetResult();
+                    Sha256Hash = Regex.Match(response, "\"GetRealmStatusData\"[)],a[.]documentId=\"(\\w*)\"}").Groups[1].Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+
+            return Sha256Hash;
         }
         #endregion
     }
