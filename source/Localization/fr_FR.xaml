@@ -24,12 +24,15 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Ne pas ignorer le jeu</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Succès caché</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Cacher les jeux avec aucun succès débloqué</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Le profil Steam n'est pas public</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Le jeu Steam &quot;{0}&quot; est privé
+Vous devez sélectionner &quot;{1}&quot; dans la configuration du plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Aucune configuration Steam et/ou clé API</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Pas d'utilisateur Steam trouvé</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Pas d'utilisateur Steam trouv</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">L'utilisateur Steam n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Utilisateur GOG n'est pas connecté</sys:String>
@@ -67,6 +70,8 @@
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Afficher la description dans l'infobulle</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Afficher les Gamerscore</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Activer les succès PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Activer les succès Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Activer les succès GOG</sys:String>
@@ -89,6 +94,8 @@
     <sys:String x:Key="LOCSuccessStoryDatabase">Base de données</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Télécharger les succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Rafraichir les données</sys:String>
+    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Focer l'Id RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Définir un Id RetroAchievements valide</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Télécharger les données manquantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Jeux récents avec données manquantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Jeux récents</sys:String>
@@ -123,7 +130,9 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Montrer le dernier succès sur une ligne</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vue de l'extension</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Afficher la description cachée même si le succès n'a pas été débloqué</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Afficher les icons des succès cachés quand non débloqués</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Afficher les titres des succès cachés quand non débloqués</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Afficher la description cachée même si le succès n'a pas été débloqu</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Afficher l'indicateur de rareté sur les succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Afficher la rareté sur l'image des succès</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Afficher uniquement les succès du jeu sélectionné dans le menu de jeu</sys:String>

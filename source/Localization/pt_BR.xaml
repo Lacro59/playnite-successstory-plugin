@@ -24,8 +24,11 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Não ignorar jogo</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Conquista oculta</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">O perfil Steam não é público</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
+You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">A Steam está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">A Steam não foi ajustada corretamente nas configurações</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Nenhuma configuração e/ou chave API do Steam</sys:String>
@@ -67,6 +70,8 @@
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Mostrar descrições em dicas</sys:String>
 
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
+
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Habilitar conquistas da PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar conquistas Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar conquistas GOG</sys:String>
@@ -89,6 +94,8 @@
     <sys:String x:Key="LOCSuccessStoryDatabase">Banco de dados</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Baixar dados de conquistas</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Recarregar dados</sys:String>
+    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Baixar dados faltando</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Jogos recentes com dados faltando</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Jogos recentes</sys:String>
@@ -123,6 +130,8 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Mostrar a última conquista em uma linha</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Exibição de extensão</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Mostrar descrição oculta quando a conquista está bloqueada</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Exibir indicador de raridade sobre conquistas</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Mostrar valor de raridade com a imagem de conquistas</sys:String>
