@@ -38,7 +38,7 @@ namespace SuccessStory.Clients
                     string gameNameApostrophe = game.Name.Replace("'", "");
                     game.Links?.ForEach(x =>
                     {
-                        productSlug = EpicApi.GetProductSlugByUrl(x.Url).IsNullOrEmpty() ? productSlug : EpicApi.GetProductSlugByUrl(x.Url);
+                        productSlug = EpicApi.GetProductSlugByUrl(x.Url, gameNameApostrophe).IsNullOrEmpty() ? productSlug : EpicApi.GetProductSlugByUrl(x.Url, gameNameApostrophe);
                     });
 
                     if (productSlug.IsNullOrEmpty())
