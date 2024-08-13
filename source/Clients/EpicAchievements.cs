@@ -35,15 +35,15 @@ namespace SuccessStory.Clients
                 try
                 {
                     string productSlug = string.Empty;
-                    string gameNameApostrophe = game.Name.Replace("'", "");
+                    string normalizedEpicName = NormalizeEpicName(game.Name);
                     game.Links?.ForEach(x =>
                     {
-                        productSlug = EpicApi.GetProductSlugByUrl(x.Url, gameNameApostrophe).IsNullOrEmpty() ? productSlug : EpicApi.GetProductSlugByUrl(x.Url, gameNameApostrophe);
+                        productSlug = EpicApi.GetProductSlugByUrl(x.Url, normalizedEpicName).IsNullOrEmpty() ? productSlug : EpicApi.GetProductSlugByUrl(x.Url, normalizedEpicName);
                     });
 
                     if (productSlug.IsNullOrEmpty())
                     {
-                        productSlug = EpicApi.GetProductSlug(PlayniteTools.NormalizeGameName(gameNameApostrophe));
+                        productSlug = EpicApi.GetProductSlug(normalizedEpicName);
                     }
 
                     if (productSlug.IsNullOrEmpty())
@@ -52,7 +52,7 @@ namespace SuccessStory.Clients
                         return null;
                     }
 
-                    string nameSpace = EpicApi.GetNameSpace(NormalizeGameName(gameNameApostrophe), productSlug);
+                    string nameSpace = EpicApi.GetNameSpace(normalizedEpicName, productSlug);
                     if (nameSpace.IsNullOrEmpty())
                     {
                         Logger.Warn($"No NameSpace for the Epic game {game.Name}");
@@ -186,6 +186,11 @@ namespace SuccessStory.Clients
                 }
             }
             return ProductSlug;
+        }
+
+        private string NormalizeEpicName(string GameName)
+        {
+            return PlayniteTools.NormalizeGameName(GameName.Replace("'", ""));
         }
         #endregion
     }
