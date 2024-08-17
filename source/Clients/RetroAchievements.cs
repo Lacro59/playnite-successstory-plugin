@@ -37,7 +37,7 @@ namespace SuccessStory.Clients
 
         public int GameId { get; set; } = 0;
 
-        private static List<int> ConsoleExcludeHash => new List<int> { 2, 8, 12, 16, 21, 40, 47, 49, 76 };
+        private static List<int> ConsoleExcludeHash => new List<int> { 2, 8, 12, 16, 21, 40, 41, 47, 49, 76 };
 
 
         private string GameNameAchievements { get; set; } = string.Empty;
@@ -60,11 +60,11 @@ namespace SuccessStory.Clients
                 // Game Id
                 if (GameId == 0)
                 {
-                    int consoleID = GetConsoleId(game);
-                    if (ConsoleExcludeHash.FindAll(x => x == consoleID)?.Count == 0)
-                    {
-                        GameId = GetGameIdByHash(game);
-                    }
+                    //int consoleID = GetConsoleId(game);
+                    //if (ConsoleExcludeHash.FindAll(x => x == consoleID)?.Count == 0)
+                    //{
+                    //    GameId = GetGameIdByHash(game);
+                    //}
 
                     if (GameId == 0)
                     {
@@ -448,27 +448,27 @@ namespace SuccessStory.Clients
                 {
                     // Exclude for performance
                     FileInfo fi = new FileInfo(FilePath);
-                    if (fi.Length > 50000000)
+                    if (fi.Length > 20000000)
                     {
                         return GameId;
                     }
                     else
                     {
-                        FilePath = ZipFileManafeExtract(FilePath);
+                        FilePath = ZipFileManageExtract(FilePath);
                     }
                 }
 
                 if (!File.Exists(FilePath))
                 {
                     Logger.Warn($"No file found for RA hash - {FilePath}");
-                    ZipFileManafeRemove();
+                    ZipFileManageRemove();
                     return GameId;
                 }
                 else
                 {
                     // Exclude for performance
                     FileInfo fi = new FileInfo(FilePath);
-                    if (fi.Length > 800000000)
+                    if (fi.Length > 300000000)
                     {
                         Logger.Warn($"Hash impossible - The file is too long - {FilePath}");
                         return GameId;
@@ -484,7 +484,7 @@ namespace SuccessStory.Clients
                     rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                     if (rA_MD5List != null)
                     {
-                        ZipFileManafeRemove();
+                        ZipFileManageRemove();
                         Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.NDS");
                         return rA_MD5List.Id;
                     }
@@ -498,7 +498,7 @@ namespace SuccessStory.Clients
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
-                    ZipFileManafeRemove();
+                    ZipFileManageRemove();
                     Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.All");
                     return rA_MD5List.Id;
                 }
@@ -511,7 +511,7 @@ namespace SuccessStory.Clients
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
-                    ZipFileManafeRemove();
+                    ZipFileManageRemove();
                     Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
                     return rA_MD5List.Id;
                 }
@@ -524,7 +524,7 @@ namespace SuccessStory.Clients
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
-                    ZipFileManafeRemove();
+                    ZipFileManageRemove();
                     Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
                     return rA_MD5List.Id;
                 }
@@ -537,7 +537,7 @@ namespace SuccessStory.Clients
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
-                    ZipFileManafeRemove();
+                    ZipFileManageRemove();
                     Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
                     return rA_MD5List.Id;
                 }
@@ -550,7 +550,7 @@ namespace SuccessStory.Clients
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
-                    ZipFileManafeRemove();
+                    ZipFileManageRemove();
                     Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
                     return rA_MD5List.Id;
                 }
@@ -563,7 +563,7 @@ namespace SuccessStory.Clients
                 rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
                 if (rA_MD5List != null)
                 {
-                    ZipFileManafeRemove();
+                    ZipFileManageRemove();
                     Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
                     return rA_MD5List.Id;
                 }
@@ -572,7 +572,7 @@ namespace SuccessStory.Clients
                     Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
                 }
 
-                ZipFileManafeRemove();
+                ZipFileManageRemove();
             }
 
             return GameId;
@@ -719,12 +719,12 @@ namespace SuccessStory.Clients
         }
 
 
-        private string ZipFileManafeExtract(string FilePath)
+        private string ZipFileManageExtract(string FilePath)
         {
             string extractPath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "tempZip");
             try
             {
-                ZipFileManafeRemove();
+                ZipFileManageRemove();
                 ZipFile.ExtractToDirectory(FilePath, extractPath);
             }
             catch { }
@@ -738,7 +738,7 @@ namespace SuccessStory.Clients
             return FilePathReturn;
         }
 
-        private void ZipFileManafeRemove()
+        private void ZipFileManageRemove()
         {
             string extractPath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "tempZip");
             FileSystem.DeleteDirectory(extractPath);
