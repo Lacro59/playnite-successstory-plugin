@@ -1,4 +1,5 @@
-﻿using CommonPluginsShared.Converters;
+﻿using CommonPluginsShared;
+using CommonPluginsShared.Converters;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using SuccessStory.Services;
@@ -13,9 +14,6 @@ namespace SuccessStory.Models
     /// </summary>
     public class ListAll
     {
-        private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-
-
         public string Id { get; set; }
         public string Icon { get; set; }
         public string Name { get; set; }
@@ -41,9 +39,6 @@ namespace SuccessStory.Models
                 return result;
             }
         }
-
-        [DontSerialize]
-        public RelayCommand<Guid> GoToGame => PluginDatabase.GoToGame;
 
         [DontSerialize]
         public bool GameExist => API.Instance.Database.Games.Get(GameId) != null;

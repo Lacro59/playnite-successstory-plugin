@@ -1,4 +1,5 @@
-﻿using Playnite.SDK;
+﻿using CommonPluginsShared;
+using Playnite.SDK;
 using Playnite.SDK.Data;
 using SuccessStory.Services;
 using System;
@@ -11,9 +12,6 @@ namespace SuccessStory.Models
     /// </summary>
     public class ListViewGames
     {
-        private static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-
-
         public string Icon100Percent { get; set; }
         public string Id { get; set; }
         public string Icon { get; set; }
@@ -49,9 +47,6 @@ namespace SuccessStory.Models
                 return result;
             }
         }
-
-        [DontSerialize]
-        public RelayCommand<Guid> GoToGame { get; set; } = PluginDatabase.GoToGame;
 
         [DontSerialize]
         public bool GameExist => API.Instance.Database.Games.Get(GameId) != null;

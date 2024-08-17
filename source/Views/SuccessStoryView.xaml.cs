@@ -427,8 +427,6 @@ namespace SuccessStory
                     .Where(x => x.HasAchievements && !x.IsDeleted && (ShowHidden ? true : x.Hidden == false))
                     .Select(x => new ListViewGames
                     {
-                        GoToGame = GoToGame,
-
                         Icon100Percent = x.Is100Percent ? Path.Combine(pluginFolder, "Resources\\badge.png") : string.Empty,
                         Id = x.Id.ToString(),
                         Name = x.Name,

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SuccessStory"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:commands="clr-namespace:CommonPluginsShared"
              xmlns:livechartscommon="clr-namespace:CommonPluginsControls.LiveChartsCommon"
              xmlns:controlsShared="clr-namespace:CommonPluginsShared.Controls"
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
@@ -252,7 +253,7 @@
                                                 <DataTemplate>
                                                     <StackPanel>
                                                         <TextBlock Visibility="{Binding GameExist, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                            <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
+                                                            <Hyperlink Command="{x:Static commands:Commands.GoToGame}" CommandParameter="{Binding GameId}">
                                                                 <controls:TextBlockTrimmed  Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
                                                             </Hyperlink>
                                                         </TextBlock>
@@ -594,7 +595,7 @@
                                     <DataTemplate>
                                         <StackPanel>
                                             <TextBlock Visibility="{Binding GameExist, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Hyperlink Command="{Binding GoToGame}" CommandParameter="{Binding GameId}">
+                                                <Hyperlink Command="{x:Static commands:Commands.GoToGame}" CommandParameter="{Binding GameId}">
                                                     <controls:TextBlockTrimmed  Text="{Binding Name}" Style="{DynamicResource ListExtendStyleTextBlock}" />
                                                 </Hyperlink>
                                             </TextBlock>
