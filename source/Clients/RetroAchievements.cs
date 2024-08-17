@@ -57,22 +57,7 @@ namespace SuccessStory.Clients
 
             if (IsConfigured())
             {
-                // Game Id
-                if (GameId == 0)
-                {
-                    //int consoleID = GetConsoleId(game);
-                    //if (ConsoleExcludeHash.FindAll(x => x == consoleID)?.Count == 0)
-                    //{
-                    //    GameId = GetGameIdByHash(game);
-                    //}
-
-                    if (GameId == 0)
-                    {
-                        GameId = GetGameIdByName(game);
-                    }
-                }
-
-                // Get achievements
+                GameId = GameId == 0 ? GetGameIdByName(game) : GameId;
                 if (GameId != 0)
                 {
                     AllAchievements = GetGameInfoAndUserProgress(GameId);
