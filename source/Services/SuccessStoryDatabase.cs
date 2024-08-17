@@ -751,10 +751,11 @@ namespace SuccessStory.Services
                         {
                             Achievements.Sort((x, y) => (x.DateUnlocked == null ? default : (DateTime)x.DateUnlocked).CompareTo(x.DateUnlocked == null ? default : (DateTime)x.DateUnlocked));
                             DateTime TempDateTime = Achievements.Where(x => x.IsUnlock).Select(x => x.DateWhenUnlocked).Max()?.ToLocalTime() ?? DateTime.Now;
+                            TempDateTime = TempDateTime == default ? DateTime.Now : TempDateTime;
 
                             for (int i = limit; i >= 0; i--)
                             {
-                                GraphicsAchievementsLabels[(limit - i)] = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null);
+                                GraphicsAchievementsLabels[limit - i] = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null);
 
                                 double DataValue = CutPeriod ? double.NaN : 0;
 
