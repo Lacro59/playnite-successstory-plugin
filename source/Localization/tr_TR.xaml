@@ -24,11 +24,11 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">Oyun yok sayılmadı</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Gizli başarım</sys:String>
-    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Kilitlenmemiş başarımları olmayan oyunları gizle</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profili herkese açık değil</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
-You must check &quot;{1}&quot; in plugin settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam oyunu &quot;{0}&quot; herkese açık değil
+Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">BaşarıÖyküsü eklentisinde Steam etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam ayarlarda düzgün yapılandırılmamı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Steam yapılandırması ve/veya API anahtarı yok</sys:String>
@@ -70,7 +70,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">İpucunda açıklama göster</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Oyuncu Skorunu Göster</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnablePSN">PSN başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Steam başarımlarını etkinleştir</sys:String>
@@ -94,8 +94,8 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryDatabase">Veritabanı</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Başarım verilerini indir</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Veriyi yenile</sys:String>
-    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
-    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
+    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">RetroAchievements Kimliğini Zorla</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Geçerli bir RetroAchievements Kimliği belirle</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Eksik verileri indir</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Eksik veri içeren son oyunlar</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Son oyunlar</sys:String>
@@ -130,8 +130,8 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">En son başarımı tek satırda göster</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Eklenti görünümü</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Başarım kilitlendiğinde gizli simgeyi göster</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Başarım kilitlendiğinde gizli başlığı göster</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Başarım kilitliyken gizli açıklamayı göster</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Başarımlarda enderlik göstergesini göster</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Başarım görseli ile birlikte enderlik değerini göster</sys:String>
