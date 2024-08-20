@@ -218,13 +218,10 @@ namespace SuccessStory.Services
                 gameAchievements = GetWeb(Id);
                 AddOrUpdate(gameAchievements);
             }
-            else if (gameAchievements == null)
+            else if (gameAchievements == null && game != null)
             {
-                if (game != null)
-                {
-                    gameAchievements = GetDefault(game);
-                    Add(gameAchievements);
-                }
+                gameAchievements = GetDefault(game);
+                Add(gameAchievements);
             }
 
             return gameAchievements;
@@ -566,7 +563,7 @@ namespace SuccessStory.Services
                         IEnumerable<Guid> ListSources = db.Select(x => x.Value.SourceId).Distinct();
                         foreach (Guid Source in ListSources)
                         {
-                            if (Source != default(Guid))
+                            if (Source != default)
                             {
                                 GameSource gameSource = API.Instance.Database.Sources.Get(Source);
                                 if (gameSource != null)
@@ -1188,6 +1185,8 @@ namespace SuccessStory.Services
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
+                API.Instance.Database.Games.BeginBufferUpdate();
+
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
@@ -1222,10 +1221,11 @@ namespace SuccessStory.Services
                         activateGlobalProgress.CurrentProgressValue++;
                     }
                 }
-
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
                 Logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
+
+                API.Instance.Database.Games.EndBufferUpdate();
             }, globalProgressOptions);
         }
 
@@ -1257,6 +1257,8 @@ namespace SuccessStory.Services
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
+                API.Instance.Database.Games.BeginBufferUpdate();
+
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
@@ -1307,6 +1309,8 @@ namespace SuccessStory.Services
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
                 Logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
+
+                API.Instance.Database.Games.EndBufferUpdate();
             }, globalProgressOptions);
         }
 
@@ -1320,6 +1324,8 @@ namespace SuccessStory.Services
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
             {
+                API.Instance.Database.Games.BeginBufferUpdate();
+
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
@@ -1352,6 +1358,8 @@ namespace SuccessStory.Services
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
                 Logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
+
+                API.Instance.Database.Games.EndBufferUpdate();
             }, globalProgressOptions);
         }
 

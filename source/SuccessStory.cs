@@ -896,7 +896,7 @@ namespace SuccessStory
 
             if (PluginSettings.Settings.AutoImportOnInstalled)
             {
-                _ = PluginDatabase.RefreshInstalled();
+                PluginDatabase.RefreshInstalled();
             }
 
             // TODO - Removed for Playnite 11
