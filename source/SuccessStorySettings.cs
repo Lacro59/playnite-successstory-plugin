@@ -185,7 +185,8 @@ namespace SuccessStory
         public SolidColorBrush RarityUncommonColor { get; set; } = Brushes.DarkGray;
         public double RarityRare { get; set; } = 10;
         public SolidColorBrush RarityRareColor { get; set; } = Brushes.Gold;
-        public bool UseUltraRare { get; set; } = false;
+        private bool useUltraRare = false;
+        public bool UseUltraRare { get => useUltraRare; set => SetValue(ref useUltraRare, value); }
         public double RarityUltraRare { get; set; } = 2;
         public SolidColorBrush RarityUltraRareColor { get; set; } = Brushes.MediumPurple;
 
@@ -215,9 +216,25 @@ namespace SuccessStory
         [DontSerialize]
         public bool HasData { get => hasData; set => SetValue(ref hasData, value); }
 
-        private bool is100Percent  = false;
+        private bool is100Percent = false;
         [DontSerialize]
         public bool Is100Percent { get => is100Percent; set => SetValue(ref is100Percent, value); }
+
+        private AchRaretyStats common = new AchRaretyStats();
+        [DontSerialize]
+        public AchRaretyStats Common { get => common; set => SetValue(ref common, value); }
+
+        private AchRaretyStats noCommon = new AchRaretyStats();
+        [DontSerialize]
+        public AchRaretyStats NoCommon { get => noCommon; set => SetValue(ref noCommon, value); }
+
+        private AchRaretyStats rare = new AchRaretyStats();
+        [DontSerialize]
+        public AchRaretyStats Rare { get => rare; set => SetValue(ref rare, value); }
+
+        private AchRaretyStats ultraRare = new AchRaretyStats();
+        [DontSerialize]
+        public AchRaretyStats UltraRare { get => ultraRare; set => SetValue(ref ultraRare, value); }
 
         private int unlocked = 0;
         [DontSerialize]
@@ -227,11 +244,11 @@ namespace SuccessStory
         [DontSerialize]
         public int Locked { get => locked; set => SetValue(ref locked, value); }
 
-        private int total  = 0;
+        private int total = 0;
         [DontSerialize]
         public int Total { get => total; set => SetValue(ref total, value); }
 
-        private int totalGamerScore  = 0;
+        private int totalGamerScore = 0;
         [DontSerialize]
         public int TotalGamerScore { get => totalGamerScore; set => SetValue(ref totalGamerScore, value); }
 

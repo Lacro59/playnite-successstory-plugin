@@ -1060,6 +1060,10 @@ namespace SuccessStory.Services
                 PluginSettings.Settings.HasData = false;
 
                 PluginSettings.Settings.Is100Percent = false;
+                PluginSettings.Settings.Common = new AchRaretyStats();
+                PluginSettings.Settings.NoCommon = new AchRaretyStats();
+                PluginSettings.Settings.Rare = new AchRaretyStats();
+                PluginSettings.Settings.UltraRare = new AchRaretyStats();
                 PluginSettings.Settings.Unlocked = 0;
                 PluginSettings.Settings.Locked = 0;
                 PluginSettings.Settings.Total = 0;
@@ -1074,6 +1078,10 @@ namespace SuccessStory.Services
             PluginSettings.Settings.HasData = gameAchievements.HasData;
 
             PluginSettings.Settings.Is100Percent = gameAchievements.Is100Percent;
+            PluginSettings.Settings.Common = gameAchievements.Common;
+            PluginSettings.Settings.NoCommon = gameAchievements.NoCommon;
+            PluginSettings.Settings.Rare = gameAchievements.Rare;
+            PluginSettings.Settings.UltraRare = gameAchievements.UltraRare;
             PluginSettings.Settings.Unlocked = gameAchievements.Unlocked;
             PluginSettings.Settings.Locked = gameAchievements.Locked;
             PluginSettings.Settings.Total = gameAchievements.Total;
