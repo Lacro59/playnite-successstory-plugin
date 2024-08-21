@@ -1126,10 +1126,10 @@ namespace SuccessStory.Services
         }
 
 
-        public override void RefreshNoLoader(Guid Id)
+        public override void RefreshNoLoader(Guid id)
         {
-            Game game = API.Instance.Database.Games.Get(Id);
-            GameAchievements loadedItem = Get(Id, true);
+            Game game = API.Instance.Database.Games.Get(id);
+            GameAchievements loadedItem = Get(id, true);
             GameAchievements webItem = null;
 
             if (loadedItem?.IsIgnored ?? true)
@@ -1158,7 +1158,7 @@ namespace SuccessStory.Services
             }
             else
             {
-                webItem = GetWeb(Id);
+                webItem = GetWeb(id);
             }
 
             bool mustUpdate = true;
@@ -1183,7 +1183,7 @@ namespace SuccessStory.Services
             ActionAfterRefresh(webItem);
         }
 
-        public override void Refresh(List<Guid> Ids)
+        public override void Refresh(List<Guid> ids)
         {
             GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
                 $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}",
@@ -1198,18 +1198,21 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                activateGlobalProgress.ProgressMaxValue = Ids.Count;
+                activateGlobalProgress.ProgressMaxValue = ids.Count;
 
                 string CancelText = string.Empty;
-                foreach (Guid Id in Ids)
+                foreach (Guid id in ids)
                 {
+                    Game game = API.Instance.Database.Games.Get(id);
+                    activateGlobalProgress.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}"
+                        + "\n\n" + game.Name + (game.Source == null ? string.Empty : $" ({game.Source.Name})");
+
                     if (activateGlobalProgress.CancelToken.IsCancellationRequested)
                     {
                         CancelText = " canceled";
                         break;
                     }
 
-                    Game game = API.Instance.Database.Games.Get(Id);
                     string SourceName = PlayniteTools.GetSourceName(game);
                     AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
                     string GameName = game.Name;
@@ -1222,7 +1225,7 @@ namespace SuccessStory.Services
                         {
                             if (!gameAchievements.IsManual)
                             {
-                                RefreshNoLoader(Id);
+                                RefreshNoLoader(id);
                             }
                         }
 
@@ -1231,7 +1234,7 @@ namespace SuccessStory.Services
                 }
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{Ids.Count} items");
+                Logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{ids.Count} items");
 
                 API.Instance.Database.Games.EndBufferUpdate();
             }, globalProgressOptions);
