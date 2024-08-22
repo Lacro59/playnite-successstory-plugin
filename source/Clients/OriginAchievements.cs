@@ -15,20 +15,8 @@ namespace SuccessStory.Clients
 {
     public class OriginAchievements : GenericAchievements
     {
-        protected static OriginApi originAPI;
-        internal static OriginApi OriginAPI
-        {
-            get
-            {
-                if (originAPI == null)
-                {
-                    originAPI = new OriginApi(PluginDatabase.PluginName);
-                }
-                return originAPI;
-            }
-
-            set => originAPI = value;
-        }
+        protected static readonly Lazy<OriginApi> originAPI = new Lazy<OriginApi>(() => new OriginApi(PluginDatabase.PluginName));
+        internal static OriginApi OriginAPI => originAPI.Value;
 
 
         public OriginAchievements() : base("EA", CodeLang.GetOriginLang(API.Instance.ApplicationSettings.Language), CodeLang.GetOriginLangCountry(API.Instance.ApplicationSettings.Language))

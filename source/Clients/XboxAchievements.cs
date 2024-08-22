@@ -22,23 +22,8 @@ namespace SuccessStory.Clients
 {
     public class XboxAchievements : GenericAchievements
     {
-        protected static XboxAccountClient xboxAccountClient;
-        internal static XboxAccountClient XboxAccountClient
-        {
-            get
-            {
-                if (xboxAccountClient == null)
-                {
-                    xboxAccountClient = new XboxAccountClient(
-                        API.Instance,
-                        PluginDatabase.Paths.PluginUserDataPath + "\\..\\" + PlayniteTools.GetPluginId(ExternalPlugin.XboxLibrary)
-                    );
-                }
-                return xboxAccountClient;
-            }
-
-            set => xboxAccountClient = value;
-        }
+        protected static readonly Lazy<XboxAccountClient> xboxAccountClient = new Lazy<XboxAccountClient>(() => new XboxAccountClient(API.Instance, PluginDatabase.Paths.PluginUserDataPath + "\\..\\" + PlayniteTools.GetPluginId(ExternalPlugin.XboxLibrary)));
+        internal static XboxAccountClient XboxAccountClient => xboxAccountClient.Value;
 
         private static string AchievementsBaseUrl => @"https://achievements.xboxlive.com/users/xuid({0})/achievements";
         private static string TitleAchievementsBaseUrl => @"https://achievements.xboxlive.com/users/xuid({0})/titleachievements";

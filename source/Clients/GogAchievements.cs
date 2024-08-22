@@ -14,20 +14,8 @@ namespace SuccessStory.Clients
 {
     public class GogAchievements : GenericAchievements
     {
-        protected static GogApi gogAPI;
-        internal static GogApi GogAPI
-        {
-            get
-            {
-                if (gogAPI == null)
-                {
-                    gogAPI = new GogApi(PluginDatabase.PluginName);
-                }
-                return gogAPI;
-            }
-
-            set => gogAPI = value;
-        }
+        protected static readonly Lazy<GogApi> gogAPI = new Lazy<GogApi>(() => new GogApi(PluginDatabase.PluginName));
+        internal static GogApi GogAPI => gogAPI.Value;
 
 
         public GogAchievements() : base("GOG", CodeLang.GetGogLang(API.Instance.ApplicationSettings.Language))
@@ -52,7 +40,7 @@ namespace SuccessStory.Clients
                         {
                             ApiName = x.Id,
                             Name = x.Name,
-                            Description =x.Description,
+                            Description = x.Description,
                             UrlUnlocked = x.UrlUnlocked,
                             UrlLocked = x.UrlLocked,
                             DateUnlocked = x.DateUnlocked,

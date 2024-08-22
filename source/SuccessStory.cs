@@ -890,7 +890,7 @@ namespace SuccessStory
 
             Task.Run(() =>
             {
-                Thread.Sleep(30000);
+                Thread.Sleep(10000);
                 PreventLibraryUpdatedOnStart = false;
             });
 
@@ -1118,8 +1118,8 @@ namespace SuccessStory
         {
             if (PluginSettings.Settings.AutoImport && !PreventLibraryUpdatedOnStart)
             {
-                List<Guid> PlayniteDb = new List<Guid>();
-                PlayniteDb = PluginDatabase.PluginSettings.Settings.AutoImportOnInstalled
+                List<Guid> playniteDb = new List<Guid>();
+                playniteDb = PluginDatabase.PluginSettings.Settings.AutoImportOnInstalled
                     ? API.Instance.Database.Games
                        .Where(x => (x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload) || x.IsInstalled)
                        .Select(x => x.Id).ToList()
@@ -1127,7 +1127,8 @@ namespace SuccessStory
                         .Where(x => (x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload))
                         .Select(x => x.Id).ToList();
 
-                PluginDatabase.Refresh(PlayniteDb);
+                Logger.Info($"OnLibraryUpdated found {playniteDb.Count} game(s) that need updating");
+                PluginDatabase.Refresh(playniteDb);
 
                 PluginSettings.Settings.LastAutoLibUpdateAssetsDownload = DateTime.Now;
                 SavePluginSettings(PluginSettings.Settings);
