@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace SuccessStory.Clients
 {
@@ -36,13 +37,15 @@ namespace SuccessStory.Clients
 
     public class ExophaseAchievements : GenericAchievements
     {
+        #region Urls
         private string UrlExophaseSearch => @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
+
         private string UrlExophase => @"https://www.exophase.com";
         private string UrlExophaseLogin => $"{UrlExophase}/login";
         private string UrlExophaseLogout => $"{UrlExophase}/logout";
         private string UrlExophaseAccount => $"{UrlExophase}/account";
+        #endregion
 
-        
 
         public ExophaseAchievements() : base("Exophase")
         {
@@ -60,10 +63,10 @@ namespace SuccessStory.Clients
             return GetAchievements(game, new SearchResult { Name = game.Name, Url = url });
         }
 
-        public GameAchievements GetAchievements(Game game, SearchResult searchResult, bool IsRetry = false)
+        public GameAchievements GetAchievements(Game game, SearchResult searchResult, bool isRetry = false)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievements> allAchievements = new List<Achievements>();
 
             try
             {
@@ -91,7 +94,7 @@ namespace SuccessStory.Clients
 
                 for (int i = 0; i < All.Count; i++)
                 {
-                    AllAchievements.Add(new Achievements 
+                    allAchievements.Add(new Achievements
                     {
                         Name = AllLocalised.Count > 0 ? AllLocalised[i].Name : All[i].Name,
                         ApiName = All[i].Name,
@@ -108,10 +111,6 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
-
-            gameAchievements.Items = AllAchievements;
-
-
             // Set source link
             if (gameAchievements.HasAchievements)
             {
@@ -123,7 +122,7 @@ namespace SuccessStory.Clients
                 };
             }
 
-
+            gameAchievements.Items = allAchievements;
             return gameAchievements;
         }
 
@@ -253,12 +252,14 @@ namespace SuccessStory.Clients
             if (searchResults.Count == 0)
             {
                 Logger.Warn($"No game found for {gameAchievements.Name} in GetAchievementsPageUrl()");
-
+                
+                Thread.Sleep(1000);
                 searchResults = SearchGame(CommonPluginsShared.PlayniteTools.NormalizeGameName(gameAchievements.Name));
                 if (searchResults.Count == 0)
                 {
                     Logger.Warn($"No game found for {CommonPluginsShared.PlayniteTools.NormalizeGameName(gameAchievements.Name)} in GetAchievementsPageUrl()");
 
+                    Thread.Sleep(1000);
                     searchResults = SearchGame(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value);
                     UsedSplit = true;
                     if (searchResults.Count == 0)
@@ -297,11 +298,7 @@ namespace SuccessStory.Clients
 
             try
             {
-                GameAchievements exophaseAchievements = GetAchievements(
-                    API.Instance.Database.Games.Get(gameAchievements.Id),
-                    achievementsUrl
-                );
-
+                GameAchievements exophaseAchievements = GetAchievements(gameAchievements.Game, achievementsUrl);
                 exophaseAchievements.Items.ForEach(y =>
                 {
                     Achievements achievement = gameAchievements.Items.Find(x => x.ApiName.IsEqual(y.ApiName));
@@ -347,12 +344,16 @@ namespace SuccessStory.Clients
                 //PC: match service
                 case Services.SuccessStoryDatabase.AchievementSource.Steam:
                     return exophaseGame.Platforms.Contains("Steam", StringComparer.InvariantCultureIgnoreCase);
+
                 case Services.SuccessStoryDatabase.AchievementSource.GOG:
                     return exophaseGame.Platforms.Contains("GOG", StringComparer.InvariantCultureIgnoreCase);
+
                 case Services.SuccessStoryDatabase.AchievementSource.Origin:
                     return exophaseGame.Platforms.Contains("Electronic Arts", StringComparer.InvariantCultureIgnoreCase);
+
                 case Services.SuccessStoryDatabase.AchievementSource.RetroAchievements:
                     return exophaseGame.Platforms.Contains("Retro", StringComparer.InvariantCultureIgnoreCase);
+
                 case Services.SuccessStoryDatabase.AchievementSource.Overwatch:
                 case Services.SuccessStoryDatabase.AchievementSource.Starcraft2:
                 case Services.SuccessStoryDatabase.AchievementSource.Wow:
@@ -364,6 +365,9 @@ namespace SuccessStory.Clients
                 case Services.SuccessStoryDatabase.AchievementSource.RPCS3:
                     return PlatformsMatch(exophaseGame, playniteGame);
 
+                case Services.SuccessStoryDatabase.AchievementSource.Epic:
+                case Services.SuccessStoryDatabase.AchievementSource.GenshinImpact:
+                case Services.SuccessStoryDatabase.AchievementSource.GuildWars2:
                 case Services.SuccessStoryDatabase.AchievementSource.None:
                 case Services.SuccessStoryDatabase.AchievementSource.Local:
                 default:
