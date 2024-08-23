@@ -1185,59 +1185,61 @@ namespace SuccessStory.Services
 
         public override void Refresh(List<Guid> ids)
         {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}",
-                true
-            );
-            globalProgressOptions.IsIndeterminate = false;
-
-            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            GlobalProgressOptions options = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}")
             {
-                API.Instance.Database.Games.BeginBufferUpdate();
+                Cancelable = true,
+                IsIndeterminate = false
+            };
+
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
+            {
+                Logger.Info($"Refresh() started");
+                Database.BeginBufferUpdate();
 
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                activateGlobalProgress.ProgressMaxValue = ids.Count;
+                a.ProgressMaxValue = ids.Count;
 
-                string CancelText = string.Empty;
+                string cancelText = string.Empty;
                 foreach (Guid id in ids)
                 {
                     Game game = API.Instance.Database.Games.Get(id);
-                    activateGlobalProgress.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}"
+                    a.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}"
                         + "\n\n" + game.Name + (game.Source == null ? string.Empty : $" ({game.Source.Name})");
 
-                    if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                    if (a.CancelToken.IsCancellationRequested)
                     {
-                        CancelText = " canceled";
+                        cancelText = " canceled";
                         break;
                     }
 
-                    string SourceName = PlayniteTools.GetSourceName(game);
+                    string sourceName = PlayniteTools.GetSourceName(game);
                     AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
-                    string GameName = game.Name;
-                    bool VerifToAddOrShow = SuccessStoryDatabase.VerifToAddOrShow(PluginSettings.Settings, game);
+                    string gameName = game.Name;
+                    bool verifToAddOrShow = VerifToAddOrShow(PluginSettings.Settings, game);
                     GameAchievements gameAchievements = Get(game, true);
 
-                    if (!gameAchievements.IsIgnored && VerifToAddOrShow)
+                    if (!gameAchievements.IsIgnored && verifToAddOrShow && !gameAchievements.IsManual)
                     {
-                        if (VerifToAddOrShow)
+                        try
                         {
-                            if (!gameAchievements.IsManual)
-                            {
-                                RefreshNoLoader(id);
-                            }
+                            RefreshNoLoader(id);
                         }
-
-                        activateGlobalProgress.CurrentProgressValue++;
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false, true, PluginName);
+                        }
                     }
+
+                    a.CurrentProgressValue++;
                 }
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task Refresh(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{ids.Count} items");
+                Logger.Info($"Task Refresh(){cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{ids.Count} items");
 
-                API.Instance.Database.Games.EndBufferUpdate();
-            }, globalProgressOptions);
+                Database.EndBufferUpdate();
+            }, options);
         }
 
         public override void ActionAfterRefresh(GameAchievements item)
@@ -1260,21 +1262,22 @@ namespace SuccessStory.Services
 
         public void RefreshRarety()
         {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}",
-                true
-            );
-            globalProgressOptions.IsIndeterminate = false;
-
-            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            GlobalProgressOptions options = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}")
             {
-                API.Instance.Database.Games.BeginBufferUpdate();
+                Cancelable = true,
+                IsIndeterminate = false
+            };
+
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
+            {
+                Logger.Info($"RefreshRarety() started");
+                Database.BeginBufferUpdate();
 
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
                 IEnumerable<GameAchievements> db = Database.Where(x => x.IsManual && x.HasAchievements);
-                activateGlobalProgress.ProgressMaxValue = (double)db.Count();
+                a.ProgressMaxValue = (double)db.Count();
                 string CancelText = string.Empty;
 
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
@@ -1283,65 +1286,76 @@ namespace SuccessStory.Services
 
                 foreach (GameAchievements gameAchievements in db)
                 {
-                    Logger.Info($"RefreshRarety({gameAchievements.Name})");
-                    if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                    a.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}"
+                        + "\n\n" + gameAchievements.Name + (gameAchievements.Source == null ? string.Empty : $" ({gameAchievements.Source.Name})");
+
+                    if (a.CancelToken.IsCancellationRequested)
                     {
                         CancelText = " canceled";
                         break;
                     }
 
-                    string SourceName = gameAchievements.SourcesLink?.Name?.ToLower();
-                    switch (SourceName)
+                    try
                     {
-                        case "steam":
-                            if (uint.TryParse(Regex.Match(gameAchievements.SourcesLink.Url, @"\d+").Value, out uint appId))
-                            {
-                                steamAchievements.SetRarity(appId, gameAchievements);
-                            }
-                            else
-                            {
-                                Logger.Warn($"No Steam appId");
-                            }
-                            break;
+                        string SourceName = gameAchievements.SourcesLink?.Name?.ToLower();
+                        switch (SourceName)
+                        {
+                            case "steam":
+                                if (uint.TryParse(Regex.Match(gameAchievements.SourcesLink.Url, @"\d+").Value, out uint appId))
+                                {
+                                    steamAchievements.SetRarity(appId, gameAchievements);
+                                }
+                                else
+                                {
+                                    Logger.Warn($"No Steam appId");
+                                }
+                                break;
 
-                        case "exophase":
-                            exophaseAchievements.SetRarety(gameAchievements, AchievementSource.Local);
-                            break;
+                            case "exophase":
+                                exophaseAchievements.SetRarety(gameAchievements, AchievementSource.Local);
+                                break;
 
-                        default:
-                            Logger.Warn($"No sourcesLink for {gameAchievements.Name} with {SourceName}");
-                            break;
+                            default:
+                                Logger.Warn($"No sourcesLink for {gameAchievements.Name} with {SourceName}");
+                                break;
+                        }
+
+                        AddOrUpdate(gameAchievements);
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false, true, PluginName);
                     }
 
-                    AddOrUpdate(gameAchievements);
-                    activateGlobalProgress.CurrentProgressValue++;
+                    a.CurrentProgressValue++;
                 }
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
+                Logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{(double)db.Count()} items");
 
-                API.Instance.Database.Games.EndBufferUpdate();
-            }, globalProgressOptions);
+                Database.EndBufferUpdate();
+            }, options);
         }
 
         public void RefreshEstimateTime()
         {
-            GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}",
-                true
-            );
-            globalProgressOptions.IsIndeterminate = false;
-
-            _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
+            GlobalProgressOptions options = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}")
             {
-                API.Instance.Database.Games.BeginBufferUpdate();
+                Cancelable = true,
+                IsIndeterminate = false
+            };
+
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
+            {
+                Logger.Info($"RefreshEstimateTime() started");
+                Database.BeginBufferUpdate();
 
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
                 IEnumerable<GameAchievements> db = Database.Where(x => x.IsManual && x.HasAchievements);
-                activateGlobalProgress.ProgressMaxValue = (double)db.Count();
+                a.ProgressMaxValue = db.Count();
                 string CancelText = string.Empty;
 
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
@@ -1350,28 +1364,36 @@ namespace SuccessStory.Services
 
                 foreach (GameAchievements gameAchievements in db)
                 {
-                    Logger.Info($"RefreshEstimateTime({gameAchievements.Name})");
+                    a.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}"
+                        + "\n\n" + gameAchievements.Name + (gameAchievements.Source == null ? string.Empty : $" ({gameAchievements.Source.Name})");
 
-                    if (activateGlobalProgress.CancelToken.IsCancellationRequested)
+                    if (a.CancelToken.IsCancellationRequested)
                     {
                         CancelText = " canceled";
                         break;
                     }
 
-                    Game game = API.Instance.Database.Games.Get(gameAchievements.Id);
-                    GameAchievements gameAchievementsNew = Serialization.GetClone(gameAchievements);
-                    gameAchievementsNew = SetEstimateTimeToUnlock(game, gameAchievements);
-                    AddOrUpdate(gameAchievementsNew);
+                    try
+                    {
+                        Game game = API.Instance.Database.Games.Get(gameAchievements.Id);
+                        GameAchievements gameAchievementsNew = Serialization.GetClone(gameAchievements);
+                        gameAchievementsNew = SetEstimateTimeToUnlock(game, gameAchievements);
+                        AddOrUpdate(gameAchievementsNew);
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false, true, PluginName);
+                    }
 
-                    activateGlobalProgress.CurrentProgressValue++;
+                    a.CurrentProgressValue++;
                 }
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {activateGlobalProgress.CurrentProgressValue}/{(double)db.Count()} items");
+                Logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{(double)db.Count()} items");
 
-                API.Instance.Database.Games.EndBufferUpdate();
-            }, globalProgressOptions);
+                Database.EndBufferUpdate();
+            }, options);
         }
 
 
