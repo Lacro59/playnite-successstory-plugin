@@ -14,13 +14,13 @@ namespace SuccessStory.Clients
 {
     public class GogAchievements : GenericAchievements
     {
-        protected static readonly Lazy<GogApi> gogAPI = new Lazy<GogApi>(() => new GogApi(PluginDatabase.PluginName));
-        internal static GogApi GogAPI => gogAPI.Value;
+        protected static readonly Lazy<GogApi> gogApi = new Lazy<GogApi>(() => new GogApi(PluginDatabase.PluginName));
+        internal static GogApi GogApi => gogApi.Value;
 
 
         public GogAchievements() : base("GOG", CodeLang.GetGogLang(API.Instance.ApplicationSettings.Language))
         {
-            GogAPI.SetLanguage(API.Instance.ApplicationSettings.Language);
+            GogApi.SetLanguage(API.Instance.ApplicationSettings.Language);
         }
 
 
@@ -33,10 +33,10 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    ObservableCollection<GameAchievement> gogAchievements = GogAPI.GetAchievements(game.GameId, GogAPI.CurrentAccountInfos);    
+                    ObservableCollection<GameAchievement> gogAchievements = GogApi.GetAchievements(game.GameId, GogApi.CurrentAccountInfos);
                     if (gogAchievements?.Count > 0)
                     {
-                        AllAchievements = gogAchievements.Select(x => new Achievements 
+                        AllAchievements = gogAchievements.Select(x => new Achievements
                         {
                             ApiName = x.Id,
                             Name = x.Name,
@@ -51,16 +51,16 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        if (!GogAPI.IsUserLoggedIn)
+                        if (!GogApi.IsUserLoggedIn)
                         {
                             ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
                         }
                     }
-                    
+
                     // Set source link
                     if (gameAchievements.HasAchievements)
                     {
-                        gameAchievements.SourcesLink = GogAPI.GetAchievementsSourceLink(game.Name, game.GameId, GogAPI.CurrentAccountInfos);
+                        gameAchievements.SourcesLink = GogApi.GetAchievementsSourceLink(game.Name, game.GameId, GogApi.CurrentAccountInfos);
                     }
                 }
                 catch (Exception ex)
@@ -120,7 +120,7 @@ namespace SuccessStory.Clients
         {
             if (CachedIsConnectedResult == null)
             {
-                CachedIsConnectedResult = GogAPI.IsUserLoggedIn;
+                CachedIsConnectedResult = GogApi.IsUserLoggedIn;
             }
 
             return (bool)CachedIsConnectedResult;
@@ -139,13 +139,13 @@ namespace SuccessStory.Clients
         public override void ResetCachedConfigurationValidationResult()
         {
             CachedConfigurationValidationResult = null;
-            GogAPI.ResetIsUserLoggedIn();
+            GogApi.ResetIsUserLoggedIn();
         }
 
         public override void ResetCachedIsConnectedResult()
         {
             CachedIsConnectedResult = null;
-            GogAPI.ResetIsUserLoggedIn();
+            GogApi.ResetIsUserLoggedIn();
         }
         #endregion
     }

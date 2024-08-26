@@ -15,13 +15,13 @@ namespace SuccessStory.Clients
 {
     public class OriginAchievements : GenericAchievements
     {
-        protected static readonly Lazy<OriginApi> originAPI = new Lazy<OriginApi>(() => new OriginApi(PluginDatabase.PluginName));
-        internal static OriginApi OriginAPI => originAPI.Value;
+        protected static readonly Lazy<OriginApi> originApi = new Lazy<OriginApi>(() => new OriginApi(PluginDatabase.PluginName));
+        internal static OriginApi OriginApi => originApi.Value;
 
 
         public OriginAchievements() : base("EA", CodeLang.GetOriginLang(API.Instance.ApplicationSettings.Language), CodeLang.GetOriginLangCountry(API.Instance.ApplicationSettings.Language))
         {
-            OriginAPI.SetLanguage(API.Instance.ApplicationSettings.Language);
+            OriginApi.SetLanguage(API.Instance.ApplicationSettings.Language);
         }
 
 
@@ -34,14 +34,14 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    GameInfos gameInfos = OriginAPI.GetGameInfos(game.GameId, null);
+                    GameInfos gameInfos = OriginApi.GetGameInfos(game.GameId, null);
                     if (gameInfos == null)
                     {
                         Logger.Warn($"No gameInfos for {game.GameId}");
                         return null;
                     }
 
-                    ObservableCollection<GameAchievement> originAchievements = OriginAPI.GetAchievements(gameInfos.Id2, OriginAPI.CurrentAccountInfos);
+                    ObservableCollection<GameAchievement> originAchievements = OriginApi.GetAchievements(gameInfos.Id2, OriginApi.CurrentAccountInfos);
                     if (originAchievements?.Count > 0)
                     {
                         AllAchievements = originAchievements.Select(x => new Achievements
@@ -61,7 +61,7 @@ namespace SuccessStory.Clients
                     // Set source link
                     if (gameAchievements.HasAchievements)
                     {
-                        gameAchievements.SourcesLink = OriginAPI.GetAchievementsSourceLink(game.Name, gameInfos.Id, OriginAPI.CurrentAccountInfos);
+                        gameAchievements.SourcesLink = OriginApi.GetAchievementsSourceLink(game.Name, gameInfos.Id, OriginApi.CurrentAccountInfos);
                     }
                 }
                 catch (Exception ex)
@@ -114,7 +114,7 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    CachedIsConnectedResult = OriginAPI.IsUserLoggedIn;
+                    CachedIsConnectedResult = OriginApi.IsUserLoggedIn;
                 }
                 catch (Exception ex)
                 {
@@ -134,13 +134,13 @@ namespace SuccessStory.Clients
         public override void ResetCachedConfigurationValidationResult()
         {
             CachedConfigurationValidationResult = null;
-            OriginAPI.ResetIsUserLoggedIn();
+            OriginApi.ResetIsUserLoggedIn();
         }
 
         public override void ResetCachedIsConnectedResult()
         {
             CachedIsConnectedResult = null;
-            OriginAPI.ResetIsUserLoggedIn();
+            OriginApi.ResetIsUserLoggedIn();
         }
         #endregion
     }

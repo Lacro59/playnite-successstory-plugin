@@ -1,4 +1,5 @@
-﻿using AngleSharp.Dom.Html;
+﻿using AngleSharp.Dom;
+using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using CommonPluginsShared;
 using CommonPluginsShared.Extensions;
@@ -37,34 +38,34 @@ namespace SuccessStory.Clients
         public static List<TrueAchievementSearch> SearchGame(Game game, OriginData originData)
         {
             List<TrueAchievementSearch> ListSearchGames = new List<TrueAchievementSearch>();
-            string Url;
-            string UrlBase;
+            string url;
+            string urlBase;
             if (originData == OriginData.Steam)
             {
                 //TODO: Decide if editions should be removed here
-                Url = string.Format(SteamUrlSearch, WebUtility.UrlEncode(PlayniteTools.NormalizeGameName(game.Name, true)));
-                UrlBase = @"https://truesteamachievements.com";
+                url = string.Format(SteamUrlSearch, WebUtility.UrlEncode(PlayniteTools.NormalizeGameName(game.Name, true)));
+                urlBase = @"https://truesteamachievements.com";
             }
             else
             {
                 //TODO: Decide if editions should be removed here
-                Url = string.Format(XboxUrlSearch, WebUtility.UrlEncode(PlayniteTools.NormalizeGameName(game.Name, true)));
-                UrlBase = @"https://www.trueachievements.com";
+                url = string.Format(XboxUrlSearch, WebUtility.UrlEncode(PlayniteTools.NormalizeGameName(game.Name, true)));
+                urlBase = @"https://www.trueachievements.com";
             }
 
 
             try
             {
                 string WebData = string.Empty;
-                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                using (IWebView WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
-                    WebViewOffscreen.NavigateAndWait(Url);
+                    WebViewOffscreen.NavigateAndWait(url);
                     WebData = WebViewOffscreen.GetPageSource();
                 }
 
                 if (WebData.IsNullOrEmpty())
                 {
-                    Logger.Warn($"No data from {Url}");
+                    Logger.Warn($"No data from {url}");
                     return ListSearchGames;
                 }
 
@@ -76,8 +77,7 @@ namespace SuccessStory.Clients
                     return ListSearchGames;
                 }
 
-                var SectionGames = htmlDocument.QuerySelector("#oSearchResults");
-
+                IElement SectionGames = htmlDocument.QuerySelector("#oSearchResults");
                 if (SectionGames == null)
                 {
                     string GameUrl = htmlDocument.QuerySelector("link[rel=\"canonical\"]")?.GetAttribute("href");
@@ -92,16 +92,16 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    foreach (var SearchGame in SectionGames.QuerySelectorAll("tr"))
+                    foreach (IElement SearchGame in SectionGames.QuerySelectorAll("tr"))
                     {
                         try
                         {
-                            var GameInfos = SearchGame.QuerySelectorAll("td");
+                            IHtmlCollection<IElement> GameInfos = SearchGame.QuerySelectorAll("td");
                             if (GameInfos.Count() > 2)
                             {
-                                string GameUrl = UrlBase + GameInfos[0].QuerySelector("a")?.GetAttribute("href");
+                                string GameUrl = urlBase + GameInfos[0].QuerySelector("a")?.GetAttribute("href");
                                 string GameName = GameInfos[1].QuerySelector("a")?.InnerHtml;
-                                string GameImage = UrlBase + GameInfos[0].QuerySelector("a img")?.GetAttribute("src");
+                                string GameImage = urlBase + GameInfos[0].QuerySelector("a img")?.GetAttribute("src");
 
                                 string ItemType = GameInfos[2].InnerHtml;
 
@@ -150,7 +150,7 @@ namespace SuccessStory.Clients
             try
             {
                 string WebData = string.Empty;
-                using (var WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                using (IWebView WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
                 {
                     WebViewOffscreen.NavigateAndWait(UrlTrueAchievement);
                     WebData = WebViewOffscreen.GetPageSource();
@@ -167,23 +167,21 @@ namespace SuccessStory.Clients
                 IHtmlDocument htmlDocument = parser.Parse(WebData);
 
                 int NumberDataCount = 0;
-                foreach (var SearchElement in htmlDocument.QuerySelectorAll("div.game div.l1 div"))
+                foreach (IElement SearchElement in htmlDocument.QuerySelectorAll("div.game div.l1 div"))
                 {
-                    var Title = SearchElement.GetAttribute("title");
-
-                    if (Title != null && (Title == "Maximum TrueAchievement" || Title == "Maximum TrueSteamAchievement"))
+                    string Title = SearchElement.GetAttribute("title");
+                    if (!Title.IsNullOrEmpty() && (Title == "Maximum TrueAchievement" || Title == "Maximum TrueSteamAchievement"))
                     {
-                        var data = SearchElement.InnerHtml;
-                        int.TryParse(Regex.Replace(data, "[^0-9]", ""), out NumberDataCount);
+                        string data = SearchElement.InnerHtml;
+                        _ = int.TryParse(Regex.Replace(data, "[^0-9]", ""), out NumberDataCount);
                         break;
                     }
                 }
 
-                foreach (var SearchElement in htmlDocument.QuerySelectorAll("div.game div.l2 a"))
+                foreach (IElement SearchElement in htmlDocument.QuerySelectorAll("div.game div.l2 a"))
                 {
-                    var Title = SearchElement.GetAttribute("title");
-
-                    if (Title != null && Title == "Estimated time to unlock all achievements")
+                    string Title = SearchElement.GetAttribute("title");
+                    if (!Title.IsNullOrEmpty() && Title == "Estimated time to unlock all achievements")
                     {
                         string EstimateTime = SearchElement.InnerHtml
                             .Replace("<i class=\"fa fa-hourglass-end\"></i>", string.Empty)
@@ -193,17 +191,9 @@ namespace SuccessStory.Clients
                         int EstimateTimeMin = 0;
                         int EstimateTimeMax = 0;
                         int index = 0;
-                        foreach (var item in EstimateTime.Replace("h", string.Empty).Split('-'))
+                        foreach (string item in EstimateTime.Replace("h", string.Empty).Split('-'))
                         {
-                            if (index == 0)
-                            {
-                                int.TryParse(item.Replace("+", string.Empty), out EstimateTimeMin);
-                            }
-                            else
-                            {
-                                int.TryParse(item, out EstimateTimeMax);
-                            }
-
+                            _ = index == 0 ? int.TryParse(item.Replace("+", string.Empty), out EstimateTimeMin) : int.TryParse(item, out EstimateTimeMax);
                             index++;
                         }
 

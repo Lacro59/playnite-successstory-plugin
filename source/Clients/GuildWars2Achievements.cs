@@ -15,15 +15,18 @@ namespace SuccessStory.Clients
 {
     public class GuildWars2Achievements : GenericAchievements
     {
-        private static string UrlApiOwnedAchievements => @"https://api.guildwars2.com/v2/account/achievements";
-        private static string UrlApiAchievementsList => @"https://api.guildwars2.com/v2/achievements";
+        #region Url
+        private static string UrlApi => @"https://api.guildwars2.com/v2";
+        private static string UrlApiOwnedAchievements => UrlApi + @"/account/achievements";
+        private static string UrlApiAchievementsList => UrlApi + @"/achievements";
         private static string UrlApiAchievements => UrlApiAchievementsList + @"?ids={0}&lang={1}";
-        private static string UrlApiAchievementsGroups => @"https://api.guildwars2.com/v2/achievements/categories/";
+        private static string UrlApiAchievementsGroups => UrlApi + @"/achievements/categories/";
+        #endregion
 
 
         public GuildWars2Achievements() : base("GuildWars2", CodeLang.GetOriginLangCountry(API.Instance.ApplicationSettings.Language))
         {
-            
+
         }
 
 
@@ -36,7 +39,7 @@ namespace SuccessStory.Clients
             {
                 // List achievements
                 string DataList = Web.DownloadStringData(UrlApiAchievementsList).GetAwaiter().GetResult();
-                Serialization.TryFromJson(DataList, out List<int> gw2AchievementsList);
+                _ = Serialization.TryFromJson(DataList, out List<int> gw2AchievementsList);
 
                 if (gw2AchievementsList == null)
                 {
@@ -47,7 +50,7 @@ namespace SuccessStory.Clients
 
                 // List groups of achievements
                 string DataGroups = Web.DownloadStringData(UrlApiAchievementsGroups).GetAwaiter().GetResult();
-                Serialization.TryFromJson(DataGroups, out List<int> gw2AchievementsGroupsList);
+                _ = Serialization.TryFromJson(DataGroups, out List<int> gw2AchievementsGroupsList);
 
                 if (gw2AchievementsGroupsList == null)
                 {
@@ -57,17 +60,17 @@ namespace SuccessStory.Clients
                 }
 
                 List<GW2AchievementsGroups> gw2AchievementsGroups = new List<GW2AchievementsGroups>();
-                gw2AchievementsGroupsList.ForEach(x => 
+                gw2AchievementsGroupsList.ForEach(x =>
                 {
                     string DataAchievementsGroups = Web.DownloadStringData(UrlApiAchievementsGroups + x).GetAwaiter().GetResult();
-                    Serialization.TryFromJson(DataAchievementsGroups, out GW2AchievementsGroups data);
+                    _ = Serialization.TryFromJson(DataAchievementsGroups, out GW2AchievementsGroups data);
                     if (data != null)
                     {
                         gw2AchievementsGroups.Add(data);
                     }
                 });
-                gw2AchievementsGroups.Add(new GW2AchievementsGroups 
-                { 
+                gw2AchievementsGroups.Add(new GW2AchievementsGroups
+                {
                     Id = 0,
                     Name = "none",
                     Order = 0,
@@ -76,15 +79,15 @@ namespace SuccessStory.Clients
 
                 // List owned achievements
                 string DataOwned = Web.DownloadStringData(UrlApiOwnedAchievements, PluginDatabase.PluginSettings.Settings.GuildWars2ApiKey).GetAwaiter().GetResult();
-                Serialization.TryFromJson(DataOwned, out List<GW2OwnedAchievements> gw2OwnedAchievements);
-               
+                _ = Serialization.TryFromJson(DataOwned, out List<GW2OwnedAchievements> gw2OwnedAchievements);
+
                 if (gw2OwnedAchievements != null)
                 {
                     List<IEnumerable<int>> ids = gw2AchievementsList.Batch(20).ToList();
 
                     // Get achievements details
                     List<GW2Achievements> gw2AchievementsAll = new List<GW2Achievements>();
-                    ids.ForEach(x => 
+                    ids.ForEach(x =>
                     {
                         string url = string.Empty;
                         try
@@ -92,7 +95,7 @@ namespace SuccessStory.Clients
                             string idsString = string.Join(",", x);
                             url = string.Format(UrlApiAchievements, idsString, LocalLang);
                             string Data = Web.DownloadStringData(url).GetAwaiter().GetResult();
-                            Serialization.TryFromJson(Data, out List<GW2Achievements> gw2Achievements);
+                            _ = Serialization.TryFromJson(Data, out List<GW2Achievements> gw2Achievements);
                             if (gw2Achievements != null)
                             {
                                 gw2Achievements.ForEach(z => gw2AchievementsAll.Add(z));
@@ -106,7 +109,7 @@ namespace SuccessStory.Clients
 
 
                     // Set achievements
-                    gw2AchievementsAll.ForEach(x => 
+                    gw2AchievementsAll.ForEach(x =>
                     {
                         Achievements ach = new Achievements
                         {
@@ -116,7 +119,7 @@ namespace SuccessStory.Clients
                             DateUnlocked = default
                         };
 
-                        var gwCategory = gw2AchievementsGroups.Find(y => y.Achievements?.Contains(x.Id) ?? false);
+                        GW2AchievementsGroups gwCategory = gw2AchievementsGroups.Find(y => y.Achievements?.Contains(x.Id) ?? false);
                         if (gwCategory != null)
                         {
                             int CategoryOrder = gwCategory.Order;
