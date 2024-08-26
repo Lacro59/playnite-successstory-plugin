@@ -179,8 +179,8 @@ namespace SuccessStory
                                     {
                                         icon = TransformIcon.Get(x) + " ";
 
-                                        var finded = FilterSourceItems.Where(y => y.SourceNameShort.IsEqual(x)).FirstOrDefault();
-                                        if (finded == null)
+                                        ListSource found = FilterSourceItems.Where(y => y.SourceNameShort.IsEqual(x)).FirstOrDefault();
+                                        if (found == null)
                                         {
                                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + x, SourceNameShort = x, IsCheck = false });
                                         }
@@ -253,8 +253,8 @@ namespace SuccessStory
                                 {
                                     icon = TransformIcon.Get(x) + " ";
 
-                                    var finded = FilterSourceItems.Where(y => y.SourceNameShort.IsEqual(x)).FirstOrDefault();
-                                    if (finded == null)
+                                    ListSource found = FilterSourceItems.FirstOrDefault(y => y.SourceNameShort.IsEqual(x));
+                                    if (found == null)
                                     {
                                         FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + x, SourceNameShort = x, IsCheck = false });
                                     }
@@ -370,7 +370,7 @@ namespace SuccessStory
 
         private void SetGraphicsAchievementsSources()
         {
-            var data = PluginDatabase.GetCountBySources();
+            AchievementsGraphicsDataCountSources data = PluginDatabase.GetCountBySources();
 
             this.Dispatcher.BeginInvoke((Action)delegate
             {

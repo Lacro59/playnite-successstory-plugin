@@ -283,12 +283,12 @@ namespace SuccessStory.Services
 
                 if (!(gameAchievements?.HasAchievements ?? false))
                 {
-                    Logger.Info($"No achievements find for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
+                    Logger.Info($"No achievements found for {game.Name} - {achievementSource}/{game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
                 }
                 else
                 {
                     gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
-                    Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements find for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
+                    Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements found for {game.Name} - {achievementSource}/{game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
                 }
 
                 Common.LogDebug(true, $"Achievements for {game.Name} - {achievementSource} - {Serialization.ToJson(gameAchievements)}");
@@ -357,7 +357,7 @@ namespace SuccessStory.Services
             {
                 for (int i = limit; i >= 0; i--)
                 {
-                    GraphicsAchievementsLabels[(limit - i)] = (string)localDateYMConverter.Convert(DateTime.Now.AddMonths(-i), null, null, null);
+                    GraphicsAchievementsLabels[limit - i] = (string)localDateYMConverter.Convert(DateTime.Now.AddMonths(-i), null, null, null);
                     SourceAchievementsSeries.Add(new CustomerForSingle
                     {
                         Name = (string)localDateYMConverter.Convert(DateTime.Now.AddMonths(-i), null, null, null),
@@ -413,7 +413,7 @@ namespace SuccessStory.Services
                         for (int i = limit; i >= 0; i--)
                         {
                             //GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
-                            GraphicsAchievementsLabels[(limit - i)] = (string)localDateYMConverter.Convert(TempDateTime.AddMonths(-i), null, null, null);
+                            GraphicsAchievementsLabels[limit - i] = (string)localDateYMConverter.Convert(TempDateTime.AddMonths(-i), null, null, null);
                             SourceAchievementsSeries.Add(new CustomerForSingle
                             {
                                 Name = TempDateTime.AddMonths(-i).ToString("yyyy-MM"),
@@ -673,7 +673,7 @@ namespace SuccessStory.Services
             {
                 for (int i = limit; i >= 0; i--)
                 {
-                    GraphicsAchievementsLabels[(limit - i)] = (string)localDateConverter.Convert(DateTime.Now.AddDays(-i), null, null, null);
+                    GraphicsAchievementsLabels[limit - i] = (string)localDateConverter.Convert(DateTime.Now.AddDays(-i), null, null, null);
                     SourceAchievementsSeries.Add(new CustomerForSingle
                     {
                         Name = (string)localDateConverter.Convert(DateTime.Now.AddDays(-i), null, null, null),
@@ -726,7 +726,7 @@ namespace SuccessStory.Services
 
                             DateTime? previousDate = null;
 
-                            foreach (var grouping in groupedAchievements)
+                            foreach (IGrouping<DateTime, Achievements> grouping in groupedAchievements)
                             {
                                 if (previousDate.HasValue && previousDate < grouping.Key.AddDays(-1))
                                 {
@@ -1149,10 +1149,10 @@ namespace SuccessStory.Services
                     webItem.IsManual = true;
                     for (int i = 0; i < webItem.Items.Count; i++)
                     {
-                        Achievements finded = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() || x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
-                        if (finded != null)
+                        Achievements found = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() || x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
+                        if (found != null)
                         {
-                            webItem.Items[i].DateUnlocked = finded.DateUnlocked;
+                            webItem.Items[i].DateUnlocked = found.DateUnlocked;
                         }
                     }
                 }

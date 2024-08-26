@@ -303,10 +303,10 @@ namespace SuccessStory.Clients
             ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(appId.ToString(), null);
             steamAchievements.ForEach(x =>
             {
-                Achievements finded = gameAchievements.Items?.Find(y => y.ApiName.IsEqual(x.Id));
-                if (finded != null)
+                Achievements found = gameAchievements.Items?.Find(y => y.ApiName.IsEqual(x.Id));
+                if (found != null)
                 {
-                    finded.GamerScore = x.GamerScore;
+                    found.GamerScore = x.GamerScore;
                 }
                 else
                 {
@@ -613,10 +613,10 @@ namespace SuccessStory.Clients
                             double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
                             double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
 
-                            Achievements finded = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
-                            if (finded != null)
+                            Achievements found = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
+                            if (found != null)
                             {
-                                finded.Progression = new AchProgression
+                                found.Progression = new AchProgression
                                 {
                                     Min = min,
                                     Max = max,
@@ -638,10 +638,10 @@ namespace SuccessStory.Clients
                             double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
                             double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
 
-                            Achievements finded = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
-                            if (finded != null)
+                            Achievements found = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
+                            if (found != null)
                             {
-                                finded.Progression = new AchProgression
+                                found.Progression = new AchProgression
                                 {
                                     Min = min,
                                     Max = max,
@@ -666,13 +666,13 @@ namespace SuccessStory.Clients
                         {
                             string[] data = progress.InnerHtml.Split('/');
                             double min = 0;
-                            double.TryParse(data[1].Trim().Replace(",", string.Empty), out double max);
-                            double.TryParse(data[0].Trim().Replace(",", string.Empty), out double val);
+                            _ = double.TryParse(data[1].Trim().Replace(",", string.Empty), out double max);
+                            _ = double.TryParse(data[0].Trim().Replace(",", string.Empty), out double val);
 
-                            Achievements finded = Achievements.Find(x => x.Name.IsEqual(Name));
-                            if (finded != null)
+                            Achievements found = Achievements.Find(x => x.Name.IsEqual(Name));
+                            if (found != null)
                             {
-                                finded.Progression = new AchProgression
+                                found.Progression = new AchProgression
                                 {
                                     Min = min,
                                     Max = max,

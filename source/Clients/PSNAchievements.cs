@@ -306,13 +306,8 @@ namespace SuccessStory.Clients
 
         public string GetNPWR(string Name)
         {
-            IEnumerable<PSN_NPWR> finded = PSN_NPWR_LIST.NPWR_LIST.Where(x => NormalizeGameName(x.Name).IsEqual(NormalizeGameName(Name)));
-            if (finded?.Count() > 0)
-            {
-                return finded.First().NPWR;
-            }
-
-            return string.Empty;
+            IEnumerable<PSN_NPWR> found = PSN_NPWR_LIST.NPWR_LIST.Where(x => NormalizeGameName(x.Name).IsEqual(NormalizeGameName(Name)));
+            return found?.Count() > 0 ? found.First().NPWR : string.Empty;
         }
 
         public string GetNPWR_2(string name)
@@ -321,10 +316,10 @@ namespace SuccessStory.Clients
             {
                 string webResult = Web.DownloadStringData(UrlAllTrophyTitles, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
                 TropyTitlesResponse tropyTitlesResponse = Serialization.FromJson<TropyTitlesResponse>(webResult);
-                var finded = tropyTitlesResponse.TrophyTitles.FirstOrDefault(x => NormalizeGameName(x.TrophyTitleName).IsEqual(NormalizeGameName(name)));
-                if (finded != null)
+                Models.PSN.TrophyTitle found = tropyTitlesResponse.TrophyTitles.FirstOrDefault(x => NormalizeGameName(x.TrophyTitleName).IsEqual(NormalizeGameName(name)));
+                if (found != null)
                 {
-                    return finded.NpCommunicationId;
+                    return found.NpCommunicationId;
                 }
             }
             catch (Exception ex)

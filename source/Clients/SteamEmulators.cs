@@ -121,13 +121,13 @@ namespace SuccessStory.Clients
 
                 gameAchievementsCached.Items.ForEach(x =>
                 {
-                    Achievements finded = data.Achievements.Find(y => x.ApiName == y.ApiName);
-                    if (finded != null)
+                    Achievements found = data.Achievements.Find(y => x.ApiName == y.ApiName);
+                    if (found != null)
                     {
-                        x.Name = finded.Name;
+                        x.Name = found.Name;
                         if (x.DateUnlocked == null || x.DateUnlocked == default(DateTime))
                         {
-                            x.DateUnlocked = finded.DateUnlocked;
+                            x.DateUnlocked = found.DateUnlocked;
                         }
                     }
                 });
@@ -897,8 +897,8 @@ namespace SuccessStory.Clients
                             default:
                                 if (ReturnAchievements.Count == 0)
                                 {
-                                    Folder finded = PluginDatabase.PluginSettings.Settings.LocalPath.Find(x => x.FolderPath.IsEqual(DirAchivements));
-                                    Guid.TryParse(finded?.GameId, out Guid GameId);
+                                    Folder found = PluginDatabase.PluginSettings.Settings.LocalPath.Find(x => x.FolderPath.IsEqual(DirAchivements));
+                                    _ = Guid.TryParse(found?.GameId, out Guid GameId);
 
                                     if (File.Exists(DirAchivements + "\\user_stats.ini") && GameId != default && GameId == game.Id)
                                     {
@@ -918,7 +918,7 @@ namespace SuccessStory.Clients
                                                 }
 
                                             }
-                                            else if (GameId != default && GameId == game.Id && (finded?.HasGame ?? false))
+                                            else if (GameId != default && GameId == game.Id && (found?.HasGame ?? false))
                                             {
                                                 if (File.Exists(DirAchivements + $"\\stats\\achievements.ini"))
                                                 {
