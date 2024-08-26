@@ -882,6 +882,10 @@ namespace SuccessStory
             if (PluginDatabase.PluginSettings.Settings.EnableSteam)
             {
                 _ = SteamApi.CurrentAccountInfos;
+                if (PluginDatabase.PluginSettings.Settings.SteamApiSettings.UseAuth)
+                {
+                    SteamApi.CurrentAccountInfos.IsPrivate = true;
+                }
             }
 
             EpicApi = new EpicApi(PluginDatabase.PluginName);

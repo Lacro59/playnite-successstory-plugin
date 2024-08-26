@@ -336,6 +336,10 @@ namespace SuccessStory
             if (Settings.EnableSteam)
             {
                 _ = SuccessStory.SteamApi.CurrentAccountInfos;
+                if (Settings.SteamApiSettings.UseAuth)
+                {
+                    SuccessStory.SteamApi.CurrentAccountInfos.IsPrivate = true;
+                }
             }
 
 
