@@ -1,0 +1,747 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4FDF1E89-5BC3-4C72-8FDA-0D580E7A5D5F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SuccessStory</RootNamespace>
+    <AssemblyName>SuccessStory</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugFS|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\..\Playnite_dev\Extensions\playnite-successstory-plugin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug9|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\Dropbox\Playnite\Playnite9\Extensions\playnite-successstory-plugin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
+      <DependentUpon>AchievementImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginButton.xaml.cs">
+      <DependentUpon>PluginButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginChart.xaml.cs">
+      <DependentUpon>PluginChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginCompact.xaml.cs">
+      <DependentUpon>PluginCompact.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginCompactList.xaml.cs">
+      <DependentUpon>PluginCompactList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginList.xaml.cs">
+      <DependentUpon>PluginList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginProgressBar.xaml.cs">
+      <DependentUpon>PluginProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginUserStats.xaml.cs">
+      <DependentUpon>PluginUserStats.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PluginViewItem.xaml.cs">
+      <DependentUpon>PluginViewItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TimePicker\TimePicker.xaml.cs">
+      <DependentUpon>TimePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\Crc32.cs" />
+    <Compile Include="Converters\SetColorConverter.cs" />
+    <Compile Include="Models\GenshinImpact\PaimonMoeAchievements.cs" />
+    <Compile Include="Models\PSN\TropyTitlesResponse.cs" />
+    <Compile Include="Models\RetroAchievements\RaConsole.cs" />
+    <Compile Include="Models\RetroAchievements\RaGame.cs" />
+    <Compile Include="Models\RetroAchievements\RaMd5List.cs" />
+    <Compile Include="Models\RetroAchievements\RaPlatformType.cs" />
+    <Compile Include="Models\BattleNetSc2User.cs" />
+    <Compile Include="Models\Xbox\Xbox360Achievement.cs" />
+    <Compile Include="Models\Xbox\XboxOneAchievement.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml.cs">
+      <DependentUpon>ComboBoxRemovable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.xaml.cs">
+      <DependentUpon>ControlPickerGradient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\RangeSlider.xaml.cs">
+      <DependentUpon>RangeSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\TextBlockTrimmed.xaml.cs">
+      <DependentUpon>TextBlockTrimmed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\TextBlockWithIcon.xaml.cs">
+      <DependentUpon>TextBlockWithIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerForSingle.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerForTime.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForMultipleSingle.xaml.cs">
+      <DependentUpon>CustomerToolTipForMultipleSingle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForMultipleTime.xaml.cs">
+      <DependentUpon>CustomerTooltipForMultipleTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForSingle.xaml.cs">
+      <DependentUpon>CustomerTooltipForSingle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForTime.xaml.cs">
+      <DependentUpon>CustomerToolTipForTime.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\PlayniteControls\DdItemListSelectionBox.xaml.cs">
+      <DependentUpon>DdItemListSelectionBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\PlayniteControls\NumericBox.xaml.cs">
+      <DependentUpon>NumericBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\PlayniteControls\SearchBox.xaml.cs">
+      <DependentUpon>SearchBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Stores\Epic\PanelView.xaml.cs">
+      <DependentUpon>PanelView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Stores\Epic\PanelViewModel.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Stores\Steam\PanelView.xaml.cs">
+      <DependentUpon>PanelView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Stores\Steam\PanelViewModel.cs" />
+    <Compile Include="playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.xaml.cs">
+      <DependentUpon>OptionsDownloadData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\NDS.cs" />
+    <Compile Include="Services\SuccessStoryDatabase.cs" />
+    <Compile Include="Services\SuccessStorySearch.cs" />
+    <Compile Include="Services\SuccessStoryTopPanelItem.cs" />
+    <Compile Include="Services\SuccessStoryViewRaSidebar.cs" />
+    <Compile Include="Services\SucessStoryViewSidebar.cs" />
+    <Compile Include="SuccessStory.cs" />
+    <Compile Include="SuccessStorySettings.cs" />
+    <Compile Include="Views\Interfaces\OverwatchCareerStats.xaml.cs">
+      <DependentUpon>OverwatchCareerStats.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Interfaces\OverwatchStats.xaml.cs">
+      <DependentUpon>OverwatchStats.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Interfaces\SettingsOrderAchievement.xaml.cs">
+      <DependentUpon>SettingsOrderAchievement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SuccessStoreGameSelection.xaml.cs">
+      <DependentUpon>SuccessStoreGameSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SuccessStoryEditManual.xaml.cs">
+      <DependentUpon>SuccessStoryEditManual.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SuccessStoryCategoryView.xaml.cs">
+      <DependentUpon>SuccessStoryCategoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SuccessStoryOneGameView.xaml.cs">
+      <DependentUpon>SuccessStoryOneGameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SuccessStoryOverwatchView.xaml.cs">
+      <DependentUpon>SuccessStoryOverwatchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SuccessStorySettingsView.xaml.cs">
+      <DependentUpon>SuccessStorySettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\SuccessStoryView.xaml.cs">
+      <DependentUpon>SuccessStoryView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Localization\ar_SA.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\bg_BG.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\ca_ES.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\da_DK.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\el_GR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\et_EE.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\gl_ES.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\he_IL.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\hr_HR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\id_ID.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\ko_KR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\lt_LT.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\nl_NL.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\ro_RO.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\sk_SK.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\sr_SP.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\sv_SE.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\tr_TR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\vi_VN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="playnite-plugincommon\CommonPluginsResources\CommonPluginsResources.csproj">
+      <Project>{4effe926-9c64-4750-a399-f344710edc09}</Project>
+      <Name>CommonPluginsResources</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- \*. some lone files in source -->
+    <None Include="extension.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="icon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Compile Clients\* -->
+    <Compile Include="Clients\BattleNetAchievements.cs" />
+    <Compile Include="Clients\EpicAchievements.cs" />
+    <Compile Include="Clients\ExophaseAchievements.cs" />
+    <Compile Include="Clients\GenericAchievements.cs" />
+    <Compile Include="Clients\GenshinImpactAchievements.cs" />
+    <Compile Include="Clients\GuildWars2Achievements.cs" />
+    <Compile Include="Clients\GogAchievements.cs" />
+    <Compile Include="Clients\OriginAchievements.cs" />
+    <Compile Include="Clients\OverwatchAchievements.cs" />
+    <Compile Include="Clients\PSNAchievements.cs" />
+    <Compile Include="Clients\RetroAchievements.cs" />
+    <Compile Include="Clients\Rpcs3Achievements.cs" />
+    <Compile Include="Clients\Starcraft2Achievements.cs" />
+    <Compile Include="Clients\SteamAchievements.cs" />
+    <Compile Include="Clients\SteamEmulators.cs" />
+    <Compile Include="Clients\TrueAchievements.cs" />
+    <Compile Include="Clients\WowAchievements.cs" />
+    <Compile Include="Clients\XboxAchievements.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Compile Models\* -->
+    <Compile Include="Models\GenshinImpact\GenshinImpactAchievementsCategory.cs" />
+    <Compile Include="Models\Achievements.cs" />
+    <Compile Include="Models\AchRaretyStats.cs" />
+    <Compile Include="Models\StarCraft2\BattleNetSc2Ach.cs" />
+    <Compile Include="Models\StarCraft2\BattleNetSc2Profil.cs" />
+    <Compile Include="Models\ExophaseSearchResult.cs" />
+    <Compile Include="Models\GameStats.cs" />
+    <Compile Include="Models\GenshinImpact\GenshinImpactAchievementData.cs" />
+    <Compile Include="Models\GuildWars2\GW2Achievements.cs" />
+    <Compile Include="Models\GuildWars2\GW2AchievementsGroups.cs" />
+    <Compile Include="Models\GuildWars2\GW2OwnedAchievements.cs" />
+    <Compile Include="Models\ListAchievements.cs" />
+    <Compile Include="Models\ListAll.cs" />
+    <Compile Include="Models\ListGames.cs" />
+    <Compile Include="Models\ProgressionAchievements.cs" />
+    <Compile Include="Models\GameAchievements.cs" />
+    <Compile Include="Models\PSN\PSN_NPWR_LIST.cs" />
+    <Compile Include="Models\QuickSearchItemSource.cs" />
+    <Compile Include="Models\RetroAchievements\RaConsoleAssociated.cs" />
+    <Compile Include="Models\SearchResult.cs" />
+    <Compile Include="Models\SuccessStoryCollection.cs" />
+    <Compile Include="Models\Wow\WowAchievementsData.cs" />
+    <Compile Include="Models\CbData.cs" />
+    <Compile Include="Models\Wow\WowRegionResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Localization\*.xaml -->
+    <None Include="Localization\es_ES.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\fr_FR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\LocSource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\ru_RU.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\pl_PL.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\zh_CN.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\de_DE.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\en_US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\it_IT.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\pt_BR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\cs_CZ.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\fa_IR.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\fi_FI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\hu_HU.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\ja_JP.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\no_NO.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\pt_PT.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\uk_UA.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Localization\zh_TW.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Resources\*.dll -->
+    <None Include="Resources\QuickSearchSDK.Attributes.dll" />
+    <None Include="Resources\QuickSearchSDK.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Resources\*.png -->
+    <None Include="Resources\badge.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\badge_bw.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\badge_flat.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\command-line.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\default_icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\hidden_trophy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\percent.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\star.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\time.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Resources\Overwatch\* -->
+    <None Include="Resources\Overwatch\Endorsement_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\Overwatch\Endorsement_5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Resources\GenshinImpact\* -->
+    <None Include="Resources\GenshinImpact\ac.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GenshinImpact\0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\18.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\19.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\20.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\21.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\22.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\23.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\24.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\26.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\27.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\28.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\29.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\30.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\31.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\33.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\34.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\35.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\37.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\38.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\39.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\40.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\41.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\42.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\43.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\44.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\46.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\47.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\49.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\50.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\GenshinImpact\9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems" Label="Shared" />
+  <Import Project="playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.projitems" Label="Shared" />
+  <Import Project="playnite-plugincommon\CommonPluginsStores\CommonPluginsStores.projitems" Label="Shared" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>powershell -ExecutionPolicy Unrestricted $(SolutionDir)..\build\build.ps1 -ConfigurationName $(ConfigurationName) -OutDir $(SolutionDir)$(OutDir) -SolutionDir $(SolutionDir)</PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\playnite-plugincommon\CommonPluginsResources\Resources\akr.WPF.Controls.ColorPicker.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\AngleSharp.0.9.9\lib\net45\AngleSharp.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\playnite-plugincommon\CommonPluginsResources\bin\Debug\CommonPluginsResources.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Microsoft.CSharp.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\morelinq.3.3.2\lib\net451\MoreLinq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\mscorlib.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\PlayniteSDK.6.11.0\lib\net462\Playnite.SDK.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\Resources\QuickSearchSDK.Attributes.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\Resources\QuickSearchSDK.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\SteamKit2.1.8.3\lib\net45\SteamKit2.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Configuration.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Data.DataSetExtensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Data.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Drawing.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\System.IO.Abstractions.2.1.0.227\lib\net40\System.IO.Abstractions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.IO.Compression.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.IO.Compression.FileSystem.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Management.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Net.Http.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Runtime.Serialization.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.ServiceModel.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Web.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\VirtualizingWrapPanel.1.5.4\lib\net45\VirtualizingWrapPanel.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\WindowsBase.dll" />
+    <ReferencePath Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\packages\YamlDotNet.5.4.0\lib\net45\YamlDotNet.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\Customs\AchievementImage.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\PluginButton.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\PluginChart.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\PluginCompact.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\PluginCompactList.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\PluginList.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\PluginProgressBar.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\PluginUserStats.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\PluginViewItem.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Controls\TimePicker\TimePicker.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\Controls\ControlPickerGradient.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\Controls\RangeSlider.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\Controls\TextBlockTrimmed.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\Controls\TextBlockWithIcon.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForMultipleSingle.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerTooltipForMultipleTime.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerTooltipForSingle.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\LiveChartsCommon\CustomerToolTipForTime.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\PlayniteControls\DdItemListSelectionBox.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\PlayniteControls\NumericBox.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\PlayniteControls\SearchBox.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\Stores\Epic\PanelView.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\Stores\Steam\PanelView.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\Interfaces\OverwatchCareerStats.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\Interfaces\OverwatchStats.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\Interfaces\SettingsOrderAchievement.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\SuccessStoreGameSelection.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\SuccessStoryEditManual.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\SuccessStoryCategoryView.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\SuccessStoryOneGameView.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\SuccessStoryOverwatchView.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\SuccessStorySettingsView.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\Views\SuccessStoryView.g.cs" />
+    <Compile Include="C:\Projects\C#\Lacro59\playnite-successstory-plugin\source\obj\Debug\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+</Project>
