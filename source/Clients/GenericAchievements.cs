@@ -161,37 +161,37 @@ namespace SuccessStory.Clients
 
 
         #region Errors
-        public virtual void ShowNotificationPluginDisable(string Message)
+        public virtual void ShowNotificationPluginDisable(string message)
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled";
-            LastErrorMessage = Message;
+            LastErrorMessage = message;
             Logger.Warn($"{ClientName} is enable then disabled in Playnite");
 
             API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled",
-                $"{PluginDatabase.PluginName}\r\n{Message}",
+                $"{PluginDatabase.PluginName}\r\n{message}",
                 NotificationType.Error
             ));
         }
 
-        public virtual void ShowNotificationPluginNoAuthenticate(string Message, ExternalPlugin PluginSource)
+        public virtual void ShowNotificationPluginNoAuthenticate(string message, ExternalPlugin pluginSource)
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate";
-            LastErrorMessage = Message;
+            LastErrorMessage = message;
             Logger.Warn($"{ClientName} user is not authenticated");
 
             API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate",
-                $"{PluginDatabase.PluginName}\r\n{Message}",
+                $"{PluginDatabase.PluginName}\r\n{message}",
                 NotificationType.Error,
                 () =>
                 {
                     try
                     {
-                        Plugin plugin = API.Instance.Addons.Plugins.Find(x => x.Id == PlayniteTools.GetPluginId(PluginSource));
+                        Plugin plugin = API.Instance.Addons.Plugins.Find(x => x.Id == PlayniteTools.GetPluginId(pluginSource));
                         if (plugin != null)
                         {
-                            plugin.OpenSettingsView();
+                            _ = plugin.OpenSettingsView();
                             foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
                             {
                                 achievementProvider.ResetCachedConfigurationValidationResult();
@@ -207,18 +207,51 @@ namespace SuccessStory.Clients
             ));
         }
 
-        public virtual void ShowNotificationPluginNoConfiguration(string Message)
+        public virtual void ShowNotificationPluginTooMuchData(string message, ExternalPlugin pluginSource)
+        {
+            LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-toomuchdata";
+            LastErrorMessage = message;
+            Logger.Warn(message);
+
+            API.Instance.Notifications.Add(new NotificationMessage(
+                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-toomuchdata",
+                $"{PluginDatabase.PluginName}\r\n{message}",
+                NotificationType.Error,
+                () =>
+                {
+                    try
+                    {
+                        Plugin plugin = API.Instance.Addons.Plugins.Find(x => x.Id == PlayniteTools.GetPluginId(pluginSource));
+                        if (plugin != null)
+                        {
+                            _ = plugin.OpenSettingsView();
+                            foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
+                            {
+                                achievementProvider.ResetCachedConfigurationValidationResult();
+                                achievementProvider.ResetCachedIsConnectedResult();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                    }
+                }
+            ));
+        }
+
+        public virtual void ShowNotificationPluginNoConfiguration(string message)
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noconfig";
-            LastErrorMessage = Message;
+            LastErrorMessage = message;
             Logger.Warn($"{ClientName} is not configured");
 
             API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noconfig",
-                $"{PluginDatabase.PluginName}\r\n{Message}",
+                $"{PluginDatabase.PluginName}\r\n{message}",
                 NotificationType.Error,
                 () => {
-                    PluginDatabase.Plugin.OpenSettingsView();
+                    _ = PluginDatabase.Plugin.OpenSettingsView();
                     foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
                     {
                         achievementProvider.ResetCachedConfigurationValidationResult();
@@ -233,9 +266,9 @@ namespace SuccessStory.Clients
             Common.LogError(ex, false, $"{ClientName}", true, PluginDatabase.PluginName);
         }
 
-        public virtual void ShowNotificationPluginWebError(Exception ex, string Url)
+        public virtual void ShowNotificationPluginWebError(Exception ex, string url)
         {
-            Common.LogError(ex, false, $"{ClientName} - Failed to load {Url}", true, PluginDatabase.PluginName);
+            Common.LogError(ex, false, $"{ClientName} - Failed to load {url}", true, PluginDatabase.PluginName);
         }
 
 

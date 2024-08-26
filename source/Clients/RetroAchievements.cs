@@ -387,10 +387,25 @@ namespace SuccessStory.Clients
 
         private int GetConsoleId(Game game)
         {
-            string PlatformName = game.Platforms.FirstOrDefault().Name;
-            Guid PlatformId = game.Platforms.FirstOrDefault().Id;
-            int consoleID = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == PlatformId) != null)?.RaConsoleId ?? 0;
-            return consoleID;
+            Platform platform = game.Platforms.FirstOrDefault();
+            int consoleId = 0;
+            IEnumerable<RaConsoleAssociated> consolesAssociated = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.Where(x => x.Platforms.Find(y => y.Id == platform.Id) != null);
+            if (consolesAssociated.Count() == 0)
+            {
+                Logger.Warn($"No ConsoleId find for {game.Name} with Platforms {platform.Name}");
+                return consoleId;
+            }
+            else if (consolesAssociated.Count() > 1)
+            {
+                string message = string.Format(ResourceProvider.GetString("LOCCommonNotificationTooMuchData"), $"{ClientName} - {platform.Name}");
+                ShowNotificationPluginTooMuchData(message, PlayniteTools.ExternalPlugin.SuccessStory);
+            }
+
+            RaConsoleAssociated consoleAssociated = consolesAssociated.First();
+            consoleId = consoleAssociated?.RaConsoleId ?? 0;
+            string consoleName = consoleAssociated?.RaConsoleName ?? string.Empty;
+            Logger.Info($"Find ConsoleId {consoleId}{(consoleName.IsNullOrEmpty() ? string.Empty : $"/{consoleName}")} for {game.Name} with Platforms {platform.Name}");
+            return consoleId;
         }
 
         private int GetGameIdByHash(Game game)
