@@ -331,6 +331,11 @@ namespace SuccessStory
 
             // TODO
             // StoreAPI intialization
+            if (SuccessStory.SteamApi.CurrentAccountInfos?.Avatar != null)
+            {
+                SuccessStory.SteamApi.CurrentAccountInfos.Avatar = null;
+                SuccessStory.SteamApi.CurrentAccountInfos.Link = null;
+            }
             SuccessStory.SteamApi.SaveCurrentUser();
             SuccessStory.SteamApi.CurrentAccountInfos = null;
             if (Settings.EnableSteam)

@@ -74,7 +74,9 @@ namespace SuccessStory.Clients
             Common.LogDebug(true, $"Steam.GetAchievements() - IsLocal : {IsLocal}, IsManual : {IsManual}, HasApiKey: {!SteamApi.CurrentAccountInfos.ApiKey.IsNullOrEmpty()}, IsPrivate: {SteamApi.CurrentAccountInfos.IsPrivate}");
             if (!IsLocal)
             {
+                Logger.Info($"SteamApi.GetAchievements({game.Name}, {game.GameId})");
                 ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(game.GameId, SteamApi.CurrentAccountInfos);
+
                 if (steamAchievements?.Count > 0 && uint.TryParse(game.GameId, out appId))
                 {
                     // Check private game
@@ -93,8 +95,6 @@ namespace SuccessStory.Clients
                             Logger.Warn($"Steam game is private - {game.Name} - {game.GameId}");
                         }
                     }
-
-                    Logger.Info($"SteamApi.GetAchievements({game.Name}, {game.GameId})");
 
                     AllAchievements = steamAchievements.Select(x => new Achievements
                     {
