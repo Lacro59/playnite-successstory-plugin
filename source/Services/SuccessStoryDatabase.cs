@@ -282,12 +282,12 @@ namespace SuccessStory.Services
 
                 if (!(gameAchievements?.HasAchievements ?? false))
                 {
-                    Logger.Info($"No achievements found for {game.Name} - {achievementSource}/{game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
+                    Logger.Warn($"No achievements found for {game.Name}");
                 }
                 else
                 {
                     //gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
-                    Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements found for {game.Name} - {achievementSource}/{game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
+                    Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements found for {game.Name}");
                 }
 
                 Common.LogDebug(true, $"Achievements for {game.Name} - {achievementSource} - {Serialization.ToJson(gameAchievements)}");
@@ -705,7 +705,7 @@ namespace SuccessStory.Services
                 return;
             }
 
-            Logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id} - {game.Source?.Name})");
+            Logger.Info($"RefreshNoLoader({game?.Name} - {game?.Id})");
 
             if (loadedItem.IsManual)
             {
