@@ -16,17 +16,14 @@ namespace SuccessStory.Clients
 {
     public class TrueAchievements
     {
-        internal static ILogger Logger => LogManager.GetLogger();
+        private static ILogger Logger => LogManager.GetLogger();
 
         private static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
         public static string XboxUrlSearch => @"https://www.trueachievements.com/searchresults.aspx?search={0}";
         public static string SteamUrlSearch => @"https://truesteamachievements.com/searchresults.aspx?search={0}";
 
-        public enum OriginData
-        {
-            Steam, Xbox
-        }
+        public enum OriginData { Steam, Xbox }
 
 
         /// <summary>
@@ -211,6 +208,11 @@ namespace SuccessStory.Clients
             catch (Exception ex)
             {
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+
+            if (EstimateTimeToUnlock.EstimateTimeMin == 0)
+            {
+                Logger.Warn($"No {(UrlTrueAchievement.ToLower().Contains("truesteamachievements") ? "TrueSteamAchievements" : "TrueAchievements")} data found");
             }
 
             return EstimateTimeToUnlock;

@@ -249,7 +249,7 @@ namespace SuccessStory.Services
                 RetroAchievements retroAchievementsProvider = achievementProvider as RetroAchievements;
                 PSNAchievements psnAchievementsProvider = achievementProvider as PSNAchievements;
 
-                Logger.Info($"Used {achievementProvider} for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
+                Logger.Info($"Used {achievementProvider} for {game.Name} - {achievementSource}/{game.Source?.Name}/{game?.Platforms?.FirstOrDefault()?.Name}");
 
                 GameAchievements TEMPgameAchievements = Get(game, true);
 
@@ -286,7 +286,7 @@ namespace SuccessStory.Services
                 }
                 else
                 {
-                    gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
+                    //gameAchievements = SetEstimateTimeToUnlock(game, gameAchievements);
                     Logger.Info($"{gameAchievements.Unlocked}/{gameAchievements.Total} achievements found for {game.Name} - {achievementSource}/{game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
                 }
 
@@ -309,13 +309,35 @@ namespace SuccessStory.Services
                     List<TrueAchievementSearch> ListGames = TrueAchievements.SearchGame(game, OriginData.Steam);
                     if (ListGames.Count > 0)
                     {
-                        EstimateTimeSteam = TrueAchievements.GetEstimateTimeToUnlock(ListGames[0].GameUrl);
+                        if (ListGames[0].GameUrl.IsNullOrEmpty())
+                        {
+                            Logger.Warn($"No TrueAchievements url for {game.Name}");
+                        }
+                        else
+                        {
+                            EstimateTimeSteam = TrueAchievements.GetEstimateTimeToUnlock(ListGames[0].GameUrl);
+                        }
+                    }
+                    else
+                    {
+                        Logger.Warn($"Game not found on TrueSteamAchivements for {game.Name}");
                     }
 
                     ListGames = TrueAchievements.SearchGame(game, OriginData.Xbox);
                     if (ListGames.Count > 0)
                     {
-                        EstimateTimeXbox = TrueAchievements.GetEstimateTimeToUnlock(ListGames[0].GameUrl);
+                        if (ListGames[0].GameUrl.IsNullOrEmpty())
+                        {
+                            Logger.Warn($"No TrueAchievements url for {game.Name}");
+                        }
+                        else
+                        {
+                            EstimateTimeXbox = TrueAchievements.GetEstimateTimeToUnlock(ListGames[0].GameUrl);
+                        }
+                    }
+                    else
+                    {
+                        Logger.Warn($"Game not found on TrueAchivements for {game.Name}");
                     }
 
                     if (EstimateTimeSteam.DataCount >= EstimateTimeXbox.DataCount)
