@@ -25,6 +25,7 @@ namespace SuccessStory.Models
         public string Description { get; set; }
         public string UrlUnlocked { get; set; }
         public string UrlLocked { get; set; }
+        // TODO
         public DateTime? DateUnlocked { get; set; }
         public bool IsHidden { get; set; } = false;
         /// <summary>
@@ -115,36 +116,15 @@ namespace SuccessStory.Models
         /// Indicates if there is no locked icon
         /// </summary>
         [DontSerialize]
-        //public bool IsGray => IsUnlock ? false : (UrlLocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
-        public bool IsGray
-        {
-            get
-            {
-                try
-                {
-                    return IsUnlock
-                        ? false
-                        : UrlLocked != null && UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75
-                            ? true
-                            : UrlLocked.IsNullOrEmpty() || !UrlUnlocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked;
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false);
-                    return false;
-                }
-            }
-        }
+        public bool IsGray => !IsUnlock && ((UrlLocked != null && UrlLocked.Contains("steamcdn-a.akamaihd.net") && UrlLocked.Length < 75) || UrlLocked.IsNullOrEmpty() || !UrlUnlocked.IsNullOrEmpty() || UrlLocked == UrlUnlocked);
 
         [DontSerialize]
         public bool EnableRaretyIndicator => PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
 
         [DontSerialize]
-        public bool DisplayRaretyValue => NoRarety
-                    ? false
-                    : !PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator
+        public bool DisplayRaretyValue => !NoRarety && (!PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator
                     ? PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator
-                    : PluginDatabase.PluginSettings.Settings.DisplayRarityValue;
+                    : PluginDatabase.PluginSettings.Settings.DisplayRarityValue);
 
         public bool NoRarety { get; set; } = false;
 
@@ -154,10 +134,10 @@ namespace SuccessStory.Models
             get
             {
                 string NameWithDateUnlock = Name;
-                if (DateUnlocked != null && DateUnlocked != default(DateTime) && DateUnlocked != new DateTime(1982, 12, 15, 0, 0, 0))
+                if (DateWhenUnlocked != null)
                 {
                     LocalDateTimeConverter converter = new LocalDateTimeConverter();
-                    NameWithDateUnlock += " (" + converter.Convert(DateUnlocked, null, null, CultureInfo.CurrentCulture) + ")";
+                    NameWithDateUnlock += " (" + converter.Convert(DateWhenUnlocked, null, null, CultureInfo.CurrentCulture) + ")";
                 }
                 return NameWithDateUnlock;
             }
@@ -250,7 +230,7 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
-        public bool IsUnlock => !(DateUnlocked == default || DateUnlocked == null || DateUnlocked.ToString().Contains("0001"));
+        public bool IsUnlock => !(DateUnlocked == null || DateUnlocked == default || DateUnlocked.ToString().Contains("0001"));
 
         private bool isVisible = true;
         [DontSerialize]
@@ -259,24 +239,14 @@ namespace SuccessStory.Models
         [DontSerialize]
         public DateTime? DateWhenUnlocked
         {
-            get => DateUnlocked == default || DateUnlocked.ToString().Contains("0001") || DateUnlocked == new DateTime(1982, 12, 15, 0, 0, 0, 0) ? null : DateUnlocked;
-            set => DateUnlocked = value == null ? default : value;
+            get => DateUnlocked == null || DateUnlocked == default || DateUnlocked.ToString().Contains("0001") || DateUnlocked.ToString().Contains("1982")
+                    ? null
+                    : (DateTime?)((DateTime)DateUnlocked).ToLocalTime();
+            set => DateUnlocked = value;
         }
 
         [DontSerialize]
-        public string DateWhenUnlockedString
-        {
-            get
-            {
-                if (DateUnlocked == default(DateTime) || DateUnlocked == new DateTime(1982, 12, 15, 0, 0, 0, 0))
-                {
-                    return string.Empty;
-                }
-
-                LocalDateTimeConverter converter = new LocalDateTimeConverter();
-                return (string)converter.Convert(DateUnlocked, null, null, CultureInfo.CurrentCulture);
-            }
-        }
+        public string DateWhenUnlockedString => (string)new LocalDateTimeConverter().Convert(DateWhenUnlocked, null, null, CultureInfo.CurrentCulture);
 
 
         public AchProgression Progression { get; set; }
@@ -289,7 +259,7 @@ namespace SuccessStory.Models
         {
             get
             {
-                if (PluginDatabase.PluginSettings.Settings.IconCustomOnlyMissing)
+                if (PluginDatabase.PluginSettings.Settings.IconCustomOnlyMissing && IsGray)
                 {
                     if (IsGray)
                     {

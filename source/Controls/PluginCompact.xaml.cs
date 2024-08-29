@@ -142,7 +142,7 @@ namespace SuccessStory.Controls
             PART_AchievementImage.Children.Clear();
             if (IsUnlocked && ListAchievements.Count > 0 && ControlDataContext.DisplayLastest)
             {
-                ControlDataContext.LastestAchievement = ListAchievements.FirstOrDefault(x => x.DateUnlocked == ListAchievements.Max(y => y.DateUnlocked));
+                ControlDataContext.LastestAchievement = ListAchievements.FirstOrDefault(x => x.DateWhenUnlocked == ListAchievements.Max(y => y.DateWhenUnlocked));
 
                 int index = ListAchievements.FindIndex(x => x == ControlDataContext.LastestAchievement);
                 ListAchievements.RemoveAt(index);
@@ -244,7 +244,7 @@ namespace SuccessStory.Controls
             if (Tag is DateTime)
             {
                 AchievementsList = AchievementsList
-                    .Where(x => x.DateUnlocked?.ToLocalTime().ToString("yyyy-MM--dd").IsEqual(((DateTime)Tag).ToString("yyyy-MM--dd")) ?? false)
+                    .Where(x => x.DateWhenUnlocked?.ToString("yyyy-MM-dd").IsEqual(((DateTime)Tag).ToString("yyyy-MM-dd")) ?? false)
                     .ToObservable();
             }
 

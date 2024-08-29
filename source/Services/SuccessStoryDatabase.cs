@@ -23,14 +23,13 @@ using static CommonPluginsShared.PlayniteTools;
 using CommonPluginsShared.Extensions;
 using System.Threading.Tasks;
 using System.Reflection;
+using SuccessStory.Models.Stats;
 
 namespace SuccessStory.Services
 {
     public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettingsViewModel, SuccessStoryCollection, GameAchievements, Achievements>
     {
         public SuccessStory Plugin { get; set; }
-
-        private bool IsRetroachievements { get; set; }
 
         private static object AchievementProvidersLock => new object();
         private static Dictionary<AchievementSource, GenericAchievements> achievementProviders;
@@ -208,15 +207,15 @@ namespace SuccessStory.Services
 
 
 
-        public override GameAchievements Get(Guid Id, bool OnlyCache = false, bool Force = false)
+        public override GameAchievements Get(Guid id, bool onlyCache = false, bool force = false)
         {
-            GameAchievements gameAchievements = base.GetOnlyCache(Id);
-            Game game = API.Instance.Database.Games.Get(Id);
+            GameAchievements gameAchievements = base.GetOnlyCache(id);
+            Game game = API.Instance.Database.Games.Get(id);
 
             // Get from web
-            if ((gameAchievements == null && !OnlyCache) || Force)
+            if ((gameAchievements == null && !onlyCache) || force)
             {
-                gameAchievements = GetWeb(Id);
+                gameAchievements = GetWeb(id);
                 AddOrUpdate(gameAchievements);
             }
             else if (gameAchievements == null && game != null)
@@ -232,9 +231,9 @@ namespace SuccessStory.Services
         /// Generate database achivements for the game if achievement exist and game not exist in database.
         /// </summary>
         /// <param name="game"></param>
-        public override GameAchievements GetWeb(Guid Id)
+        public override GameAchievements GetWeb(Guid id)
         {
-            Game game = API.Instance.Database.Games.Get(Id);
+            Game game = API.Instance.Database.Games.Get(id);
             GameAchievements gameAchievements = GetDefault(game);
             AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
 
@@ -337,460 +336,6 @@ namespace SuccessStory.Services
             }
 
             return gameAchievements;
-        }
-
-
-        /// <summary>
-        /// Get number achievements unlock by month for a game or not.
-        /// </summary>
-        /// <param name="GameID"></param>
-        /// <returns></returns>
-        public AchievementsGraphicsDataCount GetCountByMonth(Guid? GameID = null, int limit = 11)
-        {
-            string[] GraphicsAchievementsLabels = new string[limit + 1];
-            ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
-
-            LocalDateYMConverter localDateYMConverter = new LocalDateYMConverter();
-
-            // All achievements
-            if (GameID == null)
-            {
-                for (int i = limit; i >= 0; i--)
-                {
-                    GraphicsAchievementsLabels[limit - i] = (string)localDateYMConverter.Convert(DateTime.Now.AddMonths(-i), null, null, null);
-                    SourceAchievementsSeries.Add(new CustomerForSingle
-                    {
-                        Name = (string)localDateYMConverter.Convert(DateTime.Now.AddMonths(-i), null, null, null),
-                        Values = 0
-                    });
-                }
-
-                try
-                {
-                    bool ShowHidden = PluginSettings.Settings.IncludeHiddenGames;
-                    List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
-                    foreach (KeyValuePair<Guid, GameAchievements> item in db)
-                    {
-                        List<Achievements> temp = item.Value.Items;
-                        foreach (Achievements itemAchievements in temp)
-                        {
-                            if (itemAchievements.DateUnlocked != null && itemAchievements.DateUnlocked != default(DateTime))
-                            {
-                                string tempDate = (string)localDateYMConverter.Convert(((DateTime)itemAchievements.DateUnlocked).ToLocalTime(), null, null, null);
-                                int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
-
-                                if (index >= 0 && index < (limit + 1))
-                                {
-                                    SourceAchievementsSeries[index].Values += 1;
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginName);
-                }
-            }
-            // Achievement for a game
-            else
-            {
-                try
-                {
-                    List<Achievements> Achievements = GetOnlyCache((Guid)GameID).Items;
-
-                    if (Achievements != null && Achievements.Count > 0)
-                    {
-                        Achievements.Sort((x, y) => ((DateTime)y.DateUnlocked).CompareTo((DateTime)x.DateUnlocked));
-                        DateTime TempDateTime = DateTime.Now;
-
-                        // Find last achievement date unlock
-                        if (((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "0001-01" && ((DateTime)Achievements[0].DateUnlocked).ToLocalTime().ToString("yyyy-MM") != "1982-12")
-                        {
-                            TempDateTime = ((DateTime)Achievements[0].DateUnlocked).ToLocalTime();
-                        }
-
-                        for (int i = limit; i >= 0; i--)
-                        {
-                            //GraphicsAchievementsLabels[(limit - i)] = TempDateTime.AddMonths(-i).ToString("yyyy-MM");
-                            GraphicsAchievementsLabels[limit - i] = (string)localDateYMConverter.Convert(TempDateTime.AddMonths(-i), null, null, null);
-                            SourceAchievementsSeries.Add(new CustomerForSingle
-                            {
-                                Name = TempDateTime.AddMonths(-i).ToString("yyyy-MM"),
-                                Values = 0
-                            });
-                        }
-
-                        for (int i = 0; i < Achievements.Count; i++)
-                        {
-                            //string tempDate = ((DateTime)Achievements[i].DateUnlocked).ToLocalTime().ToString("yyyy-MM");
-                            string tempDate = (string)localDateYMConverter.Convert(((DateTime)Achievements[i].DateUnlocked).ToLocalTime(), null, null, null);
-                            int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
-
-                            if (index >= 0 && index < (limit + 1))
-                            {
-                                SourceAchievementsSeries[index].Values += 1;
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, $"Error in load GetCountByMonth({GameID.ToString()})", true, PluginName);
-                }
-            }
-
-            return new AchievementsGraphicsDataCount { Labels = GraphicsAchievementsLabels, Series = SourceAchievementsSeries };
-        }
-
-        public AchievementsGraphicsDataCountSources GetCountBySources()
-        {
-            List<string> tempSourcesLabels = new List<string>();
-            IEnumerable<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.IsManual);
-
-            if (PluginSettings.Settings.EnableRetroAchievementsView && PluginSettings.Settings.EnableRetroAchievements)
-            {
-                //TODO: _isRetroachievements this is never set
-                if (IsRetroachievements)
-                {
-                    if (PluginSettings.Settings.EnableRetroAchievements)
-                    {
-                        tempSourcesLabels.Add("RetroAchievements");
-                    }
-                }
-                else
-                {
-                    if (PluginSettings.Settings.EnableGog)
-                    {
-                        tempSourcesLabels.Add("GOG");
-                    }
-                    if (PluginSettings.Settings.EnableEpic)
-                    {
-                        tempSourcesLabels.Add("Epic");
-                    }
-                    if (PluginSettings.Settings.EnableSteam)
-                    {
-                        tempSourcesLabels.Add("Steam");
-                    }
-                    if (PluginSettings.Settings.EnableOrigin)
-                    {
-                        tempSourcesLabels.Add("EA app");
-                    }
-                    if (PluginSettings.Settings.EnableXbox)
-                    {
-                        tempSourcesLabels.Add("Xbox");
-                    }
-                    if (PluginSettings.Settings.EnablePsn)
-                    {
-                        tempSourcesLabels.Add("Playstation");
-                    }
-                    if (PluginSettings.Settings.EnableLocal)
-                    {
-                        tempSourcesLabels.Add("Playnite");
-                        tempSourcesLabels.Add("Hacked");
-                    }
-                    if (PluginSettings.Settings.EnableRpcs3Achievements)
-                    {
-                        tempSourcesLabels.Add("RPCS3");
-                    }
-                    if (PluginSettings.Settings.EnableSc2Achievements || PluginSettings.Settings.EnableOverwatchAchievements || PluginSettings.Settings.EnableWowAchievements)
-                    {
-                        tempSourcesLabels.Add("Battle.net");
-                    }
-                    if (PluginSettings.Settings.EnableManual)
-                    {
-                        if (db != null && db.Count() > 0)
-                        {
-                            IEnumerable<Guid> ListSources = db.Select(x => x.Value.SourceId).Distinct();
-                            foreach (Guid Source in ListSources)
-                            {
-                                GameSource gameSource = API.Instance.Database.Sources.Get(Source);
-                                if (gameSource != null)
-                                {
-                                    tempSourcesLabels.Add(gameSource.Name);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (PluginSettings.Settings.EnableGog)
-                {
-                    tempSourcesLabels.Add("GOG");
-                }
-                if (PluginSettings.Settings.EnableEpic)
-                {
-                    tempSourcesLabels.Add("Epic");
-                }
-                if (PluginSettings.Settings.EnableSteam)
-                {
-                    tempSourcesLabels.Add("Steam");
-                }
-                if (PluginSettings.Settings.EnableOrigin)
-                {
-                    tempSourcesLabels.Add("EA app");
-                }
-                if (PluginSettings.Settings.EnableXbox)
-                {
-                    tempSourcesLabels.Add("Xbox");
-                }
-                if (PluginSettings.Settings.EnablePsn)
-                {
-                    tempSourcesLabels.Add("Playstation");
-                }
-                if (PluginSettings.Settings.EnableRetroAchievements)
-                {
-                    tempSourcesLabels.Add("RetroAchievements");
-                }
-                if (PluginSettings.Settings.EnableRpcs3Achievements)
-                {
-                    tempSourcesLabels.Add("RPCS3");
-                }
-                if (PluginSettings.Settings.EnableSc2Achievements || PluginSettings.Settings.EnableOverwatchAchievements || PluginSettings.Settings.EnableWowAchievements)
-                {
-                    tempSourcesLabels.Add("Battle.net");
-                }
-                if (PluginSettings.Settings.EnableLocal)
-                {
-                    tempSourcesLabels.Add("Playnite");
-                    tempSourcesLabels.Add("Hacked");
-                }
-                if (PluginSettings.Settings.EnableManual)
-                {
-                    if (db != null && db.Count() > 0)
-                    {
-                        IEnumerable<Guid> ListSources = db.Select(x => x.Value.SourceId).Distinct();
-                        foreach (Guid Source in ListSources)
-                        {
-                            if (Source != default)
-                            {
-                                GameSource gameSource = API.Instance.Database.Sources.Get(Source);
-                                if (gameSource != null)
-                                {
-                                    tempSourcesLabels.Add(gameSource.Name);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            tempSourcesLabels = tempSourcesLabels.Distinct().ToList();
-            tempSourcesLabels.Sort((x, y) => x.CompareTo(y));
-
-            string[] GraphicsAchievementsLabels = new string[tempSourcesLabels.Count];
-            List<AchievementsGraphicsDataSources> tempDataUnlocked = new List<AchievementsGraphicsDataSources>();
-            List<AchievementsGraphicsDataSources> tempDataLocked = new List<AchievementsGraphicsDataSources>();
-            List<AchievementsGraphicsDataSources> tempDataTotal = new List<AchievementsGraphicsDataSources>();
-            for (int i = 0; i < tempSourcesLabels.Count; i++)
-            {
-                GraphicsAchievementsLabels[i] = TransformIcon.Get(tempSourcesLabels[i]);
-                tempDataLocked.Add(new AchievementsGraphicsDataSources { Source = tempSourcesLabels[i], Value = 0 });
-                tempDataUnlocked.Add(new AchievementsGraphicsDataSources { Source = tempSourcesLabels[i], Value = 0 });
-                tempDataTotal.Add(new AchievementsGraphicsDataSources { Source = tempSourcesLabels[i], Value = 0 });
-            }
-
-            bool ShowHidden = PluginSettings.Settings.IncludeHiddenGames;
-            db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
-            foreach (KeyValuePair<Guid, GameAchievements> item in db)
-            {
-                try
-                {
-                    string SourceName = PlayniteTools.GetSourceName(item.Key);
-                    foreach (Achievements achievements in item.Value.Items)
-                    {
-                        for (int i = 0; i < tempDataUnlocked.Count; i++)
-                        {
-                            if (tempDataUnlocked[i].Source.Contains(SourceName, StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                tempDataTotal[i].Value += 1;
-                                if (achievements.DateUnlocked != default(DateTime))
-                                {
-                                    tempDataUnlocked[i].Value += 1;
-                                }
-                                if (achievements.DateUnlocked == default(DateTime))
-                                {
-                                    tempDataLocked[i].Value += 1;
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, $"Error on GetCountBySources() for {item.Key}", true, PluginName);
-                }
-            }
-
-            ChartValues<CustomerForSingle> SourceAchievementsSeriesUnlocked = new ChartValues<CustomerForSingle>();
-            ChartValues<CustomerForSingle> SourceAchievementsSeriesLocked = new ChartValues<CustomerForSingle>();
-            ChartValues<CustomerForSingle> SourceAchievementsSeriesTotal = new ChartValues<CustomerForSingle>();
-            for (int i = 0; i < tempDataUnlocked.Count; i++)
-            {
-                SourceAchievementsSeriesUnlocked.Add(new CustomerForSingle
-                {
-                    Name = TransformIcon.Get(tempDataUnlocked[i].Source),
-                    Values = tempDataUnlocked[i].Value
-                });
-                SourceAchievementsSeriesLocked.Add(new CustomerForSingle
-                {
-                    Name = TransformIcon.Get(tempDataLocked[i].Source),
-                    Values = tempDataLocked[i].Value
-                });
-                SourceAchievementsSeriesTotal.Add(new CustomerForSingle
-                {
-                    Name = TransformIcon.Get(tempDataTotal[i].Source),
-                    Values = tempDataTotal[i].Value
-                });
-            }
-
-
-            return new AchievementsGraphicsDataCountSources
-            {
-                Labels = GraphicsAchievementsLabels,
-                SeriesLocked = SourceAchievementsSeriesLocked,
-                SeriesUnlocked = SourceAchievementsSeriesUnlocked,
-                SeriesTotal = SourceAchievementsSeriesTotal
-            };
-        }
-
-        /// <summary>
-        /// Get number achievements unlock by month for a game or not.
-        /// </summary>
-        /// <param name="GameID"></param>
-        /// <returns></returns>
-        public AchievementsGraphicsDataCount GetCountByDay(Guid? GameID = null, int limit = 11, bool CutPeriod = false)
-        {
-            string[] GraphicsAchievementsLabels = new string[limit + 1];
-            ChartValues<CustomerForSingle> SourceAchievementsSeries = new ChartValues<CustomerForSingle>();
-
-            LocalDateConverter localDateConverter = new LocalDateConverter();
-
-            // All achievements
-            if (GameID == null)
-            {
-                for (int i = limit; i >= 0; i--)
-                {
-                    GraphicsAchievementsLabels[limit - i] = (string)localDateConverter.Convert(DateTime.Now.AddDays(-i), null, null, null);
-                    SourceAchievementsSeries.Add(new CustomerForSingle
-                    {
-                        Name = (string)localDateConverter.Convert(DateTime.Now.AddDays(-i), null, null, null),
-                        Values = 0
-                    });
-                }
-
-                try
-                {
-                    bool ShowHidden = PluginSettings.Settings.IncludeHiddenGames;
-                    List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (ShowHidden ? true : x.Value.Hidden == false)).ToList();
-                    foreach (KeyValuePair<Guid, GameAchievements> item in db)
-                    {
-                        List<Achievements> temp = item.Value.Items;
-                        foreach (Achievements itemAchievements in temp)
-                        {
-                            if (itemAchievements.DateWhenUnlocked != null)
-                            {
-                                string tempDate = (string)localDateConverter.Convert(((DateTime)itemAchievements.DateUnlocked).ToLocalTime(), null, null, null);
-                                int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
-
-                                if (index >= 0 && index < (limit + 1))
-                                {
-                                    SourceAchievementsSeries[index].Values += 1;
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginName);
-                }
-            }
-            // Achievement for a game
-            else
-            {
-                try
-                {
-                    List<Achievements> Achievements = GetOnlyCache((Guid)GameID).Items;
-
-                    if (Achievements != null && Achievements.Count > 0)
-                    {
-                        if (CutPeriod)
-                        {
-                            IOrderedEnumerable<IGrouping<DateTime, Achievements>> groupedAchievements = Achievements
-                                .Where(a => a.IsUnlock && a.DateWhenUnlocked.HasValue)
-                                .GroupBy(a => a.DateWhenUnlocked.Value.ToLocalTime().Date)
-                                .OrderBy(g => g.Key);
-
-                            DateTime? previousDate = null;
-
-                            foreach (IGrouping<DateTime, Achievements> grouping in groupedAchievements)
-                            {
-                                if (previousDate.HasValue && previousDate < grouping.Key.AddDays(-1))
-                                {
-                                    SourceAchievementsSeries.Add(new CustomerForSingle
-                                    {
-                                        Name = string.Empty,
-                                        Values = double.NaN
-                                    });
-                                }
-                                SourceAchievementsSeries.Add(new CustomerForSingle
-                                {
-                                    Name = (string)localDateConverter.Convert(grouping.Key, null, null, null),
-                                    Values = grouping.Count()
-                                });
-                                previousDate = grouping.Key;
-                            }
-                            GraphicsAchievementsLabels = SourceAchievementsSeries.Select(x => x.Name).ToArray();
-                        }
-                        else
-                        {
-                            Achievements.Sort((x, y) => (x.DateUnlocked == null ? default : (DateTime)x.DateUnlocked).CompareTo(x.DateUnlocked == null ? default : (DateTime)x.DateUnlocked));
-                            DateTime TempDateTime = Achievements.Where(x => x.IsUnlock).Select(x => x.DateWhenUnlocked).Max()?.ToLocalTime() ?? DateTime.Now;
-                            TempDateTime = TempDateTime == default ? DateTime.Now : TempDateTime;
-
-                            for (int i = limit; i >= 0; i--)
-                            {
-                                GraphicsAchievementsLabels[limit - i] = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null);
-
-                                double DataValue = CutPeriod ? double.NaN : 0;
-
-                                SourceAchievementsSeries.Add(new CustomerForSingle
-                                {
-                                    Name = (string)localDateConverter.Convert(TempDateTime.AddDays(-i), null, null, null),
-                                    Values = DataValue
-                                });
-                            }
-
-                            for (int i = 0; i < Achievements.Count; i++)
-                            {
-                                if (Achievements[i].DateWhenUnlocked != null)
-                                {
-                                    string tempDate = (string)localDateConverter.Convert(((DateTime)Achievements[i].DateUnlocked).ToLocalTime(), null, null, null);
-                                    int index = Array.IndexOf(GraphicsAchievementsLabels, tempDate);
-
-                                    if (index >= 0 && index < (limit + 1))
-                                    {
-                                        if (double.IsNaN(SourceAchievementsSeries[index].Values))
-                                        {
-                                            SourceAchievementsSeries[index].Values = 0;
-                                        }
-                                        SourceAchievementsSeries[index].Values += 1;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, $"Error in load GetCountByDay({GameID.ToString()})", true, PluginName);
-                }
-            }
-
-            return new AchievementsGraphicsDataCount { Labels = GraphicsAchievementsLabels, Series = SourceAchievementsSeries };
         }
 
         public enum AchievementSource
@@ -1018,6 +563,7 @@ namespace SuccessStory.Services
             return settings.EnableLocal ? AchievementSource.Local : AchievementSource.None;
         }
 
+
         /// <summary>
         /// Validate achievement configuration for the service this game is linked to
         /// </summary>
@@ -1040,9 +586,9 @@ namespace SuccessStory.Services
             Logger.Warn($"VerifToAddOrShow() find no action for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
             return false;
         }
-        public bool VerifAchievementsLoad(Guid gameID)
+        public bool VerifAchievementsLoad(Guid gameId)
         {
-            return GetOnlyCache(gameID) != null;
+            return GetOnlyCache(gameId) != null;
         }
 
 
@@ -1126,7 +672,6 @@ namespace SuccessStory.Services
             });
         }
 
-
         public override void RefreshNoLoader(Guid id)
         {
             Game game = API.Instance.Database.Games.Get(id);
@@ -1152,7 +697,7 @@ namespace SuccessStory.Services
                         Achievements found = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() || x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
                         if (found != null)
                         {
-                            webItem.Items[i].DateUnlocked = found.DateUnlocked;
+                            webItem.Items[i].DateUnlocked = found.DateWhenUnlocked;
                         }
                     }
                 }
@@ -1507,60 +1052,60 @@ namespace SuccessStory.Services
             }
         }
 
-        private Guid? FindGoodPluginTags(int EstimateTimeMax)
+        private Guid? FindGoodPluginTags(int estimateTimeMax)
         {
             // Add tag
-            if (EstimateTimeMax != 0)
+            if (estimateTimeMax != 0)
             {
-                if (EstimateTimeMax <= 1)
+                if (estimateTimeMax <= 1)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon0to1")}");
                 }
-                if (EstimateTimeMax <= 6)
+                if (estimateTimeMax <= 6)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon1to5")}");
                 }
-                if (EstimateTimeMax <= 10)
+                if (estimateTimeMax <= 10)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon5to10")}");
                 }
-                if (EstimateTimeMax <= 20)
+                if (estimateTimeMax <= 20)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon10to20")}");
                 }
-                if (EstimateTimeMax <= 30)
+                if (estimateTimeMax <= 30)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon20to30")}");
                 }
-                if (EstimateTimeMax <= 40)
+                if (estimateTimeMax <= 40)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon30to40")}");
                 }
-                if (EstimateTimeMax <= 50)
+                if (estimateTimeMax <= 50)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon40to50")}");
                 }
-                if (EstimateTimeMax <= 60)
+                if (estimateTimeMax <= 60)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon50to60")}");
                 }
-                if (EstimateTimeMax <= 70)
+                if (estimateTimeMax <= 70)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon60to70")}");
                 }
-                if (EstimateTimeMax <= 80)
+                if (estimateTimeMax <= 80)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon70to80")}");
                 }
-                if (EstimateTimeMax <= 90)
+                if (estimateTimeMax <= 90)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon80to90")}");
                 }
-                if (EstimateTimeMax <= 100)
+                if (estimateTimeMax <= 100)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon90to100")}");
                 }
-                if (EstimateTimeMax > 100)
+                if (estimateTimeMax > 100)
                 {
                     return CheckTagExist($"{ResourceProvider.GetString("LOCCommon100plus")}");
                 }
@@ -1667,144 +1212,5 @@ namespace SuccessStory.Services
                 }
             }, options);
         }
-
-
-        public ProgressionAchievements Progession()
-        {
-            ProgressionAchievements Result = new ProgressionAchievements();
-            int Total = 0;
-            int Locked = 0;
-            int Unlocked = 0;
-
-            try
-            {
-                List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.HasAchievements).ToList();
-                foreach (KeyValuePair<Guid, GameAchievements> item in db)
-                {
-                    GameAchievements GameAchievements = item.Value;
-                    if (API.Instance.Database.Games.Get(item.Key) != null)
-                    {
-                        Total += GameAchievements.Total;
-                        Locked += GameAchievements.Locked;
-                        Unlocked += GameAchievements.Unlocked;
-                    }
-                    else
-                    {
-                        Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
-                    }
-                }
-
-                Result.Total = Total;
-                Result.Locked = Locked;
-                Result.Unlocked = Unlocked;
-                Result.Progression = (Total != 0) ? (int)Math.Round((double)(Unlocked * 100 / Total)) : 0;
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginName);
-            }
-
-            return Result;
-        }
-
-        public ProgressionAchievements ProgessionLaunched()
-        {
-            ProgressionAchievements Result = new ProgressionAchievements();
-            int Total = 1;
-            int Locked = 0;
-            int Unlocked = 0;
-
-            try
-            {
-                List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.Playtime > 0 && x.Value.HasAchievements).ToList();
-                foreach (KeyValuePair<Guid, GameAchievements> item in db)
-                {
-                    GameAchievements GameAchievements = item.Value;
-                    if (API.Instance.Database.Games.Get(item.Key) != null)
-                    {
-                        Total += GameAchievements.Total;
-                        Locked += GameAchievements.Locked;
-                        Unlocked += GameAchievements.Unlocked;
-                    }
-                    else
-                    {
-                        Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id.ToString()}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginName);
-            }
-
-            Result.Total = Total;
-            Result.Locked = Locked;
-            Result.Unlocked = Unlocked;
-            Result.Progression = (Total != 0) ? (int)Math.Round((double)(Unlocked * 100 / Total)) : 0;
-
-            return Result;
-        }
-
-        public ProgressionAchievements ProgessionSource(Guid GameSourceId)
-        {
-            ProgressionAchievements Result = new ProgressionAchievements();
-            int Total = 0;
-            int Locked = 0;
-            int Unlocked = 0;
-
-            try
-            {
-                List<KeyValuePair<Guid, GameAchievements>> db = Database.Items.Where(x => x.Value.SourceId == GameSourceId).ToList();
-                foreach (KeyValuePair<Guid, GameAchievements> item in db)
-                {
-                    Guid Id = item.Key;
-                    Game Game = API.Instance.Database.Games.Get(Id);
-                    GameAchievements GameAchievements = item.Value;
-
-                    if (API.Instance.Database.Games.Get(item.Key) != null)
-                    {
-                        Total += GameAchievements.Total;
-                        Locked += GameAchievements.Locked;
-                        Unlocked += GameAchievements.Unlocked;
-                    }
-                    else
-                    {
-                        Logger.Warn($"Achievements data without game for {GameAchievements.Name} & {GameAchievements.Id}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginName);
-            }
-
-            Result.Total = Total;
-            Result.Locked = Locked;
-            Result.Unlocked = Unlocked;
-            Result.Progression = (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
-
-            return Result;
-        }
-    }
-
-
-    public class AchievementsGraphicsDataCount
-    {
-        public string[] Labels { get; set; }
-        public ChartValues<CustomerForSingle> Series { get; set; }
-    }
-
-    public class AchievementsGraphicsDataCountSources
-    {
-        public string[] Labels { get; set; }
-        public ChartValues<CustomerForSingle> SeriesUnlocked { get; set; }
-        public ChartValues<CustomerForSingle> SeriesLocked { get; set; }
-        public ChartValues<CustomerForSingle> SeriesTotal { get; set; }
-    }
-
-    public class AchievementsGraphicsDataSources
-    {
-        public string Source { get; set; }
-        public int Value { get; set; }
     }
 }

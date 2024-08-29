@@ -22,6 +22,7 @@ using System.Collections.ObjectModel;
 using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Converters;
 using System.Globalization;
+using SuccessStory.Models.Stats;
 
 namespace SuccessStory
 {
@@ -105,10 +106,10 @@ namespace SuccessStory
                 GetListAll();
                 SetGraphicsAchievementsSources();
 
-                ProgressionGlobal = PluginDatabase.Progession();
-                ProgressionLaunched = PluginDatabase.ProgessionLaunched();
+                ProgressionGlobal = SuccessStoryStats.Progession();
+                ProgressionLaunched = SuccessStoryStats.ProgessionLaunched();
 
-                GraphicsData = PluginDatabase.GetCountByMonth(null, 12);
+                GraphicsData = SuccessStoryStats.GetCountByMonth(null, 12);
                 StatsGraphicsAchievementsLabels = GraphicsData.Labels;
 
 
@@ -370,7 +371,7 @@ namespace SuccessStory
 
         private void SetGraphicsAchievementsSources()
         {
-            AchievementsGraphicsDataCountSources data = PluginDatabase.GetCountBySources();
+            AchievementsGraphicsDataCountSources data = SuccessStoryStats.GetCountBySources();
 
             this.Dispatcher.BeginInvoke((Action)delegate
             {
@@ -488,9 +489,10 @@ namespace SuccessStory
                                     AchEnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
                                     AchDisplayRaretyValue = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
                                     AchName = y.Name,
-                                    AchDateUnlock = y.DateUnlocked,
+                                    AchDateUnlock = y.DateWhenUnlocked,
                                     AchDescription = y.Description,
-                                    AchPercent = y.Percent
+                                    AchPercent = y.Percent,
+                                    AchNameWithDateUnlock = y.NameWithDateUnlock
                                 });
                             });
                         });

@@ -52,21 +52,7 @@ namespace SuccessStory.Models
         public DateTime? AchDateUnlock { get; set; }
         public string AchDescription { get; set; }
         public float AchPercent { get; set; }
-        public string AchNameWithDateUnlock
-        {
-            get
-            {
-                string NameWithDateUnlock = AchName;
-
-                if (AchDateUnlock != null && AchDateUnlock != default(DateTime) && AchDateUnlock != new DateTime(1982, 12, 15, 0, 0, 0))
-                {
-                    LocalDateTimeConverter converter = new LocalDateTimeConverter();
-                    NameWithDateUnlock += " (" + converter.Convert(AchDateUnlock, null, null, CultureInfo.CurrentCulture) + ")";
-                }
-
-                return NameWithDateUnlock;
-            }
-        }
+        public string AchNameWithDateUnlock { get; set; }
 
         public bool AchIsUnlock { get; set; }
         public string AchIconImageUnlocked { get; set; }

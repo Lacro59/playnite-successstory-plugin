@@ -125,9 +125,9 @@ namespace SuccessStory.Clients
                     if (found != null)
                     {
                         x.Name = found.Name;
-                        if (x.DateUnlocked == null || x.DateUnlocked == default(DateTime))
+                        if (x.DateWhenUnlocked == null)
                         {
-                            x.DateUnlocked = found.DateUnlocked;
+                            x.DateUnlocked = found.DateWhenUnlocked;
                         }
                     }
                 });

@@ -62,8 +62,8 @@ namespace SuccessStory.Models
 
                         case OrderAchievementType.AchievementDateUnlocked:
                             OrderedItems = orderAchievement.OrderTypeFirst == OrderType.Ascending
-                                ? OrderedItems?.ThenBy(x => x.DateUnlocked) ?? OrderItems.OrderBy(x => x.DateUnlocked)
-                                : OrderedItems?.ThenByDescending(x => x.DateUnlocked) ?? OrderItems.OrderByDescending(x => x.DateUnlocked);
+                                ? OrderedItems?.ThenBy(x => x.DateWhenUnlocked) ?? OrderItems.OrderBy(x => x.DateWhenUnlocked)
+                                : OrderedItems?.ThenByDescending(x => x.DateWhenUnlocked) ?? OrderItems.OrderByDescending(x => x.DateWhenUnlocked);
                             break;
 
                         case OrderAchievementType.AchievementRarety:
@@ -86,8 +86,8 @@ namespace SuccessStory.Models
 
                         case OrderAchievementType.AchievementDateUnlocked:
                             OrderedItems = orderAchievement.OrderTypeSecond == OrderType.Ascending
-                                ? OrderedItems.ThenBy(x => x.DateUnlocked)
-                                : OrderedItems.ThenByDescending(x => x.DateUnlocked);
+                                ? OrderedItems.ThenBy(x => x.DateWhenUnlocked)
+                                : OrderedItems.ThenByDescending(x => x.DateWhenUnlocked);
                             break;
 
                         case OrderAchievementType.AchievementRarety:
@@ -110,8 +110,8 @@ namespace SuccessStory.Models
 
                         case OrderAchievementType.AchievementDateUnlocked:
                             OrderedItems = orderAchievement.OrderTypeThird == OrderType.Ascending
-                                ? OrderedItems.ThenBy(x => x.DateUnlocked)
-                                : OrderedItems.ThenByDescending(x => x.DateUnlocked);
+                                ? OrderedItems.ThenBy(x => x.DateWhenUnlocked)
+                                : OrderedItems.ThenByDescending(x => x.DateWhenUnlocked);
                             break;
 
                         case OrderAchievementType.AchievementRarety:
@@ -157,6 +157,7 @@ namespace SuccessStory.Models
         /// <summary>
         /// Indicate if the game is a rom.
         /// </summary>
+        // TODO Not assigned
         public bool IsEmulators { get; set; }
 
         [DontSerialize]
@@ -288,6 +289,10 @@ namespace SuccessStory.Models
 
         // only for RA
         public int RAgameID { get; set; }
+
+        [DontSerialize]
+        public bool IsRa => RAgameID > 0;
+
 
         // only for PSN
         public string CommunicationId { get; set; }

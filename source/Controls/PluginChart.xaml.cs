@@ -8,6 +8,7 @@ using LiveCharts.Wpf;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
+using SuccessStory.Models.Stats;
 using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
@@ -141,8 +142,8 @@ namespace SuccessStory.Controls
             bool CutPeriod = ControlDataContext.AllPeriod && ControlDataContext.CutPeriod;
             if (ControlDataContext.AllPeriod)
             {
-                DateTime? DateMin = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Min();
-                DateTime? DateMax = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateUnlocked).Max();
+                DateTime? DateMin = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateWhenUnlocked).Min();
+                DateTime? DateMax = gameAchievements.Items.Where(x => x.IsUnlock).Select(x => x.DateWhenUnlocked).Max();
 
                 if (DateMin != null && DateMax != null)
                 {
@@ -154,16 +155,16 @@ namespace SuccessStory.Controls
                         ControlDataContext.CutEnabled = false;
                     }
 
-                    GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, limit, CutPeriod);
+                    GraphicsData = SuccessStoryStats.GetCountByDay(newContext.Id, limit, CutPeriod);
                 }
                 else
                 {
-                    GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
+                    GraphicsData = SuccessStoryStats.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
                 }
             }
             else
             {
-                GraphicsData = PluginDatabase.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
+                GraphicsData = SuccessStoryStats.GetCountByDay(newContext.Id, (ControlDataContext.CountAbscissa - 1), CutPeriod);
             }
 
 
