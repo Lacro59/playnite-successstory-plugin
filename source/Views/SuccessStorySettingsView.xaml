@@ -1765,6 +1765,7 @@
                                      UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.SteamApiSettings.UseAuth, Mode=TwoWay}" />
 
                     <Epic:PanelView x:Name="EpicPanel" 
+                                    UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.EpicSettings.UseAuth, Mode=TwoWay}"
                                     Visibility="{Binding ElementName=PART_Epic, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </TabItem>

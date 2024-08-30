@@ -890,6 +890,14 @@ namespace SuccessStory
 
             EpicApi = new EpicApi(PluginDatabase.PluginName);
             EpicApi.SetLanguage(API.Instance.ApplicationSettings.Language);
+            if (PluginDatabase.PluginSettings.Settings.EnableEpic)
+            {
+                _ = EpicApi.CurrentAccountInfos;
+                if (PluginDatabase.PluginSettings.Settings.EpicSettings.UseAuth)
+                {
+                    EpicApi.CurrentAccountInfos.IsPrivate = true;
+                }
+            }
 
 
             Task.Run(() =>

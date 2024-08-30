@@ -206,7 +206,8 @@ namespace SuccessStory
 
         public bool UseLocalised { get; set; } = false;
 
-        public SteamApiSettings SteamApiSettings { get; set; } = new SteamApiSettings();
+        public SteamSettings SteamApiSettings { get; set; } = new SteamSettings();
+        public EpicSettings EpicSettings { get; set; } = new EpicSettings();
         #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
@@ -342,6 +343,17 @@ namespace SuccessStory
                 }
             }
 
+            SuccessStory.EpicApi.SaveCurrentUser();
+            SuccessStory.EpicApi.CurrentAccountInfos = null;
+            if (Settings.EnableEpic)
+            {
+                _ = SuccessStory.EpicApi.CurrentAccountInfos;
+                if (Settings.EpicSettings.UseAuth)
+                {
+                    SuccessStory.EpicApi.CurrentAccountInfos.IsPrivate = true;
+                }
+            }
+
 
             Plugin.SavePluginSettings(Settings);
             SuccessStory.PluginDatabase.PluginSettings = this;
@@ -378,9 +390,14 @@ namespace SuccessStory
         public bool OrderGroupByUnlocked { get; set; } = false;
     }
 
-    public class SteamApiSettings
+    public class SteamSettings
     {
         public bool UseApi { get; set; } = false;
+        public bool UseAuth { get; set; } = false;
+    }
+
+    public class EpicSettings
+    {
         public bool UseAuth { get; set; } = false;
     }
 }
