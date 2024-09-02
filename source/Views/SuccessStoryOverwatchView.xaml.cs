@@ -1,4 +1,5 @@
-﻿using Playnite.SDK;
+﻿using CommonPluginsShared;
+using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Services;
 using System;
@@ -36,7 +37,7 @@ namespace SuccessStory.Views
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                Common.LogError(ex, false);
             }
         }
     }
