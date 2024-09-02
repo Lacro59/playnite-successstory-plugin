@@ -762,6 +762,7 @@ namespace SuccessStory.Services
             _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
             {
                 Logger.Info($"Refresh() started");
+                API.Instance.Database.BeginBufferUpdate();
                 Database.BeginBufferUpdate();
 
                 Stopwatch stopWatch = new Stopwatch();
@@ -808,6 +809,7 @@ namespace SuccessStory.Services
                 Logger.Info($"Task Refresh(){cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{ids.Count} items");
 
                 Database.EndBufferUpdate();
+                API.Instance.Database.EndBufferUpdate();
             }, options);
         }
 
@@ -821,6 +823,7 @@ namespace SuccessStory.Services
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
             {
+                API.Instance.Database.BeginBufferUpdate();
                 Database.BeginBufferUpdate();
 
                 Stopwatch stopWatch = new Stopwatch();
@@ -869,6 +872,7 @@ namespace SuccessStory.Services
                 Logger.Info($"Task RefreshRecent() - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {playniteDb.Count} items");
 
                 Database.EndBufferUpdate();
+                API.Instance.Database.EndBufferUpdate();
             }, options);
         }
 
@@ -901,6 +905,7 @@ namespace SuccessStory.Services
             _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
             {
                 Logger.Info($"RefreshRarety() started");
+                API.Instance.Database.BeginBufferUpdate();
                 Database.BeginBufferUpdate();
 
                 Stopwatch stopWatch = new Stopwatch();
@@ -966,6 +971,7 @@ namespace SuccessStory.Services
                 Logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{(double)db.Count()} items");
 
                 Database.EndBufferUpdate();
+                API.Instance.Database.EndBufferUpdate();
             }, options);
         }
 
@@ -980,6 +986,7 @@ namespace SuccessStory.Services
             _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
             {
                 Logger.Info($"RefreshEstimateTime() started");
+                API.Instance.Database.BeginBufferUpdate();
                 Database.BeginBufferUpdate();
 
                 Stopwatch stopWatch = new Stopwatch();
@@ -1025,6 +1032,7 @@ namespace SuccessStory.Services
                 Logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{(double)db.Count()} items");
 
                 Database.EndBufferUpdate();
+                API.Instance.Database.EndBufferUpdate();
             }, options);
         }
 
