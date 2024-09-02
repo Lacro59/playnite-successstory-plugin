@@ -357,7 +357,7 @@ Packages:
       - 'Added: Get data for public Epic account (without authentification)'
   - Version: 3.3.1
     RequiredApiVersion: 6.11.0
-    ReleaseDate: 2024-08-31
+    ReleaseDate: 2024-09-02
     PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.3.1/playnite-successstory-plugin_3_3_1.pext
     Changelog:
       - 'Fixed: Crashs on plugin view'
