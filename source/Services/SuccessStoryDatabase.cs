@@ -819,69 +819,6 @@ namespace SuccessStory.Services
             }, options);
         }
 
-        public override void RefreshRecent()
-        {
-            GlobalProgressOptions options = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCCommonGettingNewDatas")}")
-            {
-                Cancelable = true,
-                IsIndeterminate = false
-            };
-
-            _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
-            {
-                API.Instance.Database.BeginBufferUpdate();
-                Database.BeginBufferUpdate();
-
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
-
-                string cancelText = string.Empty;
-
-                List<Game> playniteDb = PluginSettings.Settings.AutoImportOnInstalled
-                    ? API.Instance.Database.Games
-                       .Where(x => (x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload) || x.IsInstalled)
-                       .ToList()
-                    : API.Instance.Database.Games
-                        .Where(x => x.Added != null && x.Added > PluginSettings.Settings.LastAutoLibUpdateAssetsDownload)
-                        .ToList();
-
-                Logger.Info($"RefreshRecent found {playniteDb.Count} game(s) that need updating");
-                a.ProgressMaxValue = playniteDb.Count;
-
-                playniteDb.ForEach(x =>
-                {
-                    a.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonGettingNewDatas")}"
-                        + "\n\n" + $"{a.CurrentProgressValue}/{a.ProgressMaxValue}"
-                        + "\n" + x.Name + (x.Source == null ? string.Empty : $" ({x.Source.Name})");
-
-                    if (a.CancelToken.IsCancellationRequested)
-                    {
-                        cancelText = " canceled";
-                        return;
-                    }
-
-                    try
-                    {
-                        Thread.Sleep(100);
-                        RefreshNoLoader(x.Id);
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginName);
-                    }
-
-                    a.CurrentProgressValue++;
-                });
-
-                stopWatch.Stop();
-                TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task RefreshRecent() - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {playniteDb.Count} items");
-
-                Database.EndBufferUpdate();
-                API.Instance.Database.EndBufferUpdate();
-            }, options);
-        }
-
         public override void ActionAfterRefresh(GameAchievements item)
         {
             Game game = API.Instance.Database.Games.Get(item.Id);
