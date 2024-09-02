@@ -44,85 +44,156 @@ namespace SuccessStory
 
         public SuccessView(bool isRetroAchievements = false, Game GameSelected = null)
         {
-            InitializeComponent();
-
-            SuccessViewData.Settings = PluginDatabase.PluginSettings.Settings;
-            DataContext = SuccessViewData;
-
-            lvGameRaretyCount.Width = PluginDatabase.PluginSettings.Settings.UseUltraRare ? 240 : 210;
-
-
-            // sorting options
-            ListviewGames.SortingDefaultDataName = PluginDatabase.PluginSettings.Settings.NameSorting;
-            ListviewGames.SortingSortDirection = (PluginDatabase.PluginSettings.Settings.IsAsc) ? ListSortDirection.Ascending : ListSortDirection.Descending;
-            ListviewGames.Sorting();
-
-            // lvGames options
-            if (!PluginDatabase.PluginSettings.Settings.lvGamesIcon100Percent)
+            try
             {
-                lvGameIcon100Percent.Width = 0;
-            }
-            if (!PluginDatabase.PluginSettings.Settings.lvGamesIcon)
-            {
-                lvGameIcon.Width = 0;
-            }
-            if (!PluginDatabase.PluginSettings.Settings.lvGamesName)
-            {
-                lvGameName.Width = 0;
-            }
-            if (!PluginDatabase.PluginSettings.Settings.lvGamesLastSession)
-            {
-                lvGameLastActivity.Width = 0;
-            }
-            if (!PluginDatabase.PluginSettings.Settings.lvGamesSource)
-            {
-                lvGamesSource.Width = 0;
-            }
-            if (!PluginDatabase.PluginSettings.Settings.lvGamesProgression)
-            {
-                lvGameProgression.Width = 0;
-            }
-            if (!PluginDatabase.PluginSettings.Settings.EnableGamerScore)
-            {
-                lvTotalGamerScore.Width = 0;
-                lvGamerScore.Width = 0;
-            }
+                InitializeComponent();
+
+                SuccessViewData.Settings = PluginDatabase.PluginSettings.Settings;
+                DataContext = SuccessViewData;
+
+                lvGameRaretyCount.Width = PluginDatabase.PluginSettings.Settings.UseUltraRare ? 240 : 210;
 
 
-            ProgressionAchievements ProgressionGlobal = null;
-            ProgressionAchievements ProgressionLaunched = null;
+                // sorting options
+                ListviewGames.SortingDefaultDataName = PluginDatabase.PluginSettings.Settings.NameSorting;
+                ListviewGames.SortingSortDirection = (PluginDatabase.PluginSettings.Settings.IsAsc) ? ListSortDirection.Ascending : ListSortDirection.Descending;
+                ListviewGames.Sorting();
 
-            AchievementsGraphicsDataCount GraphicsData = null;
-            string[] StatsGraphicsAchievementsLabels = null;
-            SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
-
-
-            PART_DataLoad.Visibility = Visibility.Visible;
-            PART_Data.Visibility = Visibility.Hidden;
-
-            _ = Task.Run(() =>
-            {
-                GetListGame();
-                GetListAll();
-                SetGraphicsAchievementsSources();
-
-                ProgressionGlobal = SuccessStoryStats.Progession();
-                ProgressionLaunched = SuccessStoryStats.ProgessionLaunched();
-
-                GraphicsData = SuccessStoryStats.GetCountByMonth(null, 12);
-                StatsGraphicsAchievementsLabels = GraphicsData.Labels;
-
-
-                string icon = string.Empty;
-
-                if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
+                // lvGames options
+                if (!PluginDatabase.PluginSettings.Settings.lvGamesIcon100Percent)
                 {
-                    if (isRetroAchievements)
+                    lvGameIcon100Percent.Width = 0;
+                }
+                if (!PluginDatabase.PluginSettings.Settings.lvGamesIcon)
+                {
+                    lvGameIcon.Width = 0;
+                }
+                if (!PluginDatabase.PluginSettings.Settings.lvGamesName)
+                {
+                    lvGameName.Width = 0;
+                }
+                if (!PluginDatabase.PluginSettings.Settings.lvGamesLastSession)
+                {
+                    lvGameLastActivity.Width = 0;
+                }
+                if (!PluginDatabase.PluginSettings.Settings.lvGamesSource)
+                {
+                    lvGamesSource.Width = 0;
+                }
+                if (!PluginDatabase.PluginSettings.Settings.lvGamesProgression)
+                {
+                    lvGameProgression.Width = 0;
+                }
+                if (!PluginDatabase.PluginSettings.Settings.EnableGamerScore)
+                {
+                    lvTotalGamerScore.Width = 0;
+                    lvGamerScore.Width = 0;
+                }
+
+
+                ProgressionAchievements ProgressionGlobal = null;
+                ProgressionAchievements ProgressionLaunched = null;
+
+                AchievementsGraphicsDataCount GraphicsData = null;
+                string[] StatsGraphicsAchievementsLabels = null;
+                SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
+
+
+                PART_DataLoad.Visibility = Visibility.Visible;
+                PART_Data.Visibility = Visibility.Hidden;
+
+                _ = Task.Run(() =>
+                {
+                    GetListGame();
+                    GetListAll();
+                    SetGraphicsAchievementsSources();
+
+                    ProgressionGlobal = SuccessStoryStats.Progession();
+                    ProgressionLaunched = SuccessStoryStats.ProgessionLaunched();
+
+                    GraphicsData = SuccessStoryStats.GetCountByMonth(null, 12);
+                    StatsGraphicsAchievementsLabels = GraphicsData.Labels;
+
+
+                    string icon = string.Empty;
+
+                    if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
                     {
-                        if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
+                        if (isRetroAchievements)
                         {
-                            icon = TransformIcon.Get("RetroAchievements") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
+                            if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
+                            {
+                                icon = TransformIcon.Get("RetroAchievements") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
+                            }
+                        }
+                        else
+                        {
+                            if (PluginDatabase.PluginSettings.Settings.EnableLocal)
+                            {
+                                icon = TransformIcon.Get("Playnite") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playnite", SourceNameShort = "Playnite", IsCheck = false });
+
+                                icon = TransformIcon.Get("Hacked") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Hacked", SourceNameShort = "Hacked", IsCheck = false });
+                            }
+                            if (PluginDatabase.PluginSettings.Settings.EnableSteam)
+                            {
+                                icon = TransformIcon.Get("Steam") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Steam", SourceNameShort = "Steam", IsCheck = false });
+                            }
+                            if (PluginDatabase.PluginSettings.Settings.EnableGog)
+                            {
+                                icon = TransformIcon.Get("GOG") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "GOG", SourceNameShort = "GOG", IsCheck = false });
+                            }
+                            if (PluginDatabase.PluginSettings.Settings.EnableEpic)
+                            {
+                                icon = TransformIcon.Get("Epic") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Epic", SourceNameShort = "Epic", IsCheck = false });
+                            }
+                            if (PluginDatabase.PluginSettings.Settings.EnableOrigin)
+                            {
+                                icon = TransformIcon.Get("EA app") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "EA app", SourceNameShort = "EA app", IsCheck = false });
+                            }
+                            if (PluginDatabase.PluginSettings.Settings.EnableXbox)
+                            {
+                                icon = TransformIcon.Get("Xbox") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Xbox", SourceNameShort = "Xbox", IsCheck = false });
+                            }
+                            if (PluginDatabase.PluginSettings.Settings.EnableRpcs3Achievements)
+                            {
+                                icon = TransformIcon.Get("Rpcs3") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Rpcs3", SourceNameShort = "Rpcs3", IsCheck = false });
+                            }
+                            if (PluginDatabase.PluginSettings.Settings.EnablePsn)
+                            {
+                                icon = TransformIcon.Get("Playstation") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playstation", SourceNameShort = "Playstation", IsCheck = false });
+                            }
+                            if (PluginDatabase.PluginSettings.Settings.EnableManual)
+                            {
+                                icon = TransformIcon.Get("Manual Achievements") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
+
+                                PluginDatabase.Database.Items.Where(x => x.Value.IsManual && !x.Value.IsEmulators).Select(x => PlayniteTools.GetSourceName(x.Value.Game)).Distinct()
+                                        .ForEach(x =>
+                                        {
+                                            icon = TransformIcon.Get(x) + " ";
+
+                                            ListSource found = FilterSourceItems.Where(y => y.SourceNameShort.IsEqual(x)).FirstOrDefault();
+                                            if (found == null)
+                                            {
+                                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + x, SourceNameShort = x, IsCheck = false });
+                                            }
+                                        });
+                            }
+                            if (PluginDatabase.PluginSettings.Settings.EnableOverwatchAchievements || PluginDatabase.PluginSettings.Settings.EnableSc2Achievements)
+                            {
+                                icon = TransformIcon.Get("Battle.net") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Battle.net", SourceNameShort = "Battle.net", IsCheck = false });
+                            }
                         }
                     }
                     else
@@ -152,18 +223,23 @@ namespace SuccessStory
                         }
                         if (PluginDatabase.PluginSettings.Settings.EnableOrigin)
                         {
-                            icon = TransformIcon.Get("EA app") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "EA app", SourceNameShort = "EA app", IsCheck = false });
+                            icon = TransformIcon.Get("EA") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Electronic Arts", SourceNameShort = "EA", IsCheck = false });
                         }
                         if (PluginDatabase.PluginSettings.Settings.EnableXbox)
                         {
                             icon = TransformIcon.Get("Xbox") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Xbox", SourceNameShort = "Xbox", IsCheck = false });
                         }
+                        if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
+                        {
+                            icon = TransformIcon.Get("RetroAchievements") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
+                        }
                         if (PluginDatabase.PluginSettings.Settings.EnableRpcs3Achievements)
                         {
-                            icon = TransformIcon.Get("Rpcs3") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Rpcs3", SourceNameShort = "Rpcs3", IsCheck = false });
+                            icon = TransformIcon.Get("RPCS3") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RPCS3", SourceNameShort = "Rpcs3", IsCheck = false });
                         }
                         if (PluginDatabase.PluginSettings.Settings.EnablePsn)
                         {
@@ -175,12 +251,12 @@ namespace SuccessStory
                             icon = TransformIcon.Get("Manual Achievements") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
 
-                            PluginDatabase.Database.Items.Where(x => x.Value.IsManual && !x.Value.IsEmulators).Select(x => PlayniteTools.GetSourceName(x.Value.Game)).Distinct()
+                            PluginDatabase.Database.Items.Where(x => x.Value.IsManual).Select(x => PlayniteTools.GetSourceName(x.Value.Game)).Distinct()
                                     .ForEach(x =>
                                     {
                                         icon = TransformIcon.Get(x) + " ";
 
-                                        ListSource found = FilterSourceItems.Where(y => y.SourceNameShort.IsEqual(x)).FirstOrDefault();
+                                        ListSource found = FilterSourceItems.FirstOrDefault(y => y.SourceNameShort.IsEqual(x));
                                         if (found == null)
                                         {
                                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + x, SourceNameShort = x, IsCheck = false });
@@ -193,180 +269,111 @@ namespace SuccessStory
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Battle.net", SourceNameShort = "Battle.net", IsCheck = false });
                         }
                     }
-                }
-                else
-                {
-                    if (PluginDatabase.PluginSettings.Settings.EnableLocal)
-                    {
-                        icon = TransformIcon.Get("Playnite") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playnite", SourceNameShort = "Playnite", IsCheck = false });
-
-                        icon = TransformIcon.Get("Hacked") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Hacked", SourceNameShort = "Hacked", IsCheck = false });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnableSteam)
-                    {
-                        icon = TransformIcon.Get("Steam") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Steam", SourceNameShort = "Steam", IsCheck = false });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnableGog)
-                    {
-                        icon = TransformIcon.Get("GOG") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "GOG", SourceNameShort = "GOG", IsCheck = false });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnableEpic)
-                    {
-                        icon = TransformIcon.Get("Epic") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Epic", SourceNameShort = "Epic", IsCheck = false });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnableOrigin)
-                    {
-                        icon = TransformIcon.Get("EA") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Electronic Arts", SourceNameShort = "EA", IsCheck = false });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnableXbox)
-                    {
-                        icon = TransformIcon.Get("Xbox") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Xbox", SourceNameShort = "Xbox", IsCheck = false });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievements)
-                    {
-                        icon = TransformIcon.Get("RetroAchievements") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RetroAchievements", SourceNameShort = "RetroAchievements", IsCheck = false });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnableRpcs3Achievements)
-                    {
-                        icon = TransformIcon.Get("RPCS3") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RPCS3", SourceNameShort = "Rpcs3", IsCheck = false });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnablePsn)
-                    {
-                        icon = TransformIcon.Get("Playstation") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playstation", SourceNameShort = "Playstation", IsCheck = false });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnableManual)
-                    {
-                        icon = TransformIcon.Get("Manual Achievements") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), SourceNameShort = ResourceProvider.GetString("LOCSuccessStoryManualAchievements"), IsCheck = false });
-
-                        PluginDatabase.Database.Items.Where(x => x.Value.IsManual).Select(x => PlayniteTools.GetSourceName(x.Value.Game)).Distinct()
-                                .ForEach(x =>
-                                {
-                                    icon = TransformIcon.Get(x) + " ";
-
-                                    ListSource found = FilterSourceItems.FirstOrDefault(y => y.SourceNameShort.IsEqual(x));
-                                    if (found == null)
-                                    {
-                                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + x, SourceNameShort = x, IsCheck = false });
-                                    }
-                                });
-                    }
-                    if (PluginDatabase.PluginSettings.Settings.EnableOverwatchAchievements || PluginDatabase.PluginSettings.Settings.EnableSc2Achievements)
-                    {
-                        icon = TransformIcon.Get("Battle.net") + " ";
-                        FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Battle.net", SourceNameShort = "Battle.net", IsCheck = false });
-                    }
-                }
-            })
-             .ContinueWith(antecedent =>
-             {
-                 this.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                })
+                 .ContinueWith(antecedent =>
                  {
-                     GraphicTitle.Content = string.Empty;
-                     GraphicTitleALL.Content = ResourceProvider.GetString("LOCSuccessStoryGraphicTitleALL");
-
-                     FilterSourceItems = FilterSourceItems.OrderBy(x => x.SourceNameShort).ToObservable();
-                     SuccessViewData.FilterSourceItems = FilterSourceItems;
-
-                     SuccessViewData.ListGames = ListGames;
-                     SuccessViewData.TotalFoundCount = ListGames.Count;
-                     ListviewGames.Sorting();
-
-                     PART_TotalCommun.Content = SuccessViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
-                     PART_TotalNoCommun.Content = SuccessViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
-                     PART_TotalRare.Content = SuccessViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
-                     PART_TotalUltraRare.Content = SuccessViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
-
-
-                     if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements && isRetroAchievements)
+                     this.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                      {
-                         PART_GraphicBySource.Visibility = Visibility.Collapsed;
-                         Grid.SetColumn(PART_GraphicAllUnlocked, 0);
-                         Grid.SetColumnSpan(PART_GraphicAllUnlocked, 3);
-                     }
+                         GraphicTitle.Content = string.Empty;
+                         GraphicTitleALL.Content = ResourceProvider.GetString("LOCSuccessStoryGraphicTitleALL");
+
+                         FilterSourceItems = FilterSourceItems.OrderBy(x => x.SourceNameShort).ToObservable();
+                         SuccessViewData.FilterSourceItems = FilterSourceItems;
+
+                         SuccessViewData.ListGames = ListGames;
+                         SuccessViewData.TotalFoundCount = ListGames.Count;
+                         ListviewGames.Sorting();
+
+                         PART_TotalCommun.Content = SuccessViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
+                         PART_TotalNoCommun.Content = SuccessViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+                         PART_TotalRare.Content = SuccessViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
+                         PART_TotalUltraRare.Content = SuccessViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
 
 
-                     SuccessViewData.ProgressionGlobalCountValue = ProgressionGlobal.Unlocked;
-                     SuccessViewData.ProgressionGlobalCountMax = ProgressionGlobal.Total;
-                     SuccessViewData.ProgressionGlobal = ProgressionGlobal.Progression + "%";
-
-                     SuccessViewData.ProgressionLaunchedCountValue = ProgressionLaunched.Unlocked;
-                     SuccessViewData.ProgressionLaunchedCountMax = ProgressionLaunched.Total;
-                     SuccessViewData.ProgressionLaunched = ProgressionLaunched.Progression + "%";
-
-
-                     StatsGraphicAchievementsSeries.Add(new LineSeries
-                     {
-                         Title = string.Empty,
-                         Values = GraphicsData.Series
-                     });
-                     AchievementsMonth.Series = StatsGraphicAchievementsSeries;
-                     AchievementsMonthX.Labels = StatsGraphicsAchievementsLabels;
-
-
-                    // Set game selected
-                    if (GameSelected != null)
-                     {
-                         ListviewGames.SelectedIndex = ListGames.IndexOf(ListGames.Where(x => x.Name == GameSelected.Name).FirstOrDefault());
-                     }
-                     ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
-
-
-                     if (Filters != null)
-                     {
-                         PART_DatePicker.SelectedDate = Filters.FilterDate;
-                         PART_FilteredGames.IsChecked = Filters.FilteredGames;
-                         PART_NoUnlockedGames.IsChecked = Filters.HideNoUnlocked;
-                         PART_FilterRange.UpperValue = Filters.FilterRangeMax;
-                         PART_FilterRange.LowerValue = Filters.FilterRangeMin;
-                         TextboxSearch.Text = Filters.SearchText;
-
-                         SearchSources = Filters.SearchSources;
-                         if (SearchSources.Count != 0)
+                         if (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && PluginDatabase.PluginSettings.Settings.EnableRetroAchievements && isRetroAchievements)
                          {
-                             FilterSource.Text = string.Join(", ", SearchSources);
+                             PART_GraphicBySource.Visibility = Visibility.Collapsed;
+                             Grid.SetColumn(PART_GraphicAllUnlocked, 0);
+                             Grid.SetColumnSpan(PART_GraphicAllUnlocked, 3);
                          }
 
-                         SearchStatus = Filters.SearchStatus;
-                         if (SearchStatus.Count != 0)
+
+                         SuccessViewData.ProgressionGlobalCountValue = ProgressionGlobal.Unlocked;
+                         SuccessViewData.ProgressionGlobalCountMax = ProgressionGlobal.Total;
+                         SuccessViewData.ProgressionGlobal = ProgressionGlobal.Progression + "%";
+
+                         SuccessViewData.ProgressionLaunchedCountValue = ProgressionLaunched.Unlocked;
+                         SuccessViewData.ProgressionLaunchedCountMax = ProgressionLaunched.Total;
+                         SuccessViewData.ProgressionLaunched = ProgressionLaunched.Progression + "%";
+
+
+                         StatsGraphicAchievementsSeries.Add(new LineSeries
                          {
-                             FilterStatus.Text = string.Join(", ", SearchStatus);
+                             Title = string.Empty,
+                             Values = GraphicsData.Series
+                         });
+                         AchievementsMonth.Series = StatsGraphicAchievementsSeries;
+                         AchievementsMonthX.Labels = StatsGraphicsAchievementsLabels;
+
+
+                     // Set game selected
+                     if (GameSelected != null)
+                         {
+                             ListviewGames.SelectedIndex = ListGames.IndexOf(ListGames.Where(x => x.Name == GameSelected.Name).FirstOrDefault());
+                         }
+                         ListviewGames.ScrollIntoView(ListviewGames.SelectedItem);
+
+
+                         if (Filters != null)
+                         {
+                             PART_DatePicker.SelectedDate = Filters.FilterDate;
+                             PART_FilteredGames.IsChecked = Filters.FilteredGames;
+                             PART_NoUnlockedGames.IsChecked = Filters.HideNoUnlocked;
+                             PART_FilterRange.UpperValue = Filters.FilterRangeMax;
+                             PART_FilterRange.LowerValue = Filters.FilterRangeMin;
+                             TextboxSearch.Text = Filters.SearchText;
+
+                             SearchSources = Filters.SearchSources;
+                             if (SearchSources.Count != 0)
+                             {
+                                 FilterSource.Text = string.Join(", ", SearchSources);
+                             }
+
+                             SearchStatus = Filters.SearchStatus;
+                             if (SearchStatus.Count != 0)
+                             {
+                                 FilterStatus.Text = string.Join(", ", SearchStatus);
+                             }
+
+                             Filters = null;
+                             Filter();
                          }
 
-                         Filters = null;
-                         Filter();
-                     }
+
+                         PART_DataLoad.Visibility = Visibility.Hidden;
+                         PART_Data.Visibility = Visibility.Visible;
+                     }));
+                 });
 
 
-                     PART_DataLoad.Visibility = Visibility.Hidden;
-                     PART_Data.Visibility = Visibility.Visible;
-                 }));
-             });
+                if (!PluginDatabase.PluginSettings.Settings.DisplayChart)
+                {
+                    PART_Chart1.Visibility = Visibility.Collapsed;
+                    Grid.SetRow(PART_PluginListContener, 2);
+
+                    PART_GraphicBySource.Visibility = Visibility.Collapsed;
+                    PART_GraphicAllUnlocked.Visibility = Visibility.Collapsed;
+                    Grid.SetRowSpan(PART_PluginListContener, 5);
+                    Grid.SetRowSpan(PART_GridContenerLv, 5);
+                }
 
 
-            if (!PluginDatabase.PluginSettings.Settings.DisplayChart)
-            {
-                PART_Chart1.Visibility = Visibility.Collapsed;
-                Grid.SetRow(PART_PluginListContener, 2);
-
-                PART_GraphicBySource.Visibility = Visibility.Collapsed;
-                PART_GraphicAllUnlocked.Visibility = Visibility.Collapsed;
-                Grid.SetRowSpan(PART_PluginListContener, 5);
-                Grid.SetRowSpan(PART_GridContenerLv, 5);
+                SuccessViewData.FilterStatusItems = API.Instance.Database.CompletionStatuses.Select(x => new ListStatus { StatusName = x.Name }).ToObservable();
             }
-
-
-            SuccessViewData.FilterStatusItems = API.Instance.Database.CompletionStatuses.Select(x => new ListStatus { StatusName = x.Name }).ToObservable();
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
 
         private void SetGraphicsAchievementsSources()

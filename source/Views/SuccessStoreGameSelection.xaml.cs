@@ -40,15 +40,22 @@ namespace SuccessStory.Views
 
         public SuccessStoreGameSelection(Game game)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            GameContext = game;
+                GameContext = game;
 
-            PART_DataLoadWishlist.Visibility = Visibility.Collapsed;
-            PART_GridData.IsEnabled = true;
+                PART_DataLoadWishlist.Visibility = Visibility.Collapsed;
+                PART_GridData.IsEnabled = true;
 
-            SearchElement.Text = game.Name;
-            SearchElements();
+                SearchElement.Text = game.Name;
+                SearchElements();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
 
 

@@ -25,12 +25,19 @@ namespace SuccessStory.Views
     {
         public SuccessStoryOverwatchView(Game game)
         {
-            InitializeComponent();
-
-            DataContext = new
+            try
             {
-                GameContext = game
-            };
+                InitializeComponent();
+
+                DataContext = new
+                {
+                    GameContext = game
+                };
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
     }
 }

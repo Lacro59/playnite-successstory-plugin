@@ -47,10 +47,17 @@ namespace SuccessStory.Views
 
         public SuccessStoryEditManual(Game game)
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            GameAchievements = PluginDatabase.Get(game, true);
-            LoadData();
+                GameAchievements = PluginDatabase.Get(game, true);
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
 
         private void LoadData()

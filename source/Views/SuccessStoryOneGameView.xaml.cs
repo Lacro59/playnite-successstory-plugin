@@ -1,4 +1,5 @@
-﻿using CommonPluginsShared.Converters;
+﻿using CommonPluginsShared;
+using CommonPluginsShared.Converters;
 using Playnite.SDK;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
@@ -31,50 +32,55 @@ namespace SuccessStory.Views
 
         public SuccessStoryOneGameView(Game GameContext)
         {
-            InitializeComponent();
-            DataContext = ControlDataContext;
-
-
-            // Cover
-            if (!GameContext.CoverImage.IsNullOrEmpty())
+            try
             {
-                ControlDataContext.CoverImage = API.Instance.Database.GetFullFilePath(GameContext.CoverImage);
-            }
+                InitializeComponent();
+                DataContext = ControlDataContext;
 
-            GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
-            if (gameAchievements.SourcesLink != null)
+                // Cover
+                if (!GameContext.CoverImage.IsNullOrEmpty())
+                {
+                    ControlDataContext.CoverImage = API.Instance.Database.GetFullFilePath(GameContext.CoverImage);
+                }
+
+                GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
+                if (gameAchievements?.SourcesLink != null)
+                {
+                    ControlDataContext.SourceLabel = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
+                    ControlDataContext.SourceLink = gameAchievements.SourcesLink.Url;
+                }
+                else
+                {
+                    ControlDataContext.SourceLabel = string.Empty;
+                    ControlDataContext.SourceLink = string.Empty;
+                }
+
+                if (gameAchievements?.HasData ?? false)
+                {
+                    ControlDataContext.AchCommon = gameAchievements.Common;
+                    ControlDataContext.AchNoCommon = gameAchievements.NoCommon;
+                    ControlDataContext.AchRare = gameAchievements.Rare;
+                    ControlDataContext.AchUltraRare = gameAchievements.UltraRare;
+
+                    ControlDataContext.TotalGamerScore = gameAchievements.TotalGamerScore;
+
+                    ControlDataContext.EstimateTime = gameAchievements.EstimateTime.EstimateTime;
+
+                    LocalDateTimeConverter converter = new LocalDateTimeConverter();
+                    ControlDataContext.FirstUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
+                    ControlDataContext.LastUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
+                }
+
+
+                ControlDataContext.GameContext = GameContext;
+                ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
+
+                ControlDataContext.HasDataStats = gameAchievements.HasDataStats;
+            }
+            catch (Exception ex)
             {
-                ControlDataContext.SourceLabel = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
-                ControlDataContext.SourceLink = gameAchievements.SourcesLink.Url;
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
-            else
-            {
-                ControlDataContext.SourceLabel = string.Empty;
-                ControlDataContext.SourceLink = string.Empty;
-            }
-
-
-            if (gameAchievements.HasData)
-            {
-                ControlDataContext.AchCommon = gameAchievements.Common;
-                ControlDataContext.AchNoCommon = gameAchievements.NoCommon;
-                ControlDataContext.AchRare = gameAchievements.Rare;
-                ControlDataContext.AchUltraRare = gameAchievements.UltraRare;
-
-                ControlDataContext.TotalGamerScore = gameAchievements.TotalGamerScore;
-
-                ControlDataContext.EstimateTime = gameAchievements.EstimateTime.EstimateTime;
-
-                LocalDateTimeConverter converter = new LocalDateTimeConverter();
-                ControlDataContext.FirstUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
-                ControlDataContext.LastUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
-            }
-
-
-            ControlDataContext.GameContext = GameContext;
-            ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
-
-            ControlDataContext.HasDataStats = gameAchievements.HasDataStats;
         }
     }
 

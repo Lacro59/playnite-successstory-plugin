@@ -50,84 +50,91 @@ namespace SuccessStory.Views
 
         public SuccessStorySettingsView(SuccessStory plugin)
         {
-            InitializeComponent();
-
-            SteamPanel.StoreApi = SuccessStory.SteamApi;
-            EpicPanel.StoreApi = SuccessStory.EpicApi;
-            
-            PART_WowRegion.Text = PluginDatabase.PluginSettings.Settings.WowRegions.Find(x => x.IsSelected)?.Name;
-            PART_WowRealm.Text = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Name;
-
-            PART_SelectorColorPicker.OnlySimpleColor = true;
-
-            RarityUncommonColor = PluginDatabase.PluginSettings.Settings.RarityUncommonColor;
-            RarityRareColor = PluginDatabase.PluginSettings.Settings.RarityRareColor;
-            RarityUltraRareColor = PluginDatabase.PluginSettings.Settings.RarityUltraRareColor;
-
-
-            switch (PluginDatabase.PluginSettings.Settings.NameSorting)
+            try
             {
-                case "Name":
-                    cbDefaultSorting.Text = ResourceProvider.GetString("LOCGameNameTitle");
-                    break;
-                case "LastActivity":
-                    cbDefaultSorting.Text = ResourceProvider.GetString("LOCLastPlayed");
-                    break;
-                case "SourceName":
-                    cbDefaultSorting.Text = ResourceProvider.GetString("LOCSourceLabel");
-                    break;
-                case "ProgressionValue":
-                    cbDefaultSorting.Text = ResourceProvider.GetString("LOCSuccessStorylvGamesProgression");
-                    break;
-                default:
-                    break;
-            }
+                InitializeComponent();
+
+                SteamPanel.StoreApi = SuccessStory.SteamApi;
+                EpicPanel.StoreApi = SuccessStory.EpicApi;
+
+                PART_WowRegion.Text = PluginDatabase.PluginSettings.Settings.WowRegions.Find(x => x.IsSelected)?.Name;
+                PART_WowRealm.Text = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Name;
+
+                PART_SelectorColorPicker.OnlySimpleColor = true;
+
+                RarityUncommonColor = PluginDatabase.PluginSettings.Settings.RarityUncommonColor;
+                RarityRareColor = PluginDatabase.PluginSettings.Settings.RarityRareColor;
+                RarityUltraRareColor = PluginDatabase.PluginSettings.Settings.RarityUltraRareColor;
 
 
-            _ = Task.Run(() => CheckLogged())
-                .ContinueWith(antecedent =>
+                switch (PluginDatabase.PluginSettings.Settings.NameSorting)
                 {
-                    Dispatcher.Invoke(new Action(() =>
+                    case "Name":
+                        cbDefaultSorting.Text = ResourceProvider.GetString("LOCGameNameTitle");
+                        break;
+                    case "LastActivity":
+                        cbDefaultSorting.Text = ResourceProvider.GetString("LOCLastPlayed");
+                        break;
+                    case "SourceName":
+                        cbDefaultSorting.Text = ResourceProvider.GetString("LOCSourceLabel");
+                        break;
+                    case "ProgressionValue":
+                        cbDefaultSorting.Text = ResourceProvider.GetString("LOCSuccessStorylvGamesProgression");
+                        break;
+                    default:
+                        break;
+                }
+
+
+                _ = Task.Run(() => CheckLogged())
+                    .ContinueWith(antecedent =>
                     {
-                        lIsAuth.Content = antecedent.Result ? ResourceProvider.GetString("LOCCommonLoggedIn") : ResourceProvider.GetString("LOCCommonNotLoggedIn");
-                    }));
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            lIsAuth.Content = antecedent.Result ? ResourceProvider.GetString("LOCCommonLoggedIn") : ResourceProvider.GetString("LOCCommonNotLoggedIn");
+                        }));
+                    });
+
+
+                LocalPath = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.LocalPath);
+                PART_ItemsControl.ItemsSource = LocalPath;
+
+                Rpcs3Path = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolders);
+                PART_ItemsRpcs3Folder.ItemsSource = Rpcs3Path;
+                if (Rpcs3Path.Count > 0)
+                {
+                    PART_ItemsRpcs3Folder.Visibility = Visibility.Visible;
+                }
+
+
+                // Set ignored game
+                IgnoredGames = Serialization.GetClone(PluginDatabase.Database.Where(x => x.IsIgnored).ToList());
+                IgnoredGames.Sort((x, y) => x.Name.CompareTo(y.Name));
+                PART_IgnoredGames.ItemsSource = IgnoredGames;
+
+
+                // List features
+                PART_FeatureAchievement.ItemsSource = API.Instance.Database.Features.OrderBy(x => x.Name);
+
+
+                // List completation
+                PART_CbCompletation.ItemsSource = API.Instance.Database.CompletionStatuses.ToList();
+                PART_CbCompletation.SelectedIndex = API.Instance.Database.CompletionStatuses.ToList()
+                    .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent?.Id);
+
+
+                // Set RA console list
+                PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.ForEach(x =>
+                {
+                    x.GetSelectable();
                 });
-
-
-            LocalPath = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.LocalPath);
-            PART_ItemsControl.ItemsSource = LocalPath;
-
-            Rpcs3Path = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolders);
-            PART_ItemsRpcs3Folder.ItemsSource = Rpcs3Path;
-            if (Rpcs3Path.Count > 0)
-            {
-                PART_ItemsRpcs3Folder.Visibility = Visibility.Visible;
+                PART_LbRaConsole.ItemsSource = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
+                RaConsoleAssociateds = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
             }
-
-
-            // Set ignored game
-            IgnoredGames = Serialization.GetClone(PluginDatabase.Database.Where(x => x.IsIgnored).ToList());
-            IgnoredGames.Sort((x, y) => x.Name.CompareTo(y.Name));
-            PART_IgnoredGames.ItemsSource = IgnoredGames;
-
-
-            // List features
-            PART_FeatureAchievement.ItemsSource = API.Instance.Database.Features.OrderBy(x => x.Name);
-
-
-            // List completation
-            PART_CbCompletation.ItemsSource = API.Instance.Database.CompletionStatuses.ToList();
-            PART_CbCompletation.SelectedIndex = API.Instance.Database.CompletionStatuses.ToList()
-                .FindIndex(x => x.Id == PluginDatabase.PluginSettings.Settings.CompletionStatus100Percent?.Id);
-
-
-            // Set RA console list
-            PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.ForEach(x =>
+            catch (Exception ex)
             {
-                x.GetSelectable();
-            });
-            PART_LbRaConsole.ItemsSource = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
-            RaConsoleAssociateds = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
 
 
