@@ -722,6 +722,12 @@ namespace SuccessStory.Services
                             webItem.Items[i].DateUnlocked = found.DateWhenUnlocked;
                         }
                     }
+                    // Check is ok
+                    if (loadedItem.Unlocked != webItem.Unlocked && loadedItem.Items?.Count != webItem.Items?.Count)
+                    {
+                        Logger.Warn($"Unlocked data does not match for {game?.Name}");
+                        webItem = loadedItem;
+                    }
                 }
             }
             else
