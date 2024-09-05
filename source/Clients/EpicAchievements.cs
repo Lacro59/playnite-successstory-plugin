@@ -190,7 +190,7 @@ namespace SuccessStory.Clients
 
         private string NormalizeEpicName(string GameName)
         {
-            return PlayniteTools.NormalizeGameName(GameName.Replace("'", ""));
+            return PlayniteTools.NormalizeGameName(GameName.Replace("'", "").Replace(",", ""));
         }
         #endregion
     }
