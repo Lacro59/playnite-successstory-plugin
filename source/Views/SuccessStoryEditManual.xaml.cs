@@ -119,6 +119,12 @@ namespace SuccessStory.Views
                     datePicker.Tag = true;
                     CheckBox checkBox = ((Grid)datePicker.Parent).FindName("PART_CbUnlock") as CheckBox;
                     checkBox.IsChecked = true;
+
+                    TimePicker timePicker = ((Grid)datePicker.Parent).FindName("PART_Time") as TimePicker;
+                    int index = int.Parse(timePicker.Tag.ToString());
+                    DateTime dt = (DateTime)((Achievements)lbAchievements.Items[index]).DateUnlocked;
+                    string[] dtTime = timePicker.GetValueAsString().Split(':');
+                    ((Achievements)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2])).ToUniversalTime();
                 }
                 else
                 {
