@@ -34,25 +34,8 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    string productSlug = string.Empty;
-                    string normalizedEpicName = NormalizeEpicName(game.Name);
-                    game.Links?.ForEach(x =>
-                    {
-                        productSlug = EpicApi.GetProductSlugByUrl(x.Url, normalizedEpicName).IsNullOrEmpty() ? productSlug : EpicApi.GetProductSlugByUrl(x.Url, normalizedEpicName);
-                    });
-
-                    if (productSlug.IsNullOrEmpty())
-                    {
-                        productSlug = EpicApi.GetProductSlug(normalizedEpicName);
-                    }
-
-                    if (productSlug.IsNullOrEmpty())
-                    {
-                        Logger.Warn($"No ProductSlug for {game.Name}");
-                        return null;
-                    }
-
-                    string nameSpace = EpicApi.GetNameSpace(normalizedEpicName, productSlug);
+                    string productSlug = EpicApi.GetProducSlug(game);
+                    string nameSpace = EpicApi.GetNameSpace(game);
                     if (nameSpace.IsNullOrEmpty())
                     {
                         Logger.Warn($"No NameSpace for the Epic game {game.Name}");
