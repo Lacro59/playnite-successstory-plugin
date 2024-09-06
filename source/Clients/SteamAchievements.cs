@@ -339,7 +339,7 @@ namespace SuccessStory.Clients
         // TODO Rewrite
         public override bool ValidateConfiguration()
         {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("SteamLibrary"))
+            if (PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamDisabled"));
                 return false;

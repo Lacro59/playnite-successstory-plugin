@@ -130,6 +130,10 @@ namespace SuccessStory.Views
                 });
                 PART_LbRaConsole.ItemsSource = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
                 RaConsoleAssociateds = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds;
+
+
+                SteamPanel.Visibility = PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled ? Visibility.Visible : Visibility.Collapsed;
+                EpicPanel.Visibility = PluginDatabase.PluginSettings.Settings.PluginState.EpicIsEnabled ? Visibility.Visible : Visibility.Collapsed;
             }
             catch (Exception ex)
             {

@@ -92,7 +92,7 @@ namespace SuccessStory.Clients
         #region Configuration
         public override bool ValidateConfiguration()
         {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("EpicLibrary"))
+            if (PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicDisabled"));
                 return false;

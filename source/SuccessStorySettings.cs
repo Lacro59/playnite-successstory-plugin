@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System;
 using System.Linq;
 using Playnite.SDK.Models;
+using CommonPluginsShared.Plugins;
 
 namespace SuccessStory
 {
@@ -22,18 +23,13 @@ namespace SuccessStory
     }
 
 
-    public class SuccessStorySettings : ObservableObject
+    public class SuccessStorySettings : PluginSettings
     {
         #region Settings variables
-        public bool MenuInExtensions { get; set; } = true;
         public bool EnableIntegrationButtonHeader { get; set; } = false;
         public bool EnableIntegrationButtonSide { get; set; } = true;
 
-        public DateTime LastAutoLibUpdateAssetsDownload { get; set; } = DateTime.Now;
-
-        public bool EnableTag { get; set; } = false;
         public bool EnableGamerScore { get; set; } = true;
-        public bool AutoImport { get; set; } = true;
         public bool AutoImportOnInstalled { get; set; } = false;
 
         [DontSerialize]
@@ -213,10 +209,6 @@ namespace SuccessStory
         // Playnite serializes settings object to a JSON object and saves it as text file.
         // If you want to exclude some property from being saved then use `JsonDontSerialize` ignore attribute.
         #region Variables exposed
-        private bool hasData = false;
-        [DontSerialize]
-        public bool HasData { get => hasData; set => SetValue(ref hasData, value); }
-
         private bool is100Percent = false;
         [DontSerialize]
         public bool Is100Percent { get => is100Percent; set => SetValue(ref is100Percent, value); }

@@ -83,7 +83,7 @@ namespace SuccessStory.Clients
         #region Configuration
         public override bool ValidateConfiguration()
         {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("OriginLibrary"))
+            if (PluginDatabase.PluginSettings.Settings.PluginState.OriginIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsOriginDisabled"));
                 return false;

@@ -82,7 +82,7 @@ namespace SuccessStory.Clients
         #region Configuration
         public override bool ValidateConfiguration()
         {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("GogLibrary"))
+            if (PluginDatabase.PluginSettings.Settings.PluginState.GogIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogDisabled"));
                 return false;

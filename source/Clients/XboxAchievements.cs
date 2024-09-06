@@ -93,7 +93,7 @@ namespace SuccessStory.Clients
         #region Configuration
         public override bool ValidateConfiguration()
         {
-            if (PlayniteTools.IsDisabledPlaynitePlugins("XboxLibrary"))
+            if (PluginDatabase.PluginSettings.Settings.PluginState.XboxIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxDisabled"));
                 return false;
