@@ -762,7 +762,10 @@ namespace SuccessStory
         // Add code to be executed when game is finished installing.
         public override void OnGameInstalled(OnGameInstalledEventArgs args)
         {
-            _ = PluginDatabase.RefreshData(args.Game);
+            if (PluginDatabase.PluginSettings.Settings.AutoImportOnInstalled)
+            {
+                _ = PluginDatabase.RefreshData(args.Game);
+            }
         }
 
         // Add code to be executed when game is uninstalled.
@@ -826,17 +829,12 @@ namespace SuccessStory
                 PreventLibraryUpdatedOnStart = false;
             });
 
-            if (PluginSettings.Settings.AutoImportOnInstalled)
-            {
-                PluginDatabase.RefreshInstalled();
-            }
-
             // TODO - Removed for Playnite 11
             if (!PluginSettings.Settings.PurgeImageCache)
             {
                 PluginDatabase.ClearCache();
                 PluginSettings.Settings.PurgeImageCache = true;
-                this.SavePluginSettings(PluginSettings.Settings);
+                SavePluginSettings(PluginSettings.Settings);
             }
 
             // TODO TEMP
@@ -851,17 +849,17 @@ namespace SuccessStory
                 }
 
                 PluginSettings.Settings.DeleteOldRaConsole = false;
-                this.SavePluginSettings(PluginSettings.Settings);
+                SavePluginSettings(PluginSettings.Settings);
             }
 
             // TODO TEMP
             if (!PluginSettings.Settings.IsRaretyUpdate)
             {
-                GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions(
-                    $"{PluginDatabase.PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}",
-                    false
-                );
-                globalProgressOptions.IsIndeterminate = false;
+                GlobalProgressOptions globalProgressOptions = new GlobalProgressOptions($"{PluginDatabase.PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}")
+                {
+                    Cancelable = false,
+                    IsIndeterminate = false
+                };
 
                 _ = API.Instance.Dialogs.ActivateGlobalProgress((activateGlobalProgress) =>
                 {
@@ -875,7 +873,7 @@ namespace SuccessStory
                         });
 
                         PluginSettings.Settings.IsRaretyUpdate = true;
-                        this.SavePluginSettings(PluginSettings.Settings);
+                        SavePluginSettings(PluginSettings.Settings);
                     }
                     catch (Exception ex)
                     {

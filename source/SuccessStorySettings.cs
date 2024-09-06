@@ -30,7 +30,6 @@ namespace SuccessStory
         public bool EnableIntegrationButtonSide { get; set; } = true;
 
         public bool EnableGamerScore { get; set; } = true;
-        public bool AutoImportOnInstalled { get; set; } = false;
 
         [DontSerialize]
         public bool SteamGroupData { get; set; } = false;
