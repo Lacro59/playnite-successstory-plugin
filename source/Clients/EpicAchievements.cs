@@ -92,7 +92,7 @@ namespace SuccessStory.Clients
         #region Configuration
         public override bool ValidateConfiguration()
         {
-            if (PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled)
+            if (!PluginDatabase.PluginSettings.Settings.PluginState.EpicIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicDisabled"));
                 return false;
@@ -147,34 +147,7 @@ namespace SuccessStory.Clients
 
 
         #region Epic
-        private string GetProductSlug(string Name)
-        {
-            string ProductSlug = string.Empty;
-            using (var client = new WebStoreClient())
-            {
-                var catalogs = client.QuerySearch(Name).GetAwaiter().GetResult();
-                if (catalogs.HasItems())
-                {
-                    var catalog = catalogs.FirstOrDefault(a => a.title.IsEqual(Name, true));
-                    if (catalog == null)
-                    {
-                        catalog = catalogs[0];
-                    }
 
-                    ProductSlug = catalog?.productSlug?.Replace("/home", string.Empty);
-                    if (ProductSlug.IsNullOrEmpty())
-                    {
-                        Logger.Warn($"No ProductSlug for {Name}");
-                    }
-                }
-            }
-            return ProductSlug;
-        }
-
-        private string NormalizeEpicName(string GameName)
-        {
-            return PlayniteTools.NormalizeGameName(GameName.Replace("'", ""));
-        }
         #endregion
     }
 }

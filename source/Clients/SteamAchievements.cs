@@ -339,7 +339,7 @@ namespace SuccessStory.Clients
         // TODO Rewrite
         public override bool ValidateConfiguration()
         {
-            if (PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled)
+            if (!PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamDisabled"));
                 return false;

@@ -232,7 +232,7 @@ namespace SuccessStory.Clients
         #region Configuration
         public override bool ValidateConfiguration()
         {
-            if (PluginDatabase.PluginSettings.Settings.PluginState.PsnIsEnabled)
+            if (!PluginDatabase.PluginSettings.Settings.PluginState.PsnIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsPsnDisabled"));
                 return false;

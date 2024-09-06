@@ -82,7 +82,7 @@ namespace SuccessStory.Clients
         #region Configuration
         public override bool ValidateConfiguration()
         {
-            if (PluginDatabase.PluginSettings.Settings.PluginState.GogIsEnabled)
+            if (!PluginDatabase.PluginSettings.Settings.PluginState.GogIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogDisabled"));
                 return false;

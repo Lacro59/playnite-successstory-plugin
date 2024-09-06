@@ -83,7 +83,7 @@ namespace SuccessStory.Clients
         #region Configuration
         public override bool ValidateConfiguration()
         {
-            if (PluginDatabase.PluginSettings.Settings.PluginState.OriginIsEnabled)
+            if (!PluginDatabase.PluginSettings.Settings.PluginState.OriginIsEnabled)
             {
                 ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsOriginDisabled"));
                 return false;
