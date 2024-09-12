@@ -757,9 +757,9 @@ namespace SuccessStory.Services
             ActionAfterRefresh(webItem);
         }
 
-        public override void Refresh(List<Guid> ids)
+        internal override void Refresh(List<Guid> ids, string message)
         {
-            GlobalProgressOptions options = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}")
+            GlobalProgressOptions options = new GlobalProgressOptions($"{PluginName} - {message}")
             {
                 Cancelable = true,
                 IsIndeterminate = false
@@ -767,7 +767,6 @@ namespace SuccessStory.Services
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
             {
-                Logger.Info($"Refresh() started");
                 API.Instance.Database.BeginBufferUpdate();
                 Database.BeginBufferUpdate();
 
@@ -780,7 +779,7 @@ namespace SuccessStory.Services
                 foreach (Guid id in ids)
                 {
                     Game game = API.Instance.Database.Games.Get(id);
-                    a.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonProcessing")}"
+                    a.Text = $"{PluginName} - {message}"
                         + "\n\n" + $"{a.CurrentProgressValue}/{a.ProgressMaxValue}"
                         + "\n" + game.Name + (game.Source == null ? string.Empty : $" ({game.Source.Name})");
 
@@ -1113,77 +1112,27 @@ namespace SuccessStory.Services
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginName + " - " + ResourceProvider.GetString("LOCCommonSelectData"), View);
             _ = windowExtension.ShowDialog();
 
-            List<Game> PlayniteDb = View.GetFilteredGames();
+            List<Game> playniteDb = View.GetFilteredGames();
             bool OnlyMissing = View.GetOnlyMissing();
 
-            if (PlayniteDb == null)
+            if (playniteDb == null)
             {
                 return;
             }
 
-            PlayniteDb = PlayniteDb.FindAll(x => !Get(x.Id, true).IsIgnored);
+            playniteDb = playniteDb.FindAll(x => !Get(x.Id, true).IsIgnored);
 
             if (OnlyMissing)
             {
-                PlayniteDb = PlayniteDb.FindAll(x => !Get(x.Id, true).HasData);
+                playniteDb = playniteDb.FindAll(x => !Get(x.Id, true).HasData);
             }
             // Without manual
             else
             {
-                PlayniteDb = PlayniteDb.FindAll(x => !Get(x.Id, true).IsManual);
+                playniteDb = playniteDb.FindAll(x => !Get(x.Id, true).IsManual);
             }
 
-            GlobalProgressOptions options = new GlobalProgressOptions($"{PluginName} - {ResourceProvider.GetString("LOCCommonGettingData")}")
-            {
-                Cancelable = true,
-                IsIndeterminate = false
-            };
-
-            _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
-            {
-                try
-                {
-                    Stopwatch stopWatch = new Stopwatch();
-                    stopWatch.Start();
-
-                    a.ProgressMaxValue = (double)PlayniteDb.Count();
-
-                    string CancelText = string.Empty;
-                    foreach (Game game in PlayniteDb)
-                    {
-                        a.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonGettingData")}"
-                            + "\n\n" + $"{a.CurrentProgressValue}/{a.ProgressMaxValue}"
-                            + "\n" + game.Name + (game.Source == null ? string.Empty : $" ({game.Source.Name})");
-
-                        if (a.CancelToken.IsCancellationRequested)
-                        {
-                            CancelText = " canceled";
-                            break;
-                        }
-
-                        Thread.Sleep(100);
-
-                        try
-                        {
-                            _ = Get(game, false, true);
-                        }
-                        catch (Exception ex)
-                        {
-                            Common.LogError(ex, false, true, PluginName);
-                        }
-
-                        a.CurrentProgressValue++;
-                    }
-
-                    stopWatch.Stop();
-                    TimeSpan ts = stopWatch.Elapsed;
-                    Logger.Info($"Task GetSelectData(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{(double)PlayniteDb.Count()} items");
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, true, PluginName);
-                }
-            }, options);
+            Refresh(playniteDb.Select(x => x.Id).ToList());
         }
     }
 }
