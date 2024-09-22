@@ -673,17 +673,6 @@ namespace SuccessStory.Services
                 if (!gameAchievements.IsIgnored && VerifToAddOrShow)
                 {
                     RefreshNoLoader(game.Id);
-
-                    // Set to Beaten
-                    if (PluginSettings.Settings.CompletionStatus100Percent != null && PluginSettings.Settings.Auto100PercentCompleted)
-                    {
-                        gameAchievements = Get(game, true);
-                        if (gameAchievements.HasAchievements && gameAchievements.Is100Percent)
-                        {
-                            game.CompletionStatusId = PluginSettings.Settings.CompletionStatus100Percent.Id;
-                            API.Instance.Database.Games.Update(game);
-                        }
-                    }
                 }
 
                 // refresh themes resources
@@ -821,6 +810,7 @@ namespace SuccessStory.Services
         public override void ActionAfterRefresh(GameAchievements item)
         {
             Game game = API.Instance.Database.Games.Get(item.Id);
+            // Add feature
             if ((item?.HasAchievements ?? false) && PluginSettings.Settings.AchievementFeature != null)
             {
                 if (game.FeatureIds != null)
@@ -831,8 +821,18 @@ namespace SuccessStory.Services
                 {
                     game.FeatureIds = new List<Guid> { PluginSettings.Settings.AchievementFeature.Id };
                 }
-                API.Instance.Database.Games.Update(game);
             }
+
+            // Set to Beaten
+            if (PluginSettings.Settings.CompletionStatus100Percent != null && PluginSettings.Settings.Auto100PercentCompleted)
+            {
+                if ((item?.HasAchievements ?? false) && (item?.Is100Percent ?? false))
+                {
+                    game.CompletionStatusId = PluginSettings.Settings.CompletionStatus100Percent.Id;
+                }
+            }
+
+            API.Instance.Database.Games.Update(game);
         }
 
 
