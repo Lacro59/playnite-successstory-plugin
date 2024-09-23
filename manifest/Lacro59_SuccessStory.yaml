@@ -362,3 +362,13 @@ Packages:
     Changelog:
       - 'Fixed: Crashs on plugin view'
       - 'Fixed: Looping data migration'
+  - Version: 3.3.2
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-09-23
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.3.2/playnite-successstory-plugin_3_3_2.pext
+    Changelog:
+      - 'Updated: Localizations'
+      - 'Optimized: Prevent recalculation of non-zero GamerScore values (thanks to Artem)'
+      - 'Optimized: Epic detection (thanks to Jhanlon95)'
+      - 'Fixed: Bug when entering time for manual achievements'
+      - 'Fixed: Bug on auto completation on 100%'
