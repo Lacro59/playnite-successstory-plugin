@@ -32,6 +32,7 @@ namespace SuccessStory.Views
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
         private GameAchievements GameAchievements { get; set; }
+        private Game GameContext { get; set; }
 
         private ObservableCollection<Achievements> ListAchievements { get; set; } = new ObservableCollection<Achievements>();
 
@@ -51,6 +52,7 @@ namespace SuccessStory.Views
             {
                 InitializeComponent();
 
+                GameContext = game;
                 GameAchievements = PluginDatabase.Get(game, true);
                 LoadData();
             }
@@ -185,6 +187,7 @@ namespace SuccessStory.Views
             GameAchievements.Items = ((ObservableCollection<Achievements>)lbAchievements.ItemsSource).ToList();
             PluginDatabase.Update(GameAchievements);
 
+            PluginDatabase.ChangeCompletionStatus(GameContext);
             ((Window)Parent).Close();
         }
 

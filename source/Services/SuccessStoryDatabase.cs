@@ -823,15 +823,21 @@ namespace SuccessStory.Services
                 }
             }
 
-            // Set to Beaten
+            ChangeCompletionStatus(game);
+
+            API.Instance.Database.Games.Update(game);
+        }
+
+        public void ChangeCompletionStatus(Game game)
+        {
             if (PluginSettings.Settings.CompletionStatus100Percent != null && PluginSettings.Settings.Auto100PercentCompleted)
             {
-                if ((item?.HasAchievements ?? false) && (item?.Is100Percent ?? false))
+                GameAchievements gameAchievements = Get(game, true);
+                if ((gameAchievements?.HasAchievements ?? false) && (gameAchievements?.Is100Percent ?? false))
                 {
                     game.CompletionStatusId = PluginSettings.Settings.CompletionStatus100Percent.Id;
                 }
             }
-
             API.Instance.Database.Games.Update(game);
         }
 
