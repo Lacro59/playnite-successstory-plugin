@@ -106,7 +106,7 @@ namespace SuccessStory.Clients
                         Description = x.Description,
                         UrlUnlocked = x.UrlUnlocked,
                         UrlLocked = x.UrlLocked,
-                        DateUnlocked = x.DateUnlocked,
+                        DateUnlocked = x.DateUnlocked.ToString().Contains(default(DateTime).ToString()) ? (DateTime?) null : x.DateUnlocked,
                         IsHidden = x.IsHidden,
                         Percent = x.Percent,
                         GamerScore = x.GamerScore
