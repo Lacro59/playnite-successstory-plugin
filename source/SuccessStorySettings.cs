@@ -332,6 +332,10 @@ namespace SuccessStory
                 {
                     SuccessStory.SteamApi.CurrentAccountInfos.IsPrivate = true;
                 }
+                if (Settings.SteamApiSettings.UseApi)
+                {
+                    SuccessStory.SteamApi.CurrentAccountInfos.ApiKey = string.Empty;
+                }
             }
 
             SuccessStory.EpicApi.SaveCurrentUser();
