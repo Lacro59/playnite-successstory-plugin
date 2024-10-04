@@ -348,7 +348,7 @@ namespace SuccessStory.Clients
                 Description = (xboxAchievement.progression.timeUnlocked == default) ? xboxAchievement.lockedDescription : xboxAchievement.description,
                 IsHidden = xboxAchievement.isSecret,
                 Percent = 100,
-                DateUnlocked = xboxAchievement.progression.timeUnlocked,
+                DateUnlocked = xboxAchievement.progression.timeUnlocked.ToString().Contains(default(DateTime).ToString()) ? (DateTime?)null : xboxAchievement.progression.timeUnlocked,
                 UrlLocked = string.Empty,
                 UrlUnlocked = xboxAchievement.mediaAssets[0].url,
                 GamerScore = float.Parse(xboxAchievement.rewards?.FirstOrDefault(x => x.type.IsEqual("Gamerscore"))?.value ?? "0")
@@ -366,7 +366,7 @@ namespace SuccessStory.Clients
                 Description = unlocked ? xboxAchievement.lockedDescription : xboxAchievement.description,
                 IsHidden = xboxAchievement.isSecret,
                 Percent = 100,
-                DateUnlocked = unlocked ? xboxAchievement.timeUnlocked : default,
+                DateUnlocked = unlocked ? xboxAchievement.timeUnlocked : (DateTime?)null,
                 UrlLocked = string.Empty,
                 UrlUnlocked = $"https://image-ssl.xboxlive.com/global/t.{xboxAchievement.titleId:x}/ach/0/{xboxAchievement.imageId:x}",
                 GamerScore = xboxAchievement.gamerscore
