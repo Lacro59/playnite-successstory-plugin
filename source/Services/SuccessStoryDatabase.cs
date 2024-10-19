@@ -746,7 +746,7 @@ namespace SuccessStory.Services
             ActionAfterRefresh(webItem);
         }
 
-        internal override void Refresh(List<Guid> ids, string message)
+        internal override void Refresh(IEnumerable<Guid> ids, string message)
         {
             GlobalProgressOptions options = new GlobalProgressOptions($"{PluginName} - {message}")
             {
@@ -762,7 +762,7 @@ namespace SuccessStory.Services
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
 
-                a.ProgressMaxValue = ids.Count;
+                a.ProgressMaxValue = ids.Count();
 
                 string cancelText = string.Empty;
                 foreach (Guid id in ids)
@@ -800,7 +800,7 @@ namespace SuccessStory.Services
                 }
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task Refresh(){cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{ids.Count} items");
+                Logger.Info($"Task Refresh(){cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{ids.Count()} items");
 
                 Database.EndBufferUpdate();
                 API.Instance.Database.EndBufferUpdate();
@@ -986,22 +986,19 @@ namespace SuccessStory.Services
 
 
         #region Tag system
-        public override void AddTag(Game game, bool noUpdate = false)
+        public override void AddTag(Game game)
         {
-            GetPluginTags();
-            GameAchievements gameAchievements = Get(game, true);
-
-            if (gameAchievements.HasAchievements)
+            GameAchievements item = Get(game, true);
+            if (item.HasAchievements)
             {
                 try
                 {
-                    if (gameAchievements.EstimateTime == null)
+                    if (item.EstimateTime == null)
                     {
                         return;
                     }
 
-                    Guid? TagId = FindGoodPluginTags(gameAchievements.EstimateTime.EstimateTimeMax);
-
+                    Guid? TagId = FindGoodPluginTags(string.Empty);
                     if (TagId != null)
                     {
                         if (game.TagIds != null)
@@ -1012,22 +1009,31 @@ namespace SuccessStory.Services
                         {
                             game.TagIds = new List<Guid> { (Guid)TagId };
                         }
-
-                        if (!noUpdate)
-                        {
-                            Application.Current.Dispatcher?.Invoke(() =>
-                            {
-                                API.Instance.Database.Games.Update(game);
-                                game.OnPropertyChanged();
-                            }, DispatcherPriority.Send);
-                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     Common.LogError(ex, false, $"Tag insert error with {game.Name}", true, PluginName, string.Format(ResourceProvider.GetString("LOCCommonNotificationTagError"), game.Name));
+                    return;
                 }
             }
+            else if (TagMissing)
+            {
+                if (game.TagIds != null)
+                {
+                    game.TagIds.Add((Guid)AddNoDataTag());
+                }
+                else
+                {
+                    game.TagIds = new List<Guid> { (Guid)AddNoDataTag() };
+                }
+            }
+
+            API.Instance.MainView.UIDispatcher?.Invoke(() =>
+            {
+                API.Instance.Database.Games.Update(game);
+                game.OnPropertyChanged();
+            });
         }
 
         private Guid? FindGoodPluginTags(int estimateTimeMax)
