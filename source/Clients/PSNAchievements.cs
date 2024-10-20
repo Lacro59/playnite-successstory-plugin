@@ -192,7 +192,7 @@ namespace SuccessStory.Clients
                             Name = trophie.trophyName.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
                             Description = trophie.trophyDetail,
                             UrlUnlocked = trophie.trophyIconUrl.IsNullOrEmpty() ? "hidden_trophy.png" : trophie.trophyIconUrl,
-                            DateUnlocked = (trophieUser?.earnedDateTime == null) ? default(DateTime) : trophieUser.earnedDateTime,
+                            DateUnlocked = (trophieUser?.earnedDateTime == null) ? (DateTime?) null : trophieUser.earnedDateTime,
                             Percent = Percent == 0 ? 100 : Percent,
                             GamerScore = GamerScore
                         });
