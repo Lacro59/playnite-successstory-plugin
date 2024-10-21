@@ -57,14 +57,17 @@ namespace SuccessStory.Clients
 
             if (IsConfigured())
             {
-                int consoleID = GetConsoleId(game);
-                if (ConsoleExcludeHash.FindAll(x => x == consoleID)?.Count == 0)
-                {
-                    GameId = GetGameIdByHash(game);
-                }
                 if (GameId == 0)
                 {
-                    GameId = GetGameIdByName(game);
+                    int consoleID = GetConsoleId(game);
+                    if (ConsoleExcludeHash.FindAll(x => x == consoleID)?.Count == 0)
+                    {
+                        GameId = GetGameIdByHash(game);
+                    }
+                    if (GameId == 0)
+                    {
+                        GameId = GetGameIdByName(game);
+                    }
                 }
 
                 if (GameId != 0)
