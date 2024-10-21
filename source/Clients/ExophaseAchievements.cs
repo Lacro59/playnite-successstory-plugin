@@ -213,19 +213,20 @@ namespace SuccessStory.Clients
                 if (!Serialization.TryFromJson(StringJsonResult, out ExophaseSearchResult exophaseScheachResult))
                 {
                     Logger.Warn($"No Exophase result for {Name}");
+                    Logger.Warn($"{StringJsonResult}");
                     return ListSearchGames;
                 }
 
-                List<List> ListExophase = exophaseScheachResult?.games?.list;
+                List<List> ListExophase = exophaseScheachResult?.Games?.List;
                 if (ListExophase != null)
                 {
                     ListSearchGames = ListExophase.Select(x => new SearchResult
                     {
-                        Url = x.endpoint_awards,
-                        Name = x.title,
-                        UrlImage = x.images.o ?? x.images.l ?? x.images.m,
-                        Platforms = x.platforms.Select(p => p.name).ToList(),
-                        AchievementsCount = x.total_awards
+                        Url = x.EndpointAwards,
+                        Name = x.Title,
+                        UrlImage = x.Images.O ?? x.Images.L ?? x.Images.M,
+                        Platforms = x.Platforms.Select(p => p.Name).ToList(),
+                        AchievementsCount = x.TotalAwards ?? 0
                     }).ToList();
                 }
             }

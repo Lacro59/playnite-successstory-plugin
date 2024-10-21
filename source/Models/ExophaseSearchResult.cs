@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Playnite.SDK.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,59 +9,119 @@ namespace SuccessStory.Models
 {
     public class ExophaseSearchResult
     {
-        public bool success { get; set; }
-        public Games games { get; set; }
+        [SerializationPropertyName("success")]
+        public bool Success { get; set; }
+
+        [SerializationPropertyName("games")]
+        public ExophaseGames Games { get; set; }
     }
 
     public class ExophasePlatform
     {
-        public int termTaxonomyId { get; set; }
-        public int termId { get; set; }
-        public string name { get; set; }
-        public string slug { get; set; }
+        [SerializationPropertyName("termTaxonomyId")]
+        public int? TermTaxonomyId { get; set; }
+
+        [SerializationPropertyName("termId")]
+        public int? TermId { get; set; }
+
+        [SerializationPropertyName("name")]
+        public string Name { get; set; }
+
+        [SerializationPropertyName("slug")]
+        public string Slug { get; set; }
     }
 
     public class Images
     {
-        public string o { get; set; }
-        public string l { get; set; }
-        public string m { get; set; }
-        public string s { get; set; }
-        public string t { get; set; }
+        [SerializationPropertyName("t")]
+        public string T { get; set; }
+        [SerializationPropertyName("o")]
+        public string O { get; set; }
+        [SerializationPropertyName("s")]
+        public string S { get; set; }
+
+        [SerializationPropertyName("m")]
+        public string M { get; set; }
+
+        [SerializationPropertyName("l")]
+        public string L { get; set; }
     }
 
     public class List
     {
-        public int master_id { get; set; }
-        public int? total_exp { get; set; }
-        public int? global_players { get; set; }
-        public int? global_complete { get; set; }
-        public int total_awards { get; set; }
-        public int total_points { get; set; }
-        public string title { get; set; }
-        public string environment_slug { get; set; }
-        public List<ExophasePlatform> platforms { get; set; }
-        public string endpoint_awards { get; set; }
-        public Images images { get; set; }
+        [SerializationPropertyName("master_id")]
+        public int? MasterId { get; set; }
+
+        [SerializationPropertyName("total_exp")]
+        public int? TotalExp { get; set; }
+
+        [SerializationPropertyName("global_players")]
+        public int? GlobalPlayers { get; set; }
+
+        [SerializationPropertyName("global_complete")]
+        public int? GlobalComplete { get; set; }
+
+        [SerializationPropertyName("total_awards")]
+        public int? TotalAwards { get; set; }
+
+        [SerializationPropertyName("total_points")]
+        public int? TotalPoints { get; set; }
+
+        [SerializationPropertyName("title")]
+        public string Title { get; set; }
+
+        [SerializationPropertyName("environment_slug")]
+        public string EnvironmentSlug { get; set; }
+
+        [SerializationPropertyName("platforms")]
+        public List<ExophasePlatform> Platforms { get; set; }
+
+        [SerializationPropertyName("regions")]
+        public object Regions { get; set; }
+
+        [SerializationPropertyName("endpoint_awards")]
+        public string EndpointAwards { get; set; }
+
+        [SerializationPropertyName("images")]
+        public Images Images { get; set; }
     }
 
     public class Paging
     {
-        public int current { get; set; }
-        public int next { get; set; }
-        public int last { get; set; }
-        public int total { get; set; }
+        [SerializationPropertyName("current")]
+        public int? Current { get; set; }
+
+        [SerializationPropertyName("next")]
+        public int? Next { get; set; }
+
+        [SerializationPropertyName("last")]
+        public int? Last { get; set; }
+
+        [SerializationPropertyName("total")]
+        public int? Total { get; set; }
     }
 
-    public class Games
+    public class ExophaseGames
     {
-        public List<object> collection { get; set; }
-        public int found { get; set; }
-        public object sort { get; set; }
-        public object filters { get; set; }
-        public double pages { get; set; }
-        public List<List> list { get; set; }
-        public Paging paging { get; set; }
-    }
+        [SerializationPropertyName("collection")]
+        public List<object> Collection { get; set; }
 
+        [SerializationPropertyName("found")]
+        public int? Found { get; set; }
+
+        [SerializationPropertyName("sort")]
+        public string Sort { get; set; }
+
+        [SerializationPropertyName("filters")]
+        public List<object> Filters { get; set; }
+
+        [SerializationPropertyName("pages")]
+        public int? Pages { get; set; }
+
+        [SerializationPropertyName("list")]
+        public List<List> List { get; set; }
+
+        [SerializationPropertyName("paging")]
+        public Paging Paging { get; set; }
+    }
 }
