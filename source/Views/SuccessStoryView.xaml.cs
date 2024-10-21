@@ -104,8 +104,8 @@ namespace SuccessStory
 
                 _ = Task.Run(() =>
                 {
-                    GetListGame();
-                    GetListAll();
+                    GetListGame(isRetroAchievements);
+                    GetListAll(isRetroAchievements);
                     SetGraphicsAchievementsSources();
 
                     ProgressionGlobal = SuccessStoryStats.Progession();
@@ -399,7 +399,7 @@ namespace SuccessStory
         /// <summary>
         /// Show list game with achievement.
         /// </summary>
-        public void GetListGame()
+        public void GetListGame(bool isRetroAchievements)
         {
             try
             {
@@ -408,7 +408,7 @@ namespace SuccessStory
 
                 RelayCommand<Guid> GoToGame = new RelayCommand<Guid>((Id) =>
                 {
-                    SuccessView.Filters = new Filters
+                    Filters = new Filters
                     {
                         FilterDate = PART_DatePicker.SelectedDate,
                         FilteredGames = (bool)PART_FilteredGames.IsChecked,
@@ -426,7 +426,8 @@ namespace SuccessStory
 
 
                 ListGames = PluginDatabase.Database
-                    .Where(x => x.HasAchievements && !x.IsDeleted && (ShowHidden ? true : x.Hidden == false))
+                    .Where(x => x.HasAchievements && !x.IsDeleted && (ShowHidden || x.Hidden == false)
+                            && (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && isRetroAchievements ? x.IsRa : ((PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && !isRetroAchievements) ? !x.IsRa : true)))
                     .Select(x => new ListViewGames
                     {
                         Icon100Percent = x.Is100Percent ? Path.Combine(pluginFolder, "Resources\\badge.png") : string.Empty,
@@ -459,12 +460,13 @@ namespace SuccessStory
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
-        public void GetListAll()
+        public void GetListAll(bool isRetroAchievements)
         {
             try
             {
                 ObservableCollection<ListAll> ListAll = new ObservableCollection<ListAll>();
-                PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted)
+                PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted
+                            && (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && isRetroAchievements ? x.IsRa : ((PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && !isRetroAchievements) ? !x.IsRa : true)))
                         .ForEach(x =>
                         {
                             x.Items.Where(y => y.IsUnlock).ForEach(y =>
