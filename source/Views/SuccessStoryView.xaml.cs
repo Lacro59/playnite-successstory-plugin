@@ -100,7 +100,7 @@ namespace SuccessStory
 
 
                 PART_DataLoad.Visibility = Visibility.Visible;
-                PART_Data.Visibility = Visibility.Hidden;
+                PART_Data.Visibility = Visibility.Collapsed;
 
                 _ = Task.Run(() =>
                 {
@@ -350,7 +350,7 @@ namespace SuccessStory
                          }
 
 
-                         PART_DataLoad.Visibility = Visibility.Hidden;
+                         PART_DataLoad.Visibility = Visibility.Collapsed;
                          PART_Data.Visibility = Visibility.Visible;
                      }));
                  });
@@ -358,13 +358,7 @@ namespace SuccessStory
 
                 if (!PluginDatabase.PluginSettings.Settings.DisplayChart)
                 {
-                    PART_Chart1.Visibility = Visibility.Collapsed;
-                    Grid.SetRow(PART_PluginListContener, 2);
-
-                    PART_GraphicBySource.Visibility = Visibility.Collapsed;
-                    PART_GraphicAllUnlocked.Visibility = Visibility.Collapsed;
-                    Grid.SetRowSpan(PART_PluginListContener, 5);
-                    Grid.SetRowSpan(PART_GridContenerLv, 5);
+                    Part_Charts.Visibility = Visibility.Collapsed;
                 }
 
 
