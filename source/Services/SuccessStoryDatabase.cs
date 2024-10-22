@@ -998,7 +998,7 @@ namespace SuccessStory.Services
                         return;
                     }
 
-                    Guid? TagId = FindGoodPluginTags(string.Empty);
+                    Guid? TagId = FindGoodPluginTags(item.EstimateTime.EstimateTimeMax);
                     if (TagId != null)
                     {
                         if (game.TagIds != null)
