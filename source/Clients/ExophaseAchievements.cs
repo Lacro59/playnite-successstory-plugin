@@ -207,13 +207,18 @@ namespace SuccessStory.Clients
             List<SearchResult> ListSearchGames = new List<SearchResult>();
             try
             {
-                string UrlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
+                string json = string.Empty;
+                using (IWebView webView = API.Instance.WebViews.CreateOffscreenView())
+                {
+                    string urlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
+                    webView.NavigateAndWait(urlSearch);
+                    json = webView.GetPageText();
+                }
 
-                string StringJsonResult = Web.DownloadStringData(UrlSearch).GetAwaiter().GetResult();
-                if (!Serialization.TryFromJson(StringJsonResult, out ExophaseSearchResult exophaseScheachResult))
+                if (!Serialization.TryFromJson(json, out ExophaseSearchResult exophaseScheachResult))
                 {
                     Logger.Warn($"No Exophase result for {Name}");
-                    Logger.Warn($"{StringJsonResult}");
+                    Logger.Warn($"{json}");
                     return ListSearchGames;
                 }
 
