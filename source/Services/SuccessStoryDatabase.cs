@@ -1120,7 +1120,7 @@ namespace SuccessStory.Services
 
         public override void GetSelectData()
         {
-            OptionsDownloadData View = new OptionsDownloadData();
+            OptionsDownloadData View = new OptionsDownloadData(PluginDatabase);
             Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginName + " - " + ResourceProvider.GetString("LOCCommonSelectData"), View);
             _ = windowExtension.ShowDialog();
 

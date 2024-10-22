@@ -18,7 +18,7 @@ namespace SuccessStory.Clients
     {
         private static ILogger Logger => LogManager.GetLogger();
 
-        private static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
+        internal static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
         public static string XboxUrlSearch => @"https://www.trueachievements.com/searchresults.aspx?search={0}";
         public static string SteamUrlSearch => @"https://truesteamachievements.com/searchresults.aspx?search={0}";
