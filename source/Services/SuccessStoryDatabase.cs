@@ -639,25 +639,33 @@ namespace SuccessStory.Services
                 PluginSettings.Settings.TotalGamerScore = 0;
                 PluginSettings.Settings.Percent = 0;
                 PluginSettings.Settings.EstimateTimeToUnlock = string.Empty;
-                PluginSettings.Settings.ListAchievements = new List<Achievements>();
 
-                return;
+                PluginSettings.Settings.ListAchievements = new List<Achievements>();
+                PluginSettings.Settings.ListAchUnlockDateAsc = new List<Achievements>();
+                PluginSettings.Settings.ListAchUnlockDateDesc = new List<Achievements>();
+            }
+            else
+            {
+                PluginSettings.Settings.HasData = gameAchievements.HasData;
+
+                PluginSettings.Settings.Is100Percent = gameAchievements.Is100Percent;
+                PluginSettings.Settings.Common = gameAchievements.Common;
+                PluginSettings.Settings.NoCommon = gameAchievements.NoCommon;
+                PluginSettings.Settings.Rare = gameAchievements.Rare;
+                PluginSettings.Settings.UltraRare = gameAchievements.UltraRare;
+                PluginSettings.Settings.Unlocked = gameAchievements.Unlocked;
+                PluginSettings.Settings.Locked = gameAchievements.Locked;
+                PluginSettings.Settings.Total = gameAchievements.Total;
+                PluginSettings.Settings.TotalGamerScore = (int)gameAchievements.TotalGamerScore;
+                PluginSettings.Settings.Percent = gameAchievements.Progression;
+                PluginSettings.Settings.EstimateTimeToUnlock = gameAchievements.EstimateTime?.EstimateTime;
+
+                PluginSettings.Settings.ListAchievements = gameAchievements.Items;
+                PluginSettings.Settings.ListAchUnlockDateAsc = gameAchievements.Items?.OrderBy(x => x.DateUnlocked).ThenBy(x => x.Name).ToList();
+                PluginSettings.Settings.ListAchUnlockDateDesc = gameAchievements.Items?.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.Name).ToList();
             }
 
-            PluginSettings.Settings.HasData = gameAchievements.HasData;
 
-            PluginSettings.Settings.Is100Percent = gameAchievements.Is100Percent;
-            PluginSettings.Settings.Common = gameAchievements.Common;
-            PluginSettings.Settings.NoCommon = gameAchievements.NoCommon;
-            PluginSettings.Settings.Rare = gameAchievements.Rare;
-            PluginSettings.Settings.UltraRare = gameAchievements.UltraRare;
-            PluginSettings.Settings.Unlocked = gameAchievements.Unlocked;
-            PluginSettings.Settings.Locked = gameAchievements.Locked;
-            PluginSettings.Settings.Total = gameAchievements.Total;
-            PluginSettings.Settings.TotalGamerScore = (int)gameAchievements.TotalGamerScore;
-            PluginSettings.Settings.Percent = gameAchievements.Progression;
-            PluginSettings.Settings.EstimateTimeToUnlock = gameAchievements.EstimateTime?.EstimateTime;
-            PluginSettings.Settings.ListAchievements = gameAchievements.Items;
         }
 
 
