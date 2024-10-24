@@ -998,7 +998,7 @@ namespace SuccessStory.Services
                         return;
                     }
 
-                    Guid? TagId = FindGoodPluginTags(item.EstimateTime.EstimateTimeMax);
+                    Guid? TagId = FindGoodPluginTags(item.EstimateTime.EstimateTimeMax.ToString());
                     if (TagId != null)
                     {
                         if (game.TagIds != null)
@@ -1036,8 +1036,13 @@ namespace SuccessStory.Services
             });
         }
 
-        private Guid? FindGoodPluginTags(int estimateTimeMax)
+        internal override Guid? FindGoodPluginTags(string tagName)
         {
+            if(int.TryParse(tagName, out int estimateTimeMax))
+            {
+                return null;
+            }
+
             // Add tag
             if (estimateTimeMax != 0)
             {
@@ -1115,36 +1120,6 @@ namespace SuccessStory.Services
                 AddOrUpdate(gameAchievements);
                 Refresh(gameAchievements.Id);
             }
-        }
-
-
-        public override void GetSelectData()
-        {
-            OptionsDownloadData View = new OptionsDownloadData(PluginDatabase);
-            Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(PluginName + " - " + ResourceProvider.GetString("LOCCommonSelectData"), View);
-            _ = windowExtension.ShowDialog();
-
-            List<Game> playniteDb = View.GetFilteredGames();
-            bool OnlyMissing = View.GetOnlyMissing();
-
-            if (playniteDb == null)
-            {
-                return;
-            }
-
-            playniteDb = playniteDb.FindAll(x => !Get(x.Id, true).IsIgnored);
-
-            if (OnlyMissing)
-            {
-                playniteDb = playniteDb.FindAll(x => !Get(x.Id, true).HasData);
-            }
-            // Without manual
-            else
-            {
-                playniteDb = playniteDb.FindAll(x => !Get(x.Id, true).IsManual);
-            }
-
-            Refresh(playniteDb.Select(x => x.Id).ToList());
         }
     }
 }
