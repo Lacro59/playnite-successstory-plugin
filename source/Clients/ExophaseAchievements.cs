@@ -63,7 +63,7 @@ namespace SuccessStory.Clients
             return GetAchievements(game, new SearchResult { Name = game.Name, Url = url });
         }
 
-        public GameAchievements GetAchievements(Game game, SearchResult searchResult, bool isRetry = false)
+        public GameAchievements GetAchievements(Game game, SearchResult searchResult)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievements> allAchievements = new List<Achievements>();
@@ -384,7 +384,7 @@ namespace SuccessStory.Clients
             }
         }
 
-        private static Dictionary<string, string[]> PlaynitePlatformSpecificationIdToExophasePlatformName = new Dictionary<string, string[]>
+        private static Dictionary<string, string[]> PlaynitePlatformSpecificationIdToExophasePlatformName => new Dictionary<string, string[]>
         {
             { "xbox360", new[]{"Xbox 360"} },
             { "xbox_one", new[]{"Xbox One"} },
@@ -433,7 +433,7 @@ namespace SuccessStory.Clients
             HtmlParser parser = new HtmlParser();
             IHtmlDocument htmlDocument = parser.Parse(data);
 
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievements> allAchievements = new List<Achievements>();
             IHtmlCollection<IElement> sectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
             string gameName = htmlDocument.QuerySelector("h2.me-2 a")?.GetAttribute("title");
 
@@ -445,22 +445,22 @@ namespace SuccessStory.Clients
             {
                 foreach (IElement section in sectionAchievements)
                 {
-                    foreach (IElement SearchAchievements in section.QuerySelectorAll("li"))
+                    foreach (IElement searchAchievements in section.QuerySelectorAll("li"))
                     {
                         try
                         {
-                            string sFloat = SearchAchievements.GetAttribute("data-average")
+                            string sFloat = searchAchievements.GetAttribute("data-average")
                                 .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
                                 .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
                             _ = float.TryParse(sFloat, out float Percent);
 
-                            string urlUnlocked = SearchAchievements.QuerySelector("img").GetAttribute("src");
-                            string name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("a").InnerHtml);
-                            string description = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.award-description p").InnerHtml);
-                            bool isHidden = SearchAchievements.GetAttribute("class").IndexOf("secret") > -1;
+                            string urlUnlocked = searchAchievements.QuerySelector("img").GetAttribute("src");
+                            string name = WebUtility.HtmlDecode(searchAchievements.QuerySelector("a").InnerHtml);
+                            string description = WebUtility.HtmlDecode(searchAchievements.QuerySelector("div.award-description p").InnerHtml);
+                            bool isHidden = searchAchievements.GetAttribute("class").IndexOf("secret") > -1;
 
-                            AllAchievements.Add(new Achievements
+                            allAchievements.Add(new Achievements
                             {
                                 Name = name,
                                 UrlUnlocked = urlUnlocked,
@@ -478,7 +478,7 @@ namespace SuccessStory.Clients
                 }
             }
 
-            return AllAchievements;
+            return allAchievements;
         }
     }
 }
