@@ -71,7 +71,19 @@ namespace SuccessStory.Clients
             try
             {
                 string dataExophaseLocalised = string.Empty;
-                string dataExophase = Web.DownloadStringData(searchResult.Url).GetAwaiter().GetResult();
+                string dataExophase = string.Empty;
+
+                WebViewSettings webViewSettings = new WebViewSettings
+                {
+                    UserAgent = Web.UserAgent
+                };
+
+                using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
+                {
+                    webView.DeleteDomainCookies(".exophase.com");
+                    webView.NavigateAndWait(searchResult.Url);
+                    dataExophase = webView.GetPageSource();
+                }
 
                 if (PluginDatabase.PluginSettings.Settings.UseLocalised && !IsConnected())
                 {
@@ -86,7 +98,12 @@ namespace SuccessStory.Clients
                 }
                 else if (PluginDatabase.PluginSettings.Settings.UseLocalised)
                 {
-                    dataExophaseLocalised = Web.DownloadStringData(searchResult.Url, GetCookies()).GetAwaiter().GetResult();
+                    using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
+                    {
+                        GetCookies()?.ForEach(x => { webView.SetCookies(searchResult.Url, x); });
+                        webView.NavigateAndWait(searchResult.Url);
+                        dataExophaseLocalised = webView.GetPageSource();
+                    }
                 }
 
                 List<Achievements> All = ParseData(dataExophase);
@@ -111,6 +128,8 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
+            gameAchievements.Items = allAchievements;
+
             // Set source link
             if (gameAchievements.HasAchievements)
             {
@@ -122,7 +141,6 @@ namespace SuccessStory.Clients
                 };
             }
 
-            gameAchievements.Items = allAchievements;
             return gameAchievements;
         }
 
@@ -207,8 +225,13 @@ namespace SuccessStory.Clients
             List<SearchResult> ListSearchGames = new List<SearchResult>();
             try
             {
+                WebViewSettings webViewSettings = new WebViewSettings
+                {
+                    UserAgent = Web.UserAgent
+                };
+
                 string json = string.Empty;
-                using (IWebView webView = API.Instance.WebViews.CreateOffscreenView())
+                using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
                 {
                     string urlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
                     webView.NavigateAndWait(urlSearch);
