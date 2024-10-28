@@ -634,6 +634,33 @@ namespace SuccessStory
                 }
             });
 
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                Description = ResourceProvider.GetString("LOCCommonExtractToCsv"),
+                Action = (mainMenuItem) =>
+                {
+                    string path = API.Instance.Dialogs.SelectFolder();
+                    if (Directory.Exists(path))
+                    {
+                        PluginDatabase.ExtractToCsv(path, true);
+                    }
+                }
+            });
+            mainMenuItems.Add(new MainMenuItem
+            {
+                MenuSection = MenuInExtensions + ResourceProvider.GetString("LOCSuccessStory"),
+                Description = ResourceProvider.GetString("LOCCommonExtractAllToCsv"),
+                Action = (mainMenuItem) =>
+                {
+                    string path = API.Instance.Dialogs.SelectFolder();
+                    if (Directory.Exists(path))
+                    {
+                        PluginDatabase.ExtractToCsv(path, false);
+                    }
+                }
+            });
+
             if (PluginDatabase.PluginSettings.Settings.EnableManual)
             {
                 mainMenuItems.Add(new MainMenuItem

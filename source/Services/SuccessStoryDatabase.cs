@@ -772,7 +772,6 @@ namespace SuccessStory.Services
 
                 a.ProgressMaxValue = ids.Count();
 
-                string cancelText = string.Empty;
                 foreach (Guid id in ids)
                 {
                     Game game = API.Instance.Database.Games.Get(id);
@@ -782,7 +781,6 @@ namespace SuccessStory.Services
 
                     if (a.CancelToken.IsCancellationRequested)
                     {
-                        cancelText = " canceled";
                         break;
                     }
 
@@ -808,7 +806,7 @@ namespace SuccessStory.Services
                 }
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task Refresh(){cancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{ids.Count()} items");
+                Logger.Info($"Task Refresh(){(a.CancelToken.IsCancellationRequested ? " canceled" : string.Empty)} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{ids.Count()} items");
 
                 Database.EndBufferUpdate();
                 API.Instance.Database.EndBufferUpdate();
@@ -869,7 +867,6 @@ namespace SuccessStory.Services
 
                 IEnumerable<GameAchievements> db = Database.Where(x => x.IsManual && x.HasAchievements);
                 a.ProgressMaxValue = (double)db.Count();
-                string CancelText = string.Empty;
 
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 SteamAchievements steamAchievements = new SteamAchievements();
@@ -883,7 +880,6 @@ namespace SuccessStory.Services
 
                     if (a.CancelToken.IsCancellationRequested)
                     {
-                        CancelText = " canceled";
                         break;
                     }
 
@@ -924,7 +920,7 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task RefreshRarety(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{(double)db.Count()} items");
+                Logger.Info($"Task RefreshRarety(){(a.CancelToken.IsCancellationRequested ? " canceled" : string.Empty)} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{(double)db.Count()} items");
 
                 Database.EndBufferUpdate();
                 API.Instance.Database.EndBufferUpdate();
@@ -950,7 +946,6 @@ namespace SuccessStory.Services
 
                 IEnumerable<GameAchievements> db = Database.Where(x => x.IsManual && x.HasAchievements);
                 a.ProgressMaxValue = db.Count();
-                string CancelText = string.Empty;
 
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 SteamAchievements steamAchievements = new SteamAchievements();
@@ -964,7 +959,6 @@ namespace SuccessStory.Services
 
                     if (a.CancelToken.IsCancellationRequested)
                     {
-                        CancelText = " canceled";
                         break;
                     }
 
@@ -985,7 +979,7 @@ namespace SuccessStory.Services
 
                 stopWatch.Stop();
                 TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"Task RefreshEstimateTime(){CancelText} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{(double)db.Count()} items");
+                Logger.Info($"Task RefreshEstimateTime(){(a.CancelToken.IsCancellationRequested ? " canceled" : string.Empty)} - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)} for {a.CurrentProgressValue}/{(double)db.Count()} items");
 
                 Database.EndBufferUpdate();
                 API.Instance.Database.EndBufferUpdate();
@@ -1128,6 +1122,62 @@ namespace SuccessStory.Services
                 AddOrUpdate(gameAchievements);
                 Refresh(gameAchievements.Id);
             }
+        }
+
+
+        internal override string GetCsvData(GlobalProgressActionArgs a, bool minimum)
+        {
+            string csvData = string.Empty;
+
+            a.ProgressMaxValue = minimum
+                ? Database.Items?.Where(x => x.Value.HasAchievements)?.Count() ?? 0
+                : Database.Items?.Where(x => x.Value.HasAchievements)?.Sum(x => x.Value.Items.Count()) ?? 0;
+
+            Database.Items?.Where(x => x.Value.HasAchievements)?.ForEach(x =>
+            {
+                // Header
+                if (csvData.IsNullOrEmpty())
+                {
+                    csvData = minimum
+                        ? "\"Game name\";\"Platform\";\"Achievement link\";\"Achievements\";\"Date last unlock\";\"Gamerscore\";\"100%\";"
+                        : "\"Game name\";\"Platform\";\"Achievement link\";\"Achievement name\";\"Description\";\"Date unlock\";\"Is hidden\";\"Percent\";\"Gamerscore\";";
+                }
+
+                if (a.CancelToken.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                if (minimum)
+                {
+                    a.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonExtracting")}"
+                       + "\n\n" + $"{a.CurrentProgressValue}/{a.ProgressMaxValue}"
+                       + "\n" + x.Value.Game?.Name + (x.Value.Game?.Source == null ? string.Empty : $" ({x.Value.Game?.Source.Name})");
+
+                    csvData += Environment.NewLine;
+                    csvData += $"\"{x.Value.Name}\";\"{x.Value.Source?.Name ?? x.Value.Platforms?.First()?.Name ?? "Playnite"}\";\"{x.Value.SourcesLink?.Url}\";\"{x.Value.Unlocked + " // " + x.Value.Items.Count}\";\"{x.Value.LastUnlock?.ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty}\";\"{x.Value.TotalGamerScore}\";\"{(x.Value.Is100Percent ? "X" : string.Empty)}\";";
+                    a.CurrentProgressValue++;
+                }
+                else
+                {
+                    x.Value.Items.ForEach(y =>
+                    {
+                        if (a.CancelToken.IsCancellationRequested)
+                        {
+                            return;
+                        }
+
+                        a.Text = $"{PluginName} - {ResourceProvider.GetString("LOCCommonExtracting")}"
+                            + "\n\n" + $"{a.CurrentProgressValue}/{a.ProgressMaxValue}"
+                            + "\n" + x.Value.Game?.Name + (x.Value.Game?.Source == null ? string.Empty : $" ({x.Value.Game?.Source.Name})");
+
+                        csvData += Environment.NewLine;
+                        csvData += $"\"{x.Value.Name}\";\"{x.Value.Source?.Name ?? x.Value.Platforms?.First()?.Name ?? "Playnite"}\";\"{x.Value.SourcesLink?.Url}\";\"{y.Name}\";\"{y.Description}\";\"{y.DateWhenUnlocked?.ToString("yyyy-MM-dd HH:mm:ss") ?? string.Empty}\";\"{(y.IsHidden ? "X" : string.Empty)}\";\"{y.Percent}\";\"{y.GamerScore}\";";
+                        a.CurrentProgressValue++;
+                    });
+                }
+            });
+            return csvData;
         }
     }
 }
