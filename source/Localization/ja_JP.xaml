@@ -96,7 +96,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">データを更新</sys:String>
     <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
     <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetMissing">不足しているデータをダウンロー</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissing">不足しているデータをダウンロード</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Recent games with missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Recent games</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllData">すべてのゲーム</sys:String>
@@ -112,7 +112,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowProgressBar">実績の達成状況バーを表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactUnlocked">解除した実績の概要を表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationShowAchievementsCompactLocked">未解除の実績の概要を表示</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats"></sys:String>
+    <sys:String x:Key="LOCSuccessStoryIntegrationShowUserStats">ユーザーのゲーム統計を表示</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptions">グラフのオプション</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationGraphicOptionsCountAbscissa">グラフに表示する日数</sys:String>
@@ -136,7 +136,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">実績にレア度を表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">実績アイコンにレア度を数値で表示</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">ゲームメニューから選択したゲームの実績のみを表示</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">全実績解除時に自動的にプレイ状況を設</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">全実績解除時に自動的にプレイ状況を設定</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">ゲームリスト</sys:String>
     <sys:String x:Key="LOCSuccessStoryDefaultSorting">既定のゲームリストの並べ替え順</sys:String>
     <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Chart with all achievements</sys:String>
