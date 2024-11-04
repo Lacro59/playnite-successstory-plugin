@@ -82,7 +82,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"));
+                ShowNotificationPluginNoConfiguration();
             }
 
             gameAchievements.Items = AllAchievements;
@@ -113,7 +113,7 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsRetroAchievementsBadConfig"), PlayniteTools.ExternalPlugin.None);
+                    ShowNotificationPluginNoAuthenticate(PlayniteTools.ExternalPlugin.None);
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)
@@ -409,7 +409,7 @@ namespace SuccessStory.Clients
             }
             else if (consolesAssociated.Count() > 1)
             {
-                string message = string.Format(ResourceProvider.GetString("LOCCommonNotificationTooMuchData"), $"{ClientName} - {platform.Name}");
+                string message = string.Format(ResourceProvider.GetString("LOCCommonNotificationTooMuchData"), $"{ClientName} - {game.Name}");
                 ShowNotificationPluginTooMuchData(message, PlayniteTools.ExternalPlugin.SuccessStory);
             }
 

@@ -47,7 +47,7 @@ namespace SuccessStory.Clients
                     AuthorizationData authData = XboxAccountClient.GetSavedXstsTokens();
                     if (authData == null)
                     {
-                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
+                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.XboxLibrary);
                         return gameAchievements;
                     }
 
@@ -60,7 +60,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
+                ShowNotificationPluginNoAuthenticate(ExternalPlugin.XboxLibrary);
             }
 
 
@@ -106,7 +106,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
+                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.XboxLibrary);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)
@@ -231,7 +231,7 @@ namespace SuccessStory.Clients
                 {
                     if (ex.Message.Contains("User is not authenticated", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsXboxNotAuthenticate"), ExternalPlugin.XboxLibrary);
+                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.XboxLibrary);
                     }
                     else
                     {

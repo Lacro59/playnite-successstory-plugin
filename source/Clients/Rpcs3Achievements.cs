@@ -152,7 +152,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
+                ShowNotificationPluginNoConfiguration();
             }
 
             gameAchievements.SetRaretyIndicator();
@@ -169,7 +169,7 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsRpcs3BadConfig"));
+                    ShowNotificationPluginNoConfiguration();
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)

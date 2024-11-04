@@ -181,7 +181,7 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsGw2BadConfig"));
+                    ShowNotificationPluginNoConfiguration();
                 }
             }
             catch (Exception ex)

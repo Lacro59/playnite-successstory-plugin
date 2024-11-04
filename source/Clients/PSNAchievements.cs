@@ -207,7 +207,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
+                ShowNotificationPluginNoAuthenticate(ExternalPlugin.PSNLibrary);
             }
 
 
@@ -246,7 +246,7 @@ namespace SuccessStory.Clients
                 catch (Exception ex)
                 {
                     Common.LogError(ex, true);
-                    ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
+                    ShowNotificationPluginNoAuthenticate(ExternalPlugin.PSNLibrary);
                     return false;
                 }
 
@@ -256,7 +256,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsPsnNoAuthenticate"), ExternalPlugin.PSNLibrary);
+                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.PSNLibrary);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)

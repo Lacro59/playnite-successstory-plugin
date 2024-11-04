@@ -109,7 +109,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2"), ExternalPlugin.BattleNetLibrary);
+                ShowNotificationPluginNoAuthenticate(ExternalPlugin.BattleNetLibrary);
             }
 
             gameAchievements.Items = AllAchievements;
@@ -214,15 +214,16 @@ namespace SuccessStory.Clients
 
 
         #region Errors
-        public override void ShowNotificationPluginNoAuthenticate(string Message, ExternalPlugin PluginSource)
+        public override void ShowNotificationPluginNoAuthenticate(ExternalPlugin PluginSource)
         {
+            string message = string.Format(ResourceProvider.GetString("LOCCommonStoresNoAuthenticate"), ClientName);
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-noauthenticate";
-            LastErrorMessage = Message;
+            LastErrorMessage = message;
             Logger.Warn($"{ClientName} user is not authenticated");
 
             API.Instance.Notifications.Add(new NotificationMessage(
                 $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled",
-                $"{PluginDatabase.PluginName}\r\n{Message}",
+                $"{PluginDatabase.PluginName}\r\n{message}",
                 NotificationType.Error,
                 () =>
                 {

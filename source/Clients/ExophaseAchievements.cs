@@ -88,7 +88,7 @@ namespace SuccessStory.Clients
                 if (PluginDatabase.PluginSettings.Settings.UseLocalised && !IsConnected())
                 {
                     Logger.Warn($"Exophase is disconnected");
-                    string message = string.Format(ResourceProvider.GetString("LOCCommonStoresNoAuthenticate"), "Exophase");
+                    string message = string.Format(ResourceProvider.GetString("LOCCommonStoresNoAuthenticate"), ClientName);
                     API.Instance.Notifications.Add(new NotificationMessage(
                         $"{PluginDatabase.PluginName}-Exophase-disconnected",
                         $"{PluginDatabase.PluginName}\r\n{message}",
@@ -103,6 +103,7 @@ namespace SuccessStory.Clients
                         GetCookies()?.ForEach(x => { webView.SetCookies(searchResult.Url, x); });
                         webView.NavigateAndWait(searchResult.Url);
                         dataExophaseLocalised = webView.GetPageSource();
+                        webView.DeleteDomainCookies(".exophase.com");
                     }
                 }
 

@@ -350,7 +350,7 @@ namespace SuccessStory.Clients
                 {
                     if (!IsConfigured())
                     {
-                        ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamBadConfig"));
+                        ShowNotificationPluginNoConfiguration();
                         CachedConfigurationValidationResult = false;
                     }
 
@@ -360,7 +360,7 @@ namespace SuccessStory.Clients
                         Thread.Sleep(2000);
                         if (SteamApi.CurrentAccountInfos.IsPrivate && !IsConnected())
                         {
-                            ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsSteamNoAuthenticate"), PlayniteTools.ExternalPlugin.SuccessStory);
+                            ShowNotificationPluginNoAuthenticate(PlayniteTools.ExternalPlugin.SuccessStory);
                             CachedConfigurationValidationResult = false;
                         }
                     }

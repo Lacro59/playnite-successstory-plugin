@@ -62,7 +62,7 @@ namespace SuccessStory.Clients
                         {
                             if (!EpicApi.IsUserLoggedIn)
                             {
-                                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
+                                ShowNotificationPluginNoAuthenticate(ExternalPlugin.EpicLibrary);
                             }
                         }
                     }
@@ -81,7 +81,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
+                ShowNotificationPluginNoAuthenticate(ExternalPlugin.EpicLibrary);
             }
 
             gameAchievements.SetRaretyIndicator();
@@ -105,7 +105,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicNoAuthenticate"), ExternalPlugin.EpicLibrary);
+                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.EpicLibrary);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)

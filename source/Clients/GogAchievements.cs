@@ -53,7 +53,7 @@ namespace SuccessStory.Clients
                     {
                         if (!GogApi.IsUserLoggedIn)
                         {
-                            ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
+                            ShowNotificationPluginNoAuthenticate(ExternalPlugin.GogLibrary);
                         }
                     }
 
@@ -71,7 +71,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
+                ShowNotificationPluginNoAuthenticate(ExternalPlugin.GogLibrary);
             }
 
             gameAchievements.SetRaretyIndicator();
@@ -95,7 +95,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogNoAuthenticate"), ExternalPlugin.GogLibrary);
+                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.GogLibrary);
                     }
                     else
                     {
@@ -103,7 +103,7 @@ namespace SuccessStory.Clients
 
                         if (!(bool)CachedConfigurationValidationResult)
                         {
-                            ShowNotificationPluginNoConfiguration(ResourceProvider.GetString("LOCSuccessStoryNotificationsGogBadConfig"));
+                            ShowNotificationPluginNoConfiguration();
                         }
                     }
                 }
