@@ -25,8 +25,15 @@ namespace SuccessStory.Models
         public string Description { get; set; }
         public string UrlUnlocked { get; set; }
         public string UrlLocked { get; set; }
+
         // TODO
-        public DateTime? DateUnlocked { get; set; }
+        private DateTime? _dateUnlocked;
+        public DateTime? DateUnlocked
+        {
+            get => _dateUnlocked == default(DateTime) ? null : _dateUnlocked;
+            set => _dateUnlocked = value;
+        }
+
         public bool IsHidden { get; set; } = false;
         /// <summary>
         /// Rarity indicator
