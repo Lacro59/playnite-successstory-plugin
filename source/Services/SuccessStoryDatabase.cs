@@ -433,6 +433,7 @@ namespace SuccessStory.Services
                     break;
 
                 case ExternalPlugin.GogLibrary:
+                case ExternalPlugin.GogOssLibrary:
                     if (settings.EnableGog)
                     {
                         return AchievementSource.GOG;
