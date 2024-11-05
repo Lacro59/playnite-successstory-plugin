@@ -62,7 +62,7 @@ namespace SuccessStory.Clients
                         {
                             if (!EpicApi.IsUserLoggedIn)
                             {
-                                ShowNotificationPluginNoAuthenticate(ExternalPlugin.EpicLibrary);
+                                ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
                             }
                         }
                     }
@@ -81,7 +81,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(ExternalPlugin.EpicLibrary);
+                ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
             }
 
             gameAchievements.SetRaretyIndicator();
@@ -105,12 +105,12 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.EpicLibrary);
+                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
                     }
                 }
                 else if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginErrorMessage();
+                    ShowNotificationPluginErrorMessage(ExternalPlugin.SuccessStory);
                 }
 
                 return (bool)CachedConfigurationValidationResult;

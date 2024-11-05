@@ -56,6 +56,7 @@ namespace SuccessStory.Views
 
                 SteamPanel.StoreApi = SuccessStory.SteamApi;
                 EpicPanel.StoreApi = SuccessStory.EpicApi;
+                GogPanel.StoreApi = SuccessStory.GogApi;
 
                 PART_WowRegion.Text = PluginDatabase.PluginSettings.Settings.WowRegions.Find(x => x.IsSelected)?.Name;
                 PART_WowRealm.Text = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Name;
@@ -134,6 +135,7 @@ namespace SuccessStory.Views
 
                 SteamPanel.Visibility = PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled ? Visibility.Visible : Visibility.Collapsed;
                 EpicPanel.Visibility = PluginDatabase.PluginSettings.Settings.PluginState.EpicIsEnabled ? Visibility.Visible : Visibility.Collapsed;
+                GogPanel.Visibility = PluginDatabase.PluginSettings.Settings.PluginState.GogIsEnabled ? Visibility.Visible : Visibility.Collapsed;
             }
             catch (Exception ex)
             {

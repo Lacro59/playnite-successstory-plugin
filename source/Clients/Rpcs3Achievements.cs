@@ -11,6 +11,7 @@ using CommonPluginsShared.Extensions;
 using Playnite.SDK;
 using CommonPlayniteShared.Common;
 using System.Globalization;
+using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -174,7 +175,7 @@ namespace SuccessStory.Clients
             }
             else if (!(bool)CachedConfigurationValidationResult)
             {
-                ShowNotificationPluginErrorMessage();
+                ShowNotificationPluginErrorMessage(ExternalPlugin.SuccessStory);
             }
 
             return (bool)CachedConfigurationValidationResult;
@@ -208,32 +209,32 @@ namespace SuccessStory.Clients
         #region RPCS3
         private List<string> FindTrophyGameFolder(Game game)
         {
-            List<string> TrophyGameFolder = new List<string>();
+            List<string> trophyGameFolder = new List<string>();
 
-            List<string> FoldersPath = new List<string> { PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder };
-            PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolders?.ForEach(x => FoldersPath.Add(x.FolderPath));
+            List<string> foldersPath = new List<string> { PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder };
+            PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolders?.ForEach(x => foldersPath.Add(x.FolderPath));
 
-            FoldersPath.ForEach(x =>
+            foldersPath.ForEach(x =>
             {
-                string TrophyFolder = Path.Combine(x, "trophy");
-                string GameTrophyFolder = Path.Combine(game.InstallDirectory, "..", "TROPDIR");
-                GameTrophyFolder = API.Instance.ExpandGameVariables(game, GameTrophyFolder, PlayniteTools.GetGameEmulator(game)?.InstallDir);
+                string trophyFolder = Path.Combine(x, "trophy");
+                string gameTrophyFolder = Path.Combine(game.InstallDirectory, "..", "TROPDIR");
+                gameTrophyFolder = API.Instance.ExpandGameVariables(game, gameTrophyFolder, PlayniteTools.GetGameEmulator(game)?.InstallDir);
 
-                Common.LogDebug(true, $"TrophyFolder: {TrophyFolder}");
-                Common.LogDebug(true, $"GameTrophyFolder: {GameTrophyFolder}");
+                Common.LogDebug(true, $"trophyFolder: {trophyFolder}");
+                Common.LogDebug(true, $"gameTrophyFolder: {gameTrophyFolder}");
 
                 try
                 {
-                    if (Directory.Exists(GameTrophyFolder))
+                    if (Directory.Exists(gameTrophyFolder))
                     {
-                        _ = Parallel.ForEach(Directory.EnumerateDirectories(GameTrophyFolder), (objectDirectory, state) =>
+                        _ = Parallel.ForEach(Directory.EnumerateDirectories(gameTrophyFolder), (objectDirectory, state) =>
                         {
                             DirectoryInfo di = new DirectoryInfo(objectDirectory);
-                            string NameFolder = di.Name;
+                            string nameFolder = di.Name;
 
-                            if (Directory.Exists(Path.Combine(TrophyFolder, NameFolder)))
+                            if (Directory.Exists(Path.Combine(trophyFolder, nameFolder)))
                             {
-                                TrophyGameFolder.Add(Path.Combine(TrophyFolder, NameFolder));
+                                trophyGameFolder.Add(Path.Combine(trophyFolder, nameFolder));
                             }
                         });
                     }
@@ -244,7 +245,7 @@ namespace SuccessStory.Clients
                 }
             });
 
-            return TrophyGameFolder;
+            return trophyGameFolder;
         }
 
 

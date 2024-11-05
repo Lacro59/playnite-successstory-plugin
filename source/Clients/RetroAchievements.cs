@@ -118,7 +118,7 @@ namespace SuccessStory.Clients
             }
             else if (!(bool)CachedConfigurationValidationResult)
             {
-                ShowNotificationPluginErrorMessage();
+                ShowNotificationPluginErrorMessage(PlayniteTools.ExternalPlugin.None);
             }
 
             return (bool)CachedConfigurationValidationResult;

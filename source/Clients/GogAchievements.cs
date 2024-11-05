@@ -14,8 +14,7 @@ namespace SuccessStory.Clients
 {
     public class GogAchievements : GenericAchievements
     {
-        protected static readonly Lazy<GogApi> gogApi = new Lazy<GogApi>(() => new GogApi(PluginDatabase.PluginName));
-        internal static GogApi GogApi => gogApi.Value;
+        private GogApi GogApi => SuccessStory.GogApi;
 
 
         public GogAchievements() : base("GOG", CodeLang.GetGogLang(API.Instance.ApplicationSettings.Language))
@@ -45,7 +44,8 @@ namespace SuccessStory.Clients
                             UrlLocked = x.UrlLocked,
                             DateUnlocked = x.DateUnlocked.ToString().Contains(default(DateTime).ToString()) ? (DateTime?)null : x.DateUnlocked,
                             Percent = x.Percent,
-                            GamerScore = x.GamerScore
+                            GamerScore = x.GamerScore,
+                            IsHidden = x.IsHidden
                         }).ToList();
                         gameAchievements.Items = AllAchievements;
                     }
@@ -53,7 +53,7 @@ namespace SuccessStory.Clients
                     {
                         if (!GogApi.IsUserLoggedIn)
                         {
-                            ShowNotificationPluginNoAuthenticate(ExternalPlugin.GogLibrary);
+                            ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
                         }
                     }
 
@@ -71,7 +71,7 @@ namespace SuccessStory.Clients
             }
             else
             {
-                ShowNotificationPluginNoAuthenticate(ExternalPlugin.GogLibrary);
+                ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
             }
 
             gameAchievements.SetRaretyIndicator();
@@ -95,7 +95,7 @@ namespace SuccessStory.Clients
 
                     if (!(bool)CachedConfigurationValidationResult)
                     {
-                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.GogLibrary);
+                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
                     }
                     else
                     {
@@ -109,7 +109,7 @@ namespace SuccessStory.Clients
                 }
                 else if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginErrorMessage();
+                    ShowNotificationPluginErrorMessage(ExternalPlugin.SuccessStory);
                 }
 
                 return (bool)CachedConfigurationValidationResult;

@@ -111,7 +111,7 @@ namespace SuccessStory.Clients
                 }
                 else if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginErrorMessage();
+                    ShowNotificationPluginErrorMessage(ExternalPlugin.XboxLibrary);
                 }
 
                 return (bool)CachedConfigurationValidationResult;

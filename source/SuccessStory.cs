@@ -13,14 +13,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using CommonPlayniteShared;
 using SuccessStory.Services;
 using System.Windows.Automation;
 using CommonPluginsShared.PlayniteExtended;
-using System.Windows.Media;
 using CommonPluginsShared.Controls;
 using SuccessStory.Controls;
-using CommonPluginsShared.Models;
 using CommonPlayniteShared.Common;
 using System.Reflection;
 using CommonPluginsShared.Extensions;
@@ -30,6 +27,7 @@ using CommonPluginsStores.Steam;
 using SuccessStory.Clients;
 using SuccessStory.Models.RetroAchievements;
 using CommonPluginsStores.Epic;
+using CommonPluginsStores.Gog;
 
 namespace SuccessStory
 {
@@ -39,6 +37,7 @@ namespace SuccessStory
 
         public static SteamApi SteamApi { get; set; }
         public static EpicApi EpicApi { get; set; }
+        public static GogApi GogApi { get; set; }
 
         internal TopPanelItem TopPanelItem { get; set; }
         internal SidebarItem SidebarItem { get; set; }
@@ -828,30 +827,28 @@ namespace SuccessStory
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
             // StoreAPI intialization
-            SteamApi = new SteamApi(PluginDatabase.PluginName);
+            SteamApi = new SteamApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
             SteamApi.SetLanguage(API.Instance.ApplicationSettings.Language);
+            SteamApi.StoreSettings = PluginDatabase.PluginSettings.Settings.SteamStoreSettings;
             if (PluginDatabase.PluginSettings.Settings.EnableSteam)
             {
                 _ = SteamApi.CurrentAccountInfos;
-                if (PluginDatabase.PluginSettings.Settings.SteamApiSettings.UseAuth)
-                {
-                    SteamApi.CurrentAccountInfos.IsPrivate = true;
-                }
-                if (!PluginDatabase.PluginSettings.Settings.SteamApiSettings.UseApi)
-                {
-                    SteamApi.CurrentAccountInfos.ApiKey = string.Empty;
-                }
             }
 
-            EpicApi = new EpicApi(PluginDatabase.PluginName);
+            EpicApi = new EpicApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
             EpicApi.SetLanguage(API.Instance.ApplicationSettings.Language);
+            EpicApi.StoreSettings = PluginDatabase.PluginSettings.Settings.EpicStoreSettings;
             if (PluginDatabase.PluginSettings.Settings.EnableEpic)
             {
                 _ = EpicApi.CurrentAccountInfos;
-                if (PluginDatabase.PluginSettings.Settings.EpicSettings.UseAuth)
-                {
-                    EpicApi.CurrentAccountInfos.IsPrivate = true;
-                }
+            }
+
+            GogApi = new GogApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
+            GogApi.SetLanguage(API.Instance.ApplicationSettings.Language);
+            GogApi.StoreSettings = PluginDatabase.PluginSettings.Settings.GogStoreSettings;
+            if (PluginDatabase.PluginSettings.Settings.EnableGog)
+            {
+                _ = GogApi.CurrentAccountInfos;
             }
 
 

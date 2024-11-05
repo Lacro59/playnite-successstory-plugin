@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using Playnite.SDK.Models;
 using CommonPluginsShared.Plugins;
+using CommonPluginsStores;
 
 namespace SuccessStory
 {
@@ -201,8 +202,14 @@ namespace SuccessStory
 
         public bool UseLocalised { get; set; } = false;
 
+        // TODO temp
         public SteamSettings SteamApiSettings { get; set; } = new SteamSettings();
         public EpicSettings EpicSettings { get; set; } = new EpicSettings();
+        public GogSettings GogSettings { get; set; } = new GogSettings();
+
+        public StoreSettings SteamStoreSettings { get; set; }
+        public StoreSettings EpicStoreSettings { get; set; }
+        public StoreSettings GogStoreSettings { get; set; }
         #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
@@ -273,8 +280,8 @@ namespace SuccessStory
         private readonly SuccessStory Plugin;
         private SuccessStorySettings EditingClone { get; set; }
 
-        private SuccessStorySettings settings;
-        public SuccessStorySettings Settings { get => settings; set => SetValue(ref settings, value); }
+        private SuccessStorySettings _settings;
+        public SuccessStorySettings Settings { get => _settings; set => SetValue(ref _settings, value); }
 
 
         public SuccessStorySettingsViewModel(SuccessStory plugin)
@@ -295,6 +302,30 @@ namespace SuccessStory
 
             // Set RA console list
             Settings.RaConsoleAssociateds = Settings.RaConsoleAssociateds.OrderBy(x => x.RaConsoleName).ToList();
+
+            // TODO temp
+            if (Settings.SteamStoreSettings == null)
+            {
+                Settings.SteamStoreSettings = new StoreSettings
+                {
+                    UseApi = Settings.SteamApiSettings.UseApi,
+                    UseAuth = Settings.SteamApiSettings.UseAuth
+                };
+            }
+            if (Settings.EpicStoreSettings == null)
+            {
+                Settings.EpicStoreSettings = new StoreSettings
+                {
+                    UseAuth = Settings.EpicSettings.UseAuth
+                };
+            }
+            if (Settings.GogStoreSettings == null)
+            {
+                Settings.GogStoreSettings = new StoreSettings
+                {
+                    UseAuth = Settings.GogSettings.UseAuth
+                };
+            }
         }
 
         // Code executed when settings view is opened and user starts editing values.
@@ -334,28 +365,26 @@ namespace SuccessStory
             // StoreAPI intialization
             SuccessStory.SteamApi.SaveCurrentUser();
             SuccessStory.SteamApi.CurrentAccountInfos = null;
+            SuccessStory.SteamApi.StoreSettings = Settings.SteamStoreSettings;
             if (Settings.EnableSteam)
             {
                 _ = SuccessStory.SteamApi.CurrentAccountInfos;
-                if (Settings.SteamApiSettings.UseAuth)
-                {
-                    SuccessStory.SteamApi.CurrentAccountInfos.IsPrivate = true;
-                }
-                if (Settings.SteamApiSettings.UseApi)
-                {
-                    SuccessStory.SteamApi.CurrentAccountInfos.ApiKey = string.Empty;
-                }
             }
 
             SuccessStory.EpicApi.SaveCurrentUser();
             SuccessStory.EpicApi.CurrentAccountInfos = null;
+            SuccessStory.SteamApi.StoreSettings = Settings.EpicStoreSettings;
             if (Settings.EnableEpic)
             {
                 _ = SuccessStory.EpicApi.CurrentAccountInfos;
-                if (Settings.EpicSettings.UseAuth)
-                {
-                    SuccessStory.EpicApi.CurrentAccountInfos.IsPrivate = true;
-                }
+            }
+
+            SuccessStory.GogApi.SaveCurrentUser();
+            SuccessStory.GogApi.CurrentAccountInfos = null;
+            SuccessStory.SteamApi.StoreSettings = Settings.GogStoreSettings;
+            if (Settings.EnableGog)
+            {
+                _ = SuccessStory.GogApi.CurrentAccountInfos;
             }
 
 
@@ -401,6 +430,11 @@ namespace SuccessStory
     }
 
     public class EpicSettings
+    {
+        public bool UseAuth { get; set; } = false;
+    }
+
+    public class GogSettings
     {
         public bool UseAuth { get; set; } = false;
     }

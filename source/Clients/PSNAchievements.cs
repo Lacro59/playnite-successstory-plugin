@@ -261,7 +261,7 @@ namespace SuccessStory.Clients
                 }
                 else if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginErrorMessage();
+                    ShowNotificationPluginErrorMessage(ExternalPlugin.PSNLibrary);
                 }
 
                 return (bool)CachedConfigurationValidationResult;

@@ -101,7 +101,7 @@ namespace SuccessStory.Clients
                 }
                 else if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginErrorMessage();
+                    ShowNotificationPluginErrorMessage(ExternalPlugin.OriginLibrary);
                 }
 
                 return (bool)CachedConfigurationValidationResult;
