@@ -12,6 +12,7 @@ using Playnite.SDK;
 using CommonPlayniteShared.Common;
 using System.Globalization;
 using static CommonPluginsShared.PlayniteTools;
+using System.Text.RegularExpressions;
 
 namespace SuccessStory.Clients
 {
@@ -214,34 +215,39 @@ namespace SuccessStory.Clients
             List<string> foldersPath = new List<string> { PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder };
             PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolders?.ForEach(x => foldersPath.Add(x.FolderPath));
 
+            string path = API.Instance.ExpandGameVariables(game, Path.Combine(game.InstallDirectory, ".."), GetGameEmulator(game)?.InstallDir);
+            List<string> file = Tools.FindFile(path, "TROPHY.TRP", true);
+
+            if (file.Count() == 0)
+            {
+                Logger.Warn($"TROPHY.TRP not found for {game.Name}");
+                return new List<string>();
+            }
+            else if (file.Count() > 1)
+            {
+                Logger.Warn($"TROPHY.TRP is multiple for {game.Name}");
+                file.ForEach(x =>
+                {
+                    Logger.Warn(x);
+                });
+            }
+
+            string fileTrophyTRP = file.First();
+            string fileData = FileSystem.ReadFileAsStringSafe(fileTrophyTRP);
+            Match match = Regex.Match(fileData, @"<npcommid>(.*?)<\/npcommid>", RegexOptions.IgnoreCase);
+            string npcommid = match.Success ? match.Groups[1].Value : null;
+
             foldersPath.ForEach(x =>
             {
                 string trophyFolder = Path.Combine(x, "trophy");
-                string gameTrophyFolder = Path.Combine(game.InstallDirectory, "..", "TROPDIR");
-                gameTrophyFolder = API.Instance.ExpandGameVariables(game, gameTrophyFolder, PlayniteTools.GetGameEmulator(game)?.InstallDir);
-
-                Common.LogDebug(true, $"trophyFolder: {trophyFolder}");
-                Common.LogDebug(true, $"gameTrophyFolder: {gameTrophyFolder}");
-
-                try
+                string folder = Path.Combine(trophyFolder, npcommid);
+                if (Directory.Exists(folder))
                 {
-                    if (Directory.Exists(gameTrophyFolder))
-                    {
-                        _ = Parallel.ForEach(Directory.EnumerateDirectories(gameTrophyFolder), (objectDirectory, state) =>
-                        {
-                            DirectoryInfo di = new DirectoryInfo(objectDirectory);
-                            string nameFolder = di.Name;
-
-                            if (Directory.Exists(Path.Combine(trophyFolder, nameFolder)))
-                            {
-                                trophyGameFolder.Add(Path.Combine(trophyFolder, nameFolder));
-                            }
-                        });
-                    }
+                    trophyGameFolder.Add(folder);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                    Logger.Warn($"Trophy folder not found: {folder}");
                 }
             });
 
