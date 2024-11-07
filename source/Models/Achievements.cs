@@ -237,7 +237,7 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
-        public bool IsUnlock => DateWhenUnlocked != null;
+        public bool IsUnlock => DateWhenUnlocked != null || DateUnlocked.ToString().Contains("1982");
 
         private bool isVisible = true;
         [DontSerialize]

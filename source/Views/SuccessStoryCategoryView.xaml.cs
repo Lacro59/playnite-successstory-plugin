@@ -109,7 +109,7 @@ namespace SuccessStory.Views
 
                     ControlDataContext.TotalGamerScore = gameAchievements.TotalGamerScore;
 
-                    ControlDataContext.EstimateTime = gameAchievements.EstimateTime.EstimateTime;
+                    ControlDataContext.EstimateTime = gameAchievements.EstimateTime?.EstimateTime;
 
                     LocalDateTimeConverter converter = new LocalDateTimeConverter();
                     ControlDataContext.FirstUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);

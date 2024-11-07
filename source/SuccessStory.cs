@@ -491,6 +491,17 @@ namespace SuccessStory
                                 }
                             });
                         }
+
+                        gameMenuItems.Add(new GameMenuItem
+                        {
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCImportLabel"),
+                            Action = (mainMenuItem) =>
+                            {
+                                GenshinImpactAchievements genshinImpactAchievements = new GenshinImpactAchievements();
+                                genshinImpactAchievements.ImportAchievements(gameMenu);
+                            }
+                        });
                     }
                 }
 
