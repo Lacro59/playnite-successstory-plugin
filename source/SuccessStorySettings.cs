@@ -363,27 +363,27 @@ namespace SuccessStory
 
             // TODO
             // StoreAPI intialization
-            SuccessStory.SteamApi.SaveCurrentUser();
-            SuccessStory.SteamApi.CurrentAccountInfos = null;
             SuccessStory.SteamApi.StoreSettings = Settings.SteamStoreSettings;
             if (Settings.EnableSteam)
             {
+                SuccessStory.SteamApi.SaveCurrentUser();
+                SuccessStory.SteamApi.CurrentAccountInfos = null;
                 _ = SuccessStory.SteamApi.CurrentAccountInfos;
             }
 
-            SuccessStory.EpicApi.SaveCurrentUser();
-            SuccessStory.EpicApi.CurrentAccountInfos = null;
-            SuccessStory.SteamApi.StoreSettings = Settings.EpicStoreSettings;
+            SuccessStory.EpicApi.StoreSettings = Settings.EpicStoreSettings;
             if (Settings.EnableEpic)
             {
+                SuccessStory.EpicApi.SaveCurrentUser();
+                SuccessStory.EpicApi.CurrentAccountInfos = null;
                 _ = SuccessStory.EpicApi.CurrentAccountInfos;
             }
 
-            SuccessStory.GogApi.SaveCurrentUser();
-            SuccessStory.GogApi.CurrentAccountInfos = null;
-            SuccessStory.SteamApi.StoreSettings = Settings.GogStoreSettings;
+            SuccessStory.GogApi.StoreSettings = Settings.GogStoreSettings;
             if (Settings.EnableGog)
             {
+                SuccessStory.GogApi.SaveCurrentUser();
+                SuccessStory.GogApi.CurrentAccountInfos = null;
                 _ = SuccessStory.GogApi.CurrentAccountInfos;
             }
 
@@ -423,6 +423,7 @@ namespace SuccessStory
         public bool OrderGroupByUnlocked { get; set; } = false;
     }
 
+    // TODO TEMP
     public class SteamSettings
     {
         public bool UseApi { get; set; } = false;
