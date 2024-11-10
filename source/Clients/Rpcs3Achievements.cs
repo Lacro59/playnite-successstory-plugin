@@ -13,6 +13,7 @@ using CommonPlayniteShared.Common;
 using System.Globalization;
 using static CommonPluginsShared.PlayniteTools;
 using System.Text.RegularExpressions;
+using Paths = CommonPlayniteShared.Common.Paths;
 
 namespace SuccessStory.Clients
 {
@@ -48,14 +49,17 @@ namespace SuccessStory.Clients
                 {
                     AllAchievements = new List<Achievements>();
 
-                    if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFile)))
+                    string trophyFilePath = Paths.FixPathLength(Path.Combine(TrophyDirectory, TrophyFile));
+                    string trophyFileDetailsPath = Paths.FixPathLength(Path.Combine(TrophyDirectory, TrophyFileDetails));
+
+                    if (!File.Exists(trophyFilePath))
                     {
-                        Logger.Warn($"File {TrophyFile} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFile)}");
+                        Logger.Warn($"File {TrophyFile} not found for {game.Name} in {trophyFilePath}");
                         continue;
                     }
-                    if (!File.Exists(Path.Combine(TrophyDirectory, TrophyFileDetails)))
+                    if (!File.Exists(trophyFileDetailsPath))
                     {
-                        Logger.Warn($"File {TrophyFileDetails} not found for {game.Name} in {Path.Combine(TrophyDirectory, TrophyFileDetails)}");
+                        Logger.Warn($"File {TrophyFileDetails} not found for {game.Name} in {trophyFileDetailsPath}");
                         continue;
                     }
 
@@ -65,7 +69,7 @@ namespace SuccessStory.Clients
 
 
                     // Trophies details
-                    XDocument TrophyDetailsXml = XDocument.Load(Path.Combine(TrophyDirectory, TrophyFileDetails));
+                    XDocument TrophyDetailsXml = XDocument.Load(trophyFileDetailsPath);
 
                     string GameName = TrophyDetailsXml.Descendants("title-name").FirstOrDefault().Value.Trim();
 
@@ -114,7 +118,7 @@ namespace SuccessStory.Clients
 
 
                     // Trophies data
-                    byte[] TrophyByte = File.ReadAllBytes(Path.Combine(TrophyDirectory, TrophyFile));
+                    byte[] TrophyByte = File.ReadAllBytes(trophyFilePath);
                     string hex = Tools.ToHex(TrophyByte);
 
                     List<string> splitHex = hex.Split(new[] { "0000000600000060000000" }, StringSplitOptions.None).ToList();
@@ -191,7 +195,9 @@ namespace SuccessStory.Clients
                 return false;
             }
 
-            if (!Directory.Exists(Path.Combine(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder, "trophy")))
+            string trophyPath = Path.Combine(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder, "trophy");
+            trophyPath = Paths.FixPathLength(trophyPath);
+            if (!Directory.Exists(trophyPath))
             {
                 Logger.Warn($"No RPCS3 trophy folder in {PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolder}");
                 return false;
@@ -239,8 +245,8 @@ namespace SuccessStory.Clients
 
             foldersPath.ForEach(x =>
             {
-                string trophyFolder = Path.Combine(x, "trophy");
-                string folder = Path.Combine(trophyFolder, npcommid);
+                string trophyFolder = Paths.FixPathLength(Path.Combine(x, "trophy"));
+                string folder = Paths.FixPathLength(Path.Combine(trophyFolder, npcommid));
                 if (Directory.Exists(folder))
                 {
                     trophyGameFolder.Add(folder);
@@ -254,28 +260,29 @@ namespace SuccessStory.Clients
             return trophyGameFolder;
         }
 
-
-        private string CopyTrophyFile(string TrophyDirectory, string TrophyFile)
+        private string CopyTrophyFile(string trophyDirectory, string trophyFile)
         {
-            DirectoryInfo di = new DirectoryInfo(TrophyDirectory);
+            DirectoryInfo di = new DirectoryInfo(trophyDirectory);
             string NameFolder = di.Name;
 
-            FileSystem.CreateDirectory(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3"));
-            FileSystem.CreateDirectory(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder));
+            string parentDir = Paths.FixPathLength(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3"));
+            string dir = Paths.FixPathLength(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder));
+
+            FileSystem.CreateDirectory(parentDir);
+            FileSystem.CreateDirectory(dir);
 
             try
             {
-                if (!File.Exists(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder, TrophyFile)))
-                {
-                    File.Copy(Path.Combine(TrophyDirectory, TrophyFile), Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder, TrophyFile));
-                }
+                string targetPath = Paths.FixPathLength(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder, trophyFile));
+                string sourcePath = Paths.FixPathLength(Path.Combine(trophyDirectory, trophyFile));
+                FileSystem.CopyFile(sourcePath, targetPath, false);
             }
             catch (Exception ex)
             {
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
-            return Path.Combine("rpcs3", NameFolder, TrophyFile);
+            return Path.Combine("rpcs3", NameFolder, trophyFile);
         }
         #endregion
     }
