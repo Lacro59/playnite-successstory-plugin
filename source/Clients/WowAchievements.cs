@@ -182,12 +182,12 @@ namespace SuccessStory.Clients
                 string url = string.Format("https://worldofwarcraft.blizzard.com/game/status");
                 string response = Web.DownloadStringData(url).GetAwaiter().GetResult();
 
-                string js = Regex.Match(response, @"realm-status.\w*.js").Value;
-                if (!js.IsNullOrEmpty())
+                url = Regex.Match(response, @"<script\s+src=""([^""]+realm-status.\w*.js)"">", RegexOptions.IgnoreCase).Groups[1].Value;
+                if (!url.IsNullOrEmpty())
                 {
-                    url = $"https://assets.worldofwarcraft.blizzard.com/static/{js}";
                     response = Web.DownloadStringData(url).GetAwaiter().GetResult();
-                    Sha256Hash = Regex.Match(response, "\"GetRealmStatusData\"[)],a[.]documentId=\"(\\w*)\"}").Groups[1].Value;
+                    Match matches = Regex.Match(response, @"""GetRealmStatusData""\)[^,]*,\w*\.documentId=""(\w*)""");
+                    Sha256Hash = matches.Success ? matches.Groups[1].Value : null;
                 }
             }
             catch (Exception ex)
