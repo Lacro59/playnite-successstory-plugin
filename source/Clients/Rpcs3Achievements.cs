@@ -242,6 +242,10 @@ namespace SuccessStory.Clients
             string fileData = FileSystem.ReadFileAsStringSafe(fileTrophyTRP);
             Match match = Regex.Match(fileData, @"<npcommid>(.*?)<\/npcommid>", RegexOptions.IgnoreCase);
             string npcommid = match.Success ? match.Groups[1].Value : null;
+            if (npcommid.IsNullOrEmpty())
+            {
+                Logger.Warn($"npcommid not found for {game.Name} in {fileTrophyTRP}");
+            }
 
             foldersPath.ForEach(x =>
             {
