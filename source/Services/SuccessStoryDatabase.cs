@@ -311,7 +311,7 @@ namespace SuccessStory.Services
                     {
                         if (ListGames[0].GameUrl.IsNullOrEmpty())
                         {
-                            Logger.Warn($"No TrueAchievements url for {game.Name}");
+                            Logger.Warn($"No TrueAchievements (Steam) url for {game.Name}");
                         }
                         else
                         {
@@ -320,7 +320,7 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        Logger.Warn($"Game not found on TrueSteamAchivements for {game.Name}");
+                        Logger.Warn($"Game not found on TrueSteamAchivements (Steam) for {game.Name}");
                     }
 
                     ListGames = TrueAchievements.SearchGame(game, OriginData.Xbox);
@@ -328,7 +328,7 @@ namespace SuccessStory.Services
                     {
                         if (ListGames[0].GameUrl.IsNullOrEmpty())
                         {
-                            Logger.Warn($"No TrueAchievements url for {game.Name}");
+                            Logger.Warn($"No TrueAchievements (Xbox) url for {game.Name}");
                         }
                         else
                         {
@@ -337,17 +337,17 @@ namespace SuccessStory.Services
                     }
                     else
                     {
-                        Logger.Warn($"Game not found on TrueAchivements for {game.Name}");
+                        Logger.Warn($"Game not found on TrueAchivements (Xbox) for {game.Name}");
                     }
 
                     if (EstimateTimeSteam.DataCount >= EstimateTimeXbox.DataCount)
                     {
-                        Common.LogDebug(true, $"Get EstimateTimeSteam for {game.Name}");
+                        Common.LogDebug(true, $"Get EstimateTime (Steam) for {game.Name}");
                         gameAchievements.EstimateTime = EstimateTimeSteam;
                     }
                     else
                     {
-                        Common.LogDebug(true, $"Get EstimateTimeXbox for {game.Name}");
+                        Common.LogDebug(true, $"Get EstimateTime (Xbox) for {game.Name}");
                         gameAchievements.EstimateTime = EstimateTimeXbox;
                     }
                 }
