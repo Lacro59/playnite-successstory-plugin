@@ -38,7 +38,7 @@ namespace SuccessStory.Clients
         private string UrlWowAchLegacy => "legacy/model.json";
         #endregion
 
-        public WowAchievements() : base("Wow", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language))
+        public WowAchievements() : base("WoW", CodeLang.GetEpicLang(API.Instance.ApplicationSettings.Language))
         {
 
         }
@@ -47,8 +47,8 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
-            List<GameStats> AllStats = new List<GameStats>();
+            List<Achievements> allAchievements = new List<Achievements>();
+            List<GameStats> allStats = new List<GameStats>();
 
             string urlFinal = string.Empty;
             try
@@ -81,7 +81,7 @@ namespace SuccessStory.Clients
                             {
                                 foreach (Achievement achievement in subcategoriesItem.Achievements)
                                 {
-                                    AllAchievements.Add(new Achievements
+                                    allAchievements.Add(new Achievements
                                     {
                                         Name = achievement.Name,
                                         Description = achievement.Description,
@@ -102,8 +102,8 @@ namespace SuccessStory.Clients
             }
 
 
-            gameAchievements.Items = AllAchievements;
-            gameAchievements.ItemsStats = AllStats;
+            gameAchievements.Items = allAchievements;
+            gameAchievements.ItemsStats = allStats;
 
 
             // Set source link
@@ -111,7 +111,7 @@ namespace SuccessStory.Clients
             {
                 gameAchievements.SourcesLink = new SourceLink
                 {
-                    GameName = "Wow",
+                    GameName = "WoW",
                     Name = "Battle.net",
                     Url = UrlWowBaseLocalised
                 };
@@ -121,7 +121,7 @@ namespace SuccessStory.Clients
             if (gameAchievements.HasAchievements)
             {
                 ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Overwatch);
+                exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Wow);
             }
 
             gameAchievements.SetRaretyIndicator();
