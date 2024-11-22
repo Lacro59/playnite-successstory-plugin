@@ -837,11 +837,6 @@ namespace SuccessStory
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
-            var d = SuccessStoryStats.GetCountUnlocked(StatsType.Day, null, null, false, false);
-            var e = SuccessStoryStats.GetCountUnlocked(StatsType.Month, null, null, false, false);
-            var f = SuccessStoryStats.GetCountUnlocked(StatsType.Source, null, null, false, false);
-
-
             // StoreAPI intialization
             SteamApi = new SteamApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
             SteamApi.SetLanguage(API.Instance.ApplicationSettings.Language);

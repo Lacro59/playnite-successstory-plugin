@@ -49,7 +49,6 @@ namespace SuccessStory.Clients
 
         public ExophaseAchievements() : base("Exophase")
         {
-
         }
 
 
@@ -110,7 +109,7 @@ namespace SuccessStory.Clients
                 List<Achievement> All = ParseData(dataExophase);
                 List<Achievement> AllLocalised = dataExophaseLocalised.IsNullOrEmpty() ? new List<Achievement>() : ParseData(dataExophaseLocalised);
 
-                for (int i = 0; i < All.Count; i++)
+                for (int i = 0; i < All?.Count; i++)
                 {
                     allAchievements.Add(new Achievement
                     {
@@ -211,8 +210,8 @@ namespace SuccessStory.Clients
 
         private bool GetIsUserLoggedIn()
         {
-            string DataExophase = Web.DownloadStringData(UrlExophaseAccount, GetCookies()).GetAwaiter().GetResult();
-            bool isConnected = DataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
+            string dataExophase = Web.DownloadStringData(UrlExophaseAccount, GetCookies()).GetAwaiter().GetResult();
+            bool isConnected = dataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
             if (isConnected)
             {
                 SetCookies(GetCookies());
@@ -223,7 +222,7 @@ namespace SuccessStory.Clients
 
         public List<SearchResult> SearchGame(string Name)
         {
-            List<SearchResult> ListSearchGames = new List<SearchResult>();
+            List<SearchResult> listSearchGames = new List<SearchResult>();
             try
             {
                 WebViewSettings webViewSettings = new WebViewSettings
@@ -243,13 +242,13 @@ namespace SuccessStory.Clients
                 {
                     Logger.Warn($"No Exophase result for {Name}");
                     Logger.Warn($"{json}");
-                    return ListSearchGames;
+                    return listSearchGames;
                 }
 
                 List<List> ListExophase = exophaseScheachResult?.Games?.List;
                 if (ListExophase != null)
                 {
-                    ListSearchGames = ListExophase.Select(x => new SearchResult
+                    listSearchGames = ListExophase.Select(x => new SearchResult
                     {
                         Url = x.EndpointAwards,
                         Name = x.Title,
@@ -264,7 +263,7 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, false, $"Error on SearchGame({Name})", true, PluginDatabase.PluginName);
             }
 
-            return ListSearchGames;
+            return listSearchGames;
         }
 
 
@@ -474,14 +473,14 @@ namespace SuccessStory.Clients
                         try
                         {
                             string sFloat = searchAchievements.GetAttribute("data-average")
-                                .Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
-                                .Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+                                ?.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                                ?.Replace(",", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
 
                             _ = float.TryParse(sFloat, out float Percent);
 
-                            string urlUnlocked = searchAchievements.QuerySelector("img").GetAttribute("src");
-                            string name = WebUtility.HtmlDecode(searchAchievements.QuerySelector("a").InnerHtml);
-                            string description = WebUtility.HtmlDecode(searchAchievements.QuerySelector("div.award-description p").InnerHtml);
+                            string urlUnlocked = searchAchievements.QuerySelector("img")?.GetAttribute("src");
+                            string name = WebUtility.HtmlDecode(searchAchievements.QuerySelector("a")?.InnerHtml);
+                            string description = WebUtility.HtmlDecode(searchAchievements.QuerySelector("div.award-description p")?.InnerHtml);
                             bool isHidden = searchAchievements.GetAttribute("class").IndexOf("secret") > -1;
 
                             allAchievements.Add(new Achievement
