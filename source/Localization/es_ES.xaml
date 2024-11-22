@@ -27,8 +27,8 @@
     <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame"></sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">El perfil de Steam no es público</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
-You must check &quot;{1}&quot; in plugin settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">El juego de Steam &quot;{0}&quot; no es público
+Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam está activado en SuccessStory pero la extensión de la biblioteca ha sido deshabilitada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam no se ha configurado correctamente en la configuración</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No hay configuración de Steam y/o clave API</sys:String>
@@ -70,7 +70,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Mostrar descripción en globo de ayuda</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Mostrar puntuación</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnablePSN">Habilitar logros de PSN</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar logros de Steam</sys:String>
