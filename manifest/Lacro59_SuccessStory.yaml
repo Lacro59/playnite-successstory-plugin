@@ -372,3 +372,19 @@ Packages:
       - 'Optimized: Epic detection (thanks to Jhanlon95)'
       - 'Fixed: Bug when entering time for manual achievements'
       - 'Fixed: Bug on auto completation on 100%'
+  - Version: 3.4
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-11-23
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.4/playnite-successstory-plugin_3_4.pext
+    Changelog:
+      - 'Updated: Localizations'
+      - 'Optimized: UI'
+      - 'Fixed: Issue with auto game completation 100%'
+      - 'Fixed: Issue with Steam configuration'
+      - 'Fixed: Issue with date of unlocked achievements (thanks to yomisimie)'
+      - 'Fixed: Issue with manually det RetroAchievements ID'
+      - 'Added: New theme data (see wiki)'
+      - 'Added: Export data function'
+      - 'Added: GogOssLibrary support'
+      - 'Added: Sync Genshin Impact achievements via tracker (import data in game menu)'
+      - 'Fixed: World of Warcraft Region List won''t load'
