@@ -253,6 +253,10 @@
                                     </lvc:CartesianChart.AxisY>
                                 </lvc:CartesianChart>
                             </Grid>
+
+                            <!--Grid Grid.Row="2" Name="PART_PluginHeatmapContener" Tag="{Binding Data}">
+                                <Controls:PluginHeatmap Data="{Binding ElementName=PART_PluginHeatmapContener, Path=Tag}" GameContext="{Binding ElementName=PART_PluginListContener, Path=Tag}" />
+                            </Grid-->
                         </Grid>
 
                         <!-- Graphic all unlocked achievements -->

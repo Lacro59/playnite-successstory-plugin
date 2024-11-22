@@ -33,7 +33,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievement> AllAchievements = new List<Achievement>();
 
             try
             {
@@ -111,7 +111,7 @@ namespace SuccessStory.Clients
                     // Set achievements
                     gw2AchievementsAll.ForEach(x =>
                     {
-                        Achievements ach = new Achievements
+                        Achievement ach = new Achievement
                         {
                             ApiName = x.Id.ToString(),
                             Name = x.Name,

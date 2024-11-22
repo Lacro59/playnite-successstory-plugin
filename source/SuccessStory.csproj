@@ -145,6 +145,9 @@
     <Compile Include="Controls\PluginCompactList.xaml.cs">
       <DependentUpon>PluginCompactList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PluginHeatmap.xaml.cs">
+      <DependentUpon>PluginHeatmap.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PluginList.xaml.cs">
       <DependentUpon>PluginList.xaml</DependentUpon>
     </Compile>
@@ -288,6 +291,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PluginCompactList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PluginHeatmap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -559,7 +566,7 @@
   <ItemGroup>
     <!-- Compile Models\* -->
     <Compile Include="Models\GenshinImpact\GenshinImpactAchievementsCategory.cs" />
-    <Compile Include="Models\Achievements.cs" />
+    <Compile Include="Models\Achievement.cs" />
     <Compile Include="Models\AchRaretyStats.cs" />
     <Compile Include="Models\StarCraft2\BattleNetSc2Ach.cs" />
     <Compile Include="Models\StarCraft2\BattleNetSc2Profil.cs" />

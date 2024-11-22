@@ -72,7 +72,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievement> AllAchievements = new List<Achievement>();
 
             string Url = string.Empty;
             string UrlDetails = string.Empty;
@@ -187,7 +187,7 @@ namespace SuccessStory.Clients
                                 break;
                         }
 
-                        AllAchievements.Add(new Achievements
+                        AllAchievements.Add(new Achievement
                         {
                             Name = trophie.trophyName.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
                             Description = trophie.trophyDetail,

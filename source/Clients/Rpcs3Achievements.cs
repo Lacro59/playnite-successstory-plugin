@@ -28,7 +28,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievement> AllAchievements = new List<Achievement>();
 
 
             if (IsConfigured())
@@ -47,7 +47,7 @@ namespace SuccessStory.Clients
 
                 foreach (string TrophyDirectory in TrophyDirectories)
                 {
-                    AllAchievements = new List<Achievements>();
+                    AllAchievements = new List<Achievement>();
 
                     string trophyFilePath = Paths.FixPathLength(Path.Combine(TrophyDirectory, TrophyFile));
                     string trophyFileDetailsPath = Paths.FixPathLength(Path.Combine(TrophyDirectory, TrophyFileDetails));
@@ -98,7 +98,7 @@ namespace SuccessStory.Clients
                             GamerScore = 180;
                         }
 
-                        AllAchievements.Add(new Achievements
+                        AllAchievements.Add(new Achievement
                         {
                             ApiName = string.Empty,
                             Name = Name,

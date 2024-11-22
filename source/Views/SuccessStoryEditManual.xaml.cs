@@ -34,13 +34,13 @@ namespace SuccessStory.Views
         private GameAchievements GameAchievements { get; set; }
         private Game GameContext { get; set; }
 
-        private ObservableCollection<Achievements> ListAchievements { get; set; } = new ObservableCollection<Achievements>();
+        private ObservableCollection<Achievement> ListAchievements { get; set; } = new ObservableCollection<Achievement>();
 
         private bool ViewFilter(object item)
         {
-            bool b1 = SearchElement.Text.IsNullOrEmpty() || (item as Achievements).Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
-            bool b2 = !(bool)PART_IncludeDescription.IsChecked || ((item as Achievements).Description?.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) ?? false);
-            bool b3 = !(bool)PART_OnlyLocked.IsChecked || !(item as Achievements).IsUnlock;
+            bool b1 = SearchElement.Text.IsNullOrEmpty() || (item as Achievement).Name.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase);
+            bool b2 = !(bool)PART_IncludeDescription.IsChecked || ((item as Achievement).Description?.RemoveDiacritics().Contains(SearchElement.Text.RemoveDiacritics(), StringComparison.InvariantCultureIgnoreCase) ?? false);
+            bool b3 = !(bool)PART_OnlyLocked.IsChecked || !(item as Achievement).IsUnlock;
 
             return ((bool)PART_IncludeDescription.IsChecked ? (b1 || b2) : b1) && b3;
         }
@@ -124,9 +124,9 @@ namespace SuccessStory.Views
 
                     TimePicker timePicker = ((Grid)datePicker.Parent).FindName("PART_Time") as TimePicker;
                     int index = int.Parse(timePicker.Tag.ToString());
-                    DateTime dt = (DateTime)((Achievements)lbAchievements.Items[index]).DateUnlocked;
+                    DateTime dt = (DateTime)((Achievement)lbAchievements.Items[index]).DateUnlocked;
                     string[] dtTime = timePicker.GetValueAsString().Split(':');
-                    ((Achievements)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2])).ToUniversalTime();
+                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2])).ToUniversalTime();
                 }
                 else
                 {
@@ -145,9 +145,9 @@ namespace SuccessStory.Views
                 CheckBox checkBox = ((Grid)timePicker.Parent).FindName("PART_CbUnlock") as CheckBox;
                 if ((bool)checkBox.IsChecked)
                 {
-                    DateTime dt = (DateTime)((Achievements)lbAchievements.Items[index]).DateUnlocked;
+                    DateTime dt = (DateTime)((Achievement)lbAchievements.Items[index]).DateUnlocked;
                     string[] dtTime = timePicker.GetValueAsString().Split(':');
-                    ((Achievements)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2])).ToUniversalTime();
+                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2])).ToUniversalTime();
                 }
             }
             catch { }
@@ -161,16 +161,16 @@ namespace SuccessStory.Views
                 int index = int.Parse(checkBox.Tag.ToString());
                 if ((bool)checkBox.IsChecked)
                 {
-                    if (((Achievements)lbAchievements.Items[index]).DateWhenUnlocked == null)
+                    if (((Achievement)lbAchievements.Items[index]).DateWhenUnlocked == null)
                     {
-                        ((Achievements)lbAchievements.Items[index]).DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                        ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
                     }
                 }
                 else
                 {
                     DatePicker datePicker = ((Grid)checkBox.Parent).FindName("PART_DtUnlock") as DatePicker;
                     datePicker.SelectedDate = null;
-                    ((Achievements)lbAchievements.Items[index]).DateUnlocked = default;
+                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = default;
                 }
             }
             catch { }
@@ -184,7 +184,7 @@ namespace SuccessStory.Views
 
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
-            GameAchievements.Items = ((ObservableCollection<Achievements>)lbAchievements.ItemsSource).ToList();
+            GameAchievements.Items = ((ObservableCollection<Achievement>)lbAchievements.ItemsSource).ToList();
             PluginDatabase.Update(GameAchievements);
 
             PluginDatabase.ChangeCompletionStatus(GameContext);

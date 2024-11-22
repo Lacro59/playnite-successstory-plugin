@@ -33,7 +33,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievement> AllAchievements = new List<Achievement>();
 
             try
             {
@@ -68,7 +68,7 @@ namespace SuccessStory.Clients
                         {
                             genshinAchievements.ForEach(x =>
                             {
-                                AllAchievements.Add(new Achievements
+                                AllAchievements.Add(new Achievement
                                 {
                                     ApiName = x.Id.ToString(),
                                     Name = x.Name,
@@ -183,7 +183,7 @@ namespace SuccessStory.Clients
                         {
                             x.Value.ForEach(y =>
                             {
-                                Achievements item = gameAchievements.Items.FirstOrDefault(z => z.ApiName == y.Key && y.Value);
+                                Achievement item = gameAchievements.Items.FirstOrDefault(z => z.ApiName == y.Key && y.Value);
                                 if (item != null)
                                 {
                                     item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
@@ -202,7 +202,7 @@ namespace SuccessStory.Clients
                         {
                             if (x.Value.Done)
                             {
-                                Achievements item = gameAchievements.Items.FirstOrDefault(z => z.ApiName == x.Key);
+                                Achievement item = gameAchievements.Items.FirstOrDefault(z => z.ApiName == x.Key);
                                 if (item != null)
                                 {
                                     item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);

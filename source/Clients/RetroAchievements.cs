@@ -53,7 +53,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievement> AllAchievements = new List<Achievement>();
 
             if (IsConfigured())
             {
@@ -794,9 +794,9 @@ namespace SuccessStory.Clients
         }
 
 
-        private List<Achievements> GetGameInfoAndUserProgress(int gameID)
+        private List<Achievement> GetGameInfoAndUserProgress(int gameID)
         {
-            List<Achievements> Achievements = new List<Achievements>();
+            List<Achievement> Achievements = new List<Achievement>();
 
             string Target = "API_GetGameInfoAndUserProgress.php";
             UrlAchievements = string.Format(BaseUrl + Target + @"?z={0}&y={1}&u={0}&g={2}", User, Key, gameID);
@@ -825,7 +825,7 @@ namespace SuccessStory.Clients
                     {
                         foreach (dynamic it in item)
                         {
-                            Achievements.Add(new Achievements
+                            Achievements.Add(new Achievement
                             {
                                 Name = (string)it["Title"],
                                 Description = (string)it["Description"],

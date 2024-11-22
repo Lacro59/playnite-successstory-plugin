@@ -243,7 +243,7 @@ namespace SuccessStory.Views.Interfaces
 
         private void PART_ComboBoxAchievements_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            List<Achievements> achievements = GameAchievements.Items.Where(x => x.Category == (string)PART_ComboBoxAchievements.SelectedItem).ToList();
+            List<Achievement> achievements = GameAchievements.Items.Where(x => x.Category == (string)PART_ComboBoxAchievements.SelectedItem).ToList();
 
             PART_AchievementsData.ItemsSource = null;
             PART_AchievementsData.Items.Clear();

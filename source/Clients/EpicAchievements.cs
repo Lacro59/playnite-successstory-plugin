@@ -28,7 +28,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievement> AllAchievements = new List<Achievement>();
 
             if (IsConnected())
             {
@@ -45,7 +45,7 @@ namespace SuccessStory.Clients
                         ObservableCollection<GameAchievement> epicAchievements = EpicApi.GetAchievements(nameSpace, EpicApi.CurrentAccountInfos);
                         if (epicAchievements?.Count > 0)
                         {
-                            AllAchievements = epicAchievements.Select(x => new Achievements
+                            AllAchievements = epicAchievements.Select(x => new Achievement
                             {
                                 ApiName = x.Id,
                                 Name = x.Name,

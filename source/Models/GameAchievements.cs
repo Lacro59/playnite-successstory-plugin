@@ -12,13 +12,13 @@ using System.Collections.ObjectModel;
 
 namespace SuccessStory.Models
 {
-    public class GameAchievements : PluginDataBaseGame<Achievements>
+    public class GameAchievements : PluginDataBaseGame<Achievement>
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
 
-        private List<Achievements> items = new List<Achievements>();
-        public override List<Achievements> Items { get => items; set => SetValue(ref items, value); }
+        private List<Achievement> items = new List<Achievement>();
+        public override List<Achievement> Items { get => items; set => SetValue(ref items, value); }
 
         private List<GameStats> itemsStats = new List<GameStats>();
         public List<GameStats> ItemsStats { get => itemsStats; set => SetValue(ref itemsStats, value); }
@@ -33,16 +33,16 @@ namespace SuccessStory.Models
         public OrderAchievement orderAchievement;
 
         [DontSerialize]
-        public ObservableCollection<Achievements> OrderItems
+        public ObservableCollection<Achievement> OrderItems
         {
             get
             {
-                List<Achievements> OrderItems = Items;
-                IOrderedEnumerable<Achievements> OrderedItems = null;
+                List<Achievement> OrderItems = Items;
+                IOrderedEnumerable<Achievement> OrderedItems = null;
 
                 if (OrderItems == null)
                 {
-                    return new ObservableCollection<Achievements>();
+                    return new ObservableCollection<Achievement>();
                 }
 
                 if (orderAchievement != null)
@@ -136,10 +136,10 @@ namespace SuccessStory.Models
         }
 
         [DontSerialize]
-        public ObservableCollection<Achievements> OrderItemsOnlyUnlocked => OrderItems.Where(x => x.IsUnlock).ToObservable();
+        public ObservableCollection<Achievement> OrderItemsOnlyUnlocked => OrderItems.Where(x => x.IsUnlock).ToObservable();
 
         [DontSerialize]
-        public ObservableCollection<Achievements> OrderItemsOnlyLocked => OrderItems.Where(x => !x.IsUnlock).ToObservable();
+        public ObservableCollection<Achievement> OrderItemsOnlyLocked => OrderItems.Where(x => !x.IsUnlock).ToObservable();
 
 
         /// <summary>
@@ -323,10 +323,10 @@ namespace SuccessStory.Models
 
 
         [DontSerialize]
-        public DateTime? FirstUnlock => Items.Select(x => x.DateWhenUnlocked).Min();
+        public DateTime? FirstUnlock => Items.Select(x => x.DateWhenUnlocked)?.Min();
 
         [DontSerialize]
-        public DateTime? LastUnlock => Items.Select(x => x.DateWhenUnlocked).Max();
+        public DateTime? LastUnlock => Items.Select(x => x.DateWhenUnlocked)?.Max();
 
         [DontSerialize]
         public List<DateTime> DatesUnlock => Items.Where(x => x.DateWhenUnlocked != null).Select(x => (DateTime)x.DateWhenUnlocked).ToList();

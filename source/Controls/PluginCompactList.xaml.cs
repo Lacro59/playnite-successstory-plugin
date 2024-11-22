@@ -62,7 +62,7 @@ namespace SuccessStory.Controls
             ControlDataContext.Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight + 28;
 
             ControlDataContext.PictureHeight = PluginDatabase.PluginSettings.Settings.IntegrationCompactHeight;
-            ControlDataContext.ItemsSource = new ObservableCollection<Achievements>();
+            ControlDataContext.ItemsSource = new ObservableCollection<Achievement>();
         }
 
 
@@ -95,7 +95,7 @@ namespace SuccessStory.Controls
         private double pictureHeight;
         public double PictureHeight { get => pictureHeight; set => SetValue(ref pictureHeight, value); }
 
-        private ObservableCollection<Achievements> itemsSource;
-        public ObservableCollection<Achievements> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
+        private ObservableCollection<Achievement> itemsSource;
+        public ObservableCollection<Achievement> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
     }
 }

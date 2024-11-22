@@ -60,7 +60,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Models.Achievement> AllAchievements = new List<Models.Achievement>();
             List<GameStats> AllStats = new List<GameStats>();
 
             uint appId = 0;
@@ -97,7 +97,7 @@ namespace SuccessStory.Clients
                         }
                     }
 
-                    AllAchievements = steamAchievements.Select(x => new Achievements
+                    AllAchievements = steamAchievements.Select(x => new Models.Achievement
                     {
                         ApiName = x.Id,
                         Name = x.Name,
@@ -158,7 +158,7 @@ namespace SuccessStory.Clients
                     {
                         for (int i = 0; i < temp.Items.Count; i++)
                         {
-                            AllAchievements.Add(new Achievements
+                            AllAchievements.Add(new Models.Achievement
                             {
                                 Name = temp.Items[i].Name,
                                 ApiName = temp.Items[i].ApiName,
@@ -196,7 +196,7 @@ namespace SuccessStory.Clients
         public GameAchievements GetAchievements(Game game, uint appId)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Models.Achievement> AllAchievements = new List<Models.Achievement>();
 
             // Get Steam configuration if exist.
             if (!IsConfigured())
@@ -225,7 +225,7 @@ namespace SuccessStory.Clients
                 {
                     for (int i = 0; i < temp.Items.Count; i++)
                     {
-                        AllAchievements.Add(new Achievements
+                        AllAchievements.Add(new Models.Achievement
                         {
                             Name = temp.Items[i].Name,
                             ApiName = temp.Items[i].ApiName,
@@ -268,7 +268,7 @@ namespace SuccessStory.Clients
         private GameAchievements GetManual(uint appId, Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Models.Achievement> AllAchievements = new List<Models.Achievement>();
 
             if (appId == 0)
             {
@@ -280,7 +280,7 @@ namespace SuccessStory.Clients
             {
                 Logger.Info($"SteamApi.GetAchievements()");
 
-                AllAchievements = steamAchievements.Select(x => new Achievements
+                AllAchievements = steamAchievements.Select(x => new Models.Achievement
                 {
                     ApiName = x.Id,
                     Name = x.Name,
@@ -304,7 +304,7 @@ namespace SuccessStory.Clients
             ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(appId.ToString(), null);
             steamAchievements.ForEach(x =>
             {
-                Achievements found = gameAchievements.Items?.Find(y => y.ApiName.IsEqual(x.Id));
+                Models.Achievement found = gameAchievements.Items?.Find(y => y.ApiName.IsEqual(x.Id));
                 if (found != null)
                 {
                     found.GamerScore = x.GamerScore;
@@ -576,7 +576,7 @@ namespace SuccessStory.Clients
         */
 
 
-        private List<Achievements> GetProgressionByWeb(List<Achievements> Achievements, string Url, bool isRetry = false)
+        private List<Models.Achievement> GetProgressionByWeb(List<Models.Achievement> Achievements, string Url, bool isRetry = false)
         {
             string ResultWeb = string.Empty;
             try
@@ -614,7 +614,7 @@ namespace SuccessStory.Clients
                             double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
                             double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
 
-                            Achievements found = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
+                            Models.Achievement found = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
                             if (found != null)
                             {
                                 found.Progression = new AchProgression
@@ -639,7 +639,7 @@ namespace SuccessStory.Clients
                             double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
                             double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
 
-                            Achievements found = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
+                            Models.Achievement found = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
                             if (found != null)
                             {
                                 found.Progression = new AchProgression
@@ -670,7 +670,7 @@ namespace SuccessStory.Clients
                             _ = double.TryParse(data[1].Trim().Replace(",", string.Empty), out double max);
                             _ = double.TryParse(data[0].Trim().Replace(",", string.Empty), out double val);
 
-                            Achievements found = Achievements.Find(x => x.Name.IsEqual(Name));
+                            Models.Achievement found = Achievements.Find(x => x.Name.IsEqual(Name));
                             if (found != null)
                             {
                                 found.Progression = new AchProgression

@@ -66,7 +66,7 @@ namespace SuccessStory.Clients
         public GameAchievements GetAchievements(Game game, SearchResult searchResult)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> allAchievements = new List<Achievements>();
+            List<Achievement> allAchievements = new List<Achievement>();
 
             try
             {
@@ -107,12 +107,12 @@ namespace SuccessStory.Clients
                     }
                 }
 
-                List<Achievements> All = ParseData(dataExophase);
-                List<Achievements> AllLocalised = dataExophaseLocalised.IsNullOrEmpty() ? new List<Achievements>() : ParseData(dataExophaseLocalised);
+                List<Achievement> All = ParseData(dataExophase);
+                List<Achievement> AllLocalised = dataExophaseLocalised.IsNullOrEmpty() ? new List<Achievement>() : ParseData(dataExophaseLocalised);
 
                 for (int i = 0; i < All.Count; i++)
                 {
-                    allAchievements.Add(new Achievements
+                    allAchievements.Add(new Achievement
                     {
                         Name = AllLocalised.Count > 0 ? AllLocalised[i].Name : All[i].Name,
                         ApiName = All[i].Name,
@@ -331,7 +331,7 @@ namespace SuccessStory.Clients
                 GameAchievements exophaseAchievements = GetAchievements(gameAchievements.Game, achievementsUrl);
                 exophaseAchievements.Items.ForEach(y =>
                 {
-                    Achievements achievement = gameAchievements.Items.Find(x => x.ApiName.IsEqual(y.ApiName));
+                    Achievement achievement = gameAchievements.Items.Find(x => x.ApiName.IsEqual(y.ApiName));
                     if (achievement == null)
                     {
                         achievement = gameAchievements.Items.Find(x => x.Name.IsEqual(y.Name));
@@ -452,12 +452,12 @@ namespace SuccessStory.Clients
         #endregion
 
 
-        private List<Achievements> ParseData(string data)
+        private List<Achievement> ParseData(string data)
         {
             HtmlParser parser = new HtmlParser();
             IHtmlDocument htmlDocument = parser.Parse(data);
 
-            List<Achievements> allAchievements = new List<Achievements>();
+            List<Achievement> allAchievements = new List<Achievement>();
             IHtmlCollection<IElement> sectionAchievements = htmlDocument.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge");
             string gameName = htmlDocument.QuerySelector("h2.me-2 a")?.GetAttribute("title");
 
@@ -484,7 +484,7 @@ namespace SuccessStory.Clients
                             string description = WebUtility.HtmlDecode(searchAchievements.QuerySelector("div.award-description p").InnerHtml);
                             bool isHidden = searchAchievements.GetAttribute("class").IndexOf("secret") > -1;
 
-                            allAchievements.Add(new Achievements
+                            allAchievements.Add(new Achievement
                             {
                                 Name = name,
                                 UrlUnlocked = urlUnlocked,

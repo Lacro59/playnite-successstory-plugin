@@ -41,11 +41,17 @@ namespace SuccessStory
 
         private static Filters Filters { get; set; } = null;
 
+        private bool OnlyRa { get; }
+        private bool ExcludeRa { get; }
+
 
         public SuccessView(bool isRetroAchievements = false, Game GameSelected = null)
         {
             try
             {
+                OnlyRa = PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && isRetroAchievements;
+                ExcludeRa = PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && !isRetroAchievements;
+
                 InitializeComponent();
 
                 SuccessViewData.Settings = PluginDatabase.PluginSettings.Settings;
@@ -111,7 +117,7 @@ namespace SuccessStory
                     ProgressionGlobal = SuccessStoryStats.Progession();
                     ProgressionLaunched = SuccessStoryStats.ProgessionLaunched();
 
-                    GraphicsData = SuccessStoryStats.GetCountByMonth(null, 12);
+                    GraphicsData = SuccessStoryStats.GetCountByMonth(null, 12, OnlyRa, ExcludeRa);
                     StatsGraphicsAchievementsLabels = GraphicsData.Labels;
 
 
@@ -269,6 +275,9 @@ namespace SuccessStory
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Battle.net", SourceNameShort = "Battle.net", IsCheck = false });
                         }
                     }
+
+
+                    SuccessViewData.Data = SuccessStoryStats.GetCountUnlocked(StatsType.Day, null, null, OnlyRa, ExcludeRa);
                 })
                  .ContinueWith(antecedent =>
                  {
@@ -372,7 +381,7 @@ namespace SuccessStory
 
         private void SetGraphicsAchievementsSources()
         {
-            AchievementsGraphicsDataCountSources data = SuccessStoryStats.GetCountBySources();
+            AchievementsGraphicsDataCountSources data = SuccessStoryStats.GetCountBySources(OnlyRa, ExcludeRa);
 
             this.Dispatcher.BeginInvoke((Action)delegate
             {
@@ -717,6 +726,9 @@ namespace SuccessStory
 
         private string progressionLaunched = "40%";
         public string ProgressionLaunched { get => progressionLaunched; set => SetValue(ref progressionLaunched, value); }
+
+        private List<KeyValuePair<string, List<StatsData>>> data;
+        public List<KeyValuePair<string, List<StatsData>>> Data { get => data; set => SetValue(ref data, value); }
 
         private Game gameContext;
         public Game GameContext { get => gameContext; set => SetValue(ref gameContext, value); }

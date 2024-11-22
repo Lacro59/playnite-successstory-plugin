@@ -73,7 +73,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievement> AllAchievements = new List<Achievement>();
             List<GameStats> AllStats = new List<GameStats>();
 
 
@@ -117,7 +117,7 @@ namespace SuccessStory.Clients
                                 string Name = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.media-card-title").InnerHtml);
                                 string Description = WebUtility.HtmlDecode(SearchAchievements.QuerySelector("div.tooltip-tip p.h6").InnerHtml);
 
-                                AllAchievements.Add(new Achievements
+                                AllAchievements.Add(new Achievement
                                 {
                                     ApiName = ApiName,
                                     Name = Name,

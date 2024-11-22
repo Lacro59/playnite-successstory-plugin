@@ -197,7 +197,7 @@ namespace SuccessStory.Controls
             ControlDataContext.ItemSize = new Size(300, 65);
             ControlDataContext.ColDefinied = ColDefinied;
 
-            ControlDataContext.ItemsSource = new ObservableCollection<Achievements>();
+            ControlDataContext.ItemsSource = new ObservableCollection<Achievement>();
 
 
             foreach (object item in PART_TabControl.Items)
@@ -253,7 +253,7 @@ namespace SuccessStory.Controls
             GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
             gameAchievements.orderAchievement = OrderAchievement;
 
-            ObservableCollection<Achievements> achievements = gameAchievements.OrderItems.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
+            ObservableCollection<Achievement> achievements = gameAchievements.OrderItems.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
             ControlDataContext.ItemsSource = achievements;
         }
 
@@ -447,7 +447,7 @@ namespace SuccessStory.Controls
                 GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
                 gameAchievements.orderAchievement = OrderAchievement;
 
-                ObservableCollection<Achievements> achievements = gameAchievements.OrderItems;
+                ObservableCollection<Achievement> achievements = gameAchievements.OrderItems;
                 if (!CategoryName.IsNullOrEmpty())
                 {
                     achievements = achievements.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
@@ -491,7 +491,7 @@ namespace SuccessStory.Controls
         private int colDefinied;
         public int ColDefinied { get => colDefinied; set => SetValue(ref colDefinied, value); }
 
-        private ObservableCollection<Achievements> itemsSource;
-        public ObservableCollection<Achievements> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
+        private ObservableCollection<Achievement> itemsSource;
+        public ObservableCollection<Achievement> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
     }
 }

@@ -93,8 +93,8 @@ namespace SuccessStory.Controls
             ControlDataContext.OneLine = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialDisplayLastestOneLine;
             ControlDataContext.Height = PluginDatabase.PluginSettings.Settings.IntegrationCompactPartialHeight;
 
-            ControlDataContext.ItemsSource = new ObservableCollection<Achievements>();
-            ControlDataContext.LastestAchievement = new Achievements();
+            ControlDataContext.ItemsSource = new ObservableCollection<Achievement>();
+            ControlDataContext.LastestAchievement = new Achievement();
 
 
             // With PlayerActivities
@@ -119,7 +119,7 @@ namespace SuccessStory.Controls
             PART_ScCompactView.ColumnDefinitions.Clear();
 
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-            List<Achievements> ListAchievements;
+            List<Achievement> ListAchievements;
 
             // Select data
             if (IsUnlocked)
@@ -238,7 +238,7 @@ namespace SuccessStory.Controls
                 : Visibility.Collapsed;
 
 
-            ObservableCollection<Achievements> AchievementsList = ControlDataContext.ItemsSource;
+            ObservableCollection<Achievement> AchievementsList = ControlDataContext.ItemsSource;
 
             // With PlayerActivities
             if (Tag is DateTime)
@@ -354,10 +354,10 @@ namespace SuccessStory.Controls
         private bool oneLine;
         public bool OneLine { get => oneLine; set => SetValue(ref oneLine, value); }
 
-        private ObservableCollection<Achievements> itemsSource;
-        public ObservableCollection<Achievements> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
+        private ObservableCollection<Achievement> itemsSource;
+        public ObservableCollection<Achievement> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
 
-        private Achievements lastestAchievement;
-        public Achievements LastestAchievement { get => lastestAchievement; set => SetValue(ref lastestAchievement, value); }
+        private Achievement lastestAchievement;
+        public Achievement LastestAchievement { get => lastestAchievement; set => SetValue(ref lastestAchievement, value); }
     }
 }

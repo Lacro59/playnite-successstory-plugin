@@ -26,7 +26,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> AllAchievements = new List<Achievements>();
+            List<Achievement> AllAchievements = new List<Achievement>();
 
             if (IsConnected())
             {
@@ -35,7 +35,7 @@ namespace SuccessStory.Clients
                     ObservableCollection<GameAchievement> gogAchievements = GogApi.GetAchievements(game.GameId, GogApi.CurrentAccountInfos);
                     if (gogAchievements?.Count > 0)
                     {
-                        AllAchievements = gogAchievements.Select(x => new Achievements
+                        AllAchievements = gogAchievements.Select(x => new Achievement
                         {
                             ApiName = x.Id,
                             Name = x.Name,

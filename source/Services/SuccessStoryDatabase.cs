@@ -1,33 +1,25 @@
-﻿using LiveCharts;
-using Playnite.SDK;
+﻿using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using CommonPluginsShared;
 using CommonPluginsShared.Collections;
-using CommonPluginsControls.LiveChartsCommon;
 using SuccessStory.Clients;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using static SuccessStory.Clients.TrueAchievements;
-using System.Windows.Threading;
 using System.Windows;
-using System.Threading;
 using SuccessStory.Views;
-using CommonPluginsShared.Converters;
-using CommonPluginsControls.Controls;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using static CommonPluginsShared.PlayniteTools;
 using CommonPluginsShared.Extensions;
 using System.Threading.Tasks;
-using System.Reflection;
-using SuccessStory.Models.Stats;
 
 namespace SuccessStory.Services
 {
-    public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettingsViewModel, SuccessStoryCollection, GameAchievements, Achievements>
+    public class SuccessStoryDatabase : PluginDatabaseObject<SuccessStorySettingsViewModel, SuccessStoryCollection, GameAchievements, Achievement>
     {
         public SuccessStory Plugin { get; set; }
 
@@ -83,7 +75,7 @@ namespace SuccessStory.Services
                 stopWatch.Start();
 
                 Database = new SuccessStoryCollection(Paths.PluginDatabasePath);
-                Database.SetGameInfo<Achievements>();
+                Database.SetGameInfo<Achievement>();
 
                 DeleteDataWithDeletedGame();
 
@@ -641,9 +633,9 @@ namespace SuccessStory.Services
                 PluginSettings.Settings.Percent = 0;
                 PluginSettings.Settings.EstimateTimeToUnlock = string.Empty;
 
-                PluginSettings.Settings.ListAchievements = new List<Achievements>();
-                PluginSettings.Settings.ListAchUnlockDateAsc = new List<Achievements>();
-                PluginSettings.Settings.ListAchUnlockDateDesc = new List<Achievements>();
+                PluginSettings.Settings.ListAchievements = new List<Achievement>();
+                PluginSettings.Settings.ListAchUnlockDateAsc = new List<Achievement>();
+                PluginSettings.Settings.ListAchUnlockDateDesc = new List<Achievement>();
             }
             else
             {
@@ -714,7 +706,7 @@ namespace SuccessStory.Services
                     webItem.IsManual = true;
                     for (int i = 0; i < webItem.Items.Count; i++)
                     {
-                        Achievements found = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() || x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
+                        Achievement found = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() || x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
                         if (found != null)
                         {
                             webItem.Items[i].DateUnlocked = found.DateWhenUnlocked;

@@ -47,7 +47,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievements> allAchievements = new List<Achievements>();
+            List<Models.Achievement> allAchievements = new List<Models.Achievement>();
             List<GameStats> allStats = new List<GameStats>();
 
             string urlFinal = string.Empty;
@@ -79,9 +79,9 @@ namespace SuccessStory.Clients
                             Serialization.TryFromJson(Serialization.ToJson(subItems?.Value), out SubcategoriesItem subcategoriesItem);
                             if (subcategoriesItem?.Achievements != null)
                             {
-                                foreach (Achievement achievement in subcategoriesItem.Achievements)
+                                foreach (Models.Wow.Achievement achievement in subcategoriesItem.Achievements)
                                 {
-                                    allAchievements.Add(new Achievements
+                                    allAchievements.Add(new Models.Achievement
                                     {
                                         Name = achievement.Name,
                                         Description = achievement.Description,

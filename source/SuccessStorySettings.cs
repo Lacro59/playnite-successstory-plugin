@@ -260,17 +260,17 @@ namespace SuccessStory
         public string EstimateTimeToUnlock { get => estimateTimeToUnlock; set => SetValue(ref estimateTimeToUnlock, value); }
 
 
-        private List<Achievements> listAchievements = new List<Achievements>();
+        private List<Achievement> listAchievements = new List<Achievement>();
         [DontSerialize]
-        public List<Achievements> ListAchievements { get => listAchievements; set => SetValue(ref listAchievements, value); }
+        public List<Achievement> ListAchievements { get => listAchievements; set => SetValue(ref listAchievements, value); }
 
-        private List<Achievements> listAchUnlockDateAsc = new List<Achievements>();
+        private List<Achievement> listAchUnlockDateAsc = new List<Achievement>();
         [DontSerialize]
-        public List<Achievements> ListAchUnlockDateAsc { get => listAchUnlockDateAsc; set => SetValue(ref listAchUnlockDateAsc, value); }
+        public List<Achievement> ListAchUnlockDateAsc { get => listAchUnlockDateAsc; set => SetValue(ref listAchUnlockDateAsc, value); }
 
-        private List<Achievements> listAchUnlockDateDesc = new List<Achievements>();
+        private List<Achievement> listAchUnlockDateDesc = new List<Achievement>();
         [DontSerialize]
-        public List<Achievements> ListAchUnlockDateDesc { get => listAchUnlockDateDesc; set => SetValue(ref listAchUnlockDateDesc, value); }
+        public List<Achievement> ListAchUnlockDateDesc { get => listAchUnlockDateDesc; set => SetValue(ref listAchUnlockDateDesc, value); }
         #endregion  
     }
 
