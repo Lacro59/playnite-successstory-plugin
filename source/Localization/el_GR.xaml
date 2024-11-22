@@ -1,80 +1,80 @@
 ﻿<?xml version="1.0"?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:String x:Key="LOCSuccessStoryProgress">Progress</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEarned">Earned</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgress">Πρόοδος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEarned">Αποκτηθέντα</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryManualAchievements">Manual Achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryManualAchievements">Χειροκίνητα Επιτεύγματα</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Hidden Trophy</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Κρυφό Τρόπαιο</sys:String>
 
-    <sys:String x:Key="LOCSsRefreshRaretyManual">Refresh rarity for manual achievements</sys:String>
-    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Refresh estimate time for manual achievements</sys:String>
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Ανανέωση σπανιότητας στα χειροκίνητα επιτεύγματα</sys:String>
+    <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Ανανέωση εναπομείναντος χρόνου στα χειροκίνητα επιτεύγματα</sys:String>
     
     <!-- MainView -->
 
     <sys:String x:Key="LOCSuccessStory">SuccessStory</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievements">Achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievements">Επιτεύγματα</sys:String>
     <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryViewGames">View the games achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryViewGame">View the game achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGames">Προβολή των επιτευγμάτων παιχνιδιών</sys:String>
+    <sys:String x:Key="LOCSuccessStoryViewGame">Προβολή των επιτευγμάτων του παιχνιδιού</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnored">Ignored the game</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotIgnored">Not Ignored the game</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnored">Παράβλεψη του παιχνιδιού</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotIgnored">Μη παράβλεψη του παιχνιδιού</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Hidden achievement</sys:String>
-    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Κρυφό επίτευγμα</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Απόκρυψη παιχνιδιών χωρίς ξεκλείδωτο επίτευγμα</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profile is not public</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
-You must check &quot;{1}&quot; in plugin settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam has not been correctly configured in settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">No Steam configuration and/or API key</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">No Steam user find</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG has not been correctly configured in settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements has not been correctly configured in settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 has not been correctly configured in settings</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic user is not authenticated</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 has not been correctly configured in settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Το προφίλ Steam δεν είναι δημόσιο</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Το παιχνίδι Steam &quot;{0}&quot; δεν είναι δημόσιο
+Ελέγξτε &quot;{1}&quot; στις ρυθμίσεις προσθέτων</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Το Steam είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Το Steam δεν έχει ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Χωρίς ρύθμιση παραμέτρων Steam ή/και API</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Δεν βρέθηκε χρήστης Steam</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Ο χρήστης του Steam δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">Το GOG είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">Ο χρήστης GOG δεν είναι πιστοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">Το GOG δεν έχει ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">Το PSN είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Ο χρήστης PSN δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Η EA είναι ενεργοποιημένη στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Ο χρήστης της EA δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Το Xbox είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Ο χρήστης Xbox δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">Τα RetroAchievements δεν έχουν ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">Το RPCS3 δεν έχει ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Το Battle.net είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Ο χρήστης Battle.net δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Ο χρήστης Battle.net Overwatch δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Ο χρήστης του Battle.net StarCraft II δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Το Epic είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Ο χρήστης Epic δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">Το GuildWars 2 δεν έχει ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
-    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Achievements count</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Αριθμός επιτευγμάτων</sys:String>
     
     
     <!-- SuccessStorySettingsView -->
 
-    <sys:String x:Key="LOCSuccessStoryProgressBar">Processing, please wait...</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressBar">Γίνεται επεξεργασία, παρακαλώ περιμένετε...</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnoredGames">Ignored games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnoredGames">Απορριφθέντα παιχνίδια</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophage</sys:String>
 
-    <sys:String x:Key="LOSuccessStoryAddTagDescription">Add a tag to games with the time to full unlock</sys:String>
+    <sys:String x:Key="LOSuccessStoryAddTagDescription">Προσθήκη ετικέτας σε παιχνίδια με τον χρόνο πλήρους ξεκλειδώματος</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Show description in tooltip</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDescriptionInToolTip">Εμφάνιση περιγραφής στην επεξήγηση</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Show Gamerscore</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGamerScore">Εμφάνιση της Βαθμολογίας</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryEnablePSN">Enable PSN achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableSteam">Enable Steam achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableGog">Enable GOG achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnablePSN">Ενεργοποίηση επιτευγμάτων PSN</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableSteam">Ενεργοποίηση επιτευγμάτων Steam</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGog">Ενεργοποίηση επιτευγμάτων GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Enable Epic achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable EA achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Enable Xbox achievements</sys:String>
@@ -133,30 +133,30 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Show hidden description when achievement is locked</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarity indicator on achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Show rarity value with achievements image</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the achievements of the game selected from the game menu</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Automatically set the completation when all are unlocked</sys:String>
-    <sys:String x:Key="LOCSuccessStoryListGames">List games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Default game list sorting</sys:String>
-    <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Chart with all achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Εμφάνιση δείκτη σπανιότητας στα επιτεύγματα</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Εμφάνιση τιμής σπανιότητας με την εικόνα επιτευγμάτων</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Εμφάνιση μόνο των επιτευγμάτων του παιχνιδιού που έχουν επιλεγεί από το μενού του παιχνιδιού</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Αυτόματη ρύθμιση της ολοκλήρωσης όταν όλα ξεκλειδωθούν</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGames">Λίστα παιχνιδιών</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDefaultSorting">Προεπιλεγμένη ταξινόμηση λίστας παιχνιδιών</sys:String>
+    <sys:String x:Key="LOCSuccessStoryChartWithAllAchievements">Διάγραμμα με όλα τα επιτεύγματα</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryListGamesFields">Game fields to be displayed:</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">100% achievements icon</sys:String>
+    <sys:String x:Key="LOCSuccessStoryListGamesFields">Πεδία παιχνιδιού προς εμφάνιση:</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGamesIcon100Percent">Εικονίδιο επιτευγμάτων στο 100%</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDisplayChart">Display charts in main plugin view</sys:String>
-    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Show achievements of hidden games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Show chart of achievements by month</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Show chart of achievements by day</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayChart">Εμφάνιση γραφημάτων στην κύρια προβολή πρόσθετων</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIncludeHiddenGames">Εμφάνιση επιτευγμάτων των κρυφών παιχνιδιών</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAllUnlockedByMonth">Εμφάνιση γραφήματος επιτευγμάτων ανά μήνα</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGameUnlockedByMonth">Εμφάνιση γραφήματος των επιτευγμάτων ανά ημέρα</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">Achievements database of selection has been reset.</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataMessage">Έγινε επαναφορά της βάσης δεδομένων επιτευγμάτων.</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">Downloads missing games achievements.</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Resets and downloads achievements for all games from this source. (Use if there is any problem with achievements)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetMissingToolTip" xml:space="preserve">Θα ληφθούν τα επιτεύγματα που λείπουν.</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshDataToolTip" xml:space="preserve">Επαναφορά και λήψη επιτευγμάτων για όλα τα παιχνίδια από αυτήν την πηγή. (Χρησιμοποιήστε αν υπάρχει κάποιο πρόβλημα με τα επιτεύγματα)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Downloads achievements for games that were imported in the last month with missing achievements data. (Use if the first number count is different to the total count)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Downloads achievements for installed games with missing achievements data. (Use if the first number count is different to the total count)</sys:String>
-    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Downloads achievements for installed games with missing achievements data. (Use if the first number count is different to the total count)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataRecentToolTip" xml:space="preserve">Λήψη επιτευγμάτων για παιχνίδια που εισήχθησαν τον τελευταίο μήνα με ελλειπή δεδομένα. (Χρησιμοποιήστε αν ο πρώτος αριθμός είναι διαφορετικός από τον συνολικό αριθμό)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetDataInstalledToolTip" xml:space="preserve">Λήψη επιτευγμάτων για εγκατεστημένα παιχνίδια τον με ελλειπή δεδομένα. (Χρησιμοποιήστε αν ο πρώτος αριθμός είναι διαφορετικός από τον συνολικό αριθμό)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGetAllDataToolTip" xml:space="preserve">Λήψη επιτευγμάτων για εγκατεστημένα παιχνίδια τον με ελλειπή δεδομένα. (Χρησιμοποιήστε αν ο πρώτος αριθμός είναι διαφορετικός από τον συνολικό αριθμό)</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecentToolTip" xml:space="preserve">Resets and downloads achievements of games that were imported in the last month. (Use if there is any problem with achievements)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Resets and downloads achievements of installed games. (Use if there is any problem with achievements)</sys:String>
