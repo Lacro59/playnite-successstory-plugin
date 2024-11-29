@@ -94,8 +94,8 @@ Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryDatabase">Base de datos</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Descargar datos de logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Actualizar datos</sys:String>
-    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
-    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
+    <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Forzar ID de RetroAchievements</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Establecer un ID válido de RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Descargar datos faltantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Juegos recientes con datos faltantes</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Juegos recientes</sys:String>
@@ -130,8 +130,8 @@ Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Mostrar el último logro en una línea</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Vista de extensión</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Mostrar icono oculto cuando el logro está bloqueado</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Mostrar título oculto cuando el logro está bloqueado</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Mostrar descripción oculta cuando el logro está bloqueado</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Mostrar indicador de rareza en los logros</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Mostrar el valor de rareza con la imagen de logros</sys:String>
