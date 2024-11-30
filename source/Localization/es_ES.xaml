@@ -55,16 +55,16 @@ Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     
     <!-- SuccessStoreGameSelection -->
 
-    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Número de Logros</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievementsCount">Número de logros</sys:String>
     
     
     <!-- SuccessStorySettingsView -->
 
-    <sys:String x:Key="LOCSuccessStoryProgressBar">Procesando, Por Favor Espere...</sys:String>
+    <sys:String x:Key="LOCSuccessStoryProgressBar">Procesando, por favor espere...</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Juegos ignorados</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (sólo para tener logros localizados)</sys:String>
+    <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (solo para tener logros localizados)</sys:String>
 
     <sys:String x:Key="LOSuccessStoryAddTagDescription">Añadir una etiqueta a los juegos con el tiempo para desbloquear completamente</sys:String>
 
