@@ -81,11 +81,7 @@ namespace SuccessStory.Views
             int RowDefinied = (int)lbAchievements.Height / 80;
             int ColDefinied = 1;
 
-            DataContext = new
-            {
-                ColDefinied,
-                RowDefinied
-            };
+            DataContext = (ColDefinied, RowDefinied);
         }
 
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
@@ -126,7 +122,7 @@ namespace SuccessStory.Views
                     int index = int.Parse(timePicker.Tag.ToString());
                     DateTime dt = (DateTime)((Achievement)lbAchievements.Items[index]).DateUnlocked;
                     string[] dtTime = timePicker.GetValueAsString().Split(':');
-                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2])).ToUniversalTime();
+                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2]), DateTimeKind.Local).ToUniversalTime();
                 }
                 else
                 {
@@ -147,7 +143,7 @@ namespace SuccessStory.Views
                 {
                     DateTime dt = (DateTime)((Achievement)lbAchievements.Items[index]).DateUnlocked;
                     string[] dtTime = timePicker.GetValueAsString().Split(':');
-                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2])).ToUniversalTime();
+                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2]), DateTimeKind.Local).ToUniversalTime();
                 }
             }
             catch { }
@@ -163,7 +159,7 @@ namespace SuccessStory.Views
                 {
                     if (((Achievement)lbAchievements.Items[index]).DateWhenUnlocked == null)
                     {
-                        ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                        ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0, DateTimeKind.Local);
                     }
                 }
                 else
