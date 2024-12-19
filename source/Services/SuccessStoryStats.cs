@@ -9,6 +9,7 @@ using SuccessStory.Models;
 using SuccessStory.Models.Stats;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SuccessStory.Services
@@ -379,85 +380,64 @@ namespace SuccessStory.Services
         public static List<KeyValuePair<string, List<StatsData>>> GetCountUnlocked(StatsType statsType, Guid? sourceId, Guid? gameId, bool onlyRA, bool excludeRA)
         {
             bool includeHiddenGames = PluginDatabase.PluginSettings.Settings.IncludeHiddenGames;
-            LocalDateYMConverter localDateYMConverter = new LocalDateYMConverter();
-            LocalDateConverter localDateConverter = new LocalDateConverter();
 
-            IEnumerable<StatsData> achievements = PluginDatabase.Database.Items
+            // Filtered achievements
+            List<StatsData> achievements = PluginDatabase.Database.Items
                 .Where(x => x.Value.HasAchievements && !x.Value.IsDeleted
-                                && (includeHiddenGames || x.Value.Hidden == false)
-                                && (!onlyRA || x.Value.IsRa)
-                                && (!excludeRA || !x.Value.IsRa)
-                                && (sourceId == null || sourceId == default || x.Value.Source?.Id == sourceId)
-                                && (gameId == null || gameId == default || x.Value.Id == gameId))
-                .SelectMany(x => x.Value.Items.Select(item => new StatsData { Game = x.Value.Game, Achievement = item, IsLast = x.Value.LastUnlock != null && x.Value.LastUnlock == item.DateUnlocked }))
-                .Where(x => x.Achievement.IsUnlock);
-
-            IEnumerable<IGrouping<string, StatsData>> grouped = achievements
-                .GroupBy(x => statsType == StatsType.Day
-                                    ? x.Achievement.DateWhenUnlocked?.ToString("yyyy-MM-dd") ?? default(DateTime).ToString("yyyy-MM-dd")
-                                    : (statsType == StatsType.Month
-                                            ? x.Achievement.DateWhenUnlocked?.ToString("yyyy-MM") ?? default(DateTime).ToString("yyyy-MM")
-                                            : (onlyRA ? PlayniteTools.GetSourceNameOrPlatformForEmulated(x.Game) : PlayniteTools.GetSourceName(x.Game)))
-                                    );
-
-            List<KeyValuePair<string, List<StatsData>>> data = grouped
-                .Select(x => new KeyValuePair<string, List<StatsData>>(x.Key, x.ToList()))
+                            && (includeHiddenGames || !x.Value.Hidden)
+                            && (!onlyRA || x.Value.IsRa)
+                            && (!excludeRA || !x.Value.IsRa)
+                            && (sourceId == null || x.Value.Source?.Id == sourceId)
+                            && (gameId == null || x.Value.Id == gameId))
+                .SelectMany(x => x.Value.Items
+                    .Where(item => item.IsUnlock)
+                    .Select(item => new StatsData
+                    {
+                        Game = x.Value.Game,
+                        Achievement = item,
+                        IsLast = x.Value.LastUnlock != null && x.Value.LastUnlock == item.DateUnlocked
+                    }))
                 .ToList();
 
-            #region Add missing group
-            List<string> allGroup = new List<string>();
-            DateTime dtMin = achievements.Where(x => x.Achievement.DateWhenUnlocked != null).Min(x => (DateTime)x.Achievement.DateWhenUnlocked);
-            DateTime dtMax = achievements.Where(x => x.Achievement.DateWhenUnlocked != null).Max(x => (DateTime)x.Achievement.DateWhenUnlocked);
+            // Grouped achievements
+            Dictionary<string, List<StatsData>> grouped = achievements.GroupBy(x =>
+                statsType == StatsType.Day
+                    ? x.Achievement.DateWhenUnlocked?.ToString("yyyy-MM-dd") ?? DateTime.MinValue.ToString("yyyy-MM-dd")
+                    : statsType == StatsType.Month
+                        ? x.Achievement.DateWhenUnlocked?.ToString("yyyy-MM") ?? DateTime.MinValue.ToString("yyyy-MM")
+                        : onlyRA
+                            ? PlayniteTools.GetSourceNameOrPlatformForEmulated(x.Game)
+                            : PlayniteTools.GetSourceName(x.Game))
+                .ToDictionary(g => g.Key, g => g.ToList());
 
-            switch (statsType)
+            // Added missing groups
+            if (statsType == StatsType.Day || statsType == StatsType.Month)
             {
-                case StatsType.Day:
-                    allGroup = Enumerable.Range(0, (dtMax - dtMin).Days + 1).Select(x => dtMin.AddDays(x).ToString("yyyy-MM-dd")).ToList();
-                    break;
+                DateTime dtMin = achievements.Where(x => x.Achievement.DateWhenUnlocked.HasValue)
+                                              .Min(x => x.Achievement.DateWhenUnlocked.Value);
+                DateTime dtMax = achievements.Where(x => x.Achievement.DateWhenUnlocked.HasValue)
+                                              .Max(x => x.Achievement.DateWhenUnlocked.Value);
 
-                case StatsType.Month:
-                    dtMin = new DateTime(dtMin.Year, dtMin.Month, 1).ToLocalTime();
-                    while (dtMin <= dtMax)
-                    {
-                        allGroup.Add(dtMin.ToString("yyyy-MM"));
-                        dtMin = dtMin.AddMonths(1);
-                    }
+                IEnumerable<string> allGroupKeys = statsType == StatsType.Day
+                    ? Enumerable.Range(0, (dtMax - dtMin).Days + 1).Select(x => dtMin.AddDays(x).ToString("yyyy-MM-dd"))
+                    : Enumerable.Range(0, (dtMax.Year - dtMin.Year) * 12 + dtMax.Month - dtMin.Month + 1)
+                                .Select(x => dtMin.AddMonths(x).ToString("yyyy-MM"));
 
-                    break;
-
-                case StatsType.Source:
-                    break;
-
-                default:
-                    break;
-            }
-
-            List<string> missingGroups = allGroup.Except(grouped.Select(x => x.Key)).ToList();
-            foreach (string missingGroup in missingGroups)
-            {
-                _ = data.AddMissing(new KeyValuePair<string, List<StatsData>>(
-                    missingGroup,
-                    new List<StatsData>()
-                ));
-            }
-            #endregion
-
-            _ = statsType == StatsType.Source
-                ? data = data.OrderBy(x => x.Key).ToList()
-                : data = data.OrderBy(x => DateTime.Parse(x.Key)).ToList();
-
-
-            List<KeyValuePair<string, List<StatsCount>>> ddd = data?.Select(group =>
-            {
-                List<StatsCount> statsDataCounts = group.Value.Select(item => new StatsCount
+                foreach (string key in allGroupKeys)
                 {
-                    StatsData = new List<StatsData> { item }
-                }).ToList();
-                return new KeyValuePair<string, List<StatsCount>>(group.Key, statsDataCounts);
-            }).ToList();
+                    if (!grouped.ContainsKey(key))
+                    {
+                        grouped[key] = new List<StatsData>();
+                    }
+                }
+            }
 
+            // Sorted data
+            List<KeyValuePair<string, List<StatsData>>> sortedData = statsType == StatsType.Source
+                ? grouped.OrderBy(g => g.Key).ToList()
+                : grouped.OrderBy(g => DateTime.Parse(g.Key)).ToList();
 
-            return data;
+            return sortedData;
         }
     }
 

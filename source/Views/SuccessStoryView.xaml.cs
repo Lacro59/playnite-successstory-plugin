@@ -23,6 +23,7 @@ using CommonPluginsShared.Extensions;
 using CommonPluginsShared.Converters;
 using System.Globalization;
 using SuccessStory.Models.Stats;
+using System.Diagnostics;
 
 namespace SuccessStory
 {
@@ -475,37 +476,38 @@ namespace SuccessStory
             {
                 ObservableCollection<ListAll> ListAll = new ObservableCollection<ListAll>();
                 PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted
-                            && (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && isRetroAchievements ? x.IsRa : ((PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && !isRetroAchievements) ? !x.IsRa : true)))
+                            && (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && isRetroAchievements ? x.IsRa : (!PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView || isRetroAchievements || !x.IsRa)))
                         .ForEach(x =>
                         {
+                            ListAll listAll = new ListAll
+                            {
+                                Id = x.Id.ToString(),
+                                Name = x.Name,
+                                Icon = !x.Icon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(x.Icon) : string.Empty,
+                                LastActivity = x.LastActivity?.ToLocalTime(),
+                                SourceName = PlayniteTools.GetSourceName(x.Id),
+                                SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
+                                IsManual = x.IsManual,
+
+                                FirstUnlock = x.FirstUnlock,
+                                LastUnlock = x.LastUnlock,
+                                DatesUnlock = x.DatesUnlock
+                            };
+
                             x.Items.Where(y => y.IsUnlock).ForEach(y =>
                             {
-                                ListAll.Add(new ListAll
-                                {
-                                    Id = x.Id.ToString(),
-                                    Name = x.Name,
-                                    Icon = !x.Icon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(x.Icon) : string.Empty,
-                                    LastActivity = x.LastActivity?.ToLocalTime(),
-                                    SourceName = PlayniteTools.GetSourceName(x.Id),
-                                    SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
-                                    IsManual = x.IsManual,
+                                listAll.Gamerscore = y.GamerScore;
+                                listAll.AchIcon = y.Icon;
+                                listAll.AchIsGray = y.IsGray;
+                                listAll.AchEnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
+                                listAll.AchDisplayRaretyValue = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
+                                listAll.AchName = y.Name;
+                                listAll.AchDateUnlock = y.DateWhenUnlocked;
+                                listAll.AchDescription = y.Description;
+                                listAll.AchPercent = y.Percent;
+                                listAll.AchNameWithDateUnlock = y.NameWithDateUnlock;
 
-                                    FirstUnlock = x.FirstUnlock,
-                                    LastUnlock = x.LastUnlock,
-                                    DatesUnlock = x.DatesUnlock,
-
-                                    Gamerscore = y.GamerScore,
-
-                                    AchIcon = y.Icon,
-                                    AchIsGray = y.IsGray,
-                                    AchEnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
-                                    AchDisplayRaretyValue = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
-                                    AchName = y.Name,
-                                    AchDateUnlock = y.DateWhenUnlocked,
-                                    AchDescription = y.Description,
-                                    AchPercent = y.Percent,
-                                    AchNameWithDateUnlock = y.NameWithDateUnlock
-                                });
+                                ListAll.Add(listAll);
                             });
                         });
 
