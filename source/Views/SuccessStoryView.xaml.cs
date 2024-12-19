@@ -230,8 +230,8 @@ namespace SuccessStory
                         }
                         if (PluginDatabase.PluginSettings.Settings.EnableOrigin)
                         {
-                            icon = TransformIcon.Get("EA") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Electronic Arts", SourceNameShort = "EA", IsCheck = false });
+                            icon = TransformIcon.Get("EA app") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "EA app", SourceNameShort = "EA app", IsCheck = false });
                         }
                         if (PluginDatabase.PluginSettings.Settings.EnableXbox)
                         {
@@ -618,7 +618,7 @@ namespace SuccessStory
             }
             else
             {
-                SearchSources.Remove((string)sender.Tag);
+                _ = SearchSources.Remove((string)sender.Tag);
             }
 
             if (SearchSources.Count != 0)

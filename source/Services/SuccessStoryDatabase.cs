@@ -657,8 +657,6 @@ namespace SuccessStory.Services
                 PluginSettings.Settings.ListAchUnlockDateAsc = gameAchievements.Items?.OrderBy(x => x.DateUnlocked).ThenBy(x => x.Name).ToList();
                 PluginSettings.Settings.ListAchUnlockDateDesc = gameAchievements.Items?.OrderByDescending(x => x.DateUnlocked).ThenBy(x => x.Name).ToList();
             }
-
-
         }
 
 
