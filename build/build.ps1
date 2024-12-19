@@ -1,78 +1,61 @@
 param(
-	[string]$ConfigurationName, 
-	[string]$OutDir,
-	[string]$SolutionDir 
+    [string]$ConfigurationName, 
+    [string]$OutDir,
+    [string]$SolutionDir 
 )
 
+$PlaynitePaths = @(
+    "C:\Playnite_dev", "C:\Projects\Playnite_dev",
+    "D:\Playnite_dev", "D:\Projects\Playnite_dev",
+    "G:\Playnite_dev", "G:\Projects\Playnite_dev",
+    "F:\Playnite_dev", "F:\Projects\Playnite_dev"
+)
 
-$PlaynitePathTEMP = "C:\Playnite_dev"
-if (Test-Path -Path $PlaynitePathTEMP) 
-{
-	$PlaynitePath = $PlaynitePathTEMP
+$PlaynitePath = $null
+
+foreach ($path in $PlaynitePaths) {
+    if (Test-Path -Path $path) {
+        $PlaynitePath = $path
+        break
+    }
 }
 
-$PlaynitePathTEMP = "D:\Playnite_dev"
-if (Test-Path -Path $PlaynitePathTEMP) 
-{
-	$PlaynitePath = $PlaynitePathTEMP
-}
+if ($null -eq $PlaynitePath) {
+    Write-Host "No Playnite path valid found"
+} else {
+    $ToolboxPath = (Join-Path $PlaynitePath "toolbox.exe")
+    $OutDirPath = (Join-Path $OutDir "..")
 
-$PlaynitePathTEMP = "G:\Playnite_dev"
-if (Test-Path -Path $PlaynitePathTEMP) 
-{
-	$PlaynitePath = $PlaynitePathTEMP
-}
+    if ($ConfigurationName -eq "release") {
+        $Version = ""
 
-$PlaynitePathTEMP = "F:\Playnite_dev"
-if (Test-Path -Path $PlaynitePathTEMP) 
-{
-	$PlaynitePath = $PlaynitePathTEMP
-}
+        foreach ($Line in Get-Content (Join-Path $SolutionDir "extension.yaml")) {
+            if ($Line -imatch "Version:") {
+                $Version = $Line
+            }
+        }
 
+        $Manifest = (Join-Path $SolutionDir "..\manifest\")
+        $YmlFile = Get-ChildItem -Path $Manifest -Filter *.yaml | Select-Object -First 1
+        $Manifest = (Join-Path $Manifest $YmlFile.Name)
 
-$ToolboxPath = (Join-Path $PlaynitePath "toolbox.exe")
-$OutDirPath = (Join-Path $OutDir "..")
+        $Result = Get-Content $Manifest
 
+        if ($Result -imatch $Version) {
+            if (Test-Path $ToolboxPath) {
+                & $ToolboxPath "pack" $OutDir $OutDirPath
 
-if ($ConfigurationName -eq "release") 
-{
-	$Version = ""
-	foreach($Line in Get-Content (Join-Path $SolutionDir  "extension.yaml")) 
-	{
-		if($Line -imatch "Version:")
-		{
-			$Version = $Line
-		}
-	}
-
-	$Manifest = (Join-Path $SolutionDir  "..\manifest\")
-	$YmlFile = Get-ChildItem -Path $Manifest -Filter *.yaml | Select-Object -First 1
-	$Manifest = (Join-Path $Manifest $YmlFile.Name)
-
-	$Result = Get-Content $Manifest
-	if($Result -imatch $Version)
-	{
-		if (Test-Path $ToolboxPath)
-		{
-			& $ToolboxPath "pack" $OutDir $OutDirPath
-		
-			$Result = & $ToolboxPath "verify" "installer" $Manifest
-			if($Result -imatch "Installer manifest passed verification")
-			{		
-				
-			}
-			else 
-			{
-				echo $Result
-			}		
-		}
-		else 
-		{
-			echo "toolbox.exe not find."
-		}	
-	}
-	else
-	{
-		echo "Manifest not contains actual version"
-	}
+                $Result = & $ToolboxPath "verify" "installer" $Manifest
+                if ($Result -imatch "Installer manifest passed verification") {
+                    # Si nécessaire, ajouter des actions ici en cas de réussite
+                } else {
+                    Write-Host $Result
+                }
+            } else {
+                Write-Host "toolbox.exe not found."
+            }
+        } else {
+            Write-Host "Manifest does not contain the actual version"
+        }
+    }
 }
