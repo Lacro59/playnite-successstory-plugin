@@ -424,26 +424,25 @@ namespace SuccessStory.Clients
         {
             foreach (Platform playnitePlatform in playniteGame.Platforms)
             {
-                string[] exophasePlatformNames;
-                string sourceName = API.Instance.Database.Games.Get(playniteGame.Id).Source?.Name;
-                if (sourceName == "Xbox Game Pass")
+                string sourceName = string.Empty;
+                string key = string.Empty;
+                try
                 {
-                    if (!PlaynitePlatformSpecificationIdToExophasePlatformName.TryGetValue("xbox_game_pass", out exophasePlatformNames))
+                    sourceName = API.Instance.Database.Games.Get(playniteGame.Id)?.Source?.Name;
+                    key = sourceName == "Xbox Game Pass" ? "xbox_game_pass" : playnitePlatform.SpecificationId;
+                    if (!PlaynitePlatformSpecificationIdToExophasePlatformName.TryGetValue(key, out string[] exophasePlatformNames))
                     {
                         continue;
                     }
-                }
-                else
-                {
-                    if (!PlaynitePlatformSpecificationIdToExophasePlatformName.TryGetValue(playnitePlatform.SpecificationId, out exophasePlatformNames))
+
+                    if (exophaseGame?.Platforms?.IntersectsExactlyWith(exophasePlatformNames) ?? false)
                     {
-                        continue; //there are no natural matches between default Playnite platform name and Exophase platform name, so give up if it's not in the dictionary
+                        return true;
                     }
                 }
-
-                if (exophaseGame.Platforms.IntersectsExactlyWith(exophasePlatformNames))
+                catch (Exception ex)
                 {
-                    return true;
+                    Common.LogError(ex, false, $"Error on PlatformsMatch with {sourceName} - {key}");
                 }
             }
             return false;
