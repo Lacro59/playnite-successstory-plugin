@@ -75,7 +75,7 @@ namespace SuccessStory.Views
                 ControlDataContext.GameContext = GameContext;
                 ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
 
-                ControlDataContext.HasDataStats = gameAchievements.HasDataStats;
+                ControlDataContext.HasDataStats = gameAchievements?.HasDataStats ?? false;
             }
             catch (Exception ex)
             {
