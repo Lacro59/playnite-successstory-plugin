@@ -388,3 +388,15 @@ Packages:
       - 'Added: GogOssLibrary support'
       - 'Added: Sync Genshin Impact achievements via tracker (import data in game menu)'
       - 'Fixed: World of Warcraft Region List won''t load'
+  - Version: 3.4.1
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-12-20
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.4.1/playnite-successstory-plugin_3_4_1.pext
+    Changelog:
+      - 'Updated: Localizations'
+      - 'Fixed: Issue with date in manual achievements'
+      - 'Fixed: Many errors on download data'
+      - 'Improved: Time to calculate data'
+      - 'Fixed: "Electronic Arts" default filter not working'
+      - 'Fixed: Issue on GOG achievements (thanks to Jhanlon95)'
+      - 'Fixed: Issue on Steam achievements (thanks to Kryeker)'
