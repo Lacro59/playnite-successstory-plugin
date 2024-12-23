@@ -95,7 +95,7 @@ Musisz sprawdzić &quot;{1}&quot; w ustawieniach wtyczki</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Pobierz dane o osiągnięciach</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Odśwież dane</sys:String>
     <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Wymuś RetroAchievements Id</sys:String>
-    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Ustaw poprawny RetroAchievements Id</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Pobierz brakujące dane</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Ostatnie gry z brakującymi danymi</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Ostatnie gry</sys:String>
@@ -130,8 +130,8 @@ Musisz sprawdzić &quot;{1}&quot; w ustawieniach wtyczki</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Wyświetlaj najnowsze osiągnięcia w jednej linii</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Widok rozszerzenia</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Pokaż ukrytą ikonę, gdy osiągnięcie jest zablokowane</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Pokaż ukryty tytuł, gdy osiągnięcie jest zablokowane</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Wyświetlaj ukryty opis, gdy osiągnięcie jest zablokowane</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Pokaż wskaźnik rzadkości przy osiągnięciach</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Pokazuj wartość rzadkości z obrazem osiągnięć</sys:String>
