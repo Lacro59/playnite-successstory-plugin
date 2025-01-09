@@ -647,11 +647,16 @@ namespace SuccessStory.Clients
                                         Name = achievement.Path;
 
                                         dynamic elements = achievement.First;
-                                        dynamic unlockedTimeToken = elements.SelectToken("earned_time");
+                                        dynamic unlockedTimeToken = elements.SelectToken("earned_time").Value;
 
-                                        if (unlockedTimeToken.Value > 0)
+                                        if (unlockedTimeToken is string)
                                         {
-                                            DateUnlocked = new DateTime(1970, 1, 1).AddSeconds(unlockedTimeToken.Value);
+                                            unlockedTimeToken = UInt64.Parse(unlockedTimeToken);
+                                        }
+
+                                        if (unlockedTimeToken > 0)
+                                        {
+                                            DateUnlocked = new DateTime(1970, 1, 1).AddSeconds(unlockedTimeToken);
                                         }
 
                                         if (Name != string.Empty && DateUnlocked != null)
