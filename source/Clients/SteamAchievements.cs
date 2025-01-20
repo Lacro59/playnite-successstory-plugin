@@ -144,7 +144,7 @@ namespace SuccessStory.Clients
             {
                 if (IsManual)
                 {
-                    appId = SteamApi.GetAppId(game.Name);
+                    appId = SteamApi.GetAppId(game);
                     gameAchievements = GetManual(appId, game);
                 }
 
@@ -272,7 +272,7 @@ namespace SuccessStory.Clients
 
             if (appId == 0)
             {
-                appId = SteamApi.GetAppId(game.Name);
+                appId = SteamApi.GetAppId(game);
             }
             ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(appId.ToString(), null);
 

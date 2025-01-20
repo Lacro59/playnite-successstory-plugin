@@ -99,7 +99,7 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             GameAchievements gameAchievementsCached = SuccessStory.PluginDatabase.Get(game, true);
 
-            AppId = steamId != 0 ? steamId : SteamApi.GetAppId(game.Name);
+            AppId = steamId != 0 ? steamId : SteamApi.GetAppId(game);
             SteamEmulatorData data = Get(game, AppId, apiKey, isManual);
 
             if (gameAchievementsCached == null)
@@ -955,7 +955,7 @@ namespace SuccessStory.Clients
                                             int index = DataPath.FindIndex(x => x.IsEqual("steamemu"));
                                             string GameName = DataPath[index - 1];
 
-                                            uint TempSteamId = SteamApi.GetAppId(GameName);
+                                            uint TempSteamId = SteamApi.GetAppId(game);
                                             if (TempSteamId == appId)
                                             {
                                                 ReturnAchievements = GetSteamEmu(DirAchivements);
