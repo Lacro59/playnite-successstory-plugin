@@ -28,7 +28,7 @@
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam Profil ist nicht öffentlich</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam-Spiel &quot;{0}&quot; ist nicht öffentlich
-Überprüfen sie die Plugin-Einstellungen &quot;{1}&quot;</sys:String>
+Du musst in den Plugin die Einstellungen &quot;{1}&quot; überprüfen</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam wurde in den Einstellungen nicht richtig konfiguriert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Keine Steam Konfiguration und/oder API-Schlüssel</sys:String>
@@ -95,7 +95,7 @@
     <sys:String x:Key="LOCSuccessStoryGetData">Errungenschaftsdaten herunterladen</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Daten aktualisieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Erzwinge RetroAchievements Id</sys:String>
-    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Gültige RetroAchievements Id festlegen</sys:String>
+    <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Gültige RetroAchievements ID setzen</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Fehlende Daten herunterladen</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Aktuelle Spiele mit fehlenden Daten</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Neueste Spiele</sys:String>
@@ -130,7 +130,7 @@
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Zeige die letzte Errungenschaft in einer Zeile</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Erweiterungsansicht</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Verstecktes Symbol anzeigen, wenn die Errungenschaft gesperrt ist</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Verstecktes Icon anzeigen, wenn Errungenschaft gesperrt ist</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Versteckten Titel anzeigen, wenn die Errungenschaft gesperrt ist</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Versteckte Beschreibung anzeigen, wenn die Errungenschaft gesperrt ist</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Seltenheitsanzeige bei Errungenschaften anzeigen</sys:String>
