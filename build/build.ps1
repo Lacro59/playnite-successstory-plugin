@@ -29,7 +29,21 @@ else {
 
     if ($ConfigurationName -eq "debug-release") {
 		if (Test-Path $ToolboxPath) {
-			& $ToolboxPath "pack" $OutDir $OutDirPath
+			$string = & $ToolboxPath "pack" $OutDir $OutDirPath
+            Write-Host $string
+
+            if ($string -match '"([^"]+)"') {
+                $fullPath = $matches[1]
+                $fileName = Split-Path -Path $fullPath -Leaf
+                $fileNameWithoutExt = [System.IO.Path]::GetFileNameWithoutExtension($fileName)
+                
+                $zipPath = Join-Path $OutDirPath ($fileNameWithoutExt + ".zip")
+                if (Test-Path $zipPath) {
+                    Remove-Item $zipPath -Force
+                }
+                Compress-Archive -Path $fullPath -DestinationPath $zipPath
+                Write-Host "Compressed as ""$zipPath"""
+            }
 		} 
 		else {
 			Write-Host "toolbox.exe not found."
