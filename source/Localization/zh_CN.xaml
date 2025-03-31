@@ -21,7 +21,7 @@
     <sys:String x:Key="LOCSuccessStoryViewGame">查看游戏成就</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnored">忽略此游戏</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotIgnored">不忽略游戏</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotIgnored">不忽略此游戏</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">隐藏成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">隐藏没有解锁成就的游戏</sys:String>
@@ -31,7 +31,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam 已在功成名就中启用，但其库扩展在 Playnite 中禁用</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">未在设置中正确配置 Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">未配置 Steam 设置和/或 API 密钥</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">未找到Steam用户</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">未找到 Steam 用户</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">GOG 已在功成名就中启用，但其库扩展在 Playnite 中禁用</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG 用户未验证</sys:String>
@@ -250,10 +250,10 @@
     <sys:String x:Key="LOCSsQuickSearchInfo" xml:space="preserve">该插件使用 QuickSearch 插件的功能。
 要使用它，您必须使“successstory”或“ss”命令生效。
 
-这里是命令列表</sys:String>
+这里是命令列表：</sys:String>
 
-    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">此命令搜索具有所指定的全成就所需时间的游戏列</sys:String>
-    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">此命令搜索具有所指定的已解锁成就百分比的游戏列</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd1" xml:space="preserve">此命令搜索具有所指定的全成就所需时间的游戏列表。</sys:String>
+    <sys:String x:Key="LOCSsQuickSearchCmd2" xml:space="preserve">此命令搜索具有所指定的已解锁成就百分比的游戏列表。</sys:String>
 
 
     <!-- SuccessStorySearch -->
@@ -270,7 +270,7 @@
 
     <!-- SuccessStoryEditManual -->
 
-    <sys:String x:Key="LOCSsOnlyLocked">仅锁</sys:String>
+    <sys:String x:Key="LOCSsOnlyLocked">仅锁定</sys:String>
     <sys:String x:Key="LOCSsIncludeDescription">在搜索中包含描述</sys:String>
 
 </ResourceDictionary>
