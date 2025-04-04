@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using static CommonPluginsShared.PlayniteTools;
 using CommonPluginsShared.Extensions;
 using System.Threading.Tasks;
+using FuzzySharp;
 
 namespace SuccessStory.Services
 {
@@ -295,19 +296,23 @@ namespace SuccessStory.Services
             {
                 try
                 {
-                    EstimateTimeToUnlock EstimateTimeSteam = new EstimateTimeToUnlock();
-                    EstimateTimeToUnlock EstimateTimeXbox = new EstimateTimeToUnlock();
+                    EstimateTimeToUnlock estimateTimeSteam = new EstimateTimeToUnlock();
+                    EstimateTimeToUnlock estimateTimeXbox = new EstimateTimeToUnlock();
 
-                    List<TrueAchievementSearch> ListGames = TrueAchievements.SearchGame(game, OriginData.Steam);
-                    if (ListGames.Count > 0)
+                    List<TrueAchievementSearch> listGames = TrueAchievements.SearchGame(game, OriginData.Steam);
+                    if (listGames.Count > 0)
                     {
-                        if (ListGames[0].GameUrl.IsNullOrEmpty())
+                        var fuzzList = listGames.Select(x => new { MatchPercent = Fuzz.Ratio(game.Name, x.GameName), Data = x })
+                            .OrderByDescending(x => x.MatchPercent)
+                            .ToList();
+
+                        if (fuzzList.First().Data.GameUrl.IsNullOrEmpty())
                         {
                             Logger.Warn($"No TrueAchievements (Steam) url for {game.Name}");
                         }
                         else
                         {
-                            EstimateTimeSteam = TrueAchievements.GetEstimateTimeToUnlock(ListGames[0].GameUrl);
+                            estimateTimeSteam = TrueAchievements.GetEstimateTimeToUnlock(fuzzList.First().Data.GameUrl);
                         }
                     }
                     else
@@ -315,16 +320,20 @@ namespace SuccessStory.Services
                         Logger.Warn($"Game not found on TrueSteamAchivements (Steam) for {game.Name}");
                     }
 
-                    ListGames = TrueAchievements.SearchGame(game, OriginData.Xbox);
-                    if (ListGames.Count > 0)
+                    listGames = TrueAchievements.SearchGame(game, OriginData.Xbox);
+                    if (listGames.Count > 0)
                     {
-                        if (ListGames[0].GameUrl.IsNullOrEmpty())
+                        var fuzzList = listGames.Select(x => new { MatchPercent = Fuzz.Ratio(game.Name, x.GameName), Data = x })
+                            .OrderByDescending(x => x.MatchPercent)
+                            .ToList();
+
+                        if (fuzzList.First().Data.GameUrl.IsNullOrEmpty())
                         {
                             Logger.Warn($"No TrueAchievements (Xbox) url for {game.Name}");
                         }
                         else
                         {
-                            EstimateTimeXbox = TrueAchievements.GetEstimateTimeToUnlock(ListGames[0].GameUrl);
+                            estimateTimeXbox = TrueAchievements.GetEstimateTimeToUnlock(fuzzList.First().Data.GameUrl);
                         }
                     }
                     else
@@ -332,15 +341,15 @@ namespace SuccessStory.Services
                         Logger.Warn($"Game not found on TrueAchivements (Xbox) for {game.Name}");
                     }
 
-                    if (EstimateTimeSteam.DataCount >= EstimateTimeXbox.DataCount)
+                    if (estimateTimeSteam.DataCount >= estimateTimeXbox.DataCount)
                     {
                         Common.LogDebug(true, $"Get EstimateTime (Steam) for {game.Name}");
-                        gameAchievements.EstimateTime = EstimateTimeSteam;
+                        gameAchievements.EstimateTime = estimateTimeSteam;
                     }
                     else
                     {
                         Common.LogDebug(true, $"Get EstimateTime (Xbox) for {game.Name}");
-                        gameAchievements.EstimateTime = EstimateTimeXbox;
+                        gameAchievements.EstimateTime = estimateTimeXbox;
                     }
                 }
                 catch (Exception ex)
@@ -745,7 +754,7 @@ namespace SuccessStory.Services
             ActionAfterRefresh(webItem);
         }
 
-        internal override void Refresh(IEnumerable<Guid> ids, string message)
+        public override void Refresh(IEnumerable<Guid> ids, string message)
         {
             GlobalProgressOptions options = new GlobalProgressOptions($"{PluginName} - {message}")
             {

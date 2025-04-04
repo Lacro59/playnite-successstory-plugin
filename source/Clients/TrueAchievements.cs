@@ -34,7 +34,7 @@ namespace SuccessStory.Clients
         /// <returns></returns>
         public static List<TrueAchievementSearch> SearchGame(Game game, OriginData originData)
         {
-            List<TrueAchievementSearch> ListSearchGames = new List<TrueAchievementSearch>();
+            List<TrueAchievementSearch> listSearchGames = new List<TrueAchievementSearch>();
             string url;
             string urlBase;
             if (originData == OriginData.Steam)
@@ -53,38 +53,43 @@ namespace SuccessStory.Clients
 
             try
             {
-                string WebData = string.Empty;
-                using (IWebView WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                string reponse = string.Empty;
+                WebViewSettings webViewSettings = new WebViewSettings
                 {
-                    WebViewOffscreen.NavigateAndWait(url);
-                    WebData = WebViewOffscreen.GetPageSource();
+                    UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+                    JavaScriptEnabled = true
+                };
+                using (IWebView webViewOffscreen = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
+                {
+                    webViewOffscreen.NavigateAndWait(url);
+                    reponse = webViewOffscreen.GetPageSource();
                 }
 
-                if (WebData.IsNullOrEmpty())
+                if (reponse.IsNullOrEmpty())
                 {
                     Logger.Warn($"No data from {url}");
-                    return ListSearchGames;
+                    return listSearchGames;
                 }
 
                 HtmlParser parser = new HtmlParser();
-                IHtmlDocument htmlDocument = parser.Parse(WebData);
+                IHtmlDocument htmlDocument = parser.Parse(reponse);
 
-                if (WebData.IndexOf("There are no matching search results, please change your search terms") > -1)
+                if (reponse.IndexOf("There are no matching search results, please change your search terms") > -1)
                 {
-                    return ListSearchGames;
+                    return listSearchGames;
                 }
 
                 IElement SectionGames = htmlDocument.QuerySelector("#oSearchResults");
                 if (SectionGames == null)
                 {
-                    string GameUrl = htmlDocument.QuerySelector("link[rel=\"canonical\"]")?.GetAttribute("href");
-                    string GameImage = htmlDocument.QuerySelector("div.info img")?.GetAttribute("src");
+                    string gameUrl = htmlDocument.QuerySelector("link[rel=\"canonical\"]")?.GetAttribute("href");
+                    string gameImage = htmlDocument.QuerySelector("div.info img")?.GetAttribute("src");
 
-                    ListSearchGames.Add(new TrueAchievementSearch
+                    listSearchGames.Add(new TrueAchievementSearch
                     {
-                        GameUrl = GameUrl,
+                        GameUrl = gameUrl,
                         GameName = game.Name,
-                        GameImage = GameImage
+                        GameImage = gameImage
                     });
                 }
                 else
@@ -104,7 +109,7 @@ namespace SuccessStory.Clients
 
                                 if (ItemType.IsEqual("game"))
                                 {
-                                    ListSearchGames.Add(new TrueAchievementSearch
+                                    listSearchGames.Add(new TrueAchievementSearch
                                     {
                                         GameUrl = GameUrl,
                                         GameName = GameName,
@@ -125,7 +130,7 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
-            return ListSearchGames;
+            return listSearchGames;
         }
 
 
@@ -146,14 +151,19 @@ namespace SuccessStory.Clients
 
             try
             {
-                string WebData = string.Empty;
-                using (IWebView WebViewOffscreen = API.Instance.WebViews.CreateOffscreenView())
+                string reponse = string.Empty;
+                WebViewSettings webViewSettings = new WebViewSettings
                 {
-                    WebViewOffscreen.NavigateAndWait(UrlTrueAchievement);
-                    WebData = WebViewOffscreen.GetPageSource();
+                    UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+                    JavaScriptEnabled = true
+                };
+                using (IWebView webViewOffscreen = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
+                {
+                    webViewOffscreen.NavigateAndWait(UrlTrueAchievement);
+                    reponse = webViewOffscreen.GetPageSource();
                 }
 
-                if (WebData.IsNullOrEmpty())
+                if (reponse.IsNullOrEmpty())
                 {
                     Logger.Warn($"No data from {UrlTrueAchievement}");
                     return EstimateTimeToUnlock;
@@ -161,13 +171,13 @@ namespace SuccessStory.Clients
 
 
                 HtmlParser parser = new HtmlParser();
-                IHtmlDocument htmlDocument = parser.Parse(WebData);
+                IHtmlDocument htmlDocument = parser.Parse(reponse);
 
                 int NumberDataCount = 0;
                 foreach (IElement SearchElement in htmlDocument.QuerySelectorAll("div.game div.l1 div"))
                 {
-                    string Title = SearchElement.GetAttribute("title");
-                    if (!Title.IsNullOrEmpty() && (Title == "Maximum TrueAchievement" || Title == "Maximum TrueSteamAchievement"))
+                    string title = SearchElement.GetAttribute("title");
+                    if (!title.IsNullOrEmpty() && (title == "Maximum TrueAchievement" || title == "Maximum TrueSteamAchievement"))
                     {
                         string data = SearchElement.InnerHtml;
                         _ = int.TryParse(Regex.Replace(data, "[^0-9]", ""), out NumberDataCount);
