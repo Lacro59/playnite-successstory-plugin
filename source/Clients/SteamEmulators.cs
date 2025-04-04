@@ -978,7 +978,7 @@ namespace SuccessStory.Clients
                 #endregion
 
                 #region Get achievements
-                ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievementsSchema(appId);
+                ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievementsSchema(appId.ToString()).Item2;
                 steamAchievements?.ForEach(x =>
                 {
                     bool isFind = false;

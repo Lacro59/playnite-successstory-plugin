@@ -274,7 +274,7 @@ namespace SuccessStory.Clients
             {
                 appId = SteamApi.GetAppId(game);
             }
-            ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(appId.ToString(), null);
+            ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievementsSchema(appId.ToString()).Item2;
 
             if (steamAchievements?.Count > 0)
             {
@@ -301,7 +301,7 @@ namespace SuccessStory.Clients
 
         public void SetRarity(uint appId, GameAchievements gameAchievements)
         {
-            ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievements(appId.ToString(), null);
+            ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievementsSchema(appId.ToString()).Item2;
             steamAchievements.ForEach(x =>
             {
                 Models.Achievement found = gameAchievements.Items?.Find(y => y.ApiName.IsEqual(x.Id));
@@ -452,7 +452,7 @@ namespace SuccessStory.Clients
                         continue;
                     }
 
-                    ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievementsSchema(appId);
+                    ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievementsSchema(appId.ToString()).Item2;
                     int AchievementsCount = steamAchievements?.Count() ?? 0;
 
                     if (appId > 0)
