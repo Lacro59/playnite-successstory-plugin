@@ -112,13 +112,13 @@
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0,5" Name="PART_Grid" d:DesignWidth="400">
+                        <Grid Margin="5" Name="PART_Grid" d:DesignWidth="400" Height="65">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,5,0,0">
+                            <StackPanel Grid.Column="0" VerticalAlignment="Top">
                                 <StackPanel.Style>
                                     <Style TargetType="{x:Type StackPanel}">
                                         <Style.Triggers>
@@ -149,46 +149,10 @@
                                                           EnableRaretyIndicator="{Binding EnableRaretyIndicator}"
                                                           DisplayRaretyValue="{Binding DisplayRaretyValue}" />
                             </StackPanel>
-                        
-                            <Grid Grid.Column="1" Margin="10,0,0,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-
-                                <Grid Grid.Row="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="10" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <controls1:TextBlockTrimmed Grid.Column="0" Text="{Binding Name, FallbackValue='Achievement Title'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenTitle}" Value="False" />
-                                                            <Condition Binding="{Binding IsHidden}" Value="True" />
-                                                            <Condition Binding="{Binding IsUnlock}" Value="False" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <Setter Property="Effect">
-                                                            <Setter.Value>
-                                                                <BlurEffect Radius="4.0" KernelType="Box" />
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </MultiDataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </controls1:TextBlockTrimmed>
-
-                                    <Grid Grid.Column="1">
+                            <DockPanel Grid.Column="1" Margin="10,0,0,0" LastChildFill="True">
+                                <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+                                    <Grid DockPanel.Dock="Right">
                                         <TextBlock TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
                                                    Visibility="{Binding IsUnlock, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                    Text="{Binding DateWhenUnlocked, FallbackValue='1982-12-15 00:08:23', Converter={StaticResource LocalDateTimeConverter}}" />
@@ -213,10 +177,32 @@
                                             <Label Content="{Binding Progression.Progression}" HorizontalAlignment="Center" />
                                         </Grid>
                                     </Grid>
-                                </Grid>
+
+                                    <controls1:TextBlockTrimmed Text="{Binding Name, FallbackValue='Achievement Title'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenTitle}" Value="False" />
+                                                            <Condition Binding="{Binding IsHidden}" Value="True" />
+                                                            <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <BlurEffect Radius="4.0" KernelType="Box" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </controls1:TextBlockTrimmed>
+                                </DockPanel>
 
                                 <TextBlock Grid.Row="1" VerticalAlignment="Top" TextWrapping="Wrap" Foreground="{DynamicResource TextBrushDarker}"
-                                           Text="{Binding Description, FallbackValue='Achievement Description'}">
+                                           Name="PART_Desc"
+                                           Text="{Binding Description, FallbackValue='nodes:[parameters:workflowId:__rl:true,value:7bqOG58MCgr1sNKx,mode:list,cachedResultName:GLPI - Get SubItem,workflowInputs:mappingMode:defineBelow,value:isRecette:='}">
                                     <TextBlock.Width>
                                         <MultiBinding Converter="{StaticResource ValueOperationConverter}" ConverterParameter="-">
                                             <Binding ElementName="PART_GridContener" Path="ActualWidth" />
@@ -246,9 +232,9 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                            </Grid>
+                            </DockPanel>
 
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,5,5"
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0"
                                         Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.EnableGamerScore, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Label Content="&#xeacd;" FontFamily="{DynamicResource CommonFont}" VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding GamerScore}" Width="25" TextAlignment="Right" VerticalAlignment="Center" />
