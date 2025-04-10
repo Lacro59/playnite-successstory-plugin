@@ -291,7 +291,7 @@ namespace SuccessStory.Clients
                             timeUnlock = BitConverter.ToInt32(StringToByteArray(line.Replace("CurProgress = ", string.Empty)), 0);
                         }
 
-                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timeUnlock);
 
                         // End Achievement
                         if (timeUnlock != 0 && State)
@@ -348,7 +348,7 @@ namespace SuccessStory.Clients
                         Name = data[0];
                         sTimeUnlock = data[1];
                         timeUnlock = BitConverter.ToInt32(StringToByteArray(sTimeUnlock), 0);
-                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timeUnlock);
 
                         if (timeUnlock != 0)
                         {
@@ -407,7 +407,7 @@ namespace SuccessStory.Clients
                     {
                         sTimeUnlock = line.Replace("timestamp=", string.Empty);
                         timeUnlock = int.Parse(sTimeUnlock);
-                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+                        DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timeUnlock);
                     }
 
                     if (line == string.Empty)
@@ -469,7 +469,7 @@ namespace SuccessStory.Clients
                             Name = data[0].Trim();
                             sTimeUnlock = data.Last().Trim();
                             timeUnlock = int.Parse(sTimeUnlock.Replace("{unlocked = true, time = ", string.Empty).Replace("}", string.Empty));
-                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timeUnlock);
 
                             if (timeUnlock != 0)
                             {
@@ -537,7 +537,7 @@ namespace SuccessStory.Clients
                                         // Achievement UnlockTime
                                         if (line.IndexOf("UnlockTime") > -1 && line.ToLower() != "unlocktime=0")
                                         {
-                                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(line.Replace("UnlockTime=", string.Empty))).ToLocalTime();
+                                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(int.Parse(line.Replace("UnlockTime=", string.Empty)));
                                         }
 
                                         // End Achievement
@@ -609,7 +609,7 @@ namespace SuccessStory.Clients
                                                 }
                                             }
 
-                                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(timeUnlock).ToLocalTime();
+                                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(timeUnlock);
 
                                             // End Achievement
                                             if (timeUnlock != 0 && State)
@@ -780,7 +780,7 @@ namespace SuccessStory.Clients
                                             {
                                                 Name = achnames[Name];
                                                 int Date = BitConverter.ToInt32(datebyte, 0);
-                                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(Date).ToLocalTime();
+                                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Date);
                                                 if (Name != string.Empty && DateUnlocked != null)
                                                 {
                                                     ReturnAchievements.Add(new Achievement
@@ -851,7 +851,7 @@ namespace SuccessStory.Clients
                                             foreach (List<string> l in achlist)
                                             {
                                                 Name = l[0];
-                                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(l[1])).ToLocalTime();
+                                                DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(int.Parse(l[1]));
                                                 if (Name != string.Empty && DateUnlocked != null)
                                                 {
                                                     ReturnAchievements.Add(new Achievement
@@ -1092,7 +1092,7 @@ namespace SuccessStory.Clients
                         {
                             string[] data = line.Split('=');
 
-                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(int.Parse(data[1])).ToLocalTime();
+                            DateUnlocked = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(int.Parse(data[1]));
                             Name = data[0];
 
                             ReturnAchievements.Add(new Achievement

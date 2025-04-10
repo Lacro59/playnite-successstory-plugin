@@ -80,7 +80,7 @@ namespace SuccessStory.Clients
 
                         int.TryParse(earnedAchievement.completionDate, out int ElpasedTime);
 
-                        DateTime DateUnlocked = (ElpasedTime == 0) ? default : new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(ElpasedTime).ToLocalTime();
+                        DateTime DateUnlocked = (ElpasedTime == 0) ? default : new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(ElpasedTime);
 
                         Models.StarCraft2.Category cat = battleNetSc2Ach.Categories.FirstOrDefault(x => x.Id == achievement.CategoryId);
                         Models.StarCraft2.Category catParent = battleNetSc2Ach.Categories.FirstOrDefault(x => x.Id == cat.ParentCategoryId);
