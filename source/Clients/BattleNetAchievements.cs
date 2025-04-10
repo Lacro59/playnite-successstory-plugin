@@ -12,7 +12,7 @@ namespace SuccessStory.Clients
         protected string UrlLogin => @"https://account.battle.net/login";
 
 
-        public BattleNetAchievements(string ClientName, string LocalLang = "", string LocalLangShort = "") : base(ClientName, LocalLang, LocalLangShort)
+        public BattleNetAchievements(string clientName, string localLang = "", string localLangShort = "") : base(clientName, localLang, localLangShort)
         {
 
         }
