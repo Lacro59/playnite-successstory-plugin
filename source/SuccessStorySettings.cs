@@ -142,6 +142,7 @@ namespace SuccessStory
         public bool EnableXbox { get; set; } = false;
         public bool EnableRetroAchievements { get; set; } = false;
         public bool EnableRpcs3Achievements { get; set; } = false;
+        public bool EnableGameJolt { get; set; } = false;
 
         public bool EnableOverwatchAchievements { get; set; } = false;
         public bool EnableSc2Achievements { get; set; } = false;
@@ -157,6 +158,8 @@ namespace SuccessStory
 
         public bool EnableRetroAchievementsView { get; set; } = false;
         public bool EnableOneGameView { get; set; } = true;
+
+        public string GameJoltUser { get; set; } = string.Empty;
 
         public string RetroAchievementsUser { get; set; } = string.Empty;
         public string RetroAchievementsKey { get; set; } = string.Empty;

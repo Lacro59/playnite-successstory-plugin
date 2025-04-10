@@ -174,6 +174,11 @@ namespace SuccessStory
                                 icon = TransformIcon.Get("Rpcs3") + " ";
                                 FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Rpcs3", SourceNameShort = "Rpcs3", IsCheck = false });
                             }
+                            if (PluginDatabase.PluginSettings.Settings.EnableGameJolt)
+                            {
+                                icon = TransformIcon.Get("Game Jolt") + " ";
+                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Game Jolt", SourceNameShort = "Game Jolt", IsCheck = false });
+                            }
                             if (PluginDatabase.PluginSettings.Settings.EnablePsn)
                             {
                                 icon = TransformIcon.Get("Playstation") + " ";
@@ -247,6 +252,11 @@ namespace SuccessStory
                         {
                             icon = TransformIcon.Get("RPCS3") + " ";
                             FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "RPCS3", SourceNameShort = "Rpcs3", IsCheck = false });
+                        }
+                        if (PluginDatabase.PluginSettings.Settings.EnableGameJolt)
+                        {
+                            icon = TransformIcon.Get("Game Jolt") + " ";
+                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Game Jolt", SourceNameShort = "Game Jolt", IsCheck = false });
                         }
                         if (PluginDatabase.PluginSettings.Settings.EnablePsn)
                         {

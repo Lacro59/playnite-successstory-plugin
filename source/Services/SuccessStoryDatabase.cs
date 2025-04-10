@@ -48,6 +48,7 @@ namespace SuccessStory.Services
                             { AchievementSource.Xbox, new XboxAchievements() },
                             { AchievementSource.GenshinImpact, new GenshinImpactAchievements() },
                             { AchievementSource.GuildWars2, new GuildWars2Achievements() },
+                            { AchievementSource.GameJolt, new GameJoltAchievements() },
                             { AchievementSource.Local, SteamAchievements.GetLocalSteamAchievementsProvider() }
                         };
                     }
@@ -230,6 +231,9 @@ namespace SuccessStory.Services
             GameAchievements gameAchievements = GetDefault(game);
             AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
 
+            //
+            achievementSource = AchievementSource.GameJolt;
+
             if (achievementSource == AchievementSource.None)
             {
                 Logger.Warn($"No provider find for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
@@ -377,7 +381,8 @@ namespace SuccessStory.Services
             Starcraft2,
             Wow,
             GenshinImpact,
-            GuildWars2
+            GuildWars2,
+            GameJolt
         }
 
         private static AchievementSource GetAchievementSourceFromLibraryPlugin(SuccessStorySettings settings, Game game)
@@ -472,6 +477,13 @@ namespace SuccessStory.Services
 
                 case ExternalPlugin.XboxLibrary:
                     if (settings.EnableXbox)
+                    {
+                        return AchievementSource.Xbox;
+                    }
+                    break;
+
+                case ExternalPlugin.GameJoltLibrary:
+                    if (settings.EnableGameJolt)
                     {
                         return AchievementSource.Xbox;
                     }
@@ -610,6 +622,7 @@ namespace SuccessStory.Services
             Logger.Warn($"VerifToAddOrShow() find no action for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
             return false;
         }
+        
         public bool VerifAchievementsLoad(Guid gameId)
         {
             return GetOnlyCache(gameId) != null;

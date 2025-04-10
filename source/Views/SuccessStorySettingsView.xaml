@@ -33,43 +33,8 @@
         <TabControl Name="tcSettings">
             <TabItem Header="{DynamicResource LOCSuccessStory}">
                 <ScrollViewer  Margin="0,10,0,0">
-                    <Grid Name="SuccessStorySettings">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="0" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="0" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="0" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="0" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="0" />
-                            <RowDefinition Height="auto" />
-                            
-                            <RowDefinition Height="30" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="30" />
-                            
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="0" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="0" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="30" />
-                            
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="10" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-
-                        <Expander Grid.Row="0" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True"
+                    <StackPanel Name="SuccessStorySettings">
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True"
                                   Visibility="{Binding Settings.PluginState.SteamIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -110,7 +75,7 @@
                             </Expander.Content-->
                         </Expander>
 
-                        <Expander Grid.Row="2" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
                                   Visibility="{Binding Settings.PluginState.GogIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -139,7 +104,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="4" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
                                   Visibility="{Binding Settings.PluginState.OriginIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -168,7 +133,35 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="6" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
+
+                        <Expander Margin="0,10,0,0"
+                                  Visibility="{Binding Settings.PluginState.GameJoltIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableGameJolt}" Name="PART_EnableGameJolt" VerticalAlignment="Center">
+                                    <Label Content="{DynamicResource LOCSuccessStoryEnableGameJoltAchievements}" />
+                                </CheckBox>
+                            </Expander.Header>
+
+                            <Expander.Content>
+                                <Border IsEnabled="{Binding ElementName=PART_EnableGameJolt, Path=IsChecked}"
+				                        Margin="5" Padding="10"
+				                        BorderBrush="{DynamicResource PopupBorderBrush}"
+				                        BorderThickness="{DynamicResource PopupBorderThickness}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="{DynamicResource LOCCommonAccountName}" Margin="0,0,5,0" />
+                                        <TextBox Text="{Binding Settings.GameJoltUser}" Width="200" />
+                                    </StackPanel>
+                                </Border>
+                            </Expander.Content>
+                        </Expander>
+
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
                                   Visibility="{Binding Settings.PluginState.XboxIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -197,7 +190,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="8" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
                                   Visibility="{Binding Settings.PluginState.EpicIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -226,7 +219,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="10" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
                                   Visibility="{Binding Settings.PluginState.PsnIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -255,7 +248,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="12" Margin="0,10,0,0">
+                        <Expander Margin="0,10,0,0">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -344,7 +337,7 @@
                             </Expander.Content>
                         </Expander>
 
-                        <Expander Grid.Row="14">
+                        <Expander Margin="0,10,0,0">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -365,7 +358,7 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableRpcs3Achievements}" Name="PART_EnableRpcs3Achievements" VerticalAlignment="Center">
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableRpcs3Achievements}" Name="PART_EnableRpcs3" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableRpcs3Achievements}" />
                                     </CheckBox>
 
@@ -375,7 +368,7 @@
                             </Expander.Header>
 
                             <Expander.Content>
-                                <Border IsEnabled="{Binding ElementName=PART_EnableRpcs3Achievements, Path=IsChecked}"
+                                <Border IsEnabled="{Binding ElementName=PART_EnableRpcs3, Path=IsChecked}"
 				                        Margin="5" Padding="10"
 				                        BorderBrush="{DynamicResource PopupBorderBrush}"
 				                        BorderThickness="{DynamicResource PopupBorderThickness}">
@@ -447,7 +440,7 @@
                         </Expander>
 
 
-                        <Expander Grid.Row="16" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
                                   Visibility="{Binding Settings.PluginState.BattleNetIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -469,7 +462,7 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" Grid.Row="10" IsEnabled="false" IsChecked="{Binding Settings.EnableOverwatchAchievements}" VerticalAlignment="Center">
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsEnabled="false" IsChecked="{Binding Settings.EnableOverwatch}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableOverwatchAchievements}" />
                                     </CheckBox>
 
@@ -479,7 +472,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="18" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
                                   Visibility="{Binding Settings.PluginState.BattleNetIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -511,7 +504,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="20" Margin="0,10,0,0"
+                        <Expander Margin="0,10,0,0"
                                   Visibility="{Binding Settings.PluginState.BattleNetIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -606,7 +599,7 @@
                             </Expander.Content>
                         </Expander>
 
-                        <Expander Grid.Row="22" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True">
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -624,7 +617,7 @@
 
 
 
-                        <Expander Grid.Row="24">
+                        <Expander Margin="0,10,0,0">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -674,7 +667,7 @@
                             </Expander.Content>
                         </Expander>
 
-                        <Expander Grid.Row="26" AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0">
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
                                     <Setter Property="Background" Value="Transparent" />
@@ -688,7 +681,7 @@
                             </Expander.Header>
                         </Expander>
 
-                        <Expander Grid.Row="28"
+                        <Expander Margin="0,10,0,0"
                                   Visibility="{Binding Settings.EnableLocal, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -776,7 +769,7 @@
                                 </Border>
                             </Expander.Content>
                         </Expander>
-                    </Grid>
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
 

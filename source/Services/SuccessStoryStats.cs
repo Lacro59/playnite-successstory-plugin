@@ -206,6 +206,10 @@ namespace SuccessStory.Services
                     {
                         chartLabelsList.Add("RPCS3");
                     }
+                    if (PluginDatabase.PluginSettings.Settings.EnableGameJolt)
+                    {
+                        chartLabelsList.Add("Game Jolt");
+                    }
                     if (PluginDatabase.PluginSettings.Settings.EnableSc2Achievements || PluginDatabase.PluginSettings.Settings.EnableOverwatchAchievements || PluginDatabase.PluginSettings.Settings.EnableWowAchievements)
                     {
                         chartLabelsList.Add("Battle.net");

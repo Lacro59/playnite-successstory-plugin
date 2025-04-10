@@ -157,6 +157,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clients\GameJoltAchievements.cs" />
     <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
       <DependentUpon>AchievementImage.xaml</DependentUpon>
     </Compile>
