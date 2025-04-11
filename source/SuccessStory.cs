@@ -28,6 +28,7 @@ using SuccessStory.Clients;
 using SuccessStory.Models.RetroAchievements;
 using CommonPluginsStores.Epic;
 using CommonPluginsStores.Gog;
+using CommonPluginsStores.GameJolt;
 
 namespace SuccessStory
 {
@@ -38,6 +39,7 @@ namespace SuccessStory
         public static SteamApi SteamApi { get; set; }
         public static EpicApi EpicApi { get; set; }
         public static GogApi GogApi { get; set; }
+        public static GameJoltApi GameJoltApi { get; set; }
 
         internal TopPanelItem TopPanelItem { get; set; }
         internal SidebarItem SidebarItem { get; set; }
@@ -860,6 +862,14 @@ namespace SuccessStory
             if (PluginDatabase.PluginSettings.Settings.EnableGog)
             {
                 _ = GogApi.CurrentAccountInfos;
+            }
+
+            GameJoltApi = new GameJoltApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
+            GameJoltApi.SetLanguage(API.Instance.ApplicationSettings.Language);
+            GameJoltApi.StoreSettings = PluginDatabase.PluginSettings.Settings.GameJoltStoreSettings;
+            if (PluginDatabase.PluginSettings.Settings.EnableGameJolt)
+            {
+                _ = GameJoltApi.CurrentAccountInfos;
             }
 
 

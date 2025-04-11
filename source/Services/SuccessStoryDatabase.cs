@@ -485,7 +485,7 @@ namespace SuccessStory.Services
                 case ExternalPlugin.GameJoltLibrary:
                     if (settings.EnableGameJolt)
                     {
-                        return AchievementSource.Xbox;
+                        return AchievementSource.GameJolt;
                     }
                     break;
 

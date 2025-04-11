@@ -14,8 +14,7 @@ namespace SuccessStory.Clients
 {
     public class GameJoltAchievements : GenericAchievements
     {
-        protected static readonly Lazy<GameJoltApi> gameJoltApi = new Lazy<GameJoltApi>(() => new GameJoltApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory));
-        internal static GameJoltApi GameJoltApi => gameJoltApi.Value;
+        private GameJoltApi GameJoltApi => SuccessStory.GameJoltApi;
 
 
         public GameJoltAchievements() : base("Game Jolt")
@@ -32,20 +31,10 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    string id = game.GameId;
-                    id = game.Name;
-
-                    string user = PluginDatabase.PluginSettings.Settings.GameJoltUser;
-                    if (!user.StartsWith("@"))
+                    ObservableCollection<GameAchievement> gameJoltAchievements = GameJoltApi.GetAchievements(game.GameId, GameJoltApi.CurrentAccountInfos);
+                    if (gameJoltAchievements?.Count > 0)
                     {
-                        user = "@" + user;
-                    }
-                    GameJoltApi.CurrentAccountInfos.Pseudo = user;
-
-                    ObservableCollection<GameAchievement> gogAchievements = GameJoltApi.GetAchievements(id, GameJoltApi.CurrentAccountInfos);
-                    if (gogAchievements?.Count > 0)
-                    {
-                        AllAchievements = gogAchievements.Select(x => new Achievement
+                        AllAchievements = gameJoltAchievements.Select(x => new Achievement
                         {
                             ApiName = x.Id,
                             Name = x.Name,
@@ -63,7 +52,7 @@ namespace SuccessStory.Clients
                     // Set source link
                     if (gameAchievements.HasAchievements)
                     {
-                        gameAchievements.SourcesLink = GameJoltApi.GetAchievementsSourceLink(game.Name, id, GameJoltApi.CurrentAccountInfos);
+                        gameAchievements.SourcesLink = GameJoltApi.GetAchievementsSourceLink(game.Name, game.GameId, GameJoltApi.CurrentAccountInfos);
                     }
                 }
                 catch (Exception ex)
@@ -86,7 +75,7 @@ namespace SuccessStory.Clients
         {
             if (!PluginDatabase.PluginSettings.Settings.PluginState.GameJoltIsEnabled)
             {
-                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsEpicDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsGameJoltDisabled"));
                 return false;
             }
             else
@@ -107,7 +96,7 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
-            return !PluginDatabase.PluginSettings.Settings.GameJoltUser.IsNullOrEmpty();
+            return !GameJoltApi.CurrentAccountInfos?.Pseudo?.IsNullOrEmpty() ?? false;
         }
 
         public override bool EnabledInSettings()

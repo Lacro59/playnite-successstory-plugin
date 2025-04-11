@@ -16,6 +16,7 @@
              xmlns:Steam="clr-namespace:CommonPluginsControls.Stores.Steam" 
              xmlns:Epic="clr-namespace:CommonPluginsControls.Stores.Epic" 
              xmlns:Gog="clr-namespace:CommonPluginsControls.Stores.Gog" 
+             xmlns:GameJolt="clr-namespace:CommonPluginsControls.Stores.GameJolt" 
              xmlns:pctrls="clr-namespace:CommonPlayniteShared.Controls"
              mc:Ignorable="d" d:DesignWidth="650"
              d:DataContext="{d:DesignInstance SuccessStory:SuccessStorySettingsViewModel, IsDesignTimeCreatable=True}">
@@ -134,7 +135,7 @@
                         </Expander>
 
 
-                        <Expander Margin="0,10,0,0"
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
                                   Visibility="{Binding Settings.PluginState.GameJoltIsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Expander.Style>
                                 <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
@@ -147,18 +148,6 @@
                                     <Label Content="{DynamicResource LOCSuccessStoryEnableGameJoltAchievements}" />
                                 </CheckBox>
                             </Expander.Header>
-
-                            <Expander.Content>
-                                <Border IsEnabled="{Binding ElementName=PART_EnableGameJolt, Path=IsChecked}"
-				                        Margin="5" Padding="10"
-				                        BorderBrush="{DynamicResource PopupBorderBrush}"
-				                        BorderThickness="{DynamicResource PopupBorderThickness}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{DynamicResource LOCCommonAccountName}" Margin="0,0,5,0" />
-                                        <TextBox Text="{Binding Settings.GameJoltUser}" Width="200" />
-                                    </StackPanel>
-                                </Border>
-                            </Expander.Content>
                         </Expander>
 
                         <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0"
@@ -1769,9 +1758,12 @@
 
                     <Epic:PanelView x:Name="EpicPanel" Margin="0,0,0,10"
                                     UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.EpicStoreSettings.UseAuth, Mode=TwoWay}" />
-                    
-                    <Gog:PanelView x:Name="GogPanel" 
+
+                    <Gog:PanelView x:Name="GogPanel" Margin="0,0,0,10"
                                     UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.GogStoreSettings.UseAuth, Mode=TwoWay}" />
+
+                    <GameJolt:PanelView x:Name="GameJoltPanel" 
+                                        UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.GameJoltStoreSettings.UseAuth, Mode=TwoWay}" />
                 </StackPanel>
             </TabItem>
 

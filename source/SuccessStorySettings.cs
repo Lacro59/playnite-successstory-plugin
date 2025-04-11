@@ -159,8 +159,6 @@ namespace SuccessStory
         public bool EnableRetroAchievementsView { get; set; } = false;
         public bool EnableOneGameView { get; set; } = true;
 
-        public string GameJoltUser { get; set; } = string.Empty;
-
         public string RetroAchievementsUser { get; set; } = string.Empty;
         public string RetroAchievementsKey { get; set; } = string.Empty;
         public List<RaConsoleAssociated> RaConsoleAssociateds { get; set; } = new List<RaConsoleAssociated>();
@@ -210,9 +208,10 @@ namespace SuccessStory
         public EpicSettings EpicSettings { get; set; } = new EpicSettings();
         public GogSettings GogSettings { get; set; } = new GogSettings();
 
-        public StoreSettings SteamStoreSettings { get; set; }
-        public StoreSettings EpicStoreSettings { get; set; }
-        public StoreSettings GogStoreSettings { get; set; }
+        public StoreSettings SteamStoreSettings { get; set; } = new StoreSettings();
+        public StoreSettings EpicStoreSettings { get; set; } = new StoreSettings();
+        public StoreSettings GogStoreSettings { get; set; } = new StoreSettings();
+        public StoreSettings GameJoltStoreSettings { get; set; } = new StoreSettings();
         #endregion
 
         // Playnite serializes settings object to a JSON object and saves it as text file.
@@ -388,6 +387,14 @@ namespace SuccessStory
                 SuccessStory.GogApi.SaveCurrentUser();
                 SuccessStory.GogApi.CurrentAccountInfos = null;
                 _ = SuccessStory.GogApi.CurrentAccountInfos;
+            }
+
+            SuccessStory.GameJoltApi.StoreSettings = Settings.GameJoltStoreSettings;
+            if (Settings.EnableGameJolt)
+            {
+                SuccessStory.GameJoltApi.SaveCurrentUser();
+                SuccessStory.GameJoltApi.CurrentAccountInfos = null;
+                _ = SuccessStory.GameJoltApi.CurrentAccountInfos;
             }
 
 

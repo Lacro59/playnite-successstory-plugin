@@ -57,6 +57,7 @@ namespace SuccessStory.Views
                 SteamPanel.StoreApi = SuccessStory.SteamApi;
                 EpicPanel.StoreApi = SuccessStory.EpicApi;
                 GogPanel.StoreApi = SuccessStory.GogApi;
+                GameJoltPanel.StoreApi = SuccessStory.GameJoltApi;
 
                 PART_WowRegion.Text = PluginDatabase.PluginSettings.Settings.WowRegions.Find(x => x.IsSelected)?.Name;
                 PART_WowRealm.Text = PluginDatabase.PluginSettings.Settings.WowRealms.Find(x => x.IsSelected)?.Name;
