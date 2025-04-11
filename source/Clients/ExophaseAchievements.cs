@@ -99,7 +99,7 @@ namespace SuccessStory.Clients
                 {
                     using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
                     {
-                        GetCookies()?.ForEach(x => { webView.SetCookies(x.Domain, x); });
+                        GetCookies()?.ForEach(x => { webView.SetCookies("https://" + x.Domain, x); });
                         webView.NavigateAndWait(searchResult.Url);
                         dataExophaseLocalised = webView.GetPageSource();
                         webView.DeleteDomainCookies(".exophase.com");
@@ -181,6 +181,7 @@ namespace SuccessStory.Clients
             {
                 WindowWidth = 580,
                 WindowHeight = 700,
+                JavaScriptEnabled = true,
                 // This is needed otherwise captcha won't pass
                 UserAgent = Web.UserAgent
             };
