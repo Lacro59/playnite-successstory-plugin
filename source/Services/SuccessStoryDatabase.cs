@@ -619,7 +619,7 @@ namespace SuccessStory.Services
                 return achievementProvider.ValidateConfiguration();
             }
 
-            Logger.Warn($"VerifToAddOrShow() find no action for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
+            Logger.Warn($"VerifToAddOrShow() found no action for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
             return false;
         }
         

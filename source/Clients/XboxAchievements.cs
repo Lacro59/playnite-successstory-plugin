@@ -275,7 +275,7 @@ namespace SuccessStory.Clients
             if (titleId.IsNullOrEmpty())
             {
                 relevantAchievements = response.achievements.Where(x => x.titleAssociations.First().name.IsEqual(game.Name, true)).ToList();
-                Common.LogDebug(true, $"Not find with {game.GameId} for {game.Name} - {relevantAchievements.Count}");
+                Common.LogDebug(true, $"Not found with {game.GameId} for {game.Name} - {relevantAchievements.Count}");
             }
             else
             {

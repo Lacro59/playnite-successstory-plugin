@@ -386,12 +386,12 @@ namespace SuccessStory.Clients
             }
             else
             {
-                Logger.Warn($"No console find for {GameName} with {PlatformName}");
+                Logger.Warn($"No console found for {GameName} with {PlatformName}");
             }
 
             if (gameID == 0)
             {
-                Logger.Warn($"No game find for {GameName} with {PlatformName} in {consoleID}");
+                Logger.Warn($"No game found for {GameName} with {PlatformName} in {consoleID}");
             }
 
             return gameID;
@@ -516,7 +516,7 @@ namespace SuccessStory.Clients
                 }
                 if (GameId == 0)
                 {
-                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.All");
+                    Logger.Warn($"No game found for {game.Name} with {HashMD5} in PlatformType.NDS");
                 }
 
                 HashMD5 = GetHash(FilePath, RaPlatformType.SNES);

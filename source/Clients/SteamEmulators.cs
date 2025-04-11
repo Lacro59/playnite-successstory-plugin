@@ -1024,7 +1024,7 @@ namespace SuccessStory.Clients
                     SteamSchema steamSchema = SteamKit.GetSchemaForGame(apiKey, appId, CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language));
                     steamSchema?.Stats?.ForEach(x =>
                     {
-                        bool isFind = false;
+                        bool isFound = false;
                         for (int j = 0; j < ReturnStats.Count; j++)
                         {
                             if (ReturnStats[j].Name.IsEqual(x.Name))
@@ -1035,13 +1035,13 @@ namespace SuccessStory.Clients
                                     Value = ReturnStats[j].Value
                                 };
 
-                                isFind = true;
+                                isFound = true;
                                 ReturnStats[j] = temp;
                                 j = ReturnStats.Count;
                             }
                         }
 
-                        if (!isFind)
+                        if (!isFound)
                         {
                             ReturnStats.Add(new GameStats
                             {

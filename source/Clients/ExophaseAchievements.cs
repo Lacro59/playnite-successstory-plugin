@@ -322,7 +322,7 @@ namespace SuccessStory.Clients
             string achievementsUrl = GetAchievementsPageUrl(gameAchievements, source);
             if (achievementsUrl.IsNullOrEmpty())
             {
-                Logger.Warn($"No Exophase (rarity) url find for {gameAchievements.Name} - {gameAchievements.Id}");
+                Logger.Warn($"No Exophase (rarity) url found for {gameAchievements.Name} - {gameAchievements.Id}");
                 return;
             }
 
