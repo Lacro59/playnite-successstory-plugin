@@ -124,7 +124,7 @@ namespace SuccessStory.Clients
                                     }
                                     else
                                     {
-                                        Logger.Warn($"No trohpies find for {game.Name} - {GameId}");
+                                        Logger.Warn($"No trophies found for {game.Name} - {GameId}");
                                         gameAchievements.Items = AllAchievements;
                                         return gameAchievements;
                                     }
@@ -157,7 +157,7 @@ namespace SuccessStory.Clients
                     }
                     catch
                     {
-                        Logger.Warn($"No trophiesDetails find for {game.Name} - {GameId}");
+                        Logger.Warn($"No trophiesDetails found for {game.Name} - {GameId}");
                         gameAchievements.Items = AllAchievements;
                         return gameAchievements;
                     }
