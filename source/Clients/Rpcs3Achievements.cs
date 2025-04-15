@@ -24,136 +24,163 @@ namespace SuccessStory.Clients
 
         }
 
-
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievement> AllAchievements = new List<Achievement>();
+            List<Achievement> allAchievements = new List<Achievement>();
 
 
             if (IsConfigured())
             {
-                List<string> TrophyDirectories = FindTrophyGameFolder(game);
-                string TrophyFile = "TROPUSR.DAT";
-                string TrophyFileDetails = "TROPCONF.SFM";
+                List<string> trophyDirectories = FindTrophyGameFolder(game);
+                string trophyFile = "TROPUSR.DAT";
+                string trophyFileDetails = "TROPCONF.SFM";
 
 
                 // Directory control
-                if (TrophyDirectories.Count == 0)
+                if (trophyDirectories.Count == 0)
                 {
                     Logger.Warn($"No Trophy directoy found for {game.Name}");
                     return gameAchievements;
                 }
 
-                foreach (string TrophyDirectory in TrophyDirectories)
+                foreach (string trophyDirectory in trophyDirectories)
                 {
-                    AllAchievements = new List<Achievement>();
+                    allAchievements = new List<Achievement>();
 
-                    string trophyFilePath = Paths.FixPathLength(Path.Combine(TrophyDirectory, TrophyFile));
-                    string trophyFileDetailsPath = Paths.FixPathLength(Path.Combine(TrophyDirectory, TrophyFileDetails));
+                    string trophyFilePath = Paths.FixPathLength(Path.Combine(trophyDirectory, trophyFile));
+                    string trophyFileDetailsPath = Paths.FixPathLength(Path.Combine(trophyDirectory, trophyFileDetails));
 
                     if (!File.Exists(trophyFilePath))
                     {
-                        Logger.Warn($"File {TrophyFile} not found for {game.Name} in {trophyFilePath}");
+                        Logger.Warn($"File {trophyFile} not found for {game.Name} in {trophyFilePath}");
                         continue;
                     }
                     if (!File.Exists(trophyFileDetailsPath))
                     {
-                        Logger.Warn($"File {TrophyFileDetails} not found for {game.Name} in {trophyFileDetailsPath}");
+                        Logger.Warn($"File {trophyFileDetails} not found for {game.Name} in {trophyFileDetailsPath}");
                         continue;
                     }
 
 
-                    int TrophyCount = 0;
-                    List<string> TrophyHexData = new List<string>();
+                    int trophyCount = 0;
+                    List<string> trophyHexData = new List<string>();
 
 
                     // Trophies details
-                    XDocument TrophyDetailsXml = XDocument.Load(trophyFileDetailsPath);
+                    XDocument trophyDetailsXml = XDocument.Load(trophyFileDetailsPath);
 
-                    string GameName = TrophyDetailsXml.Descendants("title-name").FirstOrDefault().Value.Trim();
+                    string gameName = trophyDetailsXml.Descendants("title-name").FirstOrDefault().Value.Trim();
 
-                    foreach (XElement TrophyXml in TrophyDetailsXml.Descendants("trophy"))
+                    // eFMann - Get all trophies, including those in groups                    
+                    Dictionary<string, string> groupsDict = trophyDetailsXml.Descendants("group")
+                        .ToDictionary(
+                            g => g.Attribute("id")?.Value,
+                            g => g.Element("name")?.Value
+                        );
+
+                    foreach (XElement trophyXml in trophyDetailsXml.Descendants("trophy"))
                     {
-                        _ = int.TryParse(TrophyXml.Attribute("id").Value, out int TrophyDetailsId);
-                        string TrophyType = TrophyXml.Attribute("ttype").Value;
-                        string Name = TrophyXml.Element("name").Value;
-                        string Description = TrophyXml.Element("detail").Value;
+                        _ = int.TryParse(trophyXml.Attribute("id").Value, out int TrophyDetailsId);
+                        string trophyType = trophyXml.Attribute("ttype").Value;
+                        string name = trophyXml.Element("name").Value;
+                        string description = trophyXml.Element("detail").Value;
 
-                        int Percent = 100;
-                        float GamerScore = 15;
-                        if (TrophyType.IsEqual("S"))
+                        // Get group name from cache instead of querying XML
+                        string groupId = trophyXml.Attribute("gid")?.Value;
+                        string groupName = groupId != null && groupsDict.ContainsKey(groupId)
+                            ? groupsDict[groupId]
+                            : null;
+
+                        int percent = 100;
+                        float gamerScore = 15;
+                        if (trophyType.IsEqual("S"))
                         {
-                            Percent = 30;
-                            GamerScore = 30;
+                            percent = (int)PluginDatabase.PluginSettings.Settings.RarityUncommon;
+                            gamerScore = 30;
                         }
-                        if (TrophyType.IsEqual("G"))
+                        if (trophyType.IsEqual("G"))
                         {
-                            Percent = 10;
-                            GamerScore = 90;
+                            percent = (int)PluginDatabase.PluginSettings.Settings.RarityRare;
+                            gamerScore = 90;
                         }
-                        if (TrophyType.IsEqual("P"))
+                        if (trophyType.IsEqual("P"))
                         {
-                            Percent = 5;
-                            GamerScore = 180;
+                            percent = (int)PluginDatabase.PluginSettings.Settings.RarityUltraRare;
+                            gamerScore = 180;
                         }
 
-                        AllAchievements.Add(new Achievement
+                        allAchievements.Add(new Achievement
                         {
                             ApiName = string.Empty,
-                            Name = Name,
-                            Description = Description,
-                            UrlUnlocked = CopyTrophyFile(TrophyDirectory, "TROP" + TrophyDetailsId.ToString("000") + ".png"),
+                            Name = name,
+                            Description = description,
+                            UrlUnlocked = CopyTrophyFile(trophyDirectory, "TROP" + TrophyDetailsId.ToString("000") + ".png"),
                             UrlLocked = string.Empty,
                             DateUnlocked = default(DateTime),
-                            Percent = Percent,
-                            GamerScore = GamerScore,
+                            Percent = percent,
+                            GamerScore = gamerScore,
 
-                            CategoryRpcs3 = TrophyDirectories.Count > 1 ? GameName : null
+                            CategoryRpcs3 = trophyDirectories.Count > 1 ? gameName : null
                         });
                     }
 
 
-                    TrophyCount = AllAchievements.Count;
+                    trophyCount = allAchievements.Count;
 
 
                     // Trophies data
-                    byte[] TrophyByte = File.ReadAllBytes(trophyFilePath);
-                    string hex = Tools.ToHex(TrophyByte);
+                    byte[] trophyByte = File.ReadAllBytes(trophyFilePath);
+                    string hex = Tools.ToHex(trophyByte);
+                    List<string> splitHex = hex.Split(new[] { "0000000400000050000000", "0000000600000060000000" }, StringSplitOptions.None).ToList();
+                    trophyHexData = splitHex.Count >= trophyCount
+                        ? splitHex.GetRange(splitHex.Count - trophyCount, trophyCount)
+                        : new List<string>();
 
-                    List<string> splitHex = hex.Split(new[] { "0000000600000060000000" }, StringSplitOptions.None).ToList();
-                    for (int i = splitHex.Count - 1; i >= (splitHex.Count - TrophyCount); i--)
+
+                    /*
+                    if (trophyCount > 0 && splitHex.Count >= trophyCount)
                     {
-                        TrophyHexData.Add(splitHex[i]);
-                    }
-                    TrophyHexData.Reverse();
+                        // Take only the entries we need from the end of the list
+                        trophyHexData = splitHex.Skip(splitHex.Count - trophyCount).Take(trophyCount).ToList();
+                    } 
+                    */
 
-                    foreach (string HexData in TrophyHexData)
+                    foreach (string hexData in trophyHexData)
                     {
-                        string stringHexId = HexData.Substring(0, 2);
-                        int Id = (int)long.Parse(stringHexId, NumberStyles.HexNumber);
+                        if (hexData.Length < 58)
+                        {
+                            continue;
+                        }
 
-                        string Unlocked = HexData.Substring(18, 8);
-                        bool IsUnlocked = Unlocked == "00000001";
+                        string stringHexId = hexData.Substring(0, 2);
+                        int id = (int)long.Parse(stringHexId, NumberStyles.HexNumber);
 
-                        // No unlock time
-                        if (IsUnlocked)
+                        if (id >= allAchievements.Count)
+                        {
+                            continue;
+                        }
+
+                        string unlocked = hexData.Substring(18, 8);
+                        bool isUnlocked = unlocked == "00000001";
+
+                        if (isUnlocked)
                         {
                             try
                             {
-                                string dtHex = HexData.Substring(44, 14);
+                                string dtHex = hexData.Substring(44, 14);
                                 DateTime dt = new DateTime(long.Parse(dtHex, NumberStyles.AllowHexSpecifier) * 10L);
-                                AllAchievements[Id].DateUnlocked = dt;
+                                allAchievements[id].DateUnlocked = dt;
                             }
                             catch (Exception ex)
                             {
                                 Common.LogError(ex, false, false, PluginDatabase.PluginName);
-                                AllAchievements[Id].DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                allAchievements[id].DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
                             }
                         }
                     }
 
-                    AllAchievements.ForEach(x => gameAchievements.Items.Add(x));
+                    allAchievements.ForEach(x => gameAchievements.Items.Add(x));
                 }
             }
             else
@@ -266,27 +293,43 @@ namespace SuccessStory.Clients
 
         private string CopyTrophyFile(string trophyDirectory, string trophyFile)
         {
-            DirectoryInfo di = new DirectoryInfo(trophyDirectory);
-            string NameFolder = di.Name;
-
-            string parentDir = Paths.FixPathLength(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3"));
-            string dir = Paths.FixPathLength(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder));
-
-            FileSystem.CreateDirectory(parentDir);
-            FileSystem.CreateDirectory(dir);
-
             try
             {
-                string targetPath = Paths.FixPathLength(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", NameFolder, trophyFile));
+                DirectoryInfo di = new DirectoryInfo(trophyDirectory);
+                string nameFolder = di.Name;
+
+                string parentDir = Paths.FixPathLength(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3"));
+                string dir = Paths.FixPathLength(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", nameFolder));
+
+                FileSystem.CreateDirectory(parentDir);
+                FileSystem.CreateDirectory(dir);
+
+                string targetPath = Paths.FixPathLength(Path.Combine(PluginDatabase.Paths.PluginUserDataPath, "rpcs3", nameFolder, trophyFile));
                 string sourcePath = Paths.FixPathLength(Path.Combine(trophyDirectory, trophyFile));
-                FileSystem.CopyFile(sourcePath, targetPath, false);
+
+                // Only copy if target doesn't exist
+                if (!File.Exists(targetPath))
+                {
+                    try
+                    {
+                        // Try to copy without deleting first
+                        File.Copy(sourcePath, targetPath, false);
+                    }
+                    catch (IOException)
+                    {
+                        // If file is in use, wait briefly and try again
+                        System.Threading.Thread.Sleep(100);
+                        File.Copy(sourcePath, targetPath, false);
+                    }
+                }
+
+                return Path.Combine("rpcs3", nameFolder, trophyFile);
             }
             catch (Exception ex)
             {
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                return string.Empty;
             }
-
-            return Path.Combine("rpcs3", NameFolder, trophyFile);
         }
         #endregion
     }
