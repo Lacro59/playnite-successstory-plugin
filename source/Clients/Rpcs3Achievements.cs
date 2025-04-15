@@ -80,6 +80,11 @@ namespace SuccessStory.Clients
                             g => g.Element("name")?.Value
                         );
 
+                    if (trophyDetailsXml.Descendants("trophy").Count() <= 0)
+                    {
+                        Logger.Warn($"No trophy found found for {game.Name} in {trophyFileDetailsPath}");
+                    }
+
                     foreach (XElement trophyXml in trophyDetailsXml.Descendants("trophy"))
                     {
                         _ = int.TryParse(trophyXml.Attribute("id").Value, out int TrophyDetailsId);
