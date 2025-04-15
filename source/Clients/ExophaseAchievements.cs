@@ -20,31 +20,36 @@ using System.Threading;
 
 namespace SuccessStory.Clients
 {
-    public enum ExophasePlatform
-    {
-        Google_Play,
-        Steam,
-        PS3, PS4, PS5, PS_Vita,
-        Retro,
-        Xbox_One, Xbox_360, Xbox_Series, Windows_8, Windows_10, WP,
-        Stadia,
-        Origin,
-        Blizzard,
-        GOG,
-        Ubisoft,
-    }
-
-
     public class ExophaseAchievements : GenericAchievements
     {
         #region Url
-        private string UrlExophaseSearch => @"https://api.exophase.com/public/archive/games?q={0}&sort=added";
+        private string UrlApi => @"https://api.exophase.com";
+        private string UrlExophaseSearch => UrlApi + "/public/archive/games?q={0}&sort=added";
+        private string UrlExophaseSearchPlatform => UrlApi + "/public/archive/platform/{1}?q={0}&sort=added";
 
         private string UrlExophase => @"https://www.exophase.com";
         private string UrlExophaseLogin => $"{UrlExophase}/login";
         private string UrlExophaseLogout => $"{UrlExophase}/logout";
         private string UrlExophaseAccount => $"{UrlExophase}/account";
         #endregion
+
+        public static List<string> Platforms = new List<string>
+        {
+            ResourceProvider.GetString("LOCAll"),
+            "Apple",
+            "Blizzard",
+            "Electronic Arts",
+            "Epic",
+            "GOG",
+            "Google Play",
+            "Nintendo",
+            "PSN",
+            "Retro",
+            "Stadia",
+            "Steam",
+            "Ubisoft",
+            "Xbox"
+        };
 
 
         public ExophaseAchievements() : base("Exophase")
@@ -221,7 +226,7 @@ namespace SuccessStory.Clients
         }
 
 
-        public List<SearchResult> SearchGame(string Name)
+        public List<SearchResult> SearchGame(string name, string platforms = "")
         {
             List<SearchResult> listSearchGames = new List<SearchResult>();
             try
@@ -234,14 +239,17 @@ namespace SuccessStory.Clients
                 string json = string.Empty;
                 using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
                 {
-                    string urlSearch = string.Format(UrlExophaseSearch, WebUtility.UrlEncode(Name));
+                    string urlSearch = platforms.IsNullOrEmpty() || platforms.IsEqual(ResourceProvider.GetString("LOCAll"))
+                        ? string.Format(UrlExophaseSearch, WebUtility.UrlEncode(name))
+                        : string.Format(UrlExophaseSearchPlatform, WebUtility.UrlEncode(name), platforms);
+
                     webView.NavigateAndWait(urlSearch);
                     json = webView.GetPageText();
                 }
 
                 if (!Serialization.TryFromJson(json, out ExophaseSearchResult exophaseScheachResult))
                 {
-                    Logger.Warn($"No Exophase result for {Name}");
+                    Logger.Warn($"No Exophase result for {name}");
                     Logger.Warn($"{json}");
                     return listSearchGames;
                 }
@@ -261,7 +269,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on SearchGame({Name})", true, PluginDatabase.PluginName);
+                Common.LogError(ex, false, $"Error on SearchGame({name})", true, PluginDatabase.PluginName);
             }
 
             return listSearchGames;

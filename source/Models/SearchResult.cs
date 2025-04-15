@@ -21,6 +21,9 @@ namespace SuccessStory.Models
             {
                 switch (PlatformsFirst)
                 {
+                    case "macOS":
+                    case "iOS":
+                        return "#060606";
                     case "Google Play":
                         return "#6bad50";
                     case "Steam":

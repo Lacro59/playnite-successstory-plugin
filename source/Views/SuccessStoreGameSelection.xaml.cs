@@ -46,6 +46,9 @@ namespace SuccessStory.Views
 
                 GameContext = game;
 
+                PART_Platforms.ItemsSource = ExophaseAchievements.Platforms;
+                PART_Platforms.SelectedIndex = 0;
+
                 PART_DataLoadWishlist.Visibility = Visibility.Collapsed;
                 PART_GridData.IsEnabled = true;
 
@@ -117,8 +120,8 @@ namespace SuccessStory.Views
 
         private void SearchElements()
         {
-            bool IsSteam = (rbSteam != null) && (bool)rbSteam.IsChecked;
-            bool IsExophase = (rbExophase != null) && (bool)rbExophase.IsChecked;
+            bool isSteam = (rbSteam != null) && (bool)rbSteam.IsChecked;
+            bool isExophase = (rbExophase != null) && (bool)rbExophase.IsChecked;
 
             if (SearchElement == null || SearchElement.Text.IsNullOrEmpty())
             {
@@ -129,9 +132,10 @@ namespace SuccessStory.Views
             PART_GridData.IsEnabled = false;
 
             string gameSearch = RemoveAccents(SearchElement.Text);
+            string platform = PART_Platforms.Text;
 
             lbSelectable.ItemsSource = null;
-            _ = Task.Run(() => LoadData(gameSearch, IsSteam, IsExophase))
+            _ = Task.Run(() => LoadData(gameSearch, isSteam, isExophase, platform))
                 .ContinueWith(antecedent =>
                 {
                     Dispatcher.Invoke(new Action(() =>
@@ -162,20 +166,20 @@ namespace SuccessStory.Views
             return sbReturn.ToString();
         }
 
-        private List<SearchResult> LoadData(string SearchElement, bool IsSteam, bool IsExophase)
+        private List<SearchResult> LoadData(string searchElement, bool isSteam, bool isExophase, string platform)
         {
             List<SearchResult> results = new List<SearchResult>();
 
             try
             {
-                if (IsSteam)
+                if (isSteam)
                 {
-                    results = SteamAchievements.SearchGame(SearchElement);
+                    results = SteamAchievements.SearchGame(searchElement);
                 }
 
-                if (IsExophase)
+                if (isExophase)
                 {
-                    results = ExophaseAchievements.SearchGame(SearchElement);
+                    results = ExophaseAchievements.SearchGame(searchElement, platform);
                 }
             }
             catch (Exception ex)

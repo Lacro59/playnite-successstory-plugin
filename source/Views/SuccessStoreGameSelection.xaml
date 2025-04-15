@@ -7,6 +7,10 @@
              xmlns:playnitecontrols="clr-namespace:CommonPluginsControls.PlayniteControls"
              mc:Ignorable="d" Height="560" Width="700">
 
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
     <Grid>
         <Grid Name="PART_DataLoadWishlist">
             <ProgressBar IsIndeterminate="True" Width="350" Height="40" />
@@ -24,7 +28,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="10" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="10" />
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
@@ -122,17 +126,17 @@
             </Grid>
 
             <!--Search-->
-            <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" 
+            <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
+                <DockPanel DockPanel.Dock="Bottom" Margin="200,10,0,0"
+                           Visibility="{Binding ElementName=rbExophase, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Label Content="{DynamicResource LOCPlatformsTitle}"  Margin="0,0,10,0" />
+                    <ComboBox Name="PART_Platforms" />
+                </DockPanel>
+                
+                <Button Grid.Column="0" Content="{DynamicResource LOCSearchLabel}" Margin="0,0,10,0"
                         Name="PART_BtSearch" Click="ButtonSearch_Click" />
                 <playnitecontrols:SearchBox Grid.Column="2" x:Name="SearchElement" KeyUp="SearchElement_KeyUp" />
-            </Grid>
+            </DockPanel>
 
             <!--Buttons-->
             <StackPanel Grid.Column="3" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
