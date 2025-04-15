@@ -14,6 +14,7 @@ using System.Globalization;
 using static CommonPluginsShared.PlayniteTools;
 using System.Text.RegularExpressions;
 using Paths = CommonPlayniteShared.Common.Paths;
+using System.Threading;
 
 namespace SuccessStory.Clients
 {
@@ -276,15 +277,22 @@ namespace SuccessStory.Clients
 
             foldersPath.ForEach(x =>
             {
-                string trophyFolder = Paths.FixPathLength(Path.Combine(x, "trophy"));
-                string folder = Paths.FixPathLength(Path.Combine(trophyFolder, npcommid));
-                if (Directory.Exists(folder))
+                List<string> folders = Tools.FindFile(Paths.FixPathLength(x), "trophy", true);
+                if (folders.Count() == 0)
                 {
-                    trophyGameFolder.Add(folder);
+                    Logger.Warn($"Trophy folder not found: {x}");
+                }
+                else if (folders.Count() > 1)
+                {
+                    Logger.Warn($"Trophy folder is multiple for {game.Name}");
+                    folders.ForEach(y =>
+                    {
+                        Logger.Warn(y);
+                    });
                 }
                 else
                 {
-                    Logger.Warn($"Trophy folder not found: {folder}");
+                    trophyGameFolder.AddRange(folders.Where(y => !trophyGameFolder.Contains(y))); // Avoid duplicates
                 }
             });
 
@@ -310,16 +318,29 @@ namespace SuccessStory.Clients
                 // Only copy if target doesn't exist
                 if (!File.Exists(targetPath))
                 {
-                    try
+                    int maxAttempts = 5;
+                    int delayMs = 200;
+
+                    for (int attempt = 0; attempt < maxAttempts; attempt++)
                     {
-                        // Try to copy without deleting first
-                        File.Copy(sourcePath, targetPath, false);
-                    }
-                    catch (IOException)
-                    {
-                        // If file is in use, wait briefly and try again
-                        System.Threading.Thread.Sleep(100);
-                        File.Copy(sourcePath, targetPath, false);
+                        try
+                        {
+                            using (FileStream sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            using (FileStream destStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write))
+                            {
+                                sourceStream.CopyTo(destStream);
+                            }
+                            break;
+                        }
+                        catch (IOException)
+                        {
+                            if (attempt == maxAttempts - 1)
+                            {
+                                throw;
+                            }
+
+                            Thread.Sleep(delayMs);
+                        }
                     }
                 }
 
