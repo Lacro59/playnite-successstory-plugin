@@ -54,24 +54,26 @@ namespace SuccessStory.Services
 
                     Achievements.ForEach(x =>
                     {
-                        DateTime dt = (DateTime)x.DateWhenUnlocked;
-                        string dtCompare = (statsType == StatsType.Day)
-                            ? (string)localDateConverter.Convert(dt.AddDays(1), null, null, null)
-                            : (string)localDateYMConverter.Convert(dt.AddMonths(1), null, null, null);
-                        string previousCompare = (statsType == StatsType.Day)
-                            ? (string)localDateConverter.Convert(dtPrevious, null, null, null)
-                            : (string)localDateYMConverter.Convert(dtPrevious, null, null, null);
-
-                        if (!chartLabelsList.Contains((string)localDateConverter.Convert(x.DateWhenUnlocked, null, null, null)))
+                        if (x.DateWhenUnlocked != null)
                         {
-                            if (dtCompare != previousCompare && !previousCompare.IsNullOrEmpty())
-                            {
-                                chartLabelsList.Add(string.Empty);
-                            }
-                            chartLabelsList.Add((string)localDateConverter.Convert(x.DateWhenUnlocked, null, null, null));
-                            dtPrevious = dt;
-                        }
+                            DateTime dt = (DateTime)x.DateWhenUnlocked;
+                            string dtCompare = (statsType == StatsType.Day)
+                                ? (string)localDateConverter.Convert(dt.AddDays(1), null, null, null)
+                                : (string)localDateYMConverter.Convert(dt.AddMonths(1), null, null, null);
+                            string previousCompare = (statsType == StatsType.Day)
+                                ? (string)localDateConverter.Convert(dtPrevious, null, null, null)
+                                : (string)localDateYMConverter.Convert(dtPrevious, null, null, null);
 
+                            if (!chartLabelsList.Contains((string)localDateConverter.Convert(x.DateWhenUnlocked, null, null, null)))
+                            {
+                                if (dtCompare != previousCompare && !previousCompare.IsNullOrEmpty())
+                                {
+                                    chartLabelsList.Add(string.Empty);
+                                }
+                                chartLabelsList.Add((string)localDateConverter.Convert(x.DateWhenUnlocked, null, null, null));
+                                dtPrevious = dt;
+                            }
+                        }
                     });
 
                     chartLabelsList.Reverse();
