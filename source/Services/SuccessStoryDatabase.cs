@@ -729,7 +729,7 @@ namespace SuccessStory.Services
                         Achievement found = loadedItem.Items.Find(x => (x.ApiName.IsNullOrEmpty() || x.ApiName.IsEqual(webItem.Items[i].ApiName)) && x.Name.IsEqual(webItem.Items[i].Name));
                         if (found != null)
                         {
-                            webItem.Items[i].DateUnlocked = found.DateWhenUnlocked;
+                            webItem.Items[i].DateUnlocked = found.DateUnlocked;
                         }
                     }
                     // Check is ok

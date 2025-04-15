@@ -37,17 +37,17 @@ namespace SuccessStory.Clients
 
             try
             {
-                string Url = string.Format(PaimonMoe_UrlAchievements, LocalLang.ToLower());
-                string TextMapString = Web.DownloadStringData(Url).GetAwaiter().GetResult();
-                _ = Serialization.TryFromJson(TextMapString, out dynamic TextMap);
+                string url = string.Format(PaimonMoe_UrlAchievements, LocalLang.ToLower());
+                string textMapString = Web.DownloadStringData(url).GetAwaiter().GetResult();
+                _ = Serialization.TryFromJson(textMapString, out dynamic TextMap);
                 if (TextMap == null)
                 {
-                    Url = string.Format(PaimonMoe_UrlAchievements, "en");
-                    TextMapString = Web.DownloadStringData(Url).GetAwaiter().GetResult();
-                    _ = Serialization.TryFromJson(TextMapString, out TextMap);
+                    url = string.Format(PaimonMoe_UrlAchievements, "en");
+                    textMapString = Web.DownloadStringData(url).GetAwaiter().GetResult();
+                    _ = Serialization.TryFromJson(textMapString, out TextMap);
                     if (TextMap == null)
                     {
-                        throw new Exception($"No data from {Url}");
+                        throw new Exception($"No data from {url}");
                     }
                 }
 
@@ -56,9 +56,9 @@ namespace SuccessStory.Clients
                     string map = Serialization.ToJson(TextMap[i.ToString()]);
                     if (Serialization.TryFromJson(map, out Data data) && data != null)
                     {
-                        int CategoryOrder = data.Order;
-                        string Category = data.Name;
-                        string CategoryIcon = string.Format("GenshinImpact\\{0}.png", CategoryOrder - 1);
+                        int categoryOrder = data.Order;
+                        string category = data.Name;
+                        string categoryIcon = string.Format("GenshinImpact\\{0}.png", categoryOrder - 1);
 
 
                         string ach = Serialization.ToJson(data.Achievements);
@@ -75,9 +75,9 @@ namespace SuccessStory.Clients
                                     Description = x.Desc,
                                     UrlUnlocked = "GenshinImpact\\ac.png",
 
-                                    CategoryOrder = CategoryOrder,
-                                    CategoryIcon = CategoryIcon,
-                                    Category = Category,
+                                    CategoryOrder = categoryOrder,
+                                    CategoryIcon = categoryIcon,
+                                    Category = category,
 
                                     GamerScore = x.Reward,
 
@@ -95,60 +95,6 @@ namespace SuccessStory.Clients
                     Name = "GitHub",
                     Url = PaimonMoe_UrlSource
                 };
-
-                /*
-                string Url = string.Format(UrlTextMap, LocalLang.ToUpper());
-                string TextMapString = Web.DownloadStringData(Url).GetAwaiter().GetResult();
-                _ = Serialization.TryFromJson(TextMapString, out dynamic TextMap);
-                if (TextMap == null)
-                {
-                    throw new Exception($"No data from {Url}");
-                }
-
-                string AchievementsString = Web.DownloadStringData(UrlAchievements).GetAwaiter().GetResult();
-                _ = Serialization.TryFromJson(AchievementsString, out List<GenshinImpactAchievementData> GenshinImpactAchievements);
-                if (GenshinImpactAchievements == null)
-                {
-                    throw new Exception($"No data from {UrlAchievements}");
-                }
-
-                string AchievementsCategoryString = Web.DownloadStringData(UrlAchievementsCategory).GetAwaiter().GetResult();
-                _ = Serialization.TryFromJson(AchievementsCategoryString, out List<GenshinImpactAchievementsCategory> GenshinImpactAchievementsCategory);
-                if (GenshinImpactAchievementsCategory == null)
-                {
-                    throw new Exception($"No data from {UrlAchievementsCategory}");
-                }
-
-                GenshinImpactAchievements.ForEach(x => 
-                {
-                    GenshinImpactAchievementsCategory giCategory = GenshinImpactAchievementsCategory.Find(y => y.Id != null && (int)y.Id == x.GoalId);
-                    int CategoryOrder = giCategory?.OrderId ?? 0;
-                    string Category = TextMap[giCategory?.NameTextMapHash?.ToString()]?.Value;
-                    string CategoryIcon = string.Format("GenshinImpact\\ac_{0}.png", CategoryOrder);
-
-                    AllAchievements.Add(new Achievements
-                    {
-                        ApiName = x.Id.ToString(),
-                        Name = TextMap[x.TitleTextMapHash?.ToString()]?.Value,
-                        Description = TextMap[x.DescTextMapHash?.ToString()]?.Value,
-                        UrlUnlocked = "GenshinImpact\\ac.png",
-
-                        CategoryOrder = CategoryOrder,
-                        CategoryIcon = CategoryIcon,
-                        Category = Category,
-
-                        DateUnlocked = default(DateTime)
-                    });
-
-                    gameAchievements.IsManual = true;
-                    gameAchievements.SourcesLink = new CommonPluginsShared.Models.SourceLink
-                    {
-                        GameName = "Genshin Impact",
-                        Name = "GitHub",
-                        Url = UrlSource
-                    };
-                });
-                */
             }
             catch (Exception ex)
             {
