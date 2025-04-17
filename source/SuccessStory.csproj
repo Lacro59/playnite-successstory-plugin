@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\GameJoltAchievements.cs" />
+    <Compile Include="Clients\HonkaiStarRailAchievements.cs" />
     <Compile Include="Clients\WutheringWavesAchievements.cs" />
     <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
       <DependentUpon>AchievementImage.xaml</DependentUpon>
@@ -194,9 +195,11 @@
     </Compile>
     <Compile Include="Converters\Crc32.cs" />
     <Compile Include="Converters\SetColorConverter.cs" />
+    <Compile Include="Models\HonkaiStarRail\AchievementData.cs" />
     <Compile Include="Models\GenshinImpact\PaimonMoeAchievements.cs" />
     <Compile Include="Models\GenshinImpact\PaimonMoeLocalData.cs" />
     <Compile Include="Models\GenshinImpact\SeelieMeLocalData.cs" />
+    <Compile Include="Models\HonkaiStarRail\AchievementSeries.cs" />
     <Compile Include="Models\PSN\TropyTitlesResponse.cs" />
     <Compile Include="Models\RetroAchievements\RaConsole.cs" />
     <Compile Include="Models\RetroAchievements\RaGame.cs" />
@@ -1017,6 +1020,37 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\WutheringWaves\T_IconAchv256_016.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HonkaiStarRail\BattleAchievementIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\HonkaiStarRail\ChallengeAchievementIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\HonkaiStarRail\CollectAchievementIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\HonkaiStarRail\ExploreAchievementIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\HonkaiStarRail\MainLineAchievementIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\HonkaiStarRail\ReputationAchievementIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\HonkaiStarRail\RougeAchievementIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\HonkaiStarRail\TrackAchievementIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HonkaiStarRail\CultivateAchievementIcon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

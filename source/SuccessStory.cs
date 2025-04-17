@@ -151,6 +151,10 @@ namespace SuccessStory
                         {
                             ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
                         }
+                        else if (PluginSettings.Settings.EnableHonkaiStarRail && PluginDatabase.GameContext.Name.IsEqual("Honkai: Star Rail"))
+                        {
+                            ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
+                        }
                         else if (PluginSettings.Settings.EnableGuildWars2 && PluginDatabase.GameContext.Name.IsEqual("Guild Wars 2"))
                         {
                             ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
@@ -329,6 +333,10 @@ namespace SuccessStory
                                     {
                                         ViewExtension = new SuccessStoryCategoryView(gameMenu);
                                     }
+                                    else if (PluginSettings.Settings.EnableHonkaiStarRail && gameMenu.Name.IsEqual("Honkai: Star Rail"))
+                                    {
+                                        ViewExtension = new SuccessStoryCategoryView(gameMenu);
+                                    }
                                     else if (PluginSettings.Settings.EnableGuildWars2 && gameMenu.Name.IsEqual("Guild Wars 2"))
                                     {
                                         ViewExtension = new SuccessStoryCategoryView(gameMenu);
@@ -413,7 +421,7 @@ namespace SuccessStory
                     }
                 }
 
-                if (PluginSettings.Settings.EnableManual && !gameMenu.Name.IsEqual("Genshin Impact") && !gameMenu.Name.IsEqual("Wuthering Waves"))
+                if (PluginSettings.Settings.EnableManual && !gameMenu.Name.IsEqual("Genshin Impact") && !gameMenu.Name.IsEqual("Wuthering Waves") && !gameMenu.Name.IsEqual("Honkai: Star Rail"))
                 {
                     if (!gameAchievements.HasData || !gameAchievements.IsManual)
                     {
@@ -568,6 +576,64 @@ namespace SuccessStory
                             {
                                 WutheringWavesAchievements wutheringWavesAchievements = new WutheringWavesAchievements();
                                 wutheringWavesAchievements.ImportAchievements(gameMenu);
+                            }
+                        });
+                    }
+                }
+
+                if (gameMenu.Name.IsEqual("Honkai: Star Rail"))
+                {
+                    if (PluginSettings.Settings.EnableHonkaiStarRail)
+                    {
+                        if (!gameAchievements.HasData)
+                        {
+                            gameMenuItems.Add(new GameMenuItem
+                            {
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCAddHonkaiStarRail"),
+                                Action = (mainMenuItem) =>
+                                {
+                                    PluginDatabase.Remove(gameMenu);
+                                    PluginDatabase.GetHonkaiStarRail(gameMenu);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            gameMenuItems.Add(new GameMenuItem
+                            {
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCEditGame"),
+                                Action = (mainMenuItem) =>
+                                {
+                                    SuccessStoryEditManual ViewExtension = new SuccessStoryEditManual(gameMenu);
+                                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension);
+                                    windowExtension.ShowDialog();
+                                }
+                            });
+
+                            gameMenuItems.Add(new GameMenuItem
+                            {
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCRemoveTitle"),
+                                Action = (gameMenuItem) =>
+                                {
+                                    Task TaskIntegrationUI = Task.Run(() =>
+                                    {
+                                        PluginDatabase.Remove(gameMenu);
+                                    });
+                                }
+                            });
+                        }
+
+                        gameMenuItems.Add(new GameMenuItem
+                        {
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCImportLabel"),
+                            Action = (mainMenuItem) =>
+                            {
+                                HonkaiStarRailAchievements honkaiStarRailAchievements = new HonkaiStarRailAchievements();
+                                honkaiStarRailAchievements.ImportAchievements(gameMenu);
                             }
                         });
                     }

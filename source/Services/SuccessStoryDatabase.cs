@@ -47,6 +47,8 @@ namespace SuccessStory.Services
                             { AchievementSource.Steam, new SteamAchievements() },
                             { AchievementSource.Xbox, new XboxAchievements() },
                             { AchievementSource.GenshinImpact, new GenshinImpactAchievements() },
+                            { AchievementSource.WutheringWaves, new WutheringWavesAchievements() },
+                            { AchievementSource.HonkaiStarRail, new HonkaiStarRailAchievements() },
                             { AchievementSource.GuildWars2, new GuildWars2Achievements() },
                             { AchievementSource.GameJolt, new GameJoltAchievements() },
                             { AchievementSource.Local, SteamAchievements.GetLocalSteamAchievementsProvider() }
@@ -223,6 +225,39 @@ namespace SuccessStory.Services
             {
                 WutheringWavesAchievements wutheringWavesAchievements = new WutheringWavesAchievements();
                 gameAchievements = wutheringWavesAchievements.GetAchievements(game);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginName);
+            }
+
+            return gameAchievements;
+        }
+
+
+        public void GetHonkaiStarRail(Game game)
+        {
+            try
+            {
+                HonkaiStarRailAchievements honkaiStarRailAchievements = new HonkaiStarRailAchievements();
+                GameAchievements gameAchievements = honkaiStarRailAchievements.GetAchievements(game);
+                AddOrUpdate(gameAchievements);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginName);
+            }
+        }
+
+        public GameAchievements RefreshHonkaiStarRail(Game game)
+        {
+            Logger.Info($"RefreshHonkaiStarRail({game?.Name} - {game?.Id})");
+            GameAchievements gameAchievements = null;
+
+            try
+            {
+                HonkaiStarRailAchievements honkaiStarRailAchievements = new HonkaiStarRailAchievements();
+                gameAchievements = honkaiStarRailAchievements.GetAchievements(game);
             }
             catch (Exception ex)
             {
@@ -414,7 +449,9 @@ namespace SuccessStory.Services
             Wow,
             GenshinImpact,
             GuildWars2,
-            GameJolt
+            GameJolt,
+            WutheringWaves,
+            HonkaiStarRail
         }
 
         private static AchievementSource GetAchievementSourceFromLibraryPlugin(SuccessStorySettings settings, Game game)
@@ -609,6 +646,14 @@ namespace SuccessStory.Services
             {
                 return AchievementSource.GenshinImpact;
             }
+            if (game.Name.IsEqual("Wuthering Waves") && !ignoreSpecial)
+            {
+                return AchievementSource.WutheringWaves;
+            }
+            if (game.Name.IsEqual("Honkai: Star Rail") && !ignoreSpecial)
+            {
+                return AchievementSource.HonkaiStarRail;
+            }
 
             if (game.Name.IsEqual("Guild Wars 2"))
             {
@@ -751,7 +796,7 @@ namespace SuccessStory.Services
 
             if (loadedItem.IsManual)
             {
-                webItem = game.Name.IsEqual("Genshin Impact") ? RefreshGenshinImpact(game) : game.Name.IsEqual("Wuthering Waves") ? RefreshWutheringWaves(game) : RefreshManual(game);
+                webItem = game.Name.IsEqual("Genshin Impact") ? RefreshGenshinImpact(game) : game.Name.IsEqual("Wuthering Waves") ? RefreshWutheringWaves(game) : game.Name.IsEqual("Honkai: Star Rail") ? RefreshHonkaiStarRail(game) : RefreshManual(game);
 
                 if (webItem != null)
                 {
