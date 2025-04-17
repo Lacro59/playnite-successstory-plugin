@@ -12,19 +12,21 @@ namespace SuccessStory.Clients
 {
     public class GenshinImpactAchievements : GenericAchievements
     {
-        private static string Url => @"https://raw.githubusercontent.com/Sycamore0/GenshinData/main/";
+        #region Urls
+        private static string Url => @"https://raw.githubusercontent.com/Sycamore0/GenshinData/main";
         private static string UrlSource => @"https://github.com/Sycamore0/GenshinData";
+
         private static string UrlTextMap => Url + @"/TextMap/TextMap{0}.json";
         private static string UrlAchievementsCategory => Url + @"/ExcelBinOutput/AchievementGoalExcelConfigData.json";
         private static string UrlAchievements => Url + @"/ExcelBinOutput/AchievementExcelConfigData.json";
 
-
         private static string PaimonMoe_Url => "https://raw.githubusercontent.com/MadeBaruna/paimon-moe/main";
         private static string PaimonMoe_UrlSource => "https://github.com//MadeBaruna/paimon-moe";
         private static string PaimonMoe_UrlAchievements => PaimonMoe_Url + "/src/data/achievement/{0}.json";
+        #endregion
 
 
-        public GenshinImpactAchievements() : base("GenshinImpact", CodeLang.GetGenshinLang(API.Instance.ApplicationSettings.Language))
+        public GenshinImpactAchievements() : base("Genshin Impact", CodeLang.GetGenshinLang(API.Instance.ApplicationSettings.Language))
         {
 
         }
@@ -170,6 +172,7 @@ namespace SuccessStory.Clients
             _ = API.Instance.Dialogs.ShowErrorMessage(ResourceProvider.GetString("LOCImportError"), ResourceProvider.GetString("LOCSuccessStory"));
             return false;
         }
+
 
         #region Configuration
         public override bool ValidateConfiguration()
