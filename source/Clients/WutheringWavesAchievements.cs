@@ -9,11 +9,12 @@ using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
-using SuccessStory.Models.GenshinImpact;
 using SuccessStory.Models.WutheringWaves;
 
 namespace SuccessStory.Clients
 {
+    // https://wuwa.mana.wiki/c/trophy-categories
+    // https://wutheringwaves.gg/achievements/
     public class WutheringWavesAchievements : GenericAchievements
     {
         #region Urls
@@ -150,7 +151,7 @@ namespace SuccessStory.Clients
                         UrlUnlocked = "WutheringWaves\\ac.png",
 
                         CategoryOrder = group != null ? group.Id : 0,
-                        CategoryIcon = string.Empty,
+                        CategoryIcon = "WutheringWaves\\" + group.Icon.Split('.')[1] + ".png",
                         Category = category,
 
                         GamerScore = gamerScore,
