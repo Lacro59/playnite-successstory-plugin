@@ -504,6 +504,38 @@ namespace SuccessStory
                                 DatesUnlock = x.DatesUnlock
                             };
 
+                            List<ListAll> list = x.Items.Where(y => y.IsUnlock).Select(y =>
+                            {
+                                return new ListAll
+                                {
+                                    Id = x.Id.ToString(),
+                                    Name = x.Name,
+                                    Icon = !x.Icon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(x.Icon) : string.Empty,
+                                    LastActivity = x.LastActivity?.ToLocalTime(),
+                                    SourceName = PlayniteTools.GetSourceName(x.Id),
+                                    SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
+                                    IsManual = x.IsManual,
+
+                                    FirstUnlock = x.FirstUnlock,
+                                    LastUnlock = x.LastUnlock,
+                                    DatesUnlock = x.DatesUnlock,
+
+                                    Gamerscore = y.GamerScore,
+                                    AchIcon = y.Icon,
+                                    AchIsGray = y.IsGray,
+                                    AchEnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
+                                    AchDisplayRaretyValue = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
+                                    AchName = y.Name,
+                                    AchDateUnlock = y.DateWhenUnlocked,
+                                    AchDescription = y.Description,
+                                    AchPercent = y.Percent,
+                                    AchNameWithDateUnlock = y.NameWithDateUnlock,
+                                };
+                            }).ToList();
+
+                            _ = ListAll.AddMissing(list);
+
+                            /*
                             x.Items.Where(y => y.IsUnlock).ForEach(y =>
                             {
                                 listAll.Gamerscore = y.GamerScore;
@@ -519,6 +551,7 @@ namespace SuccessStory
 
                                 ListAll.Add(listAll);
                             });
+                            */
                         });
 
                 SuccessViewData.ListAll = ListAll;
