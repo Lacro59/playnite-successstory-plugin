@@ -898,8 +898,8 @@ namespace SuccessStory.Services
 
                     try
                     {
-                        string SourceName = gameAchievements.SourcesLink?.Name?.ToLower();
-                        switch (SourceName)
+                        string sourceName = gameAchievements.SourcesLink?.Name?.ToLower();
+                        switch (sourceName)
                         {
                             case "steam":
                                 if (uint.TryParse(Regex.Match(gameAchievements.SourcesLink.Url, @"\d+").Value, out uint appId))
@@ -917,11 +917,9 @@ namespace SuccessStory.Services
                                 break;
 
                             default:
-                                Logger.Warn($"No sourcesLink for {gameAchievements.Name} with {SourceName}");
+                                Logger.Warn($"No sourcesLink for {gameAchievements.Name} with {sourceName}");
                                 break;
                         }
-
-                        AddOrUpdate(gameAchievements);
                     }
                     catch (Exception ex)
                     {

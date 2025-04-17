@@ -248,6 +248,10 @@ namespace SuccessStory.Clients
                 {
                     gameName = SteamApi.GetGameInfos(appId.ToString(), null)?.Name;
                 }
+                if (gameName.IsNullOrEmpty())
+                {
+                    gameName = SteamApi.GetGameNameByWeb(appId);
+                }
 
                 gameAchievements.SourcesLink = new SourceLink
                 {
@@ -307,33 +311,13 @@ namespace SuccessStory.Clients
                 Models.Achievement found = gameAchievements.Items?.Find(y => y.ApiName.IsEqual(x.Id));
                 if (found != null)
                 {
+                    found.Percent = x.Percent;
                     found.GamerScore = x.GamerScore;
                 }
-                else
-                {
-
-                }
             });
-        }
 
-        /*
-        private void SetMissingDescription(uint appId, GameAchievements gameAchievements)
-        {
-            if (gameAchievements.HasAchievements && gameAchievements.Items?.Where(x => !x.Description.IsNullOrEmpty())?.Count() == 0)
-            {
-                gameAchievements.Items.ForEach(x =>
-                {
-                    if (x.IsHidden && x.Description.IsNullOrEmpty())
-                    {
-                        x.Description = FindHiddenDescription(appId, x.Name);
-                    }
-                });
-
-                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                exophaseAchievements.SetMissingDescription(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Steam);
-            }
+            PluginDatabase.AddOrUpdate(gameAchievements);
         }
-        */
 
 
         #region Configuration

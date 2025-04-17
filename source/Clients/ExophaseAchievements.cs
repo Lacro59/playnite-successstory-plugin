@@ -353,10 +353,7 @@ namespace SuccessStory.Clients
                     {
                         achievement.ApiName = y.ApiName;
                         achievement.Percent = y.Percent;
-                        if (source == Services.SuccessStoryDatabase.AchievementSource.Local || achievement.GamerScore == 0)
-                        {
-                            achievement.GamerScore = StoreApi.CalcGamerScore(y.Percent);
-                        }
+                        achievement.GamerScore = StoreApi.CalcGamerScore(y.Percent);
 
                         if (PluginDatabase.PluginSettings.Settings.UseLocalised && IsConnected())
                         {
