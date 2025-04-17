@@ -599,11 +599,11 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <customs:AchievementImage Width="48" Height="48"
-                                                          Icon="{Binding AchIcon, IsAsync=True}"
-                                                          IsLocked="{Binding AchIsUnlock, Converter={StaticResource InvertedBoolenConverter}}"
-                                                          IconText="{Binding AchIconText}"
-                                                          IsGray="{Binding AchIsGray}"
-                                                          Percent="{Binding AchPercent}"
+                                                          Icon="{Binding Achievement.Icon, IsAsync=True}"
+                                                          IsLocked="{Binding Achievement.IsUnlock, Converter={StaticResource InvertedBoolenConverter}}"
+                                                          IconText="{Binding Achievement.IconText}"
+                                                          IsGray="{Binding Achievement.IsGray}"
+                                                          Percent="{Binding Achievement.Percent}"
                                                           EnableRaretyIndicator="{Binding AchEnableRaretyIndicator}"
                                                           DisplayRaretyValue="{Binding AchDisplayRaretyValue}" />
                                     </DataTemplate>
@@ -614,7 +614,7 @@
                                 <GridViewColumnHeader Content="{DynamicResource LOCNameLabel}" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <controls:TextBlockTrimmed Text="{Binding AchName}" />
+                                        <controls:TextBlockTrimmed Text="{Binding Achievement.Name}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -623,23 +623,23 @@
                                 <GridViewColumnHeader Content="{DynamicResource LOCGameDescriptionTitle}" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <controls:TextBlockTrimmed Text="{Binding AchDescription}" TextWrapping="Wrap" />
+                                        <controls:TextBlockTrimmed Text="{Binding Achievement.Description}" TextWrapping="Wrap" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding AchDateUnlock, Converter={StaticResource LocalDateTimeConverter}}">
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding Achievement.DateUnlocked, Converter={StaticResource LocalDateTimeConverter}}">
                                 <GridViewColumnHeader Content="{DynamicResource LOCSuccessStoryDateUnlocked}" />
                             </GridViewColumn>
 
-                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding Gamerscore}">
+                            <GridViewColumn Width="0" DisplayMemberBinding="{Binding Achievement.GamerScore}">
                                 <controlsShared:GridViewColumnHeaderExtend Style="{StaticResource {x:Type GridViewColumnHeader}}" IsHitTestVisible="False" RefIndex="8" />
                             </GridViewColumn>
                             <GridViewColumn Width="110" x:Name="lvGamerScore">
                                 <GridViewColumnHeader Content="Gamerscore" Tag="Gamerscore" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Gamerscore}" TextAlignment="Right" />
+                                        <TextBlock Text="{Binding Achievement.GamerScore}" TextAlignment="Right" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>

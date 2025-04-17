@@ -1,11 +1,7 @@
-﻿using CommonPluginsShared;
-using CommonPluginsShared.Converters;
-using Playnite.SDK;
+﻿using Playnite.SDK;
 using Playnite.SDK.Data;
-using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace SuccessStory.Models
 {
@@ -25,37 +21,17 @@ namespace SuccessStory.Models
 
         public DateTime? FirstUnlock { get; set; }
         public DateTime? LastUnlock { get; set; }
-        public List<DateTime> DatesUnlock { get; set; }
-
-        public float Gamerscore { get; set; }
 
 
         [DontSerialize]
-        public Guid GameId
-        {
-            get
-            {
-                _ = Guid.TryParse(Id, out Guid result);
-                return result;
-            }
-        }
+        public Guid GameId => Guid.TryParse(Id, out Guid result) ? result : Guid.Empty;
 
         [DontSerialize]
         public bool GameExist => API.Instance.Database.Games.Get(GameId) != null;
 
 
-        public string AchIcon { get; set; }
-        public bool AchIsGray { get; set; }
         public bool AchEnableRaretyIndicator { get; set; }
         public bool AchDisplayRaretyValue { get; set; }
-        public string AchName { get; set; }
-        public DateTime? AchDateUnlock { get; set; }
-        public string AchDescription { get; set; }
-        public float AchPercent { get; set; }
-        public string AchNameWithDateUnlock { get; set; }
-
-        public bool AchIsUnlock { get; set; }
-        public string AchIconImageUnlocked { get; set; }
-        public string AchIconImageLocked { get; set; }
+        public Achievement Achievement { get; set; }
     }
 }

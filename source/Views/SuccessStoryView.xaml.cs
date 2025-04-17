@@ -111,9 +111,35 @@ namespace SuccessStory
 
                 _ = Task.Run(() =>
                 {
+                    Stopwatch stopWatch = new Stopwatch();
+                    stopWatch.Start();
+
                     GetListGame(isRetroAchievements);
+
+                    stopWatch.Stop();
+                    TimeSpan ts = stopWatch.Elapsed;
+                    Common.LogDebug(true, $"Task GetListGame({isRetroAchievements}) - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+                    
+
+                    stopWatch = new Stopwatch();
+                    stopWatch.Start();
+
                     GetListAll(isRetroAchievements);
+
+                    stopWatch.Stop();
+                    ts = stopWatch.Elapsed;
+                    Common.LogDebug(true, $"Task GetListAll({isRetroAchievements}) - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+
+                    
+                    stopWatch = new Stopwatch();
+                    stopWatch.Start();
+
                     SetGraphicsAchievementsSources();
+
+                    stopWatch.Stop();
+                    ts = stopWatch.Elapsed;
+                    Common.LogDebug(true, $"Task SetGraphicsAchievementsSources({isRetroAchievements}) - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
+
 
                     ProgressionGlobal = SuccessStoryStats.Progession();
                     ProgressionLaunched = SuccessStoryStats.ProgessionLaunched();
@@ -292,7 +318,7 @@ namespace SuccessStory
                 })
                  .ContinueWith(antecedent =>
                  {
-                     this.Dispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
+                     _ = API.Instance.MainView.UIDispatcher?.BeginInvoke(DispatcherPriority.Loaded, new ThreadStart(delegate
                      {
                          GraphicTitle.Content = string.Empty;
                          GraphicTitleALL.Content = ResourceProvider.GetString("LOCSuccessStoryGraphicTitleALL");
@@ -394,10 +420,10 @@ namespace SuccessStory
         {
             AchievementsGraphicsDataCountSources data = SuccessStoryStats.GetCountBySources(OnlyRa, ExcludeRa);
 
-            this.Dispatcher.BeginInvoke((Action)delegate
+            _ = API.Instance.MainView.UIDispatcher?.BeginInvoke((Action)delegate
             {
                 //let create a mapper so LiveCharts know how to plot our CustomerViewModel class
-                var customerVmMapper = Mappers.Xy<CustomerForSingle>()
+                CartesianMapper<CustomerForSingle> customerVmMapper = Mappers.Xy<CustomerForSingle>()
                     .X((value, index) => index)
                     .Y(value => value.Values);
 
@@ -480,81 +506,58 @@ namespace SuccessStory
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
+
         public void GetListAll(bool isRetroAchievements)
         {
             try
             {
-                ObservableCollection<ListAll> ListAll = new ObservableCollection<ListAll>();
-                PluginDatabase.Database.Where(x => x.HasAchievements && !x.IsDeleted
-                            && (PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView && isRetroAchievements ? x.IsRa : (!PluginDatabase.PluginSettings.Settings.EnableRetroAchievementsView || isRetroAchievements || !x.IsRa)))
-                        .ForEach(x =>
+                SuccessStorySettings settings = PluginDatabase.PluginSettings.Settings;
+                ObservableCollection<ListAll> listAll = new ObservableCollection<ListAll>();
+
+                foreach (GameAchievements item in PluginDatabase.Database)
+                {
+                    if (!item.HasAchievements || item.IsDeleted)
+                    {
+                        continue;
+                    }
+
+                    bool isGameRa = item.IsRa;
+                    bool showGame = (settings.EnableRetroAchievementsView && isRetroAchievements && isGameRa) || !settings.EnableRetroAchievementsView || isRetroAchievements || !isGameRa;
+
+                    if (!showGame)
+                    {
+                        continue;
+                    }
+
+                    string gameId = item.Id.ToString();
+                    string gameName = item.Name;
+                    string iconPath = !item.Icon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(item.Icon) : string.Empty;
+                    string sourceName = PlayniteTools.GetSourceName(item.Id);
+                    string sourceIcon = TransformIcon.Get(sourceName);
+
+                    foreach (Achievement achievement in item.Items.Where(y => y.IsUnlock))
+                    {
+                        listAll.Add(new ListAll
                         {
-                            ListAll listAll = new ListAll
-                            {
-                                Id = x.Id.ToString(),
-                                Name = x.Name,
-                                Icon = !x.Icon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(x.Icon) : string.Empty,
-                                LastActivity = x.LastActivity?.ToLocalTime(),
-                                SourceName = PlayniteTools.GetSourceName(x.Id),
-                                SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
-                                IsManual = x.IsManual,
+                            Id = gameId,
+                            Name = gameName,
+                            Icon = iconPath,
+                            LastActivity = item.LastActivity?.ToLocalTime(),
+                            SourceName = sourceName,
+                            SourceIcon = sourceIcon,
+                            IsManual = item.IsManual,
 
-                                FirstUnlock = x.FirstUnlock,
-                                LastUnlock = x.LastUnlock,
-                                DatesUnlock = x.DatesUnlock
-                            };
+                            FirstUnlock = item.FirstUnlock,
+                            LastUnlock = item.LastUnlock,
 
-                            List<ListAll> list = x.Items.Where(y => y.IsUnlock).Select(y =>
-                            {
-                                return new ListAll
-                                {
-                                    Id = x.Id.ToString(),
-                                    Name = x.Name,
-                                    Icon = !x.Icon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(x.Icon) : string.Empty,
-                                    LastActivity = x.LastActivity?.ToLocalTime(),
-                                    SourceName = PlayniteTools.GetSourceName(x.Id),
-                                    SourceIcon = TransformIcon.Get(PlayniteTools.GetSourceName(x.Id)),
-                                    IsManual = x.IsManual,
-
-                                    FirstUnlock = x.FirstUnlock,
-                                    LastUnlock = x.LastUnlock,
-                                    DatesUnlock = x.DatesUnlock,
-
-                                    Gamerscore = y.GamerScore,
-                                    AchIcon = y.Icon,
-                                    AchIsGray = y.IsGray,
-                                    AchEnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
-                                    AchDisplayRaretyValue = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator,
-                                    AchName = y.Name,
-                                    AchDateUnlock = y.DateWhenUnlocked,
-                                    AchDescription = y.Description,
-                                    AchPercent = y.Percent,
-                                    AchNameWithDateUnlock = y.NameWithDateUnlock,
-                                };
-                            }).ToList();
-
-                            _ = ListAll.AddMissing(list);
-
-                            /*
-                            x.Items.Where(y => y.IsUnlock).ForEach(y =>
-                            {
-                                listAll.Gamerscore = y.GamerScore;
-                                listAll.AchIcon = y.Icon;
-                                listAll.AchIsGray = y.IsGray;
-                                listAll.AchEnableRaretyIndicator = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
-                                listAll.AchDisplayRaretyValue = PluginDatabase.PluginSettings.Settings.EnableRaretyIndicator;
-                                listAll.AchName = y.Name;
-                                listAll.AchDateUnlock = y.DateWhenUnlocked;
-                                listAll.AchDescription = y.Description;
-                                listAll.AchPercent = y.Percent;
-                                listAll.AchNameWithDateUnlock = y.NameWithDateUnlock;
-
-                                ListAll.Add(listAll);
-                            });
-                            */
+                            AchEnableRaretyIndicator = settings.EnableRaretyIndicator,
+                            AchDisplayRaretyValue = settings.EnableRaretyIndicator,
+                            Achievement = achievement
                         });
+                    }
+                }
 
-                SuccessViewData.ListAll = ListAll;
+                SuccessViewData.ListAll = listAll;
             }
             catch (Exception ex)
             {
