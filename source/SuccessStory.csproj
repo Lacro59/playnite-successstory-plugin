@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\GameJoltAchievements.cs" />
+    <Compile Include="Clients\WutheringWavesAchievements.cs" />
     <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
       <DependentUpon>AchievementImage.xaml</DependentUpon>
     </Compile>
@@ -205,6 +206,10 @@
     <Compile Include="Models\Stats\AchievementsGraphicsDataCount.cs" />
     <Compile Include="Models\Stats\AchievementsGraphicsDataCountSources.cs" />
     <Compile Include="Models\Stats\AchievementsGraphicsDataSources.cs" />
+    <Compile Include="Models\WutheringWaves\WuWaAchievement.cs" />
+    <Compile Include="Models\WutheringWaves\WuWaCategory.cs" />
+    <Compile Include="Models\WutheringWaves\WuWaGroup.cs" />
+    <Compile Include="Models\WutheringWaves\WuWaTraduction.cs" />
     <Compile Include="Models\Xbox\Xbox360Achievement.cs" />
     <Compile Include="Models\Xbox\XboxOneAchievement.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml.cs">
@@ -971,6 +976,11 @@
     <None Include="Resources\GenshinImpact\61.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WutheringWaves\ac.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="playnite-plugincommon\CommonPlayniteShared\CommonPlayniteShared.projitems" Label="Shared" />
   <Import Project="playnite-plugincommon\CommonPluginsShared\CommonPluginsShared.projitems" Label="Shared" />

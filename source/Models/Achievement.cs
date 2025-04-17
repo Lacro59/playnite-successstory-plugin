@@ -83,6 +83,11 @@ namespace SuccessStory.Models
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
                     return TempUrlUnlocked;
                 }
+                if (TempUrlUnlocked?.Contains("WutheringWaves", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                {
+                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
+                    return TempUrlUnlocked;
+                }
                 if (TempUrlUnlocked?.Contains("default_icon", StringComparison.InvariantCultureIgnoreCase) ?? false)
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);

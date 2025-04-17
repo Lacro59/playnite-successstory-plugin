@@ -598,7 +598,23 @@
                             <Expander.Header>
                                 <Grid>
                                     <CheckBox IsChecked="{Binding Settings.EnableGenshinImpact}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSsEnableGenshinImpactAchievements}" />
+                                        <Label Content="{DynamicResource LOCSEnableGenshinImpactAchievements}" />
+                                    </CheckBox>
+                                </Grid>
+                            </Expander.Header>
+                        </Expander>
+
+                        <Expander AttachedProperties:ExpanderAttachedProperties.HideExpanderArrow="True" Margin="0,10,0,0">
+                            <Expander.Style>
+                                <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource {x:Type Expander}}">
+                                    <Setter Property="Background" Value="Transparent" />
+                                </Style>
+                            </Expander.Style>
+
+                            <Expander.Header>
+                                <Grid>
+                                    <CheckBox IsChecked="{Binding Settings.EnableWutheringWaves}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSEnableWutheringWavesAchievements}" />
                                     </CheckBox>
                                 </Grid>
                             </Expander.Header>

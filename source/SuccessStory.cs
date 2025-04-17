@@ -147,6 +147,10 @@ namespace SuccessStory
                         {
                             ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
                         }
+                        else if (PluginSettings.Settings.EnableWutheringWaves && PluginDatabase.GameContext.Name.IsEqual("Wuthering Waves"))
+                        {
+                            ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
+                        }
                         else if (PluginSettings.Settings.EnableGuildWars2 && PluginDatabase.GameContext.Name.IsEqual("Guild Wars 2"))
                         {
                             ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
@@ -313,11 +317,15 @@ namespace SuccessStory
 
                                 if (PluginDatabase.PluginSettings.Settings.EnableOneGameView)
                                 {
-                                    if ((PluginDatabase.GameContext.Name.IsEqual("overwatch") || PluginDatabase.GameContext.Name.IsEqual("overwatch 2")) && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
+                                    if ((gameMenu.Name.IsEqual("overwatch") || gameMenu.Name.IsEqual("overwatch 2")) && (PluginDatabase.GameContext.Source?.Name?.IsEqual("battle.net") ?? false))
                                     {
                                         ViewExtension = new SuccessStoryOverwatchView(gameMenu);
                                     }
                                     else if (PluginSettings.Settings.EnableGenshinImpact && gameMenu.Name.IsEqual("Genshin Impact"))
+                                    {
+                                        ViewExtension = new SuccessStoryCategoryView(gameMenu);
+                                    }
+                                    else if (PluginSettings.Settings.EnableWutheringWaves && gameMenu.Name.IsEqual("Wuthering Waves"))
                                     {
                                         ViewExtension = new SuccessStoryCategoryView(gameMenu);
                                     }
@@ -405,7 +413,7 @@ namespace SuccessStory
                     }
                 }
 
-                if (PluginSettings.Settings.EnableManual && !gameMenu.Name.IsEqual("Genshin Impact"))
+                if (PluginSettings.Settings.EnableManual && !gameMenu.Name.IsEqual("Genshin Impact") && !gameMenu.Name.IsEqual("Wuthering Waves"))
                 {
                     if (!gameAchievements.HasData || !gameAchievements.IsManual)
                     {
@@ -502,6 +510,64 @@ namespace SuccessStory
                             {
                                 GenshinImpactAchievements genshinImpactAchievements = new GenshinImpactAchievements();
                                 genshinImpactAchievements.ImportAchievements(gameMenu);
+                            }
+                        });
+                    }
+                }
+
+                if (gameMenu.Name.IsEqual("Wuthering Waves"))
+                {
+                    if (PluginSettings.Settings.EnableWutheringWaves)
+                    {
+                        if (!gameAchievements.HasData)
+                        {
+                            gameMenuItems.Add(new GameMenuItem
+                            {
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCAddWutheringWaves"),
+                                Action = (mainMenuItem) =>
+                                {
+                                    PluginDatabase.Remove(gameMenu);
+                                    PluginDatabase.GetWutheringWaves(gameMenu);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            gameMenuItems.Add(new GameMenuItem
+                            {
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCEditGame"),
+                                Action = (mainMenuItem) =>
+                                {
+                                    SuccessStoryEditManual ViewExtension = new SuccessStoryEditManual(gameMenu);
+                                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension);
+                                    windowExtension.ShowDialog();
+                                }
+                            });
+
+                            gameMenuItems.Add(new GameMenuItem
+                            {
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCRemoveTitle"),
+                                Action = (gameMenuItem) =>
+                                {
+                                    Task TaskIntegrationUI = Task.Run(() =>
+                                    {
+                                        PluginDatabase.Remove(gameMenu);
+                                    });
+                                }
+                            });
+                        }
+
+                        gameMenuItems.Add(new GameMenuItem
+                        {
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCImportLabel"),
+                            Action = (mainMenuItem) =>
+                            {
+                                WutheringWavesAchievements wutheringWavesAchievements = new WutheringWavesAchievements();
+                                wutheringWavesAchievements.ImportAchievements(gameMenu);
                             }
                         });
                     }

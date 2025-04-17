@@ -169,6 +169,7 @@ namespace SuccessStory
         public bool EnableManual { get; set; } = false;
 
         public bool EnableGenshinImpact { get; set; } = false;
+        public bool EnableWutheringWaves { get; set; } = false;
 
         public bool EnableGuildWars2 { get; set; } = false;
         public string GuildWars2ApiKey { get; set; } = string.Empty;

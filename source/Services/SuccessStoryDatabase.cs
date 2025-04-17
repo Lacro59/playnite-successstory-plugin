@@ -200,6 +200,38 @@ namespace SuccessStory.Services
         }
 
 
+        public void GetWutheringWaves(Game game)
+        {
+            try
+            {
+                WutheringWavesAchievements wutheringWavesAchievements = new WutheringWavesAchievements();
+                GameAchievements gameAchievements = wutheringWavesAchievements.GetAchievements(game);
+                AddOrUpdate(gameAchievements);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginName);
+            }
+        }
+
+        public GameAchievements RefreshWutheringWaves(Game game)
+        {
+            Logger.Info($"RefreshWutheringWaves({game?.Name} - {game?.Id})");
+            GameAchievements gameAchievements = null;
+
+            try
+            {
+                WutheringWavesAchievements wutheringWavesAchievements = new WutheringWavesAchievements();
+                gameAchievements = wutheringWavesAchievements.GetAchievements(game);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginName);
+            }
+
+            return gameAchievements;
+        }
+
 
         public override GameAchievements Get(Guid id, bool onlyCache = false, bool force = false)
         {
@@ -719,7 +751,7 @@ namespace SuccessStory.Services
 
             if (loadedItem.IsManual)
             {
-                webItem = game.Name.IsEqual("Genshin Impact") ? RefreshGenshinImpact(game) : RefreshManual(game);
+                webItem = game.Name.IsEqual("Genshin Impact") ? RefreshGenshinImpact(game) : game.Name.IsEqual("Wuthering Waves") ? RefreshWutheringWaves(game) : RefreshManual(game);
 
                 if (webItem != null)
                 {
