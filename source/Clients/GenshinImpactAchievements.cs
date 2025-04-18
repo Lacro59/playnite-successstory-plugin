@@ -154,11 +154,11 @@ namespace SuccessStory.Clients
                     GameAchievements gameAchievements = GetAchievements(game);
 
                     #region https://paimon.moe/
-                    if (Serialization.TryFromJsonFile(path, out PaimonMoeLocalData paimonMoeLocalData))
+                    if (Serialization.TryFromJsonFile(path, out PaimonMoeExport paimonMoeExport))
                     {
-                        if (paimonMoeLocalData?.Achievement != null)
+                        if (paimonMoeExport?.Achievement != null)
                         {
-                            paimonMoeLocalData.Achievement.ForEach(x =>
+                            paimonMoeExport.Achievement.ForEach(x =>
                             {
                                 x.Value.ForEach(y =>
                                 {
@@ -175,11 +175,11 @@ namespace SuccessStory.Clients
                     #endregion
 
                     #region https://seelie.me
-                    if (Serialization.TryFromJsonFile(path, out SeelieMeLocalData seelieMeLocalData))
+                    if (Serialization.TryFromJsonFile(path, out SeelieMeExport seelieMeExport))
                     {
-                        if (seelieMeLocalData?.Achievements != null)
+                        if (seelieMeExport?.Achievements != null)
                         {
-                            seelieMeLocalData.Achievements.ForEach(x =>
+                            seelieMeExport.Achievements.ForEach(x =>
                             {
                                 if (x.Value.Done)
                                 {
@@ -188,6 +188,24 @@ namespace SuccessStory.Clients
                                     {
                                         item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
                                     }
+                                }
+                            });
+                            done = true;
+                        }
+                    }
+                    #endregion
+
+                    #region https://stardb.gg/
+                    if (Serialization.TryFromJsonFile(path, out StartDbExport startDbExport))
+                    {
+                        if (startDbExport?.User?.Gi != null)
+                        {
+                            startDbExport.User.Gi.Achievements?.ForEach(x =>
+                            {
+                                Achievement item = gameAchievements.Items.FirstOrDefault(z => z.ApiName == x.ToString());
+                                if (item != null)
+                                {
+                                    item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
                                 }
                             });
                             done = true;

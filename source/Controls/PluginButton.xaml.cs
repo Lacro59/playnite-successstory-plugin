@@ -109,6 +109,10 @@ namespace SuccessStory.Controls
             {
                 ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
             }
+            else if (PluginDatabase.PluginSettings.Settings.EnableZenlessZoneZero && PluginDatabase.GameContext.Name.IsEqual("Zenless Zone Zero"))
+            {
+                ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
+            }
             else if (PluginDatabase.PluginSettings.Settings.EnableGuildWars2 && PluginDatabase.GameContext.Name.IsEqual("Guild Wars 2"))
             {
                 ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);

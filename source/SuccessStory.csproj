@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Clients\GameJoltAchievements.cs" />
+    <Compile Include="Clients\ZenlessZoneZeroAchievements.cs" />
     <Compile Include="Clients\HonkaiStarRailAchievements.cs" />
     <Compile Include="Clients\WutheringWavesAchievements.cs" />
     <Compile Include="Controls\Customs\AchievementImage.xaml.cs">
@@ -195,10 +196,11 @@
     </Compile>
     <Compile Include="Converters\Crc32.cs" />
     <Compile Include="Converters\SetColorConverter.cs" />
+    <Compile Include="Models\GenshinImpact\StartDbExport.cs" />
     <Compile Include="Models\HonkaiStarRail\AchievementData.cs" />
     <Compile Include="Models\GenshinImpact\PaimonMoeAchievements.cs" />
-    <Compile Include="Models\GenshinImpact\PaimonMoeLocalData.cs" />
-    <Compile Include="Models\GenshinImpact\SeelieMeLocalData.cs" />
+    <Compile Include="Models\GenshinImpact\PaimonMoeExport.cs" />
+    <Compile Include="Models\GenshinImpact\SeelieMeExport.cs" />
     <Compile Include="Models\HonkaiStarRail\AchievementSeries.cs" />
     <Compile Include="Models\HonkaiStarRail\StairRailStationData.cs" />
     <Compile Include="Models\HonkaiStarRail\StairRailStationExport.cs" />
@@ -217,6 +219,8 @@
     <Compile Include="Models\WutheringWaves\WuWaTraduction.cs" />
     <Compile Include="Models\Xbox\Xbox360Achievement.cs" />
     <Compile Include="Models\Xbox\XboxOneAchievement.cs" />
+    <Compile Include="Models\ZenlessZoneZero\RngMoeExport.cs" />
+    <Compile Include="Models\ZenlessZoneZero\SeelieMeData.cs" />
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Controls\ComboBoxRemovable.xaml.cs">
       <DependentUpon>ComboBoxRemovable.xaml</DependentUpon>
     </Compile>
@@ -1057,6 +1061,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\HonkaiStarRail\CultivateAchievementIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ZenlessZoneZero\ac.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

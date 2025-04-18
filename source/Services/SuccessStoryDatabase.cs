@@ -49,6 +49,7 @@ namespace SuccessStory.Services
                             { AchievementSource.GenshinImpact, new GenshinImpactAchievements() },
                             { AchievementSource.WutheringWaves, new WutheringWavesAchievements() },
                             { AchievementSource.HonkaiStarRail, new HonkaiStarRailAchievements() },
+                            { AchievementSource.ZenlessZoneZero, new ZenlessZoneZeroAchievements() },
                             { AchievementSource.GuildWars2, new GuildWars2Achievements() },
                             { AchievementSource.GameJolt, new GameJoltAchievements() },
                             { AchievementSource.Local, SteamAchievements.GetLocalSteamAchievementsProvider() }
@@ -268,6 +269,39 @@ namespace SuccessStory.Services
         }
 
 
+        public void GetZenlessZoneZero(Game game)
+        {
+            try
+            {
+                ZenlessZoneZeroAchievements zenlessZoneZeroAchievements = new ZenlessZoneZeroAchievements();
+                GameAchievements gameAchievements = zenlessZoneZeroAchievements.GetAchievements(game);
+                AddOrUpdate(gameAchievements);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginName);
+            }
+        }
+
+        public GameAchievements RefreshZenlessZoneZero(Game game)
+        {
+            Logger.Info($"RefreshZenlessZoneZero({game?.Name} - {game?.Id})");
+            GameAchievements gameAchievements = null;
+
+            try
+            {
+                ZenlessZoneZeroAchievements zenlessZoneZeroAchievements = new ZenlessZoneZeroAchievements();
+                gameAchievements = zenlessZoneZeroAchievements.GetAchievements(game);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginName);
+            }
+
+            return gameAchievements;
+        }
+
+
         public override GameAchievements Get(Guid id, bool onlyCache = false, bool force = false)
         {
             GameAchievements gameAchievements = base.GetOnlyCache(id);
@@ -451,7 +485,8 @@ namespace SuccessStory.Services
             GuildWars2,
             GameJolt,
             WutheringWaves,
-            HonkaiStarRail
+            HonkaiStarRail,
+            ZenlessZoneZero
         }
 
         private static AchievementSource GetAchievementSourceFromLibraryPlugin(SuccessStorySettings settings, Game game)
@@ -654,6 +689,10 @@ namespace SuccessStory.Services
             {
                 return AchievementSource.HonkaiStarRail;
             }
+            if (game.Name.IsEqual("Zenless Zone Zero") && !ignoreSpecial)
+            {
+                return AchievementSource.ZenlessZoneZero;
+            }
 
             if (game.Name.IsEqual("Guild Wars 2"))
             {
@@ -796,7 +835,7 @@ namespace SuccessStory.Services
 
             if (loadedItem.IsManual)
             {
-                webItem = game.Name.IsEqual("Genshin Impact") ? RefreshGenshinImpact(game) : game.Name.IsEqual("Wuthering Waves") ? RefreshWutheringWaves(game) : game.Name.IsEqual("Honkai: Star Rail") ? RefreshHonkaiStarRail(game) : RefreshManual(game);
+                webItem = game.Name.IsEqual("Genshin Impact") ? RefreshGenshinImpact(game) : game.Name.IsEqual("Wuthering Waves") ? RefreshWutheringWaves(game) : game.Name.IsEqual("Honkai: Star Rail") ? RefreshHonkaiStarRail(game) : game.Name.IsEqual("Zenless Zone Zero") ? RefreshZenlessZoneZero(game) : RefreshManual(game);
 
                 if (webItem != null)
                 {

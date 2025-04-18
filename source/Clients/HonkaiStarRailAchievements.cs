@@ -171,7 +171,7 @@ namespace SuccessStory.Clients
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
             {
-                string path = API.Instance.Dialogs.SelectFile("DAT (.dat)|*.dat");
+                string path = API.Instance.Dialogs.SelectFile("(*.dat, *.json)|*.dat;*.json");
                 if (!string.IsNullOrWhiteSpace(path) && path.EndsWith(".dat", StringComparison.InvariantCultureIgnoreCase))
                 {
                     bool done = false;
@@ -347,6 +347,61 @@ namespace SuccessStory.Clients
 
                                 done = true;
                             }
+                        }
+                    }
+                    #endregion
+
+                    if (done)
+                    {
+                        PluginDatabase.Update(gameAchievements);
+                        _ = API.Instance.Dialogs.ShowMessage(ResourceProvider.GetString("LOCImportCompleted"), ResourceProvider.GetString("LOCSuccessStory"));
+                    }
+                    else
+                    {
+                        _ = API.Instance.Dialogs.ShowErrorMessage(ResourceProvider.GetString("LOCImportError"), ResourceProvider.GetString("LOCSuccessStory"));
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(path) && path.EndsWith(".json", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    bool done = false;
+                    GameAchievements gameAchievements = GetAchievements(game);
+
+                    #region https://seelie.me
+                    if (Serialization.TryFromJsonFile(path, out SeelieMeExport seelieMeExport))
+                    {
+                        if (seelieMeExport?.Achievements != null)
+                        {
+                            seelieMeExport.Achievements.ForEach(x =>
+                            {
+                                if (x.Value.Done)
+                                {
+                                    Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => z.ApiName == x.Key);
+                                    if (item != null)
+                                    {
+                                        item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                    }
+                                }
+                            });
+                            done = true;
+                        }
+                    }
+                    #endregion
+
+                    #region https://stardb.gg/
+                    if (Serialization.TryFromJsonFile(path, out StartDbExport startDbExport))
+                    {
+                        if (startDbExport?.User?.Hsr != null)
+                        {
+                            startDbExport.User.Hsr.Achievements?.ForEach(x =>
+                            {
+                                Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => z.ApiName == x.ToString());
+                                if (item != null)
+                                {
+                                    item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                }
+                            });
+                            done = true;
                         }
                     }
                     #endregion

@@ -241,6 +241,11 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
     <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
 
+    <!-- Zenless Zone Zero -->
+
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Add Zenless Zone Zero</sys:String>
+
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Quick Play</sys:String>

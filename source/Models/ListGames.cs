@@ -39,14 +39,7 @@ namespace SuccessStory.Models
         public AchRaretyStats UltraRare { get; set; }
 
         [DontSerialize]
-        public Guid GameId
-        {
-            get
-            {
-                _ = Guid.TryParse(Id, out Guid result);
-                return result;
-            }
-        }
+        public Guid GameId => Guid.TryParse(Id, out Guid result) ? result : Guid.Empty;
 
         [DontSerialize]
         public bool GameExist => API.Instance.Database.Games.Get(GameId) != null;

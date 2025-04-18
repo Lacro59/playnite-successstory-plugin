@@ -155,6 +155,10 @@ namespace SuccessStory
                         {
                             ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
                         }
+                        else if (PluginSettings.Settings.EnableZenlessZoneZero && PluginDatabase.GameContext.Name.IsEqual("Zenless Zone Zero"))
+                        {
+                            ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
+                        }
                         else if (PluginSettings.Settings.EnableGuildWars2 && PluginDatabase.GameContext.Name.IsEqual("Guild Wars 2"))
                         {
                             ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
@@ -337,6 +341,10 @@ namespace SuccessStory
                                     {
                                         ViewExtension = new SuccessStoryCategoryView(gameMenu);
                                     }
+                                    else if (PluginSettings.Settings.EnableZenlessZoneZero && gameMenu.Name.IsEqual("Zenless Zone Zero"))
+                                    {
+                                        ViewExtension = new SuccessStoryCategoryView(gameMenu);
+                                    }
                                     else if (PluginSettings.Settings.EnableGuildWars2 && gameMenu.Name.IsEqual("Guild Wars 2"))
                                     {
                                         ViewExtension = new SuccessStoryCategoryView(gameMenu);
@@ -421,7 +429,7 @@ namespace SuccessStory
                     }
                 }
 
-                if (PluginSettings.Settings.EnableManual && !gameMenu.Name.IsEqual("Genshin Impact") && !gameMenu.Name.IsEqual("Wuthering Waves") && !gameMenu.Name.IsEqual("Honkai: Star Rail"))
+                if (PluginSettings.Settings.EnableManual && !gameMenu.Name.IsEqual("Genshin Impact") && !gameMenu.Name.IsEqual("Wuthering Waves") && !gameMenu.Name.IsEqual("Honkai: Star Rail") && !gameMenu.Name.IsEqual("Zenless Zone Zero"))
                 {
                     if (!gameAchievements.HasData || !gameAchievements.IsManual)
                     {
@@ -634,6 +642,64 @@ namespace SuccessStory
                             {
                                 HonkaiStarRailAchievements honkaiStarRailAchievements = new HonkaiStarRailAchievements();
                                 honkaiStarRailAchievements.ImportAchievements(gameMenu);
+                            }
+                        });
+                    }
+                }
+
+                if (gameMenu.Name.IsEqual("Zenless Zone Zero"))
+                {
+                    if (PluginSettings.Settings.EnableZenlessZoneZero)
+                    {
+                        if (!gameAchievements.HasData)
+                        {
+                            gameMenuItems.Add(new GameMenuItem
+                            {
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCAddZenlessZoneZero"),
+                                Action = (mainMenuItem) =>
+                                {
+                                    PluginDatabase.Remove(gameMenu);
+                                    PluginDatabase.GetZenlessZoneZero(gameMenu);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            gameMenuItems.Add(new GameMenuItem
+                            {
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCEditGame"),
+                                Action = (mainMenuItem) =>
+                                {
+                                    SuccessStoryEditManual ViewExtension = new SuccessStoryEditManual(gameMenu);
+                                    Window windowExtension = PlayniteUiHelper.CreateExtensionWindow(ResourceProvider.GetString("LOCSuccessStory"), ViewExtension);
+                                    windowExtension.ShowDialog();
+                                }
+                            });
+
+                            gameMenuItems.Add(new GameMenuItem
+                            {
+                                MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                                Description = ResourceProvider.GetString("LOCRemoveTitle"),
+                                Action = (gameMenuItem) =>
+                                {
+                                    Task TaskIntegrationUI = Task.Run(() =>
+                                    {
+                                        PluginDatabase.Remove(gameMenu);
+                                    });
+                                }
+                            });
+                        }
+
+                        gameMenuItems.Add(new GameMenuItem
+                        {
+                            MenuSection = ResourceProvider.GetString("LOCSuccessStory"),
+                            Description = ResourceProvider.GetString("LOCImportLabel"),
+                            Action = (mainMenuItem) =>
+                            {
+                                ZenlessZoneZeroAchievements zenlessZoneZeroAchievements = new ZenlessZoneZeroAchievements();
+                                zenlessZoneZeroAchievements.ImportAchievements(gameMenu);
                             }
                         });
                     }
@@ -889,7 +955,45 @@ namespace SuccessStory
                 Description = "Test",
                 Action = (mainMenuItem) =>
                 {
+                    /*
+                    WebViewSettings webViewSettings = new WebViewSettings
+                    {
+                        JavaScriptEnabled = true,
+                        UserAgent = Web.UserAgent,
+                        WindowHeight = 500,
+                        WindowWidth = 500
+                    };
 
+                    var CookiesDomains = new List<string>
+                    {
+                        "steamcommunity.com", ".steamcommunity.com",
+                        "steampowered.com",  ".steampowered.com",
+                        "store.steampowered.com", ".store.steampowered.com",
+                        "checkout.steampowered.com", ".checkout.steampowered.com",
+                        "help.steampowered.com", ".help.steampowered.com",
+                        "login.steampowered.com", ".login.steampowered.com",
+                    };
+
+                    using (IWebView webView = API.Instance.WebViews.CreateView(webViewSettings))
+                    {
+                        webView.LoadingChanged += (s, e) =>
+                        {
+                            //List<HttpCookie> httpCookies = CookiesDomains?.Count > 0
+                            //    ? webView.GetCookies()?.Where(x => CookiesDomains.Any(y => y.Contains(x?.Domain, StringComparison.OrdinalIgnoreCase)))?.ToList() ?? new List<HttpCookie>()
+                            //    : webView.GetCookies()?.Where(x => x?.Domain?.Contains("Steam", StringComparison.OrdinalIgnoreCase) ?? false)?.ToList() ?? new List<HttpCookie>();
+                        };
+
+                        CookiesDomains.ForEach(x => { webView.DeleteDomainCookies(x); });
+                        List<HttpCookie> oldCookies = SteamApi.GetStoredCookies();
+                        oldCookies?.ForEach(x =>
+                        {
+                            webView.SetCookies("https://" + x.Domain, x);
+                        });
+
+                        webView.Navigate("https://steamcommunity.com/my");
+                        _ = webView.OpenDialog();
+                    }
+                    */
                 }
             });
 #endif

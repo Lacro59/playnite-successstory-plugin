@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SuccessStory.Models.GenshinImpact
 {
-    public class SeelieMeLocalData
+    public class SeelieMeExport
     {
         [SerializationPropertyName("goals")]
         public List<object> Goals { get; set; }

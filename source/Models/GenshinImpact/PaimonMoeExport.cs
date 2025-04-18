@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SuccessStory.Models.GenshinImpact
 {
-    public class PaimonMoeLocalData
+    public class PaimonMoeExport
     {
         [SerializationPropertyName("achievement")]
         public Dictionary<string, Dictionary<string, bool>> Achievement { get; set; }
