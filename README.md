@@ -35,7 +35,8 @@ The plugin gets localised achievements (if they exist) or manual achievements.
 
 With this plugin you can
 * add a store's achievements or manual achievements
-* works for GOG, Steam, Origin, Xbox, Epic Games, RPCS3 and RetroAchievements
+* works for GOG, Steam, Origin, Xbox, Epic Games, Game Jolt, Guild Wars 2, World of Warcraft, RPCS3 and RetroAchievements
+* manual achievements with import from trackers for Genshin Impact, Wuthering Waves, Honkai Star Rail and Zenless Zone Zero
 * add tag with time to unlock all achievements
 * many user stats
   
@@ -51,5 +52,4 @@ The extension contains elements that can fit into a custom theme.
 [More information](https://github.com/Lacro59/playnite-successstory-plugin/wiki/Addition-in-a-custom-theme)
 
 ## More
-Remember to support [Playnite](https://www.patreon.com/playnite) and [Freepik](https://www.flaticon.com/authors/freepik) and [SteamDB](https://steamdb.info/donate/) and [Steam Hunters](https://steamhunters.com/supporters).  
-<a href='https://ko-fi.com/lacro59'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+Remember to support [Playnite](https://www.patreon.com/playnite) and [Freepik](https://www.flaticon.com/authors/freepik) and [SteamDB](https://steamdb.info/donate/) and [Steam Hunters](https://steamhunters.com/supporters).
