@@ -1,0 +1,5246 @@
+{
+    "series": [{
+            "title": "I, Trailblazer",
+            "id": 29325
+        }, {
+            "title": "The Rail Unto the Stars",
+            "id": 29327
+        }, {
+            "title": "Eager for Battle",
+            "id": 29323
+        }, {
+            "title": "Vestige of Luminflux",
+            "id": 29328
+        }, {
+            "title": "Universe in a Nutshell",
+            "id": 29333
+        }, {
+            "title": "Glory of the Unyielding",
+            "id": 29324
+        }, {
+            "title": "Moment of Joy",
+            "id": 29334
+        }, {
+            "title": "The Memories We Share",
+            "id": 29321
+        }, {
+            "title": "Fathom the Unfathomable",
+            "id": 29322
+        }
+    ],
+    "achievements":
+    [{
+            "id": 705481,
+            "seriesId": 29321,
+            "title": "Guess Who I Am"
+        }, {
+            "id": 705482,
+            "seriesId": 29321,
+            "title": "The Sorrows of Young Arlan"
+        }, {
+            "id": 705483,
+            "seriesId": 29321,
+            "title": "The Gift of the Magi"
+        }, {
+            "id": 705476,
+            "seriesId": 29321,
+            "title": "The Outskirts Here Are Quiet"
+        }, {
+            "id": 705477,
+            "seriesId": 29321,
+            "title": "Clara and the Sun"
+        }, {
+            "id": 705478,
+            "seriesId": 29321,
+            "title": "Serval's Faithfull: An Autobiography"
+        }, {
+            "id": 68442,
+            "seriesId": 29321,
+            "title": "A Perfect Detective"
+        }, {
+            "id": 68443,
+            "seriesId": 29321,
+            "title": "Master Among Swords"
+        }, {
+            "id": 68444,
+            "seriesId": 29321,
+            "title": "Farewell, Punklorde!"
+        }, {
+            "id": 68438,
+            "seriesId": 29321,
+            "title": "Coffin Dancer"
+        }, {
+            "id": 68538,
+            "seriesId": 29321,
+            "title": "Soaring Birds and Paper Kites"
+        }, {
+            "id": 68537,
+            "seriesId": 29321,
+            "title": "Free Will"
+        }, {
+            "id": 951886,
+            "seriesId": 29321,
+            "title": "True Free Will"
+        }, {
+            "id": 951861,
+            "seriesId": 29321,
+            "title": "The River Lethe's Taste is Bitter"
+        }, {
+            "id": 951858,
+            "seriesId": 29321,
+            "title": "Beyond Frozen Boundaries"
+        }, {
+            "id": 951859,
+            "seriesId": 29321,
+            "title": "Raindew of Yore"
+        }, {
+            "id": 951864,
+            "seriesId": 29321,
+            "title": "All That Remains is Pure White Ash"
+        }, {
+            "id": 68595,
+            "seriesId": 29321,
+            "title": "Bent but Unbroken"
+        }, {
+            "id": 68832,
+            "seriesId": 29321,
+            "title": "Wormageddon"
+        }, {
+            "id": 705584,
+            "seriesId": 29321,
+            "title": "One Day More"
+        }, {
+            "id": 789518,
+            "seriesId": 29321,
+            "title": "The Lifecycle of Software Objects"
+        }, {
+            "id": 789517,
+            "seriesId": 29321,
+            "title": "For a Breath I Tarry"
+        }, {
+            "id": 68500,
+            "seriesId": 29321,
+            "title": "Peaceful Prime Time"
+        }, {
+            "id": 705578,
+            "seriesId": 29321,
+            "title": "Seventeen's Map"
+        }, {
+            "id": 705573,
+            "seriesId": 29321,
+            "title": "Diamond and Rust"
+        }, {
+            "id": 705572,
+            "seriesId": 29321,
+            "title": "Farewell, Comet Hunter"
+        }, {
+            "id": 705575,
+            "seriesId": 29321,
+            "title": "Does She Walk Alone?"
+        }, {
+            "id": 705574,
+            "seriesId": 29321,
+            "title": "Close Encounters of the Sixth Kind"
+        }, {
+            "id": 68728,
+            "seriesId": 29321,
+            "title": "Disposable"
+        }, {
+            "id": 68726,
+            "seriesId": 29321,
+            "title": "When Breath Becomes Air"
+        }, {
+            "id": 68725,
+            "seriesId": 29321,
+            "title": "Bzzt! Clock Out!"
+        }, {
+            "id": 68724,
+            "seriesId": 29321,
+            "title": "Door to A New World"
+        }, {
+            "id": 68723,
+            "seriesId": 29321,
+            "title": "Just A Number"
+        }, {
+            "id": 68738,
+            "seriesId": 29321,
+            "title": "No King Rules Forever"
+        }, {
+            "id": 68737,
+            "seriesId": 29321,
+            "title": "Green Thumb"
+        }, {
+            "id": 705585,
+            "seriesId": 29321,
+            "title": "Greed Psychology"
+        }, {
+            "id": 747095,
+            "seriesId": 29321,
+            "title": "Moral Higher Ground"
+        }, {
+            "id": 747094,
+            "seriesId": 29321,
+            "title": "Outworlder"
+        }, {
+            "id": 747093,
+            "seriesId": 29321,
+            "title": "<nobr>50</nobr> Credits!?"
+        }, {
+            "id": 952085,
+            "seriesId": 29321,
+            "title": "Twinkly, Winkly"
+        }, {
+            "id": 747092,
+            "seriesId": 29321,
+            "title": "Sweet Pom-Pom O'Mine"
+        }, {
+            "id": 952084,
+            "seriesId": 29321,
+            "title": "Hurt Locker"
+        }, {
+            "id": 747091,
+            "seriesId": 29321,
+            "title": "Where It All Began"
+        }, {
+            "id": 952083,
+            "seriesId": 29321,
+            "title": "Knight in Shining Armor"
+        }, {
+            "id": 747090,
+            "seriesId": 29321,
+            "title": "Honest Abe"
+        }, {
+            "id": 952082,
+            "seriesId": 29321,
+            "title": "The Mandela Effect"
+        }, {
+            "id": 952081,
+            "seriesId": 29321,
+            "title": "Natural Immunity"
+        }, {
+            "id": 952080,
+            "seriesId": 29321,
+            "title": "Lā Lá Lǎ Là Land"
+        }, {
+            "id": 952079,
+            "seriesId": 29321,
+            "title": "Winter City Trap"
+        }, {
+            "id": 952078,
+            "seriesId": 29321,
+            "title": "For Ages <nobr>12</nobr> and Up"
+        }, {
+            "id": 667565,
+            "seriesId": 29321,
+            "title": "Dance Like A Butterfly, Sting Like A Bee"
+        }, {
+            "id": 952093,
+            "seriesId": 29321,
+            "title": "The Kelly Gang"
+        }, {
+            "id": 952092,
+            "seriesId": 29321,
+            "title": "The Banality of Evil"
+        }, {
+            "id": 868144,
+            "seriesId": 29321,
+            "title": "The Fourth Little Mole"
+        }, {
+            "id": 868143,
+            "seriesId": 29321,
+            "title": "The Adventurous Moles Super Grown-Up Edition"
+        }, {
+            "id": 951957,
+            "seriesId": 29321,
+            "title": "Legs Are Just for Show Anyway"
+        }, {
+            "id": 951956,
+            "seriesId": 29321,
+            "title": "Rise, Engine of Creation!"
+        }, {
+            "id": 868012,
+            "seriesId": 29321,
+            "title": "The First Step of the Future"
+        }, {
+            "id": 868011,
+            "seriesId": 29321,
+            "title": "Inorganic Wisdom Fruit"
+        }, {
+            "id": 868010,
+            "seriesId": 29321,
+            "title": "Journey to the Arctic Bear Cub"
+        }, {
+            "id": 868009,
+            "seriesId": 29321,
+            "title": "Thank You, Pela"
+        }, {
+            "id": 868016,
+            "seriesId": 29321,
+            "title": "Steel and Toys"
+        }, {
+            "id": 868015,
+            "seriesId": 29321,
+            "title": "Steel and Street Lamps"
+        }, {
+            "id": 868014,
+            "seriesId": 29321,
+            "title": "With the Colossus As Witness"
+        }, {
+            "id": 868013,
+            "seriesId": 29321,
+            "title": "Don't Try This At Home"
+        }, {
+            "id": 868020,
+            "seriesId": 29321,
+            "title": "First Things First"
+        }, {
+            "id": 868019,
+            "seriesId": 29321,
+            "title": "Confession of the Mask"
+        }, {
+            "id": 784071,
+            "seriesId": 29321,
+            "title": "Ice Grim"
+        }, {
+            "id": 68439,
+            "seriesId": 29321,
+            "title": "Free For Today"
+        }, {
+            "id": 68440,
+            "seriesId": 29321,
+            "title": "Catch Me If You Can"
+        }, {
+            "id": 68441,
+            "seriesId": 29321,
+            "title": "You Should Stay in the Museum!"
+        }, {
+            "id": 68597,
+            "seriesId": 29321,
+            "title": "Into Hall of Fame"
+        }, {
+            "id": 68596,
+            "seriesId": 29321,
+            "title": "King of the Snowy Hill"
+        }, {
+            "id": 68602,
+            "seriesId": 29321,
+            "title": "Gotta Catch 'Em All"
+        }, {
+            "id": 68601,
+            "seriesId": 29321,
+            "title": "Aetherium Wars Master"
+        }, {
+            "id": 68600,
+            "seriesId": 29321,
+            "title": "Hyperlink Casual Champion"
+        }, {
+            "id": 68599,
+            "seriesId": 29321,
+            "title": "Mark of Frigid Gust"
+        }, {
+            "id": 68606,
+            "seriesId": 29321,
+            "title": "Mark of Alloy"
+        }, {
+            "id": 68605,
+            "seriesId": 29321,
+            "title": "Mark of Intellect"
+        }, {
+            "id": 951953,
+            "seriesId": 29321,
+            "title": "Mark of Facade"
+        }, {
+            "id": 951952,
+            "seriesId": 29321,
+            "title": "We Are the Champion?"
+        }, {
+            "id": 951961,
+            "seriesId": 29321,
+            "title": "Victory, and Then Comes Farewell"
+        }, {
+            "id": 951960,
+            "seriesId": 29321,
+            "title": "The End, and Then Comes the Beginning"
+        }, {
+            "id": 951955,
+            "seriesId": 29321,
+            "title": "Does This Game Not Have Version Updates?"
+        }, {
+            "id": 66427,
+            "seriesId": 29321,
+            "title": "Draconic Opulence"
+        }, {
+            "id": 951887,
+            "seriesId": 29321,
+            "title": "Friend of the Cloud Knights"
+        }, {
+            "id": 868141,
+            "seriesId": 29321,
+            "title": "A Simple Life"
+        }, {
+            "id": 868140,
+            "seriesId": 29321,
+            "title": "Carpe Diem, Festina Lente, and Tempus Fugit"
+        }, {
+            "id": 868139,
+            "seriesId": 29321,
+            "title": "Cyber Fraud"
+        }, {
+            "id": 868138,
+            "seriesId": 29321,
+            "title": "Tootsie"
+        }, {
+            "id": 868137,
+            "seriesId": 29321,
+            "title": "A Secret Makes a Woman, Woman."
+        }, {
+            "id": 68436,
+            "seriesId": 29321,
+            "title": "Where Can A Wanderer Rest?"
+        }, {
+            "id": 68437,
+            "seriesId": 29321,
+            "title": "For Old Times' Sake"
+        }, {
+            "id": 868152,
+            "seriesId": 29321,
+            "title": "The Seven Errors of Cycranes: Sloth"
+        }, {
+            "id": 868151,
+            "seriesId": 29321,
+            "title": "Seven Birds in the Hand Is Worth A Thousand in the Bush"
+        }, {
+            "id": 784203,
+            "seriesId": 29321,
+            "title": "Fair and Square"
+        }, {
+            "id": 784202,
+            "seriesId": 29321,
+            "title": "All Is Fair in Love and War"
+        }, {
+            "id": 784201,
+            "seriesId": 29321,
+            "title": "From Hero to Zero"
+        }, {
+            "id": 784200,
+            "seriesId": 29321,
+            "title": "Far From the Madding Crowd"
+        }, {
+            "id": 784199,
+            "seriesId": 29321,
+            "title": "Let the Wind Blow Where It May"
+        }, {
+            "id": 784198,
+            "seriesId": 29321,
+            "title": "Hasta la vista, Hexanexus!"
+        }, {
+            "id": 784197,
+            "seriesId": 29321,
+            "title": "Rubik's Headache"
+        }, {
+            "id": 784196,
+            "seriesId": 29321,
+            "title": "Labor Omnia Vincit"
+        }, {
+            "id": 784211,
+            "seriesId": 29321,
+            "title": "The Crimes That Bind"
+        }, {
+            "id": 784210,
+            "seriesId": 29321,
+            "title": "Flight Cancelled"
+        }, {
+            "id": 667558,
+            "seriesId": 29321,
+            "title": "Lost and Found"
+        }, {
+            "id": 667557,
+            "seriesId": 29321,
+            "title": "Leave It There"
+        }, {
+            "id": 667556,
+            "seriesId": 29321,
+            "title": "Have Your Cake and Eat It"
+        }, {
+            "id": 667555,
+            "seriesId": 29321,
+            "title": "The Seven Errors of Cycranes: Lust"
+        }, {
+            "id": 667554,
+            "seriesId": 29321,
+            "title": "The Seven Errors of Cycranes: Gluttony"
+        }, {
+            "id": 667553,
+            "seriesId": 29321,
+            "title": "The Seven Errors of Cycranes: Greed"
+        }, {
+            "id": 667552,
+            "seriesId": 29321,
+            "title": "The Seven Errors of Cycranes: Envy"
+        }, {
+            "id": 667551,
+            "seriesId": 29321,
+            "title": "The Seven Errors of Cycranes: Wrath"
+        }, {
+            "id": 667566,
+            "seriesId": 29321,
+            "title": "The Seven Errors of Cycranes: Pride"
+        }, {
+            "id": 68531,
+            "seriesId": 29321,
+            "title": "The Willing Does Not Bite"
+        }, {
+            "id": 68534,
+            "seriesId": 29321,
+            "title": "How I Learned to Stop Worrying"
+        }, {
+            "id": 68533,
+            "seriesId": 29321,
+            "title": "Lunarescent Rim"
+        }, {
+            "id": 68536,
+            "seriesId": 29321,
+            "title": "Wordsmith"
+        }, {
+            "id": 68535,
+            "seriesId": 29321,
+            "title": "Literary Novice"
+        }, {
+            "id": 68540,
+            "seriesId": 29321,
+            "title": "Ends Above the Means"
+        }, {
+            "id": 68539,
+            "seriesId": 29321,
+            "title": "Means Above the Ends"
+        }, {
+            "id": 951855,
+            "seriesId": 29321,
+            "title": "Truthful Trailblazer"
+        }, {
+            "id": 951860,
+            "seriesId": 29321,
+            "title": "Hidden Harmony"
+        }, {
+            "id": 868241,
+            "seriesId": 29321,
+            "title": "High Elder Here, Pay Up"
+        }, {
+            "id": 952189,
+            "seriesId": 29321,
+            "title": "Boo Ha Ha!"
+        }, {
+            "id": 952182,
+            "seriesId": 29321,
+            "title": "When Fingertip Sings"
+        }, {
+            "id": 952183,
+            "seriesId": 29321,
+            "title": "Mountain of Recto, Water of Verso"
+        }, {
+            "id": 952184,
+            "seriesId": 29321,
+            "title": "Apprentice, Disciple, and Renegade"
+        }, {
+            "id": 952185,
+            "seriesId": 29321,
+            "title": "The Sorcerer's Tombstone"
+        }, {
+            "id": 952178,
+            "seriesId": 29321,
+            "title": "Close My Eyes"
+        }, {
+            "id": 952179,
+            "seriesId": 29321,
+            "title": "Legen... Wait for It... Dary!"
+        }, {
+            "id": 868245,
+            "seriesId": 29321,
+            "title": "Pale Fire"
+        }, {
+            "id": 868246,
+            "seriesId": 29321,
+            "title": "To Your Eternity"
+        }, {
+            "id": 868247,
+            "seriesId": 29321,
+            "title": "To the World's End"
+        }, {
+            "id": 868248,
+            "seriesId": 29321,
+            "title": "Inhibitor Heliobae"
+        }, {
+            "id": 68502,
+            "seriesId": 29321,
+            "title": "Let Aurum Alley Thrive Once More!"
+        }, {
+            "id": 68505,
+            "seriesId": 29321,
+            "title": "Trojan Starskiff"
+        }, {
+            "id": 68506,
+            "seriesId": 29321,
+            "title": "Outclassed by None"
+        }, {
+            "id": 68503,
+            "seriesId": 29321,
+            "title": "Horn of Plenty"
+        }, {
+            "id": 68504,
+            "seriesId": 29321,
+            "title": "Pawnshop No. 8"
+        }, {
+            "id": 68509,
+            "seriesId": 29321,
+            "title": "Delivery Dynamo"
+        }, {
+            "id": 68510,
+            "seriesId": 29321,
+            "title": "Sought Gourmet Afar, Wrought Flavor Ajar"
+        }, {
+            "id": 951856,
+            "seriesId": 29321,
+            "title": "Funds Expended, Fortunes Expanded"
+        }, {
+            "id": 951857,
+            "seriesId": 29321,
+            "title": "Stellar Stacker"
+        }, {
+            "id": 951854,
+            "seriesId": 29321,
+            "title": "Markets: Skyline"
+        }, {
+            "id": 951865,
+            "seriesId": 29321,
+            "title": "Heron Express: We Tried, We Really Did"
+        }, {
+            "id": 867915,
+            "seriesId": 29321,
+            "title": "The Departed Is That Which We Impart"
+        }, {
+            "id": 951951,
+            "seriesId": 29321,
+            "title": "Tongue of Loquacity"
+        }, {
+            "id": 951950,
+            "seriesId": 29321,
+            "title": "One-Two Punchline"
+        }, {
+            "id": 68833,
+            "seriesId": 29321,
+            "title": "Hello, World!"
+        }, {
+            "id": 68834,
+            "seriesId": 29321,
+            "title": "Hello, New World!"
+        }, {
+            "id": 68827,
+            "seriesId": 29321,
+            "title": "Seven Folios of Ether Opus"
+        }, {
+            "id": 68828,
+            "seriesId": 29321,
+            "title": "War on Chessboard"
+        }, {
+            "id": 68829,
+            "seriesId": 29321,
+            "title": "Hunt Type Influencer"
+        }, {
+            "id": 68830,
+            "seriesId": 29321,
+            "title": "Enigmata Type Influencer"
+        }, {
+            "id": 68823,
+            "seriesId": 29321,
+            "title": "Elation Type Influencer"
+        }, {
+            "id": 68824,
+            "seriesId": 29321,
+            "title": "Well-Balanced Influencer"
+        }, {
+            "id": 952186,
+            "seriesId": 29321,
+            "title": "\"Leave a Like!\""
+        }, {
+            "id": 952187,
+            "seriesId": 29321,
+            "title": "Clout Within Grasp"
+        }, {
+            "id": 952188,
+            "seriesId": 29321,
+            "title": "Gathered Is Blazing Fire, Scattered Are Shining Stars"
+        }, {
+            "id": 68927,
+            "seriesId": 29321,
+            "title": "Never Updating"
+        }, {
+            "id": 68930,
+            "seriesId": 29321,
+            "title": "Escape the Container"
+        }, {
+            "id": 68929,
+            "seriesId": 29321,
+            "title": "The Lord of Iron Throne"
+        }, {
+            "id": 68924,
+            "seriesId": 29321,
+            "title": "Hand of the King"
+        }, {
+            "id": 68923,
+            "seriesId": 29321,
+            "title": "Qualified Caretaker"
+        }, {
+            "id": 68926,
+            "seriesId": 29321,
+            "title": "The Tame-A-Gotcha Is Hungry Again"
+        }, {
+            "id": 68925,
+            "seriesId": 29321,
+            "title": "Peppybacking"
+        }, {
+            "id": 68920,
+            "seriesId": 29321,
+            "title": "The Art of Deception"
+        }, {
+            "id": 68919,
+            "seriesId": 29321,
+            "title": "Greenfingers"
+        }, {
+            "id": 952283,
+            "seriesId": 29321,
+            "title": "The Cat in the Hat"
+        }, {
+            "id": 952282,
+            "seriesId": 29321,
+            "title": "See the Forest for the Trees"
+        }, {
+            "id": 952285,
+            "seriesId": 29321,
+            "title": "Out of Service Area"
+        }, {
+            "id": 952284,
+            "seriesId": 29321,
+            "title": "One Player Short"
+        }, {
+            "id": 952279,
+            "seriesId": 29321,
+            "title": "Midnight's Children"
+        }, {
+            "id": 952278,
+            "seriesId": 29321,
+            "title": "Creations Mimic Creators"
+        }, {
+            "id": 952281,
+            "seriesId": 29321,
+            "title": "Good Friend of Pirate"
+        }, {
+            "id": 952280,
+            "seriesId": 29321,
+            "title": "The God of Small Things"
+        }, {
+            "id": 952275,
+            "seriesId": 29321,
+            "title": "Suum Cuique"
+        }, {
+            "id": 952274,
+            "seriesId": 29321,
+            "title": "Chronic Ailment Diagnostic Manual"
+        }, {
+            "id": 30483,
+            "seriesId": 29321,
+            "title": "Don't Shake Your Soda"
+        }, {
+            "id": 30484,
+            "seriesId": 29321,
+            "title": "Towards the Brighter Side"
+        }, {
+            "id": 30485,
+            "seriesId": 29321,
+            "title": "He Grew Up Under This Sunshine"
+        }, {
+            "id": 30478,
+            "seriesId": 29321,
+            "title": "East of Eden"
+        }, {
+            "id": 30479,
+            "seriesId": 29321,
+            "title": "Crime and Punishment"
+        }, {
+            "id": 30480,
+            "seriesId": 29321,
+            "title": "The Dance Is On"
+        }, {
+            "id": 30481,
+            "seriesId": 29321,
+            "title": "The Good Deeds a Man Has Done"
+        }, {
+            "id": 30490,
+            "seriesId": 29321,
+            "title": "Zoologist in Fiction"
+        }, {
+            "id": 114425,
+            "seriesId": 29321,
+            "title": "Savor Emotions"
+        }, {
+            "id": 114419,
+            "seriesId": 29321,
+            "title": "Surge of Warmth"
+        }, {
+            "id": 114420,
+            "seriesId": 29321,
+            "title": "Thumping Heart"
+        }, {
+            "id": 114421,
+            "seriesId": 29321,
+            "title": "I Know Your Thoughts"
+        }, {
+            "id": 114422,
+            "seriesId": 29321,
+            "title": "My Favorite Car"
+        }, {
+            "id": 114431,
+            "seriesId": 29321,
+            "title": "Breaking Even"
+        }, {
+            "id": 114432,
+            "seriesId": 29321,
+            "title": "The Number You Have Dialed Is Unavailable"
+        }, {
+            "id": 829896,
+            "seriesId": 29321,
+            "title": "Glasses in the City"
+        }, {
+            "id": 829897,
+            "seriesId": 29321,
+            "title": "Heart of the Rock"
+        }, {
+            "id": 829898,
+            "seriesId": 29321,
+            "title": "The Great Champagne"
+        }, {
+            "id": 829899,
+            "seriesId": 29321,
+            "title": "Don't Pick Up Anything Ominous"
+        }, {
+            "id": 829892,
+            "seriesId": 29321,
+            "title": "The Wolf of Glaux Avenue"
+        }, {
+            "id": 829893,
+            "seriesId": 29321,
+            "title": "Every Gambler Has Their Excuses"
+        }, {
+            "id": 829894,
+            "seriesId": 29321,
+            "title": "Fallen Angel"
+        }, {
+            "id": 829895,
+            "seriesId": 29321,
+            "title": "Rashomon"
+        }, {
+            "id": 829904,
+            "seriesId": 29321,
+            "title": "Magique Pepeshi"
+        }, {
+            "id": 829905,
+            "seriesId": 29321,
+            "title": "The Planet of Festivities and Six Alfalfa Credits"
+        }, {
+            "id": 946541,
+            "seriesId": 29321,
+            "title": "Mental Health Care"
+        }, {
+            "id": 946542,
+            "seriesId": 29321,
+            "title": "The Interpretation of Dreams"
+        }, {
+            "id": 946543,
+            "seriesId": 29321,
+            "title": "We Are All Friends Here"
+        }, {
+            "id": 946544,
+            "seriesId": 29321,
+            "title": "No Man's Symphony"
+        }, {
+            "id": 946537,
+            "seriesId": 29321,
+            "title": "On the Path of Voracity..."
+        }, {
+            "id": 946538,
+            "seriesId": 29321,
+            "title": "Into the Rabbit Hole"
+        }, {
+            "id": 946539,
+            "seriesId": 29321,
+            "title": "Between the Sky and You"
+        }, {
+            "id": 946540,
+            "seriesId": 29321,
+            "title": "See That Ladder? You Can Climb It!"
+        }, {
+            "id": 946549,
+            "seriesId": 29321,
+            "title": "Gravity Waterfall"
+        }, {
+            "id": 946550,
+            "seriesId": 29321,
+            "title": "Lucky Striper"
+        }, {
+            "id": 662014,
+            "seriesId": 29321,
+            "title": "I'm Lovin' This Game"
+        }, {
+            "id": 662015,
+            "seriesId": 29321,
+            "title": "Are There No Pepeshi?"
+        }, {
+            "id": 662016,
+            "seriesId": 29321,
+            "title": "Déjà Vu"
+        }, {
+            "id": 662017,
+            "seriesId": 29321,
+            "title": "Ramesrash II"
+        }, {
+            "id": 662010,
+            "seriesId": 29321,
+            "title": "Rear Window"
+        }, {
+            "id": 662011,
+            "seriesId": 29321,
+            "title": "Enemy of the Pepeshi"
+        }, {
+            "id": 662012,
+            "seriesId": 29321,
+            "title": "The Worst Nameless Ever"
+        }, {
+            "id": 662013,
+            "seriesId": 29321,
+            "title": "Gate to Stars"
+        }, {
+            "id": 662022,
+            "seriesId": 29321,
+            "title": "This Is Simply Amazing"
+        }, {
+            "id": 662023,
+            "seriesId": 29321,
+            "title": "Dream of Trustification"
+        }, {
+            "id": 745955,
+            "seriesId": 29321,
+            "title": "Reality Sinks, Dream Drifts"
+        }, {
+            "id": 745956,
+            "seriesId": 29321,
+            "title": "The Long Goodbye"
+        }, {
+            "id": 745957,
+            "seriesId": 29321,
+            "title": "Third Cone's the Charm"
+        }, {
+            "id": 745958,
+            "seriesId": 29321,
+            "title": "Oti's Economics"
+        }, {
+            "id": 745951,
+            "seriesId": 29321,
+            "title": "Attendance Rate, Zero"
+        }, {
+            "id": 745952,
+            "seriesId": 29321,
+            "title": "Birds Art Life: A Year of Observation"
+        }, {
+            "id": 745953,
+            "seriesId": 29321,
+            "title": "For Great Goods"
+        }, {
+            "id": 745954,
+            "seriesId": 29321,
+            "title": "The Cabin in the Woods"
+        }, {
+            "id": 745963,
+            "seriesId": 29321,
+            "title": "Proofs And Refutations"
+        }, {
+            "id": 745964,
+            "seriesId": 29321,
+            "title": "A Variation Named \"I\""
+        }, {
+            "id": 461428,
+            "seriesId": 29321,
+            "title": "The Lady in Gold"
+        }, {
+            "id": 461429,
+            "seriesId": 29321,
+            "title": "Lord of War"
+        }, {
+            "id": 461430,
+            "seriesId": 29321,
+            "title": "Better Late Than Never"
+        }, {
+            "id": 461431,
+            "seriesId": 29321,
+            "title": "Dishonored Legacy"
+        }, {
+            "id": 461424,
+            "seriesId": 29321,
+            "title": "Big Shot!"
+        }, {
+            "id": 461425,
+            "seriesId": 29321,
+            "title": "Make Your Dreams a Blast"
+        }, {
+            "id": 461426,
+            "seriesId": 29321,
+            "title": "To Each Their Own Drink"
+        }, {
+            "id": 461427,
+            "seriesId": 29321,
+            "title": "Omakase"
+        }, {
+            "id": 461436,
+            "seriesId": 29321,
+            "title": "Operation Dreampunk Drinksmith"
+        }, {
+            "id": 545369,
+            "seriesId": 29321,
+            "title": "Family Portrait"
+        }, {
+            "id": 545370,
+            "seriesId": 29321,
+            "title": "\"Clock\" In"
+        }, {
+            "id": 30549,
+            "seriesId": 29321,
+            "title": "Bottling History"
+        }, {
+            "id": 30546,
+            "seriesId": 29321,
+            "title": "The Tale of Syrupy Medicine"
+        }, {
+            "id": 30547,
+            "seriesId": 29321,
+            "title": "Gold and Gear... Clock?"
+        }, {
+            "id": 30544,
+            "seriesId": 29321,
+            "title": "Just A Walking Shadow"
+        }, {
+            "id": 30542,
+            "seriesId": 29321,
+            "title": "Unfinished Dream Song"
+        }, {
+            "id": 30543,
+            "seriesId": 29321,
+            "title": "Just Leave"
+        }, {
+            "id": 30556,
+            "seriesId": 29321,
+            "title": "The Birth of Hanu Union"
+        }, {
+            "id": 30557,
+            "seriesId": 29321,
+            "title": "SoulGlad Ambassador"
+        }, {
+            "id": 114489,
+            "seriesId": 29321,
+            "title": "The Wonderful Wizard of Dreamville"
+        }, {
+            "id": 114490,
+            "seriesId": 29321,
+            "title": "Clockie and His Companions"
+        }, {
+            "id": 114487,
+            "seriesId": 29321,
+            "title": "Railboard <nobr>100</nobr>"
+        }, {
+            "id": 114488,
+            "seriesId": 29321,
+            "title": "Lifeboat"
+        }, {
+            "id": 114485,
+            "seriesId": 29321,
+            "title": "Dreamflux Study Group"
+        }, {
+            "id": 114486,
+            "seriesId": 29321,
+            "title": "Angel's Murmur"
+        }, {
+            "id": 114483,
+            "seriesId": 29321,
+            "title": "The Feather He Dropped"
+        }, {
+            "id": 114484,
+            "seriesId": 29321,
+            "title": "Permanent Boarding Pass"
+        }, {
+            "id": 114497,
+            "seriesId": 29321,
+            "title": "Anyway, It's Cool"
+        }, {
+            "id": 114498,
+            "seriesId": 29321,
+            "title": "Where Splendor Meets Sorrow"
+        }, {
+            "id": 829962,
+            "seriesId": 29321,
+            "title": "Temporal Wonder"
+        }, {
+            "id": 829963,
+            "seriesId": 29321,
+            "title": "Whispers of the Past"
+        }, {
+            "id": 829960,
+            "seriesId": 29321,
+            "title": "Dreamscape Top <nobr>100</nobr>"
+        }, {
+            "id": 829961,
+            "seriesId": 29321,
+            "title": "Emotions Beyond the Lens"
+        }, {
+            "id": 829958,
+            "seriesId": 29321,
+            "title": "The Lost Generation"
+        }, {
+            "id": 829959,
+            "seriesId": 29321,
+            "title": "High-Budget Movie"
+        }, {
+            "id": 829956,
+            "seriesId": 29321,
+            "title": "Natural 0 Roll"
+        }, {
+            "id": 829957,
+            "seriesId": 29321,
+            "title": "Rail Road, Take Me Home"
+        }, {
+            "id": 829970,
+            "seriesId": 29321,
+            "title": "Where Are You Going, Mikhail?"
+        }, {
+            "id": 829971,
+            "seriesId": 29321,
+            "title": "Boxes and Ladders"
+        }, {
+            "id": 946607,
+            "seriesId": 29321,
+            "title": "Waiting for Godot"
+        }, {
+            "id": 946608,
+            "seriesId": 29321,
+            "title": "An Afternoon's Worth of Sitting"
+        }, {
+            "id": 946605,
+            "seriesId": 29321,
+            "title": "City of Love"
+        }, {
+            "id": 30545,
+            "seriesId": 29321,
+            "title": "Stickers, So Many Stickers"
+        }, {
+            "id": 30644,
+            "seriesId": 29321,
+            "title": "No Business on Continental Grounds"
+        }, {
+            "id": 30643,
+            "seriesId": 29321,
+            "title": "Requiem of the Rose"
+        }, {
+            "id": 30642,
+            "seriesId": 29321,
+            "title": "My Captain, My Ship"
+        }, {
+            "id": 30641,
+            "seriesId": 29321,
+            "title": "Unplanned Group Photo"
+        }, {
+            "id": 30640,
+            "seriesId": 29321,
+            "title": "Omega Ruby"
+        }, {
+            "id": 30639,
+            "seriesId": 29321,
+            "title": "Alpha Sapphire"
+        }, {
+            "id": 30638,
+            "seriesId": 29321,
+            "title": "Easy As Pie"
+        }, {
+            "id": 30653,
+            "seriesId": 29321,
+            "title": "Angry Origami Birds"
+        }, {
+            "id": 30652,
+            "seriesId": 29321,
+            "title": "For the Birds"
+        }, {
+            "id": 114586,
+            "seriesId": 29321,
+            "title": "Origami Zoo"
+        }, {
+            "id": 114585,
+            "seriesId": 29321,
+            "title": "A Star is Born"
+        }, {
+            "id": 114584,
+            "seriesId": 29321,
+            "title": "Need for Speed"
+        }, {
+            "id": 114583,
+            "seriesId": 29321,
+            "title": "Family Cinema"
+        }, {
+            "id": 114581,
+            "seriesId": 29321,
+            "title": "Eighteen Lordly Trashcans"
+        }, {
+            "id": 114580,
+            "seriesId": 29321,
+            "title": "LuckEx"
+        }, {
+            "id": 114579,
+            "seriesId": 29321,
+            "title": "Astral Express Night Live"
+        }, {
+            "id": 114594,
+            "seriesId": 29321,
+            "title": "The Invisible Guest"
+        }, {
+            "id": 114593,
+            "seriesId": 29321,
+            "title": "Self-Funded Merch"
+        }, {
+            "id": 830059,
+            "seriesId": 29321,
+            "title": "Shadow Captain"
+        }, {
+            "id": 830057,
+            "seriesId": 29321,
+            "title": "Beneath the Black Mirror"
+        }, {
+            "id": 830056,
+            "seriesId": 29321,
+            "title": "Return to Glory"
+        }, {
+            "id": 830055,
+            "seriesId": 29321,
+            "title": "Invisible Cities"
+        }, {
+            "id": 830054,
+            "seriesId": 29321,
+            "title": "My Heart Will Go On"
+        }, {
+            "id": 830053,
+            "seriesId": 29321,
+            "title": "Utter Horror Story"
+        }, {
+            "id": 830052,
+            "seriesId": 29321,
+            "title": "The Evil Within"
+        }, {
+            "id": 830067,
+            "seriesId": 29321,
+            "title": "Gold Coins of Starlight"
+        }, {
+            "id": 830066,
+            "seriesId": 29321,
+            "title": "O Captain! My Captain!"
+        }, {
+            "id": 30351,
+            "seriesId": 29321,
+            "title": "Sword in Stone, Soul in Sky"
+        }, {
+            "id": 30352,
+            "seriesId": 29321,
+            "title": "Blade Speaks in Seasons"
+        }, {
+            "id": 30353,
+            "seriesId": 29321,
+            "title": "Flux of Iron Impales Peak of Heaven"
+        }, {
+            "id": 30354,
+            "seriesId": 29321,
+            "title": "Occam's Sheathed Razor"
+        }, {
+            "id": 30355,
+            "seriesId": 29321,
+            "title": "Overpowered Yet Overcautious"
+        }, {
+            "id": 30357,
+            "seriesId": 29321,
+            "title": "Beyond the Plateau"
+        }, {
+            "id": 30358,
+            "seriesId": 29321,
+            "title": "Saga of Primaveral Tourism"
+        }, {
+            "id": 30359,
+            "seriesId": 29321,
+            "title": "All Sword and No Play Makes March a Dull Girl"
+        }, {
+            "id": 114291,
+            "seriesId": 29321,
+            "title": "Galactic Doppelbatter"
+        }, {
+            "id": 114292,
+            "seriesId": 29321,
+            "title": "Inter-Knot Commission"
+        }, {
+            "id": 114293,
+            "seriesId": 29321,
+            "title": "Xianzhou Tour Guide"
+        }, {
+            "id": 114294,
+            "seriesId": 29321,
+            "title": "Of Five People, Three are Escapees"
+        }, {
+            "id": 114295,
+            "seriesId": 29321,
+            "title": "Terrific Mara-Struck and Where to Find Them"
+        }, {
+            "id": 114296,
+            "seriesId": 29321,
+            "title": "Shadow Guard's Creed"
+        }, {
+            "id": 114297,
+            "seriesId": 29321,
+            "title": "Shadow Guard's Creed Rogue"
+        }, {
+            "id": 114298,
+            "seriesId": 29321,
+            "title": "Prison Visitation"
+        }, {
+            "id": 114299,
+            "seriesId": 29321,
+            "title": "False Memories"
+        }, {
+            "id": 829764,
+            "seriesId": 29321,
+            "title": "A Steal of a Deal"
+        }, {
+            "id": 829765,
+            "seriesId": 29321,
+            "title": "This Cube, Our Lives"
+        }, {
+            "id": 30446,
+            "seriesId": 29321,
+            "title": "Don't Let the Simmering Fire Die"
+        }, {
+            "id": 30449,
+            "seriesId": 29321,
+            "title": "Fringe Contender"
+        }, {
+            "id": 30448,
+            "seriesId": 29321,
+            "title": "Kengan Not-Sora"
+        }, {
+            "id": 30451,
+            "seriesId": 29321,
+            "title": "Aim to Be a Wardance Master"
+        }, {
+            "id": 30450,
+            "seriesId": 29321,
+            "title": "The Raging Bull Within Dreams"
+        }, {
+            "id": 30453,
+            "seriesId": 29321,
+            "title": "Bare Hands May Best a Knight"
+        }, {
+            "id": 30452,
+            "seriesId": 29321,
+            "title": "Lineal Champion"
+        }, {
+            "id": 30455,
+            "seriesId": 29321,
+            "title": "This Day, I Know Me"
+        }, {
+            "id": 30454,
+            "seriesId": 29321,
+            "title": "The Post-truth Age"
+        }, {
+            "id": 114388,
+            "seriesId": 29321,
+            "title": "Gone Are the Days of Youth"
+        }, {
+            "id": 114387,
+            "seriesId": 29321,
+            "title": "The Queen of News"
+        }, {
+            "id": 114390,
+            "seriesId": 29321,
+            "title": "No News Day"
+        }, {
+            "id": 114389,
+            "seriesId": 29321,
+            "title": "Seven Flowers on a Vine"
+        }, {
+            "id": 114392,
+            "seriesId": 29321,
+            "title": "Wardance <nobr>21</nobr>-Gun Salute"
+        }, {
+            "id": 114391,
+            "seriesId": 29321,
+            "title": "Dragon in Stealth"
+        }, {
+            "id": 114394,
+            "seriesId": 29321,
+            "title": "Just One Passing Martial Tutor"
+        }, {
+            "id": 114393,
+            "seriesId": 29321,
+            "title": "We Work in the Dark to Serve the Light"
+        }, {
+            "id": 114396,
+            "seriesId": 29321,
+            "title": "Last Jug of Joy"
+        }, {
+            "id": 114395,
+            "seriesId": 29321,
+            "title": "Non-Stop"
+        }, {
+            "id": 829861,
+            "seriesId": 29321,
+            "title": "Fusible Objects"
+        }, {
+            "id": 829860,
+            "seriesId": 29321,
+            "title": "The Sublime Object of Trade"
+        }, {
+            "id": 829863,
+            "seriesId": 29321,
+            "title": "Cast Off Worldly Woes"
+        }, {
+            "id": 30417,
+            "seriesId": 29321,
+            "title": "Sunday Night Live"
+        }, {
+            "id": 30414,
+            "seriesId": 29321,
+            "title": "Welcome to the Classroom of Academic Freedom"
+        }, {
+            "id": 30415,
+            "seriesId": 29321,
+            "title": "Adios, Bottle"
+        }, {
+            "id": 30420,
+            "seriesId": 29321,
+            "title": "What Goes Around, Comes Around"
+        }, {
+            "id": 30421,
+            "seriesId": 29321,
+            "title": "That Is One Big Balloon"
+        }, {
+            "id": 30418,
+            "seriesId": 29321,
+            "title": "Learned a Lesson...?"
+        }, {
+            "id": 30419,
+            "seriesId": 29321,
+            "title": "Origami House Music"
+        }, {
+            "id": 30424,
+            "seriesId": 29321,
+            "title": "Graduation Contact List"
+        }, {
+            "id": 114357,
+            "seriesId": 29321,
+            "title": "Draw It Yourself, Pen!"
+        }, {
+            "id": 114358,
+            "seriesId": 29321,
+            "title": "'<nobr>39</nobr>"
+        }, {
+            "id": 114355,
+            "seriesId": 29321,
+            "title": "Aeon Bless Paperfold University!"
+        }, {
+            "id": 114356,
+            "seriesId": 29321,
+            "title": "Sweet Dreams in the Cradle"
+        }, {
+            "id": 114361,
+            "seriesId": 29321,
+            "title": "Fast & Family"
+        }, {
+            "id": 114362,
+            "seriesId": 29321,
+            "title": "Color Your Dreams, Free Your Ideals"
+        }, {
+            "id": 114359,
+            "seriesId": 29321,
+            "title": "The Goblet of Fire"
+        }, {
+            "id": 114360,
+            "seriesId": 29321,
+            "title": "Student Club Staff Members"
+        }, {
+            "id": 114365,
+            "seriesId": 29321,
+            "title": "Is This Real?"
+        }, {
+            "id": 829831,
+            "seriesId": 29321,
+            "title": "Factory Library"
+        }, {
+            "id": 829829,
+            "seriesId": 29321,
+            "title": "Right, Right, Right, Right, Right, Right, Right"
+        }, {
+            "id": 829834,
+            "seriesId": 29321,
+            "title": "Remix <nobr>10</nobr>"
+        }, {
+            "id": 829835,
+            "seriesId": 29321,
+            "title": "Psycho-Pass"
+        }, {
+            "id": 829832,
+            "seriesId": 29321,
+            "title": "Musical Rhapsody"
+        }, {
+            "id": 829833,
+            "seriesId": 29321,
+            "title": "Natsu Matsuri"
+        }, {
+            "id": 829838,
+            "seriesId": 29321,
+            "title": "Heaven and Hell"
+        }, {
+            "id": 829839,
+            "seriesId": 29321,
+            "title": "Testify"
+        }, {
+            "id": 946475,
+            "seriesId": 29321,
+            "title": "Eerie Tales"
+        }, {
+            "id": 30512,
+            "seriesId": 29321,
+            "title": "Long Day's Journey Into Night"
+        }, {
+            "id": 30511,
+            "seriesId": 29321,
+            "title": "Good Shower!"
+        }, {
+            "id": 30510,
+            "seriesId": 29321,
+            "title": "Bath Buddy"
+        }, {
+            "id": 30517,
+            "seriesId": 29321,
+            "title": "Sudden Reflection"
+        }, {
+            "id": 30516,
+            "seriesId": 29321,
+            "title": "Night of Non-Existence"
+        }, {
+            "id": 30515,
+            "seriesId": 29321,
+            "title": "Lightbulb Riddle"
+        }, {
+            "id": 30514,
+            "seriesId": 29321,
+            "title": "Cake Home Alone"
+        }, {
+            "id": 30521,
+            "seriesId": 29321,
+            "title": "Reliable Old Computer"
+        }, {
+            "id": 30520,
+            "seriesId": 29321,
+            "title": "Betwixt Freezing and Melting"
+        }, {
+            "id": 114454,
+            "seriesId": 29321,
+            "title": "Nothing Happens Tonight"
+        }, {
+            "id": 114453,
+            "seriesId": 29321,
+            "title": "Mini Wizard of Oz"
+        }, {
+            "id": 114452,
+            "seriesId": 29321,
+            "title": "Tides of Time Gone By"
+        }, {
+            "id": 114451,
+            "seriesId": 29321,
+            "title": "Cold Steel Forging"
+        }, {
+            "id": 114458,
+            "seriesId": 29321,
+            "title": "I Love My Family"
+        }, {
+            "id": 114457,
+            "seriesId": 29321,
+            "title": "Meeting Keep Going!"
+        }, {
+            "id": 114456,
+            "seriesId": 29321,
+            "title": "Dream Renovator"
+        }, {
+            "id": 114455,
+            "seriesId": 29321,
+            "title": "A Step Behind Cataclysm"
+        }, {
+            "id": 30783242,
+            "seriesId": 29321,
+            "title": "Ring the Bell"
+        }, {
+            "id": 30508318,
+            "seriesId": 29321,
+            "title": "I Call Upon Eternal Dawn"
+        }, {
+            "id": 30561074,
+            "seriesId": 29321,
+            "title": "I Call Upon the New King"
+        }, {
+            "id": 30810439,
+            "seriesId": 29321,
+            "title": "I Call Upon Peace and Prosperity"
+        }, {
+            "id": 30543697,
+            "seriesId": 29321,
+            "title": "I Call Upon Night of Old"
+        }, {
+            "id": 30858607,
+            "seriesId": 29321,
+            "title": "Big City Anecdotes"
+        }, {
+            "id": 30583676,
+            "seriesId": 29321,
+            "title": "Strife's Afterglow"
+        }, {
+            "id": 30898308,
+            "seriesId": 29321,
+            "title": "Dawn of War"
+        }, {
+            "id": 30623400,
+            "seriesId": 29321,
+            "title": "The Holy Deer's Death"
+        }, {
+            "id": 14095644,
+            "seriesId": 29321,
+            "title": "Frolic With Waves and Beasts"
+        }, {
+            "id": 13886314,
+            "seriesId": 29321,
+            "title": "Cease the Mad Disharmony"
+        }, {
+            "id": 14135668,
+            "seriesId": 29321,
+            "title": "Chase the Light Below"
+        }, {
+            "id": 13868870,
+            "seriesId": 29321,
+            "title": "Ordinary World"
+        }, {
+            "id": 13921623,
+            "seriesId": 29321,
+            "title": "Big Universe, Small World"
+        }, {
+            "id": 13646779,
+            "seriesId": 29321,
+            "title": "Love in the Time of Black Tide"
+        }, {
+            "id": 13896075,
+            "seriesId": 29321,
+            "title": "Fruitless Tree"
+        }, {
+            "id": 13686684,
+            "seriesId": 29321,
+            "title": "The Trailblazer Paradox"
+        }, {
+            "id": 13936110,
+            "seriesId": 29321,
+            "title": "Tomorrow is a New Day"
+        }, {
+            "id": 13726716,
+            "seriesId": 29321,
+            "title": "Theory of Predetermination"
+        }, {
+            "id": 30760202,
+            "seriesId": 29321,
+            "title": "Idol's Dusk"
+        }, {
+            "id": 30486758,
+            "seriesId": 29321,
+            "title": "All is One"
+        }, {
+            "id": 30795510,
+            "seriesId": 29321,
+            "title": "Death of Metaphysics"
+        }, {
+            "id": 30528705,
+            "seriesId": 29321,
+            "title": "The Unchosen Path"
+        }, {
+            "id": 30771931,
+            "seriesId": 29321,
+            "title": "Day of Apotheosis"
+        }, {
+            "id": 30832809,
+            "seriesId": 29321,
+            "title": "Feather in Hand"
+        }, {
+            "id": 30551740,
+            "seriesId": 29321,
+            "title": "Untold Secrets"
+        }, {
+            "id": 30809232,
+            "seriesId": 29321,
+            "title": "The Fire Is Dying"
+        }, {
+            "id": 30509362,
+            "seriesId": 29321,
+            "title": "Torchbearer Neo"
+        }, {
+            "id": 30843003,
+            "seriesId": 29321,
+            "title": "Philosopher"
+        }, {
+            "id": 13800924,
+            "seriesId": 29321,
+            "title": "Philosopher King"
+        }, {
+            "id": 14108622,
+            "seriesId": 29321,
+            "title": "Lightwalker"
+        }, {
+            "id": 13842875,
+            "seriesId": 29321,
+            "title": "Hermit Crab"
+        }, {
+            "id": 14150551,
+            "seriesId": 29321,
+            "title": "Absolute, Objective Memory"
+        }, {
+            "id": 13884803,
+            "seriesId": 29321,
+            "title": "Rebuilding the Rights of Statues"
+        }, {
+            "id": 14126708,
+            "seriesId": 29321,
+            "title": "The Counterfeiters"
+        }, {
+            "id": 13656170,
+            "seriesId": 29321,
+            "title": "Gods and Mortals"
+        }, {
+            "id": 13914712,
+            "seriesId": 29321,
+            "title": "Whyfor this Silent Joy?"
+        }, {
+            "id": 13632577,
+            "seriesId": 29321,
+            "title": "The Mountain Range, the Blacksmith, and the Old Customer"
+        }, {
+            "id": 13956653,
+            "seriesId": 29321,
+            "title": "We Sit on the Ground"
+        }, {
+            "id": 30453814,
+            "seriesId": 29321,
+            "title": "The Bro Sleeping On the Top Bunk"
+        }, {
+            "id": 30704161,
+            "seriesId": 29321,
+            "title": "Moonlight in a Bottle"
+        }, {
+            "id": 30495967,
+            "seriesId": 29321,
+            "title": "Fleeting Melodies and Solid Notes"
+        }, {
+            "id": 30746317,
+            "seriesId": 29321,
+            "title": "Laurel Brings Messages..."
+        }, {
+            "id": 30476543,
+            "seriesId": 29321,
+            "title": "The Sound of a Laden Bag"
+        }, {
+            "id": 30792336,
+            "seriesId": 29321,
+            "title": "The Kind Type"
+        }, {
+            "id": 30518400,
+            "seriesId": 29321,
+            "title": "Second Stomach for Soil"
+        }, {
+            "id": 30572212,
+            "seriesId": 29321,
+            "title": "Rationality of Reasonable Animals"
+        }, {
+            "id": 13786459,
+            "seriesId": 29321,
+            "title": "Fingers In Many Pots"
+        }, {
+            "id": 30545239,
+            "seriesId": 29321,
+            "title": "Talk-To-A-Rock Socialization"
+        }, {
+            "id": 14084604,
+            "seriesId": 29321,
+            "title": "Hey There, Want an Apple?"
+        }, {
+            "id": 13813715,
+            "seriesId": 29321,
+            "title": "Dredging the Rivers of Time Past"
+        }, {
+            "id": 14063011,
+            "seriesId": 29321,
+            "title": "The Earth Is Quivering"
+        }, {
+            "id": 13853623,
+            "seriesId": 29321,
+            "title": "Traveler's Vanity"
+        }, {
+            "id": 14102926,
+            "seriesId": 29321,
+            "title": "Mounted Poetry"
+        }, {
+            "id": 13832092,
+            "seriesId": 29321,
+            "title": "Pampering Secrets"
+        }, {
+            "id": 14146922,
+            "seriesId": 29321,
+            "title": "Dust of Time"
+        }, {
+            "id": 13871941,
+            "seriesId": 29321,
+            "title": "Weeping Grasslands of Yesterday"
+        }, {
+            "id": 14033775,
+            "seriesId": 29321,
+            "title": "Friend, Well Met"
+        }, {
+            "id": 13653805,
+            "seriesId": 29321,
+            "title": "Where Might a Comfy, Warm Cabin Be?"
+        }, {
+            "id": 30682723,
+            "seriesId": 29321,
+            "title": "Where Are the Flames and Swords?"
+        }, {
+            "id": 30472273,
+            "seriesId": 29321,
+            "title": "But Where is the Snow of Yesteryear?"
+        }, {
+            "id": 30722631,
+            "seriesId": 29321,
+            "title": "Melancholic Subdual"
+        }, {
+            "id": 30447016,
+            "seriesId": 29321,
+            "title": "Silenced Clamoring"
+        }, {
+            "id": 30762908,
+            "seriesId": 29321,
+            "title": "It's In the Book..."
+        }, {
+            "id": 30486920,
+            "seriesId": 29321,
+            "title": "Pure Fiction or Everlasting History"
+        }, {
+            "id": 30737397,
+            "seriesId": 29321,
+            "title": "Amphoreus Citizen"
+        }, {
+            "id": 30535143,
+            "seriesId": 29321,
+            "title": "Amphoreus Detective"
+        }, {
+            "id": 13824370,
+            "seriesId": 29321,
+            "title": "Amphoreus Know-It-All"
+        }, {
+            "id": 31260751,
+            "seriesId": 29321,
+            "title": "Bad Boss"
+        }, {
+            "id": 31022707,
+            "seriesId": 29321,
+            "title": "Megacorp"
+        }, {
+            "id": 31370336,
+            "seriesId": 29321,
+            "title": "Four Protect One"
+        }, {
+            "id": 31127954,
+            "seriesId": 29321,
+            "title": "...Are You Working for a Competitor?"
+        }, {
+            "id": 31381436,
+            "seriesId": 29321,
+            "title": "Monopoly"
+        }, {
+            "id": 31073709,
+            "seriesId": 29321,
+            "title": "Small Company, Big Boss"
+        }, {
+            "id": 31355865,
+            "seriesId": 29321,
+            "title": "Unicorn Enterprise"
+        }, {
+            "id": 31080905,
+            "seriesId": 29321,
+            "title": "The Killer Is Not From This Game"
+        }, {
+            "id": 14628251,
+            "seriesId": 29321,
+            "title": "Peace for the Living"
+        }, {
+            "id": 14354349,
+            "seriesId": 29321,
+            "title": "Sanctuary Silenced by Fate"
+        }, {
+            "id": 14641598,
+            "seriesId": 29321,
+            "title": "Glimmering Tree Shade"
+        }, {
+            "id": 14465990,
+            "seriesId": 29321,
+            "title": "Yet the Other Ships Passed Safely"
+        }, {
+            "id": 14192082,
+            "seriesId": 29321,
+            "title": "Portrait of Souls"
+        }, {
+            "id": 14475235,
+            "seriesId": 29321,
+            "title": "Amphorean Positioning System"
+        }, {
+            "id": 14163981,
+            "seriesId": 29321,
+            "title": "Transform!"
+        }, {
+            "id": 14447127,
+            "seriesId": 29321,
+            "title": "Endless Flowers and Holy Leaves"
+        }, {
+            "id": 14173220,
+            "seriesId": 29321,
+            "title": "Long Journey Into Lovely Night"
+        }, {
+            "id": 31300491,
+            "seriesId": 29321,
+            "title": "Path of the Illustrious"
+        }, {
+            "id": 31061503,
+            "seriesId": 29321,
+            "title": "The World Beyond the Cave"
+        }, {
+            "id": 31311854,
+            "seriesId": 29321,
+            "title": "Furiae... Outworld!?"
+        }, {
+            "id": 31003072,
+            "seriesId": 29321,
+            "title": "Gazing At the Gods' Palaces"
+        }, {
+            "id": 31286066,
+            "seriesId": 29321,
+            "title": "I Call Upon Miracles of Reason"
+        }, {
+            "id": 31112481,
+            "seriesId": 29321,
+            "title": "I Call Upon The Final Dawn"
+        }, {
+            "id": 31362845,
+            "seriesId": 29321,
+            "title": "Outlander's Anthem"
+        }, {
+            "id": 31119625,
+            "seriesId": 29321,
+            "title": "Mother, I Have Returned Home"
+        }, {
+            "id": 31337332,
+            "seriesId": 29321,
+            "title": "I Already Built My Own City"
+        }, {
+            "id": 31065434,
+            "seriesId": 29321,
+            "title": "Sowing the Sun"
+        }, {
+            "id": 14570961,
+            "seriesId": 29321,
+            "title": "Sovereign of the Woods"
+        }, {
+            "id": 33544218,
+            "seriesId": 29321,
+            "title": "She Once Borrowed Your Warmth"
+        }, {
+            "id": 33269263,
+            "seriesId": 29321,
+            "title": "One-Day Talanton"
+        }, {
+            "id": 33059965,
+            "seriesId": 29321,
+            "title": "That Quiet Stone Path at Dawn"
+        }, {
+            "id": 33309287,
+            "seriesId": 29321,
+            "title": "Blasphemer Beneath the Divine Jaw"
+        }, {
+            "id": 33034320,
+            "seriesId": 29321,
+            "title": "On the Road of That Irretrievable Day"
+        }, {
+            "id": 33357376,
+            "seriesId": 29321,
+            "title": "The Farmer and the Wooden Horse"
+        }, {
+            "id": 33082540,
+            "seriesId": 29321,
+            "title": "Ferry Horse of the River of Souls"
+        }, {
+            "id": 33331860,
+            "seriesId": 29321,
+            "title": "Insect Companion's Return"
+        }, {
+            "id": 33122439,
+            "seriesId": 29321,
+            "title": "The Beginning and End of All Things"
+        }, {
+            "id": 16594060,
+            "seriesId": 29321,
+            "title": "An Unending and Eternal Dream"
+        }, {
+            "id": 16320154,
+            "seriesId": 29321,
+            "title": "Make Known Mysterious Justice"
+        }, {
+            "id": 16366919,
+            "seriesId": 29321,
+            "title": "Born to Die"
+        }, {
+            "id": 16617303,
+            "seriesId": 29321,
+            "title": "A Glimpse of Freedom in a Cup"
+        }, {
+            "id": 16406884,
+            "seriesId": 29321,
+            "title": "A Thousand Words at Death's Door"
+        }, {
+            "id": 16657274,
+            "seriesId": 29321,
+            "title": "Akivili's Tendon!"
+        }, {
+            "id": 16446732,
+            "seriesId": 29321,
+            "title": "Footsteps Frenzied By Thoughts"
+        }, {
+            "id": 16697105,
+            "seriesId": 29321,
+            "title": "Stubby Eyebrows Are the Cutest!"
+        }, {
+            "id": 16421181,
+            "seriesId": 29321,
+            "title": "For Whom the Specimen Remains Silent"
+        }, {
+            "id": 33520794,
+            "seriesId": 29321,
+            "title": "Golden Offering to the Protagonist"
+        }, {
+            "id": 33247881,
+            "seriesId": 29321,
+            "title": "I Call for Deep Slumber"
+        }, {
+            "id": 33489079,
+            "seriesId": 29321,
+            "title": "I Call for the End of Debate"
+        }, {
+            "id": 33289889,
+            "seriesId": 29321,
+            "title": "Above the Rest"
+        }, {
+            "id": 33266424,
+            "seriesId": 29321,
+            "title": "Phantom Thief? So What? I'm a Trailblazer!"
+        }, {
+            "id": 33048812,
+            "seriesId": 29321,
+            "title": "Complete Phagousa's Sacred Beast Collection"
+        }, {
+            "id": 33308447,
+            "seriesId": 29321,
+            "title": "Seal Tide Surge"
+        }, {
+            "id": 33090829,
+            "seriesId": 29321,
+            "title": "Sealiously Sorry, Do You Want to Dance Too?"
+        }, {
+            "id": 33342267,
+            "seriesId": 29321,
+            "title": "Dynaseal Warriors"
+        }, {
+            "id": 16298899,
+            "seriesId": 29321,
+            "title": "Three Points Shots Are Key"
+        }, {
+            "id": 16606719,
+            "seriesId": 29321,
+            "title": "Welcome to Starfleet Academy"
+        }, {
+            "id": 742607,
+            "seriesId": 29322,
+            "title": "Until the Light Takes Us"
+        }, {
+            "id": 742606,
+            "seriesId": 29322,
+            "title": "Unopen World"
+        }, {
+            "id": 67636,
+            "seriesId": 29322,
+            "title": "Where the Celestial Path May Lead"
+        }, {
+            "id": 67449,
+            "seriesId": 29322,
+            "title": "Travels Afar"
+        }, {
+            "id": 742574,
+            "seriesId": 29322,
+            "title": "Proper Role-Playing Gamer"
+        }, {
+            "id": 742575,
+            "seriesId": 29322,
+            "title": "But at What Cost?"
+        }, {
+            "id": 67649,
+            "seriesId": 29322,
+            "title": "A Drop in the Bucket"
+        }, {
+            "id": 67450,
+            "seriesId": 29322,
+            "title": "The Star of Wealth Shines Upon You"
+        }, {
+            "id": 742640,
+            "seriesId": 29322,
+            "title": "Destructive Impulse"
+        }, {
+            "id": 742637,
+            "seriesId": 29322,
+            "title": "Free Will of Destruction"
+        }, {
+            "id": 742475,
+            "seriesId": 29322,
+            "title": "Take by Surprise"
+        }, {
+            "id": 742474,
+            "seriesId": 29322,
+            "title": "Can't See Behind"
+        }, {
+            "id": 742473,
+            "seriesId": 29322,
+            "title": "The Tertiary Power"
+        }, {
+            "id": 742480,
+            "seriesId": 29322,
+            "title": "The Tertiary Dimension"
+        }, {
+            "id": 747029,
+            "seriesId": 29322,
+            "title": "Dissertation Proposal"
+        }, {
+            "id": 747032,
+            "seriesId": 29322,
+            "title": "Literature Review"
+        }, {
+            "id": 747031,
+            "seriesId": 29322,
+            "title": "Non-Pulp Fiction"
+        }, {
+            "id": 747026,
+            "seriesId": 29322,
+            "title": "Everwinter City's Resident Historian"
+        }, {
+            "id": 65495,
+            "seriesId": 29322,
+            "title": "Glued to Books"
+        }, {
+            "id": 65494,
+            "seriesId": 29322,
+            "title": "Learned in All Things"
+        }, {
+            "id": 742415,
+            "seriesId": 29322,
+            "title": "Red-Name Alert"
+        }, {
+            "id": 742418,
+            "seriesId": 29322,
+            "title": "High-Level Domination"
+        }, {
+            "id": 742444,
+            "seriesId": 29322,
+            "title": "Inter-Domain Roaming"
+        }, {
+            "id": 742445,
+            "seriesId": 29322,
+            "title": "You Want Me to Raid Without Achievements?"
+        }, {
+            "id": 742508,
+            "seriesId": 29322,
+            "title": "Tindalos Piggy"
+        }, {
+            "id": 742505,
+            "seriesId": 29322,
+            "title": "Phase ATM"
+        }, {
+            "id": 67642,
+            "seriesId": 29322,
+            "title": "Sensory Socialization"
+        }, {
+            "id": 742411,
+            "seriesId": 29322,
+            "title": "Unearthly Marvel"
+        }, {
+            "id": 742414,
+            "seriesId": 29322,
+            "title": "The Seven-Bridges Problem"
+        }, {
+            "id": 742417,
+            "seriesId": 29322,
+            "title": "The Birth of Tragedy"
+        }, {
+            "id": 742412,
+            "seriesId": 29322,
+            "title": "Sisyphus of the Mines"
+        }, {
+            "id": 742416,
+            "seriesId": 29322,
+            "title": "The Tale of Moles"
+        }, {
+            "id": 625765,
+            "seriesId": 29322,
+            "title": "Red to Red and White to White"
+        }, {
+            "id": 705576,
+            "seriesId": 29322,
+            "title": "Don't You Dare Waste It"
+        }, {
+            "id": 951954,
+            "seriesId": 29322,
+            "title": "North Wind Creates Heroes"
+        }, {
+            "id": 625764,
+            "seriesId": 29322,
+            "title": "A Metaphor of Caves"
+        }, {
+            "id": 625767,
+            "seriesId": 29322,
+            "title": "North by Northwest"
+        }, {
+            "id": 67444,
+            "seriesId": 29322,
+            "title": "I Was Here Flying: Meridian Pin"
+        }, {
+            "id": 67445,
+            "seriesId": 29322,
+            "title": "I Was Here Flying: Matrix of Prescience"
+        }, {
+            "id": 67446,
+            "seriesId": 29322,
+            "title": "I Was Here Flying: Aureate Elixir Furnace"
+        }, {
+            "id": 67447,
+            "seriesId": 29322,
+            "title": "Take It Easy, Icarus"
+        }, {
+            "id": 67448,
+            "seriesId": 29322,
+            "title": "Unboxing Assessment"
+        }, {
+            "id": 67810,
+            "seriesId": 29322,
+            "title": "The Golem: How He Came Into the World"
+        }, {
+            "id": 67807,
+            "seriesId": 29322,
+            "title": "Through the Narrows to Paradise Beyond"
+        }, {
+            "id": 67411,
+            "seriesId": 29322,
+            "title": "Walk Into The Trap"
+        }, {
+            "id": 29458,
+            "seriesId": 29322,
+            "title": "This Side of Paradise"
+        }, {
+            "id": 29461,
+            "seriesId": 29322,
+            "title": "Penacony Dreams"
+        }, {
+            "id": 29460,
+            "seriesId": 29322,
+            "title": "\"Space Walk\""
+        }, {
+            "id": 29455,
+            "seriesId": 29322,
+            "title": "Tweet?"
+        }, {
+            "id": 29454,
+            "seriesId": 29322,
+            "title": "Tweet! Tweet!"
+        }, {
+            "id": 29457,
+            "seriesId": 29322,
+            "title": "Always Sync With Time"
+        }, {
+            "id": 29456,
+            "seriesId": 29322,
+            "title": "Whose Dream Is It?"
+        }, {
+            "id": 29467,
+            "seriesId": 29322,
+            "title": "Eternal Golden Braid"
+        }, {
+            "id": 29466,
+            "seriesId": 29322,
+            "title": "Pictorial World"
+        }, {
+            "id": 113400,
+            "seriesId": 29322,
+            "title": "FlyMe2theBalloon"
+        }, {
+            "id": 113399,
+            "seriesId": 29322,
+            "title": "Balloon Gakuen 2"
+        }, {
+            "id": 113402,
+            "seriesId": 29322,
+            "title": "Balloon Impact 3rd"
+        }, {
+            "id": 113401,
+            "seriesId": 29322,
+            "title": "Penacony: Balloon Rail"
+        }, {
+            "id": 113396,
+            "seriesId": 29322,
+            "title": "I'm a Grown-up!"
+        }, {
+            "id": 113395,
+            "seriesId": 29322,
+            "title": "All the Sad Young Men"
+        }, {
+            "id": 113398,
+            "seriesId": 29322,
+            "title": "Jack of All Trades"
+        }, {
+            "id": 113397,
+            "seriesId": 29322,
+            "title": "Walks with Wolves"
+        }, {
+            "id": 113408,
+            "seriesId": 29322,
+            "title": "Lie in Wait"
+        }, {
+            "id": 113407,
+            "seriesId": 29322,
+            "title": "Escape Velocity Reached"
+        }, {
+            "id": 828873,
+            "seriesId": 29322,
+            "title": "<nobr>100%</nobr> Alertness"
+        }, {
+            "id": 828872,
+            "seriesId": 29322,
+            "title": "Learning in Sleep"
+        }, {
+            "id": 828875,
+            "seriesId": 29322,
+            "title": "Home Alone"
+        }, {
+            "id": 828874,
+            "seriesId": 29322,
+            "title": "Anti-Balloon"
+        }, {
+            "id": 828869,
+            "seriesId": 29322,
+            "title": "Saga of the Dreamhaven Tumult"
+        }, {
+            "id": 828868,
+            "seriesId": 29322,
+            "title": "Safety Car"
+        }, {
+            "id": 828871,
+            "seriesId": 29322,
+            "title": "Non-Racing Line"
+        }, {
+            "id": 828870,
+            "seriesId": 29322,
+            "title": "Pole to Win"
+        }, {
+            "id": 828881,
+            "seriesId": 29322,
+            "title": "Biggest DRS Beneficiary"
+        }, {
+            "id": 828880,
+            "seriesId": 29322,
+            "title": "Slow Road to Hell"
+        }, {
+            "id": 945518,
+            "seriesId": 29322,
+            "title": "A Dreamy Town, Oak Paradise!"
+        }, {
+            "id": 945517,
+            "seriesId": 29322,
+            "title": "Dreamweaving Industrialization"
+        }, {
+            "id": 945520,
+            "seriesId": 29322,
+            "title": "To Get Blood Out of a Stone"
+        }, {
+            "id": 945519,
+            "seriesId": 29322,
+            "title": "Living With a Wolf"
+        }, {
+            "id": 945514,
+            "seriesId": 29322,
+            "title": "Maximum Firepower"
+        }, {
+            "id": 945513,
+            "seriesId": 29322,
+            "title": "Secret Party"
+        }, {
+            "id": 945516,
+            "seriesId": 29322,
+            "title": "Pac-Man"
+        }, {
+            "id": 29524,
+            "seriesId": 29322,
+            "title": "Elysian Balloon"
+        }, {
+            "id": 29523,
+            "seriesId": 29322,
+            "title": "Second Balloon Eruption"
+        }, {
+            "id": 29522,
+            "seriesId": 29322,
+            "title": "A Post-Balloon Odyssey"
+        }, {
+            "id": 29520,
+            "seriesId": 29322,
+            "title": "New Penacony Dreams"
+        }, {
+            "id": 29519,
+            "seriesId": 29322,
+            "title": "Blood Sugar Highs"
+        }, {
+            "id": 29518,
+            "seriesId": 29322,
+            "title": "Tweet... I Can't Move Anymore"
+        }, {
+            "id": 29533,
+            "seriesId": 29322,
+            "title": "Audition Funhouse"
+        }, {
+            "id": 29532,
+            "seriesId": 29322,
+            "title": "Audition Rizzler"
+        }, {
+            "id": 113466,
+            "seriesId": 29322,
+            "title": "Disqualified!"
+        }, {
+            "id": 113465,
+            "seriesId": 29322,
+            "title": "First Blood"
+        }, {
+            "id": 113464,
+            "seriesId": 29322,
+            "title": "Wolflike"
+        }, {
+            "id": 113463,
+            "seriesId": 29322,
+            "title": "Old Wolf Homecoming"
+        }, {
+            "id": 113462,
+            "seriesId": 29322,
+            "title": "Like a Wolf Arrives!"
+        }, {
+            "id": 113461,
+            "seriesId": 29322,
+            "title": "Fifteenth Blood"
+        }, {
+            "id": 113460,
+            "seriesId": 29322,
+            "title": "How Many Drops Are We At Now?"
+        }, {
+            "id": 113459,
+            "seriesId": 29322,
+            "title": "Armor-Piercing Bullet"
+        }, {
+            "id": 113474,
+            "seriesId": 29322,
+            "title": "The Crocodile Enemy"
+        }, {
+            "id": 113473,
+            "seriesId": 29322,
+            "title": "Goodbye, Hanunue"
+        }, {
+            "id": 828939,
+            "seriesId": 29322,
+            "title": "Final Blood"
+        }, {
+            "id": 828938,
+            "seriesId": 29322,
+            "title": "Hanu's Legacy"
+        }, {
+            "id": 828937,
+            "seriesId": 29322,
+            "title": "Za Warudo!"
+        }, {
+            "id": 828935,
+            "seriesId": 29322,
+            "title": "Saturation Bombing"
+        }, {
+            "id": 828933,
+            "seriesId": 29322,
+            "title": "In the Name of The Family"
+        }, {
+            "id": 29557,
+            "seriesId": 29322,
+            "title": "Balloons, Towards Tomorrow~"
+        }, {
+            "id": 29554,
+            "seriesId": 29322,
+            "title": "Alas, Not a Concert Band"
+        }, {
+            "id": 29326,
+            "seriesId": 29322,
+            "title": "Avian Vision"
+        }, {
+            "id": 29329,
+            "seriesId": 29322,
+            "title": "Hidden Corner"
+        }, {
+            "id": 29359,
+            "seriesId": 29322,
+            "title": "The Place Promised in Our Early Days"
+        }, {
+            "id": 29360,
+            "seriesId": 29322,
+            "title": "The Hand of God"
+        }, {
+            "id": 29361,
+            "seriesId": 29322,
+            "title": "Starlit Sway in Violet Haze"
+        }, {
+            "id": 29392,
+            "seriesId": 29322,
+            "title": "The Curtain Never Falls on Balloons"
+        }, {
+            "id": 29391,
+            "seriesId": 29322,
+            "title": "Farewell, Origami Birds!"
+        }, {
+            "id": 15018787,
+            "seriesId": 29322,
+            "title": "Amphoreus' Demigod of Treasures"
+        }, {
+            "id": 14746838,
+            "seriesId": 29322,
+            "title": "Walk Along This Pillar of Light"
+        }, {
+            "id": 15136452,
+            "seriesId": 29322,
+            "title": "Chirping Secret: Golden Journey"
+        }, {
+            "id": 14852334,
+            "seriesId": 29322,
+            "title": "Chirping Secret: Fleetfoot Paradox"
+        }, {
+            "id": 15110809,
+            "seriesId": 29322,
+            "title": "Chirping Secret: Blemish of Light"
+        }, {
+            "id": 14830729,
+            "seriesId": 29322,
+            "title": "Chirping Secret: Many-Faced"
+        }, {
+            "id": 15089333,
+            "seriesId": 29322,
+            "title": "Butterflies and Souls"
+        }, {
+            "id": 14936236,
+            "seriesId": 29322,
+            "title": "Beauty Within a Box"
+        }, {
+            "id": 15194718,
+            "seriesId": 29322,
+            "title": "Weather Forecast"
+        }, {
+            "id": 31700713,
+            "seriesId": 29322,
+            "title": "Inverted Crown of Thorns"
+        }, {
+            "id": 31941886,
+            "seriesId": 29322,
+            "title": "The Unstolen Flame"
+        }, {
+            "id": 31675022,
+            "seriesId": 29322,
+            "title": "Flesh and Blood Have Become Words"
+        }, {
+            "id": 31916178,
+            "seriesId": 29322,
+            "title": "Into the Currents of Time"
+        }, {
+            "id": 31784611,
+            "seriesId": 29322,
+            "title": "Alibi"
+        }, {
+            "id": 31501489,
+            "seriesId": 29322,
+            "title": "The Perfect Alibi"
+        }, {
+            "id": 31758687,
+            "seriesId": 29322,
+            "title": "Hot Potato"
+        }, {
+            "id": 31487848,
+            "seriesId": 29322,
+            "title": "Frozen in Time"
+        }, {
+            "id": 31729012,
+            "seriesId": 29322,
+            "title": "Temporal Virtuosity"
+        }, {
+            "id": 31462152,
+            "seriesId": 29322,
+            "title": "Destroying the Rights of Statues"
+        }, {
+            "id": 15058095,
+            "seriesId": 29322,
+            "title": "Daylight Saving Time"
+        }, {
+            "id": 14793372,
+            "seriesId": 29322,
+            "title": "Stone Into Lake"
+        }, {
+            "id": 15034482,
+            "seriesId": 29322,
+            "title": "Sweet Summer Bug Cannot Recall Snow"
+        }, {
+            "id": 14769764,
+            "seriesId": 29322,
+            "title": "Synchronized Bird's Eye View"
+        }, {
+            "id": 15010897,
+            "seriesId": 29322,
+            "title": "The River Halts, The Mountain Comes"
+        }, {
+            "id": 14869069,
+            "seriesId": 29322,
+            "title": "High-Altitude Shuttle Run"
+        }, {
+            "id": 15126585,
+            "seriesId": 29322,
+            "title": "In the Balance"
+        }, {
+            "id": 14845482,
+            "seriesId": 29322,
+            "title": "Engraved Disaster"
+        }, {
+            "id": 15102984,
+            "seriesId": 29322,
+            "title": "Exploit Every Weakness"
+        }, {
+            "id": 14822398,
+            "seriesId": 29322,
+            "title": "Self-Criticism"
+        }, {
+            "id": 31858546,
+            "seriesId": 29322,
+            "title": "Novikov Self-Consistency Principle"
+        }, {
+            "id": 31705422,
+            "seriesId": 29322,
+            "title": "Shieldbreaker Fist"
+        }, {
+            "id": 31963994,
+            "seriesId": 29322,
+            "title": "Initial D"
+        }, {
+            "id": 31692073,
+            "seriesId": 29322,
+            "title": "No-Fly Zone"
+        }, {
+            "id": 31934211,
+            "seriesId": 29322,
+            "title": "Amphora Breaker"
+        }, {
+            "id": 31666453,
+            "seriesId": 29322,
+            "title": "Janus' Gift"
+        }, {
+            "id": 14750597,
+            "seriesId": 29322,
+            "title": "Textbook Design"
+        }, {
+            "id": 15039899,
+            "seriesId": 29322,
+            "title": "Cerces' Incomplete Theorem"
+        }, {
+            "id": 15118249,
+            "seriesId": 29322,
+            "title": "Erudition From The Deep"
+        }, {
+            "id": 14850488,
+            "seriesId": 29322,
+            "title": "Adonis Elevator"
+        }, {
+            "id": 15125332,
+            "seriesId": 29322,
+            "title": "Fly Catcher"
+        }, {
+            "id": 15099763,
+            "seriesId": 29322,
+            "title": "Throbbing Heart"
+        }, {
+            "id": 14831873,
+            "seriesId": 29322,
+            "title": "Faith in A Seed"
+        }, {
+            "id": 15172371,
+            "seriesId": 29322,
+            "title": "Butterfly Adores Flower"
+        }, {
+            "id": 31714435,
+            "seriesId": 29322,
+            "title": "Chirping Secret: Lattice of Wisdom"
+        }, {
+            "id": 31973231,
+            "seriesId": 29322,
+            "title": "Chirping Secret: Law of Passage"
+        }, {
+            "id": 31656319,
+            "seriesId": 29322,
+            "title": "The Start of All Roads"
+        }, {
+            "id": 31947592,
+            "seriesId": 29322,
+            "title": "Rainbow's End"
+        }, {
+            "id": 31499602,
+            "seriesId": 29322,
+            "title": "We Journey Still"
+        }, {
+            "id": 31758112,
+            "seriesId": 29322,
+            "title": "Newbie Entering the Door"
+        }, {
+            "id": 31506741,
+            "seriesId": 29322,
+            "title": "All Fates Are Marked With A Price"
+        }, {
+            "id": 31732505,
+            "seriesId": 29322,
+            "title": "Underground Boxer"
+        }, {
+            "id": 21513144,
+            "seriesId": 29322,
+            "title": "Thief Steals Stealthily"
+        }, {
+            "id": 21770638,
+            "seriesId": 29322,
+            "title": "The World!"
+        }, {
+            "id": 21503901,
+            "seriesId": 29322,
+            "title": "Chrono Surge"
+        }, {
+            "id": 22007269,
+            "seriesId": 29322,
+            "title": "Let Me Try to Touch the Divine"
+        }, {
+            "id": 21740529,
+            "seriesId": 29322,
+            "title": "Get Out... of Here!"
+        }, {
+            "id": 21981632,
+            "seriesId": 29322,
+            "title": "Oronyx's Ascension"
+        }, {
+            "id": 21713966,
+            "seriesId": 29322,
+            "title": "Twin Moons' Embrace"
+        }, {
+            "id": 21955124,
+            "seriesId": 29322,
+            "title": "Above Tartarus"
+        }, {
+            "id": 21688327,
+            "seriesId": 29322,
+            "title": "Relics from the Sea of Souls"
+        }, {
+            "id": 4885974,
+            "seriesId": 29322,
+            "title": "So, Continue Onward"
+        }, {
+            "id": 4860393,
+            "seriesId": 29322,
+            "title": "Spotlight Effect"
+        }, {
+            "id": 5117723,
+            "seriesId": 29322,
+            "title": "Time is Not Your Friend"
+        }, {
+            "id": 4830004,
+            "seriesId": 29322,
+            "title": "Chirping Secret: Lost Prayers"
+        }, {
+            "id": 5071136,
+            "seriesId": 29322,
+            "title": "Chirping Secret: Path of Pilgrimage"
+        }, {
+            "id": 4804444,
+            "seriesId": 29322,
+            "title": "House of the Golden Chrysalis"
+        }, {
+            "id": 745839,
+            "seriesId": 29323,
+            "title": "Unstoppable"
+        }, {
+            "id": 745678,
+            "seriesId": 29323,
+            "title": "Break Till Broken"
+        }, {
+            "id": 745773,
+            "seriesId": 29323,
+            "title": "Serious Punch"
+        }, {
+            "id": 745776,
+            "seriesId": 29323,
+            "title": "Ki Impact"
+        }, {
+            "id": 745775,
+            "seriesId": 29323,
+            "title": "Annihilation"
+        }, {
+            "id": 745612,
+            "seriesId": 29323,
+            "title": "Consecutive Normal Punches"
+        }, {
+            "id": 745609,
+            "seriesId": 29323,
+            "title": "Blade of Taixu"
+        }, {
+            "id": 745610,
+            "seriesId": 29323,
+            "title": "Reverberating Ruin"
+        }, {
+            "id": 913494,
+            "seriesId": 29323,
+            "title": "Trauma Team Platinum Bundle"
+        }, {
+            "id": 344440,
+            "seriesId": 29323,
+            "title": "Earthwork"
+        }, {
+            "id": 745707,
+            "seriesId": 29323,
+            "title": "A Song of Vice and Dire"
+        }, {
+            "id": 745706,
+            "seriesId": 29323,
+            "title": "Memory, Sorrow, and Thorn"
+        }, {
+            "id": 745546,
+            "seriesId": 29323,
+            "title": "Electric Dreams"
+        }, {
+            "id": 745547,
+            "seriesId": 29323,
+            "title": "Fahrenheit <nobr>451</nobr>"
+        }, {
+            "id": 745548,
+            "seriesId": 29323,
+            "title": "Sunstorm"
+        }, {
+            "id": 745549,
+            "seriesId": 29323,
+            "title": "The Demolished Man"
+        }, {
+            "id": 745550,
+            "seriesId": 29323,
+            "title": "Lightning Breaker (I)"
+        }, {
+            "id": 745551,
+            "seriesId": 29323,
+            "title": "Lightning Breaker (II)"
+        }, {
+            "id": 745552,
+            "seriesId": 29323,
+            "title": "Fire Breaker (I)"
+        }, {
+            "id": 745553,
+            "seriesId": 29323,
+            "title": "Fire Breaker (II)"
+        }, {
+            "id": 745554,
+            "seriesId": 29323,
+            "title": "Wind Breaker (I)"
+        }, {
+            "id": 628900,
+            "seriesId": 29323,
+            "title": "Wind Breaker (II)"
+        }, {
+            "id": 628901,
+            "seriesId": 29323,
+            "title": "Physical Breaker (I)"
+        }, {
+            "id": 628902,
+            "seriesId": 29323,
+            "title": "Physical Breaker (II)"
+        }, {
+            "id": 745641,
+            "seriesId": 29323,
+            "title": "Schrödinger's Other Cat"
+        }, {
+            "id": 745644,
+            "seriesId": 29323,
+            "title": "The Cold Equations"
+        }, {
+            "id": 745643,
+            "seriesId": 29323,
+            "title": "Unimaginably Imaginary"
+        }, {
+            "id": 745646,
+            "seriesId": 29323,
+            "title": "Quantum Breaker (I)"
+        }, {
+            "id": 745645,
+            "seriesId": 29323,
+            "title": "Quantum Breaker (II)"
+        }, {
+            "id": 745648,
+            "seriesId": 29323,
+            "title": "Ice Breaker (I)"
+        }, {
+            "id": 745647,
+            "seriesId": 29323,
+            "title": "Ice Breaker (II)"
+        }, {
+            "id": 745650,
+            "seriesId": 29323,
+            "title": "Imaginary Breaker (I)"
+        }, {
+            "id": 745649,
+            "seriesId": 29323,
+            "title": "Imaginary Breaker (II)"
+        }, {
+            "id": 746008,
+            "seriesId": 29323,
+            "title": "Preemptive Strike"
+        }, {
+            "id": 746005,
+            "seriesId": 29323,
+            "title": "Technique Breaker (I)"
+        }, {
+            "id": 746006,
+            "seriesId": 29323,
+            "title": "Mozambique Drill"
+        }, {
+            "id": 746003,
+            "seriesId": 29323,
+            "title": "Follow-Up Breaker (I)"
+        }, {
+            "id": 746004,
+            "seriesId": 29323,
+            "title": "Follow-Up Breaker (II)"
+        }, {
+            "id": 746001,
+            "seriesId": 29323,
+            "title": "A Thousand Cuts..."
+        }, {
+            "id": 746002,
+            "seriesId": 29323,
+            "title": "DoT Breaker (I)"
+        }, {
+            "id": 745999,
+            "seriesId": 29323,
+            "title": "DoT Breaker (II)"
+        }, {
+            "id": 629362,
+            "seriesId": 29323,
+            "title": "No Offense"
+        }, {
+            "id": 629360,
+            "seriesId": 29323,
+            "title": "The Exorcist"
+        }, {
+            "id": 707659,
+            "seriesId": 29323,
+            "title": "Perpetual Freezer"
+        }, {
+            "id": 707656,
+            "seriesId": 29323,
+            "title": "Morituri Te Salutant"
+        }, {
+            "id": 707657,
+            "seriesId": 29323,
+            "title": "One on One"
+        }, {
+            "id": 707654,
+            "seriesId": 29323,
+            "title": "All Men Must Die"
+        }, {
+            "id": 707655,
+            "seriesId": 29323,
+            "title": "Energy Grandet"
+        }, {
+            "id": 707652,
+            "seriesId": 29323,
+            "title": "Passing as a Flower in the City of the Dead"
+        }, {
+            "id": 707653,
+            "seriesId": 29323,
+            "title": "Add Insult to Injury"
+        }, {
+            "id": 707666,
+            "seriesId": 29323,
+            "title": "A Casualty of Armors"
+        }, {
+            "id": 707667,
+            "seriesId": 29323,
+            "title": "Serial Breaker"
+        }, {
+            "id": 791597,
+            "seriesId": 29323,
+            "title": "Heavenly Hand"
+        }, {
+            "id": 791598,
+            "seriesId": 29323,
+            "title": "Always Come Prepared"
+        }, {
+            "id": 791595,
+            "seriesId": 29323,
+            "title": "Highway Star"
+        }, {
+            "id": 791596,
+            "seriesId": 29323,
+            "title": "Extreme Survival"
+        }, {
+            "id": 791593,
+            "seriesId": 29323,
+            "title": "Bullet Time"
+        }, {
+            "id": 791594,
+            "seriesId": 29323,
+            "title": "Perish Song"
+        }, {
+            "id": 791607,
+            "seriesId": 29323,
+            "title": "Bring a Gun to a Knife Fight"
+        }, {
+            "id": 707527,
+            "seriesId": 29323,
+            "title": "Deus Ex Machina"
+        }, {
+            "id": 707622,
+            "seriesId": 29323,
+            "title": "Four-and-a-Half Pirouettes"
+        }, {
+            "id": 707621,
+            "seriesId": 29323,
+            "title": "Surge of Tiles"
+        }, {
+            "id": 707620,
+            "seriesId": 29323,
+            "title": "It's My Turn"
+        }, {
+            "id": 707627,
+            "seriesId": 29323,
+            "title": "Trial of Thirteen"
+        }, {
+            "id": 707626,
+            "seriesId": 29323,
+            "title": "Coffee Lover"
+        }, {
+            "id": 707625,
+            "seriesId": 29323,
+            "title": "Over-Protective"
+        }, {
+            "id": 707463,
+            "seriesId": 29323,
+            "title": "When the National Anthem Rings"
+        }, {
+            "id": 707467,
+            "seriesId": 29323,
+            "title": "Foolish Little Brother..."
+        }, {
+            "id": 707468,
+            "seriesId": 29323,
+            "title": "Serval's Parting Gift"
+        }, {
+            "id": 707469,
+            "seriesId": 29323,
+            "title": "Et tu, Bronya?"
+        }, {
+            "id": 791401,
+            "seriesId": 29323,
+            "title": "Listen..."
+        }, {
+            "id": 70746,
+            "seriesId": 29323,
+            "title": "\"I Don't Get No Respect!\""
+        }, {
+            "id": 70743,
+            "seriesId": 29323,
+            "title": "Chad Norris"
+        }, {
+            "id": 70744,
+            "seriesId": 29323,
+            "title": "Attack! No Matter the Cost!"
+        }, {
+            "id": 70741,
+            "seriesId": 29323,
+            "title": "Decapitation Strike"
+        }, {
+            "id": 70753,
+            "seriesId": 29323,
+            "title": "The Limping Lupine"
+        }, {
+            "id": 954098,
+            "seriesId": 29323,
+            "title": "Regurgitation"
+        }, {
+            "id": 954099,
+            "seriesId": 29323,
+            "title": "Hit It Where It Hurts Most"
+        }, {
+            "id": 954096,
+            "seriesId": 29323,
+            "title": "Cataclysm Disruptor"
+        }, {
+            "id": 954094,
+            "seriesId": 29323,
+            "title": "\"Thank You for Your Service\""
+        }, {
+            "id": 954095,
+            "seriesId": 29323,
+            "title": "Achilles' Horse"
+        }, {
+            "id": 954108,
+            "seriesId": 29323,
+            "title": "Doldrums"
+        }, {
+            "id": 954109,
+            "seriesId": 29323,
+            "title": "Code of Chivalry"
+        }, {
+            "id": 870159,
+            "seriesId": 29323,
+            "title": "Full Metal Jacket"
+        }, {
+            "id": 870157,
+            "seriesId": 29323,
+            "title": "Right-Hand Man's Many Right-Handed Right Hands"
+        }, {
+            "id": 870158,
+            "seriesId": 29323,
+            "title": "Homemade Crushed Ice"
+        }, {
+            "id": 870155,
+            "seriesId": 29323,
+            "title": "Road to Canossa"
+        }, {
+            "id": 870153,
+            "seriesId": 29323,
+            "title": "Save the Princess"
+        }, {
+            "id": 870154,
+            "seriesId": 29323,
+            "title": "Hot-Blooded"
+        }, {
+            "id": 70841,
+            "seriesId": 29323,
+            "title": "Accidental Amnesia"
+        }, {
+            "id": 70839,
+            "seriesId": 29323,
+            "title": "Friendly Fire"
+        }, {
+            "id": 70838,
+            "seriesId": 29323,
+            "title": "Wrathful Aurumaton"
+        }, {
+            "id": 70837,
+            "seriesId": 29323,
+            "title": "Will of Steel"
+        }, {
+            "id": 70614,
+            "seriesId": 29323,
+            "title": "This Fragile Body"
+        }, {
+            "id": 70611,
+            "seriesId": 29323,
+            "title": "When the Hunter Becomes the Hunted"
+        }, {
+            "id": 70709,
+            "seriesId": 29323,
+            "title": "Sickly Complexion"
+        }, {
+            "id": 70708,
+            "seriesId": 29323,
+            "title": "Horticulturalist"
+        }, {
+            "id": 70707,
+            "seriesId": 29323,
+            "title": "BOOM"
+        }, {
+            "id": 70714,
+            "seriesId": 29323,
+            "title": "Unfulfilled Wish"
+        }, {
+            "id": 70713,
+            "seriesId": 29323,
+            "title": "Go, Bladie"
+        }, {
+            "id": 70712,
+            "seriesId": 29323,
+            "title": "Win by Decision"
+        }, {
+            "id": 70711,
+            "seriesId": 29323,
+            "title": "Self-Hypnosis"
+        }, {
+            "id": 70548,
+            "seriesId": 29323,
+            "title": "Icebreaker"
+        }, {
+            "id": 70550,
+            "seriesId": 29323,
+            "title": "Wardance: Greatsword Trial"
+        }, {
+            "id": 70551,
+            "seriesId": 29323,
+            "title": "Wardance: Épée Trial"
+        }, {
+            "id": 70643,
+            "seriesId": 29323,
+            "title": "Wardance: Spear Trial"
+        }, {
+            "id": 70646,
+            "seriesId": 29323,
+            "title": "Wardance...?"
+        }, {
+            "id": 70645,
+            "seriesId": 29323,
+            "title": "Wardance: Soulsteel Trial"
+        }, {
+            "id": 70552,
+            "seriesId": 29323,
+            "title": "Beetleburster"
+        }, {
+            "id": 70553,
+            "seriesId": 29323,
+            "title": "I am the Swarm"
+        }, {
+            "id": 70554,
+            "seriesId": 29323,
+            "title": "Just a Bug"
+        }, {
+            "id": 70555,
+            "seriesId": 29323,
+            "title": "Wardance: Glaive Trial"
+        }, {
+            "id": 953902,
+            "seriesId": 29323,
+            "title": "Dragon Trifecta"
+        }, {
+            "id": 953903,
+            "seriesId": 29323,
+            "title": "Survival, Survival, Survival"
+        }, {
+            "id": 953904,
+            "seriesId": 29323,
+            "title": "Heh, Cosmic Big Lotto?"
+        }, {
+            "id": 70648,
+            "seriesId": 29323,
+            "title": "Of Four People, The Price..."
+        }, {
+            "id": 71003,
+            "seriesId": 29323,
+            "title": "Even The Rich Are Starving"
+        }, {
+            "id": 71006,
+            "seriesId": 29323,
+            "title": "The Real Exorcist"
+        }, {
+            "id": 71105,
+            "seriesId": 29323,
+            "title": "In Utter Darkness"
+        }, {
+            "id": 71005,
+            "seriesId": 29323,
+            "title": "Ghosty Scythe of Vice"
+        }, {
+            "id": 71104,
+            "seriesId": 29323,
+            "title": "My Heart and Actions Are Utterly Unclouded"
+        }, {
+            "id": 71008,
+            "seriesId": 29323,
+            "title": "Quintuple Savage"
+        }, {
+            "id": 71103,
+            "seriesId": 29323,
+            "title": "The Things I Do for Beauty"
+        }, {
+            "id": 71007,
+            "seriesId": 29323,
+            "title": "Inferno"
+        }, {
+            "id": 71102,
+            "seriesId": 29323,
+            "title": "Sororal Duo"
+        }, {
+            "id": 71010,
+            "seriesId": 29323,
+            "title": "Come Here! Now Go Away!"
+        }, {
+            "id": 71101,
+            "seriesId": 29323,
+            "title": "Let Her Cook"
+        }, {
+            "id": 71100,
+            "seriesId": 29323,
+            "title": "Trigger Warning"
+        }, {
+            "id": 71099,
+            "seriesId": 29323,
+            "title": "Chain Peoplebreaker"
+        }, {
+            "id": 32661,
+            "seriesId": 29323,
+            "title": "Good Night Kitchen"
+        }, {
+            "id": 32658,
+            "seriesId": 29323,
+            "title": "National Sensation"
+        }, {
+            "id": 32659,
+            "seriesId": 29323,
+            "title": "Hazardous Waste"
+        }, {
+            "id": 32656,
+            "seriesId": 29323,
+            "title": "All Is Predestined"
+        }, {
+            "id": 32657,
+            "seriesId": 29323,
+            "title": "I... I... I'm So Sorry!"
+        }, {
+            "id": 32654,
+            "seriesId": 29323,
+            "title": "Sparkling Sparkle"
+        }, {
+            "id": 32655,
+            "seriesId": 29323,
+            "title": "Withdrawal from Sweets"
+        }, {
+            "id": 32668,
+            "seriesId": 29323,
+            "title": "Memento Mori"
+        }, {
+            "id": 32669,
+            "seriesId": 29323,
+            "title": "Quiet Burning"
+        }, {
+            "id": 116601,
+            "seriesId": 29323,
+            "title": "Ignite My Heart, Inflame My Flesh"
+        }, {
+            "id": 116602,
+            "seriesId": 29323,
+            "title": "Boxcars"
+        }, {
+            "id": 116599,
+            "seriesId": 29323,
+            "title": "All My People, All My People..."
+        }, {
+            "id": 116600,
+            "seriesId": 29323,
+            "title": "Lady Snowblood"
+        }, {
+            "id": 116597,
+            "seriesId": 29323,
+            "title": "Blind Stealing"
+        }, {
+            "id": 116598,
+            "seriesId": 29323,
+            "title": "Purging Heatiness"
+        }, {
+            "id": 116595,
+            "seriesId": 29323,
+            "title": "Fight Fire With Fire"
+        }, {
+            "id": 116596,
+            "seriesId": 29323,
+            "title": "Performance Evaluation"
+        }, {
+            "id": 33806,
+            "seriesId": 29323,
+            "title": "Divine Judgment Does Not Discriminate"
+        }, {
+            "id": 32595,
+            "seriesId": 29323,
+            "title": "JACKPOT!"
+        }, {
+            "id": 32596,
+            "seriesId": 29323,
+            "title": "Soap Opera"
+        }, {
+            "id": 32597,
+            "seriesId": 29323,
+            "title": "Passion Play"
+        }, {
+            "id": 32590,
+            "seriesId": 29323,
+            "title": "Ensemble Piece"
+        }, {
+            "id": 32591,
+            "seriesId": 29323,
+            "title": "One-Act Play"
+        }, {
+            "id": 32592,
+            "seriesId": 29323,
+            "title": "Literary Fragment"
+        }, {
+            "id": 32593,
+            "seriesId": 29323,
+            "title": "Duration of a Song"
+        }, {
+            "id": 32602,
+            "seriesId": 29323,
+            "title": "Pied Piper of Hamelin"
+        }, {
+            "id": 32603,
+            "seriesId": 29323,
+            "title": "Ultimate Dance Move!"
+        }, {
+            "id": 116535,
+            "seriesId": 29323,
+            "title": "Russian Roulette"
+        }, {
+            "id": 116536,
+            "seriesId": 29323,
+            "title": "Workday Without God"
+        }, {
+            "id": 116537,
+            "seriesId": 29323,
+            "title": "And Then It Is Monday..."
+        }, {
+            "id": 32690,
+            "seriesId": 29323,
+            "title": "Planet of Festivities Special Team"
+        }, {
+            "id": 32693,
+            "seriesId": 29323,
+            "title": "Save the Cat!"
+        }, {
+            "id": 32692,
+            "seriesId": 29323,
+            "title": "The Contractor"
+        }, {
+            "id": 32687,
+            "seriesId": 29323,
+            "title": "Go, Bla— SAM"
+        }, {
+            "id": 32686,
+            "seriesId": 29323,
+            "title": "I Will... Set the Seas Ablaze!"
+        }, {
+            "id": 32689,
+            "seriesId": 29323,
+            "title": "Seeing Summer"
+        }, {
+            "id": 32529,
+            "seriesId": 29323,
+            "title": "Swordseeker"
+        }, {
+            "id": 32526,
+            "seriesId": 29323,
+            "title": "Up the Heat, Out the Chill"
+        }, {
+            "id": 32527,
+            "seriesId": 29323,
+            "title": "No Words for the Moon"
+        }, {
+            "id": 32532,
+            "seriesId": 29323,
+            "title": "Ain't Nothing to Fear"
+        }, {
+            "id": 32533,
+            "seriesId": 29323,
+            "title": "Frankenstein's Dog"
+        }, {
+            "id": 32530,
+            "seriesId": 29323,
+            "title": "Trivia Night"
+        }, {
+            "id": 32531,
+            "seriesId": 29323,
+            "title": "This Is the Real Deal!"
+        }, {
+            "id": 32536,
+            "seriesId": 29323,
+            "title": "Misandao"
+        }, {
+            "id": 32624,
+            "seriesId": 29323,
+            "title": "When This Stormy Rain Has Stopped..."
+        }, {
+            "id": 32623,
+            "seriesId": 29323,
+            "title": "Are You Upset?"
+        }, {
+            "id": 32622,
+            "seriesId": 29323,
+            "title": "Wardance: Armament Trial"
+        }, {
+            "id": 32629,
+            "seriesId": 29323,
+            "title": "Verdantia March"
+        }, {
+            "id": 32628,
+            "seriesId": 29323,
+            "title": "Diametrically Opposed"
+        }, {
+            "id": 32627,
+            "seriesId": 29323,
+            "title": "Lone Wolf's Howl"
+        }, {
+            "id": 32626,
+            "seriesId": 29323,
+            "title": "Veiled Moon, Ceased Sheen"
+        }, {
+            "id": 32633,
+            "seriesId": 29323,
+            "title": "Full Warfare Panic!"
+        }, {
+            "id": 32632,
+            "seriesId": 29323,
+            "title": "Marshmallow Rabbit"
+        }, {
+            "id": 116566,
+            "seriesId": 29323,
+            "title": "Bloodless Blade"
+        }, {
+            "id": 116565,
+            "seriesId": 29323,
+            "title": "I Am the Storm"
+        }, {
+            "id": 32463,
+            "seriesId": 29323,
+            "title": "Bananenlightenment Master"
+        }, {
+            "id": 32464,
+            "seriesId": 29323,
+            "title": "Un-banaenlighten-able"
+        }, {
+            "id": 32465,
+            "seriesId": 29323,
+            "title": "Dazzling: Break!"
+        }, {
+            "id": 32466,
+            "seriesId": 29323,
+            "title": "A Step Like a Malicious Spirit in Pursuit"
+        }, {
+            "id": 32558,
+            "seriesId": 29323,
+            "title": "Farewell, Seven Rest Days"
+        }, {
+            "id": 32561,
+            "seriesId": 29323,
+            "title": "I Killed Myself?"
+        }, {
+            "id": 32560,
+            "seriesId": 29323,
+            "title": "Fly Into the Sky Together"
+        }, {
+            "id": 21610534,
+            "seriesId": 29323,
+            "title": "Pankration's True Intention"
+        }, {
+            "id": 21632566,
+            "seriesId": 29323,
+            "title": "Eternal Lance"
+        }, {
+            "id": 21898329,
+            "seriesId": 29323,
+            "title": "Diagonal March"
+        }, {
+            "id": 21645931,
+            "seriesId": 29323,
+            "title": "Supreme Glory"
+        }, {
+            "id": 21928057,
+            "seriesId": 29323,
+            "title": "Death That Halted Battles"
+        }, {
+            "id": 21671300,
+            "seriesId": 29323,
+            "title": "Shattered Battleground"
+        }, {
+            "id": 21951376,
+            "seriesId": 29323,
+            "title": "The Conqueror King"
+        }, {
+            "id": 21692844,
+            "seriesId": 29323,
+            "title": "Promise, Friend!"
+        }, {
+            "id": 21977027,
+            "seriesId": 29323,
+            "title": "Together, Mem!"
+        }, {
+            "id": 5212798,
+            "seriesId": 29323,
+            "title": "Deus Ex Aurifilo"
+        }, {
+            "id": 4970595,
+            "seriesId": 29323,
+            "title": "Frantic Waltz"
+        }, {
+            "id": 5238423,
+            "seriesId": 29323,
+            "title": "Flawless Cloth"
+        }, {
+            "id": 4734083,
+            "seriesId": 29323,
+            "title": "The Past Just Jumped Me"
+        }, {
+            "id": 5023432,
+            "seriesId": 29323,
+            "title": "Elevated Admiration"
+        }, {
+            "id": 4781305,
+            "seriesId": 29323,
+            "title": "The Past Strikes Back"
+        }, {
+            "id": 5053165,
+            "seriesId": 29323,
+            "title": "Proxy War"
+        }, {
+            "id": 21572522,
+            "seriesId": 29323,
+            "title": "Truth is the Eternal Ultimate"
+        }, {
+            "id": 21855621,
+            "seriesId": 29323,
+            "title": "Reading Comprehension"
+        }, {
+            "id": 22124923,
+            "seriesId": 29323,
+            "title": "Fading Light"
+        }, {
+            "id": 22392458,
+            "seriesId": 29323,
+            "title": "Moonless Night"
+        }, {
+            "id": 22183068,
+            "seriesId": 29323,
+            "title": "Storm Quells"
+        }, {
+            "id": 22418102,
+            "seriesId": 29323,
+            "title": "One Who Lost Their Shadow"
+        }, {
+            "id": 22159557,
+            "seriesId": 29323,
+            "title": "One Who Is Without Shadow"
+        }, {
+            "id": 22476497,
+            "seriesId": 29323,
+            "title": "The Gate of Fire, The Endless Might"
+        }, {
+            "id": 22185197,
+            "seriesId": 29323,
+            "title": "Tribbie Kill"
+        }, {
+            "id": 22502128,
+            "seriesId": 29323,
+            "title": "Saturated Covering Fire"
+        }, {
+            "id": 22243334,
+            "seriesId": 29323,
+            "title": "One Against Thousands"
+        }, {
+            "id": 7731633,
+            "seriesId": 29323,
+            "title": "The Limit of Classification"
+        }, {
+            "id": 7450535,
+            "seriesId": 29323,
+            "title": "Bared Quality"
+        }, {
+            "id": 7495065,
+            "seriesId": 29323,
+            "title": "Dragon Tamer"
+        }, {
+            "id": 7762828,
+            "seriesId": 29323,
+            "title": "Heroes Never Die"
+        }, {
+            "id": 7479672,
+            "seriesId": 29323,
+            "title": "Nether Realm Butterflies Dancing Together"
+        }, {
+            "id": 7788372,
+            "seriesId": 29323,
+            "title": "Resting in the Cocoon"
+        }, {
+            "id": 7505223,
+            "seriesId": 29323,
+            "title": "After Death... There Will Be No Eternal Sleep"
+        }, {
+            "id": 7781181,
+            "seriesId": 29323,
+            "title": "Half-Life"
+        }, {
+            "id": 7563555,
+            "seriesId": 29323,
+            "title": "Immaculate Body"
+        }, {
+            "id": 744752,
+            "seriesId": 29324,
+            "title": "Shadows Die Ad Infinitum (I)"
+        }, {
+            "id": 744749,
+            "seriesId": 29324,
+            "title": "Shadows Die Ad Infinitum (II)"
+        }, {
+            "id": 744750,
+            "seriesId": 29324,
+            "title": "Shadows Die Ad Infinitum (III)"
+        }, {
+            "id": 744653,
+            "seriesId": 29324,
+            "title": "Day of the Triffids (I)"
+        }, {
+            "id": 744656,
+            "seriesId": 29324,
+            "title": "Day of the Triffids (II)"
+        }, {
+            "id": 744655,
+            "seriesId": 29324,
+            "title": "Day of the Triffids (III)"
+        }, {
+            "id": 744686,
+            "seriesId": 29324,
+            "title": "Phantom of the Cavern (I)"
+        }, {
+            "id": 744687,
+            "seriesId": 29324,
+            "title": "Phantom of the Cavern (II)"
+        }, {
+            "id": 744688,
+            "seriesId": 29324,
+            "title": "Phantom of the Cavern (III)"
+        }, {
+            "id": 744587,
+            "seriesId": 29324,
+            "title": "Echo of War (I)"
+        }, {
+            "id": 744586,
+            "seriesId": 29324,
+            "title": "Echo of War (II)"
+        }, {
+            "id": 69622,
+            "seriesId": 29324,
+            "title": "Voyage to the Ends of the Sky"
+        }, {
+            "id": 739305,
+            "seriesId": 29325,
+            "title": "Ever-Burning Amber"
+        }, {
+            "id": 739371,
+            "seriesId": 29325,
+            "title": "My Childhood"
+        }, {
+            "id": 739370,
+            "seriesId": 29325,
+            "title": "My Apprenticeship"
+        }, {
+            "id": 739369,
+            "seriesId": 29325,
+            "title": "My Universities"
+        }, {
+            "id": 739308,
+            "seriesId": 29325,
+            "title": "Childhood's End"
+        }, {
+            "id": 739276,
+            "seriesId": 29325,
+            "title": "Destiny Beckons (I)"
+        }, {
+            "id": 739273,
+            "seriesId": 29325,
+            "title": "Destiny Beckons (II)"
+        }, {
+            "id": 739274,
+            "seriesId": 29325,
+            "title": "Destiny Beckons (III)"
+        }, {
+            "id": 739307,
+            "seriesId": 29325,
+            "title": "Time Enough for Love"
+        }, {
+            "id": 746963,
+            "seriesId": 29325,
+            "title": "Don't Make This Too Easy (I)"
+        }, {
+            "id": 746962,
+            "seriesId": 29325,
+            "title": "Don't Make This Too Easy (II)"
+        }, {
+            "id": 746961,
+            "seriesId": 29325,
+            "title": "Don't Make This Too Easy (III)"
+        }, {
+            "id": 739437,
+            "seriesId": 29325,
+            "title": "Path Traces (I)"
+        }, {
+            "id": 739440,
+            "seriesId": 29325,
+            "title": "Path Traces (II)"
+        }, {
+            "id": 739439,
+            "seriesId": 29325,
+            "title": "Path Traces (III)"
+        }, {
+            "id": 739434,
+            "seriesId": 29325,
+            "title": "Path Traces (IV)"
+        }, {
+            "id": 64372,
+            "seriesId": 29325,
+            "title": "I Have Finished The Race"
+        }, {
+            "id": 739310,
+            "seriesId": 29325,
+            "title": "Divine Relics (IV)"
+        }, {
+            "id": 739309,
+            "seriesId": 29325,
+            "title": "Divine Relics (V)"
+        }, {
+            "id": 739342,
+            "seriesId": 29325,
+            "title": "Armed to the Teeth"
+        }, {
+            "id": 64373,
+            "seriesId": 29325,
+            "title": "Sovereign Warframe"
+        }, {
+            "id": 64476,
+            "seriesId": 29325,
+            "title": "Orderly Entrance"
+        }, {
+            "id": 26193,
+            "seriesId": 29325,
+            "title": "Nessun Dorma"
+        }, {
+            "id": 14485347,
+            "seriesId": 29325,
+            "title": "Meet Yesterday Once More"
+        }, {
+            "id": 741483,
+            "seriesId": 29327,
+            "title": "My Heart Lies With the Stars"
+        }, {
+            "id": 741482,
+            "seriesId": 29327,
+            "title": "Everwinter Night"
+        }, {
+            "id": 741481,
+            "seriesId": 29327,
+            "title": "Lost World"
+        }, {
+            "id": 741488,
+            "seriesId": 29327,
+            "title": "Half the Wizard of Oz"
+        }, {
+            "id": 741487,
+            "seriesId": 29327,
+            "title": "Winter Is Leaving"
+        }, {
+            "id": 741322,
+            "seriesId": 29327,
+            "title": "Sauntering Fox"
+        }, {
+            "id": 741323,
+            "seriesId": 29327,
+            "title": "Omniscia Spares None"
+        }, {
+            "id": 66423,
+            "seriesId": 29327,
+            "title": "A Professional Onlooker"
+        }, {
+            "id": 66425,
+            "seriesId": 29327,
+            "title": "Prophets Do Not Prophesize"
+        }, {
+            "id": 66428,
+            "seriesId": 29327,
+            "title": "The Deer Hunter"
+        }, {
+            "id": 66426,
+            "seriesId": 29327,
+            "title": "Slayer of a Very \"Deer\" Friend"
+        }, {
+            "id": 66617,
+            "seriesId": 29327,
+            "title": "Svah Sanishyu"
+        }, {
+            "id": 66616,
+            "seriesId": 29327,
+            "title": "The Imbibitor Lunae Arrives"
+        }, {
+            "id": 66615,
+            "seriesId": 29327,
+            "title": "The Arbor Snaps"
+        }, {
+            "id": 66456,
+            "seriesId": 29327,
+            "title": "Transient Are the Living"
+        }, {
+            "id": 66551,
+            "seriesId": 29327,
+            "title": "Sunny Deeds Beget Rainy Needs"
+        }, {
+            "id": 66651,
+            "seriesId": 29327,
+            "title": "The Dangers in My Heart"
+        }, {
+            "id": 66654,
+            "seriesId": 29327,
+            "title": "Fluffy, Puffy Tail"
+        }, {
+            "id": 66749,
+            "seriesId": 29327,
+            "title": "Divine Verso, Mundane Recto"
+        }, {
+            "id": 28305,
+            "seriesId": 29327,
+            "title": "Do You Remember Me?"
+        }, {
+            "id": 28302,
+            "seriesId": 29327,
+            "title": "Trailblazer in Dreamscape"
+        }, {
+            "id": 28303,
+            "seriesId": 29327,
+            "title": "Gentleness, the Name of Nocturne"
+        }, {
+            "id": 28308,
+            "seriesId": 29327,
+            "title": "The Pursuit of Sweetness"
+        }, {
+            "id": 28309,
+            "seriesId": 29327,
+            "title": "Old Friends, New Friends"
+        }, {
+            "id": 28306,
+            "seriesId": 29327,
+            "title": "If I Can Stop One Heart From Breaking"
+        }, {
+            "id": 28307,
+            "seriesId": 29327,
+            "title": "Sibyl, What Do You Want?"
+        }, {
+            "id": 28313,
+            "seriesId": 29327,
+            "title": "A Drop of the Hard Stuff"
+        }, {
+            "id": 112245,
+            "seriesId": 29327,
+            "title": "She Replied, I Want to Die."
+        }, {
+            "id": 112246,
+            "seriesId": 29327,
+            "title": "To Icarus"
+        }, {
+            "id": 28239,
+            "seriesId": 29327,
+            "title": "The Last Tycoon"
+        }, {
+            "id": 28240,
+            "seriesId": 29327,
+            "title": "We Will Be Freemen as Our Fathers Were"
+        }, {
+            "id": 28241,
+            "seriesId": 29327,
+            "title": "If We Walk in the Light"
+        }, {
+            "id": 28242,
+            "seriesId": 29327,
+            "title": "In the End, We Awaken From Our Dreams"
+        }, {
+            "id": 28243,
+            "seriesId": 29327,
+            "title": "Sincerity Is Eternally the Ultimate"
+        }, {
+            "id": 28244,
+            "seriesId": 29327,
+            "title": "The Ultimate is Eternal Sincerity"
+        }, {
+            "id": 28334,
+            "seriesId": 29327,
+            "title": "All the Flowers are Dying"
+        }, {
+            "id": 28337,
+            "seriesId": 29327,
+            "title": "It's a Wonderful Life"
+        }, {
+            "id": 28336,
+            "seriesId": 29327,
+            "title": "Going My Way"
+        }, {
+            "id": 28339,
+            "seriesId": 29327,
+            "title": "On the Road"
+        }, {
+            "id": 28338,
+            "seriesId": 29327,
+            "title": "Ship of Fools"
+        }, {
+            "id": 28341,
+            "seriesId": 29327,
+            "title": "Tell Me, O Muse"
+        }, {
+            "id": 28437,
+            "seriesId": 29327,
+            "title": "A Crossing of Blades and Hearts"
+        }, {
+            "id": 28434,
+            "seriesId": 29327,
+            "title": "Gift of Gab"
+        }, {
+            "id": 28435,
+            "seriesId": 29327,
+            "title": "PowerSuasion"
+        }, {
+            "id": 28432,
+            "seriesId": 29327,
+            "title": "A Closing on Open Casket"
+        }, {
+            "id": 28433,
+            "seriesId": 29327,
+            "title": "An Autumnal Shine of Blade"
+        }, {
+            "id": 28430,
+            "seriesId": 29327,
+            "title": "Shackles Shattered"
+        }, {
+            "id": 28431,
+            "seriesId": 29327,
+            "title": "Time to Hunt"
+        }, {
+            "id": 28532,
+            "seriesId": 29327,
+            "title": "Flying Aureus Shot to Lupine Rue"
+        }, {
+            "id": 28531,
+            "seriesId": 29327,
+            "title": "The Ancient Sea Ebbs"
+        }, {
+            "id": 28530,
+            "seriesId": 29327,
+            "title": "Where The Hunter Belongs"
+        }, {
+            "id": 28529,
+            "seriesId": 29327,
+            "title": "Time-Honed Blade Trial"
+        }, {
+            "id": 28371,
+            "seriesId": 29327,
+            "title": "Epic Hunt: Culmination"
+        }, {
+            "id": 28372,
+            "seriesId": 29327,
+            "title": "Let's Be Banafriends!"
+        }, {
+            "id": 28373,
+            "seriesId": 29327,
+            "title": "The Belly of an Architect"
+        }, {
+            "id": 28366,
+            "seriesId": 29327,
+            "title": "High School Musical"
+        }, {
+            "id": 28367,
+            "seriesId": 29327,
+            "title": "Yuppie Dream"
+        }, {
+            "id": 28368,
+            "seriesId": 29327,
+            "title": "Stick and Rope"
+        }, {
+            "id": 28369,
+            "seriesId": 29327,
+            "title": "Nobody Knows Slumbernana Better Than Me"
+        }, {
+            "id": 28378,
+            "seriesId": 29327,
+            "title": "Banacademic Incident"
+        }, {
+            "id": 28379,
+            "seriesId": 29327,
+            "title": "My Friend Boothill"
+        }, {
+            "id": 112311,
+            "seriesId": 29327,
+            "title": "Ninja's Path: Past Life"
+        }, {
+            "id": 112312,
+            "seriesId": 29327,
+            "title": "Fiendling: Realization"
+        }, {
+            "id": 112313,
+            "seriesId": 29327,
+            "title": "Fiendling: Rout"
+        }, {
+            "id": 112314,
+            "seriesId": 29327,
+            "title": "Fiendling: Without a Trace"
+        }, {
+            "id": 28466,
+            "seriesId": 29327,
+            "title": "Between Pledge and Forgettance"
+        }, {
+            "id": 28469,
+            "seriesId": 29327,
+            "title": "Please Don't Call Her Big Sister"
+        }, {
+            "id": 28468,
+            "seriesId": 29327,
+            "title": "Apparitional Return"
+        }, {
+            "id": 28463,
+            "seriesId": 29327,
+            "title": "Speak, Memory"
+        }, {
+            "id": 28462,
+            "seriesId": 29327,
+            "title": "Feathers Eternal, Sky Complete"
+        }, {
+            "id": 28465,
+            "seriesId": 29327,
+            "title": "A New Venture on the Eighth Dawn"
+        }, {
+            "id": 16969079,
+            "seriesId": 29327,
+            "title": "Baby with Face Covered in Gold"
+        }, {
+            "id": 17219425,
+            "seriesId": 29327,
+            "title": "I Like to Tie People in My Dream"
+        }, {
+            "id": 17121682,
+            "seriesId": 29327,
+            "title": "<nobr>300</nobr>"
+        }, {
+            "id": 16847802,
+            "seriesId": 29327,
+            "title": "Fireflies in a Bottle"
+        }, {
+            "id": 17114542,
+            "seriesId": 29327,
+            "title": "Bobbing Spider's Threads"
+        }, {
+            "id": 16906207,
+            "seriesId": 29327,
+            "title": "Return, Illusions of the Past!"
+        }, {
+            "id": 17144257,
+            "seriesId": 29327,
+            "title": "Welcome Sunset Thrice"
+        }, {
+            "id": 16886779,
+            "seriesId": 29327,
+            "title": "Generations Fall Like Leaves"
+        }, {
+            "id": 17071592,
+            "seriesId": 29327,
+            "title": "Dawn of the Living Dead"
+        }, {
+            "id": 17183906,
+            "seriesId": 29327,
+            "title": "Sing, O Goddess, of His Rage"
+        }, {
+            "id": 16926419,
+            "seriesId": 29327,
+            "title": "The Shapeless God is the Most Visible of All Things"
+        }, {
+            "id": 17144015,
+            "seriesId": 29327,
+            "title": "Among the Undying Divine"
+        }, {
+            "id": 16886527,
+            "seriesId": 29327,
+            "title": "Warrior, Why Do You Question Thy Origins?"
+        }, {
+            "id": 17169644,
+            "seriesId": 29327,
+            "title": "The World, As Nature, Withers and Blooms"
+        }, {
+            "id": 16846594,
+            "seriesId": 29327,
+            "title": "Old Leaves Fall, New Trees Flourish"
+        }, {
+            "id": 17113396,
+            "seriesId": 29327,
+            "title": "The World Is Thus: One Generation Rises, Another Wilts"
+        }, {
+            "id": 24976662,
+            "seriesId": 29327,
+            "title": "Dear Mother, You Granted Me Life"
+        }, {
+            "id": 24727302,
+            "seriesId": 29327,
+            "title": "Ferry Souls with a Rust-Colored Boat"
+        }, {
+            "id": 24998194,
+            "seriesId": 29327,
+            "title": "Cruel Night Oppresses Unfortunate Mortals"
+        }, {
+            "id": 25076523,
+            "seriesId": 29327,
+            "title": "The Law as the Crown of Peace"
+        }, {
+            "id": 24827225,
+            "seriesId": 29327,
+            "title": "Embrace Your Long Fingers"
+        }, {
+            "id": 25036623,
+            "seriesId": 29327,
+            "title": "Unmoor and Sail Away From the Underworld"
+        }, {
+            "id": 740297,
+            "seriesId": 29328,
+            "title": "The Express Passenger's Guide to the Galaxy"
+        }, {
+            "id": 740300,
+            "seriesId": 29328,
+            "title": "Express Crew Roster"
+        }, {
+            "id": 740299,
+            "seriesId": 29328,
+            "title": "The Great Interastral Migration"
+        }, {
+            "id": 740495,
+            "seriesId": 29328,
+            "title": "Ripples on the Dirac Sea (I)"
+        }, {
+            "id": 740494,
+            "seriesId": 29328,
+            "title": "Ripples on the Dirac Sea (II)"
+        }, {
+            "id": 740493,
+            "seriesId": 29328,
+            "title": "Ripples on the Dirac Sea (III)"
+        }, {
+            "id": 740525,
+            "seriesId": 29328,
+            "title": "Supreme Treasure of the Netherworld"
+        }, {
+            "id": 740526,
+            "seriesId": 29328,
+            "title": "Fate/stranger Fake"
+        }, {
+            "id": 740462,
+            "seriesId": 29328,
+            "title": "Interastral Peace Diamond Membership"
+        }, {
+            "id": 740463,
+            "seriesId": 29328,
+            "title": "Interastral Peace Supreme Diamond Membership"
+        }, {
+            "id": 65333,
+            "seriesId": 29328,
+            "title": "Mega Rich Light-Bending Guy"
+        }, {
+            "id": 65497,
+            "seriesId": 29328,
+            "title": "Texting Enjoyer"
+        }, {
+            "id": 65496,
+            "seriesId": 29328,
+            "title": "That Friendship Has Sailed"
+        }, {
+            "id": 27445,
+            "seriesId": 29328,
+            "title": "Stand By Me"
+        }, {
+            "id": 747988,
+            "seriesId": 29333,
+            "title": "The First and Last Freedom"
+        }, {
+            "id": 747985,
+            "seriesId": 29333,
+            "title": "The Art of Loving"
+        }, {
+            "id": 747986,
+            "seriesId": 29333,
+            "title": "Freeze!"
+        }, {
+            "id": 747991,
+            "seriesId": 29333,
+            "title": "Elemental Reaction System"
+        }, {
+            "id": 747992,
+            "seriesId": 29333,
+            "title": "Your Opponent Has Poor Connection"
+        }, {
+            "id": 747989,
+            "seriesId": 29333,
+            "title": "Twenty Four Love Poems and a Song of Despair"
+        }, {
+            "id": 747990,
+            "seriesId": 29333,
+            "title": "We Call the Heart Dancing in the Dark the Moon"
+        }, {
+            "id": 748083,
+            "seriesId": 29333,
+            "title": "Good Night, My Friend"
+        }, {
+            "id": 748081,
+            "seriesId": 29333,
+            "title": "Ready Player One"
+        }, {
+            "id": 748149,
+            "seriesId": 29333,
+            "title": "Consumerism Psychology"
+        }, {
+            "id": 748151,
+            "seriesId": 29333,
+            "title": "The Great Cosmic Gatsby"
+        }, {
+            "id": 709837,
+            "seriesId": 29333,
+            "title": "A Special Experience"
+        }, {
+            "id": 709839,
+            "seriesId": 29333,
+            "title": "A Not-So-Special Experience"
+        }, {
+            "id": 73085,
+            "seriesId": 29333,
+            "title": "A Room of One's Own"
+        }, {
+            "id": 73084,
+            "seriesId": 29333,
+            "title": "Penrose Stairs"
+        }, {
+            "id": 73083,
+            "seriesId": 29333,
+            "title": "King of Infinity"
+        }, {
+            "id": 956439,
+            "seriesId": 29333,
+            "title": "Fevered Strike"
+        }, {
+            "id": 956438,
+            "seriesId": 29333,
+            "title": "Rosebud"
+        }, {
+            "id": 956445,
+            "seriesId": 29333,
+            "title": "Adrenaline"
+        }, {
+            "id": 956444,
+            "seriesId": 29333,
+            "title": "Infectious Good Luck"
+        }, {
+            "id": 956443,
+            "seriesId": 29333,
+            "title": "Do Android Snails Dream of Electric Trees?"
+        }, {
+            "id": 956442,
+            "seriesId": 29333,
+            "title": "Expert Tree-Climber"
+        }, {
+            "id": 956433,
+            "seriesId": 29333,
+            "title": "My Swiss Army Curios"
+        }, {
+            "id": 956432,
+            "seriesId": 29333,
+            "title": "Life Is but a Game"
+        }, {
+            "id": 872500,
+            "seriesId": 29333,
+            "title": "Who Moved My Pokeball?"
+        }, {
+            "id": 872499,
+            "seriesId": 29333,
+            "title": "A Porcine Football Team"
+        }, {
+            "id": 872498,
+            "seriesId": 29333,
+            "title": "Don't Let It Get Away!"
+        }, {
+            "id": 872497,
+            "seriesId": 29333,
+            "title": "Existence Precedes Essence"
+        }, {
+            "id": 872504,
+            "seriesId": 29333,
+            "title": "Memories Look at Me"
+        }, {
+            "id": 872503,
+            "seriesId": 29333,
+            "title": "Create A Beautiful Chaos"
+        }, {
+            "id": 872502,
+            "seriesId": 29333,
+            "title": "Velocity of the Universe's Expansion"
+        }, {
+            "id": 872501,
+            "seriesId": 29333,
+            "title": "Wreck-It Self"
+        }, {
+            "id": 872492,
+            "seriesId": 29333,
+            "title": "Gnosticism"
+        }, {
+            "id": 872491,
+            "seriesId": 29333,
+            "title": "Exhalation"
+        }, {
+            "id": 788559,
+            "seriesId": 29333,
+            "title": "Millennium Bug in Amber"
+        }, {
+            "id": 788558,
+            "seriesId": 29333,
+            "title": "You See Memories"
+        }, {
+            "id": 788557,
+            "seriesId": 29333,
+            "title": "Don't Worry Be Happy"
+        }, {
+            "id": 788556,
+            "seriesId": 29333,
+            "title": "The Speed of Thought"
+        }, {
+            "id": 788563,
+            "seriesId": 29333,
+            "title": "Cool Guys Don't Look At Explosions"
+        }, {
+            "id": 788562,
+            "seriesId": 29333,
+            "title": "The Plague of Fantasies"
+        }, {
+            "id": 788561,
+            "seriesId": 29333,
+            "title": "Angel's Breath"
+        }, {
+            "id": 788560,
+            "seriesId": 29333,
+            "title": "A Finger in Every Pie"
+        }, {
+            "id": 788551,
+            "seriesId": 29333,
+            "title": "An Island Unto Oneself"
+        }, {
+            "id": 788550,
+            "seriesId": 29333,
+            "title": "Private Collector"
+        }, {
+            "id": 671914,
+            "seriesId": 29333,
+            "title": "Triangle Strategy"
+        }, {
+            "id": 671913,
+            "seriesId": 29333,
+            "title": "Master Ball"
+        }, {
+            "id": 671912,
+            "seriesId": 29333,
+            "title": "A 4-Star Rarity Daydream"
+        }, {
+            "id": 671911,
+            "seriesId": 29333,
+            "title": "It's Good to Be Rich!"
+        }, {
+            "id": 671918,
+            "seriesId": 29333,
+            "title": "On Fire off the Shoulder of Orion"
+        }, {
+            "id": 671917,
+            "seriesId": 29333,
+            "title": "Glitter at the Tannhauser Gate"
+        }, {
+            "id": 671916,
+            "seriesId": 29333,
+            "title": "Wake Up!"
+        }, {
+            "id": 671915,
+            "seriesId": 29333,
+            "title": "Lost Like Tears in Rain"
+        }, {
+            "id": 671905,
+            "seriesId": 29333,
+            "title": "Console Game"
+        }, {
+            "id": 587973,
+            "seriesId": 29333,
+            "title": "If I Can Save One Heart From Cracking"
+        }, {
+            "id": 587972,
+            "seriesId": 29333,
+            "title": "The Grand Budapest Hotel"
+        }, {
+            "id": 587971,
+            "seriesId": 29333,
+            "title": "Aleph Is the Universe"
+        }, {
+            "id": 587970,
+            "seriesId": 29333,
+            "title": "Coherence"
+        }, {
+            "id": 471327,
+            "seriesId": 29333,
+            "title": "Does This Game Not Have a Platinum Trophy?"
+        }, {
+            "id": 788593,
+            "seriesId": 29333,
+            "title": "Will of the Hive"
+        }, {
+            "id": 788591,
+            "seriesId": 29333,
+            "title": "The <nobr>400</nobr> Blows"
+        }, {
+            "id": 788590,
+            "seriesId": 29333,
+            "title": "Phase IV"
+        }, {
+            "id": 72660,
+            "seriesId": 29333,
+            "title": "Knight of Beauty's Self-Help"
+        }, {
+            "id": 73122,
+            "seriesId": 29333,
+            "title": "Spring in Fialta"
+        }, {
+            "id": 73119,
+            "seriesId": 29333,
+            "title": "The Hunter Games"
+        }, {
+            "id": 73120,
+            "seriesId": 29333,
+            "title": "Macadam Stories"
+        }, {
+            "id": 73117,
+            "seriesId": 29333,
+            "title": "The Predator"
+        }, {
+            "id": 73118,
+            "seriesId": 29333,
+            "title": "Symbolic Exchange and Death"
+        }, {
+            "id": 73115,
+            "seriesId": 29333,
+            "title": "Simulated Universe Wasn't Built in a Day"
+        }, {
+            "id": 73116,
+            "seriesId": 29333,
+            "title": "Nick of Time"
+        }, {
+            "id": 73113,
+            "seriesId": 29333,
+            "title": "Back to Klendathu"
+        }, {
+            "id": 73114,
+            "seriesId": 29333,
+            "title": "Welcome to the Monkey House"
+        }, {
+            "id": 956476,
+            "seriesId": 29333,
+            "title": "Scattered Hailstones, Shattered Ghostbones"
+        }, {
+            "id": 956477,
+            "seriesId": 29333,
+            "title": "Eternity and a Day"
+        }, {
+            "id": 956474,
+            "seriesId": 29333,
+            "title": "The World as Representation"
+        }, {
+            "id": 956475,
+            "seriesId": 29333,
+            "title": "Scorched Earth"
+        }, {
+            "id": 956472,
+            "seriesId": 29333,
+            "title": "Hearken, Waken, Enliven"
+        }, {
+            "id": 956473,
+            "seriesId": 29333,
+            "title": "Homogeneous Nucleation"
+        }, {
+            "id": 956470,
+            "seriesId": 29333,
+            "title": "Methuselah's Children"
+        }, {
+            "id": 956471,
+            "seriesId": 29333,
+            "title": "Data Bank Overseer"
+        }, {
+            "id": 956468,
+            "seriesId": 29333,
+            "title": "Stars Within Reach"
+        }, {
+            "id": 956469,
+            "seriesId": 29333,
+            "title": "Q"
+        }, {
+            "id": 872535,
+            "seriesId": 29333,
+            "title": "Welcome to Valhalla"
+        }, {
+            "id": 872536,
+            "seriesId": 29333,
+            "title": "Wreck-It Self II"
+        }, {
+            "id": 872533,
+            "seriesId": 29333,
+            "title": "Harvest Moon"
+        }, {
+            "id": 872534,
+            "seriesId": 29333,
+            "title": "Room of Parting Paths"
+        }, {
+            "id": 872531,
+            "seriesId": 29333,
+            "title": "Choir of One"
+        }, {
+            "id": 872532,
+            "seriesId": 29333,
+            "title": "To Be, or Not to Be"
+        }, {
+            "id": 872529,
+            "seriesId": 29333,
+            "title": "Dial of Destiny"
+        }, {
+            "id": 872530,
+            "seriesId": 29333,
+            "title": "Things to Come"
+        }, {
+            "id": 872527,
+            "seriesId": 29333,
+            "title": "Back to the Future"
+        }, {
+            "id": 872528,
+            "seriesId": 29333,
+            "title": "The End of Eternity"
+        }, {
+            "id": 788594,
+            "seriesId": 29333,
+            "title": "On the Comet"
+        }, {
+            "id": 788595,
+            "seriesId": 29333,
+            "title": "Weyland-Yutani Investigator"
+        }, {
+            "id": 788592,
+            "seriesId": 29333,
+            "title": "Mass Relay"
+        }, {
+            "id": 788588,
+            "seriesId": 29333,
+            "title": "Silent Running"
+        }, {
+            "id": 788589,
+            "seriesId": 29333,
+            "title": "Stranger in a Strange Land"
+        }, {
+            "id": 788586,
+            "seriesId": 29333,
+            "title": "Nuke Them From Orbit"
+        }, {
+            "id": 788587,
+            "seriesId": 29333,
+            "title": "Plague Across Eons"
+        }, {
+            "id": 671949,
+            "seriesId": 29333,
+            "title": "A Dream of Babel"
+        }, {
+            "id": 671950,
+            "seriesId": 29333,
+            "title": "How One Becomes What One Is"
+        }, {
+            "id": 72758,
+            "seriesId": 29333,
+            "title": "All Hail Deus Eruditionis"
+        }, {
+            "id": 72757,
+            "seriesId": 29333,
+            "title": "Omnissiah"
+        }, {
+            "id": 72760,
+            "seriesId": 29333,
+            "title": "The Four Color Theorem"
+        }, {
+            "id": 72759,
+            "seriesId": 29333,
+            "title": "World on a Wire"
+        }, {
+            "id": 72762,
+            "seriesId": 29333,
+            "title": "Galaxy Brain"
+        }, {
+            "id": 72761,
+            "seriesId": 29333,
+            "title": "The Mental Pale"
+        }, {
+            "id": 72763,
+            "seriesId": 29333,
+            "title": "Hive Mind"
+        }, {
+            "id": 956111,
+            "seriesId": 29333,
+            "title": "The Wolf of Astral Street"
+        }, {
+            "id": 956110,
+            "seriesId": 29333,
+            "title": "Pacifica Is Still Pacifica"
+        }, {
+            "id": 956113,
+            "seriesId": 29333,
+            "title": "Class-D Personnel"
+        }, {
+            "id": 956112,
+            "seriesId": 29333,
+            "title": "A Death Knell for Leibowitz"
+        }, {
+            "id": 956115,
+            "seriesId": 29333,
+            "title": "Tau Zero"
+        }, {
+            "id": 956114,
+            "seriesId": 29333,
+            "title": "Changing Planes"
+        }, {
+            "id": 956117,
+            "seriesId": 29333,
+            "title": "When Pigs Pry"
+        }, {
+            "id": 956116,
+            "seriesId": 29333,
+            "title": "Star Port Controller"
+        }, {
+            "id": 956119,
+            "seriesId": 29333,
+            "title": "To Terminus"
+        }, {
+            "id": 956118,
+            "seriesId": 29333,
+            "title": "The Man Who Sold the Moon"
+        }, {
+            "id": 872170,
+            "seriesId": 29333,
+            "title": "Halcyon Holdings Corporate Board Specialist"
+        }, {
+            "id": 872169,
+            "seriesId": 29333,
+            "title": "Time Enough for Play"
+        }, {
+            "id": 872172,
+            "seriesId": 29333,
+            "title": "Spacer's Choice Vendor"
+        }, {
+            "id": 872171,
+            "seriesId": 29333,
+            "title": "The Merchant and the Alchemist's Gate"
+        }, {
+            "id": 872174,
+            "seriesId": 29333,
+            "title": "Herta's Treasure"
+        }, {
+            "id": 872173,
+            "seriesId": 29333,
+            "title": "I Am Alpha"
+        }, {
+            "id": 872176,
+            "seriesId": 29333,
+            "title": "I Am Omega"
+        }, {
+            "id": 872175,
+            "seriesId": 29333,
+            "title": "Sixty-Sided Die"
+        }, {
+            "id": 872178,
+            "seriesId": 29333,
+            "title": "Roulette of Destiny"
+        }, {
+            "id": 872177,
+            "seriesId": 29333,
+            "title": "XK-Class Scenario"
+        }, {
+            "id": 788229,
+            "seriesId": 29333,
+            "title": "Mechanical Ascension"
+        }, {
+            "id": 788228,
+            "seriesId": 29333,
+            "title": "Colossus: The Forbin Project"
+        }, {
+            "id": 788231,
+            "seriesId": 29333,
+            "title": "Bubblegum Crisis"
+        }, {
+            "id": 788230,
+            "seriesId": 29333,
+            "title": "Sea of Rust"
+        }, {
+            "id": 788233,
+            "seriesId": 29333,
+            "title": "Key to a Bygone Space"
+        }, {
+            "id": 788232,
+            "seriesId": 29333,
+            "title": "King of Curses"
+        }, {
+            "id": 788235,
+            "seriesId": 29333,
+            "title": "Normal Distribution"
+        }, {
+            "id": 788234,
+            "seriesId": 29333,
+            "title": "Gloomy Blues"
+        }, {
+            "id": 788237,
+            "seriesId": 29333,
+            "title": "All Watched Over By Machines of Loving Grace"
+        }, {
+            "id": 788236,
+            "seriesId": 29333,
+            "title": "Wheel of Destiny"
+        }, {
+            "id": 671584,
+            "seriesId": 29333,
+            "title": "Evasive Reflex"
+        }, {
+            "id": 671583,
+            "seriesId": 29333,
+            "title": "Exterminatus"
+        }, {
+            "id": 35037,
+            "seriesId": 29333,
+            "title": "No Ill Will"
+        }, {
+            "id": 35034,
+            "seriesId": 29333,
+            "title": "Butterfly on the Ripple"
+        }, {
+            "id": 35035,
+            "seriesId": 29333,
+            "title": "Last Essays"
+        }, {
+            "id": 35032,
+            "seriesId": 29333,
+            "title": "The Aeons THEMSELVES"
+        }, {
+            "id": 35033,
+            "seriesId": 29333,
+            "title": "Imperfect Scholar"
+        }, {
+            "id": 35028,
+            "seriesId": 29333,
+            "title": "Join the Glorious Evolution"
+        }, {
+            "id": 35029,
+            "seriesId": 29333,
+            "title": "Iron Sunrise"
+        }, {
+            "id": 118977,
+            "seriesId": 29333,
+            "title": "Learn to Be \"Me\""
+        }, {
+            "id": 118978,
+            "seriesId": 29333,
+            "title": "Imperial Alchemist"
+        }, {
+            "id": 118974,
+            "seriesId": 29333,
+            "title": "Break Free From the Quagmire of Probabilities"
+        }, {
+            "id": 118971,
+            "seriesId": 29333,
+            "title": "Kardashev Type-III"
+        }, {
+            "id": 118972,
+            "seriesId": 29333,
+            "title": "Beyond Cognition"
+        }, {
+            "id": 118969,
+            "seriesId": 29333,
+            "title": "Time Dilation"
+        }, {
+            "id": 834451,
+            "seriesId": 29333,
+            "title": "1:4:9"
+        }, {
+            "id": 746930,
+            "seriesId": 29334,
+            "title": "Earth Week"
+        }, {
+            "id": 71996,
+            "seriesId": 29334,
+            "title": "Earth Month"
+        }, {
+            "id": 71998,
+            "seriesId": 29334,
+            "title": "Earth Year"
+        }, {
+            "id": 746996,
+            "seriesId": 29334,
+            "title": "Diogenes' Utopia"
+        }, {
+            "id": 746993,
+            "seriesId": 29334,
+            "title": "Insatiable"
+        }, {
+            "id": 746994,
+            "seriesId": 29334,
+            "title": "Trashy Humor"
+        }, {
+            "id": 746999,
+            "seriesId": 29334,
+            "title": "Karmic Wheel"
+        }, {
+            "id": 747000,
+            "seriesId": 29334,
+            "title": "Saint"
+        }, {
+            "id": 746103,
+            "seriesId": 29334,
+            "title": "It Takes Three"
+        }, {
+            "id": 70771,
+            "seriesId": 29334,
+            "title": "Versatile Joker"
+        }, {
+            "id": 746102,
+            "seriesId": 29334,
+            "title": "Match-Three"
+        }, {
+            "id": 707461,
+            "seriesId": 29334,
+            "title": "One Big Happy Family"
+        }, {
+            "id": 747062,
+            "seriesId": 29334,
+            "title": "Hot-Blooded Trailblazer"
+        }, {
+            "id": 707462,
+            "seriesId": 29334,
+            "title": "Architects (And Former Architects)"
+        }, {
+            "id": 747063,
+            "seriesId": 29334,
+            "title": "Pessimistic Trailblazer"
+        }, {
+            "id": 747064,
+            "seriesId": 29334,
+            "title": "Apologetic Trailblazer"
+        }, {
+            "id": 747057,
+            "seriesId": 29334,
+            "title": "Silent Trailblazer"
+        }, {
+            "id": 747058,
+            "seriesId": 29334,
+            "title": "The Echoer"
+        }, {
+            "id": 747059,
+            "seriesId": 29334,
+            "title": "The Meaning of Choice"
+        }, {
+            "id": 746101,
+            "seriesId": 29334,
+            "title": "Lone Wolf"
+        }, {
+            "id": 746100,
+            "seriesId": 29334,
+            "title": "For the Amber Lord"
+        }, {
+            "id": 746099,
+            "seriesId": 29334,
+            "title": "Ablution Dictum"
+        }, {
+            "id": 746098,
+            "seriesId": 29334,
+            "title": "The Xianzhou Alliance"
+        }, {
+            "id": 746097,
+            "seriesId": 29334,
+            "title": "Meaningless Achievement"
+        }, {
+            "id": 746096,
+            "seriesId": 29334,
+            "title": "The Great Accord"
+        }, {
+            "id": 746095,
+            "seriesId": 29334,
+            "title": "Knowledge Is Power"
+        }, {
+            "id": 629459,
+            "seriesId": 29334,
+            "title": "Miracles of Yaoshi"
+        }, {
+            "id": 629458,
+            "seriesId": 29334,
+            "title": "Tempestuous Suppression"
+        }, {
+            "id": 629457,
+            "seriesId": 29334,
+            "title": "Fulguration Beckoner"
+        }, {
+            "id": 629456,
+            "seriesId": 29334,
+            "title": "Total Conflagration"
+        }, {
+            "id": 629455,
+            "seriesId": 29334,
+            "title": "Glacier Dynast"
+        }, {
+            "id": 629454,
+            "seriesId": 29334,
+            "title": "Quantum Test"
+        }, {
+            "id": 629453,
+            "seriesId": 29334,
+            "title": "Imaginary Law"
+        }, {
+            "id": 629452,
+            "seriesId": 29334,
+            "title": "Speak with Fists"
+        }, {
+            "id": 72031,
+            "seriesId": 29334,
+            "title": "Life in All Its Forms"
+        }, {
+            "id": 72034,
+            "seriesId": 29334,
+            "title": "Starry Saga of the Shattered Sword"
+        }, {
+            "id": 72064,
+            "seriesId": 29334,
+            "title": "Guardian of the Underworld"
+        }, {
+            "id": 72097,
+            "seriesId": 29334,
+            "title": "Hold Your Horses"
+        }, {
+            "id": 72096,
+            "seriesId": 29334,
+            "title": "Tea is Thicker Than Water"
+        }, {
+            "id": 72095,
+            "seriesId": 29334,
+            "title": "Luofu Foodie"
+        }, {
+            "id": 72094,
+            "seriesId": 29334,
+            "title": "It's Just a Picture"
+        }, {
+            "id": 72093,
+            "seriesId": 29334,
+            "title": "Art Transcends Language"
+        }, {
+            "id": 72092,
+            "seriesId": 29334,
+            "title": "You've Been Pom'd!"
+        }, {
+            "id": 72091,
+            "seriesId": 29334,
+            "title": "Astral Express-ions"
+        }, {
+            "id": 72090,
+            "seriesId": 29334,
+            "title": "To The Other Me"
+        }, {
+            "id": 70549,
+            "seriesId": 29334,
+            "title": "In the Name of Landau"
+        }, {
+            "id": 70556,
+            "seriesId": 29334,
+            "title": "Full Metal Racket"
+        }, {
+            "id": 72130,
+            "seriesId": 29334,
+            "title": "Spamming SPAM"
+        }, {
+            "id": 72127,
+            "seriesId": 29334,
+            "title": "War at Home"
+        }, {
+            "id": 72128,
+            "seriesId": 29334,
+            "title": "Absolute Zero"
+        }, {
+            "id": 72125,
+            "seriesId": 29334,
+            "title": "Trust the Process"
+        }, {
+            "id": 72126,
+            "seriesId": 29334,
+            "title": "All Is Well"
+        }, {
+            "id": 72123,
+            "seriesId": 29334,
+            "title": "It's Always Darkest Before the Dawn"
+        }, {
+            "id": 72124,
+            "seriesId": 29334,
+            "title": "The Vermilion Bird Brings Swift Fortune"
+        }, {
+            "id": 72121,
+            "seriesId": 29334,
+            "title": "Smooth Sailing With Wise Council"
+        }, {
+            "id": 72122,
+            "seriesId": 29334,
+            "title": "Wooden Dummy: Star Rail"
+        }, {
+            "id": 71642,
+            "seriesId": 29334,
+            "title": "Mission Impossible?"
+        }, {
+            "id": 71639,
+            "seriesId": 29334,
+            "title": "Good Night Makka Pakka"
+        }, {
+            "id": 71640,
+            "seriesId": 29334,
+            "title": "Who You Gonna Call?"
+        }, {
+            "id": 71637,
+            "seriesId": 29334,
+            "title": "Strategic Runaway"
+        }, {
+            "id": 71638,
+            "seriesId": 29334,
+            "title": "Meta-Guardians of the Galaxy"
+        }, {
+            "id": 71635,
+            "seriesId": 29334,
+            "title": "Call Me in Your Heart"
+        }, {
+            "id": 33814,
+            "seriesId": 29334,
+            "title": "Friction, Friction"
+        }, {
+            "id": 33817,
+            "seriesId": 29334,
+            "title": "Parallax"
+        }, {
+            "id": 33816,
+            "seriesId": 29334,
+            "title": "Why Do Birds Fly?"
+        }, {
+            "id": 33819,
+            "seriesId": 29334,
+            "title": "Penrose Triangle"
+        }, {
+            "id": 30491,
+            "seriesId": 29334,
+            "title": "Tales of a Card Shark"
+        }, {
+            "id": 114423,
+            "seriesId": 29334,
+            "title": "As Fragile as Crisp Cone"
+        }, {
+            "id": 114424,
+            "seriesId": 29334,
+            "title": "Introduction to Psychoanalysis"
+        }, {
+            "id": 33821,
+            "seriesId": 29334,
+            "title": "Rules Are Made to Be Broken..."
+        }, {
+            "id": 33820,
+            "seriesId": 29334,
+            "title": "Bill — Board"
+        }, {
+            "id": 33807,
+            "seriesId": 29334,
+            "title": "Truth Must Circulate Like Currency"
+        }, {
+            "id": 117756,
+            "seriesId": 29334,
+            "title": "Why Is the Origami Bird So Huge?"
+        }, {
+            "id": 33879,
+            "seriesId": 29334,
+            "title": "Think Thrice Before Acts"
+        }, {
+            "id": 33878,
+            "seriesId": 29334,
+            "title": "Going Dutch"
+        }, {
+            "id": 830058,
+            "seriesId": 29334,
+            "title": "Host's Choice"
+        }, {
+            "id": 33913,
+            "seriesId": 29334,
+            "title": "Guest's Choice"
+        }, {
+            "id": 29328,
+            "seriesId": 29334,
+            "title": "The Door Is Tougher"
+        }, {
+            "id": 33979,
+            "seriesId": 29334,
+            "title": "Help Me, Senior Frater!"
+        }, {
+            "id": 2231656,
+            "seriesId": 29334,
+            "title": "Back to the F-F-F-Future"
+        }, {
+            "id": 2481945,
+            "seriesId": 29334,
+            "title": "Holy Motors"
+        }, {
+            "id": 2220341,
+            "seriesId": 29334,
+            "title": "The Pillar Is Falling —"
+        }, {
+            "id": 2470693,
+            "seriesId": 29334,
+            "title": "Beautiful Lady"
+        }, {
+            "id": 2180566,
+            "seriesId": 29334,
+            "title": "He That Is Without Sin May Cast The First Stone"
+        }, {
+            "id": 2177534,
+            "seriesId": 29334,
+            "title": "Move, Why Don't You Move?"
+        }, {
+            "id": 2520772,
+            "seriesId": 29334,
+            "title": "Okhema Does Not Believe in Tears"
+        }, {
+            "id": 5169058,
+            "seriesId": 29334,
+            "title": "The Flowers Here Move"
+        }, {
+            "id": 5143495,
+            "seriesId": 29334,
+            "title": "Yesterday's Elevator, Today's People"
+        }
+    ]
+}

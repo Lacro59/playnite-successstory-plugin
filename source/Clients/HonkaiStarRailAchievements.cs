@@ -12,6 +12,7 @@ using Playnite.SDK.Models;
 using SuccessStory.Models;
 using SuccessStory.Models.GenshinImpact;
 using SuccessStory.Models.HonkaiStarRail;
+using SuccessStory.Services;
 
 namespace SuccessStory.Clients
 {
@@ -36,7 +37,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievement> AllAchievements = new List<Achievement>();
+            List<Models.Achievement> AllAchievements = new List<Models.Achievement>();
 
             try
             {
@@ -54,21 +55,31 @@ namespace SuccessStory.Clients
 
                 string cachePath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "HonkaiStarRail_" + pushedAt, "TextMap.json");
                 _ = Serialization.TryFromJsonFile(cachePath, out dynamic textMap);
+                _ = Serialization.TryFromJsonFile(cachePath.Replace("TextMap.json", "TextMapEN.json"), out dynamic textMapEn);
                 if (textMap == null)
                 {
                     url = string.Format(TurnBasedGameData_UrlTextMap, LocalLang.ToUpper());
                     string textMapString = Web.DownloadStringData(url).GetAwaiter().GetResult();
                     _ = Serialization.TryFromJson(textMapString, out textMap);
-                    if (textMap == null)
+
+                    if (!LocalLang.IsEqual("en"))
                     {
                         url = string.Format(TurnBasedGameData_UrlTextMap, "EN");
-                        textMapString = Web.DownloadStringData(url).GetAwaiter().GetResult();
-                        _ = Serialization.TryFromJson(textMapString, out textMap);
-                        if (textMap == null)
-                        {
-                            throw new Exception($"No data from {url}");
-                        }
+                        string textMapEnString = Web.DownloadStringData(url).GetAwaiter().GetResult();
+                        _ = Serialization.TryFromJson(textMapString, out textMapEn);
+                        FileSystem.WriteStringToFile(cachePath.Replace("TextMap.json", "TextMapEN.json"), textMapEnString);
                     }
+                    else
+                    {
+                        textMapEn = textMap;
+                        FileSystem.WriteStringToFile(cachePath.Replace("TextMap.json", "TextMapEN.json"), textMapString);
+                    }
+
+                    if (textMap == null)
+                    {
+                        textMap = textMapEn;
+                    }
+
                     FileSystem.WriteStringToFile(cachePath, textMapString);
                 }
 
@@ -107,10 +118,11 @@ namespace SuccessStory.Clients
 
                     string icon = Path.GetFileName(achievementSeries.FirstOrDefault(y => y.SeriesID == x.SeriesID).MainIconPath);
 
-                    AllAchievements.Add(new Achievement
+                    AllAchievements.Add(new Models.Achievement
                     {
                         ApiName = x.AchievementID.ToString(),
                         Name = (string)textMap[x.AchievementTitle.Hash],
+                        NameEn = (string)textMapEn[x.AchievementTitle.Hash],
                         Description = description,
                         UrlUnlocked = "HonkaiStarRail\\" + icon,
 
@@ -154,54 +166,190 @@ namespace SuccessStory.Clients
             GlobalProgressOptions options = new GlobalProgressOptions(ResourceProvider.GetString("LOCCommonImporting"))
             {
                 Cancelable = true,
-                IsIndeterminate = false
+                IsIndeterminate = true
             };
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
             {
-                string path = API.Instance.Dialogs.SelectFile("JSON (.json)|*.json");
-                if (!string.IsNullOrWhiteSpace(path) && path.EndsWith(".json", StringComparison.InvariantCultureIgnoreCase))
+                string path = API.Instance.Dialogs.SelectFile("DAT (.dat)|*.dat");
+                if (!string.IsNullOrWhiteSpace(path) && path.EndsWith(".dat", StringComparison.InvariantCultureIgnoreCase))
                 {
                     bool done = false;
                     GameAchievements gameAchievements = GetAchievements(game);
 
-                    if (Serialization.TryFromJsonFile(path, out PaimonMoeLocalData paimonMoeLocalData))
-                    {
-                        if (paimonMoeLocalData?.Achievement != null)
-                        {
-                            paimonMoeLocalData.Achievement.ForEach(x =>
-                            {
-                                x.Value.ForEach(y =>
-                                {
-                                    Achievement item = gameAchievements.Items.FirstOrDefault(z => z.ApiName == y.Key && y.Value);
-                                    if (item != null)
-                                    {
-                                        item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
-                                    }
-                                });
-                            });
-                            done = true;
-                        }
-                    }
+                    string content = File.ReadAllText(path);
 
-                    if (Serialization.TryFromJsonFile(path, out SeelieMeLocalData seelieMeLocalData))
+                    #region https://starrailstation.com/
+                    if (content.StartsWith("srs"))
                     {
-                        if (seelieMeLocalData?.Achievements != null)
+                        string compressed = content.Substring(3);
+                        string json = LZString.DecompressFromUTF16(compressed);
+
+                        if (Serialization.TryFromJson(json, out StairRailStationExport stairRailStationExport))
                         {
-                            seelieMeLocalData.Achievements.ForEach(x =>
+                            if (stairRailStationExport?.Data?.Stores?._1Achieve?.CompleteState != null)
                             {
-                                if (x.Value.Done)
+                                string dataPath = Path.Combine(PluginDatabase.Paths.PluginPath, "Data", "starrailstation.json");
+                                _ = Serialization.TryFromJsonFile(dataPath, out StairRailStationData stairRailStationData);
+
+                                if (stairRailStationExport.Data.Stores._1Achieve.CompleteState._29325 != null)
                                 {
-                                    Achievement item = gameAchievements.Items.FirstOrDefault(z => z.ApiName == x.Key);
-                                    if (item != null)
+                                    MatchCollection matches = Regex.Matches(stairRailStationExport.Data.Stores._1Achieve.CompleteState._29325.ToString(), @"\d+");
+                                    foreach (Match match in matches)
                                     {
-                                        item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                        Models.HonkaiStarRail.Achievement srData = stairRailStationData.Achievements.FirstOrDefault(x => x.Id == int.Parse(match.Value));
+                                        if (srData != null)
+                                        {
+                                            Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => srData.Title.IsEqual(z.NameEn));
+                                            if (item != null)
+                                            {
+                                                item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                            }
+                                        }
                                     }
                                 }
-                            });
-                            done = true;
+
+                                if (stairRailStationExport.Data.Stores._1Achieve.CompleteState._29327 != null)
+                                {
+                                    MatchCollection matches = Regex.Matches(stairRailStationExport.Data.Stores._1Achieve.CompleteState._29327.ToString(), @"\d+");
+                                    foreach (Match match in matches)
+                                    {
+                                        Models.HonkaiStarRail.Achievement srData = stairRailStationData.Achievements.FirstOrDefault(x => x.Id == int.Parse(match.Value));
+                                        if (srData != null)
+                                        {
+                                            Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => srData.Title.IsEqual(z.NameEn));
+                                            if (item != null)
+                                            {
+                                                item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (stairRailStationExport.Data.Stores._1Achieve.CompleteState._29323 != null)
+                                {
+                                    MatchCollection matches = Regex.Matches(stairRailStationExport.Data.Stores._1Achieve.CompleteState._29323.ToString(), @"\d+");
+                                    foreach (Match match in matches)
+                                    {
+                                        Models.HonkaiStarRail.Achievement srData = stairRailStationData.Achievements.FirstOrDefault(x => x.Id == int.Parse(match.Value));
+                                        if (srData != null)
+                                        {
+                                            Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => srData.Title.IsEqual(z.NameEn));
+                                            if (item != null)
+                                            {
+                                                item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (stairRailStationExport.Data.Stores._1Achieve.CompleteState._29328 != null)
+                                {
+                                    MatchCollection matches = Regex.Matches(stairRailStationExport.Data.Stores._1Achieve.CompleteState._29328.ToString(), @"\d+");
+                                    foreach (Match match in matches)
+                                    {
+                                        Models.HonkaiStarRail.Achievement srData = stairRailStationData.Achievements.FirstOrDefault(x => x.Id == int.Parse(match.Value));
+                                        if (srData != null)
+                                        {
+                                            Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => srData.Title.IsEqual(z.NameEn));
+                                            if (item != null)
+                                            {
+                                                item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (stairRailStationExport.Data.Stores._1Achieve.CompleteState._29333 != null)
+                                {
+                                    MatchCollection matches = Regex.Matches(stairRailStationExport.Data.Stores._1Achieve.CompleteState._29333.ToString(), @"\d+");
+                                    foreach (Match match in matches)
+                                    {
+                                        Models.HonkaiStarRail.Achievement srData = stairRailStationData.Achievements.FirstOrDefault(x => x.Id == int.Parse(match.Value));
+                                        if (srData != null)
+                                        {
+                                            Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => srData.Title.IsEqual(z.NameEn));
+                                            if (item != null)
+                                            {
+                                                item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (stairRailStationExport.Data.Stores._1Achieve.CompleteState._29324 != null)
+                                {
+                                    MatchCollection matches = Regex.Matches(stairRailStationExport.Data.Stores._1Achieve.CompleteState._29324.ToString(), @"\d+");
+                                    foreach (Match match in matches)
+                                    {
+                                        Models.HonkaiStarRail.Achievement srData = stairRailStationData.Achievements.FirstOrDefault(x => x.Id == int.Parse(match.Value));
+                                        if (srData != null)
+                                        {
+                                            Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => srData.Title.IsEqual(z.NameEn));
+                                            if (item != null)
+                                            {
+                                                item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (stairRailStationExport.Data.Stores._1Achieve.CompleteState._29334 != null)
+                                {
+                                    MatchCollection matches = Regex.Matches(stairRailStationExport.Data.Stores._1Achieve.CompleteState._29334.ToString(), @"\d+");
+                                    foreach (Match match in matches)
+                                    {
+                                        Models.HonkaiStarRail.Achievement srData = stairRailStationData.Achievements.FirstOrDefault(x => x.Id == int.Parse(match.Value));
+                                        if (srData != null)
+                                        {
+                                            Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => srData.Title.IsEqual(z.NameEn));
+                                            if (item != null)
+                                            {
+                                                item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (stairRailStationExport.Data.Stores._1Achieve.CompleteState._29321 != null)
+                                {
+                                    MatchCollection matches = Regex.Matches(stairRailStationExport.Data.Stores._1Achieve.CompleteState._29321.ToString(), @"\d+");
+                                    foreach (Match match in matches)
+                                    {
+                                        Models.HonkaiStarRail.Achievement srData = stairRailStationData.Achievements.FirstOrDefault(x => x.Id == int.Parse(match.Value));
+                                        if (srData != null)
+                                        {
+                                            Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => srData.Title.IsEqual(z.NameEn));
+                                            if (item != null)
+                                            {
+                                                item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (stairRailStationExport.Data.Stores._1Achieve.CompleteState._29322 != null)
+                                {
+                                    MatchCollection matches = Regex.Matches(stairRailStationExport.Data.Stores._1Achieve.CompleteState._29322.ToString(), @"\d+");
+                                    foreach (Match match in matches)
+                                    {
+                                        Models.HonkaiStarRail.Achievement srData = stairRailStationData.Achievements.FirstOrDefault(x => x.Id == int.Parse(match.Value));
+                                        if (srData != null)
+                                        {
+                                            Models.Achievement item = gameAchievements.Items.FirstOrDefault(z => srData.Title.IsEqual(z.NameEn));
+                                            if (item != null)
+                                            {
+                                                item.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                done = true;
+                            }
                         }
                     }
+                    #endregion
 
                     if (done)
                     {

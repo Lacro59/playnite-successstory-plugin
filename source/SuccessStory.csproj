@@ -200,6 +200,8 @@
     <Compile Include="Models\GenshinImpact\PaimonMoeLocalData.cs" />
     <Compile Include="Models\GenshinImpact\SeelieMeLocalData.cs" />
     <Compile Include="Models\HonkaiStarRail\AchievementSeries.cs" />
+    <Compile Include="Models\HonkaiStarRail\StairRailStationData.cs" />
+    <Compile Include="Models\HonkaiStarRail\StairRailStationExport.cs" />
     <Compile Include="Models\PSN\TropyTitlesResponse.cs" />
     <Compile Include="Models\RetroAchievements\RaConsole.cs" />
     <Compile Include="Models\RetroAchievements\RaGame.cs" />
@@ -272,6 +274,7 @@
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.xaml.cs">
       <DependentUpon>OptionsDownloadData.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\LZString.cs" />
     <Compile Include="Services\NDS.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />
     <Compile Include="Services\SuccessStorySearch.cs" />
@@ -354,6 +357,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <None Include="Data\starrailstation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Localization\ar_SA.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

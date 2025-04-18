@@ -21,6 +21,8 @@ namespace SuccessStory.Models
 
         private string _name;
         public string Name { get => _name; set => _name = value?.Trim(); }
+        private string _nameEn;
+        public string NameEn { get => _nameEn; set => _nameEn = value?.Trim(); }
         public string ApiName { get; set; } = string.Empty;
         public string Description { get; set; }
         public string UrlUnlocked { get; set; }

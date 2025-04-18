@@ -142,7 +142,7 @@ namespace SuccessStory.Clients
             GlobalProgressOptions options = new GlobalProgressOptions(ResourceProvider.GetString("LOCCommonImporting"))
             {
                 Cancelable = true,
-                IsIndeterminate = false
+                IsIndeterminate = true
             };
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
@@ -153,6 +153,7 @@ namespace SuccessStory.Clients
                     bool done = false;
                     GameAchievements gameAchievements = GetAchievements(game);
 
+                    #region https://paimon.moe/
                     if (Serialization.TryFromJsonFile(path, out PaimonMoeLocalData paimonMoeLocalData))
                     {
                         if (paimonMoeLocalData?.Achievement != null)
@@ -171,7 +172,9 @@ namespace SuccessStory.Clients
                             done = true;
                         }
                     }
+                    #endregion
 
+                    #region https://seelie.me
                     if (Serialization.TryFromJsonFile(path, out SeelieMeLocalData seelieMeLocalData))
                     {
                         if (seelieMeLocalData?.Achievements != null)
@@ -190,6 +193,7 @@ namespace SuccessStory.Clients
                             done = true;
                         }
                     }
+                    #endregion
 
                     if (done)
                     {

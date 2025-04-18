@@ -191,7 +191,7 @@ namespace SuccessStory.Clients
             GlobalProgressOptions options = new GlobalProgressOptions(ResourceProvider.GetString("LOCCommonImporting"))
             {
                 Cancelable = true,
-                IsIndeterminate = false
+                IsIndeterminate = true
             };
 
             _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
@@ -202,6 +202,7 @@ namespace SuccessStory.Clients
                     bool done = false;
                     GameAchievements gameAchievements = GetAchievements(game);
 
+                    #region https://wuwatracker.com/
                     if (Serialization.TryFromJsonFile(path, out List<int> wuwatracker))
                     {
                         wuwatracker?.ForEach(x =>
@@ -214,6 +215,7 @@ namespace SuccessStory.Clients
                         });
                         done = true;
                     }
+                    #endregion
 
                     if (done)
                     {
