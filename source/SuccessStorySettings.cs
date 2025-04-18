@@ -70,37 +70,37 @@ namespace SuccessStory
         public bool IconCustomOnlyMissing { get; set; } = true;
 
 
-        private bool enableIntegrationViewItem = true;
-        public bool EnableIntegrationViewItem { get => enableIntegrationViewItem; set => SetValue(ref enableIntegrationViewItem, value); }
+        private bool _enableIntegrationViewItem = true;
+        public bool EnableIntegrationViewItem { get => _enableIntegrationViewItem; set => SetValue(ref _enableIntegrationViewItem, value); }
 
         public bool IntegrationViewItemWithProgressBar { get; set; } = false;
 
 
-        private bool enableIntegrationButton = true;
-        public bool EnableIntegrationButton { get => enableIntegrationButton; set => SetValue(ref enableIntegrationButton, value); }
+        private bool _enableIntegrationButton = true;
+        public bool EnableIntegrationButton { get => _enableIntegrationButton; set => SetValue(ref _enableIntegrationButton, value); }
 
-        private bool enableIntegrationButtonDetails = false;
-        public bool EnableIntegrationButtonDetails { get => enableIntegrationButtonDetails; set => SetValue(ref enableIntegrationButtonDetails, value); }
+        private bool _enableIntegrationButtonDetails = false;
+        public bool EnableIntegrationButtonDetails { get => _enableIntegrationButtonDetails; set => SetValue(ref _enableIntegrationButtonDetails, value); }
 
-        private bool enableIntegrationProgressBar = true;
-        public bool EnableIntegrationProgressBar { get => enableIntegrationProgressBar; set => SetValue(ref enableIntegrationProgressBar, value); }
+        private bool _enableIntegrationProgressBar = true;
+        public bool EnableIntegrationProgressBar { get => _enableIntegrationProgressBar; set => SetValue(ref _enableIntegrationProgressBar, value); }
 
         public bool EnableIntegrationProgressBarIndicator { get; set; } = false;
         public bool EnableIntegrationProgressBarPercent { get; set; } = false;
 
 
-        private bool enableIntegrationCompact = true;
-        public bool EnableIntegrationCompact { get => enableIntegrationCompact; set => SetValue(ref enableIntegrationCompact, value); }
+        private bool _enableIntegrationCompact = true;
+        public bool EnableIntegrationCompact { get => _enableIntegrationCompact; set => SetValue(ref _enableIntegrationCompact, value); }
 
         public double IntegrationCompactHeight { get; set; } = 48;
         public bool IntegrationCompactShowDescription { get; set; } = true;
 
 
-        private bool enableIntegrationCompactLocked = true;
-        public bool EnableIntegrationCompactLocked { get => enableIntegrationCompactLocked; set => SetValue(ref enableIntegrationCompactLocked, value); }
+        private bool _enableIntegrationCompactLocked = true;
+        public bool EnableIntegrationCompactLocked { get => _enableIntegrationCompactLocked; set => SetValue(ref _enableIntegrationCompactLocked, value); }
 
-        private bool enableIntegrationCompactUnlocked = true;
-        public bool EnableIntegrationCompactUnlocked { get => enableIntegrationCompactUnlocked; set => SetValue(ref enableIntegrationCompactUnlocked, value); }
+        private bool _enableIntegrationCompactUnlocked = true;
+        public bool EnableIntegrationCompactUnlocked { get => _enableIntegrationCompactUnlocked; set => SetValue(ref _enableIntegrationCompactUnlocked, value); }
 
         public double IntegrationCompactPartialHeight { get; set; } = 48;
         public bool IntegrationCompactPartialDisplayLastest { get; set; } = true;
@@ -108,8 +108,8 @@ namespace SuccessStory
         public bool IntegrationCompactPartialShowDescription { get; set; } = true;
 
 
-        private bool enableIntegrationChart = true;
-        public bool EnableIntegrationChart { get => enableIntegrationChart; set => SetValue(ref enableIntegrationChart, value); }
+        private bool _enableIntegrationChart = true;
+        public bool EnableIntegrationChart { get => _enableIntegrationChart; set => SetValue(ref _enableIntegrationChart, value); }
 
         public double IntegrationChartHeight { get; set; } = 120;
         public bool EnableIntegrationAxisChart { get; set; } = true;
@@ -120,14 +120,14 @@ namespace SuccessStory
         public bool EnableIntegrationChartCutPeriod { get; set; } = false;
 
 
-        private bool enableIntegrationUserStats = true;
-        public bool EnableIntegrationUserStats { get => enableIntegrationUserStats; set => SetValue(ref enableIntegrationUserStats, value); }
+        private bool _enableIntegrationUserStats = true;
+        public bool EnableIntegrationUserStats { get => _enableIntegrationUserStats; set => SetValue(ref _enableIntegrationUserStats, value); }
 
         public double IntegrationUserStatsHeight { get; set; } = 120;
 
 
-        private bool enableIntegrationList = true;
-        public bool EnableIntegrationList { get => enableIntegrationList; set => SetValue(ref enableIntegrationList, value); }
+        private bool _enableIntegrationList = true;
+        public bool EnableIntegrationList { get => _enableIntegrationList; set => SetValue(ref _enableIntegrationList, value); }
 
         public double IntegrationListHeight { get; set; } = 200;
         public double IntegrationListIconHeight { get; set; } = 48;
