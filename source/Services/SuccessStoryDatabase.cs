@@ -332,9 +332,6 @@ namespace SuccessStory.Services
             GameAchievements gameAchievements = GetDefault(game);
             AchievementSource achievementSource = GetAchievementSource(PluginSettings.Settings, game);
 
-            //
-            achievementSource = AchievementSource.GameJolt;
-
             if (achievementSource == AchievementSource.None)
             {
                 Logger.Warn($"No provider find for {game.Name} - {achievementSource} - {game.Source?.Name} - {game?.Platforms?.FirstOrDefault()?.Name}");
