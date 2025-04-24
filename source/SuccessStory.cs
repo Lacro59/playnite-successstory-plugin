@@ -955,45 +955,7 @@ namespace SuccessStory
                 Description = "Test",
                 Action = (mainMenuItem) =>
                 {
-                    /*
-                    WebViewSettings webViewSettings = new WebViewSettings
-                    {
-                        JavaScriptEnabled = true,
-                        UserAgent = Web.UserAgent,
-                        WindowHeight = 500,
-                        WindowWidth = 500
-                    };
 
-                    var CookiesDomains = new List<string>
-                    {
-                        "steamcommunity.com", ".steamcommunity.com",
-                        "steampowered.com",  ".steampowered.com",
-                        "store.steampowered.com", ".store.steampowered.com",
-                        "checkout.steampowered.com", ".checkout.steampowered.com",
-                        "help.steampowered.com", ".help.steampowered.com",
-                        "login.steampowered.com", ".login.steampowered.com",
-                    };
-
-                    using (IWebView webView = API.Instance.WebViews.CreateView(webViewSettings))
-                    {
-                        webView.LoadingChanged += (s, e) =>
-                        {
-                            //List<HttpCookie> httpCookies = CookiesDomains?.Count > 0
-                            //    ? webView.GetCookies()?.Where(x => CookiesDomains.Any(y => y.Contains(x?.Domain, StringComparison.OrdinalIgnoreCase)))?.ToList() ?? new List<HttpCookie>()
-                            //    : webView.GetCookies()?.Where(x => x?.Domain?.Contains("Steam", StringComparison.OrdinalIgnoreCase) ?? false)?.ToList() ?? new List<HttpCookie>();
-                        };
-
-                        CookiesDomains.ForEach(x => { webView.DeleteDomainCookies(x); });
-                        List<HttpCookie> oldCookies = SteamApi.GetStoredCookies();
-                        oldCookies?.ForEach(x =>
-                        {
-                            webView.SetCookies("https://" + x.Domain, x);
-                        });
-
-                        webView.Navigate("https://steamcommunity.com/my");
-                        _ = webView.OpenDialog();
-                    }
-                    */
                 }
             });
 #endif
