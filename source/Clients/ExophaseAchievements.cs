@@ -104,7 +104,11 @@ namespace SuccessStory.Clients
                 {
                     using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
                     {
-                        GetCookies()?.ForEach(x => { webView.SetCookies("https://" + x.Domain, x); });
+                        GetCookies()?.ForEach(x => 
+                        {
+                            string domain = x.Domain.StartsWith(".") ? x.Domain.Substring(1) : x.Domain;
+                            webView.SetCookies("https://" + domain, x);
+                        });
                         webView.NavigateAndWait(searchResult.Url);
                         dataExophaseLocalised = webView.GetPageSource();
                         webView.DeleteDomainCookies(".exophase.com");
