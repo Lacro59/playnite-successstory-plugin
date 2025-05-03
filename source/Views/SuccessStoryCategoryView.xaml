@@ -8,7 +8,8 @@
              xmlns:controls="clr-namespace:SuccessStory.Controls"
              xmlns:controls1="clr-namespace:CommonPluginsShared.Controls" 
              xmlns:controls2="clr-namespace:CommonPluginsControls.Controls"
-             mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="1100">
+             mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="1100"
+             d:DataContext="{d:DesignInstance Type=local:ControlDataContext, IsDesignTimeCreatable=True}">
 
     <UserControl.Resources>
         <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
@@ -62,6 +63,8 @@
                                Text="{Binding GameContext.Name, FallbackValue='Game Name'}"
                                FontSize="{DynamicResource FontSizeLargest}" TextWrapping="Wrap"
                                Foreground="{DynamicResource TextBrush}" />
+                    <Button Content="&#xefd1;" Click="ButtonRefresh_Click" HorizontalAlignment="Right" Grid.ColumnSpan="3"
+                            Name="ButtonRefresh" FontFamily="{DynamicResource FontIcoFont}" Tag="{Binding GameContext.Id}" />
 
                     <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal"
                                 Visibility="{Binding ElementName=PART_FirstUnlock, Path=Text, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
@@ -198,5 +201,11 @@
                 </Hyperlink>
             </TextBlock>
         </Grid>
+
+        <StackPanel Grid.Row="3" Margin="0,10,0,0" Orientation="Horizontal" HorizontalAlignment="Right"
+                    Visibility="{Binding DateLastRefresh, Converter={StaticResource StringNullOrEmptyToVisibilityConverter}}">
+            <Label FontSize="8" Content="Last refresh" />
+            <Label FontSize="8" Content="{Binding DateLastRefresh}" Margin="10,0,0,0" />
+        </StackPanel>
     </Grid>
 </UserControl>

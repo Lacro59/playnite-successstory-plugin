@@ -31,98 +31,102 @@ namespace SuccessStory.Views
         private ControlDataContext ControlDataContext { get; set; } = new ControlDataContext();
 
 
-        public SuccessStoryCategoryView(Game game)
+        public SuccessStoryCategoryView(Game gameContext)
         {
             try
             {
                 InitializeComponent();
                 DataContext = ControlDataContext;
-
-
-                // Cover
-                if (!game.CoverImage.IsNullOrEmpty())
-                {
-                    string CoverImage = API.Instance.Database.GetFullFilePath(game.CoverImage);
-                    PART_ImageCover.Source = BitmapExtensions.BitmapFromFile(CoverImage);
-                }
-
-                GameAchievements gameAchievements = PluginDatabase.Get(game, true);
-
-                if (gameAchievements.HasData)
-                {
-                    if (gameAchievements.EstimateTime == null || gameAchievements.EstimateTime.EstimateTimeMin == 0)
-                    {
-                        PART_TimeToUnlockContener.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        PART_TimeToUnlock.Text = gameAchievements.EstimateTime.EstimateTime;
-                    }
-
-                    LocalDateTimeConverter converter = new LocalDateTimeConverter();
-                    PART_FirstUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
-                    PART_LastUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
-
-                    // Adjustement
-                    if (game.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.SteamLibrary))
-                    {
-                        gameAchievements?.Items?.ForEach(x =>
-                        {
-                            x.Category = x.Category.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryBaseGame") : x.Category;
-                        });
-                    }
-
-                    // Category
-                    List<CategoryAchievement> categories = gameAchievements.Items
-                        .DistinctBy(x => x.Category)
-                        .Select(x => new CategoryAchievement
-                        {
-                            Icon100Percent = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() == gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count() ? Path.Combine(PluginDatabase.Paths.PluginPath, "Resources\\badge.png") : string.Empty,
-                            CategoryIcon = x.ImageCategoryIcon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(gameAchievements.Icon) : x.ImageCategoryIcon,
-                            CategoryName = x.Category,
-                            CategoryOrder = x.CategoryOrder,
-                            Maximum = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count(),
-                            Value = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count(),
-                            Progression = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() + " / " + gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count()
-                        })
-                        .OrderBy(x => x.CategoryOrder).ToList();
-
-                    PART_ListCategory.ItemsSource = game.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.SteamLibrary)
-                        ? categories
-                        : categories.Where(x => !x.CategoryName.IsNullOrEmpty()).ToList();
-
-                    PART_ListCategory.SelectedIndex = 0;
-                }
-
-                if (gameAchievements.SourcesLink != null)
-                {
-                    PART_SourceLabel.Text = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
-                    PART_SourceLink.Tag = gameAchievements.SourcesLink.Url;
-                }
-
-                if (gameAchievements.HasData)
-                {
-                    ControlDataContext.AchCommon = gameAchievements.Common;
-                    ControlDataContext.AchNoCommon = gameAchievements.NoCommon;
-                    ControlDataContext.AchRare = gameAchievements.Rare;
-                    ControlDataContext.AchUltraRare = gameAchievements.UltraRare;
-
-                    ControlDataContext.TotalGamerScore = gameAchievements.TotalGamerScore;
-
-                    ControlDataContext.EstimateTime = gameAchievements.EstimateTime?.EstimateTime;
-
-                    LocalDateTimeConverter converter = new LocalDateTimeConverter();
-                    ControlDataContext.FirstUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
-                    ControlDataContext.LastUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
-                }
-
-                ControlDataContext.GameContext = game;
-                ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
+                Init(gameContext);
             }
             catch (Exception ex)
             {
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
+        }
+
+        private void Init(Game gameContext)
+        {
+            // Cover
+            if (!gameContext.CoverImage.IsNullOrEmpty())
+            {
+                string CoverImage = API.Instance.Database.GetFullFilePath(gameContext.CoverImage);
+                PART_ImageCover.Source = BitmapExtensions.BitmapFromFile(CoverImage);
+            }
+
+            GameAchievements gameAchievements = PluginDatabase.Get(gameContext, true);
+
+            if (gameAchievements.HasData)
+            {
+                if (gameAchievements.EstimateTime == null || gameAchievements.EstimateTime.EstimateTimeMin == 0)
+                {
+                    PART_TimeToUnlockContener.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    PART_TimeToUnlock.Text = gameAchievements.EstimateTime.EstimateTime;
+                }
+
+                LocalDateTimeConverter converter = new LocalDateTimeConverter();
+                PART_FirstUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
+                PART_LastUnlock.Text = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
+
+                // Adjustement
+                if (gameContext.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.SteamLibrary))
+                {
+                    gameAchievements?.Items?.ForEach(x =>
+                    {
+                        x.Category = x.Category.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryBaseGame") : x.Category;
+                    });
+                }
+
+                // Category
+                List<CategoryAchievement> categories = gameAchievements.Items
+                    .DistinctBy(x => x.Category)
+                    .Select(x => new CategoryAchievement
+                    {
+                        Icon100Percent = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() == gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count() ? Path.Combine(PluginDatabase.Paths.PluginPath, "Resources\\badge.png") : string.Empty,
+                        CategoryIcon = x.ImageCategoryIcon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(gameAchievements.Icon) : x.ImageCategoryIcon,
+                        CategoryName = x.Category,
+                        CategoryOrder = x.CategoryOrder,
+                        Maximum = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count(),
+                        Value = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count(),
+                        Progression = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() + " / " + gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count()
+                    })
+                    .OrderBy(x => x.CategoryOrder).ToList();
+
+                PART_ListCategory.ItemsSource = gameContext.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.SteamLibrary)
+                    ? categories
+                    : categories.Where(x => !x.CategoryName.IsNullOrEmpty()).ToList();
+
+                PART_ListCategory.SelectedIndex = 0;
+            }
+
+            if (gameAchievements.SourcesLink != null)
+            {
+                PART_SourceLabel.Text = gameAchievements.SourcesLink.GameName + " (" + gameAchievements.SourcesLink.Name + ")";
+                PART_SourceLink.Tag = gameAchievements.SourcesLink.Url;
+            }
+
+            if (gameAchievements.HasData)
+            {
+                ControlDataContext.AchCommon = gameAchievements.Common;
+                ControlDataContext.AchNoCommon = gameAchievements.NoCommon;
+                ControlDataContext.AchRare = gameAchievements.Rare;
+                ControlDataContext.AchUltraRare = gameAchievements.UltraRare;
+
+                ControlDataContext.TotalGamerScore = gameAchievements.TotalGamerScore;
+
+                ControlDataContext.EstimateTime = gameAchievements.EstimateTime?.EstimateTime;
+
+                LocalDateTimeConverter converter = new LocalDateTimeConverter();
+                ControlDataContext.FirstUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Min(), null, null, CultureInfo.CurrentCulture);
+                ControlDataContext.LastUnlock = (string)converter.Convert(gameAchievements.Items.Select(x => x.DateWhenUnlocked).Max(), null, null, CultureInfo.CurrentCulture);
+                ControlDataContext.DateLastRefresh = (string)converter.Convert(gameAchievements.DateLastRefresh, null, null, CultureInfo.CurrentCulture);
+            }
+
+            ControlDataContext.GameContext = gameContext;
+            ControlDataContext.Settings = PluginDatabase.PluginSettings.Settings;
         }
 
 
@@ -149,6 +153,23 @@ namespace SuccessStory.Views
             catch (Exception ex)
             {
                 Common.LogError(ex, true);
+            }
+        }
+
+        private void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Guid id = (Guid)((FrameworkElement)sender).Tag;
+                if (id != default)
+                {
+                    PluginDatabase.Refresh(id);
+                    Init(API.Instance.Database.Games.Get(id));
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
         }
     }
