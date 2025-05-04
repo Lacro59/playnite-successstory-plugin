@@ -14,6 +14,7 @@ using CommonPlayniteShared.PluginLibrary.PSNLibrary.Models;
 using static CommonPluginsShared.PlayniteTools;
 using Playnite.SDK;
 using SuccessStory.Models.PSN;
+using CommonPluginsStores.Psn.Models;
 
 namespace SuccessStory.Clients
 {
@@ -74,8 +75,8 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievement> AllAchievements = new List<Achievement>();
 
-            string Url = string.Empty;
-            string UrlDetails = string.Empty;
+            string url = string.Empty;
+            string urlDetails = string.Empty;
 
 
             if (IsConnected())
@@ -86,45 +87,45 @@ namespace SuccessStory.Clients
 
                     // TODO Old plugin, still useful?
                     string[] split = game.GameId.Split('#');
-                    string GameId = split.Count() < 3 ? game.GameId : game.GameId.Split('#')[2];
+                    string gameId = split.Count() < 3 ? game.GameId : game.GameId.Split('#')[2];
 
-                    bool IsPS5 = game.Platforms.Where(x => x.Name.Contains("5")).Count() > 0;
+                    bool isPS5 = game.Platforms.Where(x => x.Name.Contains("5")).Count() > 0;
 
                     if (!CommunicationId.IsNullOrEmpty())
                     {
-                        GameId = CommunicationId;
+                        gameId = CommunicationId;
                     }
 
-                    if (!GameId.Contains("NPWR", StringComparison.InvariantCultureIgnoreCase))
+                    if (!gameId.Contains("NPWR", StringComparison.InvariantCultureIgnoreCase))
                     {
                         try
                         {
-                            string UrlTrophiesMobile = string.Format(TrophiesWithIdsMobileUrl, GameId);
-                            string WebTrophiesMobileResult = Web.DownloadStringData(UrlTrophiesMobile, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
-                            TrophyTitlesWithIdsMobile titles_part = Serialization.FromJson<TrophyTitlesWithIdsMobile>(WebTrophiesMobileResult);
+                            string urlTrophiesMobile = string.Format(TrophiesWithIdsMobileUrl, gameId);
+                            string webTrophiesMobileResult = Web.DownloadStringData(urlTrophiesMobile, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
+                            TrophyTitlesWithIdsMobile titles_part = Serialization.FromJson<TrophyTitlesWithIdsMobile>(webTrophiesMobileResult);
 
-                            string TMP_GameId = titles_part?.titles?.FirstOrDefault()?.trophyTitles?.FirstOrDefault()?.npCommunicationId;
-                            if (!TMP_GameId.IsNullOrEmpty())
+                            string tmp_GameId = titles_part?.titles?.FirstOrDefault()?.trophyTitles?.FirstOrDefault()?.npCommunicationId;
+                            if (!tmp_GameId.IsNullOrEmpty())
                             {
-                                GameId = TMP_GameId;
+                                gameId = tmp_GameId;
                             }
                             else
                             {
-                                TMP_GameId = GetNPWR_2(game.Name);
-                                if (!TMP_GameId.IsNullOrEmpty())
+                                tmp_GameId = GetNPWR_2(game.Name);
+                                if (!tmp_GameId.IsNullOrEmpty())
                                 {
-                                    GameId = TMP_GameId;
+                                    gameId = tmp_GameId;
                                 }
                                 else
                                 {
-                                    TMP_GameId = GetNPWR(game.Name);
-                                    if (!TMP_GameId.IsNullOrEmpty())
+                                    tmp_GameId = GetNPWR(game.Name);
+                                    if (!tmp_GameId.IsNullOrEmpty())
                                     {
-                                        GameId = TMP_GameId;
+                                        gameId = tmp_GameId;
                                     }
                                     else
                                     {
-                                        Logger.Warn($"No trophies found for {game.Name} - {GameId}");
+                                        Logger.Warn($"No trophies found for {game.Name} - {gameId}");
                                         gameAchievements.Items = AllAchievements;
                                         return gameAchievements;
                                     }
@@ -133,31 +134,31 @@ namespace SuccessStory.Clients
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false, $"Error on PSNAchievements with {GameId}", true, PluginDatabase.PluginName);
+                            Common.LogError(ex, false, $"Error on PSNAchievements with {gameId}", true, PluginDatabase.PluginName);
                         }
                     }
 
-                    Url = string.Format(UrlTrophies, GameId) + (IsPS5 ? string.Empty : "?npServiceName=trophy");
-                    UrlDetails = string.Format(UrlTrophiesDetails, GameId) + (IsPS5 ? string.Empty : "?npServiceName=trophy");
+                    url = string.Format(UrlTrophies, gameId) + (isPS5 ? string.Empty : "?npServiceName=trophy");
+                    urlDetails = string.Format(UrlTrophiesDetails, gameId) + (isPS5 ? string.Empty : "?npServiceName=trophy");
 
-                    string WebResult = string.Empty;
+                    string response = string.Empty;
                     Trophies trophies = new Trophies { trophies = new List<Trophie>() };
                     try
                     {
-                        WebResult = Web.DownloadStringData(Url, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
-                        trophies = Serialization.FromJson<Trophies>(WebResult);
+                        response = Web.DownloadStringData(url, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
+                        trophies = Serialization.FromJson<Trophies>(response);
                     }
                     catch { }
 
                     Trophies trophiesDetails = null;
                     try
                     {
-                        string WebResultDetails = Web.DownloadStringData(UrlDetails, PsnAPI.mobileToken.access_token, "", LocalLang).GetAwaiter().GetResult();
-                        trophiesDetails = Serialization.FromJson<Trophies>(WebResultDetails);
+                        string responseDetails = Web.DownloadStringData(urlDetails, PsnAPI.mobileToken.access_token, "", LocalLang).GetAwaiter().GetResult();
+                        trophiesDetails = Serialization.FromJson<Trophies>(responseDetails);
                     }
                     catch
                     {
-                        Logger.Warn($"No trophiesDetails found for {game.Name} - {GameId}");
+                        Logger.Warn($"No trophiesDetails found for {game.Name} - {gameId}");
                         gameAchievements.Items = AllAchievements;
                         return gameAchievements;
                     }
@@ -198,7 +199,7 @@ namespace SuccessStory.Clients
                         });
                     }
 
-                    gameAchievements.CommunicationId = GameId;
+                    gameAchievements.CommunicationId = gameId;
                 }
                 catch (Exception ex)
                 {
@@ -220,7 +221,7 @@ namespace SuccessStory.Clients
                 {
                     GameName = gameAchievements.Name,
                     Name = "PSN",
-                    Url = Url
+                    Url = url
                 };
             }
 
