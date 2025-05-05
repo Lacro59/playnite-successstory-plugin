@@ -596,11 +596,14 @@
                             </Expander.Style>
 
                             <Expander.Header>
-                                <Grid>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-gatcha-games#genshin-impact" />
+                                    
                                     <CheckBox IsChecked="{Binding Settings.EnableGenshinImpact}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCEnableGenshinImpactAchievements}" />
                                     </CheckBox>
-                                </Grid>
+                                </DockPanel>
                             </Expander.Header>
                         </Expander>
 
@@ -612,11 +615,14 @@
                             </Expander.Style>
 
                             <Expander.Header>
-                                <Grid>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-gatcha-games#wuthering-waves" />
+
                                     <CheckBox IsChecked="{Binding Settings.EnableWutheringWaves}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCEnableWutheringWavesAchievements}" />
                                     </CheckBox>
-                                </Grid>
+                                </DockPanel>
                             </Expander.Header>
                         </Expander>
 
@@ -628,11 +634,14 @@
                             </Expander.Style>
 
                             <Expander.Header>
-                                <Grid>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-gatcha-games#honkai-star-rail" />
+
                                     <CheckBox IsChecked="{Binding Settings.EnableHonkaiStarRail}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCEnableHonkaiStarRailAchievements}" />
                                     </CheckBox>
-                                </Grid>
+                                </DockPanel>
                             </Expander.Header>
                         </Expander>
 
@@ -644,11 +653,14 @@
                             </Expander.Style>
 
                             <Expander.Header>
-                                <Grid>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}"
+                                            Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Configure-gatcha-games#zenless-zone-zero" />
+
                                     <CheckBox IsChecked="{Binding Settings.EnableZenlessZoneZero}" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCEnableZenlessZoneZeroAchievements}" />
                                     </CheckBox>
-                                </Grid>
+                                </DockPanel>
                             </Expander.Header>
                         </Expander>
 
@@ -710,9 +722,14 @@
                             </Expander.Style>
 
                             <Expander.Header>
-                                <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableManual}" VerticalAlignment="Center">
-                                    <Label Content="{DynamicResource LOCSuccessStoryEnableManualAchievements}" />
-                                </CheckBox>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="&#xefca;" FontFamily="{DynamicResource FontIcoFont}"
+                                                Click="Button_Click_Wiki" Tag="https://github.com/Lacro59/playnite-successstory-plugin/wiki/Use-manual-achievements" />
+
+                                    <CheckBox Grid.Column="0" Grid.Row="10" IsChecked="{Binding Settings.EnableManual}" VerticalAlignment="Center">
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableManualAchievements}" />
+                                    </CheckBox>
+                                </DockPanel>
                             </Expander.Header>
                         </Expander>
 
@@ -725,27 +742,16 @@
                             </Expander.Style>
 
                             <Expander.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="8" />
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="40" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableLocal}" VerticalAlignment="Center">
-                                        <Label Content="Enable Local" />
-                                    </CheckBox>
+                                <DockPanel>
                                     <Button Content="&#xe980;" FontFamily="{DynamicResource CommonFont}" Click="ButtonAddLocalFolder_Click" 
-                                            Name="ButtonAddLocalFolder" Grid.Column="8"
+                                            Name="ButtonAddLocalFolder" DockPanel.Dock="Right"
                                             Visibility="{Binding ElementName=PART_BoderLocal, Path=Visibility}"
                                             VerticalAlignment="Center" />
-                                </Grid>
+                                    
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableLocal}">
+                                        <Label Content="Enable Local" />
+                                    </CheckBox>
+                                </DockPanel>
                             </Expander.Header>
 
                             <Expander.Content>
