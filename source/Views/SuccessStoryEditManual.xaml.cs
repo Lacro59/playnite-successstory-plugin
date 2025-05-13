@@ -78,10 +78,10 @@ namespace SuccessStory.Views
 
         private void LbAchievements_Loaded(object sender, RoutedEventArgs e)
         {
-            int RowDefinied = (int)lbAchievements.Height / 80;
-            int ColDefinied = 1;
+            int rowDefinied = (int)lbAchievements.Height / 80;
+            int colDefinied = 1;
 
-            DataContext = (ColDefinied, RowDefinied);
+            DataContext = (colDefinied, rowDefinied);
         }
 
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
@@ -121,7 +121,7 @@ namespace SuccessStory.Views
                     checkBox.IsChecked = true;
 
                     TimePicker timePicker = ((Grid)datePicker.Parent).FindName("PART_Time") as TimePicker;
-                    DateTime dt = (DateTime)dataContext.DateUnlocked;
+                    DateTime dt = (DateTime)datePicker.SelectedDate;
                     string[] dtTime = timePicker.GetValueAsString().Split(':');
                     dataContext.DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2]), DateTimeKind.Local).ToUniversalTime();
                 }

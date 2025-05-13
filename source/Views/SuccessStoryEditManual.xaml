@@ -188,7 +188,7 @@
                                             Tag="{Binding IsUnlock, Mode=OneTime}"
                                             SelectedDateChanged="DatePicker_SelectedDateChanged" />
                                 <temperaturemeasurementtool:TimePicker Grid.Column="4" Grid.Row="0" Grid.RowSpan="5" x:Name="PART_Time" TimeChanged="PART_Time_TimeChanged"
-                                                                       Time="{Binding DateUnlocked}"
+                                                                       Time="{Binding DateWhenUnlocked}"
                                                                        Visibility="{Binding ElementName=PART_DtUnlock, Path=Tag, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             </Grid>
                         </Grid>
