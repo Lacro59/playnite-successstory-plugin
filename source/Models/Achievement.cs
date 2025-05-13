@@ -33,7 +33,7 @@ namespace SuccessStory.Models
         public DateTime? DateUnlocked
         {
             get => _dateUnlocked == default(DateTime) ? null : _dateUnlocked;
-            set => _dateUnlocked = value;
+            set => _dateUnlocked = value is DateTime dt ? dt.ToUniversalTime() : value;
         }
 
         public bool IsHidden { get; set; } = false;

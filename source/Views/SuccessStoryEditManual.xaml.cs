@@ -112,6 +112,8 @@ namespace SuccessStory.Views
             try
             {
                 DatePicker datePicker = sender as DatePicker;
+                Achievement dataContext = (Achievement)(sender as FrameworkElement)?.DataContext;
+
                 if (datePicker.SelectedDate != null)
                 {
                     datePicker.Tag = true;
@@ -119,10 +121,9 @@ namespace SuccessStory.Views
                     checkBox.IsChecked = true;
 
                     TimePicker timePicker = ((Grid)datePicker.Parent).FindName("PART_Time") as TimePicker;
-                    int index = int.Parse(timePicker.Tag.ToString());
-                    DateTime dt = (DateTime)((Achievement)lbAchievements.Items[index]).DateUnlocked;
+                    DateTime dt = (DateTime)dataContext.DateUnlocked;
                     string[] dtTime = timePicker.GetValueAsString().Split(':');
-                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2]), DateTimeKind.Local).ToUniversalTime();
+                    dataContext.DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2]), DateTimeKind.Local).ToUniversalTime();
                 }
                 else
                 {
@@ -137,13 +138,13 @@ namespace SuccessStory.Views
             try
             {
                 TimePicker timePicker = sender as TimePicker;
-                int index = int.Parse(timePicker.Tag.ToString());
+                Achievement dataContext = (Achievement)(sender as FrameworkElement)?.DataContext;
                 CheckBox checkBox = ((Grid)timePicker.Parent).FindName("PART_CbUnlock") as CheckBox;
                 if ((bool)checkBox.IsChecked)
                 {
-                    DateTime dt = (DateTime)((Achievement)lbAchievements.Items[index]).DateUnlocked;
+                    DateTime dt = (DateTime)dataContext.DateUnlocked;
                     string[] dtTime = timePicker.GetValueAsString().Split(':');
-                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2]), DateTimeKind.Local).ToUniversalTime();
+                    dataContext.DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2]), DateTimeKind.Local).ToUniversalTime();
                 }
             }
             catch { }
@@ -154,19 +155,19 @@ namespace SuccessStory.Views
             try
             {
                 CheckBox checkBox = sender as CheckBox;
-                int index = int.Parse(checkBox.Tag.ToString());
+                Achievement dataContext = (Achievement)(sender as FrameworkElement)?.DataContext;
                 if ((bool)checkBox.IsChecked)
                 {
-                    if (((Achievement)lbAchievements.Items[index]).DateWhenUnlocked == null)
+                    if (dataContext.DateWhenUnlocked == null)
                     {
-                        ((Achievement)lbAchievements.Items[index]).DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0, DateTimeKind.Local);
+                        dataContext.DateUnlocked = new DateTime(1982, 12, 15, 0, 0, 0, 0, DateTimeKind.Local);
                     }
                 }
                 else
                 {
                     DatePicker datePicker = ((Grid)checkBox.Parent).FindName("PART_DtUnlock") as DatePicker;
                     datePicker.SelectedDate = null;
-                    ((Achievement)lbAchievements.Items[index]).DateUnlocked = default;
+                    dataContext.DateUnlocked = default;
                 }
             }
             catch { }
@@ -199,28 +200,12 @@ namespace SuccessStory.Views
             CollectionViewSource.GetDefaultView(lbAchievements.ItemsSource).Refresh();
         }
 
+        private void Element_Changed(object sender, RoutedEventArgs e)
+        {
+            Filter();
+        }
+
         private void SearchElement_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Filter();
-        }
-
-
-        private void PART_OnlyLocked_Checked(object sender, RoutedEventArgs e)
-        {
-            Filter();
-        }
-
-        private void PART_OnlyLocked_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Filter();
-        }
-
-        private void PART_IncludeDescription_Checked(object sender, RoutedEventArgs e)
-        {
-            Filter();
-        }
-
-        private void PART_IncludeDescription_Unchecked(object sender, RoutedEventArgs e)
         {
             Filter();
         }
