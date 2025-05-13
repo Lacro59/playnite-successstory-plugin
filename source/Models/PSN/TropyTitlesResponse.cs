@@ -7,7 +7,6 @@ using Playnite.SDK.Data;
 
 namespace SuccessStory.Models.PSN
 {
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class DefinedTrophies
     {
         [SerializationPropertyName("bronze")]
@@ -92,5 +91,11 @@ namespace SuccessStory.Models.PSN
         public DateTime LastUpdatedDateTime { get; set; }
     }
 
-
+    public class PsnAllTrophies
+    {
+        [SerializationPropertyName("trophyTitles")]
+        public List<TrophyTitle> TrophyTitles { get; set; }
+        [SerializationPropertyName("totalItemCount")]
+        public int TotalItemCount { get; set; }
+    }
 }

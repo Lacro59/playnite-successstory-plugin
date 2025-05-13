@@ -73,7 +73,7 @@ namespace SuccessStory.Clients
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Achievement> AllAchievements = new List<Achievement>();
+            List<Achievement> allAchievements = new List<Achievement>();
 
             string url = string.Empty;
             string urlDetails = string.Empty;
@@ -89,7 +89,7 @@ namespace SuccessStory.Clients
                     string[] split = game.GameId.Split('#');
                     string gameId = split.Count() < 3 ? game.GameId : game.GameId.Split('#')[2];
 
-                    bool isPS5 = game.Platforms.Where(x => x.Name.Contains("5")).Count() > 0;
+                    bool isPS5 = game.Platforms?.Where(x => x.Name.Contains("5")).Count() > 0;
 
                     if (!CommunicationId.IsNullOrEmpty())
                     {
@@ -126,7 +126,7 @@ namespace SuccessStory.Clients
                                     else
                                     {
                                         Logger.Warn($"No trophies found for {game.Name} - {gameId}");
-                                        gameAchievements.Items = AllAchievements;
+                                        gameAchievements.Items = allAchievements;
                                         return gameAchievements;
                                     }
                                 }
@@ -159,14 +159,14 @@ namespace SuccessStory.Clients
                     catch
                     {
                         Logger.Warn($"No trophiesDetails found for {game.Name} - {gameId}");
-                        gameAchievements.Items = AllAchievements;
+                        gameAchievements.Items = allAchievements;
                         return gameAchievements;
                     }
 
                     foreach (Trophie trophie in trophiesDetails?.trophies)
                     {
-                        Trophie trophieUser = trophies.trophies.Where(x => x.trophyId == trophie.trophyId).FirstOrDefault();
-                        float.TryParse(trophieUser?.trophyEarnedRate, NumberStyles.Float, CultureInfo.InvariantCulture, out float Percent);
+                        Trophie trophieUser = trophies.trophies.FirstOrDefault(x => x.trophyId == trophie.trophyId);
+                        _ = float.TryParse(trophieUser?.trophyEarnedRate, NumberStyles.Float, CultureInfo.InvariantCulture, out float Percent);
 
                         float GamerScore = 0;
                         switch (trophie.trophyType)
@@ -181,19 +181,19 @@ namespace SuccessStory.Clients
                                 GamerScore = 90;
                                 break;
                             case "platinum":
-                                GamerScore = 180;
+                                GamerScore = 300;
                                 break;
                             default:
                                 GamerScore = 15;
                                 break;
                         }
 
-                        AllAchievements.Add(new Achievement
+                        allAchievements.Add(new Achievement
                         {
                             Name = trophie.trophyName.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
                             Description = trophie.trophyDetail,
                             UrlUnlocked = trophie.trophyIconUrl.IsNullOrEmpty() ? "hidden_trophy.png" : trophie.trophyIconUrl,
-                            DateUnlocked = (trophieUser?.earnedDateTime == null) ? (DateTime?) null : trophieUser.earnedDateTime,
+                            DateUnlocked = (trophieUser?.earnedDateTime == null) ? null : trophieUser.earnedDateTime,
                             Percent = Percent == 0 ? 100 : Percent,
                             GamerScore = GamerScore
                         });
@@ -212,7 +212,7 @@ namespace SuccessStory.Clients
             }
 
 
-            gameAchievements.Items = AllAchievements;
+            gameAchievements.Items = allAchievements;
 
             // Set source link
             if (gameAchievements.HasAchievements)
@@ -294,8 +294,8 @@ namespace SuccessStory.Clients
 
             try
             {
-                string WebResult = Web.DownloadStringData(UrlAllTrophies, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
-                psnAllTrophies = Serialization.FromJson<PsnAllTrophies>(WebResult);
+                string response = Web.DownloadStringData(UrlAllTrophies, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
+                psnAllTrophies = Serialization.FromJson<PsnAllTrophies>(response);
             }
             catch (Exception ex)
             {
@@ -315,9 +315,9 @@ namespace SuccessStory.Clients
         {
             try
             {
-                string webResult = Web.DownloadStringData(UrlAllTrophyTitles, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
-                TropyTitlesResponse tropyTitlesResponse = Serialization.FromJson<TropyTitlesResponse>(webResult);
-                Models.PSN.TrophyTitle found = tropyTitlesResponse.TrophyTitles.FirstOrDefault(x => NormalizeGameName(x.TrophyTitleName).IsEqual(NormalizeGameName(name)));
+                string response = Web.DownloadStringData(UrlAllTrophyTitles, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
+                TropyTitlesResponse tropyTitlesResponse = Serialization.FromJson<TropyTitlesResponse>(response);
+                TrophyTitle found = tropyTitlesResponse.TrophyTitles.FirstOrDefault(x => NormalizeGameName(x.TrophyTitleName).IsEqual(NormalizeGameName(name)));
                 if (found != null)
                 {
                     return found.NpCommunicationId;
@@ -331,45 +331,5 @@ namespace SuccessStory.Clients
             return string.Empty;
         }
         #endregion
-    }
-
-
-    public class PsnAllTrophies
-    {
-        public List<TrophyTitle> trophyTitles { get; set; }
-        public int totalItemCount { get; set; }
-    }
-
-    public class DefinedTrophies
-    {
-        public int bronze { get; set; }
-        public int silver { get; set; }
-        public int gold { get; set; }
-        public int platinum { get; set; }
-    }
-
-    public class EarnedTrophies
-    {
-        public int bronze { get; set; }
-        public int silver { get; set; }
-        public int gold { get; set; }
-        public int platinum { get; set; }
-    }
-
-    public class TrophyTitle
-    {
-        public string npServiceName { get; set; }
-        public string npCommunicationId { get; set; }
-        public string trophySetVersion { get; set; }
-        public string trophyTitleName { get; set; }
-        public string trophyTitleDetail { get; set; }
-        public string trophyTitleIconUrl { get; set; }
-        public string trophyTitlePlatform { get; set; }
-        public bool hasTrophyGroups { get; set; }
-        public DefinedTrophies definedTrophies { get; set; }
-        public int progress { get; set; }
-        public EarnedTrophies earnedTrophies { get; set; }
-        public bool hiddenFlag { get; set; }
-        public DateTime lastUpdatedDateTime { get; set; }
     }
 }
