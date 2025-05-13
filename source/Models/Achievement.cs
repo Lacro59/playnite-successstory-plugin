@@ -61,6 +61,11 @@ namespace SuccessStory.Models
         public string CategoryRpcs3 { get; set; } = string.Empty;
 
 
+        private static string[] LocalResourceGames => new[]
+        {
+            "rpcs3", "hidden_trophy", "GenshinImpact", "WutheringWaves", "HonkaiStarRail", "ZenlessZoneZero", "default_icon"
+        };
+
         /// <summary>
         /// Image for unlocked achievement
         /// </summary>
@@ -75,32 +80,7 @@ namespace SuccessStory.Models
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, UrlUnlocked);
                     return TempUrlUnlocked;
                 }
-                if (TempUrlUnlocked?.Contains("hidden_trophy", StringComparison.InvariantCultureIgnoreCase) ?? false)
-                {
-                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
-                    return TempUrlUnlocked;
-                }
-                if (TempUrlUnlocked?.Contains("GenshinImpact", StringComparison.InvariantCultureIgnoreCase) ?? false)
-                {
-                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
-                    return TempUrlUnlocked;
-                }
-                if (TempUrlUnlocked?.Contains("WutheringWaves", StringComparison.InvariantCultureIgnoreCase) ?? false)
-                {
-                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
-                    return TempUrlUnlocked;
-                }
-                if (TempUrlUnlocked?.Contains("HonkaiStarRail", StringComparison.InvariantCultureIgnoreCase) ?? false)
-                {
-                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
-                    return TempUrlUnlocked;
-                }
-                if (TempUrlUnlocked?.Contains("ZenlessZoneZero", StringComparison.InvariantCultureIgnoreCase) ?? false)
-                {
-                    TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
-                    return TempUrlUnlocked;
-                }
-                if (TempUrlUnlocked?.Contains("default_icon", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                if (LocalResourceGames.Any(game => TempUrlUnlocked?.Contains(game, StringComparison.InvariantCultureIgnoreCase) == true))
                 {
                     TempUrlUnlocked = Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", UrlUnlocked);
                     return TempUrlUnlocked;
