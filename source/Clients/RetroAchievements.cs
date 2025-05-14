@@ -26,7 +26,7 @@ namespace SuccessStory.Clients
     // https://docs.retroachievements.org/developer-docs/game-identification.html
     public class RetroAchievements : GenericAchievements
     {
-        #region Url
+        #region Urls
         private static string BaseUrl => @"https://retroachievements.org/API/";
         private static string BaseUrlUnlocked => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
         private static string BaseUrlLocked => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
@@ -41,7 +41,6 @@ namespace SuccessStory.Clients
 
 
         private string GameNameAchievements { get; set; } = string.Empty;
-        private string UrlAchievements { get; set; } = string.Empty;
 
 
         public RetroAchievements() : base("RetroAchievements")
@@ -62,11 +61,11 @@ namespace SuccessStory.Clients
                     int consoleID = GetConsoleId(game);
                     if (ConsoleExcludeHash.FindAll(x => x == consoleID)?.Count == 0)
                     {
-                        GameId = GetGameIdByHash(game);
+                        GameId = GetGameIdByHash(game, consoleID);
                     }
                     if (GameId == 0)
                     {
-                        GameId = GetGameIdByName(game);
+                        GameId = GetGameIdByName(game, consoleID);
                     }
                 }
 
@@ -140,8 +139,8 @@ namespace SuccessStory.Clients
         public static List<RaConsole> GetConsoleIDs()
         {
             List<RaConsole> resultObj = new List<RaConsole>();
-            string Target = "API_GetConsoleIDs.php";
-            string Url = string.Format(BaseUrl + Target + @"?z={0}&y={1}", User, Key);
+            string target = "API_GetConsoleIDs.php";
+            string url = string.Format(BaseUrl + target + @"?z={0}&y={1}", User, Key);
 
             string fileConsoles = PluginDatabase.Paths.PluginUserDataPath + "\\RA_Consoles.json";
             if (File.Exists(fileConsoles) && File.GetLastWriteTime(fileConsoles).AddDays(5) > DateTime.Now && Serialization.TryFromJsonFile(fileConsoles, out resultObj))
@@ -149,26 +148,26 @@ namespace SuccessStory.Clients
                 return resultObj;
             }
 
-            string ResultWeb = string.Empty;
+            string response = string.Empty;
 
             try
             {
-                ResultWeb = Web.DownloadStringData(Url).GetAwaiter().GetResult();
+                response = Web.DownloadStringData(url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, $"Failed to load from {Url}", true, PluginDatabase.PluginName);
+                Common.LogError(ex, false, $"Failed to load from {url}", true, PluginDatabase.PluginName);
             }
 
 
-            if (!ResultWeb.IsNullOrEmpty())
+            if (!response.IsNullOrEmpty())
             {
-                _ = Serialization.TryFromJson(ResultWeb, out List<RaConsole> data);
+                _ = Serialization.TryFromJson(response, out List<RaConsole> data);
                 resultObj = data ?? new List<RaConsole>();
 
                 if (resultObj?.Count == 0)
                 {
-                    Exception ex = new Exception($"Failed to parse {ResultWeb}");
+                    Exception ex = new Exception($"Failed to parse {response}");
                     Common.LogError(ex, false, true, PluginDatabase.PluginName);
                 }
                 else
@@ -181,159 +180,158 @@ namespace SuccessStory.Clients
         }
 
 
-        public static int FindConsole(string PlatformName)
+        public static int FindConsole(string platformName)
         {
-            List<RaConsole> ra_Consoles = GetConsoleIDs();
+            List<RaConsole> raConsoles = GetConsoleIDs();
             int consoleID = 0;
 
             #region Normalize
-            if (PlatformName.IsEqual("Sega Genesis"))
+            if (platformName.IsEqual("Sega Genesis"))
             {
-                PlatformName = "Mega Drive";
+                platformName = "Mega Drive";
             }
-            if (PlatformName.IsEqual("Nintendo SNES"))
+            if (platformName.IsEqual("Nintendo SNES"))
             {
-                PlatformName = "SNES";
+                platformName = "SNES";
             }
-            if (PlatformName.IsEqual("Super Nintendo Entertainment System"))
+            if (platformName.IsEqual("Super Nintendo Entertainment System"))
             {
-                PlatformName = "SNES";
+                platformName = "SNES";
             }
-            if (PlatformName.IsEqual("Nintendo Game Boy"))
+            if (platformName.IsEqual("Nintendo Game Boy"))
             {
-                PlatformName = "Game Boy";
+                platformName = "Game Boy";
             }
-            if (PlatformName.IsEqual("Nintendo Game Boy Advance"))
+            if (platformName.IsEqual("Nintendo Game Boy Advance"))
             {
-                PlatformName = "Game Boy Advance";
+                platformName = "Game Boy Advance";
             }
-            if (PlatformName.IsEqual("Nintendo Game Boy Color"))
+            if (platformName.IsEqual("Nintendo Game Boy Color"))
             {
-                PlatformName = "Game Boy Color";
+                platformName = "Game Boy Color";
             }
-            if (PlatformName.IsEqual("Nintendo Entertainment System"))
+            if (platformName.IsEqual("Nintendo Entertainment System"))
             {
-                PlatformName = "NES";
+                platformName = "NES";
             }
-            if (PlatformName.IsEqual("PC Engine SuperGrafx"))
+            if (platformName.IsEqual("PC Engine SuperGrafx"))
             {
-                PlatformName = "PC Engine";
+                platformName = "PC Engine";
             }
-            if (PlatformName.IsEqual("Sega 32X"))
+            if (platformName.IsEqual("Sega 32X"))
             {
-                PlatformName = "32X";
+                platformName = "32X";
             }
-            if (PlatformName.IsEqual("Sega Master System"))
+            if (platformName.IsEqual("Sega Master System"))
             {
-                PlatformName = "Master System";
+                platformName = "Master System";
             }
-            if (PlatformName.IsEqual("Sony PlayStation"))
+            if (platformName.IsEqual("Sony PlayStation"))
             {
-                PlatformName = "PlayStation";
+                platformName = "PlayStation";
             }
-            if (PlatformName.IsEqual("SNK Neo Geo Pocket"))
+            if (platformName.IsEqual("SNK Neo Geo Pocket"))
             {
-                PlatformName = "Neo Geo Pocket";
+                platformName = "Neo Geo Pocket";
             }
-            if (PlatformName.IsEqual("Sega Game Gear"))
+            if (platformName.IsEqual("Sega Game Gear"))
             {
-                PlatformName = "Game Gear";
+                platformName = "Game Gear";
             }
-            if (PlatformName.IsEqual("Nintendo GameCube"))
+            if (platformName.IsEqual("Nintendo GameCube"))
             {
-                PlatformName = "GameCube";
+                platformName = "GameCube";
             }
-            if (PlatformName.IsEqual("Nintendo Wii"))
+            if (platformName.IsEqual("Nintendo Wii"))
             {
-                PlatformName = "Wii";
+                platformName = "Wii";
             }
-            if (PlatformName.IsEqual("Nintendo Wii U"))
+            if (platformName.IsEqual("Nintendo Wii U"))
             {
-                PlatformName = "Wii U";
+                platformName = "Wii U";
             }
-            if (PlatformName.IsEqual("Sony PlayStation 2"))
+            if (platformName.IsEqual("Sony PlayStation 2"))
             {
-                PlatformName = "PlayStation 2";
+                platformName = "PlayStation 2";
             }
-            if (PlatformName.IsEqual("Microsoft Xbox"))
+            if (platformName.IsEqual("Microsoft Xbox"))
             {
-                PlatformName = "Xbox";
+                platformName = "Xbox";
             }
-            if (PlatformName.IsEqual("Magnavox Odyssey2"))
+            if (platformName.IsEqual("Magnavox Odyssey2"))
             {
-                PlatformName = "Magnavox Odyssey 2";
+                platformName = "Magnavox Odyssey 2";
             }
-            if (PlatformName.IsEqual("PC (DOS)"))
+            if (platformName.IsEqual("PC (DOS)"))
             {
-                PlatformName = "DOS";
+                platformName = "DOS";
             }
-            if (PlatformName.IsEqual("Various"))
+            if (platformName.IsEqual("Various"))
             {
-                PlatformName = "Arcade";
+                platformName = "Arcade";
             }
-            if (PlatformName.IsEqual("MAME 2003 Plus"))
+            if (platformName.IsEqual("MAME 2003 Plus"))
             {
-                PlatformName = "Arcade";
+                platformName = "Arcade";
             }
-            if (PlatformName.IsEqual("Nintendo Virtual Boy"))
+            if (platformName.IsEqual("Nintendo Virtual Boy"))
             {
-                PlatformName = "Virtual Boy";
+                platformName = "Virtual Boy";
             }
-            if (PlatformName.IsEqual("Sega SG 1000"))
+            if (platformName.IsEqual("Sega SG 1000"))
             {
-                PlatformName = "SG-1000";
+                platformName = "SG-1000";
             }
-            if (PlatformName.IsEqual("Atari ST/STE/TT/Falcon"))
+            if (platformName.IsEqual("Atari ST/STE/TT/Falcon"))
             {
-                PlatformName = "Atari ST";
+                platformName = "Atari ST";
             }
-            if (PlatformName.IsEqual("Sega Saturn"))
+            if (platformName.IsEqual("Sega Saturn"))
             {
-                PlatformName = "Saturn";
+                platformName = "Saturn";
             }
-            if (PlatformName.IsEqual("Sega Dreamcast"))
+            if (platformName.IsEqual("Sega Dreamcast"))
             {
-                PlatformName = "Dreamcast";
+                platformName = "Dreamcast";
             }
-            if (PlatformName.IsEqual("Sony PlayStation Portable"))
+            if (platformName.IsEqual("Sony PlayStation Portable"))
             {
-                PlatformName = "PlayStation Portable";
+                platformName = "PlayStation Portable";
             }
-            if (PlatformName.IsEqual("Sony PSP"))
+            if (platformName.IsEqual("Sony PSP"))
             {
-                PlatformName = "PlayStation Portable";
+                platformName = "PlayStation Portable";
             }
-            if (PlatformName.IsEqual("Coleco ColecoVision"))
+            if (platformName.IsEqual("Coleco ColecoVision"))
             {
-                PlatformName = "ColecoVision";
+                platformName = "ColecoVision";
             }
-            if (PlatformName.IsEqual("SNK Neo Geo CD"))
+            if (platformName.IsEqual("SNK Neo Geo CD"))
             {
-                PlatformName = "Neo Geo CD";
+                platformName = "Neo Geo CD";
             }
-            if (PlatformName.Contains("Grafx"))
+            if (platformName.Contains("Grafx"))
             {
-                PlatformName = "PC Engine";
+                platformName = "PC Engine";
             }
             #endregion
 
-            RaConsole FindConsole = ra_Consoles.Find(x => PlatformName.IsEqual(x.Name));
-            if (FindConsole != null)
+            RaConsole raConsole = raConsoles.Find(x => platformName.IsEqual(x.Name));
+            if (raConsole != null)
             {
-                consoleID = FindConsole.ID;
+                consoleID = raConsole.ID;
             }
 
             return consoleID;
         }
 
 
-        private int GetGameIdByName(Game game)
+        private int GetGameIdByName(Game game, int consoleID)
         {
-            string GameName = game.Name;
-            string PlatformName = game.Platforms.FirstOrDefault().Name;
+            Logger.Info($"GetGameIdByName({game.Name}, {consoleID})");
 
-            // Search id console for the game
-            int consoleID = GetConsoleId(game);
+            string gameName = game.Name;
+            string platformName = game.Platforms.FirstOrDefault().Name;
 
             // Search game id
             int gameID = 0;
@@ -347,10 +345,10 @@ namespace SuccessStory.Clients
                     string retroArchTitle = ra_Game.Title;
                     //TODO: Decide if editions should be removed here
                     string normalizedRetroArchTitle = PlayniteTools.NormalizeGameName(retroArchTitle, true);
-                    string normalizedPlayniteTitle = PlayniteTools.NormalizeGameName(GameName, true);
+                    string normalizedPlayniteTitle = PlayniteTools.NormalizeGameName(gameName, true);
                     if (normalizedPlayniteTitle.IsEqual(normalizedRetroArchTitle))
                     {
-                        Logger.Info($"Find for {GameName} [{ra_Game.ID}] / {retroArchTitle} with {PlatformName} in {consoleID}");
+                        Logger.Info($"Find for {gameName} [{ra_Game.ID}] / {retroArchTitle} with {platformName} in {consoleID}");
                         gameID = ra_Game.ID;
                         break;
                     }
@@ -360,9 +358,9 @@ namespace SuccessStory.Clients
                     {
                         foreach (string TitleSplit in TitleSplits)
                         {
-                            if (GameName.IsEqual(TitleSplit) && gameID == 0)
+                            if (gameName.IsEqual(TitleSplit) && gameID == 0)
                             {
-                                Logger.Info($"Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
+                                Logger.Info($"Find for {gameName} [{ra_Game.ID}] / {TitleSplit} with {platformName} in {consoleID}");
                                 gameID = ra_Game.ID;
                                 break;
                             }
@@ -374,9 +372,9 @@ namespace SuccessStory.Clients
                     {
                         foreach (string TitleSplit in TitleSplits)
                         {
-                            if (GameName.IsEqual(TitleSplit) && gameID == 0)
+                            if (gameName.IsEqual(TitleSplit) && gameID == 0)
                             {
-                                Logger.Info($"Find for {GameName} [{ra_Game.ID}] / {TitleSplit} with {PlatformName} in {consoleID}");
+                                Logger.Info($"Find for {gameName} [{ra_Game.ID}] / {TitleSplit} with {platformName} in {consoleID}");
                                 gameID = ra_Game.ID;
                                 break;
                             }
@@ -386,12 +384,12 @@ namespace SuccessStory.Clients
             }
             else
             {
-                Logger.Warn($"No console found for {GameName} with {PlatformName}");
+                Logger.Warn($"No console found for {gameName} with {platformName}");
             }
 
             if (gameID == 0)
             {
-                Logger.Warn($"No game found for {GameName} with {PlatformName} in {consoleID}");
+                Logger.Warn($"No game found for {gameName} with {platformName} in {consoleID}");
             }
 
             return gameID;
@@ -420,19 +418,18 @@ namespace SuccessStory.Clients
             return consoleId;
         }
 
-        private int GetGameIdByHash(Game game)
+        private int GetGameIdByHash(Game game, int consoleID)
         {
-            // Search id console for the game
-            int consoleID = GetConsoleId(game);
+            Logger.Info($"GetGameIdByHash({game.Name}, {consoleID})");
 
             // Search game id
-            int GameId = 0;
+            int gameId = 0;
             if (consoleID != 0)
             {
                 List<RaGame> ra_Games = GetGameList(consoleID);
                 ra_Games.Sort((x, y) => y.Title.CompareTo(x.Title));
 
-                string HashMD5 = string.Empty;
+                string hashMD5 = string.Empty;
 
                 RaMd5List rA_MD5List = null;
                 List<RaMd5List> rA_MD5Lists = new List<RaMd5List>();
@@ -449,12 +446,12 @@ namespace SuccessStory.Clients
 
                 if (!File.Exists(FilePath))
                 {
-                    return GameId;
+                    return gameId;
                 }
 
                 if (FilePath.Contains(".rar") && FilePath.Contains(".7z"))
                 {
-                    return GameId;
+                    return gameId;
                 }
                 if (FilePath.Contains(".zip"))
                 {
@@ -462,7 +459,7 @@ namespace SuccessStory.Clients
                     FileInfo fi = new FileInfo(FilePath);
                     if (fi.Length > 20000000)
                     {
-                        return GameId;
+                        return gameId;
                     }
                     else
                     {
@@ -474,7 +471,7 @@ namespace SuccessStory.Clients
                 {
                     Logger.Warn($"No file found for RA hash - {FilePath}");
                     ZipFileManageRemove();
-                    return GameId;
+                    return gameId;
                 }
                 else
                 {
@@ -483,7 +480,7 @@ namespace SuccessStory.Clients
                     if (fi.Length > 300000000)
                     {
                         Logger.Warn($"Hash impossible - The file is too long - {FilePath}");
-                        return GameId;
+                        return gameId;
                     }
                 }
 
@@ -492,102 +489,102 @@ namespace SuccessStory.Clients
 
                 if (ext.IsEqual(".nds"))
                 {
-                    HashMD5 = GetHash(FilePath, RaPlatformType.NDS);
-                    rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                    hashMD5 = GetHash(FilePath, RaPlatformType.NDS);
+                    rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(hashMD5));
                     if (rA_MD5List != null)
                     {
                         ZipFileManageRemove();
-                        Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                        Logger.Info($"Find for {game.Name} with {hashMD5} in PlatformType.NDS");
                         return rA_MD5List.Id;
                     }
-                    if (GameId == 0)
+                    if (gameId == 0)
                     {
-                        Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.NDS");
+                        Logger.Warn($"No game find for {game.Name} with {hashMD5} in PlatformType.NDS");
                     }
                 }
 
-                HashMD5 = GetHash(FilePath, RaPlatformType.All);
-                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                hashMD5 = GetHash(FilePath, RaPlatformType.All);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(hashMD5));
                 if (rA_MD5List != null)
                 {
                     ZipFileManageRemove();
-                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.All");
+                    Logger.Info($"Find for {game.Name} with {hashMD5} in PlatformType.All");
                     return rA_MD5List.Id;
                 }
-                if (GameId == 0)
+                if (gameId == 0)
                 {
-                    Logger.Warn($"No game found for {game.Name} with {HashMD5} in PlatformType.NDS");
+                    Logger.Warn($"No game found for {game.Name} with {hashMD5} in PlatformType.NDS");
                 }
 
-                HashMD5 = GetHash(FilePath, RaPlatformType.SNES);
-                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                hashMD5 = GetHash(FilePath, RaPlatformType.SNES);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(hashMD5));
                 if (rA_MD5List != null)
                 {
                     ZipFileManageRemove();
-                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Info($"Find for {game.Name} with {hashMD5} in PlatformType.SNES");
                     return rA_MD5List.Id;
                 }
-                if (GameId == 0)
+                if (gameId == 0)
                 {
-                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Warn($"No game find for {game.Name} with {hashMD5} in PlatformType.SNES");
                 }
 
-                HashMD5 = GetHash(FilePath, RaPlatformType.NES);
-                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                hashMD5 = GetHash(FilePath, RaPlatformType.NES);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(hashMD5));
                 if (rA_MD5List != null)
                 {
                     ZipFileManageRemove();
-                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Info($"Find for {game.Name} with {hashMD5} in PlatformType.SNES");
                     return rA_MD5List.Id;
                 }
-                if (GameId == 0)
+                if (gameId == 0)
                 {
-                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Warn($"No game find for {game.Name} with {hashMD5} in PlatformType.SNES");
                 }
 
-                HashMD5 = GetHash(FilePath, RaPlatformType.Arcade);
-                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                hashMD5 = GetHash(FilePath, RaPlatformType.Arcade);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(hashMD5));
                 if (rA_MD5List != null)
                 {
                     ZipFileManageRemove();
-                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    Logger.Info($"Find for {game.Name} with {hashMD5} in PlatformType.Sega_CD_Saturn");
                     return rA_MD5List.Id;
                 }
-                if (GameId == 0)
+                if (gameId == 0)
                 {
-                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    Logger.Warn($"No game find for {game.Name} with {hashMD5} in PlatformType.Sega_CD_Saturn");
                 }
 
-                HashMD5 = GetHash(FilePath, RaPlatformType.Famicom);
-                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                hashMD5 = GetHash(FilePath, RaPlatformType.Famicom);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(hashMD5));
                 if (rA_MD5List != null)
                 {
                     ZipFileManageRemove();
-                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Info($"Find for {game.Name} with {hashMD5} in PlatformType.SNES");
                     return rA_MD5List.Id;
                 }
-                if (GameId == 0)
+                if (gameId == 0)
                 {
-                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.SNES");
+                    Logger.Warn($"No game find for {game.Name} with {hashMD5} in PlatformType.SNES");
                 }
 
-                HashMD5 = GetHash(FilePath, RaPlatformType.Sega_CD_Saturn);
-                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(HashMD5));
+                hashMD5 = GetHash(FilePath, RaPlatformType.Sega_CD_Saturn);
+                rA_MD5List = rA_MD5Lists.Find(x => x.MD5.IsEqual(hashMD5));
                 if (rA_MD5List != null)
                 {
                     ZipFileManageRemove();
-                    Logger.Info($"Find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    Logger.Info($"Find for {game.Name} with {hashMD5} in PlatformType.Sega_CD_Saturn");
                     return rA_MD5List.Id;
                 }
-                if (GameId == 0)
+                if (gameId == 0)
                 {
-                    Logger.Warn($"No game find for {game.Name} with {HashMD5} in PlatformType.Sega_CD_Saturn");
+                    Logger.Warn($"No game find for {game.Name} with {hashMD5} in PlatformType.Sega_CD_Saturn");
                 }
 
                 ZipFileManageRemove();
             }
 
-            return GameId;
+            return gameId;
         }
 
         private string GetHash(string FilePath, RaPlatformType platformType)
@@ -731,13 +728,13 @@ namespace SuccessStory.Clients
         }
 
 
-        private string ZipFileManageExtract(string FilePath)
+        private string ZipFileManageExtract(string filePath)
         {
             string extractPath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "tempZip");
             try
             {
                 ZipFileManageRemove();
-                ZipFile.ExtractToDirectory(FilePath, extractPath);
+                ZipFile.ExtractToDirectory(filePath, extractPath);
             }
             catch { }
 
@@ -759,8 +756,8 @@ namespace SuccessStory.Clients
 
         private List<RaGame> GetGameList(int consoleID)
         {
-            string Target = "API_GetGameList.php";
-            string url = string.Format(BaseUrl + Target + @"?z={0}&y={1}&i={2}&h=1", User, Key, consoleID);
+            string target = "API_GetGameList.php";
+            string url = string.Format(BaseUrl + target + @"?z={0}&y={1}&i={2}&h=1", User, Key, consoleID);
 
             List<RaGame> resultObj = new List<RaGame>();
 
@@ -770,10 +767,10 @@ namespace SuccessStory.Clients
                 return resultObj;
             }
 
-            string ResultWeb = string.Empty;
+            string response = string.Empty;
             try
             {
-                ResultWeb = Web.DownloadStringData(url).GetAwaiter().GetResult();
+                response = Web.DownloadStringData(url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {
@@ -782,12 +779,12 @@ namespace SuccessStory.Clients
 
             try
             {
-                resultObj = Serialization.FromJson<List<RaGame>>(ResultWeb);
+                resultObj = Serialization.FromJson<List<RaGame>>(response);
                 File.WriteAllText(fileConsoles, Serialization.ToJson(resultObj), Encoding.UTF8);
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Failed to parse {ResultWeb}", true, PluginDatabase.PluginName);
+                Common.LogError(ex, false, $"Failed to parse {response}", true, PluginDatabase.PluginName);
             }
 
             return resultObj;
@@ -796,43 +793,43 @@ namespace SuccessStory.Clients
 
         private List<Achievement> GetGameInfoAndUserProgress(int gameID)
         {
-            List<Achievement> Achievements = new List<Achievement>();
+            List<Achievement> achievements = new List<Achievement>();
 
-            string Target = "API_GetGameInfoAndUserProgress.php";
-            UrlAchievements = string.Format(BaseUrl + Target + @"?z={0}&y={1}&u={0}&g={2}", User, Key, gameID);
+            string target = "API_GetGameInfoAndUserProgress.php";
+            string url = string.Format(BaseUrl + target + @"?z={0}&y={1}&u={0}&g={2}", User, Key, gameID);
 
-            string ResultWeb;
+            string response;
             try
             {
-                ResultWeb = Web.DownloadStringData(UrlAchievements).GetAwaiter().GetResult();
+                response = Web.DownloadStringData(url).GetAwaiter().GetResult();
             }
             catch (WebException ex)
             {
-                Common.LogError(ex, false, $"Failed to load from {UrlAchievements}", true, PluginDatabase.PluginName);
-                return Achievements;
+                Common.LogError(ex, false, $"Failed to load from {url}", true, PluginDatabase.PluginName);
+                return achievements;
             }
 
             try
             {
-                dynamic resultObj = Serialization.FromJson<dynamic>(ResultWeb);
+                dynamic resultObj = Serialization.FromJson<dynamic>(response);
 
                 GameNameAchievements = (string)resultObj["Title"];
-                int NumDistinctPlayersCasual = resultObj["NumDistinctPlayersCasual"] == null ? 0 : (int)resultObj["NumDistinctPlayersCasual"];
+                int numDistinctPlayersCasual = resultObj["NumDistinctPlayersCasual"] == null ? 0 : (int)resultObj["NumDistinctPlayersCasual"];
 
-                if (resultObj["Achievements"] != null && !ResultWeb.Contains("\"Achievements\":{}"))
+                if (resultObj["Achievements"] != null && !response.Contains("\"Achievements\":{}"))
                 {
                     foreach (dynamic item in resultObj["Achievements"])
                     {
                         foreach (dynamic it in item)
                         {
-                            Achievements.Add(new Achievement
+                            achievements.Add(new Achievement
                             {
                                 Name = (string)it["Title"],
                                 Description = (string)it["Description"],
                                 UrlLocked = string.Format(BaseUrlLocked, (string)it["BadgeName"]),
                                 UrlUnlocked = string.Format(BaseUrlUnlocked, (string)it["BadgeName"]),
                                 DateUnlocked = (it["DateEarned"] == null) ? (DateTime?) null : Convert.ToDateTime((string)it["DateEarned"]),
-                                Percent = it["NumAwarded"] == null || (int)it["NumAwarded"] == 0 || NumDistinctPlayersCasual == 0 ? 100 : (int)it["NumAwarded"] * 100 / NumDistinctPlayersCasual,
+                                Percent = it["NumAwarded"] == null || (int)it["NumAwarded"] == 0 || numDistinctPlayersCasual == 0 ? 100 : (int)it["NumAwarded"] * 100 / numDistinctPlayersCasual,
                                 GamerScore = it["Points"] == null ? 0 : (int)it["Points"]
                             });
                         }
@@ -841,11 +838,11 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"[{gameID}] Failed to parse {ResultWeb}", true, PluginDatabase.PluginName);
-                return Achievements;
+                Common.LogError(ex, false, $"[{gameID}] Failed to parse {response}", true, PluginDatabase.PluginName);
+                return achievements;
             }
 
-            return Achievements;
+            return achievements;
         }
         #endregion
     }
