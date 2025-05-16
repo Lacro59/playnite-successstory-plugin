@@ -49,6 +49,7 @@ Você deve verificar &quot;{1}&quot; nas configurações do plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">O usuário da Battle.net não está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">O usuário do Overwatch pelo Battle.net não está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">O usuário da StarCraft II pelo Battle.net não está autenticado</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">Game Jolt is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">A Epic está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">O usuário da Epic não está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 não foi configurado corretamente nas configurações</sys:String>
@@ -63,6 +64,8 @@ Você deve verificar &quot;{1}&quot; nas configurações do plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressBar">Processando, aguarde...</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Jogos ignorados</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Group Steam achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (apenas para ter conquistas localizadas)</sys:String>
 
@@ -85,6 +88,7 @@ Você deve verificar &quot;{1}&quot; nas configurações do plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Habilitar conquistas do StarCraft II</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Ativar conquistas de World of Warcraft</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Ativar conquistas do Guild Wars 2</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements">Enable Game Jolt achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Desabilitar o uso da API (Use quando você não tem uma chave de API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Pasta principal do usuário</sys:String>
@@ -184,6 +188,8 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Base game</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Primeiro desbloqueio</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">Último desbloqueio</sys:String>
     
@@ -222,10 +228,24 @@ Especialmente útil para conquistas do Xbox com suas imagens grandes que são re
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Habilitar conquistas de Genshin Impact</sys:String>
+    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Adicionar Genshin Impact</sys:String>
 
-    
+    <!-- Wuthering Waves -->
+
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Enable Wuthering Waves achievements</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Add Wuthering Waves</sys:String>
+
+    <!-- Honkai Star Rail -->
+
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
+
+    <!-- Zenless Zone Zero -->
+
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Add Zenless Zone Zero</sys:String>
+
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Jogo rápido</sys:String>
