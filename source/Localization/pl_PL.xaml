@@ -49,6 +49,7 @@ Musisz sprawdzić &quot;{1}&quot; w ustawieniach wtyczki</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Użytkownik Battle.net nie jest uwierzytelniony</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Użytkownik Battle.net Overwatch nie jest uwierzytelniony</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Użytkownik Battle.net StarCraft II nie jest uwierzytelniony</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">Game Jolt is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic jest włączony w SuccessStory, ale rozszerzenie biblioteki zostało wyłączone w Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Użytkownik Epic nie jest uwierzytelniony</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">Gra GuildWars 2 nie została poprawnie skonfigurowana w ustawieniach</sys:String>
@@ -63,6 +64,8 @@ Musisz sprawdzić &quot;{1}&quot; w ustawieniach wtyczki</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressBar">Przetwarzanie, proszę czekać...</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Ignorowane gry</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Group Steam achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (tylko dla przetłumaczonych osiągnięć)</sys:String>
 
@@ -85,6 +88,7 @@ Musisz sprawdzić &quot;{1}&quot; w ustawieniach wtyczki</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Włącz osiągnięcia StarCraft II</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Włącz osiągniecia World of Warcraft</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Włącz osiągnięcia Guild Wars 2</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements">Enable Game Jolt achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Wyłącz wykorzystanie API (Używaj, gdy nie masz klucza API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Katalog domowy użytkownika</sys:String>
@@ -184,6 +188,8 @@ Szczególnie przydatne dla osiągnięć Xbox z dużymi obrazkami, które są zmn
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Base game</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Pierwsze odblokowanie</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">Ostatnie odblokowanie</sys:String>
     
@@ -222,10 +228,24 @@ Szczególnie przydatne dla osiągnięć Xbox z dużymi obrazkami, które są zmn
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Włącz osiągnięcia Genshin Impact</sys:String>
+    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Dodaj Genshin Impact</sys:String>
 
-    
+    <!-- Wuthering Waves -->
+
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Enable Wuthering Waves achievements</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Add Wuthering Waves</sys:String>
+
+    <!-- Honkai Star Rail -->
+
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
+
+    <!-- Zenless Zone Zero -->
+
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Add Zenless Zone Zero</sys:String>
+
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Szybka gra</sys:String>
