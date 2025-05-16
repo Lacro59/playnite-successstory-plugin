@@ -499,11 +499,11 @@ namespace SuccessStory.Clients
                     return gameId;
                 }
 
-                if (FilePath.Contains(".rar") && FilePath.Contains(".7z"))
+                if (FilePath.Contains(".rar", StringComparison.OrdinalIgnoreCase) || FilePath.Contains(".7z", StringComparison.OrdinalIgnoreCase))
                 {
                     return gameId;
                 }
-                if (FilePath.Contains(".zip"))
+                if (FilePath.Contains(".zip", StringComparison.OrdinalIgnoreCase))
                 {
                     // Exclude for performance
                     FileInfo fi = new FileInfo(FilePath);
