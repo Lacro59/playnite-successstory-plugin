@@ -220,7 +220,7 @@ namespace SuccessStory.Controls
             }
 
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-            gameAchievements.orderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement;
+            gameAchievements.OrderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement;
 
             if (!gameAchievements.Items.FirstOrDefault().CategoryRpcs3.IsNullOrEmpty())
             {
@@ -251,7 +251,7 @@ namespace SuccessStory.Controls
             }
 
             GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
-            gameAchievements.orderAchievement = OrderAchievement;
+            gameAchievements.OrderAchievement = OrderAchievement;
 
             ObservableCollection<Achievement> achievements = gameAchievements.OrderItems.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
             ControlDataContext.ItemsSource = achievements;
@@ -445,7 +445,7 @@ namespace SuccessStory.Controls
             if (GameContext != null)
             {
                 GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
-                gameAchievements.orderAchievement = OrderAchievement;
+                gameAchievements.OrderAchievement = OrderAchievement;
 
                 ObservableCollection<Achievement> achievements = gameAchievements.OrderItems;
                 if (!CategoryName.IsNullOrEmpty())

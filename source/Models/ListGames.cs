@@ -34,7 +34,7 @@ namespace SuccessStory.Models
 
 
         public AchRaretyStats Common { get; set; }
-        public AchRaretyStats NoCommon { get; set; }
+        public AchRaretyStats UnCommon { get; set; }
         public AchRaretyStats Rare { get; set; }
         public AchRaretyStats UltraRare { get; set; }
 

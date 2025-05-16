@@ -43,8 +43,8 @@ namespace SuccessStory.Clients
             try
             {
                 string url = PaimonMoe_UrlApi;
-                string reponse = Web.DownloadStringData(url).GetAwaiter().GetResult();
-                _ = Serialization.TryFromJson(reponse, out dynamic gitHub);
+                string response = Web.DownloadStringData(url).GetAwaiter().GetResult();
+                _ = Serialization.TryFromJson(response, out dynamic gitHub);
                 if (gitHub == null)
                 {
                     throw new Exception($"No data with {url}");

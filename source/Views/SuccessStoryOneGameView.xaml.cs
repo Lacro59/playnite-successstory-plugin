@@ -67,7 +67,7 @@ namespace SuccessStory.Views
             if (gameAchievements?.HasData ?? false)
             {
                 ControlDataContext.AchCommon = gameAchievements.Common;
-                ControlDataContext.AchNoCommon = gameAchievements.NoCommon;
+                ControlDataContext.AchNoCommon = gameAchievements.UnCommon;
                 ControlDataContext.AchRare = gameAchievements.Rare;
                 ControlDataContext.AchUltraRare = gameAchievements.UltraRare;
 

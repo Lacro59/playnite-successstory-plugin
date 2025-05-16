@@ -27,19 +27,45 @@ namespace SuccessStory.Clients
     public class RetroAchievements : GenericAchievements
     {
         #region Urls
+        /// <summary>
+        /// Base URL for the RetroAchievements API.
+        /// </summary>
         private static string BaseUrl => @"https://retroachievements.org/API/";
+
+        /// <summary>
+        /// URL template for unlocked achievement badges.
+        /// </summary>
         private static string BaseUrlUnlocked => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}.png";
+
+        /// <summary>
+        /// URL template for locked achievement badges.
+        /// </summary>
         private static string BaseUrlLocked => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
         #endregion
 
+        /// <summary>
+        /// Gets the configured RetroAchievements username.
+        /// </summary>
         private static string User => PluginDatabase.PluginSettings.Settings.RetroAchievementsUser;
+
+        /// <summary>
+        /// Gets the configured RetroAchievements API key.
+        /// </summary>
         private static string Key => PluginDatabase.PluginSettings.Settings.RetroAchievementsKey;
 
+        /// <summary>
+        /// Gets or sets the RetroAchievements game ID.
+        /// </summary>
         public int GameId { get; set; } = 0;
 
+        /// <summary>
+        /// List of console IDs to exclude from hash-based matching.
+        /// </summary>
         private static List<int> ConsoleExcludeHash => new List<int> { 2, 8, 12, 16, 21, 40, 41, 47, 49, 76 };
 
-
+        /// <summary>
+        /// Stores the name of the game as recognized by RetroAchievements.
+        /// </summary>
         private string GameNameAchievements { get; set; } = string.Empty;
 
 
@@ -136,6 +162,10 @@ namespace SuccessStory.Clients
 
 
         #region RetroAchievements
+        /// <summary>
+        /// Retrieves the list of supported consoles from the RetroAchievements API.
+        /// </summary>
+        /// <returns>List of <see cref="RaConsole"/> objects.</returns>
         public static List<RaConsole> GetConsoleIDs()
         {
             List<RaConsole> resultObj = new List<RaConsole>();
@@ -179,7 +209,11 @@ namespace SuccessStory.Clients
             return resultObj;
         }
 
-
+        /// <summary>
+        /// Finds the RetroAchievements console ID for a given platform name.
+        /// </summary>
+        /// <param name="platformName">The platform name to match.</param>
+        /// <returns>The console ID if found; otherwise, 0.</returns>
         public static int FindConsole(string platformName)
         {
             List<RaConsole> raConsoles = GetConsoleIDs();
@@ -325,7 +359,12 @@ namespace SuccessStory.Clients
             return consoleID;
         }
 
-
+        /// <summary>
+        /// Attempts to find the RetroAchievements game ID by matching the game name.
+        /// </summary>
+        /// <param name="game">The game to search for.</param>
+        /// <param name="consoleID">The console ID to search within.</param>
+        /// <returns>The game ID if found; otherwise, 0.</returns>
         private int GetGameIdByName(Game game, int consoleID)
         {
             Logger.Info($"GetGameIdByName({game.Name}, {consoleID})");
@@ -395,6 +434,11 @@ namespace SuccessStory.Clients
             return gameID;
         }
 
+        /// <summary>
+        /// Gets the RetroAchievements console ID associated with the specified game.
+        /// </summary>
+        /// <param name="game">The game for which to find the console ID.</param>
+        /// <returns>The console ID if found; otherwise, 0.</returns>
         private int GetConsoleId(Game game)
         {
             Platform platform = game.Platforms.FirstOrDefault();
@@ -418,6 +462,12 @@ namespace SuccessStory.Clients
             return consoleId;
         }
 
+        /// <summary>
+        /// Attempts to find the RetroAchievements game ID by matching the ROM hash.
+        /// </summary>
+        /// <param name="game">The game to search for.</param>
+        /// <param name="consoleID">The console ID to search within.</param>
+        /// <returns>The game ID if found; otherwise, 0.</returns>
         private int GetGameIdByHash(Game game, int consoleID)
         {
             Logger.Info($"GetGameIdByHash({game.Name}, {consoleID})");
@@ -587,6 +637,12 @@ namespace SuccessStory.Clients
             return gameId;
         }
 
+        /// <summary>
+        /// Computes the MD5 hash of a game file, applying platform-specific rules.
+        /// </summary>
+        /// <param name="FilePath">The path to the game file.</param>
+        /// <param name="platformType">The platform type for hash calculation.</param>
+        /// <returns>The MD5 hash as a string.</returns>
         private string GetHash(string FilePath, RaPlatformType platformType)
         {
             try
@@ -710,6 +766,11 @@ namespace SuccessStory.Clients
             }
         }
 
+        /// <summary>
+        /// Computes the MD5 hash for a byte array.
+        /// </summary>
+        /// <param name="byteSequence">The byte array to hash.</param>
+        /// <returns>The MD5 hash as a string.</returns>
         private static string GetMd5(byte[] byteSequence)
         {
             try
@@ -727,7 +788,11 @@ namespace SuccessStory.Clients
             }
         }
 
-
+        /// <summary>
+        /// Extracts the first file from a ZIP archive for hash calculation.
+        /// </summary>
+        /// <param name="filePath">The path to the ZIP file.</param>
+        /// <returns>The path to the extracted file.</returns>
         private string ZipFileManageExtract(string filePath)
         {
             string extractPath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "tempZip");
@@ -747,13 +812,20 @@ namespace SuccessStory.Clients
             return FilePathReturn;
         }
 
+        /// <summary>
+        /// Removes the temporary directory used for ZIP extraction.
+        /// </summary>
         private void ZipFileManageRemove()
         {
             string extractPath = Path.Combine(PluginDatabase.Paths.PluginCachePath, "tempZip");
             FileSystem.DeleteDirectory(extractPath);
         }
 
-
+        /// <summary>
+        /// Retrieves the list of games for a specific console from the RetroAchievements API.
+        /// </summary>
+        /// <param name="consoleID">The console ID.</param>
+        /// <returns>List of <see cref="RaGame"/> objects.</returns>
         private List<RaGame> GetGameList(int consoleID)
         {
             string target = "API_GetGameList.php";
@@ -790,7 +862,11 @@ namespace SuccessStory.Clients
             return resultObj;
         }
 
-
+        /// <summary>
+        /// Retrieves achievement information and user progress for a specific game.
+        /// </summary>
+        /// <param name="gameID">The RetroAchievements game ID.</param>
+        /// <returns>List of <see cref="Achievement"/> objects.</returns>
         private List<Achievement> GetGameInfoAndUserProgress(int gameID)
         {
             List<Achievement> achievements = new List<Achievement>();

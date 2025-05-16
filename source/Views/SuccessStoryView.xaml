@@ -474,7 +474,7 @@
                                                             <Label Grid.Column="2" Content="{Binding Common.UnLocked}" HorizontalAlignment="Right" />
 
                                                             <Label Grid.Column="4" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityUncommonColor}" />
-                                                            <Label Grid.Column="6" Content="{Binding NoCommon.UnLocked}" HorizontalAlignment="Right" />
+                                                            <Label Grid.Column="6" Content="{Binding UnCommon.UnLocked}" HorizontalAlignment="Right" />
 
                                                             <Label Grid.Column="8" Content="&#127942;" Margin="0,0,5,0" Foreground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.Settings.RarityRareColor}" />
                                                             <Label Grid.Column="10" Content="{Binding Rare.UnLocked}" HorizontalAlignment="Right" />

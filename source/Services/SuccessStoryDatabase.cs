@@ -795,7 +795,7 @@ namespace SuccessStory.Services
 
                 PluginSettings.Settings.Is100Percent = gameAchievements.Is100Percent;
                 PluginSettings.Settings.Common = gameAchievements.Common;
-                PluginSettings.Settings.NoCommon = gameAchievements.NoCommon;
+                PluginSettings.Settings.NoCommon = gameAchievements.UnCommon;
                 PluginSettings.Settings.Rare = gameAchievements.Rare;
                 PluginSettings.Settings.UltraRare = gameAchievements.UltraRare;
                 PluginSettings.Settings.Unlocked = gameAchievements.Unlocked;
