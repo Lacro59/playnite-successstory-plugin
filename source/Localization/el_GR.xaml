@@ -49,6 +49,7 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Ο χρήστης Battle.net δεν είναι ταυτοποιημένος</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Ο χρήστης Battle.net Overwatch δεν είναι ταυτοποιημένος</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Ο χρήστης του Battle.net StarCraft II δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">Game Jolt is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Το Epic είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Ο χρήστης Epic δεν είναι ταυτοποιημένος</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">Το GuildWars 2 δεν έχει ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
@@ -63,6 +64,8 @@
     <sys:String x:Key="LOCSuccessStoryProgressBar">Γίνεται επεξεργασία, παρακαλώ περιμένετε...</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Απορριφθέντα παιχνίδια</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Group Steam achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophage</sys:String>
 
@@ -85,6 +88,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Enable StarCraft II achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Enable World of Warcraft achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Enable Guild Wars 2 achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements">Enable Game Jolt achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Disable API usage (Use when you don't have an API key)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Home user folder</sys:String>
@@ -184,6 +188,8 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Base game</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">First unlock</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">Last unlock</sys:String>
     
@@ -222,10 +228,24 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
+    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Add Genshin Impact</sys:String>
 
-    
+    <!-- Wuthering Waves -->
+
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Enable Wuthering Waves achievements</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Add Wuthering Waves</sys:String>
+
+    <!-- Honkai Star Rail -->
+
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
+
+    <!-- Zenless Zone Zero -->
+
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Add Zenless Zone Zero</sys:String>
+
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Quick Play</sys:String>

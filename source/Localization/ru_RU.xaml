@@ -15,8 +15,7 @@
 
     <sys:String x:Key="LOCSuccessStory">Достижения</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievements">Достижения</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroAchievements
-</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroAchievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewGames">Посмотреть игровые достижения</sys:String>
     <sys:String x:Key="LOCSuccessStoryViewGame">Просмотр достижений в игре</sys:String>
@@ -50,6 +49,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Пользователь Battle.net не авторизован</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Пользователь Battle.net Overwatch не авторизован</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Пользователь Battle.net StarCraft II не авторизован</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">Game Jolt is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic включен в успешную историю, но библиотека расширениы было отключена в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic пользователь не авторизован</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 не был правильно настроен в настройка</sys:String>
@@ -64,6 +64,8 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressBar">Обработка, подождите...</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Игнорируемые игры</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Group Steam achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Экзофаза (только для локализованных достижений)</sys:String>
 
@@ -86,6 +88,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Включить достижения StarCraft II</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Включить достижения World of Warcraft</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Включить достижения Guild Wars 2</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements">Enable Game Jolt achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Отключить использование API (используйте, когда у вас нет API ключ)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Папка пользователя</sys:String>
@@ -190,6 +193,8 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Base game</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Первое разблокированное</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">Последнее разблокированное</sys:String>
     
@@ -228,10 +233,24 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Включение достижений Genshin</sys:String>
+    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Добавить Генешин</sys:String>
 
-    
+    <!-- Wuthering Waves -->
+
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Enable Wuthering Waves achievements</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Add Wuthering Waves</sys:String>
+
+    <!-- Honkai Star Rail -->
+
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
+
+    <!-- Zenless Zone Zero -->
+
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Add Zenless Zone Zero</sys:String>
+
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Быстрая игра</sys:String>
