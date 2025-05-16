@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SuccessStory.Models.Stats
 {
-    public class AchievementsGraphicsDataCountSources
+    public class AchGraphicsDataCountSources
     {
         public string[] Labels { get; set; }
         public ChartValues<CustomerForSingle> SeriesUnlocked { get; set; }

@@ -138,7 +138,7 @@ namespace SuccessStory.Controls
         {
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
 
-            AchievementsGraphicsDataCount GraphicsData = null;
+            AchGraphicsDataCount GraphicsData = null;
             bool CutPeriod = ControlDataContext.AllPeriod && ControlDataContext.CutPeriod;
             if (ControlDataContext.AllPeriod)
             {

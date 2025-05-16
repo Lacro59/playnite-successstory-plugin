@@ -98,10 +98,10 @@ namespace SuccessStory
                 }
 
 
-                ProgressionAchievements ProgressionGlobal = null;
-                ProgressionAchievements ProgressionLaunched = null;
+                AchProgressionTotal ProgressionGlobal = null;
+                AchProgressionTotal ProgressionLaunched = null;
 
-                AchievementsGraphicsDataCount GraphicsData = null;
+                AchGraphicsDataCount GraphicsData = null;
                 string[] StatsGraphicsAchievementsLabels = null;
                 SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
 
@@ -418,7 +418,7 @@ namespace SuccessStory
 
         private void SetGraphicsAchievementsSources()
         {
-            AchievementsGraphicsDataCountSources data = SuccessStoryStats.GetCountBySources(OnlyRa, ExcludeRa);
+            AchGraphicsDataCountSources data = SuccessStoryStats.GetCountBySources(OnlyRa, ExcludeRa);
 
             _ = API.Instance.MainView.UIDispatcher?.BeginInvoke((Action)delegate
             {
