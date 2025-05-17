@@ -402,23 +402,18 @@ Packages:
       - 'Fixed: Issue on Steam achievements (thanks to Kryeker)'
   - Version: 3.5
     RequiredApiVersion: 6.11.0
-    ReleaseDate: 2025-05-16
+    ReleaseDate: 2025-05-17
     PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.5/playnite-successstory-plugin_3_5.pext
     Changelog:
-      - 'Updated: Localizations'
-      - 'Fixed: TrueAchievements / TrueSteamAchievements'
-      - 'Optimized: UI'
-      - 'Added: Game Jolt achievements'
-      - 'Fixed: Some Exophase issues'
-      - 'Optimized: RPCS3 (thanks to eFMann)'
-      - 'Fixed: Error when DateWhenUnlocked is null'
-      - 'Fixed: Imported achievements from Genshin Impact keeps resetting'
-      - 'Updated: Genshin Impact achievements'
-      - 'Fixed: List View only showing one (duplicated) achievement for each game'
-      - 'Fixed: Issue with GamerScore on manual achievements'
-      - 'Added: Wuthering Waves achievements'
-      - 'Added: Honkai Star Rail achievements'
-      - 'Added: Zenless Zone Zero achievements'
-      - 'Added: Refresh button on the achievements pages'
-      - 'Fixed: Errors that appear differently when manually dated'
-      - 'Fixed: Some errors'
+      - 'Added: Achievements support for Game Jolt, Wuthering Waves, Honkai Star Rail, and Zenless Zone Zero'
+      - 'Added: Refresh button on achievements pages'
+      - 'Enhanced: Achievement progression and rarity display'
+      - 'Fixed: Integration issues with TrueAchievements, TrueSteamAchievements, and Exophase'
+      - 'Fixed: Errors related to null unlock dates and duplicated achievements in list view'
+      - 'Fixed: GamerScore calculation for manual achievements and platinum trophies'
+      - 'Fixed: Genshin Impact achievements import and reset issues'
+      - 'Optimized: UI layout and achievement display ordering'
+      - 'Added: Quick wiki access buttons in settings'
+      - 'Updated: Translations and localization for multiple languages, including new keys for added games and Game Jolt support'
+      - 'Improved: Reliability of achievement providers with better error handling'
+      - 'Fixed: Various minor errors and performance issues'
