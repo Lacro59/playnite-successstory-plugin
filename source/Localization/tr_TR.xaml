@@ -29,27 +29,28 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Steam profili herkese açık değil</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam oyunu &quot;{0}&quot; herkese açık değil
 Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">BaşarıÖyküsü eklentisinde Steam etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmı</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">BaşarıÖyküsü eklentisinde Steam etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam ayarlarda düzgün yapılandırılmamı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Steam yapılandırması ve/veya API anahtarı yok</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig2">Steam kullanıcısı bulunamadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamNoAuthenticate">Steam kullanıcı kimliği doğrulanmadı</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">BaşarıÖyküsü eklentisinde GOG etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmı</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGogDisabled">BaşarıÖyküsü eklentisinde GOG etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogNoAuthenticate">GOG kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG ayarlarda düzgün yapılandırılmamı</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">BaşarıÖyküsü eklentisinde PSN etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmı</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">BaşarıÖyküsü eklentisinde PSN etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN kullanıcı kimliği doğrulanmadı</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">BaşarıÖyküsü eklentisinde EA etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmı</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">BaşarıÖyküsü eklentisinde EA etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA kullanıcı kimliği doğrulanmadı</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">BaşarıÖyküsü eklentisinde Xbox etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmı</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">BaşarıÖyküsü eklentisinde Xbox etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements ayarlarda düzgün yapılandırılmamı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 ayarlarda düzgün yapılandırılmamı</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">BaşarıÖyküsü eklentisinde Battle.net etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmı</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">BaşarıÖyküsü eklentisinde Battle.net etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II kullanıcı kimliği doğrulanmadı</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">BaşarıÖyküsü eklentisinde Epic etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmı</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">BaşarıÖyküsü eklentisinde Game Jolt etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">BaşarıÖyküsü eklentisinde Epic etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 ayarlarda düzgün yapılandırılmamı</sys:String>
     
@@ -63,6 +64,8 @@ Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressBar">İşleniyor, lütfen bekleyin...</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Yok sayılan oyunlar</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Grup Steam başarıları</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (sadece yerelleştirilmiş başarımlar)</sys:String>
 
@@ -85,6 +88,7 @@ Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">StarCraft II başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">World of Warcraft başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Guild Wars 2 başarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements">Game Jolt başarımlarını etkinleştir</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">API kullanımını devre dışı bırak (API anahtarınız yoksa kullanın)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Başlangıç kullanıcı klasörü</sys:String>
@@ -184,6 +188,8 @@ Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Temel oyun</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">İlk kilidi açılan</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">Son kilidi açılan</sys:String>
     
@@ -222,10 +228,24 @@ Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Genshin Impact başarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Genshin Impact başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Genshin Impact ekle</sys:String>
 
-    
+    <!-- Wuthering Waves -->
+
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Wuthering Waves başarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Wuthering Waves Ekle</sys:String>
+
+    <!-- Honkai Star Rail -->
+
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Honkai Star Rail başarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Honkai Star Rails Ekle</sys:String>
+
+    <!-- Zenless Zone Zero -->
+
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Zenless Zone Zero başarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Zenless Zone Zero Ekle</sys:String>
+
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Hızlı Oyun</sys:String>

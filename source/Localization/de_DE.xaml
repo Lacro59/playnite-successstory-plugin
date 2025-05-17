@@ -49,6 +49,7 @@ Du musst in den Plugin die Einstellungen &quot;{1}&quot; überprüfen</sys:Strin
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net Benutzer ist nicht authentifiziert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch Benutzer ist nicht authentifiziert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II Benutzer ist nicht authentifiziert</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">Game Joitt ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic Benutzer ist nicht authentifiziert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 wurde in den Einstellungen nicht korrekt konfiguriert</sys:String>
@@ -63,6 +64,8 @@ Du musst in den Plugin die Einstellungen &quot;{1}&quot; überprüfen</sys:Strin
     <sys:String x:Key="LOCSuccessStoryProgressBar">Verarbeitung, bitte warten...</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Ignorierte Spiele</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Steam-Errungenschaften gruppieren</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (nur lokalisierte Errungenschaften)</sys:String>
 
@@ -85,6 +88,7 @@ Du musst in den Plugin die Einstellungen &quot;{1}&quot; überprüfen</sys:Strin
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">StarCraft II Errungenschaften aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">World of Warcraft Errungenschaften aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Guild Wars 2 Errungenschaften aktivieren</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements">Game Jolt Erfolge aktivieren</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">API Nutzung deaktivieren (Verwenden Sie dies, wenn Sie keinen API Schlüssel haben)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Benutzerverzeichnis</sys:String>
@@ -184,6 +188,8 @@ Besonders nützlich für Xbox Errungenschaften mit ihren großen Bildern, die be
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Basisspiel</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Erste Freischaltung</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">Letzte Freischaltung</sys:String>
     
@@ -222,10 +228,24 @@ Besonders nützlich für Xbox Errungenschaften mit ihren großen Bildern, die be
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Genshin Impact Errungenschaften aktivieren</sys:String>
+    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Genshin Impact Erfolge aktivieren</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Genshin Impact hinzufügen</sys:String>
 
-    
+    <!-- Wuthering Waves -->
+
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Enable Wuthering Waves achievements</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Add Wuthering Waves</sys:String>
+
+    <!-- Honkai Star Rail -->
+
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
+
+    <!-- Zenless Zone Zero -->
+
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Add Zenless Zone Zero</sys:String>
+
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Schnelles Spiel</sys:String>

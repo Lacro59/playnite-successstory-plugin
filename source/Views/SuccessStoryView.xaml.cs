@@ -98,10 +98,10 @@ namespace SuccessStory
                 }
 
 
-                ProgressionAchievements ProgressionGlobal = null;
-                ProgressionAchievements ProgressionLaunched = null;
+                AchProgressionTotal ProgressionGlobal = null;
+                AchProgressionTotal ProgressionLaunched = null;
 
-                AchievementsGraphicsDataCount GraphicsData = null;
+                AchGraphicsDataCount GraphicsData = null;
                 string[] StatsGraphicsAchievementsLabels = null;
                 SeriesCollection StatsGraphicAchievementsSeries = new SeriesCollection();
 
@@ -331,7 +331,7 @@ namespace SuccessStory
                          ListviewGames.Sorting();
 
                          PART_TotalCommun.Content = SuccessViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
-                         PART_TotalNoCommun.Content = SuccessViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+                         PART_TotalNoCommun.Content = SuccessViewData.ListGames.Select(x => x.UnCommon.UnLocked).Sum();
                          PART_TotalRare.Content = SuccessViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
                          PART_TotalUltraRare.Content = SuccessViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
 
@@ -418,7 +418,7 @@ namespace SuccessStory
 
         private void SetGraphicsAchievementsSources()
         {
-            AchievementsGraphicsDataCountSources data = SuccessStoryStats.GetCountBySources(OnlyRa, ExcludeRa);
+            AchGraphicsDataCountSources data = SuccessStoryStats.GetCountBySources(OnlyRa, ExcludeRa);
 
             _ = API.Instance.MainView.UIDispatcher?.BeginInvoke((Action)delegate
             {
@@ -496,7 +496,7 @@ namespace SuccessStory
                         DatesUnlock = x.DatesUnlock,
 
                         Common = x.Common,
-                        NoCommon = x.NoCommon,
+                        UnCommon = x.UnCommon,
                         Rare = x.Rare,
                         UltraRare = x.UltraRare
                     }).ToObservable();
@@ -618,7 +618,7 @@ namespace SuccessStory
             ListviewGames.SelectedIndex = -1;
 
             PART_TotalCommun.Content = SuccessViewData.ListGames.Select(x => x.Common.UnLocked).Sum();
-            PART_TotalNoCommun.Content = SuccessViewData.ListGames.Select(x => x.NoCommon.UnLocked).Sum();
+            PART_TotalNoCommun.Content = SuccessViewData.ListGames.Select(x => x.UnCommon.UnLocked).Sum();
             PART_TotalRare.Content = SuccessViewData.ListGames.Select(x => x.Rare.UnLocked).Sum();
             PART_TotalUltraRare.Content = SuccessViewData.ListGames.Select(x => x.UltraRare.UnLocked).Sum();
         }

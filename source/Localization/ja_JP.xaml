@@ -49,6 +49,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net ユーザーが認証されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch ユーザーが認証されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">Battle.net StarCraft II ユーザーが認証されていません</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">Game Jolt is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic は SuccessStory で有効になっていますが、Playnite でライブラリ拡張機能が無効になっています</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">Epic ユーザーが認証されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">GuildWars 2 の設定が正しく設定されていません</sys:String>
@@ -63,6 +64,8 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressBar">処理中です。しばらくお待ちください…</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">無視したゲーム</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Group Steam achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (only to have localised achievements)</sys:String>
 
@@ -85,6 +88,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">StarCraft II 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">World of Warcraft 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Guild Wars 2 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements">Enable Game Jolt achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">API の使用を無効にする（API キーを持っていない場合に使用します）</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">ホームユーザーフォルダ</sys:String>
@@ -184,6 +188,8 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Base game</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">最初の解除</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">最後の解除</sys:String>
     
@@ -222,10 +228,24 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Genshin Impact 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">原神を追加</sys:String>
 
-    
+    <!-- Wuthering Waves -->
+
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Enable Wuthering Waves achievements</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Add Wuthering Waves</sys:String>
+
+    <!-- Honkai Star Rail -->
+
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
+
+    <!-- Zenless Zone Zero -->
+
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Add Zenless Zone Zero</sys:String>
+
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">クイックプレイ</sys:String>

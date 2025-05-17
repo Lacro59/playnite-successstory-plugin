@@ -400,3 +400,20 @@ Packages:
       - 'Fixed: "Electronic Arts" default filter not working'
       - 'Fixed: Issue on GOG achievements (thanks to Jhanlon95)'
       - 'Fixed: Issue on Steam achievements (thanks to Kryeker)'
+  - Version: 3.5
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2025-05-17
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.5/playnite-successstory-plugin_3_5.pext
+    Changelog:
+      - 'Added: Achievements support for Game Jolt, Wuthering Waves, Honkai Star Rail, and Zenless Zone Zero'
+      - 'Added: Refresh button on achievements pages'
+      - 'Enhanced: Achievement progression and rarity display'
+      - 'Fixed: Integration issues with TrueAchievements, TrueSteamAchievements, and Exophase'
+      - 'Fixed: Errors related to null unlock dates and duplicated achievements in list view'
+      - 'Fixed: GamerScore calculation for manual achievements and platinum trophies'
+      - 'Fixed: Genshin Impact achievements import and reset issues'
+      - 'Optimized: UI layout and achievement display ordering'
+      - 'Added: Quick wiki access buttons in settings'
+      - 'Updated: Translations and localization for multiple languages, including new keys for added games and Game Jolt support'
+      - 'Improved: Reliability of achievement providers with better error handling'
+      - 'Fixed: Various minor errors and performance issues'

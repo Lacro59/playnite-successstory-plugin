@@ -34,33 +34,50 @@ namespace SuccessStory.Services
                 {
                     if (achievementProviders == null)
                     {
-                        achievementProviders = new Dictionary<AchievementSource, GenericAchievements> {
-                            { AchievementSource.GOG, new GogAchievements() },
-                            { AchievementSource.Epic, new EpicAchievements() },
-                            { AchievementSource.Origin, new OriginAchievements() },
-                            { AchievementSource.Overwatch, new OverwatchAchievements() },
-                            { AchievementSource.Wow, new WowAchievements() },
-                            { AchievementSource.Playstation, new PSNAchievements() },
-                            { AchievementSource.RetroAchievements, new RetroAchievements() },
-                            { AchievementSource.RPCS3, new Rpcs3Achievements() },
-                            { AchievementSource.Starcraft2, new Starcraft2Achievements() },
-                            { AchievementSource.Steam, new SteamAchievements() },
-                            { AchievementSource.Xbox, new XboxAchievements() },
-                            { AchievementSource.GenshinImpact, new GenshinImpactAchievements() },
-                            { AchievementSource.WutheringWaves, new WutheringWavesAchievements() },
-                            { AchievementSource.HonkaiStarRail, new HonkaiStarRailAchievements() },
-                            { AchievementSource.ZenlessZoneZero, new ZenlessZoneZeroAchievements() },
-                            { AchievementSource.GuildWars2, new GuildWars2Achievements() },
-                            { AchievementSource.GameJolt, new GameJoltAchievements() },
-                            { AchievementSource.Local, SteamAchievements.GetLocalSteamAchievementsProvider() }
-                        };
+                        achievementProviders = new Dictionary<AchievementSource, GenericAchievements>();
+
+                        // Local method to secure the creation of each provider
+                        void TryAddProvider(AchievementSource source, Func<GenericAchievements> factory)
+                        {
+                            try
+                            {
+                                Common.LogDebug(true, $"[AchievementsFactory] Creating provider for: {source}");
+                                var provider = factory();
+                                achievementProviders[source] = provider;
+                                Common.LogDebug(true, $"[AchievementsFactory] Successfully created provider for: {source}");
+                            }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, $"[AchievementsFactory] Error creating provider for {source}", true, PluginDatabase.PluginName);
+                            }
+                        }
+
+                        // Secure addition of providers
+                        TryAddProvider(AchievementSource.GOG, () => new GogAchievements());
+                        TryAddProvider(AchievementSource.Epic, () => new EpicAchievements());
+                        TryAddProvider(AchievementSource.Origin, () => new OriginAchievements());
+                        TryAddProvider(AchievementSource.Overwatch, () => new OverwatchAchievements());
+                        TryAddProvider(AchievementSource.Wow, () => new WowAchievements());
+                        TryAddProvider(AchievementSource.Playstation, () => new PSNAchievements());
+                        TryAddProvider(AchievementSource.RetroAchievements, () => new RetroAchievements());
+                        TryAddProvider(AchievementSource.RPCS3, () => new Rpcs3Achievements());
+                        TryAddProvider(AchievementSource.Starcraft2, () => new Starcraft2Achievements());
+                        TryAddProvider(AchievementSource.Steam, () => new SteamAchievements());
+                        TryAddProvider(AchievementSource.Xbox, () => new XboxAchievements());
+                        TryAddProvider(AchievementSource.GenshinImpact, () => new GenshinImpactAchievements());
+                        TryAddProvider(AchievementSource.WutheringWaves, () => new WutheringWavesAchievements());
+                        TryAddProvider(AchievementSource.HonkaiStarRail, () => new HonkaiStarRailAchievements());
+                        TryAddProvider(AchievementSource.ZenlessZoneZero, () => new ZenlessZoneZeroAchievements());
+                        TryAddProvider(AchievementSource.GuildWars2, () => new GuildWars2Achievements());
+                        TryAddProvider(AchievementSource.GameJolt, () => new GameJoltAchievements());
+                        TryAddProvider(AchievementSource.Local, () => SteamAchievements.GetLocalSteamAchievementsProvider());
                     }
                 }
                 return achievementProviders;
             }
         }
 
-        public SuccessStoryDatabase(SuccessStorySettingsViewModel PluginSettings, string PluginUserDataPath) : base(PluginSettings, "SuccessStory", PluginUserDataPath)
+        public SuccessStoryDatabase(SuccessStorySettingsViewModel pluginSettings, string pluginUserDataPath) : base(pluginSettings, "SuccessStory", pluginUserDataPath)
         {
             TagBefore = "[SS]";
         }
@@ -778,7 +795,7 @@ namespace SuccessStory.Services
 
                 PluginSettings.Settings.Is100Percent = gameAchievements.Is100Percent;
                 PluginSettings.Settings.Common = gameAchievements.Common;
-                PluginSettings.Settings.NoCommon = gameAchievements.NoCommon;
+                PluginSettings.Settings.NoCommon = gameAchievements.UnCommon;
                 PluginSettings.Settings.Rare = gameAchievements.Rare;
                 PluginSettings.Settings.UltraRare = gameAchievements.UltraRare;
                 PluginSettings.Settings.Unlocked = gameAchievements.Unlocked;

@@ -407,16 +407,16 @@ namespace SuccessStory.Clients
 
 
         #region Steam
-        public List<SearchResult> SearchGame(string Name)
+        public List<SearchResult> SearchGame(string name)
         {
-            List<SearchResult> ListSearchGames = new List<SearchResult>();
+            List<SearchResult> searchGames = new List<SearchResult>();
 
-            string Url = string.Empty;
+            string searchUrl = string.Empty;
             try
             {
-                Url = string.Format(UrlSearch, WebUtility.UrlEncode(Name));
-                string DataSteamSearch = Web.DownloadStringData(Url).GetAwaiter().GetResult();
-                IHtmlDocument htmlDocument = new HtmlParser().Parse(DataSteamSearch);
+                searchUrl = string.Format(UrlSearch, WebUtility.UrlEncode(name));
+                string response = Web.DownloadStringData(searchUrl).GetAwaiter().GetResult();
+                IHtmlDocument htmlDocument = new HtmlParser().Parse(response);
 
                 int index = 0;
                 foreach (IElement gameElem in htmlDocument.QuerySelectorAll(".search_result_row"))
@@ -441,7 +441,7 @@ namespace SuccessStory.Clients
 
                     if (appId > 0)
                     {
-                        ListSearchGames.Add(new SearchResult
+                        searchGames.Add(new SearchResult
                         {
                             Name = WebUtility.HtmlDecode(title),
                             Url = url,
@@ -456,10 +456,10 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error with SearchGame{Name} on {Url}", true, PluginDatabase.PluginName);
+                Common.LogError(ex, false, $"Error with SearchGame {name} on {searchUrl}", true, PluginDatabase.PluginName);
             }
 
-            return ListSearchGames;
+            return searchGames;
         }
 
 

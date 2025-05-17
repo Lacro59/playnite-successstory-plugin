@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SuccessStory.Models.Stats
 {
-    public class AchievementsGraphicsDataSources
+    public class AchGraphicsDataSources
     {
         public string Source { get; set; }
         public int Value { get; set; }

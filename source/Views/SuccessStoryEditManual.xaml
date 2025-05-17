@@ -47,12 +47,12 @@
             <playnitecontrols:SearchBox Grid.Column="2" x:Name="SearchElement" TextChanged="SearchElement_TextChanged" />
 
             <CheckBox Grid.Column="4" Name="PART_IncludeDescription" IsChecked="False" VerticalAlignment="Center"
-                      Checked="PART_IncludeDescription_Checked" Unchecked="PART_IncludeDescription_Unchecked">
+                      Checked="Element_Changed" Unchecked="Element_Changed">
                 <Label Content="{DynamicResource LOCSsIncludeDescription}" />
             </CheckBox>
 
             <CheckBox Grid.Column="6" Name="PART_OnlyLocked" IsChecked="True" VerticalAlignment="Center"
-                      Checked="PART_OnlyLocked_Checked" Unchecked="PART_OnlyLocked_Unchecked">
+                      Checked="Element_Changed" Unchecked="Element_Changed">
                 <Label Content="{DynamicResource LOCSsOnlyLocked}" />
             </CheckBox>
         </Grid>
@@ -188,8 +188,7 @@
                                             Tag="{Binding IsUnlock, Mode=OneTime}"
                                             SelectedDateChanged="DatePicker_SelectedDateChanged" />
                                 <temperaturemeasurementtool:TimePicker Grid.Column="4" Grid.Row="0" Grid.RowSpan="5" x:Name="PART_Time" TimeChanged="PART_Time_TimeChanged"
-                                                                       Time="{Binding DateUnlocked}"
-                                                                       Tag="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}, Mode=OneWay, Converter={StaticResource IndexConverter}}"                                          
+                                                                       Time="{Binding DateWhenUnlocked}"
                                                                        Visibility="{Binding ElementName=PART_DtUnlock, Path=Tag, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             </Grid>
                         </Grid>

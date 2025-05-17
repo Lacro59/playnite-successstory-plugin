@@ -1,14 +1,13 @@
-﻿using CommonPluginsShared.Collections;
+﻿using CommonPluginsShared;
+using CommonPluginsShared.Collections;
+using CommonPluginsShared.Models;
+using Playnite.SDK.Data;
+using SuccessStory.Clients;
+using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using SuccessStory.Clients;
-using Playnite.SDK.Data;
-using CommonPluginsShared;
-using CommonPluginsShared.Models;
-using System.IO;
-using SuccessStory.Services;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace SuccessStory.Models
 {
@@ -17,20 +16,64 @@ namespace SuccessStory.Models
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
 
-        private List<Achievement> items = new List<Achievement>();
-        public override List<Achievement> Items { get => items; set => SetValue(ref items, value); }
+        #region Cache fields
+        private bool? _hasAchievements;
+
+        private float? _totalGamerScore;
+        private int? _total;
+        private int? _unlocked;
+        private int? _locked;
+
+        private DateTime? _firstUnlock;
+        private DateTime? _lastUnlock;
+        private List<DateTime> _datesUnlock;
+
+        private AchRaretyStats _commonStats;
+        private AchRaretyStats _uncommonStats;
+        private AchRaretyStats _rareStats;
+        private AchRaretyStats _ultraRareStats;
+        #endregion
+
+
+        /// <summary>
+        /// Indicate if the game has achievements.
+        /// </summary>
+        [DontSerialize]
+        public bool HasAchievements => (_hasAchievements ?? (_hasAchievements = Items?.Count > 0)).Value;
+
+        /// <summary>
+        /// Indicate if the achievements have added manualy.
+        /// </summary>
+        public bool IsManual { get; set; }
+
+        /// <summary>
+        /// Indicate if the game is ignored.
+        /// </summary>
+        public bool IsIgnored { get; set; }
+
+        [DontSerialize]
+        public bool Is100Percent => Total == Unlocked;
+
+        [DontSerialize]
+        public string SourceIcon => TransformIcon.Get(PlayniteTools.GetSourceName(Id));
+
+        public SourceLink SourcesLink { get; set; }
+
 
         private List<GameStats> itemsStats = new List<GameStats>();
         public List<GameStats> ItemsStats { get => itemsStats; set => SetValue(ref itemsStats, value); }
 
         public bool ShowStats { get; set; } = true;
 
+        /// <summary>
+        /// Indicate if the game has stats data.
+        /// </summary>
         [DontSerialize]
-        public float TotalGamerScore => Items?.Where(x => x.IsUnlock).Sum(x => x.GamerScore) ?? 0;
+        public virtual bool HasDataStats => ItemsStats?.Count > 0;
 
 
         [DontSerialize]
-        public OrderAchievement orderAchievement;
+        public OrderAchievement OrderAchievement { get; set; }
 
         [DontSerialize]
         public ObservableCollection<Achievement> OrderItems
@@ -45,29 +88,29 @@ namespace SuccessStory.Models
                     return new ObservableCollection<Achievement>();
                 }
 
-                if (orderAchievement != null)
+                if (OrderAchievement != null)
                 {
-                    if (orderAchievement.OrderGroupByUnlocked)
+                    if (OrderAchievement.OrderGroupByUnlocked)
                     {
                         OrderedItems = OrderItems.OrderByDescending(x => x.IsUnlock);
                     }
 
-                    switch (orderAchievement.OrderAchievementTypeFirst)
+                    switch (OrderAchievement.OrderAchievementTypeFirst)
                     {
                         case OrderAchievementType.AchievementName:
-                            OrderedItems = orderAchievement.OrderTypeFirst == OrderType.Ascending
+                            OrderedItems = OrderAchievement.OrderTypeFirst == OrderType.Ascending
                                 ? OrderedItems?.ThenBy(x => x.Name) ?? OrderItems.OrderBy(x => x.Name)
                                 : OrderedItems?.ThenByDescending(x => x.Name) ?? OrderItems.OrderByDescending(x => x.Name);
                             break;
 
                         case OrderAchievementType.AchievementDateUnlocked:
-                            OrderedItems = orderAchievement.OrderTypeFirst == OrderType.Ascending
+                            OrderedItems = OrderAchievement.OrderTypeFirst == OrderType.Ascending
                                 ? OrderedItems?.ThenBy(x => x.DateWhenUnlocked) ?? OrderItems.OrderBy(x => x.DateWhenUnlocked)
                                 : OrderedItems?.ThenByDescending(x => x.DateWhenUnlocked) ?? OrderItems.OrderByDescending(x => x.DateWhenUnlocked);
                             break;
 
                         case OrderAchievementType.AchievementRarety:
-                            OrderedItems = orderAchievement.OrderTypeFirst == OrderType.Ascending
+                            OrderedItems = OrderAchievement.OrderTypeFirst == OrderType.Ascending
                                 ? OrderedItems?.ThenBy(x => x.Percent) ?? OrderItems.OrderBy(x => x.Percent)
                                 : OrderedItems?.ThenByDescending(x => x.Percent) ?? OrderItems.OrderByDescending(x => x.Percent);
                             break;
@@ -76,22 +119,22 @@ namespace SuccessStory.Models
                             break;
                     }
 
-                    switch (orderAchievement.OrderAchievementTypeSecond)
+                    switch (OrderAchievement.OrderAchievementTypeSecond)
                     {
                         case OrderAchievementType.AchievementName:
-                            OrderedItems = orderAchievement.OrderTypeSecond == OrderType.Ascending
+                            OrderedItems = OrderAchievement.OrderTypeSecond == OrderType.Ascending
                                 ? OrderedItems.ThenBy(x => x.Name)
                                 : OrderedItems.ThenByDescending(x => x.Name);
                             break;
 
                         case OrderAchievementType.AchievementDateUnlocked:
-                            OrderedItems = orderAchievement.OrderTypeSecond == OrderType.Ascending
+                            OrderedItems = OrderAchievement.OrderTypeSecond == OrderType.Ascending
                                 ? OrderedItems.ThenBy(x => x.DateWhenUnlocked)
                                 : OrderedItems.ThenByDescending(x => x.DateWhenUnlocked);
                             break;
 
                         case OrderAchievementType.AchievementRarety:
-                            OrderedItems = orderAchievement.OrderTypeSecond == OrderType.Ascending
+                            OrderedItems = OrderAchievement.OrderTypeSecond == OrderType.Ascending
                                 ? OrderedItems.ThenBy(x => x.Percent)
                                 : OrderedItems.ThenByDescending(x => x.Percent);
                             break;
@@ -100,22 +143,22 @@ namespace SuccessStory.Models
                             break;
                     }
 
-                    switch (orderAchievement.OrderAchievementTypeThird)
+                    switch (OrderAchievement.OrderAchievementTypeThird)
                     {
                         case OrderAchievementType.AchievementName:
-                            OrderedItems = orderAchievement.OrderTypeThird == OrderType.Ascending
+                            OrderedItems = OrderAchievement.OrderTypeThird == OrderType.Ascending
                                 ? OrderedItems.ThenBy(x => x.Name)
                                 : OrderedItems.ThenByDescending(x => x.Name);
                             break;
 
                         case OrderAchievementType.AchievementDateUnlocked:
-                            OrderedItems = orderAchievement.OrderTypeThird == OrderType.Ascending
+                            OrderedItems = OrderAchievement.OrderTypeThird == OrderType.Ascending
                                 ? OrderedItems.ThenBy(x => x.DateWhenUnlocked)
                                 : OrderedItems.ThenByDescending(x => x.DateWhenUnlocked);
                             break;
 
                         case OrderAchievementType.AchievementRarety:
-                            OrderedItems = orderAchievement.OrderTypeThird == OrderType.Ascending
+                            OrderedItems = OrderAchievement.OrderTypeThird == OrderType.Ascending
                                 ? OrderedItems.ThenBy(x => x.Percent)
                                 : OrderedItems.ThenByDescending(x => x.Percent);
                             break;
@@ -124,7 +167,7 @@ namespace SuccessStory.Models
                             break;
                     }
 
-                    orderAchievement = null;
+                    OrderAchievement = null;
 
                     return OrderedItems.ToObservable();
                 }
@@ -142,17 +185,8 @@ namespace SuccessStory.Models
         public ObservableCollection<Achievement> OrderItemsOnlyLocked => OrderItems.Where(x => !x.IsUnlock).ToObservable();
 
 
-        /// <summary>
-        /// Indicate if the game has stats data.
-        /// </summary>
-        [DontSerialize]
-        public virtual bool HasDataStats => ItemsStats?.Count > 0;
 
-        /// <summary>
-        /// Indicate if the game has achievements.
-        /// </summary>
-        [DontSerialize]
-        public bool HasAchievements => Items?.Count > 0;
+
 
         /// <summary>
         /// Indicate if the game is a rom.
@@ -160,142 +194,179 @@ namespace SuccessStory.Models
         // TODO Not assigned
         public bool IsEmulators { get; set; }
 
-        [DontSerialize]
-        public bool Is100Percent => Total == Unlocked;
 
-        [DontSerialize]
-        public string SourceIcon => TransformIcon.Get(PlayniteTools.GetSourceName(Id));
-
+        #region Achievements global stats
         /// <summary>
-        /// Total achievements for the game.
+        /// Total GamerScore accumulated from unlocked achievements.
         /// </summary>
         [DontSerialize]
-        public int Total => Items.Count();
+        public float TotalGamerScore
+        {
+            get
+            {
+                if (_totalGamerScore == null)
+                {
+                    _totalGamerScore = Items.Where(x => x.IsUnlock).Sum(x => x.GamerScore);
+                }
+                return _totalGamerScore.Value;
+            }
+        }
 
         /// <summary>
-        /// Total unlocked achievements for the game.
+        /// Total number of achievements.
         /// </summary>
         [DontSerialize]
-        public int Unlocked => Items.FindAll(x => x.IsUnlock).Count;
+        public int Total => (_total ?? (_total = Items.Count)).Value;
 
         /// <summary>
-        /// Total locked achievements for the game.
+        /// Number of unlocked achievements.
         /// </summary>
         [DontSerialize]
-        public int Locked => Items.FindAll(x => !x.IsUnlock).Count;
+        public int Unlocked => (_unlocked ?? (_unlocked = Items.Count(x => x.IsUnlock))).Value;
+
+        /// <summary>
+        /// Number of locked achievements.
+        /// </summary>
+        [DontSerialize]
+        public int Locked => (_locked ?? (_locked = Items.Count(x => !x.IsUnlock))).Value;
+
+        /// <summary>
+        /// Overall progression in percentage (rounded up).
+        /// </summary>
+        [DontSerialize]
+        public int Progression => Total != 0 ? (int)Math.Ceiling((double)(Unlocked * 100) / Total) : 0;
 
         /// <summary>
         /// Estimate time to unlock all achievements.
         /// </summary>
         public EstimateTimeToUnlock EstimateTime { get; set; }
+        #endregion
 
+
+        #region Achievements rarity stats
         /// <summary>
-        /// Percentage
+        /// Get statistics for Common achievements (with a rarity above the "Uncommon" threshold).
         /// </summary>
-        [DontSerialize]
-        public int Progression => (Total != 0) ? (int)Math.Ceiling((double)(Unlocked * 100 / Total)) : 0;
-
-        /// <summary>
-        /// Indicate if the achievements have added manualy.
-        /// </summary>
-        public bool IsManual { get; set; }
-
-        /// <summary>
-        /// Indicate if the game is ignored.
-        /// </summary>
-        public bool IsIgnored { get; set; }
-
-
-        public SourceLink SourcesLink { get; set; }
-
-
-        // Commun, Non Commun, Rare, Épique
         [DontSerialize]
         public AchRaretyStats Common
         {
             get
             {
-                double RarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
-
-                AchRaretyStats achRaretyStats = new AchRaretyStats
+                if (_commonStats == null)
                 {
-                    Total = Items.Where(x => x.Percent > RarityUncommon).Count(),
-                    UnLocked = Items.Where(x => x.Percent > RarityUncommon && x.IsUnlock).Count()
-                };
-                achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
+                    double rarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
 
-                return achRaretyStats;
+                    var commonAchievements = Items.Where(x => x.Percent > rarityUncommon).ToList();
+
+                    _commonStats = new AchRaretyStats
+                    {
+                        Total = commonAchievements.Count,
+                        UnLocked = commonAchievements.Count(x => x.IsUnlock),
+                        Locked = commonAchievements.Count(x => !x.IsUnlock)
+                    };
+                }
+                return _commonStats;
             }
         }
 
+        /// <summary>
+        /// Get statistics for Uncommon achievements (rarity between "Rare" and "Uncommon" thresholds).
+        /// </summary>
         [DontSerialize]
-        public AchRaretyStats NoCommon
+        public AchRaretyStats UnCommon
         {
             get
             {
-                double RarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
-                double RarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
-
-                AchRaretyStats achRaretyStats = new AchRaretyStats
+                if (_uncommonStats == null)
                 {
-                    Total = Items.Where(x => x.Percent <= RarityUncommon && x.Percent > RarityRare).Count(),
-                    UnLocked = Items.Where(x => x.Percent <= RarityUncommon && x.Percent > RarityRare && x.IsUnlock).Count()
-                };
-                achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
+                    double rarityUncommon = PluginDatabase.PluginSettings.Settings.RarityUncommon;
+                    double rarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
 
-                return achRaretyStats;
+                    var uncommonAchievements = Items
+                        .Where(x => x.Percent <= rarityUncommon && x.Percent > rarityRare)
+                        .ToList();
+
+                    _uncommonStats = new AchRaretyStats
+                    {
+                        Total = uncommonAchievements.Count,
+                        UnLocked = uncommonAchievements.Count(x => x.IsUnlock),
+                        Locked = uncommonAchievements.Count(x => !x.IsUnlock)
+                    };
+                }
+                return _uncommonStats;
             }
         }
 
+        /// <summary>
+        /// Get statistics for Rare achievements (rarity between "UltraRare" and "Rare" thresholds).
+        /// </summary>
         [DontSerialize]
         public AchRaretyStats Rare
         {
             get
             {
-                double RarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
-                double RarityUltraRare = PluginDatabase.PluginSettings.Settings.UseUltraRare ? 
-                                            PluginDatabase.PluginSettings.Settings.RarityUltraRare :
-                                            0;
-
-                AchRaretyStats achRaretyStats = new AchRaretyStats
+                if (_rareStats == null)
                 {
-                    Total = Items.Where(x => x.Percent <= RarityRare && x.Percent > RarityUltraRare).Count(),
-                    UnLocked = Items.Where(x => x.Percent <= RarityRare && x.Percent > RarityUltraRare && x.IsUnlock).Count()
-                };
-                achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
+                    double rarityRare = PluginDatabase.PluginSettings.Settings.RarityRare;
+                    double rarityUltraRare = PluginDatabase.PluginSettings.Settings.UseUltraRare
+                        ? PluginDatabase.PluginSettings.Settings.RarityUltraRare
+                        : 0;
 
-                return achRaretyStats;
+                    var rareAchievements = Items
+                        .Where(x => x.Percent <= rarityRare && x.Percent > rarityUltraRare)
+                        .ToList();
+
+                    _rareStats = new AchRaretyStats
+                    {
+                        Total = rareAchievements.Count,
+                        UnLocked = rareAchievements.Count(x => x.IsUnlock),
+                        Locked = rareAchievements.Count(x => !x.IsUnlock)
+                    };
+                }
+                return _rareStats;
             }
         }
 
+        /// <summary>
+        /// Get statistics for Ultra Rare achievements (rarity equal to or below the "UltraRare" threshold).
+        /// </summary>
         [DontSerialize]
         public AchRaretyStats UltraRare
         {
             get
             {
-                double RarityUltraRare = PluginDatabase.PluginSettings.Settings.RarityUltraRare;
-
-                AchRaretyStats achRaretyStats = new AchRaretyStats
+                if (_ultraRareStats == null)
                 {
-                    Total = Items.Where(x => x.Percent <= RarityUltraRare).Count(),
-                    UnLocked = Items.Where(x => x.Percent <= RarityUltraRare && x.IsUnlock).Count()
-                };
-                achRaretyStats.Locked = achRaretyStats.Total - achRaretyStats.UnLocked;
+                    double rarityUltraRare = PluginDatabase.PluginSettings.Settings.RarityUltraRare;
 
-                return achRaretyStats;
+                    var ultraRareAchievements = Items
+                        .Where(x => x.Percent <= rarityUltraRare)
+                        .ToList();
+
+                    _ultraRareStats = new AchRaretyStats
+                    {
+                        Total = ultraRareAchievements.Count,
+                        UnLocked = ultraRareAchievements.Count(x => x.IsUnlock),
+                        Locked = ultraRareAchievements.Count(x => !x.IsUnlock)
+                    };
+                }
+                return _ultraRareStats;
             }
         }
+        #endregion
 
 
-        // only for RA
+        #region For RetroAchievements
         public int RAgameID { get; set; }
 
         [DontSerialize]
         public bool IsRa => RAgameID > 0;
+        #endregion
 
 
-        // only for PSN
+        # region For PSN
         public string CommunicationId { get; set; }
+        #endregion
 
 
         [DontSerialize]
@@ -308,38 +379,113 @@ namespace SuccessStory.Models
                     return true;
                 }
 
-                if (Items?.First()?.UrlUnlocked?.Contains("GenshinImpact", StringComparison.InvariantCultureIgnoreCase) ?? false)
-                {
-                    return true;
-                }
-                if (Items?.First()?.UrlUnlocked?.Contains("rpcs3", StringComparison.InvariantCultureIgnoreCase) ?? false)
+                Achievement first = Items.FirstOrDefault();
+                if (first?.UrlUnlocked?.IndexOf("GenshinImpact", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    first?.UrlUnlocked?.IndexOf("rpcs3", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     return true;
                 }
 
-                return !(Items.Where(x => x.ImageUnlockedIsCached && x.ImageLockedIsCached).Count() == 0);
+                return Items.All(x => x.ImageUnlockedIsCached && x.ImageLockedIsCached);
             }
         }
 
 
+        #region Achievements dates stats
+        /// <summary>
+        /// Gets the earliest unlock date among all achievements.
+        /// Returns null if no achievements have been unlocked.
+        /// </summary>
         [DontSerialize]
-        public DateTime? FirstUnlock => Items.Select(x => x.DateWhenUnlocked)?.Min();
+        public DateTime? FirstUnlock
+        {
+            get
+            {
+                if (_firstUnlock == null && Items?.Any() == true)
+                {
+                    _firstUnlock = Items
+                        .Where(x => x.DateWhenUnlocked.HasValue)
+                        .Select(x => x.DateWhenUnlocked.Value)
+                        .OrderBy(d => d)
+                        .FirstOrDefault();
+                }
+                return _firstUnlock;
+            }
+        }
 
+        /// <summary>
+        /// Gets the latest unlock date among all achievements.
+        /// Returns null if no achievements have been unlocked.
+        /// </summary>
         [DontSerialize]
-        public DateTime? LastUnlock => Items.Select(x => x.DateWhenUnlocked)?.Max();
+        public DateTime? LastUnlock
+        {
+            get
+            {
+                if (_lastUnlock == null && Items?.Any() == true)
+                {
+                    _lastUnlock = Items
+                        .Where(x => x.DateWhenUnlocked.HasValue)
+                        .Select(x => x.DateWhenUnlocked.Value)
+                        .OrderByDescending(d => d)
+                        .FirstOrDefault();
+                }
+                return _lastUnlock;
+            }
+        }
 
+        /// <summary>
+        /// Gets a list of all unlock dates, sorted in ascending order.
+        /// </summary>
         [DontSerialize]
-        public List<DateTime> DatesUnlock => Items.Where(x => x.DateWhenUnlocked != null).Select(x => (DateTime)x.DateWhenUnlocked).ToList();
+        public List<DateTime> DatesUnlock
+        {
+            get
+            {
+                return _datesUnlock ?? (_datesUnlock = Items?
+                    .Where(x => x.DateWhenUnlocked.HasValue)
+                    .Select(x => x.DateWhenUnlocked.Value)
+                    .OrderBy(date => date)
+                    .ToList() ?? new List<DateTime>());
+            }
+        }
 
+        #endregion
+
+
+        /// <summary>
+        /// Clears cached. Automatically called when Items is updated.
+        /// </summary>
+        protected override void RefreshCachedValues()
+        {
+            _hasAchievements = null;
+
+            _total = null;
+            _unlocked = null;
+            _locked = null;
+            _totalGamerScore = null;
+
+            _firstUnlock = null;
+            _lastUnlock = null;
+            _datesUnlock = null;
+
+            _commonStats = null;
+            _uncommonStats = null;
+            _rareStats = null;
+            _ultraRareStats = null;
+        }
 
         public void SetRaretyIndicator()
         {
             if (HasAchievements)
             {
-                bool NoRarety = Items?.Where(x => x.Percent != 100)?.Count() == 0;
-                if (NoRarety)
+                bool allNoRarety = Items.All(x => x.Percent == 100);
+                if (allNoRarety)
                 {
-                    _ = Items.All(x => { x.NoRarety = true; return true; });
+                    foreach (Achievement achievement in Items)
+                    {
+                        achievement.NoRarety = true;
+                    }
                 }
             }
         }

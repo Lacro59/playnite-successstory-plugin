@@ -69,7 +69,7 @@ namespace SuccessStory.Controls
         public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-            gameAchievements.orderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationCompactOrderAchievement;
+            gameAchievements.OrderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationCompactOrderAchievement;
             ControlDataContext.ItemsSource = gameAchievements.OrderItems;
         }
     }

@@ -23,7 +23,7 @@ namespace SuccessStory.Services
 
 
         #region Charts
-        private static AchievementsGraphicsDataCount GetCount(StatsType statsType, Guid? id, int limit, bool cutPeriod, bool onlyRA, bool excludeRA)
+        private static AchGraphicsDataCount GetCount(StatsType statsType, Guid? id, int limit, bool cutPeriod, bool onlyRA, bool excludeRA)
         {
             string[] chartLabels = new string[limit + 1];
             ChartValues<CustomerForSingle> chartSeries = new ChartValues<CustomerForSingle>();
@@ -121,7 +121,7 @@ namespace SuccessStory.Services
                 Common.LogError(ex, false, $"Error in GetCount({statsType}, {id}, {limit}, {cutPeriod}, {onlyRA}, {excludeRA})", true, PluginDatabase.PluginName);
             }
 
-            return new AchievementsGraphicsDataCount { Labels = chartLabels, Series = chartSeries };
+            return new AchGraphicsDataCount { Labels = chartLabels, Series = chartSeries };
         }
 
 
@@ -132,7 +132,7 @@ namespace SuccessStory.Services
         /// <param name="limit"></param>
         /// <param name="onlyRA"></param>
         /// <returns></returns>
-        public static AchievementsGraphicsDataCount GetCountByMonth(Guid? id = null, int limit = 11, bool onlyRA = false, bool excludeRA = false)
+        public static AchGraphicsDataCount GetCountByMonth(Guid? id = null, int limit = 11, bool onlyRA = false, bool excludeRA = false)
         {
             return GetCount(StatsType.Month, id, limit, false, onlyRA, excludeRA);
         }
@@ -142,7 +142,7 @@ namespace SuccessStory.Services
         /// </summary>
         /// <param name="onlyRA"></param>
         /// <returns></returns>
-        public static AchievementsGraphicsDataCountSources GetCountBySources(bool onlyRA = false, bool excludeRA = false)
+        public static AchGraphicsDataCountSources GetCountBySources(bool onlyRA = false, bool excludeRA = false)
         {
             List<string> chartLabelsList = new List<string>();
             string[] chartLabels = new string[0];
@@ -232,17 +232,17 @@ namespace SuccessStory.Services
                 }
 
                 chartLabels = new string[chartLabelsList.Count];
-                List<AchievementsGraphicsDataSources> tempDataUnlocked = new List<AchievementsGraphicsDataSources>();
-                List<AchievementsGraphicsDataSources> tempDataLocked = new List<AchievementsGraphicsDataSources>();
-                List<AchievementsGraphicsDataSources> tempDataTotal = new List<AchievementsGraphicsDataSources>();
+                List<AchGraphicsDataSources> tempDataUnlocked = new List<AchGraphicsDataSources>();
+                List<AchGraphicsDataSources> tempDataLocked = new List<AchGraphicsDataSources>();
+                List<AchGraphicsDataSources> tempDataTotal = new List<AchGraphicsDataSources>();
 
                 chartLabelsList = chartLabelsList.Distinct().OrderBy(x => x).ToList();
                 for (int i = 0; i < chartLabelsList.Count; i++)
                 {
                     chartLabels[i] = TransformIcon.Get(chartLabelsList[i]);
-                    tempDataLocked.Add(new AchievementsGraphicsDataSources { Source = chartLabelsList[i], Value = 0 });
-                    tempDataUnlocked.Add(new AchievementsGraphicsDataSources { Source = chartLabelsList[i], Value = 0 });
-                    tempDataTotal.Add(new AchievementsGraphicsDataSources { Source = chartLabelsList[i], Value = 0 });
+                    tempDataLocked.Add(new AchGraphicsDataSources { Source = chartLabelsList[i], Value = 0 });
+                    tempDataUnlocked.Add(new AchGraphicsDataSources { Source = chartLabelsList[i], Value = 0 });
+                    tempDataTotal.Add(new AchGraphicsDataSources { Source = chartLabelsList[i], Value = 0 });
                 }
                 #endregion
 
@@ -304,7 +304,7 @@ namespace SuccessStory.Services
                 Common.LogError(ex, false, $"Error in load GetCountBySources()", true, PluginDatabase.PluginName);
             }
 
-            return new AchievementsGraphicsDataCountSources
+            return new AchGraphicsDataCountSources
             {
                 Labels = chartLabels,
                 SeriesLocked = chartSeriesLocked,
@@ -320,7 +320,7 @@ namespace SuccessStory.Services
         /// <param name="limit"></param>
         /// <param name="cutPeriod"></param>
         /// <returns></returns>
-        public static AchievementsGraphicsDataCount GetCountByDay(Guid? id = null, int limit = 11, bool cutPeriod = false)
+        public static AchGraphicsDataCount GetCountByDay(Guid? id = null, int limit = 11, bool cutPeriod = false)
         {
             return GetCount(StatsType.Day, id, limit, cutPeriod, false, false);
         }
@@ -328,23 +328,21 @@ namespace SuccessStory.Services
 
 
         #region Progression
-        private static ProgressionAchievements GetProgession(bool withPlaytime, Guid sourceId)
+        private static AchProgressionTotal GetProgession(bool withPlaytime, Guid sourceId)
         {
             bool includeHiddenGames = PluginDatabase.PluginSettings.Settings.IncludeHiddenGames;
-            ProgressionAchievements Result = new ProgressionAchievements();
+            AchProgressionTotal Result = new AchProgressionTotal();
 
             try
             {
                 var data = PluginDatabase.Database.Items
                     .Where(x => x.Value.HasAchievements && !x.Value.IsDeleted && (includeHiddenGames || x.Value.Hidden == false) && (!withPlaytime || x.Value.Playtime > 0) && (sourceId == default || x.Value.SourceId == sourceId));
-                Result = new ProgressionAchievements
+                Result = new AchProgressionTotal
                 {
-                    Total = data.Sum(x => x.Value.Total),
                     Locked = data.Sum(x => x.Value.Locked),
                     Unlocked = data.Sum(x => x.Value.Unlocked),
                     GamerScore = (int)data.Sum(x => x.Value.TotalGamerScore)
                 };
-                Result.Progression = (Result.Total != 0) ? (int)Math.Round((double)(Result.Unlocked * 100 / Result.Total)) : 0;
             }
             catch (Exception ex)
             {
@@ -359,7 +357,7 @@ namespace SuccessStory.Services
         /// Progression for all games with achievements data.
         /// </summary>
         /// <returns></returns>
-        public static ProgressionAchievements Progession()
+        public static AchProgressionTotal Progession()
         {
             return GetProgession(false, default);
         }
@@ -368,7 +366,7 @@ namespace SuccessStory.Services
         /// Progression for all games with achievements data and a playtime.
         /// </summary>
         /// <returns></returns>
-        public static ProgressionAchievements ProgessionLaunched()
+        public static AchProgressionTotal ProgessionLaunched()
         {
             return GetProgession(true, default);
         }
@@ -377,7 +375,7 @@ namespace SuccessStory.Services
         /// Progression for all games on a source with achievements data.
         /// </summary>
         /// <returns></returns>
-        public static ProgressionAchievements ProgessionSource(Guid sourceId)
+        public static AchProgressionTotal ProgessionSource(Guid sourceId)
         {
             return GetProgession(false, sourceId);
         }

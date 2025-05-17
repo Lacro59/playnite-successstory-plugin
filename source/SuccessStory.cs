@@ -189,16 +189,16 @@ namespace SuccessStory
             }
         }
 
-        private void WindowBase_LoadedEvent(object sender, System.EventArgs e)
+        private void WindowBase_LoadedEvent(object sender, EventArgs e)
         {
-            string WinIdProperty = string.Empty;
+            string winIdProperty = string.Empty;
             try
             {
-                WinIdProperty = ((Window)sender).GetValue(AutomationProperties.AutomationIdProperty).ToString();
+                winIdProperty = ((Window)sender).GetValue(AutomationProperties.AutomationIdProperty).ToString();
 
-                if (WinIdProperty == "WindowSettings" ||WinIdProperty == "WindowExtensions" || WinIdProperty == "WindowLibraryIntegrations")
+                if (winIdProperty == "WindowSettings" || winIdProperty == "WindowExtensions" || winIdProperty == "WindowLibraryIntegrations")
                 {
-                    foreach (var achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
+                    foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
                     {
                         achievementProvider.ResetCachedConfigurationValidationResult();
                         achievementProvider.ResetCachedIsConnectedResult();
@@ -207,7 +207,7 @@ namespace SuccessStory
             }
             catch (Exception ex)
             {
-                Common.LogError(ex, false, $"Error on WindowBase_LoadedEvent for {WinIdProperty}", true, PluginDatabase.PluginName);
+                Common.LogError(ex, false, $"Error on WindowBase_LoadedEvent for {winIdProperty}", true, PluginDatabase.PluginName);
             }
         }
         #endregion

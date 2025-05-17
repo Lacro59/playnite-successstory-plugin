@@ -24,7 +24,7 @@
     <sys:String x:Key="LOCSuccessStoryNotIgnored">No se ha ignorado el juego</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Logro oculto</sys:String>
-    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame"></sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">El perfil de Steam no es público</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">El juego de Steam &quot;{0}&quot; no es público
@@ -49,6 +49,7 @@ Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">El usuario de Battle.net no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">El usuario de Overwatch de Battle.net no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">El usuario de Battle.net StarCraft II no está autenticado</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">Game Jolt is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic está activado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">El usuario de Epic no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">Guild Wars2 no se ha configurado correctamente en la configuración</sys:String>
@@ -63,6 +64,8 @@ Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryProgressBar">Procesando, por favor espere...</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Juegos ignorados</sys:String>
+    
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Group Steam achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase (solo para tener logros localizados)</sys:String>
 
@@ -85,6 +88,7 @@ Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Habilitar logros de StarCraft II</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Activa los logros de World of Warcraft</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Habilitar los logros de Guild Wars 2</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements">Enable Game Jolt achievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Desactivar el uso de la API (Usar cuando no tienes una clave API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Carpeta de usuario</sys:String>
@@ -184,6 +188,8 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
 
     <!-- SuccessStoryOneGameView -->
 
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Base game</sys:String>
+    
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Primer desbloqueo</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">Último desbloqueo</sys:String>
     
@@ -222,10 +228,24 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCSsEnableGenshinImpactAchievements">Habilitar los logros de Genshin Impact</sys:String>
+    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Añadir Genshin Impact</sys:String>
 
-    
+    <!-- Wuthering Waves -->
+
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Enable Wuthering Waves achievements</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Add Wuthering Waves</sys:String>
+
+    <!-- Honkai Star Rail -->
+
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
+
+    <!-- Zenless Zone Zero -->
+
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Añadir Zenless Zone Zero</sys:String>
+
     <!-- Overwatch -->
 
     <sys:String x:Key="LOCSsOverwatchQuickPlay">Partida rápida</sys:String>

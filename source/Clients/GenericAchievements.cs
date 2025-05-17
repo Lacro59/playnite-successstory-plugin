@@ -35,30 +35,34 @@ namespace SuccessStory.Clients
             set => webViewOffscreen = value;
         }
 
+        // Access to the plugin's database.
         internal static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
+        // Cached validation results for configuration and connection status.
         protected bool? CachedConfigurationValidationResult { get; set; }
         protected bool? CachedIsConnectedResult { get; set; }
 
+        // Client details and language information.
         protected string ClientName { get; }
         protected string LocalLang { get; }
         protected string LocalLangShort { get; }
 
+        // Error details for notifications.
         protected string LastErrorId { get; set; }
         protected string LastErrorMessage { get; set; }
 
+        // Path to store cookies.
         internal string CookiesPath { get; }
 
 
-
-        // TODO Must be removed when all store is refactored
-        public GenericAchievements(string ClientName, string LocalLang = "", string LocalLangShort = "")
+        // Constructor to initialize the client name and language settings.
+        public GenericAchievements(string clientName, string localLang = "", string localLangShort = "")
         {
-            this.ClientName = ClientName;
-            this.LocalLang = LocalLang;
-            this.LocalLangShort = LocalLangShort;
+            ClientName = clientName;
+            LocalLang = localLang;
+            LocalLangShort = localLangShort;
 
-            CookiesPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, CommonPlayniteShared.Common.Paths.GetSafePathName($"{ClientName}.json"));
+            CookiesPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, CommonPlayniteShared.Common.Paths.GetSafePathName($"{clientName}.json"));
         }
 
 
@@ -90,43 +94,43 @@ namespace SuccessStory.Clients
 
         #region Configuration
         /// <summary>
-        /// Override to validate service-specific config and display error messages to the user
+        /// Abstract method to validate the service-specific configuration and display error messages to the user.
         /// </summary>
-        /// <param name="playniteAPI"></param>
-        /// <param name="plugin"></param>
-        /// <returns>false when there are errors, true if everything's good</returns>
+        /// <returns>true if configuration is valid, false otherwise.</returns>
         public abstract bool ValidateConfiguration();
 
+        /// <summary>
+        /// Checks if the plugin is connected to the service.
+        /// </summary>
+        /// <returns>true if connected, false otherwise.</returns>
+        public virtual bool IsConnected() => false;
 
-        public virtual bool IsConnected()
-        {
-            return false;
-        }
+        /// <summary>
+        /// Checks if the plugin is configured correctly.
+        /// </summary>
+        /// <returns>true if configured, false otherwise.</returns>
+        public virtual bool IsConfigured() => false;
 
-        public virtual bool IsConfigured()
-        {
-            return false;
-        }
-
-        public virtual bool EnabledInSettings()
-        {
-            return false;
-        }
+        /// <summary>
+        /// Checks if the plugin is enabled in the settings.
+        /// </summary>
+        /// <returns>true if enabled, false otherwise.</returns>
+        public virtual bool EnabledInSettings() => false;
         #endregion
 
 
-        public virtual void ResetCachedConfigurationValidationResult()
-        {
-            CachedConfigurationValidationResult = null;
-        }
+        // Resets the cached configuration validation result.
+        public virtual void ResetCachedConfigurationValidationResult() => CachedConfigurationValidationResult = null;
 
-        public virtual void ResetCachedIsConnectedResult()
-        {
-            CachedIsConnectedResult = null;
-        }
+        // Resets the cached connection result.
+        public virtual void ResetCachedIsConnectedResult() => CachedIsConnectedResult = null;
 
 
         #region Cookies
+        /// <summary>
+        /// Gets the cookies from the saved file, if it exists.
+        /// </summary>
+        /// <returns>A list of HTTP cookies.</returns>
         internal List<HttpCookie> GetCookies()
         {
             if (File.Exists(CookiesPath))
@@ -148,6 +152,10 @@ namespace SuccessStory.Clients
             return null;
         }
 
+        /// <summary>
+        /// Saves the cookies to a file by encrypting them.
+        /// </summary>
+        /// <param name="httpCookies">The list of cookies to save.</param>
         internal void SetCookies(List<HttpCookie> httpCookies)
         {
             FileSystem.CreateDirectory(Path.GetDirectoryName(CookiesPath));
@@ -161,6 +169,10 @@ namespace SuccessStory.Clients
 
 
         #region Errors
+        /// <summary>
+        /// Displays a notification when the plugin is disabled.
+        /// </summary>
+        /// <param name="message">The error message to display.</param>
         public virtual void ShowNotificationPluginDisable(string message)
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-disabled";
@@ -174,6 +186,10 @@ namespace SuccessStory.Clients
             ));
         }
 
+        /// <summary>
+        /// Displays a notification when the plugin is not authenticated.
+        /// </summary>
+        /// <param name="pluginSource">The external plugin source.</param>
         public virtual void ShowNotificationPluginNoAuthenticate(ExternalPlugin pluginSource)
         {
             string message = string.Format(ResourceProvider.GetString("LOCCommonStoresNoAuthenticate"), ClientName);
@@ -208,6 +224,11 @@ namespace SuccessStory.Clients
             ));
         }
 
+        /// <summary>
+        /// Displays a notification when too much data is received from the plugin source.
+        /// </summary>
+        /// <param name="message">The error message.</param>
+        /// <param name="pluginSource">The external plugin source.</param>
         public virtual void ShowNotificationPluginTooMuchData(string message, ExternalPlugin pluginSource)
         {
             LastErrorId = $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-toomuchdata";
@@ -241,6 +262,9 @@ namespace SuccessStory.Clients
             ));
         }
 
+        /// <summary>
+        /// Displays a notification when the plugin is misconfigured.
+        /// </summary>
         public virtual void ShowNotificationPluginNoConfiguration()
         {
             string message = string.Format(ResourceProvider.GetString("LOCCommonStoreBadConfiguration"), ClientName);
@@ -263,17 +287,29 @@ namespace SuccessStory.Clients
             ));
         }
 
+        /// <summary>
+        /// Displays a generic error notification.
+        /// </summary>
+        /// <param name="ex">The exception to display.</param>
         public virtual void ShowNotificationPluginError(Exception ex)
         {
             Common.LogError(ex, false, $"{ClientName}", true, PluginDatabase.PluginName);
         }
 
+        /// <summary>
+        /// Displays an error when loading a URL fails.
+        /// </summary>
+        /// <param name="ex">The exception to display.</param>
+        /// <param name="url">The URL that failed to load.</param>
         public virtual void ShowNotificationPluginWebError(Exception ex, string url)
         {
             Common.LogError(ex, false, $"{ClientName} - Failed to load {url}", true, PluginDatabase.PluginName);
         }
 
-
+        /// <summary>
+        /// Displays the last error message.
+        /// </summary>
+        /// <param name="pluginSource">The external plugin source.</param>
         public virtual void ShowNotificationPluginErrorMessage(ExternalPlugin pluginSource)
         {
             if (!LastErrorMessage.IsNullOrEmpty())
