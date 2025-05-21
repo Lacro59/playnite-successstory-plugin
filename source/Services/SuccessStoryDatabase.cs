@@ -88,33 +88,6 @@ namespace SuccessStory.Services
             Plugin = plugin;
         }
 
-
-        protected override bool LoadDatabase()
-        {
-            try
-            {
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
-
-                Database = new SuccessStoryCollection(Paths.PluginDatabasePath);
-                Database.SetGameInfo<Achievement>();
-
-                DeleteDataWithDeletedGame();
-
-                stopWatch.Stop();
-                TimeSpan ts = stopWatch.Elapsed;
-                Logger.Info($"LoadDatabase with {Database.Count} items - {string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10)}");
-            }
-            catch (Exception ex)
-            {
-                Common.LogError(ex, false, true, PluginName);
-                return false;
-            }
-
-            return true;
-        }
-
-
         public void GetManual(Game game)
         {
             try

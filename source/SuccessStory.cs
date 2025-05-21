@@ -1039,36 +1039,16 @@ namespace SuccessStory
         {
             // StoreAPI intialization
             SteamApi = new SteamApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
-            SteamApi.SetLanguage(API.Instance.ApplicationSettings.Language);
-            SteamApi.StoreSettings = PluginDatabase.PluginSettings.Settings.SteamStoreSettings;
-            if (PluginDatabase.PluginSettings.Settings.EnableSteam)
-            {
-                _ = SteamApi.CurrentAccountInfos;
-            }
+            SteamApi.Intialization(PluginDatabase.PluginSettings.Settings.SteamStoreSettings, PluginDatabase.PluginSettings.Settings.EnableSteam);
 
             EpicApi = new EpicApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
-            EpicApi.SetLanguage(API.Instance.ApplicationSettings.Language);
-            EpicApi.StoreSettings = PluginDatabase.PluginSettings.Settings.EpicStoreSettings;
-            if (PluginDatabase.PluginSettings.Settings.EnableEpic)
-            {
-                _ = EpicApi.CurrentAccountInfos;
-            }
+            EpicApi.Intialization(PluginDatabase.PluginSettings.Settings.EpicStoreSettings, PluginDatabase.PluginSettings.Settings.EnableEpic);
 
             GogApi = new GogApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
-            GogApi.SetLanguage(API.Instance.ApplicationSettings.Language);
-            GogApi.StoreSettings = PluginDatabase.PluginSettings.Settings.GogStoreSettings;
-            if (PluginDatabase.PluginSettings.Settings.EnableGog)
-            {
-                _ = GogApi.CurrentAccountInfos;
-            }
+            GogApi.Intialization(PluginDatabase.PluginSettings.Settings.GogStoreSettings, PluginDatabase.PluginSettings.Settings.EnableGog);
 
             GameJoltApi = new GameJoltApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
-            GameJoltApi.SetLanguage(API.Instance.ApplicationSettings.Language);
-            GameJoltApi.StoreSettings = PluginDatabase.PluginSettings.Settings.GameJoltStoreSettings;
-            if (PluginDatabase.PluginSettings.Settings.EnableGameJolt)
-            {
-                _ = GameJoltApi.CurrentAccountInfos;
-            }
+            GameJoltApi.Intialization(PluginDatabase.PluginSettings.Settings.GameJoltStoreSettings, PluginDatabase.PluginSettings.Settings.EnableGameJolt);
 
 
             Task.Run(() =>

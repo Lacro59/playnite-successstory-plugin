@@ -367,39 +367,11 @@ namespace SuccessStory
             });
 
 
-            // TODO
             // StoreAPI intialization
-            SuccessStory.SteamApi.StoreSettings = Settings.SteamStoreSettings;
-            if (Settings.EnableSteam)
-            {
-                SuccessStory.SteamApi.SaveCurrentUser();
-                SuccessStory.SteamApi.CurrentAccountInfos = null;
-                _ = SuccessStory.SteamApi.CurrentAccountInfos;
-            }
-
-            SuccessStory.EpicApi.StoreSettings = Settings.EpicStoreSettings;
-            if (Settings.EnableEpic)
-            {
-                SuccessStory.EpicApi.SaveCurrentUser();
-                SuccessStory.EpicApi.CurrentAccountInfos = null;
-                _ = SuccessStory.EpicApi.CurrentAccountInfos;
-            }
-
-            SuccessStory.GogApi.StoreSettings = Settings.GogStoreSettings;
-            if (Settings.EnableGog)
-            {
-                SuccessStory.GogApi.SaveCurrentUser();
-                SuccessStory.GogApi.CurrentAccountInfos = null;
-                _ = SuccessStory.GogApi.CurrentAccountInfos;
-            }
-
-            SuccessStory.GameJoltApi.StoreSettings = Settings.GameJoltStoreSettings;
-            if (Settings.EnableGameJolt)
-            {
-                SuccessStory.GameJoltApi.SaveCurrentUser();
-                SuccessStory.GameJoltApi.CurrentAccountInfos = null;
-                _ = SuccessStory.GameJoltApi.CurrentAccountInfos;
-            }
+            SuccessStory.SteamApi.SaveSettings(Settings.SteamStoreSettings, Settings.EnableSteam);
+            SuccessStory.EpicApi.SaveSettings(Settings.EpicStoreSettings, Settings.EnableEpic);
+            SuccessStory.GogApi.SaveSettings(Settings.GogStoreSettings, Settings.EnableGog);
+            SuccessStory.GameJoltApi.SaveSettings(Settings.GameJoltStoreSettings, Settings.EnableGameJolt);
 
 
             Plugin.SavePluginSettings(Settings);
