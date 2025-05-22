@@ -233,18 +233,18 @@ Besonders nützlich für Xbox Errungenschaften mit ihren großen Bildern, die be
 
     <!-- Wuthering Waves -->
 
-    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Enable Wuthering Waves achievements</sys:String>
-    <sys:String x:Key="LOCAddWutheringWaves">Add Wuthering Waves</sys:String>
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Wuthering Waves Errungenschaften aktivieren</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Wuthering Waves hinzufügen</sys:String>
 
     <!-- Honkai Star Rail -->
 
-    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
-    <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Honkai Star Rail Errungenschaften aktivieren</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Füge Honkai Star Rails Errungenschaften hinzu</sys:String>
 
     <!-- Zenless Zone Zero -->
 
-    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
-    <sys:String x:Key="LOCAddZenlessZoneZero">Add Zenless Zone Zero</sys:String>
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Zenless Zone Null Errungenschaften aktivieren</sys:String>
+    <sys:String x:Key="LOCAddZenlessZoneZero">Zenless Zone Null Errungenschaften hinzufügen</sys:String>
 
     <!-- Overwatch -->
 
