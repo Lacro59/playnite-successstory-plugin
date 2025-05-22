@@ -368,10 +368,10 @@ namespace SuccessStory
 
 
             // StoreAPI intialization
-            SuccessStory.SteamApi.SaveSettings(Settings.SteamStoreSettings, Settings.EnableSteam);
-            SuccessStory.EpicApi.SaveSettings(Settings.EpicStoreSettings, Settings.EnableEpic);
-            SuccessStory.GogApi.SaveSettings(Settings.GogStoreSettings, Settings.EnableGog);
-            SuccessStory.GameJoltApi.SaveSettings(Settings.GameJoltStoreSettings, Settings.EnableGameJolt);
+            SuccessStory.SteamApi.SaveSettings(Settings.SteamStoreSettings, Settings.PluginState.SteamIsEnabled && Settings.EnableSteam);
+            SuccessStory.EpicApi.SaveSettings(Settings.EpicStoreSettings, Settings.PluginState.EpicIsEnabled && Settings.EnableEpic);
+            SuccessStory.GogApi.SaveSettings(Settings.GogStoreSettings, Settings.PluginState.GogIsEnabled && Settings.EnableGog);
+            SuccessStory.GameJoltApi.SaveSettings(Settings.GameJoltStoreSettings, Settings.PluginState.GameJoltIsEnabled && Settings.EnableGameJolt);
 
 
             Plugin.SavePluginSettings(Settings);

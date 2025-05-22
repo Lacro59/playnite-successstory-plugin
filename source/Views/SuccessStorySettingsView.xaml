@@ -57,7 +57,7 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableSteam}" Name="PART_EnableSteam" VerticalAlignment="Center">
+                                    <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding Settings.EnableSteam}" Name="PART_STEAM" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableSteam}" />
                                     </CheckBox>
 
@@ -98,7 +98,7 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding Settings.EnableGog}" VerticalAlignment="Center">
+                                    <CheckBox Grid.Column="0" Grid.Row="3" IsChecked="{Binding Settings.EnableGog}" Name="PART_GOG" VerticalAlignment="Center">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableGog}" />
                                     </CheckBox>
                                 </Grid>
@@ -144,7 +144,7 @@
                             </Expander.Style>
 
                             <Expander.Header>
-                                <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableGameJolt}" Name="PART_EnableGameJolt" VerticalAlignment="Center">
+                                <CheckBox Grid.Column="0" IsChecked="{Binding Settings.EnableGameJolt}" Name="PART_GAMEJOLT" VerticalAlignment="Center">
                                     <Label Content="{DynamicResource LOCSuccessStoryEnableGameJoltAchievements}" />
                                 </CheckBox>
                             </Expander.Header>
@@ -201,7 +201,7 @@
                                         <ColumnDefinition Width="40" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnableEpic}" VerticalAlignment="Center" Name="PART_Epic">
+                                    <CheckBox Grid.Column="0" Grid.Row="5" IsChecked="{Binding Settings.EnableEpic}" VerticalAlignment="Center" Name="PART_EPIC">
                                         <Label Content="{DynamicResource LOCSuccessStoryEnableEpic}" />
                                     </CheckBox>
                                 </Grid>
@@ -1805,16 +1805,20 @@
             <TabItem Header="{DynamicResource LOCLibraries}">
                 <StackPanel Margin="10">
                     <Steam:PanelView x:Name="SteamPanel" Margin="0,0,0,10"
+                                     Visibility="{Binding ElementName=PART_STEAM, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
                                      UseApi="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.SteamStoreSettings.UseApi, Mode=TwoWay}" 
                                      UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.SteamStoreSettings.UseAuth, Mode=TwoWay}" />
 
                     <Epic:PanelView x:Name="EpicPanel" Margin="0,0,0,10"
+                                    Visibility="{Binding ElementName=PART_EPIC, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
                                     UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.EpicStoreSettings.UseAuth, Mode=TwoWay}" />
 
                     <Gog:PanelView x:Name="GogPanel" Margin="0,0,0,10"
-                                    UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.GogStoreSettings.UseAuth, Mode=TwoWay}" />
+                                   Visibility="{Binding ElementName=PART_GOG, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                   UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.GogStoreSettings.UseAuth, Mode=TwoWay}" />
 
                     <GameJolt:PanelView x:Name="GameJoltPanel" 
+                                        Visibility="{Binding ElementName=PART_GAMEJOLT, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
                                         UseAuth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Settings.GameJoltStoreSettings.UseAuth, Mode=TwoWay}" />
                 </StackPanel>
             </TabItem>
