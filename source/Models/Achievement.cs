@@ -57,15 +57,32 @@ namespace SuccessStory.Models
         /// </summary>
         public string UrlLocked { get; set; }
 
-        // TODO
         private DateTime? _dateUnlocked;
+
         /// <summary>
         /// Gets or sets the date and time when the achievement was unlocked.
+        /// Converts to local time when reading, and ensures UTC storage when setting.
+        /// If the provided value is DateTime.MinValue, it is treated as null.
         /// </summary>
         public DateTime? DateUnlocked
         {
-            get => _dateUnlocked == default(DateTime) ? null : _dateUnlocked;
-            set => _dateUnlocked = value is DateTime dt ? dt.ToUniversalTime() : value;
+            get
+            {
+                if (_dateUnlocked.HasValue && _dateUnlocked.Value == DateTime.MinValue)
+                    return null;
+                return _dateUnlocked?.ToLocalTime();
+            }
+            set
+            {
+                if (!value.HasValue || value.Value == default)
+                {
+                    _dateUnlocked = null;
+                }
+                else
+                {
+                    _dateUnlocked = value.Value.ToUniversalTime();
+                }
+            }
         }
 
         /// <summary>
@@ -335,7 +352,7 @@ namespace SuccessStory.Models
         [DontSerialize]
         public DateTime? DateWhenUnlocked
         {
-            get => DateUnlocked == null || DateUnlocked == default || DateUnlocked.ToString().Contains("0001") || DateUnlocked.ToString().Contains("1982")
+            get => DateUnlocked == null || DateUnlocked.Value.Year == 0001 || DateUnlocked.Value.Year == 1982
                     ? null
                     : (DateTime?)((DateTime)DateUnlocked).ToLocalTime();
             set => DateUnlocked = value;
