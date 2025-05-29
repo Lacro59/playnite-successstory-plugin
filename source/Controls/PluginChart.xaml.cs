@@ -25,10 +25,10 @@ namespace SuccessStory.Controls
     public partial class PluginChart : PluginUserControlExtend
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginChartDataContext ControlDataContext = new PluginChartDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginChartDataContext)controlDataContext;

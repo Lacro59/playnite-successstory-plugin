@@ -19,10 +19,10 @@ namespace SuccessStory.Controls
     public partial class PluginUserStats : PluginUserControlExtend
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginUserStatsDataContext ControlDataContext = new PluginUserStatsDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginUserStatsDataContext)controlDataContext;

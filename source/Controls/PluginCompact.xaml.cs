@@ -12,7 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SuccessStory.Controls.Customs;
@@ -30,17 +29,17 @@ namespace SuccessStory.Controls
     public partial class PluginCompact : PluginUserControlExtend
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginCompactDataContext ControlDataContext = new PluginCompactDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginCompactDataContext)controlDataContext;
         }
 
-
         #region Properties
+
         public bool IsUnlocked
         {
             get => (bool)GetValue(IsUnlockedProperty);
@@ -52,8 +51,8 @@ namespace SuccessStory.Controls
             typeof(bool),
             typeof(PluginCompact),
             new FrameworkPropertyMetadata(false, ControlsPropertyChangedCallback));
-        #endregion
 
+        #endregion
 
         public PluginCompact()
         {
@@ -77,7 +76,6 @@ namespace SuccessStory.Controls
                 });
             });
         }
-
 
         public override void SetDefaultDataContext()
         {
@@ -105,7 +103,6 @@ namespace SuccessStory.Controls
             }
         }
 
-
         public override void SetData(Game newContext, PluginDataBaseGameBase PluginGameData)
         {
             if (!IsUnlocked)
@@ -119,33 +116,38 @@ namespace SuccessStory.Controls
             PART_ScCompactView.ColumnDefinitions.Clear();
 
             GameAchievements gameAchievements = (GameAchievements)PluginGameData;
-            List<Achievement> ListAchievements;
+            ObservableCollection<Achievement> achievements;
 
             // Select data
             if (IsUnlocked)
             {
                 gameAchievements.OrderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationCompactUnlockedOrderAchievement;
-                ListAchievements = gameAchievements.OrderItemsOnlyUnlocked.ToList();
+                achievements = gameAchievements.OrderItemsOnlyUnlocked;
             }
             else
             {
                 gameAchievements.OrderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationCompactLockedOrderAchievement;
-                ListAchievements = gameAchievements.OrderItemsOnlyLocked.ToList();
+                achievements = gameAchievements.OrderItemsOnlyLocked;
             }
 
-            if (ListAchievements.Count == 0)
+            if (achievements.Count == 0)
             {
                 MustDisplay = false;
                 return;
             }
 
             PART_AchievementImage.Children.Clear();
-            if (IsUnlocked && ListAchievements.Count > 0 && ControlDataContext.DisplayLastest)
+            if (IsUnlocked && achievements.Count > 0 && ControlDataContext.DisplayLastest)
             {
-                ControlDataContext.LastestAchievement = ListAchievements.FirstOrDefault(x => x.DateWhenUnlocked == ListAchievements.Max(y => y.DateWhenUnlocked));
+                var lastAchievement = achievements
+                    .OrderByDescending(x => x.DateWhenUnlocked)
+                    .FirstOrDefault();
 
-                int index = ListAchievements.FindIndex(x => x == ControlDataContext.LastestAchievement);
-                ListAchievements.RemoveAt(index);
+                ControlDataContext.LastestAchievement = lastAchievement;
+                if (lastAchievement != null)
+                {
+                    achievements.Remove(lastAchievement);
+                }
 
                 AchievementImage achievementImage = new AchievementImage
                 {
@@ -168,13 +170,13 @@ namespace SuccessStory.Controls
                 PART_LastestAchievemenDateWhenUnlocked.Text = (string)localDateTimeConverter.Convert(ControlDataContext.LastestAchievement.DateWhenUnlocked, null, null, CultureInfo.CurrentCulture);
             }
 
-            ControlDataContext.ItemsSource = ListAchievements.ToObservable();
+            ControlDataContext.ItemsSource = achievements;
 
             PART_ScCompactView_IsLoaded(null, null);
         }
 
-
         #region Events
+
         /// <summary>
         /// Show or not the ToolTip.
         /// </summary>
@@ -182,7 +184,6 @@ namespace SuccessStory.Controls
         /// <param name="e"></param>
         private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            string Text = ((TextBlock)sender).Text;
             TextBlock textBlock = (TextBlock)sender;
 
             Typeface typeface = new Typeface(
@@ -241,14 +242,18 @@ namespace SuccessStory.Controls
             ObservableCollection<Achievement> AchievementsList = ControlDataContext.ItemsSource;
 
             // With PlayerActivities
-            if (Tag is DateTime)
+            if (Tag is DateTime filterDate)
             {
                 AchievementsList = AchievementsList
-                    .Where(x => x.DateWhenUnlocked?.ToString("yyyy-MM-dd").IsEqual(((DateTime)Tag).ToString("yyyy-MM-dd")) ?? false)
+                    .Where(x => x.DateWhenUnlocked?.Date == filterDate.Date)
                     .ToObservable();
+
+                MustDisplay = AchievementsList.Any();
+                if (!MustDisplay)
+                {
+                    return;
+                }
             }
-
-
 
             PART_ScCompactView.Children.Clear();
             PART_ScCompactView.ColumnDefinitions.Clear();
@@ -327,37 +332,31 @@ namespace SuccessStory.Controls
         {
             PART_ScCompactView_IsLoaded(null, null);
         }
+
         #endregion
-
-
-        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            ((Image)sender).Source = new BitmapImage(new Uri(Path.Combine(PluginDatabase.Paths.PluginPath, "Resources", "default_icon.png")));
-        }
     }
-
 
     public class PluginCompactDataContext : ObservableObject, IDataContext
     {
-        private bool isActivated;
-        public bool IsActivated { get => isActivated; set => SetValue(ref isActivated, value); }
+        private bool _isActivated;
+        public bool IsActivated { get => _isActivated; set => SetValue(ref _isActivated, value); }
 
-        private bool showHiddenIcon;
-        public bool ShowHiddenIcon { get => showHiddenIcon; set => SetValue(ref showHiddenIcon, value); }
+        private bool _showHiddenIcon;
+        public bool ShowHiddenIcon { get => _showHiddenIcon; set => SetValue(ref _showHiddenIcon, value); }
 
-        private double height;
-        public double Height { get => height; set => SetValue(ref height, value); }
+        private double _height;
+        public double Height { get => _height; set => SetValue(ref _height, value); }
 
-        private bool displayLastest;
-        public bool DisplayLastest { get => displayLastest; set => SetValue(ref displayLastest, value); }
+        private bool _displayLastest;
+        public bool DisplayLastest { get => _displayLastest; set => SetValue(ref _displayLastest, value); }
 
-        private bool oneLine;
-        public bool OneLine { get => oneLine; set => SetValue(ref oneLine, value); }
+        private bool _oneLine;
+        public bool OneLine { get => _oneLine; set => SetValue(ref _oneLine, value); }
 
-        private ObservableCollection<Achievement> itemsSource;
-        public ObservableCollection<Achievement> ItemsSource { get => itemsSource; set => SetValue(ref itemsSource, value); }
+        private ObservableCollection<Achievement> _itemsSource;
+        public ObservableCollection<Achievement> ItemsSource { get => _itemsSource; set => SetValue(ref _itemsSource, value); }
 
-        private Achievement lastestAchievement;
-        public Achievement LastestAchievement { get => lastestAchievement; set => SetValue(ref lastestAchievement, value); }
+        private Achievement _lastestAchievement;
+        public Achievement LastestAchievement { get => _lastestAchievement; set => SetValue(ref _lastestAchievement, value); }
     }
 }

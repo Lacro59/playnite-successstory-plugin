@@ -26,10 +26,10 @@ namespace SuccessStory.Controls
     public partial class PluginHeatmap : PluginUserControlExtend
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginHeatmapDataContext ControlDataContext = new PluginHeatmapDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginHeatmapDataContext)controlDataContext;

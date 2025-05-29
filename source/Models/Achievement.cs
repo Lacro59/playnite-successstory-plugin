@@ -24,14 +24,15 @@ namespace SuccessStory.Models
         /// </summary>
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
-
         private string _name;
+
         /// <summary>
         /// Gets or sets the localized name of the achievement.
         /// </summary>
         public string Name { get => _name; set => _name = value?.Trim(); }
 
         private string _nameEn;
+
         /// <summary>
         /// Gets or sets the English name of the achievement.
         /// </summary>
@@ -69,7 +70,9 @@ namespace SuccessStory.Models
             get
             {
                 if (_dateUnlocked.HasValue && _dateUnlocked.Value == DateTime.MinValue)
+                {
                     return null;
+                }
                 return _dateUnlocked?.ToLocalTime();
             }
             set
@@ -339,12 +342,13 @@ namespace SuccessStory.Models
         [DontSerialize]
         public bool IsUnlock => DateWhenUnlocked != null || DateUnlocked.ToString().Contains("1982");
 
-        private bool isVisible = true;
+        private bool _isVisible = true;
+
         /// <summary>
         /// Gets or sets a value indicating whether the achievement is visible in the UI.
         /// </summary>
         [DontSerialize]
-        public bool IsVisible { get => isVisible; set => SetValue(ref isVisible, value); }
+        public bool IsVisible { get => _isVisible; set => SetValue(ref _isVisible, value); }
 
         /// <summary>
         /// Gets or sets the local date and time when the achievement was unlocked, or null if not unlocked.

@@ -19,10 +19,10 @@ namespace SuccessStory.Controls
     public partial class PluginCompactList : PluginUserControlExtend
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginCompactListDataContext ControlDataContext = new PluginCompactListDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginCompactListDataContext)controlDataContext;

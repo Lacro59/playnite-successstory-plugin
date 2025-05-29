@@ -18,10 +18,10 @@ namespace SuccessStory.Controls
     public partial class PluginViewItem : PluginUserControlExtend
     {
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
-        internal override IPluginDatabase pluginDatabase => PluginDatabase;
+        protected override IPluginDatabase pluginDatabase => PluginDatabase;
 
         private PluginViewItemDataContext ControlDataContext = new PluginViewItemDataContext();
-        internal override IDataContext controlDataContext
+        protected override IDataContext controlDataContext
         {
             get => ControlDataContext;
             set => ControlDataContext = (PluginViewItemDataContext)controlDataContext;
