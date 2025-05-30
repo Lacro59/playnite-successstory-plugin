@@ -4,25 +4,18 @@ using CommonPluginsShared;
 using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Net;
-using System.Text;
 using System.Linq;
 using AngleSharp.Dom.Html;
 using AngleSharp.Parser.Html;
 using Playnite.SDK.Models;
-using SteamKit2;
 using System.Globalization;
-using CommonPlayniteShared.Common.Web;
-using System.Text.RegularExpressions;
 using CommonPluginsShared.Models;
 using PlayniteTools = CommonPluginsShared.PlayniteTools;
 using CommonPluginsShared.Extensions;
 using System.Threading;
 using CommonPluginsStores.Steam;
 using CommonPluginsStores.Steam.Models;
-using CommonPlayniteShared.Common;
 using AngleSharp.Dom;
 using CommonPluginsStores.Models;
 using System.Collections.ObjectModel;
@@ -39,7 +32,8 @@ namespace SuccessStory.Clients
         private bool IsLocal { get; set; } = false;
         private bool IsManual { get; set; } = false;
 
-        #region Url
+        #region Urls
+
         private static string UrlBase => @"https://steamcommunity.com";
         private static string UrlProfil => UrlBase + @"/my/profile";
         private static string UrlProfilById => UrlBase + @"/profiles/{0}/stats/{1}?tab=achievements&l={2}";
@@ -48,20 +42,18 @@ namespace SuccessStory.Clients
         private static string UrlAchievements => UrlBase + @"/stats/{0}/achievements/?l={1}";
 
         private static string UrlSearch => @"https://store.steampowered.com/search/?term={0}&ignore_preferences=1&category1=998&ndl=1";
+        
         #endregion
-
 
         public SteamAchievements() : base("Steam", CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language))
         {
-
         }
-
 
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Models.Achievement> AllAchievements = new List<Models.Achievement>();
-            List<GameStats> AllStats = new List<GameStats>();
+            List<Models.Achievement> allAchievements = new List<Models.Achievement>();
+            List<GameStats> allStats = new List<GameStats>();
 
             uint appId = 0;
 
@@ -97,7 +89,7 @@ namespace SuccessStory.Clients
                         }
                     }
 
-                    AllAchievements = steamAchievements.Select(x => new Models.Achievement
+                    allAchievements = steamAchievements.Select(x => new Models.Achievement
                     {
                         ApiName = x.Id,
                         Name = x.Name,
@@ -113,7 +105,7 @@ namespace SuccessStory.Clients
                         GamerScore = x.GamerScore
                     }).ToList();
 
-                    gameAchievements.Items = AllAchievements;
+                    gameAchievements.Items = allAchievements;
                     gameAchievements.ItemsStats = SteamApi.GetUsersStats(appId, SteamApi.CurrentAccountInfos)?.Select(x => new GameStats
                     {
                         Name = x.Name,
@@ -137,7 +129,7 @@ namespace SuccessStory.Clients
                 // Set progression
                 if (gameAchievements.HasAchievements && gameAchievements.Items.Where(x => x.Progression?.Max != 0)?.Count() != 0)
                 {
-                    gameAchievements.Items = GetProgressionByWeb(gameAchievements.Items, string.Format(UrlProfilById, SteamApi.CurrentAccountInfos.UserId, game.GameId, LocalLang));
+                    gameAchievements.Items = GetProgressionByWeb(gameAchievements.Items, game);
                 }
             }
             else
@@ -158,7 +150,7 @@ namespace SuccessStory.Clients
                     {
                         for (int i = 0; i < temp.Items.Count; i++)
                         {
-                            AllAchievements.Add(new Models.Achievement
+                            allAchievements.Add(new Models.Achievement
                             {
                                 Name = temp.Items[i].Name,
                                 ApiName = temp.Items[i].ApiName,
@@ -169,7 +161,7 @@ namespace SuccessStory.Clients
                             });
                         }
 
-                        gameAchievements.Items = AllAchievements;
+                        gameAchievements.Items = allAchievements;
                         gameAchievements.ItemsStats = temp.ItemsStats;
                     }
                 }
@@ -196,7 +188,7 @@ namespace SuccessStory.Clients
         public GameAchievements GetAchievements(Game game, uint appId)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Models.Achievement> AllAchievements = new List<Models.Achievement>();
+            List<Models.Achievement> allAchievements = new List<Models.Achievement>();
 
             // Get Steam configuration if exist.
             if (!IsConfigured())
@@ -225,7 +217,7 @@ namespace SuccessStory.Clients
                 {
                     for (int i = 0; i < temp.Items.Count; i++)
                     {
-                        AllAchievements.Add(new Models.Achievement
+                        allAchievements.Add(new Models.Achievement
                         {
                             Name = temp.Items[i].Name,
                             ApiName = temp.Items[i].ApiName,
@@ -236,7 +228,7 @@ namespace SuccessStory.Clients
                         });
                     }
 
-                    gameAchievements.Items = AllAchievements;
+                    gameAchievements.Items = allAchievements;
                 }
             }
 
@@ -268,11 +260,10 @@ namespace SuccessStory.Clients
             return gameAchievements;
         }
 
-
         private GameAchievements GetManual(uint appId, Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-            List<Models.Achievement> AllAchievements = new List<Models.Achievement>();
+            List<Models.Achievement> allAchievements = new List<Models.Achievement>();
 
             if (appId == 0)
             {
@@ -284,7 +275,7 @@ namespace SuccessStory.Clients
             {
                 Logger.Info($"SteamApi.GetAchievements()");
 
-                AllAchievements = steamAchievements.Select(x => new Models.Achievement
+                allAchievements = steamAchievements.Select(x => new Models.Achievement
                 {
                     ApiName = x.Id,
                     Name = x.Name,
@@ -295,13 +286,12 @@ namespace SuccessStory.Clients
                     IsHidden = x.IsHidden,
                     Percent = x.Percent
                 }).ToList();
-                gameAchievements.Items = AllAchievements;
+                gameAchievements.Items = allAchievements;
                 gameAchievements.IsManual = true;
             }
 
             return gameAchievements;
         }
-
 
         public void SetRarity(uint appId, GameAchievements gameAchievements)
         {
@@ -319,8 +309,8 @@ namespace SuccessStory.Clients
             PluginDatabase.AddOrUpdate(gameAchievements);
         }
 
-
         #region Configuration
+
         // TODO Rewrite
         public override bool ValidateConfiguration()
         {
@@ -392,8 +382,8 @@ namespace SuccessStory.Clients
         {
             return IsLocal ? PluginDatabase.PluginSettings.Settings.EnableLocal : PluginDatabase.PluginSettings.Settings.EnableSteam;
         }
-        #endregion
 
+        #endregion
 
         public void SetLocal()
         {
@@ -405,8 +395,8 @@ namespace SuccessStory.Clients
             IsManual = true;
         }
 
-
         #region Steam
+
         public List<SearchResult> SearchGame(string name)
         {
             List<SearchResult> searchGames = new List<SearchResult>();
@@ -462,226 +452,23 @@ namespace SuccessStory.Clients
             return searchGames;
         }
 
-
-        /*
-        // TODO Use "profileurl" in "ISteamUser"
-        // TODO Utility after updated GetAchievementsByWeb()
-        private string FindHiddenDescription(uint AppId, string DisplayName, bool TryByName = false)
+        private List<Models.Achievement> GetProgressionByWeb(List<Models.Achievement> achievements, Game game)
         {
-            string url = string.Empty;
-            string ResultWeb = string.Empty;
-            bool noData = true;
-
-            // Get data
-            if (HtmlDocument == null)
+            var achievementsProgression = SteamApi.GetProgressionByWeb(uint.Parse(game.GameId), SteamApi.CurrentAccountInfos);
+            foreach(var achievement in achievements)
             {
-                if (!TryByName)
+                var achievementProgression = achievementsProgression.FirstOrDefault(x => x.Id.IsEqual(achievement.ApiName));
+                if (achievementProgression != null)
                 {
-                    Common.LogDebug(true, $"FindHiddenDescription() for {SteamApi.CurrentAccountInfos.UserId} - {AppId}");
-                    url = string.Format(UrlProfilById, SteamApi.CurrentAccountInfos.UserId, AppId, LocalLang);
-                    try
+                    achievement.Progression = new AchProgression
                     {
-                        List<HttpCookie> cookies = SteamApi.GetStoredCookies();
-                        ResultWeb = Web.DownloadStringData(url, cookies).GetAwaiter().GetResult();
-                    }
-                    catch (WebException ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
-                }
-                else
-                {
-                    Common.LogDebug(true, $"FindHiddenDescription() for {SteamApi.CurrentAccountInfos.Pseudo} - {AppId}");
-                    url = string.Format(UrlProfilByName, SteamApi.CurrentAccountInfos.Pseudo, AppId, LocalLang);
-                    try
-                    {
-                        List<HttpCookie> cookies = SteamApi.GetStoredCookies();
-                        ResultWeb = Web.DownloadStringData(url, cookies).GetAwaiter().GetResult();
-                    }
-                    catch (WebException ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
-                }
-
-                if (!ResultWeb.IsNullOrEmpty())
-                {
-                    HtmlParser parser = new HtmlParser();
-                    HtmlDocument = parser.Parse(ResultWeb);
-
-                    if (HtmlDocument.QuerySelectorAll("div.achieveRow").Length != 0)
-                    {
-                        noData = false;
-                    }
-                }
-
-                if (!TryByName && noData)
-                {
-                    HtmlDocument = null;
-                    return FindHiddenDescription(AppId, DisplayName, TryByName = true);
-                }
-                else if (noData)
-                {
-                    return string.Empty;
+                        Value = achievementProgression.Value,
+                        Max = achievementProgression.Max
+                    };
                 }
             }
 
-            // Find the achievement description
-            if (HtmlDocument != null)
-            {
-                foreach (IElement achieveRow in HtmlDocument.QuerySelectorAll("div.achieveRow"))
-                {
-                    try
-                    {
-                        if (achieveRow.QuerySelector("h3").InnerHtml.IsEqual(DisplayName))
-                        {
-                            string TempDescription = achieveRow.QuerySelector("h5").InnerHtml;
-
-                            if (TempDescription.Contains("steamdb_achievement_spoiler"))
-                            {
-                                TempDescription = achieveRow.QuerySelector("h5 span").InnerHtml;
-                                return WebUtility.HtmlDecode(TempDescription.Trim());
-                            }
-                            else
-                            {
-                                return WebUtility.HtmlDecode(TempDescription.Trim());
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
-                    }
-                }
-            }
-
-            return string.Empty;
-        }
-        */
-
-
-        private List<Models.Achievement> GetProgressionByWeb(List<Models.Achievement> Achievements, string Url, bool isRetry = false)
-        {
-            string ResultWeb = string.Empty;
-            try
-            {
-                Url += "&panorama=please";
-                List<HttpCookie> cookies = SteamApi.GetStoredCookies();
-                ResultWeb = Web.DownloadStringData(Url, cookies, string.Empty, true).GetAwaiter().GetResult();
-
-                int index = ResultWeb.IndexOf("var g_rgAchievements = ");
-                if (index > -1)
-                {
-                    ResultWeb = ResultWeb.Substring(index + "var g_rgAchievements = ".Length);
-
-                    index = ResultWeb.IndexOf("var g_rgLeaderboards");
-                    ResultWeb = ResultWeb.Substring(0, index).Trim();
-
-                    ResultWeb = ResultWeb.Substring(0, ResultWeb.Length - 1).Trim();
-
-                    dynamic dataByWeb = Serialization.FromJson<dynamic>(ResultWeb);
-                    if (dataByWeb == null)
-                    {
-                        Logger.Warn($"No g_rgAchievements data");
-                        return Achievements;
-                    }
-
-                    dynamic OpenData = dataByWeb["open"];
-                    foreach (dynamic dd in OpenData)
-                    {
-                        string stringData = Serialization.ToJson(dd.Value);
-                        SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
-
-                        if (!(steamAchievementData.Progress is string))
-                        {
-                            double.TryParse(steamAchievementData.Progress["min_val"].ToString(), out double min);
-                            double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
-                            double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
-
-                            Models.Achievement found = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
-                            if (found != null)
-                            {
-                                found.Progression = new AchProgression
-                                {
-                                    Min = min,
-                                    Max = max,
-                                    Value = val,
-                                };
-                            }
-                        }
-                    }
-
-                    dynamic ClosedData = dataByWeb["closed"];
-                    foreach (dynamic dd in ClosedData)
-                    {
-                        string stringData = Serialization.ToJson(dd.Value);
-                        SteamAchievementData steamAchievementData = Serialization.FromJson<SteamAchievementData>(stringData);
-
-                        if (!(steamAchievementData.Progress is string))
-                        {
-                            double.TryParse(steamAchievementData.Progress["min_val"].ToString(), out double min);
-                            double.TryParse(steamAchievementData.Progress["max_val"].ToString(), out double max);
-                            double.TryParse(steamAchievementData.Progress["currentVal"].ToString(), out double val);
-
-                            Models.Achievement found = Achievements.Find(x => x.ApiName.IsEqual(steamAchievementData.RawName));
-                            if (found != null)
-                            {
-                                found.Progression = new AchProgression
-                                {
-                                    Min = min,
-                                    Max = max,
-                                    Value = val,
-                                };
-                            }
-                        }
-                    }
-                }
-                else if (ResultWeb.IndexOf("achieveRow") > -1)
-                {
-                    IHtmlDocument htmlDocument = new HtmlParser().Parse(ResultWeb);
-
-                    htmlDocument = new HtmlParser().Parse(ResultWeb);
-                    foreach (IElement el in htmlDocument.QuerySelectorAll(".achieveRow"))
-                    {
-                        string UrlUnlocked = el.QuerySelector(".achieveImgHolder img")?.GetAttribute("src") ?? string.Empty;
-                        string Name = el.QuerySelector(".achieveTxtHolder h3").InnerHtml;
-                        string Description = el.QuerySelector(".achieveTxtHolder h5").InnerHtml;
-
-                        foreach (IElement progress in el.QuerySelectorAll(".progressText"))
-                        {
-                            string[] data = progress.InnerHtml.Split('/');
-                            double min = 0;
-                            _ = double.TryParse(data[1].Trim().Replace(",", string.Empty), out double max);
-                            _ = double.TryParse(data[0].Trim().Replace(",", string.Empty), out double val);
-
-                            Models.Achievement found = Achievements.Find(x => x.Name.IsEqual(Name));
-                            if (found != null)
-                            {
-                                found.Progression = new AchProgression
-                                {
-                                    Min = min,
-                                    Max = max,
-                                    Value = val,
-                                };
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Common.LogDebug(true, $"No achievement data on {Url}");
-                    if (!isRetry)
-                    {
-                        return GetProgressionByWeb(Achievements, Url, true);
-                    }
-                }
-            }
-            catch (WebException ex)
-            {
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
-            }
-
-            return Achievements;
+            return achievements;
         }
 
 
@@ -691,26 +478,7 @@ namespace SuccessStory.Clients
             provider.SetLocal();
             return provider;
         }
-        #endregion
 
-
-        #region Errors
-        public virtual void ShowNotificationPluginNoPublic(string Message)
-        {
-            Logger.Warn($"{ClientName} user is not public");
-
-            API.Instance.Notifications.Add(new NotificationMessage(
-                $"{PluginDatabase.PluginName}-{ClientName.RemoveWhiteSpace()}-nopublic",
-                $"{PluginDatabase.PluginName}\r\n{Message}",
-                NotificationType.Error,
-                () =>
-                {
-                    ResetCachedConfigurationValidationResult();
-                    ResetCachedIsConnectedResult();
-                    _ = PluginDatabase.Plugin.OpenSettingsView();
-                }
-            ));
-        }
         #endregion
     }
 }
