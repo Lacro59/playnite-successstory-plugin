@@ -1,5 +1,4 @@
 ﻿using Playnite.SDK;
-using Playnite.SDK.Data;
 using CommonPluginsShared;
 using SuccessStory.Models;
 using System;
@@ -25,30 +24,47 @@ namespace SuccessStory.Clients
 {
     public class SteamAchievements : GenericAchievements
     {
+        /// <summary>
+        /// Gets the Steam API instance from the plugin.
+        /// </summary>
         private SteamApi SteamApi => SuccessStory.SteamApi;
 
+        /// <summary>
+        /// Gets or sets the last loaded HTML document (if any).
+        /// </summary>
         private IHtmlDocument HtmlDocument { get; set; } = null;
 
+        /// <summary>
+        /// Indicates whether local achievement data should be used.
+        /// </summary>
         private bool IsLocal { get; set; } = false;
+
+        /// <summary>
+        /// Indicates whether manual achievement data loading is enabled.
+        /// </summary>
         private bool IsManual { get; set; } = false;
 
         #region Urls
 
         private static string UrlBase => @"https://steamcommunity.com";
-        private static string UrlProfil => UrlBase + @"/my/profile";
         private static string UrlProfilById => UrlBase + @"/profiles/{0}/stats/{1}?tab=achievements&l={2}";
-        private static string UrlProfilByName => UrlBase + @"/id/{0}/stats/{1}?tab=achievements&l={2}";
-
-        private static string UrlAchievements => UrlBase + @"/stats/{0}/achievements/?l={1}";
-
         private static string UrlSearch => @"https://store.steampowered.com/search/?term={0}&ignore_preferences=1&category1=998&ndl=1";
-        
+
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SteamAchievements"/> class.
+        /// </summary>
         public SteamAchievements() : base("Steam", CodeLang.GetSteamLang(API.Instance.ApplicationSettings.Language))
         {
         }
 
+        /// <summary>
+        /// Retrieves the achievements for the specified game.
+        /// This may involve using the Steam API or loading local/manual data.
+        /// </summary>
+        /// <param name="game">The game for which achievements are retrieved.</param>
+        /// <returns>A <see cref="GameAchievements"/> object containing the achievements.</returns>
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
@@ -56,7 +72,6 @@ namespace SuccessStory.Clients
             List<GameStats> allStats = new List<GameStats>();
 
             uint appId = 0;
-
 
             // Get Steam configuration if exist.
             if (!IsConfigured())
@@ -179,12 +194,18 @@ namespace SuccessStory.Clients
             }
 
             SetRarity(appId, gameAchievements);
-            //SetMissingDescription(appId, gameAchievements);
             gameAchievements.SetRaretyIndicator();
 
             return gameAchievements;
         }
 
+        /// <summary>
+        /// Retrieves achievements for a specific game and app ID.
+        /// Used for cases where the game ID may be missing or ambiguous.
+        /// </summary>
+        /// <param name="game">The Playnite game object.</param>
+        /// <param name="appId">The Steam App ID of the game.</param>
+        /// <returns>Game achievements for the provided App ID.</returns>
         public GameAchievements GetAchievements(Game game, uint appId)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
@@ -254,12 +275,17 @@ namespace SuccessStory.Clients
             }
 
             SetRarity(appId, gameAchievements);
-            //SetMissingDescription(appId, gameAchievements);
             gameAchievements.SetRaretyIndicator();
 
             return gameAchievements;
         }
 
+        /// <summary>
+        /// Loads achievements from Steam without authentication (manual schema parsing).
+        /// </summary>
+        /// <param name="appId">Steam App ID of the game.</param>
+        /// <param name="game">The game object.</param>
+        /// <returns>Game achievements parsed manually.</returns>
         private GameAchievements GetManual(uint appId, Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
@@ -293,6 +319,11 @@ namespace SuccessStory.Clients
             return gameAchievements;
         }
 
+        /// <summary>
+        /// Sets rarity information and gamer score for the given achievements.
+        /// </summary>
+        /// <param name="appId">The Steam App ID.</param>
+        /// <param name="gameAchievements">The achievements to update.</param>
         public void SetRarity(uint appId, GameAchievements gameAchievements)
         {
             ObservableCollection<GameAchievement> steamAchievements = SteamApi.GetAchievementsSchema(appId.ToString()).Item2;
@@ -311,6 +342,10 @@ namespace SuccessStory.Clients
 
         #region Configuration
 
+        /// <summary>
+        /// Validates that the plugin is properly configured and the Steam account is connected.
+        /// </summary>
+        /// <returns>True if valid, otherwise false.</returns>
         // TODO Rewrite
         public override bool ValidateConfiguration()
         {
@@ -360,6 +395,10 @@ namespace SuccessStory.Clients
             }
         }
 
+        /// <summary>
+        /// Indicates whether the user is currently connected to their Steam account.
+        /// </summary>
+        /// <returns>True if connected, otherwise false.</returns>
         public override bool IsConnected()
         {
             if (CachedIsConnectedResult == null)
@@ -373,11 +412,19 @@ namespace SuccessStory.Clients
             return (bool)CachedIsConnectedResult;
         }
 
+        /// <summary>
+        /// Indicates whether the plugin has been configured for Steam usage.
+        /// </summary>
+        /// <returns>True if configured, otherwise false.</returns>
         public override bool IsConfigured()
         {
             return SteamApi.IsConfigured();
         }
 
+        /// <summary>
+        /// Returns whether Steam achievements are enabled in plugin settings.
+        /// </summary>
+        /// <returns>True if enabled, otherwise false.</returns>
         public override bool EnabledInSettings()
         {
             return IsLocal ? PluginDatabase.PluginSettings.Settings.EnableLocal : PluginDatabase.PluginSettings.Settings.EnableSteam;
@@ -385,11 +432,17 @@ namespace SuccessStory.Clients
 
         #endregion
 
+        /// <summary>
+        /// Forces achievement loading to use local files (for emulators or offline usage).
+        /// </summary>
         public void SetLocal()
         {
             IsLocal = true;
         }
 
+        /// <summary>
+        /// Enables manual parsing of achievement schemas.
+        /// </summary>
         public void SetManual()
         {
             IsManual = true;
@@ -397,6 +450,12 @@ namespace SuccessStory.Clients
 
         #region Steam
 
+        /// <summary>
+        /// Searches the Steam store for a game by name.
+        /// Returns a maximum of 10 results.
+        /// </summary>
+        /// <param name="name">Game name to search.</param>
+        /// <returns>List of search results containing app ID and metadata.</returns>
         public List<SearchResult> SearchGame(string name)
         {
             List<SearchResult> searchGames = new List<SearchResult>();
@@ -452,6 +511,12 @@ namespace SuccessStory.Clients
             return searchGames;
         }
 
+        /// <summary>
+        /// Tries to enrich achievements with progression info scraped from the Steam community web page.
+        /// </summary>
+        /// <param name="achievements">Achievements to enrich.</param>
+        /// <param name="game">The game being processed.</param>
+        /// <returns>List of updated achievements.</returns>
         private List<Models.Achievement> GetProgressionByWeb(List<Models.Achievement> achievements, Game game)
         {
             var achievementsProgression = SteamApi.GetProgressionByWeb(uint.Parse(game.GameId), SteamApi.CurrentAccountInfos);
@@ -471,7 +536,10 @@ namespace SuccessStory.Clients
             return achievements;
         }
 
-
+        /// <summary>
+        /// Gets a Steam achievements provider pre-configured for local usage.
+        /// </summary>
+        /// <returns>A <see cref="SteamAchievements"/> instance set to local mode.</returns>
         public static SteamAchievements GetLocalSteamAchievementsProvider()
         {
             SteamAchievements provider = new SteamAchievements();
