@@ -64,7 +64,7 @@
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">已忽略游戏</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Group Steam achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">聚集 Steam 成就</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Exophase（仅为了得到本地化的成就）</sys:String>
 
@@ -187,7 +187,7 @@
 
     <!-- SuccessStoryOneGameView -->
 
-    <sys:String x:Key="LOCSuccessStoryBaseGame">Base game</sys:String>
+    <sys:String x:Key="LOCSuccessStoryBaseGame">基础游戏</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">首次解锁</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">上次解锁</sys:String>
