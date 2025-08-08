@@ -49,7 +49,7 @@ Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">El usuario de Battle.net no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">El usuario de Overwatch de Battle.net no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateSc2">El usuario de Battle.net StarCraft II no está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">Game Jolt is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsGameJoltDisabled">Game Jolt está activado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicDisabled">Epic está activado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEpicNoAuthenticate">El usuario de Epic no está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGw2BadConfig">Guild Wars2 no se ha configurado correctamente en la configuración</sys:String>
@@ -88,7 +88,7 @@ Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Habilitar logros de StarCraft II</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableWowAchievements">Activa los logros de World of Warcraft</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGw2Achievements">Habilitar los logros de Guild Wars 2</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements">Enable Game Jolt achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableGameJoltAchievements"></sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Desactivar el uso de la API (Usar cuando no tienes una clave API)</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Carpeta de usuario</sys:String>
