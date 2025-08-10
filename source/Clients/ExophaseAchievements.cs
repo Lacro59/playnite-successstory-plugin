@@ -232,29 +232,31 @@ namespace SuccessStory.Clients
                 var cookies = GetCookies();
                 if (cookies == null || cookies.Count == 0)
                 {
+                    Logger.Warn("Exophase: no cookies present – user considered disconnected.");
                     return false;
                 }
                 cookies.ForEach(cookie => webViewOffscreen.SetCookies(UrlExophaseAccount, cookie));
 
                 // 2. Prepare asynchronous wait
-                var loadingCompleted = new ManualResetEventSlim(false);
-                webViewOffscreen.LoadingChanged += (s, e) =>
+                using (var loadingCompleted = new ManualResetEventSlim(false))
                 {
-                    if (!e.IsLoading)
+                    webViewOffscreen.LoadingChanged += (s, e) =>
                     {
-                        loadingCompleted.Set();
-                    }
-                };
+                        if (!e.IsLoading)
+                        {
+                            loadingCompleted.Set();
+                        }
+                    };
 
-                // 3. Navigate and wait for page to be fully loaded
-                webViewOffscreen.Navigate(UrlExophaseAccount);
-                TimeSpan waitTimeout = TimeSpan.FromSeconds(30);
-                if (!loadingCompleted.Wait(waitTimeout))
-                {
-                    Logger.Error($"Timeout during authentication status check after {waitTimeout.TotalSeconds} seconds.");
-                    webViewOffscreen.DeleteDomainCookies(".exophase.com");
-                    webViewOffscreen.Dispose();
-                    return false;
+                    // 3. Navigate and wait for page to be fully loaded
+                    webViewOffscreen.Navigate(UrlExophaseAccount);
+                    TimeSpan waitTimeout = TimeSpan.FromSeconds(30);
+                    if (!loadingCompleted.Wait(waitTimeout))
+                    {
+                        Logger.Error($"Timeout during authentication status check after {waitTimeout.TotalSeconds} seconds.");
+                        webViewOffscreen.DeleteDomainCookies(".exophase.com");
+                        return false;
+                    }
                 }
 
                 // 4. Get content and check login
@@ -267,7 +269,6 @@ namespace SuccessStory.Clients
                         .Where(c => c.Domain.IsEqual(".exophase.com"))
                         .ToList();
                     webViewOffscreen.DeleteDomainCookies(".exophase.com");
-                    webViewOffscreen.Dispose();
                     SetCookies(refreshedCookies);
                 }
 
