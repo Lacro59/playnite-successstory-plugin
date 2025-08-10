@@ -228,51 +228,56 @@ namespace SuccessStory.Clients
 
             using (IWebView webViewOffscreen = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
             {
-                // 1. Set cookies
-                var cookies = GetCookies();
-                if (cookies == null || cookies.Count == 0)
+                try
                 {
-                    Logger.Warn("Exophase: no cookies present – user considered disconnected.");
-                    return false;
-                }
-                cookies.ForEach(cookie => webViewOffscreen.SetCookies(UrlExophaseAccount, cookie));
-
-                // 2. Prepare asynchronous wait
-                using (var loadingCompleted = new ManualResetEventSlim(false))
-                {
-                    webViewOffscreen.LoadingChanged += (s, e) =>
+                    // 1. Set cookies
+                    var cookies = GetCookies();
+                    if (cookies == null || cookies.Count == 0)
                     {
-                        if (!e.IsLoading)
-                        {
-                            loadingCompleted.Set();
-                        }
-                    };
-
-                    // 3. Navigate and wait for page to be fully loaded
-                    webViewOffscreen.Navigate(UrlExophaseAccount);
-                    TimeSpan waitTimeout = TimeSpan.FromSeconds(30);
-                    if (!loadingCompleted.Wait(waitTimeout))
-                    {
-                        Logger.Error($"Timeout during authentication status check after {waitTimeout.TotalSeconds} seconds.");
-                        webViewOffscreen.DeleteDomainCookies(".exophase.com");
+                        Logger.Warn("Exophase: no cookies present – user considered disconnected.");
                         return false;
                     }
+                    cookies.ForEach(cookie => webViewOffscreen.SetCookies(UrlExophaseAccount, cookie));
+
+                    // 2. Prepare asynchronous wait
+                    using (var loadingCompleted = new ManualResetEventSlim(false))
+                    {
+                        webViewOffscreen.LoadingChanged += (s, e) =>
+                        {
+                            if (!e.IsLoading)
+                            {
+                                loadingCompleted.Set();
+                            }
+                        };
+
+                        // 3. Navigate and wait for page to be fully loaded
+                        webViewOffscreen.Navigate(UrlExophaseAccount);
+                        TimeSpan waitTimeout = TimeSpan.FromSeconds(30);
+                        if (!loadingCompleted.Wait(waitTimeout))
+                        {
+                            Logger.Error($"Timeout during authentication status check after {waitTimeout.TotalSeconds} seconds.");
+                            return false;
+                        }
+                    }
+
+                    // 4. Get content and check login
+                    string dataExophase = webViewOffscreen.GetPageSource();
+                    bool isConnected = dataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
+
+                    if (isConnected)
+                    {
+                        var refreshedCookies = (webViewOffscreen.GetCookies() ?? cookies ?? new List<HttpCookie>())
+                            .Where(c => c.Domain.IsEqual(".exophase.com"))
+                            .ToList();
+                        SetCookies(refreshedCookies);
+                    }
+
+                    return isConnected;
                 }
-
-                // 4. Get content and check login
-                string dataExophase = webViewOffscreen.GetPageSource();
-                bool isConnected = dataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
-
-                if (isConnected)
+                finally
                 {
-                    var refreshedCookies = (webViewOffscreen.GetCookies() ?? cookies ?? new List<HttpCookie>())
-                        .Where(c => c.Domain.IsEqual(".exophase.com"))
-                        .ToList();
                     webViewOffscreen.DeleteDomainCookies(".exophase.com");
-                    SetCookies(refreshedCookies);
                 }
-
-                return isConnected;
             }
         }
 
