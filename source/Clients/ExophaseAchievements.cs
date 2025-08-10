@@ -265,7 +265,7 @@ namespace SuccessStory.Clients
 
                 if (isConnected)
                 {
-                    var refreshedCookies = webViewOffscreen.GetCookies()
+                    var refreshedCookies = (webViewOffscreen.GetCookies() ?? cookies ?? new List<HttpCookie>())
                         .Where(c => c.Domain.IsEqual(".exophase.com"))
                         .ToList();
                     webViewOffscreen.DeleteDomainCookies(".exophase.com");
