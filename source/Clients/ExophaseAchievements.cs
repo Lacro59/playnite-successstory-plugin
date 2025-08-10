@@ -218,17 +218,6 @@ namespace SuccessStory.Clients
             WebViewOffscreen.Dispose();
         }
 
-        //private bool GetIsUserLoggedIn()
-        //{
-        //    string dataExophase = Web.DownloadStringData(UrlExophaseAccount, GetCookies()).GetAwaiter().GetResult();
-        //    bool isConnected = dataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
-        //    if (isConnected)
-        //    {
-        //        SetCookies(GetCookies());
-        //    }
-        //    return isConnected;
-        //}
-
         private bool GetIsUserLoggedIn()
         {
             WebViewSettings webViewSettings = new WebViewSettings
