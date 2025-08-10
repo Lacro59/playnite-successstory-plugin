@@ -228,11 +228,11 @@ namespace SuccessStory.Clients
 
             using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
             {
-                // 1. Imposta i cookie
+                // 1. Set cookies
                 List<HttpCookie> cookies = GetCookies();
                 cookies.ForEach(cookie => webView.SetCookies(UrlExophaseAccount, cookie));
 
-                // 2. Prepara l'attesa asincrona
+                // 2. Prepare asynchronous wait
                 var loadingCompleted = new ManualResetEventSlim(false);
                 webView.LoadingChanged += (s, e) =>
                 {
@@ -242,11 +242,11 @@ namespace SuccessStory.Clients
                     }
                 };
 
-                // 3. Naviga e aspetta che la pagina sia completamente caricata
+                // 3. Navigate and wait for page to be fully loaded
                 webView.Navigate(UrlExophaseAccount);
                 loadingCompleted.Wait();
 
-                // 4. Ottieni il contenuto e controlla il login
+                // 4. Get content and check login
                 string dataExophase = webView.GetPageSource();
                 bool isConnected = dataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
 
