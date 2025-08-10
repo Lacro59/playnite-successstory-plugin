@@ -248,7 +248,12 @@ namespace SuccessStory.Clients
 
                 // 3. Navigate and wait for page to be fully loaded
                 webView.Navigate(UrlExophaseAccount);
-                loadingCompleted.Wait();
+                TimeSpan waitTimeout = TimeSpan.FromSeconds(30);
+                if (!loadingCompleted.Wait(waitTimeout))
+                {
+                    Logger.Error($"Timeout during authentication status check after {waitTimeout.TotalSeconds} seconds.");
+                    return false;
+                }
 
                 // 4. Get content and check login
                 string dataExophase = webView.GetPageSource();
