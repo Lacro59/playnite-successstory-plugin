@@ -218,15 +218,56 @@ namespace SuccessStory.Clients
             WebViewOffscreen.Dispose();
         }
 
+        //private bool GetIsUserLoggedIn()
+        //{
+        //    string dataExophase = Web.DownloadStringData(UrlExophaseAccount, GetCookies()).GetAwaiter().GetResult();
+        //    bool isConnected = dataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
+        //    if (isConnected)
+        //    {
+        //        SetCookies(GetCookies());
+        //    }
+        //    return isConnected;
+        //}
+
         private bool GetIsUserLoggedIn()
         {
-            string dataExophase = Web.DownloadStringData(UrlExophaseAccount, GetCookies()).GetAwaiter().GetResult();
-            bool isConnected = dataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
-            if (isConnected)
+            WebViewSettings webViewSettings = new WebViewSettings
             {
-                SetCookies(GetCookies());
+                UserAgent = Web.UserAgent,
+                JavaScriptEnabled = true
+            };
+
+            using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
+            {
+                // 1. Imposta i cookie
+                List<HttpCookie> cookies = GetCookies();
+                cookies.ForEach(cookie => webView.SetCookies(UrlExophaseAccount, cookie));
+
+                // 2. Prepara l'attesa asincrona
+                var loadingCompleted = new ManualResetEventSlim(false);
+                webView.LoadingChanged += (s, e) =>
+                {
+                    if (!e.IsLoading)
+                    {
+                        loadingCompleted.Set();
+                    }
+                };
+
+                // 3. Naviga e aspetta che la pagina sia completamente caricata
+                webView.Navigate(UrlExophaseAccount);
+                loadingCompleted.Wait();
+
+                // 4. Ottieni il contenuto e controlla il login
+                string dataExophase = webView.GetPageSource();
+                bool isConnected = dataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
+
+                if (isConnected)
+                {
+                    SetCookies(cookies);
+                }
+
+                return isConnected;
             }
-            return isConnected;
         }
 
 
