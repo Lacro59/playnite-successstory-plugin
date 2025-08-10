@@ -229,7 +229,11 @@ namespace SuccessStory.Clients
             using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
             {
                 // 1. Set cookies
-                List<HttpCookie> cookies = GetCookies();
+                var cookies = GetCookies();
+                if (cookies == null || cookies.Count == 0)
+                {
+                    return false;
+                }
                 cookies.ForEach(cookie => webView.SetCookies(UrlExophaseAccount, cookie));
 
                 // 2. Prepare asynchronous wait
