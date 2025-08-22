@@ -228,22 +228,22 @@ Especialmente útil para los logros de Xbox con sus imágenes grandes que se red
 
     <!-- Genshin Impact -->
 
-    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Enable Genshin Impact achievements</sys:String>
+    <sys:String x:Key="LOCEnableGenshinImpactAchievements">Habilitar logros de Genshin Impact</sys:String>
     <sys:String x:Key="LOCAddGenshinImpact">Añadir Genshin Impact</sys:String>
 
     <!-- Wuthering Waves -->
 
-    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Enable Wuthering Waves achievements</sys:String>
-    <sys:String x:Key="LOCAddWutheringWaves">Add Wuthering Waves</sys:String>
+    <sys:String x:Key="LOCEnableWutheringWavesAchievements">Habilitar logros de Wuthering Waves</sys:String>
+    <sys:String x:Key="LOCAddWutheringWaves">Añadir Wuthering Waves</sys:String>
 
     <!-- Honkai Star Rail -->
 
-    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Enable Honkai Star Rail achievements</sys:String>
-    <sys:String x:Key="LOCAddHonkaiStarRail">Add Honkai Star Rails</sys:String>
+    <sys:String x:Key="LOCEnableHonkaiStarRailAchievements">Habilitar logros de Honkai Star Rails</sys:String>
+    <sys:String x:Key="LOCAddHonkaiStarRail">Añadir Honkai Star Rails</sys:String>
 
     <!-- Zenless Zone Zero -->
 
-    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Enable Zenless Zone Zero achievements</sys:String>
+    <sys:String x:Key="LOCEnableZenlessZoneZeroAchievements">Habilitar logros de Zenless Zone Zero</sys:String>
     <sys:String x:Key="LOCAddZenlessZoneZero">Añadir Zenless Zone Zero</sys:String>
 
     <!-- Overwatch -->
