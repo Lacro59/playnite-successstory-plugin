@@ -8,7 +8,7 @@
     
     <sys:String x:Key="LOCSuccessStoryHiddenTrophy">Прихований трофей</sys:String>
 
-    <sys:String x:Key="LOCSsRefreshRaretyManual">Оновити рідкість для користувацьких досягнень</sys:String>
+    <sys:String x:Key="LOCSsRefreshRaretyManual">Оновити рідкісність для користувацьких досягнень</sys:String>
     <sys:String x:Key="LOCSsRefreshEstimateTimeManual">Оновити приблизний час користувацьких досягнень</sys:String>
     
     <!-- MainView -->
@@ -137,8 +137,8 @@
     <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Показувати прихований значок якщо досягнення не здобуте</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Показувати прихований заголовок якщо досягнення не здобуте</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Показувати прихований опис коли досягнення заблоковано</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Показувати індикатор рідкості на досягненні</sys:String>
-    <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Показати значення рідкості із зображенням досягнень</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Показувати індикатор рідкісності на досягненні</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Показати значення рідкісності із зображенням досягнень</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Відображати лише досягнення гри, вибраної з ігрового меню</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableAuto100PercentCompleted">Автоматично встановлювати статус завершення на 100%, коли всі досягнення здобуто</sys:String>
     <sys:String x:Key="LOCSuccessStoryListGames">Список ігор</sys:String>
@@ -166,8 +166,8 @@
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecentToolTip" xml:space="preserve">Скидання та завантаження досягнень встановлених ігор. (Використовуйте, якщо виникли проблеми з досягненнями)</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshAllDataToolTip" xml:space="preserve">Скидання та завантаження досягнень всіх ігор. (Використовуйте, якщо виникли проблеми з досягненнями)</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryRarityConfig">Налаштування рідкості</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUseUltraRare">Використовувати ультра-рідкісні досягнення</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRarityConfig">Налаштування рідкісності</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUseUltraRare">Використовувати ультрарідкісні досягнення</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryEnableImageCache">Ввімкнути кешування зображень досягнень *</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableImageCacheToolTip" xml:space="preserve">Неблокуючий процес, який може трохи збільшити використання пам'яті при кешуванні.
@@ -201,7 +201,7 @@
     <sys:String x:Key="LOCSuccessStoryCommon">Поширені</sys:String>
     <sys:String x:Key="LOCSuccessStoryNoCommon">Не поширені</sys:String>
     <sys:String x:Key="LOCSuccessStoryRare">Рідкісні</sys:String>
-    <sys:String x:Key="LOCSuccessStoryUltraRare">Ультра-рідкісні</sys:String>
+    <sys:String x:Key="LOCSuccessStoryUltraRare">Ультрарідкісні</sys:String>
 
     <!-- SuccessStoryView -->
 

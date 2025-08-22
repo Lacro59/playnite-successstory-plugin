@@ -20,15 +20,15 @@
     <sys:String x:Key="LOCSuccessStoryViewGames">Посмотреть игровые достижения</sys:String>
     <sys:String x:Key="LOCSuccessStoryViewGame">Просмотр достижений в игре</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryIgnored">Игнорировать игр</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotIgnored">Не игнорировать игр</sys:String>
+    <sys:String x:Key="LOCSuccessStoryIgnored">Игнорировать игру</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotIgnored">Не игнорировать игру</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryHiddenAchievement">Скрытое достижение</sys:String>
-    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Hide games with no unlocked achievement</sys:String>
+    <sys:String x:Key="LOCSuccessStoryHideNoUnlockedGame">Скрыть игры без открытых достижений</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamPrivate">Профиль Steam не является публичным</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Steam game &quot;{0}&quot; is not public
-You must check &quot;{1}&quot; in plugin settings</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsSteamGamePrivate" xml:space="preserve">Игра Steam &quot;{0}&quot; не является публичной
+Вы должны проверить &quot;{1}&quot; в настройках плагина</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamDisabled">Steam подключен к Достижениям, но расширение библиотеки было отключено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig">Steam не был правильно настроен в настройка</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsSteamBadConfig1">Нет конфигурации Steam и/или API ключа</sys:String>
@@ -65,7 +65,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryIgnoredGames">Игнорируемые игры</sys:String>
     
-    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Group Steam achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryGroupSteamAchievements">Группировать достижения Steam</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryExophaseOnlyLocalised">Экзофаза (только для локализованных достижений)</sys:String>
 
@@ -134,7 +134,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryIntegrationCompactPartialDisplayLastestOneLine">Показать последнее достижение в одной строке</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewsSettings">Расширения</sys:String>
-    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Показывать скрытую иконку, когда достижение заблокировано</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Показывать скрытое описание, когда достижение разблокировано</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Показывать индикатор редкости у достижения</sys:String>
@@ -193,7 +193,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
 
     <!-- SuccessStoryOneGameView -->
 
-    <sys:String x:Key="LOCSuccessStoryBaseGame">Base game</sys:String>
+    <sys:String x:Key="LOCSuccessStoryBaseGame">Базовая версия игры</sys:String>
     
     <sys:String x:Key="LOCSuccessStoryFirstUnlock">Первое разблокированное</sys:String>
     <sys:String x:Key="LOCSuccessStoryLastUnlock">Последнее разблокированное</sys:String>
