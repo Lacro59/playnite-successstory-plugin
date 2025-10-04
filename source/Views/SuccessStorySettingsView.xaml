@@ -128,7 +128,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox Grid.Column="0" Grid.Row="4" IsChecked="{Binding Settings.EnableOrigin}" VerticalAlignment="Center">
-                                        <Label Content="{DynamicResource LOCSuccessStoryEnableOrigin}" />
+                                        <Label Content="{DynamicResource LOCSuccessStoryEnableEa}" />
                                     </CheckBox>
                                 </Grid>
                             </Expander.Header>

@@ -39,8 +39,8 @@ Você deve verificar &quot;{1}&quot; nas configurações do plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG não foi ajustado corretamente nas configurações</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">A PSN está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">O usuário da PSN não está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">A EA está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Usuário EA não está autenticado</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">A EA está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">Usuário EA não está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">O Xbox está habilitado no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">O usuário do Xbox não está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">O RetroAchievements não foi ajustado corretamente nas configurações</sys:String>
@@ -79,7 +79,7 @@ Você deve verificar &quot;{1}&quot; nas configurações do plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar conquistas Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar conquistas GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Habilitar conquistas Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Habilitar conquistas EA</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Habilitar conquistas EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Habilitar conquistas Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Habilitar conquistas RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Habilitar conquistas RPCS3</sys:String>

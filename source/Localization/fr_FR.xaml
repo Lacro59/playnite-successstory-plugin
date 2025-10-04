@@ -39,8 +39,8 @@ Vous devez sélectionner &quot;{1}&quot; dans la configuration du plugin</sys:St
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Utilisateur PSN n'est pas connecté</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Le support de l'application EA est activé danss SuccessStory mais son intégration Playnite est inactive</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">L'utilisateur EA n'est pas authentifié</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">Le support de l'application EA est activé danss SuccessStory mais son intégration Playnite est inactive</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">L'utilisateur EA n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox non authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements n'a pas été correctement configuré dans les paramètres</sys:String>
@@ -79,7 +79,7 @@ Vous devez sélectionner &quot;{1}&quot; dans la configuration du plugin</sys:St
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Activer les succès Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Activer les succès GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Activer les succès Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Activer les succès EA</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Activer les succès EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Activer les succès Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Activer les succès RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Activer les succès RPCS3</sys:String>

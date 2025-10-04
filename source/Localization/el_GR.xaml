@@ -39,8 +39,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">Το GOG δεν έχει ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">Το PSN είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Ο χρήστης PSN δεν είναι ταυτοποιημένος</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Η EA είναι ενεργοποιημένη στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Ο χρήστης της EA δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">Η EA είναι ενεργοποιημένη στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">Ο χρήστης της EA δεν είναι ταυτοποιημένος</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Το Xbox είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Ο χρήστης Xbox δεν είναι ταυτοποιημένος</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">Τα RetroAchievements δεν έχουν ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
@@ -79,7 +79,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Ενεργοποίηση επιτευγμάτων Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Ενεργοποίηση επιτευγμάτων GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Enable Epic achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable EA achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Enable EA achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Enable Xbox achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Enable RetroAchievements achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Enable RPCS3 achievements</sys:String>

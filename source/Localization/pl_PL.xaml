@@ -39,8 +39,8 @@ Musisz sprawdzić &quot;{1}&quot; w ustawieniach wtyczki</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG nie został poprawnie skonfigurowany w ustawieniach</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN jest włączone w SuccessStory, ale rozszerzenie biblioteki zostało wyłączone w Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Użytkownik PSN nie jest uwierzytelniony</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA jest włączone w SuccessStory, ale rozszerzenie biblioteki zostało wyłączone w Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Użytkownik EA nie jest uwierzytelniony</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA jest włączone w SuccessStory, ale rozszerzenie biblioteki zostało wyłączone w Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">Użytkownik EA nie jest uwierzytelniony</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox jest włączony w SuccessStory ale rozszerzenie biblioteki zostało wyłączone w Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Użytkownik Xbox nie jest uwierzytelniony</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements nie został poprawnie skonfigurowany w ustawieniach</sys:String>
@@ -79,7 +79,7 @@ Musisz sprawdzić &quot;{1}&quot; w ustawieniach wtyczki</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Włącz osiągnięcia Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Włącz osiągnięcia GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Włącz osiągnięcia Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Włącz osiągnięcia EA</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Włącz osiągnięcia EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Włącz osiągnięcia Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Włącz osiągnięcia RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Włącz osiągnięcia RPCS3</sys:String>

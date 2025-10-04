@@ -39,8 +39,8 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG не был правильно настроен в настройка</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN включен в успешную историю, но расширение библиотеки было отключено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Пользователь PSN не аутентифицирован</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA подключен к Достижениям, но расширение библиотеки было отключено в Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA пользователь не авторизован</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA подключен к Достижениям, но расширение библиотеки было отключено в Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA пользователь не авторизован</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox подключен к Достижениям, но расширение библиотеки было отключено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Пользователь Xbox не авторизован</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">РетроДостижения не были правильно настроены в настройка</sys:String>
@@ -79,7 +79,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Включить достижения Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Включить достижения GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Включить достижения Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Включить достижения EA</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Включить достижения EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Включить достижения Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Включить достижения RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Включить достижения RPCS3</sys:String>

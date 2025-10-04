@@ -39,8 +39,8 @@ Du musst in den Plugin die Einstellungen &quot;{1}&quot; überprüfen</sys:Strin
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG wurde in den Einstellungen nicht richtig konfiguriert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN Benutzer ist nicht authentifiziert</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA User ist nicht authentifiziert</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA User ist nicht authentifiziert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox Benutzer ist nicht authentifiziert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements wurden in den Einstellungen nicht richtig konfiguriert</sys:String>
@@ -79,7 +79,7 @@ Du musst in den Plugin die Einstellungen &quot;{1}&quot; überprüfen</sys:Strin
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Steam Errungenschaften aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">GOG Erfolge aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Epic Errungenschaften aktivieren</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">EA Errungenschaften aktivieren</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">EA Errungenschaften aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Xbox Erfolge aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">RetroAchievements Erfolge aktivieren</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">RPCS3 Erfolge aktivieren</sys:String>

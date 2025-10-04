@@ -39,8 +39,8 @@ Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG ayarlarda düzgün yapılandırılmamı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">BaşarıÖyküsü eklentisinde PSN etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN kullanıcı kimliği doğrulanmadı</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">BaşarıÖyküsü eklentisinde EA etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA kullanıcı kimliği doğrulanmadı</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">BaşarıÖyküsü eklentisinde EA etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">BaşarıÖyküsü eklentisinde Xbox etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements ayarlarda düzgün yapılandırılmamı</sys:String>
@@ -79,7 +79,7 @@ Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Steam başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">GOG başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Epic başarımlarını etkinleştir</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">EA başarımlarını etkinleştir</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">EA başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Xbox başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">RetroAchievement başarılarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">RPCS3 başarılarımlarını etkinleştir</sys:String>

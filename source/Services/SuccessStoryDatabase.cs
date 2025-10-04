@@ -55,7 +55,7 @@ namespace SuccessStory.Services
                         // Secure addition of providers
                         TryAddProvider(AchievementSource.GOG, () => new GogAchievements());
                         TryAddProvider(AchievementSource.Epic, () => new EpicAchievements());
-                        TryAddProvider(AchievementSource.Origin, () => new OriginAchievements());
+                        TryAddProvider(AchievementSource.EA, () => new EaAchievements());
                         TryAddProvider(AchievementSource.Overwatch, () => new OverwatchAchievements());
                         TryAddProvider(AchievementSource.Wow, () => new WowAchievements());
                         TryAddProvider(AchievementSource.Playstation, () => new PSNAchievements());
@@ -461,7 +461,7 @@ namespace SuccessStory.Services
             Steam,
             GOG,
             Epic,
-            Origin,
+            EA,
             Xbox,
             RetroAchievements,
             RPCS3,
@@ -548,7 +548,7 @@ namespace SuccessStory.Services
                 case ExternalPlugin.OriginLibrary:
                     if (settings.EnableOrigin)
                     {
-                        return AchievementSource.Origin;
+                        return AchievementSource.EA;
                     }
                     break;
 

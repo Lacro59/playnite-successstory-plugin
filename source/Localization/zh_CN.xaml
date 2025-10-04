@@ -38,8 +38,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">未在设置中正确配置 GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN 已在功成名就中启用，但其库扩展在 Playnite 中禁用</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN 用户未验证</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA 已在功成名就中启用，但其库扩展在 Playnite 中禁用</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA 用户未验证</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA 已在功成名就中启用，但其库扩展在 Playnite 中禁用</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA 用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox 已在功成名就中启用，但其库扩展未在 Playnite 中启用</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox 用户未验证</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">未在设置中正确配置 RetroAchievements</sys:String>
@@ -78,7 +78,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">启用 Steam 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">启用 GOG 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">启用 Epic 成就</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">启用 EA 成就</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">启用 EA 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">启用 Xbox 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">启用 RetroAchievements 成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">启用 RPCS3 成就</sys:String>

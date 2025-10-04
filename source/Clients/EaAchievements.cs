@@ -13,13 +13,13 @@ using Playnite.SDK;
 
 namespace SuccessStory.Clients
 {
-    public class OriginAchievements : GenericAchievements
+    public class EaAchievements : GenericAchievements
     {
         protected static readonly Lazy<EaApi> eaApi = new Lazy<EaApi>(() => new EaApi(PluginDatabase.PluginName));
         internal static EaApi EaApi => eaApi.Value;
 
 
-        public OriginAchievements() : base("EA", CodeLang.GetEaLang(API.Instance.ApplicationSettings.Language), CodeLang.GetCountryFromLast(API.Instance.ApplicationSettings.Language))
+        public EaAchievements() : base("EA", CodeLang.GetEaLang(API.Instance.ApplicationSettings.Language), CodeLang.GetCountryFromLast(API.Instance.ApplicationSettings.Language))
         {
             EaApi.SetLanguage(API.Instance.ApplicationSettings.Language);
         }
@@ -85,7 +85,7 @@ namespace SuccessStory.Clients
         {
             if (!PluginDatabase.PluginSettings.Settings.PluginState.OriginIsEnabled)
             {
-                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsOriginDisabled"));
+                ShowNotificationPluginDisable(ResourceProvider.GetString("LOCSuccessStoryNotificationsEaDisabled"));
                 return false;
             }
             else
