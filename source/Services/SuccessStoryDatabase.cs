@@ -645,9 +645,9 @@ namespace SuccessStory.Services
                 // TODO emulator.BuiltInConfigId = "retroarch" is limited; other emulators has RA
                 if (game.Platforms?.Count > 0)
                 {
-                    string PlatformName = game.Platforms.FirstOrDefault().Name;
-                    Guid PlatformId = game.Platforms.FirstOrDefault().Id;
-                    int consoleID = settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == PlatformId) != null)?.RaConsoleId ?? 0;
+                    string platformName = game.Platforms.FirstOrDefault().Name;
+                    Guid platformId = game.Platforms.FirstOrDefault().Id;
+                    int consoleID = settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == platformId) != null)?.RaConsoleId ?? 0;
                     if (settings.EnableRetroAchievements && consoleID != 0)
                     {
                         return AchievementSource.RetroAchievements;

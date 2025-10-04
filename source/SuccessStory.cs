@@ -296,14 +296,14 @@ namespace SuccessStory
 
             // TODO: for multiple games, either check if any of them could have achievements, or just assume so
             SuccessStoryDatabase.AchievementSource achievementSource = SuccessStoryDatabase.GetAchievementSource(PluginSettings.Settings, gameMenu);
-            bool GameCouldHaveAchievements = achievementSource != SuccessStoryDatabase.AchievementSource.None;
+            bool gameCouldHaveAchievements = achievementSource != SuccessStoryDatabase.AchievementSource.None;
             GameAchievements gameAchievements = PluginDatabase.Get(gameMenu, true);
 
             List<GameMenuItem> gameMenuItems = new List<GameMenuItem>();
 
             if (!gameAchievements.IsIgnored)
             {
-                if (GameCouldHaveAchievements)
+                if (gameCouldHaveAchievements)
                 {
                     if (!PluginSettings.Settings.EnableOneGameView || (PluginSettings.Settings.EnableOneGameView && gameAchievements.HasData))
                     {
@@ -728,7 +728,7 @@ namespace SuccessStory
             }
             else
             {
-                if (GameCouldHaveAchievements)
+                if (gameCouldHaveAchievements)
                 {
                     gameMenuItems.Add(new GameMenuItem
                     {
