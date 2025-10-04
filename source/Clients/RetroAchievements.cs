@@ -446,7 +446,14 @@ namespace SuccessStory.Clients
             IEnumerable<RaConsoleAssociated> consolesAssociated = PluginDatabase.PluginSettings.Settings.RaConsoleAssociateds.Where(x => x.Platforms.Find(y => y.Id == platform.Id) != null);
             if (consolesAssociated.Count() == 0)
             {
-                Logger.Warn($"No ConsoleId find for {game.Name} with Platforms {platform.Name}");
+                string message = string.Format(ResourceProvider.GetString("LOCSuccessStoryNotificationsRetroAchievementsNoConsoleId"), game.Name, platform.Name);
+                Logger.Warn($"No ConsoleId find for {game.Name} with platforms {platform.Name}");
+                API.Instance.Notifications.Add(new NotificationMessage(
+                    $"{PluginDatabase.PluginName}-{ClientName}-NoConsoleId",
+                    $"{PluginDatabase.PluginName}\r\n{message}",
+                    NotificationType.Error,
+                    () => PluginDatabase.Plugin.OpenSettingsView()
+                ));
                 return consoleId;
             }
             else if (consolesAssociated.Count() > 1)
