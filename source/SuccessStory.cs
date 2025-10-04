@@ -1042,18 +1042,18 @@ namespace SuccessStory
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
-            // StoreAPI intialization
+            // StoreAPI Initialization
             SteamApi = new SteamApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
-            SteamApi.Intialization(PluginDatabase.PluginSettings.Settings.SteamStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled && PluginDatabase.PluginSettings.Settings.EnableSteam);
+            SteamApi.Initialization(PluginDatabase.PluginSettings.Settings.SteamStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled && PluginDatabase.PluginSettings.Settings.EnableSteam);
 
             EpicApi = new EpicApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
-            EpicApi.Intialization(PluginDatabase.PluginSettings.Settings.EpicStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.EpicIsEnabled && PluginDatabase.PluginSettings.Settings.EnableEpic);
+            EpicApi.Initialization(PluginDatabase.PluginSettings.Settings.EpicStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.EpicIsEnabled && PluginDatabase.PluginSettings.Settings.EnableEpic);
 
             GogApi = new GogApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
-            GogApi.Intialization(PluginDatabase.PluginSettings.Settings.GogStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.GogIsEnabled && PluginDatabase.PluginSettings.Settings.EnableGog);
+            GogApi.Initialization(PluginDatabase.PluginSettings.Settings.GogStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.GogIsEnabled && PluginDatabase.PluginSettings.Settings.EnableGog);
 
             GameJoltApi = new GameJoltApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
-            GameJoltApi.Intialization(PluginDatabase.PluginSettings.Settings.GameJoltStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.GameJoltIsEnabled && PluginDatabase.PluginSettings.Settings.EnableGameJolt);
+            GameJoltApi.Initialization(PluginDatabase.PluginSettings.Settings.GameJoltStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.GameJoltIsEnabled && PluginDatabase.PluginSettings.Settings.EnableGameJolt);
 
             Task.Run(() =>
             {

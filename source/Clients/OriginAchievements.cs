@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using static CommonPluginsShared.PlayniteTools;
-using CommonPluginsStores.Origin;
+using CommonPluginsStores.Ea;
 using System.Collections.ObjectModel;
 using CommonPluginsStores.Models;
 using System.Linq;
@@ -15,13 +15,13 @@ namespace SuccessStory.Clients
 {
     public class OriginAchievements : GenericAchievements
     {
-        protected static readonly Lazy<OriginApi> originApi = new Lazy<OriginApi>(() => new OriginApi(PluginDatabase.PluginName));
-        internal static OriginApi OriginApi => originApi.Value;
+        protected static readonly Lazy<EaApi> eaApi = new Lazy<EaApi>(() => new EaApi(PluginDatabase.PluginName));
+        internal static EaApi EaApi => eaApi.Value;
 
 
-        public OriginAchievements() : base("EA", CodeLang.GetOriginLang(API.Instance.ApplicationSettings.Language), CodeLang.GetOriginLangCountry(API.Instance.ApplicationSettings.Language))
+        public OriginAchievements() : base("EA", CodeLang.GetEaLang(API.Instance.ApplicationSettings.Language), CodeLang.GetCountryFromLast(API.Instance.ApplicationSettings.Language))
         {
-            OriginApi.SetLanguage(API.Instance.ApplicationSettings.Language);
+            EaApi.SetLanguage(API.Instance.ApplicationSettings.Language);
         }
 
 
@@ -34,14 +34,14 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    GameInfos gameInfos = OriginApi.GetGameInfos(game.GameId, null);
+                    GameInfos gameInfos = EaApi.GetGameInfos(game.GameId, null);
                     if (gameInfos == null)
                     {
                         Logger.Warn($"No gameInfos for {game.GameId}");
                         return null;
                     }
 
-                    ObservableCollection<GameAchievement> originAchievements = OriginApi.GetAchievements(gameInfos.Id2, OriginApi.CurrentAccountInfos);
+                    ObservableCollection<GameAchievement> originAchievements = EaApi.GetAchievements(gameInfos.Id2, EaApi.CurrentAccountInfos);
                     if (originAchievements?.Count > 0)
                     {
                         AllAchievements = originAchievements.Select(x => new Achievement
@@ -61,7 +61,7 @@ namespace SuccessStory.Clients
                     // Set source link
                     if (gameAchievements.HasAchievements)
                     {
-                        gameAchievements.SourcesLink = OriginApi.GetAchievementsSourceLink(game.Name, gameInfos.Id, OriginApi.CurrentAccountInfos);
+                        gameAchievements.SourcesLink = EaApi.GetAchievementsSourceLink(game.Name, gameInfos.Id, EaApi.CurrentAccountInfos);
                     }
                 }
                 catch (Exception ex)
@@ -114,7 +114,7 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    CachedIsConnectedResult = OriginApi.IsUserLoggedIn;
+                    CachedIsConnectedResult = EaApi.IsUserLoggedIn;
                 }
                 catch (Exception ex)
                 {
@@ -134,13 +134,13 @@ namespace SuccessStory.Clients
         public override void ResetCachedConfigurationValidationResult()
         {
             CachedConfigurationValidationResult = null;
-            OriginApi.ResetIsUserLoggedIn();
+            EaApi.ResetIsUserLoggedIn();
         }
 
         public override void ResetCachedIsConnectedResult()
         {
             CachedIsConnectedResult = null;
-            OriginApi.ResetIsUserLoggedIn();
+            EaApi.ResetIsUserLoggedIn();
         }
         #endregion
     }

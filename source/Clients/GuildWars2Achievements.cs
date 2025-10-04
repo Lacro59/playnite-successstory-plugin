@@ -24,7 +24,7 @@ namespace SuccessStory.Clients
         #endregion
 
 
-        public GuildWars2Achievements() : base("GuildWars2", CodeLang.GetOriginLangCountry(API.Instance.ApplicationSettings.Language))
+        public GuildWars2Achievements() : base("GuildWars2", CodeLang.GetCountryFromLast(API.Instance.ApplicationSettings.Language))
         {
 
         }
