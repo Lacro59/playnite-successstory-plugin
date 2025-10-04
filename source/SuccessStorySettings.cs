@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using Playnite.SDK.Models;
 using CommonPluginsShared.Plugins;
-using CommonPluginsStores;
 using CommonPluginsStores.Models;
 
 namespace SuccessStory
