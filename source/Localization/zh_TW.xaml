@@ -14,7 +14,7 @@
     <!-- MainView -->
 
     <sys:String x:Key="LOCSuccessStory">SuccessStory</sys:String>
-    <sys:String x:Key="LOCSuccessStoryAchievements">Achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryAchievements">成就</sys:String>
     <sys:String x:Key="LOCSuccessStoryRetroAchievements">RetroAchievements</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryViewGames">View the games achievements</sys:String>
@@ -95,15 +95,15 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Show separate view for RetroAchievements</sys:String>
 
-    <sys:String x:Key="LOCSuccessStoryDatabase">Database</sys:String>
+    <sys:String x:Key="LOCSuccessStoryDatabase">數據庫</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetData">Download achievements data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshData">Refresh data</sys:String>
     <sys:String x:Key="LOCSuccessStoryForceRetroAchievementsId">Force RetroAchievements Id</sys:String>
     <sys:String x:Key="LOCSuccessStorySetRetroAchievementsId">Set a valid RetroAchievements Id</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetMissing">Download missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataRecent">Recent games with missing data</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">Recent games</sys:String>
-    <sys:String x:Key="LOCSuccessStoryRefreshAllData">All games</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllDataRecent">最近的遊戲</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRefreshAllData">全部遊戲</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetAllData">All games with missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryGetDataInstalled">Installed games with missing data</sys:String>
     <sys:String x:Key="LOCSuccessStoryRefreshDataInstalledRecent">Installed games</sys:String>
@@ -218,7 +218,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- ListViewGames -->
 
-    <sys:String x:Key="LOCSuccessStorylvGamesProgression">Progression</sys:String>
+    <sys:String x:Key="LOCSuccessStorylvGamesProgression">進度</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryGraphicTitleALL">All achievements unlocked by month</sys:String>
     <sys:String x:Key="LOCSuccessStoryGraphicTitleALLDay">All achievements unlocked by day</sys:String>
@@ -248,7 +248,7 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- Overwatch -->
 
-    <sys:String x:Key="LOCSsOverwatchQuickPlay">Quick Play</sys:String>
+    <sys:String x:Key="LOCSsOverwatchQuickPlay">快速遊玩</sys:String>
     <sys:String x:Key="LOCSsOverwatchCompetitivePlay">Competitive Play</sys:String>
 
     <sys:String x:Key="LOCSsOverwatchGamesWon">{0} games won</sys:String>
@@ -258,9 +258,9 @@ Especially useful for Xbox achievements with their larges images which are reduc
 
     <!-- Wow -->
 
-    <sys:String x:Key="LOCSsWowRegion">Region</sys:String>
+    <sys:String x:Key="LOCSsWowRegion">地區</sys:String>
     <sys:String x:Key="LOCSsWowRealm">Realm</sys:String>
-    <sys:String x:Key="LOCSsWowCharacter">Character</sys:String>
+    <sys:String x:Key="LOCSsWowCharacter">角色</sys:String>
 
     <!-- QuickSearch -->
 
