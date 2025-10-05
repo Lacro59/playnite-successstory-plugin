@@ -39,11 +39,13 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG неправильно налаштовано в налаштуваннях</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Користувач PSN не автентифікований</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Користувач EA не автентифікований</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">Користувач EA не автентифікований</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Користувач Xbox не автентифікований</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements неправильно налаштовано в налаштуваннях</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsNoConsoleId" xml:space="preserve">Не знайдено ConsoleId для {0} з платформами {1}.
+Пов'яжіть платформу з плагіном в налаштуваннях</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 неправильно налаштовано в налаштуваннях</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net увімкнено в SuccessStory але розширення бібліотеки було вимкнено в Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Користувач Battle.net не автентифікований</sys:String>
@@ -79,7 +81,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Увімкнути досягнення Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Увімкнути досягнення GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Увімкнути досягнення Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Увімкнути досягнення EA</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Увімкнути досягнення EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Увімкнути досягнення Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Увімкнути досягнення RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Увімкнути досягнення RPCS3</sys:String>
