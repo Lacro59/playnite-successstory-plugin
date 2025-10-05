@@ -39,11 +39,13 @@ Você deve verificar &quot;{1}&quot; nas configurações do plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG não foi ajustado corretamente nas configurações</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">A PSN está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">O usuário da PSN não está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">A EA está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Usuário EA não está autenticado</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">O Xbox está habilitado no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">O usuário do Xbox não está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">O RetroAchievements não foi ajustado corretamente nas configurações</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsNoConsoleId" xml:space="preserve">No ConsoleId find for {0} with platforms {1}.
+Associate the platform in the plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">O RPCS3 não foi ajustado corretamente nas configurações</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">A Battle.net está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">O usuário da Battle.net não está autenticado</sys:String>
@@ -79,7 +81,7 @@ Você deve verificar &quot;{1}&quot; nas configurações do plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar conquistas Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar conquistas GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Habilitar conquistas Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Habilitar conquistas EA</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Enable EA achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Habilitar conquistas Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Habilitar conquistas RetroAchievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Habilitar conquistas RPCS3</sys:String>
