@@ -39,11 +39,13 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">Το GOG δεν έχει ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">Το PSN είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Ο χρήστης PSN δεν είναι ταυτοποιημένος</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">Η EA είναι ενεργοποιημένη στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">Ο χρήστης της EA δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Το Xbox είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Ο χρήστης Xbox δεν είναι ταυτοποιημένος</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">Τα RetroAchievements δεν έχουν ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsNoConsoleId" xml:space="preserve">No ConsoleId find for {0} with platforms {1}.
+Associate the platform in the plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">Το RPCS3 δεν έχει ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Το Battle.net είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Ο χρήστης Battle.net δεν είναι ταυτοποιημένος</sys:String>
@@ -79,7 +81,7 @@
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Ενεργοποίηση επιτευγμάτων Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Ενεργοποίηση επιτευγμάτων GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Enable Epic achievements</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">Enable EA achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Enable EA achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Enable Xbox achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Enable RetroAchievements achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Enable RPCS3 achievements</sys:String>
