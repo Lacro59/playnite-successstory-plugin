@@ -39,11 +39,13 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG の設定が正しく設定されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">SuccessStory で PSN が有効になっていますが、Playnite でライブラリ拡張機能が無効になっています</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN ユーザーが認証されていません</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginDisabled">EA は SuccessStory で有効になっていますが、Playnite でライブラリ拡張機能が無効になっています</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsOriginNoAuthenticate">EA ユーザーが認証されていません</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox は SuccessStory で有効になっていますが、Playnite でライブラリ拡張機能が無効になっています</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox ユーザーが認証されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">RetroAchievements の設定が正しく設定されていません</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsNoConsoleId" xml:space="preserve">No ConsoleId find for {0} with platforms {1}.
+Associate the platform in the plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 の設定が正しく設定されていません</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net は SuccessStory で有効になっていますが、Playnite でライブラリ拡張機能が無効になっています</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net ユーザーが認証されていません</sys:String>
@@ -79,7 +81,7 @@ You must check &quot;{1}&quot; in plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Steam 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">GOG 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Epic 実績を有効にする</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableOrigin">EA 実績を有効にする</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Enable EA achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Xbox 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">RetroAchievements 実績を有効にする</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">RPCS3 実績を有効にする</sys:String>
