@@ -1042,18 +1042,22 @@ namespace SuccessStory
         // Add code to be executed when Playnite is initialized.
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
+            // StoreAPI Initialization
             Task.Run(() =>
             {
-                // StoreAPI Initialization
+                Logger.Info("SteamApi Initialization");
                 SteamApi = new SteamApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
                 SteamApi.Initialization(PluginDatabase.PluginSettings.Settings.SteamStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled && PluginDatabase.PluginSettings.Settings.EnableSteam);
 
+                Logger.Info("EpicApi Initialization");
                 EpicApi = new EpicApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
                 EpicApi.Initialization(PluginDatabase.PluginSettings.Settings.EpicStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.EpicIsEnabled && PluginDatabase.PluginSettings.Settings.EnableEpic);
 
+                Logger.Info("GogApi Initialization");
                 GogApi = new GogApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
                 GogApi.Initialization(PluginDatabase.PluginSettings.Settings.GogStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.GogIsEnabled && PluginDatabase.PluginSettings.Settings.EnableGog);
 
+                Logger.Info("GameJoltApi Initialization");
                 GameJoltApi = new GameJoltApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
                 GameJoltApi.Initialization(PluginDatabase.PluginSettings.Settings.GameJoltStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.GameJoltIsEnabled && PluginDatabase.PluginSettings.Settings.EnableGameJolt);
             });
@@ -1064,8 +1068,8 @@ namespace SuccessStory
                 PreventLibraryUpdatedOnStart = false;
             });
 
-                // TODO - Removed for Playnite 11
-                if (!PluginSettings.Settings.PurgeImageCache)
+            // TODO - Removed for Playnite 11
+            if (!PluginSettings.Settings.PurgeImageCache)
             {
                 PluginDatabase.ClearCache();
                 PluginSettings.Settings.PurgeImageCache = true;
