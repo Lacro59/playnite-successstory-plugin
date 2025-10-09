@@ -618,48 +618,41 @@ namespace SuccessStory.Services
 
         private static AchievementSource GetAchievementSourceFromEmulator(SuccessStorySettings settings, Game game)
         {
-            AchievementSource achievementSource = AchievementSource.None;
-
-            if (game.GameActions == null)
+            // Priority 1: Check for RPCS3
+            if (settings.EnableRpcs3Achievements && PlayniteTools.GameUseRpcs3(game))
             {
-                return achievementSource;
+                return AchievementSource.RPCS3;
             }
 
-            foreach (GameAction action in game.GameActions)
+            // Priority 2: Check if any game action is an emulator
+            bool hasEmulatorAction = game.GameActions.Any(action => action.Type == GameActionType.Emulator);
+            if (settings.EnableRetroAchievements && hasEmulatorAction)
             {
-                if (action.Type != GameActionType.Emulator)
-                {
-                    continue;
-                }
-                else
-                {
-                    achievementSource = AchievementSource.RetroAchievements;
-                }
+                return AchievementSource.RetroAchievements;
+            }
 
-                if (PlayniteTools.GameUseRpcs3(game) && settings.EnableRpcs3Achievements)
+            // Priority 3: Check for RetroAchievements via platform
+            if (settings.EnableRetroAchievements && game.Platforms?.Count > 0)
+            {
+                var platform = game.Platforms.FirstOrDefault();
+                if (platform != null)
                 {
-                    return AchievementSource.RPCS3;
-                }
+                    int consoleID = settings.RaConsoleAssociateds
+                        .FirstOrDefault(x => x.Platforms.Any(y => y.Id == platform.Id))
+                        ?.RaConsoleId ?? 0;
 
-                // TODO With the emulator migration problem emulator.BuiltInConfigId is null
-                // TODO emulator.BuiltInConfigId = "retroarch" is limited; other emulators has RA
-                if (game.Platforms?.Count > 0)
-                {
-                    string platformName = game.Platforms.FirstOrDefault().Name;
-                    Guid platformId = game.Platforms.FirstOrDefault().Id;
-                    int consoleID = settings.RaConsoleAssociateds.Find(x => x.Platforms.Find(y => y.Id == platformId) != null)?.RaConsoleId ?? 0;
-                    if (settings.EnableRetroAchievements && consoleID != 0)
+                    if (consoleID != 0)
                     {
                         return AchievementSource.RetroAchievements;
                     }
                 }
-                else
-                {
-                    Logger.Warn($"No platform for {game.Name}");
-                }
+            }
+            else if (settings.EnableRetroAchievements && (game.Platforms == null || game.Platforms.Count == 0))
+            {
+                Logger.Warn($"GetAchievementSourceFromEmulator: No platform for {game.Name}");
             }
 
-            return achievementSource;
+            return AchievementSource.None;
         }
 
         public static AchievementSource GetAchievementSource(SuccessStorySettings settings, Game game, bool ignoreSpecial = false)
