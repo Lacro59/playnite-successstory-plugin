@@ -144,8 +144,7 @@ namespace SuccessStory.Services
                             Url = gameAchievements.SourcesLink?.Url
                         };
 
-                        ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                        gameAchievements = exophaseAchievements.GetAchievements(game, searchResult);
+                        gameAchievements = SuccessStory.ExophaseAchievements.GetAchievements(game, searchResult);
                     }
 
                     Common.LogDebug(true, $"RefreshManual({game.Id}) - gameAchievements: {Serialization.ToJson(gameAchievements)}");
@@ -977,7 +976,6 @@ namespace SuccessStory.Services
                 IEnumerable<GameAchievements> db = Database.Where(x => x.IsManual && x.HasAchievements);
                 a.ProgressMaxValue = (double)db.Count();
 
-                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 SteamAchievements steamAchievements = new SteamAchievements();
                 bool SteamConfig = steamAchievements.IsConfigured();
 
@@ -1009,7 +1007,7 @@ namespace SuccessStory.Services
                                 break;
 
                             case "exophase":
-                                exophaseAchievements.SetRarety(gameAchievements, AchievementSource.Local);
+                                SuccessStory.ExophaseAchievements.SetRarety(gameAchievements, AchievementSource.Local);
                                 break;
 
                             default:
@@ -1054,7 +1052,6 @@ namespace SuccessStory.Services
                 IEnumerable<GameAchievements> db = Database.Where(x => x.IsManual && x.HasAchievements);
                 a.ProgressMaxValue = db.Count();
 
-                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
                 SteamAchievements steamAchievements = new SteamAchievements();
                 bool SteamConfig = steamAchievements.IsConfigured();
 

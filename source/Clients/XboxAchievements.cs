@@ -81,8 +81,7 @@ namespace SuccessStory.Clients
             // Set rarity from Exophase
             if (gameAchievements.HasAchievements)
             {
-                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Xbox);
+                SuccessStory.ExophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Xbox);
             }
 
             gameAchievements.SetRaretyIndicator();

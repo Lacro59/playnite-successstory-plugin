@@ -38,8 +38,6 @@ namespace SuccessStory.Views
 
         private SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
-        private ExophaseAchievements ExophaseAchievements { get; set; } = new ExophaseAchievements();
-
         public static List<Folder> LocalPath { get; set; } = new List<Folder>();
         public static List<Folder> Rpcs3Path { get; set; } = new List<Folder>();
 
@@ -188,7 +186,8 @@ namespace SuccessStory.Views
 
             try
             {
-                ExophaseAchievements.Login();
+                SuccessStory.ExophaseAchievements.ResetCachedIsConnectedResult();
+                SuccessStory.ExophaseAchievements.Login();
 
                 Task task = Task.Run(() => CheckLogged())
                     .ContinueWith(antecedent =>
@@ -207,7 +206,7 @@ namespace SuccessStory.Views
 
         private bool CheckLogged()
         {
-            return ExophaseAchievements.IsConnected();
+            return SuccessStory.ExophaseAchievements.IsConnected();
         }
         #endregion
 

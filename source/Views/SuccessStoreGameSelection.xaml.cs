@@ -35,7 +35,6 @@ namespace SuccessStory.Views
         private Game GameContext { get; set; }
 
         private SteamAchievements SteamAchievements { get; set; } = new SteamAchievements();
-        private ExophaseAchievements ExophaseAchievements { get; set; } = new ExophaseAchievements();
 
 
         public SuccessStoreGameSelection(Game game)
@@ -77,18 +76,29 @@ namespace SuccessStory.Views
         private void BtOk_Click(object sender, RoutedEventArgs e)
         {
             SearchResult searchResult = (SearchResult)lbSelectable.SelectedItem;
+            bool isSteam = (rbSteam != null) && (bool)rbSteam.IsChecked;
+            bool isExophase = (rbExophase != null) && (bool)rbExophase.IsChecked;
 
-            if ((bool)rbSteam.IsChecked)
+            GlobalProgressOptions options = new GlobalProgressOptions(ResourceProvider.GetString("LOCCommonImporting"))
             {
-                SteamAchievements.SetLocal();
-                SteamAchievements.SetManual();
-                GameAchievements = SteamAchievements.GetAchievements(GameContext, searchResult.AppId);
-            }
+                Cancelable = false,
+                IsIndeterminate = true
+            };
 
-            if ((bool)rbExophase.IsChecked)
+            _ = API.Instance.Dialogs.ActivateGlobalProgress((a) =>
             {
-                GameAchievements = ExophaseAchievements.GetAchievements(GameContext, searchResult);
-            }
+                if (isSteam)
+                {
+                    SteamAchievements.SetLocal();
+                    SteamAchievements.SetManual();
+                    GameAchievements = SteamAchievements.GetAchievements(GameContext, searchResult.AppId);
+                }
+
+                if (isExophase)
+                {
+                    GameAchievements = SuccessStory.ExophaseAchievements.GetAchievements(GameContext, searchResult);
+                }
+            }, options);
 
             ((Window)Parent).Close();
         }
@@ -179,7 +189,7 @@ namespace SuccessStory.Views
 
                 if (isExophase)
                 {
-                    results = ExophaseAchievements.SearchGame(searchElement, platform);
+                    results = SuccessStory.ExophaseAchievements.SearchGame(searchElement, platform);
                 }
             }
             catch (Exception ex)

@@ -131,8 +131,7 @@ namespace SuccessStory.Clients
             // Set rarity from Exophase
             if (gameAchievements.HasAchievements)
             {
-                ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                exophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Starcraft2);
+                SuccessStory.ExophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Starcraft2);
             }
 
             gameAchievements.SetRaretyIndicator();

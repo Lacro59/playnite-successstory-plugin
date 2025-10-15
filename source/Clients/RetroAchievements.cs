@@ -1,23 +1,24 @@
-﻿using CommonPluginsShared;
+﻿using CommonPlayniteShared.Common;
+using CommonPluginsShared;
+using CommonPluginsShared.Extensions;
+using CommonPluginsShared.Models;
+using Playnite.SDK;
+using Playnite.SDK.Data;
+using Playnite.SDK.Models;
+using SuccessStory.Models;
+using SuccessStory.Models.RetroAchievements;
+using SuccessStory.Services;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Linq;
-using System.Text;
-using SuccessStory.Models;
-using Playnite.SDK.Models;
-using Playnite.SDK.Data;
 using System.IO;
-using System.Security.Cryptography;
 using System.IO.Compression;
-using System.Threading.Tasks;
-using CommonPluginsShared.Models;
-using CommonPluginsShared.Extensions;
-using SuccessStory.Services;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
-using Playnite.SDK;
-using SuccessStory.Models.RetroAchievements;
-using CommonPlayniteShared.Common;
+using System.Threading.Tasks;
+using static CommonPluginsShared.PlayniteTools;
 
 namespace SuccessStory.Clients
 {
@@ -27,6 +28,7 @@ namespace SuccessStory.Clients
     public class RetroAchievements : GenericAchievements
     {
         #region Urls
+
         /// <summary>
         /// Base URL for the RetroAchievements API.
         /// </summary>
@@ -41,6 +43,7 @@ namespace SuccessStory.Clients
         /// URL template for locked achievement badges.
         /// </summary>
         private static string BaseUrlLocked => @"https://s3-eu-west-1.amazonaws.com/i.retroachievements.org/Badge/{0}_lock.png";
+        
         #endregion
 
         /// <summary>
@@ -130,6 +133,7 @@ namespace SuccessStory.Clients
 
 
         #region Configuration
+
         public override bool ValidateConfiguration()
         {
             if (CachedConfigurationValidationResult == null)
@@ -158,15 +162,17 @@ namespace SuccessStory.Clients
         {
             return PluginDatabase.PluginSettings.Settings.EnableRetroAchievements;
         }
+
         #endregion
 
 
         #region RetroAchievements
+
         /// <summary>
         /// Retrieves the list of supported consoles from the RetroAchievements API.
         /// </summary>
         /// <returns>List of <see cref="RaConsole"/> objects.</returns>
-        public static List<RaConsole> GetConsoleIDs()
+        public List<RaConsole> GetConsoleIDs()
         {
             List<RaConsole> resultObj = new List<RaConsole>();
             string target = "API_GetConsoleIDs.php";
@@ -197,8 +203,15 @@ namespace SuccessStory.Clients
 
                 if (resultObj?.Count == 0)
                 {
-                    Exception ex = new Exception($"Failed to parse {response}");
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                    if (response.Contains("Unauthenticated"))
+                    {
+                        ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
+                    }
+                    else 
+                    {
+                        Exception ex = new Exception($"Failed to parse {response}");
+                        Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                    }
                 }
                 else
                 {
@@ -220,6 +233,7 @@ namespace SuccessStory.Clients
             int consoleID = 0;
 
             #region Normalize
+
             if (platformName.IsEqual("Sega Genesis"))
             {
                 platformName = "Mega Drive";
@@ -348,6 +362,7 @@ namespace SuccessStory.Clients
             {
                 platformName = "PC Engine";
             }
+
             #endregion
 
             RaConsole raConsole = raConsoles.Find(x => platformName.IsEqual(x.Name));
@@ -927,6 +942,7 @@ namespace SuccessStory.Clients
 
             return achievements;
         }
+
         #endregion
     }
 }

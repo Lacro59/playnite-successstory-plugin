@@ -22,7 +22,8 @@ namespace SuccessStory.Clients
 {
     public class ExophaseAchievements : GenericAchievements
     {
-        #region Url
+        #region Urls
+
         private string UrlApi => @"https://api.exophase.com";
         private string UrlExophaseSearch => UrlApi + "/public/archive/games?q={0}&sort=added";
         private string UrlExophaseSearchPlatform => UrlApi + "/public/archive/platform/{1}?q={0}&sort=added";
@@ -31,6 +32,7 @@ namespace SuccessStory.Clients
         private string UrlExophaseLogin => $"{UrlExophase}/login";
         private string UrlExophaseLogout => $"{UrlExophase}/logout";
         private string UrlExophaseAccount => $"{UrlExophase}/account";
+
         #endregion
 
         public static List<string> Platforms = new List<string>
@@ -87,6 +89,15 @@ namespace SuccessStory.Clients
                     webView.DeleteDomainCookies(".exophase.com");
                     webView.NavigateAndWait(searchResult.Url);
                     dataExophase = webView.GetPageSource();
+
+                    if (!Regex.IsMatch(dataExophase, @"<title>.*?\bAchievements\b.*?</title>"))
+                    {
+                        Logger.Warn("Exophase no english data or notice message app"); 
+                        webView.DeleteDomainCookies(".exophase.com");
+                        Thread.Sleep(2000);
+                        webView.NavigateAndWait(searchResult.Url);
+                        dataExophase = webView.GetPageSource();
+                    }
                 }
 
                 if (PluginDatabase.PluginSettings.Settings.UseLocalised && !IsConnected())
@@ -102,16 +113,15 @@ namespace SuccessStory.Clients
                 }
                 else if (PluginDatabase.PluginSettings.Settings.UseLocalised)
                 {
-                    using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
+                    var data = Web.DownloadSourceDataWebView(searchResult.Url, GetCookies(), true, new List<string> { ".exophase.com" }).GetAwaiter().GetResult();
+                    dataExophaseLocalised = data.Item1;
+                    
+                    if (dataExophaseLocalised.Contains("Notice Message App"))
                     {
-                        GetCookies()?.ForEach(x => 
-                        {
-                            string domain = x.Domain.StartsWith(".") ? x.Domain.Substring(1) : x.Domain;
-                            webView.SetCookies("https://" + domain, x);
-                        });
-                        webView.NavigateAndWait(searchResult.Url);
-                        dataExophaseLocalised = webView.GetPageSource();
-                        webView.DeleteDomainCookies(".exophase.com");
+                        Logger.Warn("Exophase notice message app");
+                        Thread.Sleep(2000);
+                        data = Web.DownloadSourceDataWebView(searchResult.Url, GetCookies(), true, new List<string> { ".exophase.com" }).GetAwaiter().GetResult();
+                        dataExophaseLocalised = data.Item1;
                     }
                 }
 
@@ -155,12 +165,12 @@ namespace SuccessStory.Clients
 
 
         #region Configuration
+
         public override bool ValidateConfiguration()
         {
             // The authentification is only for localised achievement
             return true;
         }
-
 
         public override bool IsConnected()
         {
@@ -168,7 +178,6 @@ namespace SuccessStory.Clients
             {
                 CachedIsConnectedResult = GetIsUserLoggedIn();
             }
-
             return (bool)CachedIsConnectedResult;
         }
 
@@ -177,10 +186,11 @@ namespace SuccessStory.Clients
             // No necessary activation
             return true;
         }
+
         #endregion
 
-
         #region Exophase
+
         public void Login()
         {
             FileSystem.DeleteFile(CookiesPath);
@@ -220,65 +230,15 @@ namespace SuccessStory.Clients
 
         private bool GetIsUserLoggedIn()
         {
-            WebViewSettings webViewSettings = new WebViewSettings
+            var data = Web.DownloadSourceDataWebView(UrlExophaseAccount, GetCookies(), true, new List<string> { ".exophase.com" }).GetAwaiter().GetResult();
+            bool isConnected = data.Item1.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
+
+            if (isConnected)
             {
-                UserAgent = Web.UserAgent,
-                JavaScriptEnabled = true
-            };
-
-            using (IWebView webViewOffscreen = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
-            {
-                try
-                {
-                    // 1. Set cookies
-                    var cookies = GetCookies();
-                    if (cookies == null || cookies.Count == 0)
-                    {
-                        Logger.Warn("Exophase: no cookies present – user considered disconnected.");
-                        return false;
-                    }
-                    cookies.ForEach(cookie => webViewOffscreen.SetCookies(UrlExophaseAccount, cookie));
-
-                    // 2. Prepare asynchronous wait
-                    using (var loadingCompleted = new ManualResetEventSlim(false))
-                    {
-                        webViewOffscreen.LoadingChanged += (s, e) =>
-                        {
-                            if (!e.IsLoading)
-                            {
-                                loadingCompleted.Set();
-                            }
-                        };
-
-                        // 3. Navigate and wait for page to be fully loaded
-                        webViewOffscreen.Navigate(UrlExophaseAccount);
-                        TimeSpan waitTimeout = TimeSpan.FromSeconds(30);
-                        if (!loadingCompleted.Wait(waitTimeout))
-                        {
-                            Logger.Error($"Timeout during authentication status check after {waitTimeout.TotalSeconds} seconds.");
-                            return false;
-                        }
-                    }
-
-                    // 4. Get content and check login
-                    string dataExophase = webViewOffscreen.GetPageSource();
-                    bool isConnected = dataExophase.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
-
-                    if (isConnected)
-                    {
-                        var refreshedCookies = (webViewOffscreen.GetCookies() ?? cookies ?? new List<HttpCookie>())
-                            .Where(c => c.Domain.IsEqual(".exophase.com"))
-                            .ToList();
-                        SetCookies(refreshedCookies);
-                    }
-
-                    return isConnected;
-                }
-                finally
-                {
-                    webViewOffscreen.DeleteDomainCookies(".exophase.com");
-                }
+                SetCookies(data.Item2);
             }
+
+            return isConnected;
         }
 
 
@@ -509,6 +469,7 @@ namespace SuccessStory.Clients
             }
             return false;
         }
+
         #endregion
 
 
@@ -523,7 +484,8 @@ namespace SuccessStory.Clients
 
             if (sectionAchievements == null || sectionAchievements.Count() == 0)
             {
-                return null;
+                Logger.Warn("Exophase data is not parsed");
+                return new List<Achievement>();
             }
             else
             {

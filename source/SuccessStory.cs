@@ -43,6 +43,8 @@ namespace SuccessStory
         public static GogApi GogApi { get; set; }
         public static GameJoltApi GameJoltApi { get; set; }
 
+        public static ExophaseAchievements ExophaseAchievements { get; set; }
+
         internal TopPanelItem TopPanelItem { get; set; }
         internal SidebarItem SidebarItem { get; set; }
         internal SidebarItem SidebarRaItem { get; set; }
@@ -1045,6 +1047,10 @@ namespace SuccessStory
             // StoreAPI Initialization
             Task.Run(() =>
             {
+                Logger.Info("ExophaseAchievements Initialization");
+                ExophaseAchievements = new ExophaseAchievements();
+
+
                 Logger.Info("SteamApi Initialization");
                 SteamApi = new SteamApi(PluginDatabase.PluginName, PlayniteTools.ExternalPlugin.SuccessStory);
                 SteamApi.Initialization(PluginDatabase.PluginSettings.Settings.SteamStoreSettings, PluginDatabase.PluginSettings.Settings.PluginState.SteamIsEnabled && PluginDatabase.PluginSettings.Settings.EnableSteam);
@@ -1206,8 +1212,8 @@ namespace SuccessStory
             {
                 Task.Run(() =>
                 {
-                    ExophaseAchievements exophaseAchievements = new ExophaseAchievements();
-                    if (!exophaseAchievements.IsConnected())
+                    Thread.Sleep(5000);
+                    if (!ExophaseAchievements.IsConnected())
                     {
                         Application.Current.Dispatcher?.BeginInvoke((Action)delegate
                         {
