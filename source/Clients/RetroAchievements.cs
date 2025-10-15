@@ -142,12 +142,12 @@ namespace SuccessStory.Clients
 
                 if (!(bool)CachedConfigurationValidationResult)
                 {
-                    ShowNotificationPluginNoAuthenticate(PlayniteTools.ExternalPlugin.None);
+                    ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
                 }
             }
             else if (!(bool)CachedConfigurationValidationResult)
             {
-                ShowNotificationPluginErrorMessage(PlayniteTools.ExternalPlugin.None);
+                ShowNotificationPluginErrorMessage(ExternalPlugin.SuccessStory);
             }
 
             return (bool)CachedConfigurationValidationResult;
@@ -206,6 +206,7 @@ namespace SuccessStory.Clients
                     if (response.Contains("Unauthenticated"))
                     {
                         ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
+                        return resultObj;
                     }
                     else 
                     {
@@ -227,7 +228,7 @@ namespace SuccessStory.Clients
         /// </summary>
         /// <param name="platformName">The platform name to match.</param>
         /// <returns>The console ID if found; otherwise, 0.</returns>
-        public static int FindConsole(string platformName)
+        public int FindConsole(string platformName)
         {
             List<RaConsole> raConsoles = GetConsoleIDs();
             int consoleID = 0;
@@ -909,6 +910,12 @@ namespace SuccessStory.Clients
 
             try
             {
+                if (response.Contains("Unauthenticated"))
+                {
+                    ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
+                    return achievements;
+                }
+
                 dynamic resultObj = Serialization.FromJson<dynamic>(response);
 
                 GameNameAchievements = (string)resultObj["Title"];

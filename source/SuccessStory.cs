@@ -1235,11 +1235,12 @@ namespace SuccessStory
             {
                 Task.Run(() =>
                 {
-                    List<RaConsole> ra_Consoles = RetroAchievements.GetConsoleIDs();
+                    RetroAchievements retroAchievements = new RetroAchievements();
+                    List<RaConsole> ra_Consoles = retroAchievements.GetConsoleIDs();
                     if (ra_Consoles == null)
                     {
                         Thread.Sleep(2000);
-                        ra_Consoles = RetroAchievements.GetConsoleIDs();
+                        ra_Consoles = retroAchievements.GetConsoleIDs();
                     }
 
                     ra_Consoles.ForEach(x =>
@@ -1257,7 +1258,7 @@ namespace SuccessStory
                             // Search and add platform
                             API.Instance.Database.Platforms.ForEach(z =>
                             {
-                                int RaConsoleId = RetroAchievements.FindConsole(z.Name);
+                                int RaConsoleId = retroAchievements.FindConsole(z.Name);
                                 if (RaConsoleId == x.ID)
                                 {
                                     PluginSettings.Settings.RaConsoleAssociateds.Find(y => y.RaConsoleId == RaConsoleId).Platforms.Add(new Platform { Id = z.Id });
