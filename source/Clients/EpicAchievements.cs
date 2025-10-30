@@ -1,5 +1,4 @@
-﻿using CommonPlayniteShared.PluginLibrary.EpicLibrary.Services;
-using CommonPluginsShared;
+﻿using CommonPluginsShared;
 using CommonPluginsShared.Extensions;
 using CommonPluginsStores.Epic;
 using CommonPluginsStores.Models;
@@ -24,7 +23,6 @@ namespace SuccessStory.Clients
 
         }
 
-
         public override GameAchievements GetAchievements(Game game)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
@@ -34,42 +32,42 @@ namespace SuccessStory.Clients
             {
                 try
                 {
-                    string productSlug = EpicApi.GetProducSlug(game);
-                    string nameSpace = EpicApi.GetNameSpace(game);
-                    if (nameSpace.IsNullOrEmpty())
+                    var assets = EpicApi.GetAssets();
+                    var asset = assets.FirstOrDefault(x => x.AppName.IsEqual(game.GameId));
+                    if (asset == null)
                     {
-                        Logger.Warn($"No NameSpace for the Epic game {game.Name}");
+                        Logger.Warn($"No asset for the Epic game {game.Name}");
+                        return gameAchievements;
+                    }
+
+                    ObservableCollection<GameAchievement> epicAchievements = EpicApi.GetAchievements(asset.Namespace, EpicApi.CurrentAccountInfos);
+                    if (epicAchievements?.Count > 0)
+                    {
+                        AllAchievements = epicAchievements.Select(x => new Achievement
+                        {
+                            ApiName = x.Id,
+                            Name = x.Name,
+                            Description = x.Description,
+                            UrlUnlocked = x.UrlUnlocked,
+                            UrlLocked = x.UrlLocked,
+                            DateUnlocked = x.DateUnlocked.ToString().Contains(default(DateTime).ToString()) ? (DateTime?)null : x.DateUnlocked,
+                            Percent = x.Percent,
+                            GamerScore = x.GamerScore
+                        }).ToList();
+                        gameAchievements.Items = AllAchievements;
                     }
                     else
                     {
-                        ObservableCollection<GameAchievement> epicAchievements = EpicApi.GetAchievements(nameSpace, EpicApi.CurrentAccountInfos);
-                        if (epicAchievements?.Count > 0)
+                        if (!EpicApi.IsUserLoggedIn)
                         {
-                            AllAchievements = epicAchievements.Select(x => new Achievement
-                            {
-                                ApiName = x.Id,
-                                Name = x.Name,
-                                Description = x.Description,
-                                UrlUnlocked = x.UrlUnlocked,
-                                UrlLocked = x.UrlLocked,
-                                DateUnlocked = x.DateUnlocked.ToString().Contains(default(DateTime).ToString()) ? (DateTime?)null : x.DateUnlocked,
-                                Percent = x.Percent,
-                                GamerScore = x.GamerScore
-                            }).ToList();
-                            gameAchievements.Items = AllAchievements;
-                        }
-                        else
-                        {
-                            if (!EpicApi.IsUserLoggedIn)
-                            {
-                                ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
-                            }
+                            ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
                         }
                     }
 
                     // Set source link
                     if (gameAchievements.HasAchievements)
                     {
+                        string productSlug = EpicApi.GetProductSlug(asset.Namespace);
                         gameAchievements.SourcesLink = EpicApi.GetAchievementsSourceLink(game.Name, productSlug, EpicApi.CurrentAccountInfos);
                     }
                 }
@@ -90,6 +88,7 @@ namespace SuccessStory.Clients
 
 
         #region Configuration
+
         public override bool ValidateConfiguration()
         {
             if (!PluginDatabase.PluginSettings.Settings.PluginState.EpicIsEnabled)
@@ -143,10 +142,6 @@ namespace SuccessStory.Clients
             CachedIsConnectedResult = null;
             EpicApi.ResetIsUserLoggedIn();
         }
-        #endregion
-
-
-        #region Epic
 
         #endregion
     }
