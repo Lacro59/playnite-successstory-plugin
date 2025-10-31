@@ -205,15 +205,11 @@ namespace SuccessStory.Clients
                 {
                     try
                     {
-                        Plugin plugin = API.Instance.Addons.Plugins.Find(x => x.Id == PlayniteTools.GetPluginId(pluginSource));
-                        if (plugin != null)
+                        ShowPluginSettings(pluginSource);
+                        foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
                         {
-                            _ = plugin.OpenSettingsView();
-                            foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
-                            {
-                                achievementProvider.ResetCachedConfigurationValidationResult();
-                                achievementProvider.ResetCachedIsConnectedResult();
-                            }
+                            achievementProvider.ResetCachedConfigurationValidationResult();
+                            achievementProvider.ResetCachedIsConnectedResult();
                         }
                     }
                     catch (Exception ex)
@@ -243,15 +239,11 @@ namespace SuccessStory.Clients
                 {
                     try
                     {
-                        Plugin plugin = API.Instance.Addons.Plugins.Find(x => x.Id == PlayniteTools.GetPluginId(pluginSource));
-                        if (plugin != null)
+                        ShowPluginSettings(pluginSource);
+                        foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
                         {
-                            _ = plugin.OpenSettingsView();
-                            foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
-                            {
-                                achievementProvider.ResetCachedConfigurationValidationResult();
-                                achievementProvider.ResetCachedIsConnectedResult();
-                            }
+                            achievementProvider.ResetCachedConfigurationValidationResult();
+                            achievementProvider.ResetCachedIsConnectedResult();
                         }
                     }
                     catch (Exception ex)
@@ -322,15 +314,11 @@ namespace SuccessStory.Clients
                 {
                     try
                     {
-                        Plugin plugin = API.Instance.Addons.Plugins.Find(x => x.Id == PlayniteTools.GetPluginId(pluginSource));
-                        if (plugin != null)
+                        ShowPluginSettings(pluginSource);
+                        foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
                         {
-                            _ = plugin.OpenSettingsView();
-                            foreach (GenericAchievements achievementProvider in SuccessStoryDatabase.AchievementProviders.Values)
-                            {
-                                achievementProvider.ResetCachedConfigurationValidationResult();
-                                achievementProvider.ResetCachedIsConnectedResult();
-                            }
+                            achievementProvider.ResetCachedConfigurationValidationResult();
+                            achievementProvider.ResetCachedIsConnectedResult();
                         }
                     }
                     catch (Exception ex)
