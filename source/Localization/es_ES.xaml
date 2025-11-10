@@ -39,7 +39,7 @@ Debes revisar &quot;{1}&quot; en la configuración del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG no se ha configurado correctamente en la configuración</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN está habilitado en SuccessStory pero la extensión de la biblioteca ha sido desactivada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">El usuario de PSN no está autenticado</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled"></sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox está activado en SuccessStory pero la extensión de la biblioteca ha sido deshabilitada en Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">El usuario de Xbox no está autenticado</sys:String>
