@@ -14,7 +14,6 @@ using PlayniteTools = CommonPluginsShared.PlayniteTools;
 using CommonPluginsShared.Extensions;
 using System.Threading;
 using CommonPluginsStores.Steam;
-using CommonPluginsStores.Steam.Models;
 using AngleSharp.Dom;
 using CommonPluginsStores.Models;
 using System.Collections.ObjectModel;
@@ -263,7 +262,7 @@ namespace SuccessStory.Clients
                 }
                 if (gameName.IsNullOrEmpty())
                 {
-                    gameName = SteamApi.GetGameNameByWeb(appId);
+                    gameName = SteamApi.GetGameName(appId);
                 }
 
                 gameAchievements.SourcesLink = new SourceLink
