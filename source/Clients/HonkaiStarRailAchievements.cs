@@ -19,12 +19,14 @@ namespace SuccessStory.Clients
     public class HonkaiStarRailAchievements : GenericAchievements
     {
         #region Urls
+
         private static string TurnBasedGameData_Url => "https://raw.githubusercontent.com/DimbreathBot/TurnBasedGameData/refs/heads/main";
         private static string TurnBasedGameData_UrlApi => "https://api.github.com/repos/DimbreathBot/TurnBasedGameData";
         private static string TurnBasedGameData_UrlSource => "https://github.com/DimbreathBot/TurnBasedGameData";
         private static string TurnBasedGameData_UrlTextMap => TurnBasedGameData_Url + "/TextMap/TextMap{0}.json";
         private static string TurnBasedGameData_UrlAchievementData => TurnBasedGameData_Url + "/ExcelOutput/AchievementData.json";
         private static string TurnBasedGameData_UrlAchievementSeries => TurnBasedGameData_Url + "/ExcelOutput/AchievementSeries.json";
+        
         #endregion
 
 
@@ -180,6 +182,7 @@ namespace SuccessStory.Clients
                     string content = File.ReadAllText(path);
 
                     #region https://starrailstation.com/
+
                     if (content.StartsWith("srs"))
                     {
                         string compressed = content.Substring(3);
@@ -349,6 +352,7 @@ namespace SuccessStory.Clients
                             }
                         }
                     }
+                    
                     #endregion
 
                     if (done)
@@ -368,6 +372,7 @@ namespace SuccessStory.Clients
                     GameAchievements gameAchievements = GetAchievements(game);
 
                     #region https://seelie.me
+
                     if (Serialization.TryFromJsonFile(path, out SeelieMeExport seelieMeExport))
                     {
                         if (seelieMeExport?.Achievements != null)
@@ -386,9 +391,11 @@ namespace SuccessStory.Clients
                             done = true;
                         }
                     }
+
                     #endregion
 
                     #region https://stardb.gg/
+
                     if (Serialization.TryFromJsonFile(path, out StartDbExport startDbExport))
                     {
                         if (startDbExport?.User?.Hsr != null)
@@ -404,6 +411,7 @@ namespace SuccessStory.Clients
                             done = true;
                         }
                     }
+
                     #endregion
 
                     if (done)
@@ -419,8 +427,8 @@ namespace SuccessStory.Clients
             }, options);
         }
 
-
         #region Configuration
+
         public override bool ValidateConfiguration()
         {
             return true;
@@ -430,6 +438,7 @@ namespace SuccessStory.Clients
         {
             return PluginDatabase.PluginSettings.Settings.EnableHonkaiStarRail;
         }
+
         #endregion
     }
 }
