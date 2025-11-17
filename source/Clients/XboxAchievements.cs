@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Playnite.SDK;
 using Playnite.SDK.Data;
@@ -12,7 +11,6 @@ using CommonPluginsShared;
 using CommonPlayniteShared.PluginLibrary.XboxLibrary.Models;
 using SuccessStory.Models;
 using CommonPluginsShared.Models;
-using CommonPlayniteShared.PluginLibrary.XboxLibrary;
 using CommonPluginsShared.Extensions;
 using static CommonPluginsShared.PlayniteTools;
 using CommonPlayniteShared.PluginLibrary.XboxLibrary.Services;
@@ -88,8 +86,8 @@ namespace SuccessStory.Clients
             return gameAchievements;
         }
 
-
         #region Configuration
+
         public override bool ValidateConfiguration()
         {
             if (!PluginDatabase.PluginSettings.Settings.PluginState.XboxIsEnabled)
@@ -137,10 +135,11 @@ namespace SuccessStory.Clients
         {
             return PluginDatabase.PluginSettings.Settings.EnableXbox;
         }
+
         #endregion
 
-
         #region Xbox
+
         private string GetTitleId(Game game)
         {
             string titleId = string.Empty;
@@ -385,6 +384,7 @@ namespace SuccessStory.Clients
             headers.Add("Authorization", $"XBL3.0 x={auth.DisplayClaims.xui[0].uhs};{auth.Token}");
             headers.Add("Accept-Language", LocalLang);
         }
+        
         #endregion
     }
 }
