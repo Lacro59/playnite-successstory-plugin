@@ -20,8 +20,8 @@ namespace SuccessStory.Clients
 
         internal static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
-        public static string XboxUrlSearch => @"https://www.trueachievements.com/searchresults.aspx?search={0}";
-        public static string SteamUrlSearch => @"https://truesteamachievements.com/searchresults.aspx?search={0}";
+        private static string XboxUrlSearch => @"https://www.trueachievements.com/searchresults.aspx?search={0}";
+        private static string SteamUrlSearch => @"https://truesteamachievements.com/searchresults.aspx?search={0}";
 
         public enum OriginData { Steam, Xbox }
 
@@ -53,28 +53,19 @@ namespace SuccessStory.Clients
 
             try
             {
-                string reponse = string.Empty;
-                WebViewSettings webViewSettings = new WebViewSettings
-                {
-                    UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
-                    JavaScriptEnabled = true
-                };
-                using (IWebView webViewOffscreen = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
-                {
-                    webViewOffscreen.NavigateAndWait(url);
-                    reponse = webViewOffscreen.GetPageSource();
-                }
+                var sourceData = Web.DownloadSourceDataWebView(url).GetAwaiter().GetResult();
+                string response = sourceData.Item1;
 
-                if (reponse.IsNullOrEmpty())
+                if (response.IsNullOrEmpty())
                 {
                     Logger.Warn($"No data from {url}");
                     return listSearchGames;
                 }
 
                 HtmlParser parser = new HtmlParser();
-                IHtmlDocument htmlDocument = parser.Parse(reponse);
+                IHtmlDocument htmlDocument = parser.Parse(response);
 
-                if (reponse.IndexOf("There are no matching search results, please change your search terms") > -1)
+                if (response.IndexOf("There are no matching search results, please change your search terms") > -1)
                 {
                     return listSearchGames;
                 }
@@ -94,26 +85,26 @@ namespace SuccessStory.Clients
                 }
                 else
                 {
-                    foreach (IElement SearchGame in SectionGames.QuerySelectorAll("tr"))
+                    foreach (IElement searchGame in SectionGames.QuerySelectorAll("tr"))
                     {
                         try
                         {
-                            IHtmlCollection<IElement> GameInfos = SearchGame.QuerySelectorAll("td");
-                            if (GameInfos.Count() > 2)
+                            IHtmlCollection<IElement> gameInfos = searchGame.QuerySelectorAll("td");
+                            if (gameInfos.Count() > 2)
                             {
-                                string GameUrl = urlBase + GameInfos[0].QuerySelector("a")?.GetAttribute("href");
-                                string GameName = GameInfos[1].QuerySelector("a")?.InnerHtml;
-                                string GameImage = urlBase + GameInfos[0].QuerySelector("a img")?.GetAttribute("src");
+                                string gameUrl = urlBase + gameInfos[0].QuerySelector("a")?.GetAttribute("href");
+                                string gameName = gameInfos[1].QuerySelector("a")?.InnerHtml;
+                                string gameImage = urlBase + gameInfos[0].QuerySelector("a img")?.GetAttribute("src");
 
-                                string ItemType = GameInfos[2].InnerHtml;
+                                string itemType = gameInfos[2].InnerHtml;
 
-                                if (ItemType.IsEqual("game"))
+                                if (itemType.IsEqual("game"))
                                 {
                                     listSearchGames.Add(new TrueAchievementSearch
                                     {
-                                        GameUrl = GameUrl,
-                                        GameName = GameName,
-                                        GameImage = GameImage
+                                        GameUrl = gameUrl,
+                                        GameName = gameName,
+                                        GameImage = gameImage
                                     });
                                 }
                             }
@@ -137,79 +128,70 @@ namespace SuccessStory.Clients
         /// <summary>
         /// Get the estimate time from game url on truesteamachievements or trueachievements.
         /// </summary>
-        /// <param name="UrlTrueAchievement"></param>
+        /// <param name="urlTrueAchievement"></param>
         /// <returns></returns>
-        public static EstimateTimeToUnlock GetEstimateTimeToUnlock(string UrlTrueAchievement)
+        public static EstimateTimeToUnlock GetEstimateTimeToUnlock(string urlTrueAchievement)
         {
-            EstimateTimeToUnlock EstimateTimeToUnlock = new EstimateTimeToUnlock();
+            EstimateTimeToUnlock estimateTimeToUnlock = new EstimateTimeToUnlock();
 
-            if (UrlTrueAchievement.IsNullOrEmpty())
+            if (urlTrueAchievement.IsNullOrEmpty())
             {
                 Logger.Warn($"No url for GetEstimateTimeToUnlock()");
-                return EstimateTimeToUnlock;
+                return estimateTimeToUnlock;
             }
 
             try
             {
-                string reponse = string.Empty;
-                WebViewSettings webViewSettings = new WebViewSettings
-                {
-                    UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
-                    JavaScriptEnabled = true
-                };
-                using (IWebView webViewOffscreen = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
-                {
-                    webViewOffscreen.NavigateAndWait(UrlTrueAchievement);
-                    reponse = webViewOffscreen.GetPageSource();
-                }
+                var sourceData = Web.DownloadSourceDataWebView(urlTrueAchievement).GetAwaiter().GetResult();
+                string response = sourceData.Item1;
 
-                if (reponse.IsNullOrEmpty())
+                if (response.IsNullOrEmpty())
                 {
-                    Logger.Warn($"No data from {UrlTrueAchievement}");
-                    return EstimateTimeToUnlock;
+                    Logger.Warn($"No data from {urlTrueAchievement}");
+                    return estimateTimeToUnlock;
                 }
 
 
                 HtmlParser parser = new HtmlParser();
-                IHtmlDocument htmlDocument = parser.Parse(reponse);
+                IHtmlDocument htmlDocument = parser.Parse(response);
 
-                int NumberDataCount = 0;
+                int numberDataCount = 0;
                 foreach (IElement SearchElement in htmlDocument.QuerySelectorAll("div.game div.l1 div"))
                 {
                     string title = SearchElement.GetAttribute("title");
                     if (!title.IsNullOrEmpty() && (title == "Maximum TrueAchievement" || title == "Maximum TrueSteamAchievement"))
                     {
                         string data = SearchElement.InnerHtml;
-                        _ = int.TryParse(Regex.Replace(data, "[^0-9]", ""), out NumberDataCount);
+                        _ = int.TryParse(Regex.Replace(data, "[^0-9]", ""), out numberDataCount);
                         break;
                     }
                 }
 
                 foreach (IElement SearchElement in htmlDocument.QuerySelectorAll("div.game div.l2 a"))
                 {
-                    string Title = SearchElement.GetAttribute("title");
-                    if (!Title.IsNullOrEmpty() && Title == "Estimated time to unlock all achievements")
+                    string title = SearchElement.GetAttribute("title");
+                    if (!title.IsNullOrEmpty() && title == "Estimated time to unlock all achievements")
                     {
-                        string EstimateTime = SearchElement.InnerHtml
+                        string estimateTime = SearchElement.InnerHtml
                             .Replace("<i class=\"fa fa-hourglass-end\"></i>", string.Empty)
                             .Replace("<i class=\"fa fa-clock-o\"></i>", string.Empty)
                             .Trim();
 
-                        int EstimateTimeMin = 0;
-                        int EstimateTimeMax = 0;
+                        int estimateTimeMin = 0;
+                        int estimateTimeMax = 0;
                         int index = 0;
-                        foreach (string item in EstimateTime.Replace("h", string.Empty).Split('-'))
+                        foreach (string item in estimateTime.Replace("h", string.Empty).Split('-'))
                         {
-                            _ = index == 0 ? int.TryParse(item.Replace("+", string.Empty), out EstimateTimeMin) : int.TryParse(item, out EstimateTimeMax);
+                            _ = index == 0 ? int.TryParse(item.Replace("+", string.Empty), out estimateTimeMin) : int.TryParse(item, out estimateTimeMax);
                             index++;
                         }
 
-                        EstimateTimeToUnlock = new EstimateTimeToUnlock
+                        estimateTimeToUnlock = new EstimateTimeToUnlock
                         {
-                            DataCount = NumberDataCount,
-                            EstimateTime = EstimateTime,
-                            EstimateTimeMin = EstimateTimeMin,
-                            EstimateTimeMax = EstimateTimeMax
+                            DataCount = numberDataCount,
+                            EstimateTime = estimateTime,
+                            EstimateTimeMin = estimateTimeMin,
+                            EstimateTimeMax = estimateTimeMax
                         };
                         break;
                     }
@@ -220,12 +202,12 @@ namespace SuccessStory.Clients
                 Common.LogError(ex, false, true, PluginDatabase.PluginName);
             }
 
-            if (EstimateTimeToUnlock.EstimateTimeMin == 0)
+            if (estimateTimeToUnlock.EstimateTimeMin == 0)
             {
-                Logger.Warn($"No {(UrlTrueAchievement.ToLower().Contains("truesteamachievements") ? "TrueSteamAchievements" : "TrueAchievements")} data found");
+                Logger.Warn($"No {(urlTrueAchievement.ToLower().Contains("truesteamachievements") ? "TrueSteamAchievements" : "TrueAchievements")} data found");
             }
 
-            return EstimateTimeToUnlock;
+            return estimateTimeToUnlock;
         }
     }
 
