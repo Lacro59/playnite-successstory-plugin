@@ -566,6 +566,7 @@ namespace SuccessStory.Services
                     break;
 
                 case ExternalPlugin.XboxLibrary:
+                case ExternalPlugin.XCloud:
                     if (settings.EnableXbox)
                     {
                         return AchievementSource.Xbox;
