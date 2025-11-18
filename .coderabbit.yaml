@@ -1,4 +1,10 @@
 # .coderabbit.yaml
-
-# Ignore pull requests coming from these branches.
-ignored_branch: "l10n_master,l10n_devel"
+reviews:
+  auto_review:
+    enabled: true
+    base_branches:
+      - "devel"
+    ignore_title_keywords:
+      - "l10n"
+      - "localization"
+      - "translation"
