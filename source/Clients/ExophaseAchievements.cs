@@ -56,7 +56,9 @@ namespace SuccessStory.Clients
 
         public ExophaseAchievements() : base("Exophase")
         {
-        }
+            CookiesDomains = new List<string> { ".exophase.com" };
+
+		}
 
 
         public override GameAchievements GetAchievements(Game game)
@@ -86,14 +88,14 @@ namespace SuccessStory.Clients
 
                 using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
                 {
-                    webView.DeleteDomainCookies(".exophase.com");
+                    webView.DeleteDomainCookies(CookiesDomains.First());
                     webView.NavigateAndWait(searchResult.Url);
                     dataExophase = webView.GetPageSource();
 
                     if (!Regex.IsMatch(dataExophase, @"<title>.*?\bAchievements\b.*?</title>"))
                     {
                         Logger.Warn("Exophase no english data or notice message app"); 
-                        webView.DeleteDomainCookies(".exophase.com");
+                        webView.DeleteDomainCookies(CookiesDomains.First());
                         Thread.Sleep(2000);
                         webView.NavigateAndWait(searchResult.Url);
                         dataExophase = webView.GetPageSource();
@@ -113,14 +115,14 @@ namespace SuccessStory.Clients
                 }
                 else if (PluginDatabase.PluginSettings.Settings.UseLocalised)
                 {
-                    var data = Web.DownloadSourceDataWebView(searchResult.Url, GetCookies(), true, new List<string> { ".exophase.com" }).GetAwaiter().GetResult();
+                    var data = Web.DownloadSourceDataWebView(searchResult.Url, GetCookies(), true, CookiesDomains).GetAwaiter().GetResult();
                     dataExophaseLocalised = data.Item1;
                     
                     if (dataExophaseLocalised.Contains("Notice Message App"))
                     {
                         Logger.Warn("Exophase notice message app");
                         Thread.Sleep(2000);
-                        data = Web.DownloadSourceDataWebView(searchResult.Url, GetCookies(), true, new List<string> { ".exophase.com" }).GetAwaiter().GetResult();
+                        data = Web.DownloadSourceDataWebView(searchResult.Url, GetCookies(), true, CookiesDomains).GetAwaiter().GetResult();
                         dataExophaseLocalised = data.Item1;
                     }
                 }
@@ -205,32 +207,30 @@ namespace SuccessStory.Clients
                 UserAgent = Web.UserAgent
             };
 
-            using (IWebView WebView = API.Instance.WebViews.CreateView(webViewSettings))
+            using (IWebView webView = API.Instance.WebViews.CreateView(webViewSettings))
             {
-                WebView.LoadingChanged += (s, e) =>
+                webView.LoadingChanged += (s, e) =>
                 {
-                    string address = WebView.GetCurrentAddress();
+                    string address = webView.GetCurrentAddress();
                     if (address.StartsWith(UrlExophaseAccount, StringComparison.InvariantCultureIgnoreCase) && !address.StartsWith(UrlExophaseLogout, StringComparison.InvariantCultureIgnoreCase))
                     {
                         CachedIsConnectedResult = true;
-                        WebView.Close();
+                        webView.Close();
                     }
                 };
 
-                WebView.DeleteDomainCookies(".exophase.com");
-                WebView.Navigate(UrlExophaseLogin);
-                _ = WebView.OpenDialog();
+                webView.DeleteDomainCookies(CookiesDomains.First());
+                webView.Navigate(UrlExophaseLogin);
+                _ = webView.OpenDialog();
             }
 
-            List<HttpCookie> httpCookies = WebViewOffscreen.GetCookies().Where(x => x.Domain.IsEqual(".exophase.com")).ToList();
+            List<HttpCookie> httpCookies = CookiesTools.GetWebCookies(true);
             SetCookies(httpCookies);
-            WebViewOffscreen.DeleteDomainCookies(".exophase.com");
-            WebViewOffscreen.Dispose();
         }
 
         private bool GetIsUserLoggedIn()
         {
-            var data = Web.DownloadSourceDataWebView(UrlExophaseAccount, GetCookies(), true, new List<string> { ".exophase.com" }).GetAwaiter().GetResult();
+            var data = Web.DownloadSourceDataWebView(UrlExophaseAccount, GetCookies(), true, CookiesDomains).GetAwaiter().GetResult();
             bool isConnected = data.Item1.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
 
             if (isConnected)
@@ -246,22 +246,13 @@ namespace SuccessStory.Clients
         {
             List<SearchResult> listSearchGames = new List<SearchResult>();
             try
-            {
-                WebViewSettings webViewSettings = new WebViewSettings
-                {
-                    UserAgent = Web.UserAgent
-                };
+			{
+				string urlSearch = platforms.IsNullOrEmpty() || platforms.IsEqual(ResourceProvider.GetString("LOCAll"))
+					? string.Format(UrlExophaseSearch, WebUtility.UrlEncode(name))
+					: string.Format(UrlExophaseSearchPlatform, WebUtility.UrlEncode(name), platforms);
 
-                string json = string.Empty;
-                using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
-                {
-                    string urlSearch = platforms.IsNullOrEmpty() || platforms.IsEqual(ResourceProvider.GetString("LOCAll"))
-                        ? string.Format(UrlExophaseSearch, WebUtility.UrlEncode(name))
-                        : string.Format(UrlExophaseSearchPlatform, WebUtility.UrlEncode(name), platforms);
-
-                    webView.NavigateAndWait(urlSearch);
-                    json = webView.GetPageText();
-                }
+                var dataText = Web.DownloadJsonDataWebView(urlSearch).GetAwaiter().GetResult();
+				string json = dataText.Item1;
 
                 if (!Serialization.TryFromJson(json, out ExophaseSearchResult exophaseScheachResult))
                 {
@@ -270,10 +261,10 @@ namespace SuccessStory.Clients
                     return listSearchGames;
                 }
 
-                List<List> ListExophase = exophaseScheachResult?.Games?.List;
-                if (ListExophase != null)
+                List<List> listExophase = exophaseScheachResult?.Games?.List;
+                if (listExophase != null)
                 {
-                    listSearchGames = ListExophase.Select(x => new SearchResult
+                    listSearchGames = listExophase.Select(x => new SearchResult
                     {
                         Url = x.EndpointAwards,
                         Name = x.Title,
@@ -294,7 +285,7 @@ namespace SuccessStory.Clients
 
         private string GetAchievementsPageUrl(GameAchievements gameAchievements, Services.SuccessStoryDatabase.AchievementSource source)
         {
-            bool UsedSplit = false;
+            bool usedSplit = false;
 
             string sourceLinkName = gameAchievements.SourcesLink?.Name;
             if (sourceLinkName == "Exophase")
@@ -315,7 +306,7 @@ namespace SuccessStory.Clients
 
                     Thread.Sleep(1000);
                     searchResults = SearchGame(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value);
-                    UsedSplit = true;
+                    usedSplit = true;
                     if (searchResults.Count == 0)
                     {
                         Logger.Warn($"No game found for {Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value} in GetAchievementsPageUrl()");
@@ -324,7 +315,7 @@ namespace SuccessStory.Clients
                 }
             }
 
-            string normalizedGameName = UsedSplit ? CommonPluginsShared.PlayniteTools.NormalizeGameName(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value) : CommonPluginsShared.PlayniteTools.NormalizeGameName(gameAchievements.Name);
+            string normalizedGameName = usedSplit ? CommonPluginsShared.PlayniteTools.NormalizeGameName(Regex.Match(gameAchievements.Name, @"^.*(?=[:-])").Value) : CommonPluginsShared.PlayniteTools.NormalizeGameName(gameAchievements.Name);
             SearchResult searchResult = searchResults.Find(x => CommonPluginsShared.PlayniteTools.NormalizeGameName(x.Name) == normalizedGameName && PlatformAndProviderMatch(x, gameAchievements, source));
 
             if (searchResult == null)

@@ -20,21 +20,6 @@ namespace SuccessStory.Clients
     {
         internal static ILogger Logger => LogManager.GetLogger();
 
-        protected static IWebView webViewOffscreen;
-        internal static IWebView WebViewOffscreen
-        {
-            get
-            {
-                if (webViewOffscreen == null)
-                {
-                    webViewOffscreen = API.Instance.WebViews.CreateOffscreenView();
-                }
-                return webViewOffscreen;
-            }
-
-            set => webViewOffscreen = value;
-        }
-
         // Access to the plugin's database.
         internal static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
@@ -52,7 +37,9 @@ namespace SuccessStory.Clients
         protected string LastErrorMessage { get; set; }
 
         // Path to store cookies.
+        internal CookiesTools CookiesTools { get; }
         internal string CookiesPath { get; }
+        internal List<string> CookiesDomains { get; set; }
 
 
         // Constructor to initialize the client name and language settings.
@@ -63,10 +50,11 @@ namespace SuccessStory.Clients
             LocalLangShort = localLangShort;
 
             CookiesPath = Path.Combine(PluginDatabase.Paths.PluginUserDataPath, CommonPlayniteShared.Common.Paths.GetSafePathName($"{clientName}.json"));
-        }
-
+            CookiesTools = new CookiesTools(PluginDatabase.PluginName, clientName, CookiesPath, CookiesDomains);
+		}
 
         #region Achievements
+
         /// <summary>
         /// Get all achievements for a game.
         /// </summary>
@@ -89,10 +77,11 @@ namespace SuccessStory.Clients
         /// <param name="game"></param>
         /// <returns></returns>
         public abstract GameAchievements GetAchievements(Game game);
+
         #endregion
 
-
         #region Configuration
+
         /// <summary>
         /// Abstract method to validate the service-specific configuration and display error messages to the user.
         /// </summary>
@@ -116,8 +105,8 @@ namespace SuccessStory.Clients
         /// </summary>
         /// <returns>true if enabled, false otherwise.</returns>
         public virtual bool EnabledInSettings() => false;
-        #endregion
 
+        #endregion
 
         // Resets the cached configuration validation result.
         public virtual void ResetCachedConfigurationValidationResult() => CachedConfigurationValidationResult = null;
@@ -125,50 +114,24 @@ namespace SuccessStory.Clients
         // Resets the cached connection result.
         public virtual void ResetCachedIsConnectedResult() => CachedIsConnectedResult = null;
 
-
         #region Cookies
+
         /// <summary>
         /// Gets the cookies from the saved file, if it exists.
         /// </summary>
         /// <returns>A list of HTTP cookies.</returns>
-        internal List<HttpCookie> GetCookies()
-        {
-            if (File.Exists(CookiesPath))
-            {
-                try
-                {
-                    return Serialization.FromJson<List<HttpCookie>>(
-                        Encryption.DecryptFromFile(
-                            CookiesPath,
-                            Encoding.UTF8,
-                            WindowsIdentity.GetCurrent().User.Value));
-                }
-                catch (Exception ex)
-                {
-                    Common.LogError(ex, false, "Failed to load saved cookies");
-                }
-            }
-
-            return null;
-        }
+        internal List<HttpCookie> GetCookies() => CookiesTools.GetStoredCookies();
 
         /// <summary>
         /// Saves the cookies to a file by encrypting them.
         /// </summary>
         /// <param name="httpCookies">The list of cookies to save.</param>
-        internal void SetCookies(List<HttpCookie> httpCookies)
-        {
-            FileSystem.CreateDirectory(Path.GetDirectoryName(CookiesPath));
-            Encryption.EncryptToFile(
-                CookiesPath,
-                Serialization.ToJson(httpCookies),
-                Encoding.UTF8,
-                WindowsIdentity.GetCurrent().User.Value);
-        }
+        internal void SetCookies(List<HttpCookie> httpCookies) => CookiesTools.SetStoredCookies(httpCookies);
+
         #endregion
 
-
         #region Errors
+
         /// <summary>
         /// Displays a notification when the plugin is disabled.
         /// </summary>
@@ -329,6 +292,7 @@ namespace SuccessStory.Clients
                 ));
             }
         }
+
         #endregion
     }
 }
