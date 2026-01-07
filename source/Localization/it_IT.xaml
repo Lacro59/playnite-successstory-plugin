@@ -48,7 +48,7 @@ Devi controllare &quot;{1}&quot; nelle impostazioni del plugin</sys:String>
 Associa la piattaforma nelle impostazioni del plugin</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 non è stato correttamente configurato nelle impostazioni</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsShadPS4BadConfig">ShadPS4 non è stato configurato correttamente nelle impostazioni</sys:String>
-	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Xbox360 Achievements have not been correctly configured in settings</sys:String>
+	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Gli obiettivi Xbox360 non sono stati configurati correttamente nelle impostazioni</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net è abilitato in Successory ma l'estensione della libreria è stata disabilitata in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">L'utente Battle.net non è autenticato</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">L'utente Overwatch di Battle.net non è autenticato</sys:String>
