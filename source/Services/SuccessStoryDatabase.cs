@@ -321,7 +321,7 @@ namespace SuccessStory.Services
             else if (gameAchievements == null && game != null)
             {
                 gameAchievements = GetDefault(game);
-                //Add(gameAchievements);
+                Add(gameAchievements);
             }
 
             return gameAchievements;
