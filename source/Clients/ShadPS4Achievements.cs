@@ -37,29 +37,12 @@ namespace SuccessStory.Clients
                 if (string.IsNullOrEmpty(timestamp))
                     return null;
 
-                // Parse the PS4 timestamp
-                ulong tickValue = ulong.Parse(timestamp);
+                long seconds = long.Parse(timestamp);
 
-                // Divide by 1000 to get milliseconds instead of microseconds
-                long milliseconds = (long)(tickValue / 1000);
-
-                // Add milliseconds to PS4 epoch
-                DateTime utcTime = PS4Epoch.AddMilliseconds(milliseconds);
-
-                // Convert to local time
-                DateTime localTime = utcTime.ToLocalTime();
-
-                // Adjust the year by subtracting the offset
-                return new DateTime(
-                    localTime.Year - YearOffset,
-                    localTime.Month,
-                    localTime.Day,
-                    localTime.Hour,
-                    localTime.Minute,
-                    localTime.Second,
-                    localTime.Millisecond,
-                    localTime.Kind
-                );
+                return DateTimeOffset
+                    .FromUnixTimeSeconds(seconds)
+                    .ToLocalTime()
+                    .DateTime;
             }
             catch (Exception ex)
             {
