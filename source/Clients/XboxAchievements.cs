@@ -282,6 +282,14 @@ namespace SuccessStory.Clients
             }
 
             List<Achievement> achievements = relevantAchievements.Select(ConvertToAchievement).ToList();
+            
+            // download achievement images immediately to avoid waiting for download when rendering them for the first time
+            foreach (var achievement in achievements)
+            {
+                _ = achievement.ImageUnlocked;
+                _ = achievement.ImageLocked;
+            }
+            
             return achievements;
         }
 
