@@ -363,7 +363,8 @@ namespace SuccessStory.Clients
 
         private static string AddResizeParamsToUrl(string url)
         {
-            if (!(url.StartsWith("http://images-eds.xboxlive.com/image") || url.StartsWith("https://images-eds-ssl.xboxlive.com/image")))
+            if (string.IsNullOrEmpty(url) ||
+                !(url.StartsWith("http://images-eds.xboxlive.com/image") || url.StartsWith("https://images-eds-ssl.xboxlive.com/image")))
             {
                 return url;
             }
