@@ -290,33 +290,6 @@ namespace SuccessStory.Clients
                     gameAchievements = GetManual(appId, game);
                 }
 
-                if (!gameAchievements.HasAchievements)
-                {
-                    SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
-                    GameAchievements temp = se.GetAchievementsLocal(game, SteamApi.CurrentAccountInfos?.ApiKey, 0, IsManual);
-                    appId = se.GetAppId();
-
-                    if (temp.Items.Count > 0)
-                    {
-                        for (int i = 0; i < temp.Items.Count; i++)
-                        {
-                            allAchievements.Add(new Models.Achievement
-                            {
-                                Name = temp.Items[i].Name,
-                                ApiName = temp.Items[i].ApiName,
-                                Description = temp.Items[i].Description,
-                                UrlUnlocked = temp.Items[i].UrlUnlocked,
-                                UrlLocked = temp.Items[i].UrlLocked,
-                                DateUnlocked = temp.Items[i].DateUnlocked
-                            });
-                        }
-
-                        gameAchievements.Items = allAchievements;
-                        gameAchievements.ItemsStats = temp.ItemsStats;
-                        // local achievements loaded
-                     }
-                }
-
                 // Set source link
                 if (gameAchievements.HasAchievements)
                 {
@@ -360,35 +333,6 @@ namespace SuccessStory.Clients
                 gameAchievements = GetManual(appId, game);
                 swManual.Stop();
                 Logger.Debug($"Steam.GetManual took {swManual.ElapsedMilliseconds}ms");
-            }
-
-            if (IsLocal && !gameAchievements.HasAchievements)
-            {
-                if (SteamApi.CurrentAccountInfos.ApiKey.IsNullOrEmpty())
-                {
-                    Logger.Warn($"No Steam API key");
-                }
-
-                SteamEmulators se = new SteamEmulators(PluginDatabase.PluginSettings.Settings.LocalPath);
-                GameAchievements temp = se.GetAchievementsLocal(game, SteamApi.CurrentAccountInfos.ApiKey, appId, IsManual);
-
-                if (temp.Items.Count > 0)
-                {
-                    for (int i = 0; i < temp.Items.Count; i++)
-                    {
-                        allAchievements.Add(new Models.Achievement
-                        {
-                            Name = temp.Items[i].Name,
-                            ApiName = temp.Items[i].ApiName,
-                            Description = temp.Items[i].Description,
-                            UrlUnlocked = temp.Items[i].UrlUnlocked,
-                            UrlLocked = temp.Items[i].UrlLocked,
-                            DateUnlocked = temp.Items[i].DateUnlocked
-                        });
-                    }
-
-                    gameAchievements.Items = allAchievements;
-                }
             }
 
             // Set source link
@@ -559,15 +503,6 @@ namespace SuccessStory.Clients
         public override bool IsConfigured()
         {
             return SteamApi.IsConfigured();
-        }
-
-        /// <summary>
-        /// Returns whether Steam achievements are enabled in plugin settings.
-        /// </summary>
-        /// <returns>True if enabled, otherwise false.</returns>
-        public override bool EnabledInSettings()
-        {
-            return IsLocal ? PluginDatabase.PluginSettings.Settings.EnableLocal : PluginDatabase.PluginSettings.Settings.EnableSteam;
         }
 
         #endregion
