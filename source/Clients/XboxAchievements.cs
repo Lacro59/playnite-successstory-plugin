@@ -487,6 +487,14 @@ namespace SuccessStory.Clients
             }
 
             List<Achievement> achievements = relevantAchievements.Select(ConvertToAchievement).ToList();
+            
+            // download achievement images immediately to avoid waiting for download when rendering them for the first time
+            foreach (var achievement in achievements)
+            {
+                _ = achievement.ImageUnlocked;
+                _ = achievement.ImageLocked;
+            }
+            
             return achievements;
         }
 
@@ -553,9 +561,20 @@ namespace SuccessStory.Clients
                 Percent = 100,
                 DateUnlocked = xboxAchievement.progression.timeUnlocked.ToString().Contains(default(DateTime).ToString()) ? (DateTime?)null : xboxAchievement.progression.timeUnlocked,
                 UrlLocked = string.Empty,
-                UrlUnlocked = xboxAchievement.mediaAssets[0].url,
+                UrlUnlocked = AddResizeParamsToUrl(xboxAchievement.mediaAssets[0].url),
                 GamerScore = float.Parse(xboxAchievement.rewards?.FirstOrDefault(x => x.type.IsEqual("Gamerscore"))?.value ?? "0")
             };
+        }
+
+        private static string AddResizeParamsToUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url) ||
+                !(url.StartsWith("http://images-eds.xboxlive.com/image") || url.StartsWith("https://images-eds-ssl.xboxlive.com/image")))
+            {
+                return url;
+            }
+            var paramSeparator = url.Contains("?") ? "&" : "?";
+            return $"{url}{paramSeparator}h=120&w=120";
         }
 
         private static Achievement ConvertToAchievement(Xbox360Achievement xboxAchievement)
