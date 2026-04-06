@@ -725,8 +725,7 @@ namespace SuccessStory.Services
                 return source;
             }
 
-            //any game can still get local achievements when that's enabled
-            return settings.EnableLocal ? AchievementSource.Local : AchievementSource.None;
+            return AchievementSource.None;
         }
 
 
