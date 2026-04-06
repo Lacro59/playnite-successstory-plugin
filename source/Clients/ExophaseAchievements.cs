@@ -13,10 +13,13 @@ using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
@@ -54,10 +57,43 @@ namespace SuccessStory.Clients
         };
 
 
+        private static readonly HttpClient _sharedHttpClient = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(15)
+        };
+
+        // Cache expiration in days
+        private const int CACHE_EXPIRATION_DAYS = 7;
+
+        private static readonly SemaphoreSlim _bgFetchSemaphore = new SemaphoreSlim(2);
+        private static CancellationTokenSource _bgFetchCts = new CancellationTokenSource();
+        private static readonly object _bgFetchCtsLock = new object();
+
+        static ExophaseAchievements()
+        {
+            _sharedHttpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36");
+        }
+
         public ExophaseAchievements() : base("Exophase")
         {
             CookiesDomains = new List<string> { ".exophase.com" };
 		}
+
+        private static string GetCacheDirectory()
+        {
+            return Path.Combine(PluginDatabase.Paths.PluginCachePath, "ExophaseImages");
+        }
+
+        private static string GenerateCacheKey(string url)
+        {
+            string safeUrl = url ?? string.Empty;
+            string cacheKey = Regex.Replace(safeUrl, "[^a-zA-Z0-9_-]", "_");
+            if (cacheKey.Length > 100)
+            {
+                cacheKey = safeUrl.MD5();
+            }
+            return cacheKey;
+        }
 
 
         public override GameAchievements GetAchievements(Game game)
@@ -65,12 +101,40 @@ namespace SuccessStory.Clients
             throw new NotImplementedException();
         }
 
-        public GameAchievements GetAchievements(Game game, string url)
+        public GameAchievements GetAchievements(Game game, string url, CancellationToken cancellationToken = default)
         {
-            return GetAchievements(game, new SearchResult { Name = game.Name, Url = url });
+            return GetAchievements(game, new SearchResult { Name = game.Name, Url = url }, cancellationToken);
         }
 
-        public GameAchievements GetAchievements(Game game, SearchResult searchResult)
+        public async Task<GameAchievements> GetAchievementsAsync(Game game, string url)
+        {
+            return await GetAchievementsAsync(game, new SearchResult { Name = game.Name, Url = url });
+        }
+
+        /// <summary>
+        /// Gets achievements for a game synchronously.
+        /// WARNING: This method uses sync-over-async and MUST only be called from background threads.
+        /// Use GetAchievementsAsync when possible to avoid deadlocks.
+        /// </summary>
+        /// <param name="game">The game to get achievements for</param>
+        /// <param name="searchResult">The search result containing the URL</param>
+        /// <returns>Game achievements</returns>
+        /// <exception cref="InvalidOperationException">Thrown if called from a thread with a synchronization context</exception>
+        public GameAchievements GetAchievements(Game game, SearchResult searchResult, CancellationToken cancellationToken = default)
+        {
+            // Enforce background thread usage to prevent deadlocks
+            if (SynchronizationContext.Current != null)
+            {
+                throw new InvalidOperationException(
+                    "GetAchievements (sync) must be called from a background thread. " +
+                    "Use GetAchievementsAsync or wrap this call in Task.Run() to avoid deadlocks.");
+            }
+            
+            // Synchronous wrapper for backward compatibility
+            return GetAchievementsAsync(game, searchResult, cancellationToken).GetAwaiter().GetResult();
+        }
+
+        public async Task<GameAchievements> GetAchievementsAsync(Game game, SearchResult searchResult, CancellationToken cancellationToken = default)
         {
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievement> allAchievements = new List<Achievement>();
@@ -80,25 +144,154 @@ namespace SuccessStory.Clients
                 string dataExophaseLocalised = string.Empty;
                 string dataExophase = string.Empty;
 
-                WebViewSettings webViewSettings = new WebViewSettings
+                // Normalize fetch URL and prepare cache key
+                string fetchUrl = searchResult.Url ?? string.Empty;
+                if (fetchUrl.StartsWith("/"))
                 {
-                    UserAgent = Web.UserAgent
-                };
-
-                using (IWebView webView = API.Instance.WebViews.CreateOffscreenView(webViewSettings))
+                    fetchUrl = UrlExophase.TrimEnd('/') + fetchUrl;
+                }
+                if (!fetchUrl.Contains("/achievements", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    webView.DeleteDomainCookies(CookiesDomains.First());
-                    webView.NavigateAndWait(searchResult.Url);
-                    dataExophase = webView.GetPageSource();
-
-                    if (!Regex.IsMatch(dataExophase, @"<title>.*?\bAchievements\b.*?</title>"))
+                    fetchUrl = fetchUrl.TrimEnd('/') + "/achievements/";
+                }
+                string cacheKeyUrl = fetchUrl;
+                try
+                {
+                    var cacheDir = GetCacheDirectory();
+                    if (!Directory.Exists(cacheDir)) Directory.CreateDirectory(cacheDir);
+                    string cacheKey = GenerateCacheKey(cacheKeyUrl);
+                    string cacheFile = Path.Combine(cacheDir, cacheKey + ".json");
+                    if (File.Exists(cacheFile))
                     {
-                        Logger.Warn("Exophase no english data or notice message app"); 
-                        webView.DeleteDomainCookies(CookiesDomains.First());
-                        Thread.Sleep(2000);
-                        webView.NavigateAndWait(searchResult.Url);
-                        dataExophase = webView.GetPageSource();
+                        var age = DateTime.UtcNow - File.GetLastWriteTimeUtc(cacheFile);
+                        if (age.TotalDays <= CACHE_EXPIRATION_DAYS)
+                        {
+                            // load cached achievements quickly
+                            var jsonCache = File.ReadAllText(cacheFile);
+                            try
+                            {
+                                var cached = Serialization.FromJson<Dictionary<string, Achievement>>(jsonCache);
+                                if (cached != null && cached.Count > 0)
+                                {
+                                    gameAchievements.Items = cached.Values.ToList();
+                                    // Register images to resolver
+                                    var imagesDict = cached.ToDictionary(kv => kv.Key, kv => kv.Value.UrlUnlocked);
+                                    Services.AchievementImageResolver.RegisterImages(game, imagesDict);
+                                    return gameAchievements;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Logger.Warn($"Exophase cache deserialization failed, trying old format (may result in incomplete data): {ex.Message}");
+                                var cachedOld = Serialization.FromJson<Dictionary<string, string>>(jsonCache);
+                                if (cachedOld != null && cachedOld.Count > 0)
+                                {
+                                    var cachedList = cachedOld.Select(kv => new Achievement { Name = kv.Key, UrlUnlocked = kv.Value }).ToList();
+                                    gameAchievements.Items = cachedList;
+                                    Services.AchievementImageResolver.RegisterImages(game, cachedOld);
+                                    return gameAchievements;
+                                }
+                            }
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, "Error reading Exophase cache", true, PluginDatabase.PluginName);
+                }
+
+                // Fetch data asynchronously
+                try
+                {
+                    // Try WebView fetch first to obtain fully rendered page (bypasses Cloudflare/JS)
+                    try
+                    {
+                        var webData = await Web.DownloadSourceDataWebView(fetchUrl, GetCookies(), true, CookiesDomains, true, true, "ul.achievement, ul.trophy, ul.challenge", cancellationToken);
+                        if (!string.IsNullOrEmpty(webData.Item1))
+                        {
+                            dataExophase = webData.Item1;
+                        }
+                    }
+                    catch (Exception exWebView)
+                    {
+                        Logger.Debug($"Exophase WebView fetch failed, falling back to HTTP: {exWebView.Message}");
+                        // WebView fetch failed; fall back to HTTP methods
+                    }
+
+                    // Fallback: try HTTP client then simple download
+                    if (string.IsNullOrEmpty(dataExophase))
+                    {
+                        string fetched = null;
+                        try
+                        {
+                            var resp = await _sharedHttpClient.GetAsync(fetchUrl, cancellationToken);
+                            if (resp.IsSuccessStatusCode)
+                            {
+                                fetched = await resp.Content.ReadAsStringAsync();
+                            }
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            // Cancelled
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Debug($"Exophase HTTP client fetch failed: {ex.Message}");
+                        }
+
+                        if (!string.IsNullOrEmpty(fetched))
+                        {
+                            dataExophase = fetched;
+                        }
+                    }
+
+                    // Final fallback
+                    if (string.IsNullOrEmpty(dataExophase))
+                    {
+                        try
+                        {
+                            dataExophase = await Web.DownloadStringData(fetchUrl);
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false, $"Exophase HTTP fetch failed for {searchResult.Url}, scheduling background WebView fetch", true, PluginDatabase.PluginName);
+
+                            // Background fetch: parse, cache and register images without blocking
+                            ScheduleBackgroundFetch(fetchUrl, cacheKeyUrl, game);
+
+                            dataExophase = string.Empty;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, "Error fetching Exophase page", true, PluginDatabase.PluginName);
+                    dataExophase = string.Empty;
+                }
+
+                // Check if the fetched page contains achievement lists; some Exophase pages don't include 'Achievements' in <title>
+                bool hasAchievementLists = false;
+                if (!string.IsNullOrEmpty(dataExophase))
+                {
+                    try
+                    {
+                        var parserCheck = new HtmlParser();
+                        var docCheck = parserCheck.Parse(dataExophase);
+                        hasAchievementLists = (docCheck.QuerySelectorAll("ul.achievement, ul.trophy, ul.challenge")?.Length ?? 0) > 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Debug($"Exophase achievement list check failed: {ex.Message}");
+                        hasAchievementLists = false;
+                    }
+                }
+
+                // If no achievement lists found, schedule background fetch for next run
+                if (!hasAchievementLists)
+                {
+                    Logger.Debug($"Exophase: No achievement lists found for {searchResult.Url}, scheduling background fetch");
+                    ScheduleBackgroundFetch(fetchUrl, cacheKeyUrl, game);
+                    dataExophase = string.Empty;
                 }
 
                 if (PluginDatabase.PluginSettings.Settings.UseLocalised && !IsConnected())
@@ -114,20 +307,58 @@ namespace SuccessStory.Clients
                 }
                 else if (PluginDatabase.PluginSettings.Settings.UseLocalised)
                 {
-                    var data = Web.DownloadSourceDataWebView(searchResult.Url, GetCookies(), true, CookiesDomains).GetAwaiter().GetResult();
-                    dataExophaseLocalised = data.Item1;
-                    
-                    if (dataExophaseLocalised.Contains("Notice Message App"))
+                     try
+                     {
+                         dataExophaseLocalised = await Web.DownloadStringData(fetchUrl);
+                     }
+                     catch (Exception ex)
+                     {
+                         Common.LogError(ex, false, $"Exophase localized fetch failed for {searchResult.Url}", true, PluginDatabase.PluginName);
+                         dataExophaseLocalised = string.Empty;
+                     }
+                    // If localized page contains a notice message, skip retries
+                    // If localized page contains a notice message, skip retries and fallback to default
+                    if (!string.IsNullOrEmpty(dataExophaseLocalised) && dataExophaseLocalised.Contains("Notice Message App"))
                     {
-                        Logger.Warn("Exophase notice message app");
-                        Thread.Sleep(2000);
-                        data = Web.DownloadSourceDataWebView(searchResult.Url, GetCookies(), true, CookiesDomains).GetAwaiter().GetResult();
-                        dataExophaseLocalised = data.Item1;
+                        Common.LogDebug(true, $"Exophase localized page contained 'Notice Message App'. Falling back to non-localized data.");
+                        dataExophaseLocalised = null;
                     }
-                }
+                 }
 
                 List<Achievement> All = ParseData(dataExophase);
                 List<Achievement> AllLocalised = dataExophaseLocalised.IsNullOrEmpty() ? new List<Achievement>() : ParseData(dataExophaseLocalised);
+
+                // After parsing, cache achievements to disk for future runs (using canonical format)
+                try
+                {
+                    // Build canonical cache format: Dictionary<string, Achievement>
+                    var achievementsDict = All.Where(a => !a.Name.IsNullOrEmpty())
+                        .GroupBy(a => a.Name)
+                        .ToDictionary(g => g.Key, g => g.First());
+                    
+                    if (achievementsDict.Count > 0)
+                    {
+                        var cacheDir = GetCacheDirectory();
+                        if (!Directory.Exists(cacheDir)) Directory.CreateDirectory(cacheDir);
+                        // Use the same normalized URL for cache key as used in reads
+                        string cacheKey = GenerateCacheKey(cacheKeyUrl);
+                        string cacheFile = Path.Combine(cacheDir, cacheKey + ".json");
+                        File.WriteAllText(cacheFile, Serialization.ToJson(achievementsDict));
+                        
+                        // Register images separately (requires name->url map)
+                        var imagesDict = achievementsDict
+                            .Where(kv => !kv.Value.UrlUnlocked.IsNullOrEmpty())
+                            .ToDictionary(kv => kv.Key, kv => kv.Value.UrlUnlocked);
+                        if (imagesDict.Count > 0)
+                        {
+                            Services.AchievementImageResolver.RegisterImages(game, imagesDict);
+                        }
+                    }
+                }
+                catch (Exception exCache)
+                {
+                    Common.LogError(exCache, false, "Error caching Exophase images", true, PluginDatabase.PluginName);
+                }
 
                 for (int i = 0; i < All?.Count; i++)
                 {
@@ -192,43 +423,64 @@ namespace SuccessStory.Clients
 
         #region Exophase
 
-        public void Login()
+        public Task Login()
         {
-            FileSystem.DeleteFile(CookiesPath);
-            ResetCachedIsConnectedResult();
-
-            WebViewSettings webViewSettings = new WebViewSettings
+            try
             {
-                WindowWidth = 580,
-                WindowHeight = 700,
-                JavaScriptEnabled = true,
-                // This is needed otherwise captcha won't pass
-                UserAgent = Web.UserAgent
-            };
+                FileSystem.DeleteFile(CookiesPath);
+                ResetCachedIsConnectedResult();
 
-            using (IWebView webView = API.Instance.WebViews.CreateView(webViewSettings))
-            {
-                webView.LoadingChanged += (s, e) =>
+                WebViewSettings webViewSettings = new WebViewSettings
                 {
-                    string address = webView.GetCurrentAddress();
-                    if (address.StartsWith(UrlExophaseAccount, StringComparison.InvariantCultureIgnoreCase) && !address.StartsWith(UrlExophaseLogout, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        CachedIsConnectedResult = true;
-                        webView.Close();
-                    }
+                    WindowWidth = 580,
+                    WindowHeight = 700,
+                    JavaScriptEnabled = true,
+                    // This is needed otherwise captcha won't pass
+                    UserAgent = Web.UserAgent
                 };
 
-                webView.DeleteDomainCookies(CookiesDomains.First());
-                webView.Navigate(UrlExophaseLogin);
-                _ = webView.OpenDialog();
-            }
+                using (IWebView webView = API.Instance.WebViews.CreateView(webViewSettings))
+                {
+                    webView.LoadingChanged += (s, e) =>
+                    {
+                        string address = webView.GetCurrentAddress();
+                        if (address.StartsWith(UrlExophaseAccount, StringComparison.InvariantCultureIgnoreCase) && !address.StartsWith(UrlExophaseLogout, StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            var cookies = webView.GetCookies();
+                            if (cookies?.Count > 0)
+                            {
+                                SetCookies(cookies);
+                                CachedIsConnectedResult = true;
+                            }
+                            else
+                            {
+                                Logger.Warn("Exophase Login: No cookies found in WebView.");
+                            }
+                            webView.Close();
+                        }
+                    };
 
-            List<HttpCookie> httpCookies = CookiesTools.GetWebCookies(true);
-            SetCookies(httpCookies);
+                    webView.DeleteDomainCookies(CookiesDomains.First());
+                    webView.Navigate(UrlExophaseLogin);
+                    _ = webView.OpenDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+            return Task.CompletedTask;
         }
 
         private bool GetIsUserLoggedIn()
         {
+            if (SynchronizationContext.Current != null)
+            {
+                throw new InvalidOperationException(
+                    "GetIsUserLoggedIn must be called from a background thread. " +
+                    "Use Task.Run() to avoid deadlocks.");
+            }
+
             var data = Web.DownloadSourceDataWebView(UrlExophaseAccount, GetCookies(), true, CookiesDomains).GetAwaiter().GetResult();
             bool isConnected = data.Item1.Contains("column-username", StringComparison.InvariantCultureIgnoreCase);
 
@@ -250,7 +502,7 @@ namespace SuccessStory.Clients
 					? string.Format(UrlExophaseSearch, WebUtility.UrlEncode(name))
 					: string.Format(UrlExophaseSearchPlatform, WebUtility.UrlEncode(name), platforms);
 
-                var dataText = Web.DownloadJsonDataWebView(urlSearch).GetAwaiter().GetResult();
+                var dataText = Web.DownloadJsonDataWebView(urlSearch, GetCookies()).GetAwaiter().GetResult();
 				string json = dataText.Item1;
 
                 if (!Serialization.TryFromJson(json, out ExophaseSearchResult exophaseScheachResult))
@@ -331,7 +583,7 @@ namespace SuccessStory.Clients
         /// </summary>
         /// <param name="gameAchievements"></param>
         /// <param name="source"></param>
-        public void SetRarety(GameAchievements gameAchievements, Services.SuccessStoryDatabase.AchievementSource source)
+        public void SetRarety(GameAchievements gameAchievements, Services.SuccessStoryDatabase.AchievementSource source, CancellationToken cancellationToken = default)
         {
             string achievementsUrl = GetAchievementsPageUrl(gameAchievements, source);
             if (achievementsUrl.IsNullOrEmpty())
@@ -342,8 +594,10 @@ namespace SuccessStory.Clients
 
             try
             {
-                GameAchievements exophaseAchievements = GetAchievements(gameAchievements.Game, achievementsUrl);
-                exophaseAchievements.Items.ForEach(y =>
+                GameAchievements exophaseAchievements = GetAchievements(gameAchievements.Game, achievementsUrl, cancellationToken);
+                var missingMatches = new List<string>();
+                
+                foreach (var y in exophaseAchievements.Items)
                 {
                     Achievement achievement = gameAchievements.Items.Find(x => x.ApiName.IsEqual(y.ApiName));
                     if (achievement == null)
@@ -369,9 +623,29 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        Logger.Warn($"No Exophase (rarity) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} - {y.Name} in {achievementsUrl}");
+                        // Collect missing names and log a single summary after processing to avoid flooding logs
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(y.Name))
+                            {
+                                missingMatches.Add(y.Name);
+                            }
+                        }
+                        catch (Exception ex) { Logger.Debug($"Exophase missing match collection failed: {ex.Message}"); }
                     }
-                });
+                }
+
+                if (missingMatches.Count > 0)
+                {
+                    // limit output length
+                    int maxShow = 10;
+                    string sample = string.Join(", ", missingMatches.Take(maxShow));
+                    if (missingMatches.Count > maxShow)
+                    {
+                        sample += ", ...";
+                    }
+                    Logger.Warn($"No Exophase (rarity) matching achievements found for {gameAchievements.Name} - {gameAchievements.Id} in {achievementsUrl}: {missingMatches.Count} missing. Examples: {sample}");
+                }
 
                 PluginDatabase.AddOrUpdate(gameAchievements);
             }
@@ -516,5 +790,209 @@ namespace SuccessStory.Clients
 
             return allAchievements;
         }
+
+
+
+
+        private void ScheduleBackgroundFetch(string fetchUrl, string searchResultUrl, Game game)
+        {
+            Task.Run(async () =>
+            {
+                CancellationToken token;
+                lock (_bgFetchCtsLock)
+                {
+                    if (_bgFetchCts == null || _bgFetchCts.IsCancellationRequested)
+                    {
+                        Logger.Debug($"Exophase background fetch skipped - shutdown in progress or completed");
+                        return;
+                    }
+                    token = _bgFetchCts.Token;
+                }
+                
+                try
+                {
+                    await _bgFetchSemaphore.WaitAsync(token);
+                }
+                catch (OperationCanceledException)
+                {
+                    Logger.Debug($"Exophase background fetch cancelled before starting for {searchResultUrl}");
+                    return;
+                }
+                catch (ObjectDisposedException)
+                {
+                    Logger.Debug($"Exophase background fetch semaphore disposed");
+                    return;
+                }
+                
+                try
+                {
+                    token.ThrowIfCancellationRequested();
+                    
+                    var webDataBg = await Web.DownloadSourceDataWebView(fetchUrl, GetCookies(), true, CookiesDomains);
+                    if (webDataBg.Item1.IsNullOrEmpty())
+                    {
+                        Logger.Warn($"Exophase background fetch: no data from {fetchUrl}");
+                        return;
+                    }
+
+                    var parsed = ParseData(webDataBg.Item1);
+                    CacheAndApplyImages(parsed, searchResultUrl, game);
+                }
+                catch (OperationCanceledException)
+                {
+                    Logger.Debug($"Exophase background fetch cancelled for {searchResultUrl}");
+                }
+                catch (Exception bgEx)
+                {
+                    Common.LogError(bgEx, false, $"Exophase background fetch failed for {searchResultUrl}", true, PluginDatabase.PluginName);
+                }
+                finally
+                {
+                    try
+                    {
+                        _bgFetchSemaphore.Release();
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        // Already disposed, ignore
+                    }
+                }
+            });
+        }
+
+        private void CacheAndApplyImages(List<Achievement> parsed, string cacheKeyUrl, Game game)
+        {
+            // Filter out empty Name/UrlUnlocked and de-duplicate by Name
+            var achievementsDict = new Dictionary<string, Achievement>();
+            var imagesDict = new Dictionary<string, string>();
+            var imagesNormalized = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var a in parsed)
+            {
+                if (a.Name.IsNullOrEmpty()) continue;
+                if (!achievementsDict.ContainsKey(a.Name))
+                {
+                    achievementsDict.Add(a.Name, a);
+                    if (!a.UrlUnlocked.IsNullOrEmpty())
+                    {
+                        imagesDict.Add(a.Name, a.UrlUnlocked);
+                        
+                        string keyNorm = a.Name.RemoveDiacritics().ToLowerInvariant().Trim();
+                        if (!imagesNormalized.ContainsKey(keyNorm))
+                        {
+                            imagesNormalized.Add(keyNorm, a.UrlUnlocked);
+                        }
+                    }
+                }
+            }
+
+            if (achievementsDict.Count > 0)
+            {
+                var cacheDir = GetCacheDirectory();
+                if (!Directory.Exists(cacheDir)) Directory.CreateDirectory(cacheDir);
+
+                string cacheKey = GenerateCacheKey(cacheKeyUrl);
+                string cacheFile = Path.Combine(cacheDir, cacheKey + ".json");
+                File.WriteAllText(cacheFile, Serialization.ToJson(achievementsDict));
+
+                if (imagesDict.Count > 0)
+                {
+                    Services.AchievementImageResolver.RegisterImages(game, imagesDict);
+                }
+
+                try
+                {
+                    // Also apply images to any existing GameAchievements in the plugin DB so UI updates immediately
+                    var existing = PluginDatabase.Get(game, true);
+                    if (existing != null && existing.Items != null && existing.Items.Count > 0)
+                    {
+                        bool changed = false;
+                        foreach (var it in existing.Items)
+                        {
+                            if (it == null) continue;
+                            string name = it.Name ?? string.Empty;
+                            string keyNorm = name.RemoveDiacritics().ToLowerInvariant().Trim();
+                            
+                            if (keyNorm.IsNullOrEmpty()) continue;
+
+                            if (imagesNormalized.TryGetValue(keyNorm, out string url))
+                            {
+                                if (it.UrlUnlocked != url)
+                                {
+                                    it.UrlUnlocked = url;
+                                    changed = true;
+                                }
+                            }
+                        }
+
+                        if (changed)
+                        {
+                            PluginDatabase.AddOrUpdate(existing);
+                        }
+                    }
+                }
+                catch (Exception exUpdate)
+                {
+                    Common.LogError(exUpdate, false, $"Exophase background: failed to apply images to DB for {game.Name}", true, PluginDatabase.PluginName);
+                }
+            }
+        }
+
+
+        #region Shutdown
+
+        /// <summary>
+        /// Shutdown method to cancel background tasks and dispose resources. Should be called when plugin unloads.
+        /// Note: This operation is terminal for the static background fetcher. Background fetches cannot be restarted without reloading the domain/application.
+        /// </summary>
+        public static void Shutdown()
+        {
+            lock (_bgFetchCtsLock)
+            {
+                try
+                {
+                    _bgFetchCts?.Cancel();
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    Logger.Debug($"Background fetch cancel: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn($"Error cancelling background fetch tasks: {ex.Message}");
+                }
+                
+                try
+                {
+                    _bgFetchCts?.Dispose();
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    Logger.Debug($"Background fetch dispose: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn($"Error disposing cancellation token source: {ex.Message}");
+                }
+            }
+            
+            // Do not dispose semaphore as it is static and reused across reloads
+            /*
+            try
+            {
+                _bgFetchSemaphore?.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+                // Already disposed, ignore
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn($"Error disposing semaphore: {ex.Message}");
+            }
+            */
+        }
+
+        #endregion
     }
 }

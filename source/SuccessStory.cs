@@ -60,7 +60,7 @@ namespace SuccessStory
 
         #endregion
 
-        public SuccessStory(IPlayniteAPI api) : base(api)
+        public SuccessStory(IPlayniteAPI api) : base(api, "SuccessStory")
         {
             // Manual dll load
             try
@@ -1197,6 +1197,8 @@ namespace SuccessStory
                 CancellationToken ct = TokenSource.Token;
                 Task TaskCacheImage = Task.Run(() =>
                 {
+                    Thread.Sleep(60000);
+
                     // Wait Playnite & extension database are loaded
                     _ = SpinWait.SpinUntil(() => API.Instance.Database.IsOpen, -1);
                     _ = SpinWait.SpinUntil(() => PluginDatabase.IsLoaded, -1);
@@ -1210,6 +1212,8 @@ namespace SuccessStory
 #endif
                     db.ForEach(x =>
                     {
+                        Thread.Sleep(50);
+
                         if (ct.IsCancellationRequested)
                         {
                             return;
@@ -1343,7 +1347,30 @@ namespace SuccessStory
         // Add code to be executed when Playnite is shutting down.
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
         {
-            TokenSource.Cancel();
+            // Stop the plugin if it is loaded.
+            if (PluginDatabase != null)
+            {
+                TokenSource.Cancel();
+                
+                // Cleanup static resources
+                try
+                {
+                    Clients.XboxAchievements.Cleanup();
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, "Error during XboxAchievements cleanup", true, PluginDatabase.PluginName);
+                }
+                
+                try
+                {
+                    Clients.ExophaseAchievements.Shutdown();
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, "Error during ExophaseAchievements shutdown", true, PluginDatabase.PluginName);
+                }
+            }
         }
 
         #endregion

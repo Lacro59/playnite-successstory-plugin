@@ -128,6 +128,7 @@ namespace SuccessStory.Clients
             }
 
             gameAchievements.SetRaretyIndicator();
+            PluginDatabase.AddOrUpdate(gameAchievements);
             return gameAchievements;
         }
 
@@ -824,7 +825,10 @@ namespace SuccessStory.Clients
                 ZipFileManageRemove();
                 ZipFile.ExtractToDirectory(filePath, extractPath);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
 
             string FilePathReturn = string.Empty;
             _ = Parallel.ForEach(Directory.EnumerateFiles(extractPath, "*.*", SearchOption.AllDirectories), (objectFile) =>

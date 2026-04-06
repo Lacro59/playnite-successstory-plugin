@@ -122,7 +122,10 @@ namespace SuccessStory.Views
                     datePicker.Tag = false;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
 
         private void PART_Time_TimeChanged(object sender, RoutedEventArgs e)
@@ -139,7 +142,10 @@ namespace SuccessStory.Views
                     dataContext.DateUnlocked = new DateTime(dt.Year, dt.Month, dt.Day, int.Parse(dtTime[0]), int.Parse(dtTime[1]), int.Parse(dtTime[2]), DateTimeKind.Local).ToUniversalTime();
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
 
         private void PART_CbUnlock_Click(object sender, RoutedEventArgs e)
@@ -162,7 +168,10 @@ namespace SuccessStory.Views
                     dataContext.DateUnlocked = default;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
 
 

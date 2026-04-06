@@ -119,13 +119,13 @@ namespace SuccessStory.Controls
             // Select data
             if (IsUnlocked)
             {
-                gameAchievements.OrderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationCompactUnlockedOrderAchievement;
-                achievements = gameAchievements.OrderItemsOnlyUnlocked;
+                achievements = gameAchievements.GetOrderItems(PluginDatabase.PluginSettings.Settings.IntegrationCompactUnlockedOrderAchievement)
+                    .Where(x => x.IsUnlock).ToObservable();
             }
             else
             {
-                gameAchievements.OrderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationCompactLockedOrderAchievement;
-                achievements = gameAchievements.OrderItemsOnlyLocked;
+                achievements = gameAchievements.GetOrderItems(PluginDatabase.PluginSettings.Settings.IntegrationCompactLockedOrderAchievement)
+                    .Where(x => !x.IsUnlock).ToObservable();
             }
 
             if (achievements.Count == 0)

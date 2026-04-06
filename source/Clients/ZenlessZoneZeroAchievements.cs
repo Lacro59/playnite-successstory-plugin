@@ -111,7 +111,7 @@ namespace SuccessStory.Clients
 
             gameAchievements.Items = AllAchievements;
             gameAchievements.SetRaretyIndicator();
-
+            PluginDatabase.AddOrUpdate(gameAchievements);
             return gameAchievements;
         }
 
