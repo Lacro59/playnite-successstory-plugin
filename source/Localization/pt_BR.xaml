@@ -48,7 +48,7 @@ Você deve verificar &quot;{1}&quot; nas configurações do plugin</sys:String>
 Associe a plataforma nas configurações do plugin</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">O RPCS3 não foi ajustado corretamente nas configurações</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsShadPS4BadConfig">ShadPS4 não foi ajustada corretamente nas configurações</sys:String>
-	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Xbox360 Achievements have not been correctly configured in settings</sys:String>
+	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">As conquistas do Xbox360 não foram ajustadas corretamente nas configurações</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">A Battle.net está habilitada no SuccessStory, mas a extensão da biblioteca foi desativada no Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">O usuário da Battle.net não está autenticado</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">O usuário do Overwatch pelo Battle.net não está autenticado</sys:String>
@@ -83,12 +83,12 @@ Associe a plataforma nas configurações do plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Habilitar conquistas Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Habilitar conquistas GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Habilitar conquistas Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableEa">Habilitar conquistas EA</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Habilitar conquistas da EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Habilitar conquistas Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Habilitar conquistas RetroAchievements</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Habilitar conquistas RPCS3</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Achievements">Habilitar conquistas ShadPS4</sys:String>
-	<sys:String x:Key="LOCSuccessStoryEnableXbox360Achievements">Enable Xbox 360 achievements</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableXbox360Achievements">Ative as conquistas do Xbox 360</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Habilitar conquistas manuais</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Habilitar conquistas do Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Habilitar conquistas do StarCraft II</sys:String>
@@ -100,7 +100,7 @@ Associe a plataforma nas configurações do plugin</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Pasta principal do usuário</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Folder">Pasta de usuário ShadPS4</sys:String>
 
-	<sys:String x:Key="LOCSuccessStoryEnableXeniaFolder">Xenia__canary.exe location</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableXeniaFolder">Local do Xenia__canary.exe</sys:String>
 
 	<sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Exibir uma visualização separada para conquistas do RetroAchievements</sys:String>
 

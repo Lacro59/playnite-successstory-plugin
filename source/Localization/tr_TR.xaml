@@ -39,7 +39,7 @@ Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG ayarlarda düzgün yapılandırılmamı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">BaşarıÖyküsü eklentisinde PSN etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">PSN kullanıcı kimliği doğrulanmadı</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">BaşarıÖyküsü eklentisinde EA etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">BaşarıÖyküsü eklentisinde EA etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">BaşarıÖyküsü eklentisinde Xbox etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Xbox kullanıcı kimliği doğrulanmadı</sys:String>
@@ -47,8 +47,8 @@ Eklenti ayarlarında &quot;{1}&quot; seçeneği işaretlenmeli</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsNoConsoleId" xml:space="preserve">{1} platformlu {0} için ConsoleId bulunamadı.
 Platformu eklenti ayarlarında ilişkilendirin</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 ayarlarda düzgün yapılandırılmamı</sys:String>
-	<sys:String x:Key="LOCSuccessStoryNotificationsShadPS4BadConfig">ShadPS4 has not been correctly configured in settings</sys:String>
-	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Xbox360 Achievements have not been correctly configured in settings</sys:String>
+	<sys:String x:Key="LOCSuccessStoryNotificationsShadPS4BadConfig">ShadPS4 ayarlarda düzgün yapılandırılmamış</sys:String>
+	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Xbox360 Başarımları ayarlarda doğru şekilde yapılandırılmadı</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">BaşarıÖyküsü eklentisinde Battle.net etkinleştirilmiş ancak Playnite'da kütüphane eklentisi devre dışı bırakılmış</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net kullanıcı kimliği doğrulanmadı</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch kullanıcı kimliği doğrulanmadı</sys:String>
@@ -87,8 +87,8 @@ Platformu eklenti ayarlarında ilişkilendirin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Xbox başarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">RetroAchievement başarılarımlarını etkinleştir</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">RPCS3 başarılarımlarını etkinleştir</sys:String>
-	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Achievements">Enable ShadPS4 achievements</sys:String>
-	<sys:String x:Key="LOCSuccessStoryEnableXbox360Achievements">Enable Xbox 360 achievements</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Achievements">ShadPS4 başarımlarını etkinleştir</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableXbox360Achievements">Xbox 360 başarımlarını etkinleştir</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableManualAchievements">El ile girilen başarılarımları etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Overwatch başarılarımlarını etkinleştir</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">StarCraft II başarımlarını etkinleştir</sys:String>
@@ -98,9 +98,9 @@ Platformu eklenti ayarlarında ilişkilendirin</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">API kullanımını devre dışı bırak (API anahtarınız yoksa kullanın)</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Başlangıç kullanıcı klasörü</sys:String>
-	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Folder">ShadPS4 user folder</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Folder">ShadPS4 kullanıcı klasörü</sys:String>
 
-	<sys:String x:Key="LOCSuccessStoryEnableXeniaFolder">Xenia__canary.exe location</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableXeniaFolder">Xenia__canary.exe konumu</sys:String>
 
 	<sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">RetroAchievements için ayrı görünüm göster</sys:String>
 

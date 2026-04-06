@@ -48,7 +48,7 @@ Devi controllare &quot;{1}&quot; nelle impostazioni del plugin</sys:String>
 Associa la piattaforma nelle impostazioni del plugin</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 non è stato correttamente configurato nelle impostazioni</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsShadPS4BadConfig">ShadPS4 non è stato configurato correttamente nelle impostazioni</sys:String>
-	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Xbox360 Achievements have not been correctly configured in settings</sys:String>
+	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Gli obiettivi Xbox360 non sono stati configurati correttamente nelle impostazioni</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net è abilitato in Successory ma l'estensione della libreria è stata disabilitata in Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">L'utente Battle.net non è autenticato</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">L'utente Overwatch di Battle.net non è autenticato</sys:String>
@@ -83,7 +83,7 @@ Associa la piattaforma nelle impostazioni del plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSteam">Abilita obiettivi di Steam</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableGog">Abilita obiettivi di GOG</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableEpic">Abilita risultati di Epic</sys:String>
-    <sys:String x:Key="LOCSuccessStoryEnableEa">Abilita i risultati di EA</sys:String>
+    <sys:String x:Key="LOCSuccessStoryEnableEa">Abilita gli obiettivi EA</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Abilita obiettivi Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Abilita obiettivi di RetroAchievements</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Attiva risultati RPCS3</sys:String>

@@ -39,8 +39,8 @@
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">Το GOG δεν έχει ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">Το PSN είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Ο χρήστης PSN δεν είναι ταυτοποιημένος</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">Η EA είναι ενεργοποιημένη στο SuccessStory αλλά η επέκταση της βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">Ο χρήστης της EA δεν είναι ταυτοποιημένος</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">EA is enabled in SuccessStory but the library extension has been disabled in Playnite</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">EA user is not authenticated</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Το Xbox είναι ενεργοποιημένο στο SuccessStory αλλά η επέκταση βιβλιοθήκης έχει απενεργοποιηθεί στο Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Ο χρήστης Xbox δεν είναι ταυτοποιημένος</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsRetroAchievementsBadConfig">Τα RetroAchievements δεν έχουν ρυθμιστεί σωστά στις ρυθμίσεις</sys:String>
