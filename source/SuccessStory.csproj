@@ -623,7 +623,6 @@
     <Compile Include="Clients\Rpcs3Achievements.cs" />
     <Compile Include="Clients\Starcraft2Achievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
-    <Compile Include="Clients\SteamEmulators.cs" />
     <Compile Include="Clients\TrueAchievements.cs" />
     <Compile Include="Clients\WowAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />

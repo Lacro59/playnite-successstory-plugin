@@ -297,7 +297,7 @@ namespace SuccessStory.Services
             else if (gameAchievements == null && game != null)
             {
                 gameAchievements = GetDefault(game);
-                //Add(gameAchievements);
+                Add(gameAchievements);
             }
 
             return gameAchievements;
@@ -794,8 +794,7 @@ namespace SuccessStory.Services
                 return source;
             }
 
-            //any game can still get local achievements when that's enabled
-            return settings.EnableLocal ? AchievementSource.Local : AchievementSource.None;
+            return AchievementSource.None;
         }
 
 
