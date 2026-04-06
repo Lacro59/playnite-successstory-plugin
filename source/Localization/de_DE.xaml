@@ -48,7 +48,7 @@ Du musst in den Plugin die Einstellungen &quot;{1}&quot; überprüfen</sys:Strin
 Verknüpfen Sie die Plattform in den Plugin-Einstellungen</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 wurde in den Einstellungen nicht richtig konfiguriert</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsShadPS4BadConfig">ShadPS4 wurde in den Einstellungen nicht richtig konfiguriert</sys:String>
-	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Xbox360 Achievements have not been correctly configured in settings</sys:String>
+	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Xbox360 Errungenschaften wurden in den Einstellungen nicht korrekt konfiguriert</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net ist in SuccessStory aktiviert, aber die Bibliothekserweiterung wurde in Playnite deaktiviert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">Battle.net Benutzer ist nicht authentifiziert</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">Battle.net Overwatch Benutzer ist nicht authentifiziert</sys:String>
