@@ -8,8 +8,10 @@ using SuccessStory.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using static CommonPluginsShared.PlayniteTools;
+
 
 namespace SuccessStory.Clients
 {
@@ -25,6 +27,8 @@ namespace SuccessStory.Clients
 
         public override GameAchievements GetAchievements(Game game)
         {
+            var swOverall = Stopwatch.StartNew();
+            Logger.Info($"Epic.GetAchievements START - {game.Name}");
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievement> AllAchievements = new List<Achievement>();
 
@@ -33,14 +37,16 @@ namespace SuccessStory.Clients
                 try
                 {
                     var assets = EpicApi.GetAssets();
+
                     var asset = assets.FirstOrDefault(x => x.AppName.IsEqual(game.GameId));
+                    string targetNamespace = asset?.Namespace ?? game.GameId;
+
                     if (asset == null)
                     {
-                        Logger.Warn($"No asset for the Epic game {game.Name}");
-                        return gameAchievements;
+                        Logger.Warn($"No asset for the Epic game {game.Name}. Using GameId {game.GameId} as namespace.");
                     }
 
-                    ObservableCollection<GameAchievement> epicAchievements = EpicApi.GetAchievements(asset.Namespace, EpicApi.CurrentAccountInfos);
+                    var epicAchievements = EpicApi.GetAchievements(targetNamespace, EpicApi.CurrentAccountInfos);
                     if (epicAchievements?.Count > 0)
                     {
                         AllAchievements = epicAchievements.Select(x => new Achievement
@@ -58,16 +64,16 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        if (!EpicApi.IsUserLoggedIn)
-                        {
-                            ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
-                        }
+                        Logger.Debug($"No achievements found for {game.Name} on Epic");
                     }
 
                     // Set source link
-                    if (gameAchievements.HasAchievements)
+                    if (gameAchievements.HasAchievements && gameAchievements.SourcesLink == null)
                     {
-                        string productSlug = EpicApi.GetProductSlug(asset.Namespace);
+                        var swSlug = Stopwatch.StartNew();
+                        string productSlug = EpicApi.GetProductSlug(targetNamespace);
+                        swSlug.Stop();
+                        Logger.Debug($"Epic.GetProductSlug: {swSlug.ElapsedMilliseconds}ms");
                         gameAchievements.SourcesLink = EpicApi.GetAchievementsSourceLink(game.Name, productSlug, EpicApi.CurrentAccountInfos);
                     }
                 }
@@ -80,9 +86,14 @@ namespace SuccessStory.Clients
             else
             {
                 ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
+                return gameAchievements;
             }
 
             gameAchievements.SetRaretyIndicator();
+            PluginDatabase.AddOrUpdate(gameAchievements);
+
+            swOverall.Stop();
+            Logger.Info($"Epic.GetAchievements STOP - {game.Name} - {swOverall.ElapsedMilliseconds}ms");
             return gameAchievements;
         }
 

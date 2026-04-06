@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
+using System.Threading;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 using Playnite.SDK.Models;
@@ -13,13 +15,20 @@ using SuccessStory.Models;
 using CommonPluginsShared.Models;
 using CommonPluginsShared.Extensions;
 using static CommonPluginsShared.PlayniteTools;
+using Playnite.SDK.Plugins;
 using CommonPlayniteShared.PluginLibrary.XboxLibrary.Services;
 using SuccessStory.Models.Xbox;
 
 namespace SuccessStory.Clients
 {
-    public class XboxAchievements : GenericAchievements
+    public class XboxAchievements : GenericAchievements, IDisposable
     {
+        private static readonly object _initLock = new object();
+        private static readonly object _cacheLock = new object(); // For thread-safe cache operations
+        private static readonly SemaphoreSlim _isConnectedSemaphore = new SemaphoreSlim(1, 1);
+        private static readonly ConcurrentDictionary<string, string> _titleIdCache = new ConcurrentDictionary<string, string>();
+        private static readonly int _titleIdCacheMaxSize = 500; // Prevent unbounded growth
+        private static readonly HttpClient _sharedHttpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
         protected static readonly Lazy<XboxAccountClient> xboxAccountClient = new Lazy<XboxAccountClient>(() => new XboxAccountClient(API.Instance, PluginDatabase.Paths.PluginUserDataPath + "\\..\\" + PlayniteTools.GetPluginId(ExternalPlugin.XboxLibrary)));
         internal static XboxAccountClient XboxAccountClient => xboxAccountClient.Value;
 
@@ -49,7 +58,23 @@ namespace SuccessStory.Clients
                         return gameAchievements;
                     }
 
-                    AllAchievements = GetXboxAchievements(game, authData).GetAwaiter().GetResult();
+                    // Run in background with timeout to avoid blocking UI thread and potential deadlocks indefinitely
+                    using (CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(30)))
+                    {
+                        try
+                        {
+                            AllAchievements = Task.Run(async () => await GetXboxAchievements(game, authData, cts.Token).ConfigureAwait(false), cts.Token).GetAwaiter().GetResult() ?? new List<Achievement>();
+                        }
+                        catch (Exception ex) when (ex is OperationCanceledException || ex is TaskCanceledException)
+                        {
+                            Logger.Warn($"Xbox achievements retrieval timed out for {game.Name} after 30 seconds.");
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex, $"Error on GetXboxAchievements() for {game.Name}");
+                            ShowNotificationPluginError(ex);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -61,28 +86,78 @@ namespace SuccessStory.Clients
                 ShowNotificationPluginNoAuthenticate(ExternalPlugin.XboxLibrary);
             }
 
+            if (AllAchievements.Count > 0)
+            {
+                gameAchievements.Items = AllAchievements;
+            }
+            else // AllAchievements.Count == 0
+            {
+                // Check if we have cached data - if so, this might indicate data loss
+                var cachedData = SuccessStory.PluginDatabase.Get(game.Id, true);
+                bool hadCachedAchievements = cachedData?.Items?.Count > 0;
+                
+                if (hadCachedAchievements)
+                {
+                    // Warn: we had data before but now it's empty (possible data loss)
+                    Logger.Warn($"Xbox: No achievements found for {game.Name}, but cached data exists. Restoring from cache.");
+                    gameAchievements.Items = cachedData.Items;
+                }
+                else
+                {
+                    // Info: legitimately no achievements for this title
+                    Logger.Info($"Xbox: No achievements found for {game.Name} (title may not have achievements)");
+                }
+            }
 
-            gameAchievements.Items = AllAchievements;
-
-
-            // Set source link
+            // Set source link AFTER populating Items
             if (gameAchievements.HasAchievements)
             {
+                // Use cached title ID if available, otherwise use empty string
+                // Full async fetch happens during GetXboxAchievements
+                string titleId = string.Empty;
+                if (game.GameId != null && _titleIdCache.TryGetValue(game.GameId, out string cachedTitleId))
+                {
+                    titleId = cachedTitleId;
+                }
+                
                 gameAchievements.SourcesLink = new SourceLink
                 {
                     GameName = game.Name,
                     Name = "Xbox",
-                    Url = $"https://account.xbox.com/{LocalLang}/GameInfoHub?titleid={GetTitleId(game)}&selectedTab=achievementsTab&activetab=main:mainTab2"
+                    Url = !string.IsNullOrEmpty(titleId) 
+                        ? $"https://account.xbox.com/{LocalLang}/GameInfoHub?titleid={titleId}&selectedTab=achievementsTab&activetab=main:mainTab2"
+                        : $"https://account.xbox.com/{LocalLang}/Profile"
                 };
             }
 
-            // Set rarity from Exophase
+            // Set rarity from Exophase AFTER Items are populated — guarded to avoid crashing when Exophase integration is broken
             if (gameAchievements.HasAchievements)
             {
-                SuccessStory.ExophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Xbox);
+                try
+                {
+                    if (SuccessStory.ExophaseAchievements != null && SuccessStory.ExophaseAchievements.IsConnected())
+                    {
+                        SuccessStory.ExophaseAchievements.SetRarety(gameAchievements, Services.SuccessStoryDatabase.AchievementSource.Xbox);
+                    }
+                    else
+                    {
+                        Logger.Debug("Exophase not connected or unavailable - skipping rarity fetch for Xbox achievements.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log and continue — do not let Exophase failures crash Xbox achievement retrieval
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                }
             }
 
             gameAchievements.SetRaretyIndicator();
+
+            // Only update if we actually have items to save (either new ones or restored ones)
+            if (gameAchievements.HasAchievements)
+            {
+                PluginDatabase.AddOrUpdate(gameAchievements);
+            }
             return gameAchievements;
         }
 
@@ -118,13 +193,102 @@ namespace SuccessStory.Clients
 
         public override bool IsConnected()
         {
+            // Short-circuit if disposed
+            if (Interlocked.CompareExchange(ref _disposed, 0, 0) == 1)
+            {
+                return false;
+            }
+            
+            // Check cached result
             if (CachedIsConnectedResult == null)
             {
-                CachedIsConnectedResult = XboxAccountClient.GetIsUserLoggedIn().GetAwaiter().GetResult();
-                if (!(bool)CachedIsConnectedResult && File.Exists(XboxAccountClient.liveTokensPath))
+                // Sync-over-async: We run the full async flow on a background thread to avoid deadlocks.
+                // Note: Calling .GetAwaiter().GetResult() from a thread with a synchronization context (like the UI thread)
+                // still carries some risk. Prefer using IsConnectedAsync() whenever possible.
+                lock (_initLock)
                 {
-                    XboxAccountClient.RefreshTokens().GetAwaiter().GetResult();
-                    CachedIsConnectedResult = XboxAccountClient.GetIsUserLoggedIn().GetAwaiter().GetResult();
+                    if (CachedIsConnectedResult == null)
+                    {
+                        try
+                        {
+                            CachedIsConnectedResult = Task.Run(async () => await IsConnectedAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
+                        }
+                        catch (ObjectDisposedException)
+                        {
+                            // Disposed during execution
+                            CachedIsConnectedResult = false;
+                            return false;
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            // Cancelled during execution
+                            CachedIsConnectedResult = false;
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return (bool)CachedIsConnectedResult;
+        }
+
+        public override async Task<bool> IsConnectedAsync()
+        {
+            // Short-circuit if disposed
+            if (Interlocked.CompareExchange(ref _disposed, 0, 0) == 1)
+            {
+                return false;
+            }
+            
+            if (CachedIsConnectedResult == null)
+            {
+                try
+                {
+                    await _isConnectedSemaphore.WaitAsync().ConfigureAwait(false);
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Semaphore disposed
+                    return false;
+                }
+                
+                try
+                {
+                    // Double-check after acquiring lock
+                    if (CachedIsConnectedResult == null)
+                    {
+                        bool isAuthenticated = await XboxAccountClient.GetIsUserLoggedIn().ConfigureAwait(false);
+                        if (!isAuthenticated && File.Exists(XboxAccountClient.liveTokensPath))
+                        {
+                            await XboxAccountClient.RefreshTokens().ConfigureAwait(false);
+                            isAuthenticated = await XboxAccountClient.GetIsUserLoggedIn().ConfigureAwait(false);
+                        }
+
+                        if (!isAuthenticated)
+                        {
+                            Logger.Warn($"{ClientName} user is not authenticated");
+                        }
+
+                        // Update cached result
+                        CachedIsConnectedResult = isAuthenticated;
+                    }
+                }
+                catch (ObjectDisposedException)
+                {
+                    // Disposed during execution
+                    CachedIsConnectedResult = false;
+                    return false;
+                }
+                finally
+                {
+                    try
+                    {
+                        _isConnectedSemaphore.Release();
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        // Already disposed, ignore
+                    }
                 }
             }
 
@@ -140,7 +304,7 @@ namespace SuccessStory.Clients
 
         #region Xbox
 
-        private string GetTitleId(Game game)
+        private async Task<string> GetTitleIdAsync(Game game)
         {
             string titleId = string.Empty;
             if (game.GameId?.StartsWith("CONSOLE_") == true)
@@ -152,24 +316,58 @@ namespace SuccessStory.Clients
             }
             else if (!game.GameId.IsNullOrEmpty())
             {
-                TitleHistoryResponse.Title libTitle = XboxAccountClient.GetTitleInfo(game.GameId).Result;
-                titleId = libTitle.titleId;
+                try
+                {
+                    if (_titleIdCache.TryGetValue(game.GameId, out string cachedTitleId))
+                    {
+                        return cachedTitleId;
+                    }
+
+                    var titleInfo = await XboxAccountClient.GetTitleInfo(game.GameId).ConfigureAwait(false);
+                    if (titleInfo != null && !string.IsNullOrEmpty(titleInfo.titleId))
+                    {
+                        // Thread-safe cache size check and clear
+                        lock (_cacheLock)
+                        {
+                            if (_titleIdCache.Count >= _titleIdCacheMaxSize)
+                            {
+                                Logger.Debug($"Xbox title ID cache size limit reached ({_titleIdCacheMaxSize}), clearing cache");
+                                _titleIdCache.Clear();
+                            }
+                            _titleIdCache.TryAdd(game.GameId, titleInfo.titleId);
+                        }
+                        
+                        return titleInfo.titleId;
+                    }
+                    else
+                    {
+                        Logger.Warn($"{ClientName} - No title info found for {game.GameId}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, $"{ClientName} - Error fetching title info for {game.GameId}");
+                }
 
                 Common.LogDebug(true, $"{ClientName} - name: {game.Name} - gameId: {game.GameId} - titleId: {titleId}");
             }
             return titleId;
         }
 
-        private async Task<TContent> GetSerializedContentFromUrl<TContent>(string url, AuthorizationData authData, string contractVersion) where TContent : class
+
+
+        private async Task<TContent> GetSerializedContentFromUrl<TContent>(string url, AuthorizationData authData, string contractVersion, CancellationToken cancellationToken) where TContent : class
         {
             Common.LogDebug(true, $"{ClientName} - url: {url}");
 
-            using (HttpClient client = new HttpClient())
+            // Create per-request message to avoid thread-safety issues with shared client headers
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url))
             {
-                client.DefaultRequestHeaders.Add("User-Agent", Web.UserAgent);
-                SetAuthenticationHeaders(client.DefaultRequestHeaders, authData, contractVersion);
+                request.Headers.Add("User-Agent", Web.UserAgent);
+                SetAuthenticationHeaders(request.Headers, authData, contractVersion);
 
-                HttpResponseMessage response = client.GetAsync(url).Result;
+                using (HttpResponseMessage response = await _sharedHttpClient.SendAsync(request, cancellationToken).ConfigureAwait(false))
+                {
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
@@ -194,32 +392,39 @@ namespace SuccessStory.Clients
                     return null;
                 }
 
-                string cont = await response.Content.ReadAsStringAsync();
+                string cont = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 Common.LogDebug(true, cont);
 
                 return Serialization.FromJson<TContent>(cont);
+                }
             }
         }
 
 
-        private async Task<List<Achievement>> GetXboxAchievements(Game game, AuthorizationData authorizationData)
+        private async Task<List<Achievement>> GetXboxAchievements(Game game, AuthorizationData authorizationData, CancellationToken cancellationToken)
         {
-            List<Func<Game, AuthorizationData, Task<List<Achievement>>>> getAchievementMethods = new List<Func<Game, AuthorizationData, Task<List<Achievement>>>>
+            var getAchievementMethods = new List<Func<Game, AuthorizationData, CancellationToken, Task<List<Achievement>>>>
             {
-                GetXboxOneAchievements,
-                GetXbox360Achievements
+                GetXboxOneAchievements
             };
 
-            if (game.Platforms != null && game.Platforms.Any(p => p.SpecificationId == "xbox360"))
+            // Conditionally add Xbox360 support if enabled
+            if (PluginDatabase?.PluginSettings?.Settings?.EnableXbox360Achievements == true)
+            {
+                getAchievementMethods.Add(GetXbox360Achievements);
+                Logger.Info("Xbox360 achievements enabled - adding to fetch methods");
+            }
+
+            if (game.Platforms != null && game.Platforms.Any(p => p.SpecificationId == "xbox360") && getAchievementMethods.Contains(GetXbox360Achievements))
             {
                 getAchievementMethods.Reverse();
             }
 
-            foreach (Func<Game, AuthorizationData, Task<List<Achievement>>> getAchievementsMethod in getAchievementMethods)
+            foreach (Func<Game, AuthorizationData, CancellationToken, Task<List<Achievement>>> getAchievementsMethod in getAchievementMethods)
             {
                 try
                 {
-                    List<Achievement> result = await getAchievementsMethod.Invoke(game, authorizationData);
+                    List<Achievement> result = await getAchievementsMethod.Invoke(game, authorizationData, cancellationToken).ConfigureAwait(false);
                     if (result != null && result.Any())
                     {
                         return result;
@@ -238,7 +443,7 @@ namespace SuccessStory.Clients
                 }
             }
 
-            return null;
+            return new List<Achievement>();
         }
 
         /// <summary>
@@ -247,7 +452,7 @@ namespace SuccessStory.Clients
         /// <param name="game"></param>
         /// <param name="authorizationData"></param>
         /// <returns></returns>
-        private async Task<List<Achievement>> GetXboxOneAchievements(Game game, AuthorizationData authorizationData)
+        private async Task<List<Achievement>> GetXboxOneAchievements(Game game, AuthorizationData authorizationData, CancellationToken cancellationToken)
         {
             if (authorizationData is null)
             {
@@ -258,7 +463,7 @@ namespace SuccessStory.Clients
 
             Common.LogDebug(true, $"GetXboxAchievements() - name: {game.Name} - gameId: {game.GameId}");
             
-            string titleId = GetTitleId(game);
+            string titleId = await GetTitleIdAsync(game).ConfigureAwait(false);
 
             string url = string.Format(AchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
             if (titleId.IsNullOrEmpty())
@@ -267,7 +472,7 @@ namespace SuccessStory.Clients
                 Logger.Warn($"{ClientName} - Bad request");
             }
 
-            XboxOneAchievementResponse response = await GetSerializedContentFromUrl<XboxOneAchievementResponse>(url, authorizationData, "2");
+            XboxOneAchievementResponse response = await GetSerializedContentFromUrl<XboxOneAchievementResponse>(url, authorizationData, "2", cancellationToken).ConfigureAwait(false);
 
             List<XboxOneAchievement> relevantAchievements;
             if (titleId.IsNullOrEmpty())
@@ -291,7 +496,7 @@ namespace SuccessStory.Clients
         /// <param name="game"></param>
         /// <param name="authorizationData"></param>
         /// <returns></returns>
-        private async Task<List<Achievement>> GetXbox360Achievements(Game game, AuthorizationData authorizationData)
+        private async Task<List<Achievement>> GetXbox360Achievements(Game game, AuthorizationData authorizationData, CancellationToken cancellationToken)
         {
             if (authorizationData is null)
             {
@@ -302,7 +507,7 @@ namespace SuccessStory.Clients
 
             Common.LogDebug(true, $"GetXbox360Achievements() - name: {game.Name} - gameId: {game.GameId}");
 
-            string titleId = GetTitleId(game);
+            string titleId = await GetTitleIdAsync(game).ConfigureAwait(false);
 
             if (titleId.IsNullOrEmpty())
             {
@@ -312,13 +517,13 @@ namespace SuccessStory.Clients
 
             // gets the player-unlocked achievements
             string unlockedAchievementsUrl = string.Format(AchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
-            Task<Xbox360AchievementResponse> getUnlockedAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(unlockedAchievementsUrl, authorizationData, "1");
+            Task<Xbox360AchievementResponse> getUnlockedAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(unlockedAchievementsUrl, authorizationData, "1", cancellationToken);
 
             // gets all of the game's achievements, but they're all marked as locked
             string allAchievementsUrl = string.Format(TitleAchievementsBaseUrl, xuid) + $"?titleId={titleId}&maxItems=1000";
-            Task<Xbox360AchievementResponse> getAllAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(allAchievementsUrl, authorizationData, "1");
+            Task<Xbox360AchievementResponse> getAllAchievementsTask = GetSerializedContentFromUrl<Xbox360AchievementResponse>(allAchievementsUrl, authorizationData, "1", cancellationToken);
 
-            await Task.WhenAll(getUnlockedAchievementsTask, getAllAchievementsTask);
+            await Task.WhenAll(getUnlockedAchievementsTask, getAllAchievementsTask).ConfigureAwait(false);
 
             Dictionary<int, Xbox360Achievement> mergedAchievements = getUnlockedAchievementsTask.Result.achievements.ToDictionary(x => x.id);
             foreach (Xbox360Achievement a in getAllAchievementsTask.Result.achievements)
@@ -385,6 +590,61 @@ namespace SuccessStory.Clients
             headers.Add("Accept-Language", LocalLang);
         }
         
+        #endregion
+
+        #region IDisposable
+
+        private static int _disposed = 0;
+
+        /// <summary>
+        /// Cleanup method to dispose of static resources. Should be called when plugin unloads.
+        /// </summary>
+        public static void Cleanup()
+        {
+            // Use Interlocked for thread-safe disposal check
+            if (Interlocked.CompareExchange(ref _disposed, 1, 0) == 0)
+            {
+                try
+                {
+                    _isConnectedSemaphore?.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                }
+                
+                try
+                {
+                    _sharedHttpClient?.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                }
+                
+                try
+                {
+                    _titleIdCache?.Clear();
+                }
+                catch (Exception ex)
+                {
+                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Instance dispose method. This is empty because all resources are static.
+        /// Call the static Cleanup() method when the plugin unloads to release resources.
+        /// This interface implementation exists for compatibility with disposal patterns.
+        /// </summary>
+        public void Dispose()
+        {
+            // All resources are static (_sharedHttpClient, _isConnectedSemaphore)
+            // They must be disposed via the static Cleanup() method, not per-instance
+            // This is intentional for the plugin lifecycle where resources are shared
+        }
+
         #endregion
     }
 }

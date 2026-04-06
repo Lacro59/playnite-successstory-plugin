@@ -13,6 +13,7 @@ using System.Security.Principal;
 using CommonPlayniteShared.Common;
 using static CommonPluginsShared.PlayniteTools;
 using Playnite.SDK.Plugins;
+using System.Threading.Tasks;
 
 namespace SuccessStory.Clients
 {
@@ -23,9 +24,26 @@ namespace SuccessStory.Clients
         // Access to the plugin's database.
         internal static SuccessStoryDatabase PluginDatabase => SuccessStory.PluginDatabase;
 
+        // Lock object for thread-safe access to shared properties.
+        private readonly object providerLock = new object();
+
+        private bool? _cachedConfigurationValidationResult;
+        private bool? _cachedIsConnectedResult;
+        private string _lastErrorId;
+        private string _lastErrorMessage;
+
         // Cached validation results for configuration and connection status.
-        protected bool? CachedConfigurationValidationResult { get; set; }
-        protected bool? CachedIsConnectedResult { get; set; }
+        protected bool? CachedConfigurationValidationResult
+        {
+            get { lock (providerLock) return _cachedConfigurationValidationResult; }
+            set { lock (providerLock) _cachedConfigurationValidationResult = value; }
+        }
+
+        protected bool? CachedIsConnectedResult
+        {
+            get { lock (providerLock) return _cachedIsConnectedResult; }
+            set { lock (providerLock) _cachedIsConnectedResult = value; }
+        }
 
         // Client details and language information.
         protected string ClientName { get; }
@@ -33,8 +51,17 @@ namespace SuccessStory.Clients
         protected string LocalLangShort { get; }
 
         // Error details for notifications.
-        protected string LastErrorId { get; set; }
-        protected string LastErrorMessage { get; set; }
+        protected string LastErrorId
+        {
+            get { lock (providerLock) return _lastErrorId; }
+            set { lock (providerLock) _lastErrorId = value; }
+        }
+
+        protected string LastErrorMessage
+        {
+            get { lock (providerLock) return _lastErrorMessage; }
+            set { lock (providerLock) _lastErrorMessage = value; }
+        }
 
         // Path to store cookies.
         internal CookiesTools CookiesTools { get; }
@@ -93,6 +120,12 @@ namespace SuccessStory.Clients
         /// </summary>
         /// <returns>true if connected, false otherwise.</returns>
         public virtual bool IsConnected() => false;
+
+        /// <summary>
+        /// Checks if the plugin is connected to the service asynchronously.
+        /// </summary>
+        /// <returns>A task representing the result of the connection check.</returns>
+        public virtual Task<bool> IsConnectedAsync() => Task.FromResult(IsConnected());
 
         /// <summary>
         /// Checks if the plugin is configured correctly.

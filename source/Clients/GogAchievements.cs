@@ -10,6 +10,7 @@ using CommonPluginsStores.Models;
 using System.Collections.Generic;
 using Playnite.SDK;
 
+
 namespace SuccessStory.Clients
 {
     public class GogAchievements : GenericAchievements
@@ -19,7 +20,11 @@ namespace SuccessStory.Clients
 
         public GogAchievements() : base("GOG", CodeLang.GetGogLang(API.Instance.ApplicationSettings.Language))
         {
-            GogApi.SetLanguage(API.Instance.ApplicationSettings.Language);
+            // Null-safety: GogApi may not be initialized yet if called early in plugin lifecycle
+            if (SuccessStory.GogApi != null)
+            {
+                SuccessStory.GogApi.SetLanguage(API.Instance.ApplicationSettings.Language);
+            }
         }
 
 
@@ -51,10 +56,7 @@ namespace SuccessStory.Clients
                     }
                     else
                     {
-                        if (!GogApi.IsUserLoggedIn)
-                        {
-                            ShowNotificationPluginNoAuthenticate(ExternalPlugin.SuccessStory);
-                        }
+                        // No achievements returned by GOG API
                     }
 
                     // Set source link
@@ -75,6 +77,7 @@ namespace SuccessStory.Clients
             }
 
             gameAchievements.SetRaretyIndicator();
+            PluginDatabase.AddOrUpdate(gameAchievements);
             return gameAchievements;
         }
 

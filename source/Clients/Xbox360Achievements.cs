@@ -22,13 +22,10 @@ namespace SuccessStory.Clients
         private readonly IPlayniteAPI _playniteApi;
         private readonly ILogger _logger;
         private string _xeniaPath;
-        private bool _isInitialized;
-
-        // Path constants
+        private volatile bool _isInitialized;
+        private readonly object _initLock = new object();
         private const string SUCCESS_STORY_GUID = "cebe6d32-8c46-4459-b993-5a5189d60788";
-        private readonly string _playniteAppData;
-
-        // The four main paths we'll use
+        private string _playniteAppData;
         private string _xeniaLogFilePath;
         private string _xeniaAchievementsDir;
         private string _successStoryDataDir;
@@ -38,44 +35,139 @@ namespace SuccessStory.Clients
         {
             _playniteApi = API.Instance;
             _logger = LogManager.GetLogger();
-            _isInitialized = false;
-            _xeniaPath = PluginDatabase.PluginSettings.Settings.XeniaInstallationFolder;
+            // _isInitialized defaults to false, no need to set explicitly
+            // Do not read Xenia path or initialize paths at construction time to avoid probing
+            // the user's system when Xbox360 support is disabled. Defer initialization until
+            // the feature is actually used or when explicit Xenia path is provided.
             _playniteAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            InitializePaths();
-            _logger.Info($"Xbox360Achievements initialized with Xenia path: {_xeniaPath}");
+            _logger.Debug("Xbox360Achievements constructed (lazy init)");
         }
 
-        public Xbox360Achievements(IPlayniteAPI playniteApi, string xeniaPath) : base("Xbox360")
+        // Overloaded constructor used by settings UI to provide API instance and optional xenia path
+        public Xbox360Achievements(IPlayniteAPI apiInstance, string xeniaPath) : base("Xbox360")
         {
-            _playniteApi = playniteApi;
-            _xeniaPath = xeniaPath;
+            _playniteApi = apiInstance ?? API.Instance;
             _logger = LogManager.GetLogger();
-            _isInitialized = false;
+            // _isInitialized defaults to false, no need to set explicitly
             _playniteAppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            InitializePaths();
+            _xeniaPath = xeniaPath; // may be a folder path or exe path depending on caller
+            _logger.Debug($"Xbox360Achievements constructed with provided xeniaPath: '{_xeniaPath}'");
         }
 
-        private void InitializePaths()
+        // Ensure paths and environment are initialized lazily to avoid probing at startup
+        private void EnsureInitialized()
         {
-            if (string.IsNullOrEmpty(_xeniaPath))
+            if (_isInitialized)
             {
-                _logger.Error("Xbox360: Xenia path is null or empty");
                 return;
             }
 
-            string xeniaDir = Path.GetDirectoryName(_xeniaPath);
-            _xeniaLogFilePath = Path.Combine(xeniaDir, "xenia.log");
-            _xeniaAchievementsDir = Path.Combine(xeniaDir, "Achievements".TrimEnd('\\') + '\\');
-            _successStoryDataDir = Directory.Exists(Path.Combine(_playniteAppData, "Playnite", "ExtensionsData", SUCCESS_STORY_GUID, "SuccessStory"))
-                ? Path.Combine(_playniteAppData, "Playnite", "ExtensionsData", SUCCESS_STORY_GUID, "SuccessStory".TrimEnd('\\') + '\\')
-                : Path.Combine(_playniteApi.Paths.ApplicationPath, "ExtensionsData", SUCCESS_STORY_GUID, "SuccessStory".TrimEnd('\\') + '\\');
-            _xeniaJsonTempDir = _xeniaAchievementsDir;
+            lock (_initLock)
+            {
+                if (_isInitialized)
+                {
+                    return;
+                }
+
+                try
+                {
+                    // Prefer explicit ctor-provided _xeniaPath over settings
+                    if (string.IsNullOrEmpty(_xeniaPath))
+                    {
+                        // Only fallback to settings if no explicit path was provided
+                        try
+                        {
+                            var settings = SuccessStory.PluginDatabase?.PluginSettings?.Settings;
+                            _xeniaPath = settings?.XeniaInstallationFolder;
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.Error(ex, "Error accessing SuccessStory settings in Xbox360Achievements.EnsureInitialized");
+                        }
+                    }
+
+                    // InitializePaths now returns bool for success/failure
+                    bool success = InitializePaths();
+                    if (success)
+                    {
+                        _isInitialized = true;
+                        _logger.Debug($"Xbox360Achievements initialized. XeniaPath='{_xeniaPath}'");
+                    }
+                    else
+                    {
+                        _logger.Warn("Xbox360Achievements InitializePaths failed");
+                        _isInitialized = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Xbox360Achievements EnsureInitialized failed");
+                    _isInitialized = false;
+                }
+            }
+        }
+
+        private bool InitializePaths()
+        {
+            if (string.IsNullOrEmpty(_xeniaPath))
+            {
+                _logger.Warn("Xbox360: Xenia path is null or empty");
+                return false;
+            }
+
+            try
+            {
+                // Determine xeniaDir: use _xeniaPath directly if it's a directory, otherwise get its parent
+                string xeniaDir;
+                if (Directory.Exists(_xeniaPath))
+                {
+                    xeniaDir = _xeniaPath;
+                }
+                else if (_xeniaPath.EndsWith(Path.DirectorySeparatorChar.ToString()) || _xeniaPath.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+                {
+                    xeniaDir = _xeniaPath;
+                }
+                else
+                {
+                    xeniaDir = Path.GetDirectoryName(_xeniaPath);
+                }
+                
+                if (string.IsNullOrEmpty(xeniaDir))
+                {
+                    _logger.Warn("Xbox360: Could not determine Xenia directory from path");
+                    return false;
+                }
+
+                _xeniaLogFilePath = Path.Combine(xeniaDir, "xenia.log");
+                _xeniaAchievementsDir = Path.Combine(xeniaDir, "Achievements") + Path.DirectorySeparatorChar;
+                
+                _successStoryDataDir = Directory.Exists(Path.Combine(_playniteAppData, "Playnite", "ExtensionsData", SUCCESS_STORY_GUID, "SuccessStory"))
+                    ? Path.Combine(_playniteAppData, "Playnite", "ExtensionsData", SUCCESS_STORY_GUID, "SuccessStory") + Path.DirectorySeparatorChar
+                    : Path.Combine(_playniteApi.Paths.ApplicationPath, "ExtensionsData", SUCCESS_STORY_GUID, "SuccessStory") + Path.DirectorySeparatorChar;
+                
+                _xeniaJsonTempDir = _xeniaAchievementsDir;
+
+                // Validate required directories are set
+                if (string.IsNullOrEmpty(_successStoryDataDir) || string.IsNullOrEmpty(_xeniaAchievementsDir))
+                {
+                    _logger.Warn("Xbox360: Required directories could not be initialized");
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Xbox360: Error in InitializePaths");
+                return false;
+            }
         }
 
         public override GameAchievements GetAchievements(Game game)
         {
             _logger.Info($"Xbox360: Getting achievements for game: {game.Name}");
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
+            bool saved = false;
 
             if (!EnabledInSettings())
             {
@@ -83,56 +175,55 @@ namespace SuccessStory.Clients
                 return gameAchievements;
             }
 
-            if (!_isInitialized && !string.IsNullOrEmpty(_xeniaPath))
+            EnsureInitialized();
+
+            if (!_isInitialized)
             {
-                try
+                _logger.Warn("Xbox360: EnsureInitialized failed, cannot get achievements");
+                return gameAchievements;
+            }
+
+            try
+            {
+                if (IsConfigured())
                 {
-                    InitializeXeniaEnvironment(_xeniaPath);
-                    _isInitialized = true;
-
-                    if (IsConfigured())
+                    string gameId = game.Id.ToString();
+                    if (!string.IsNullOrEmpty(gameId))
                     {
-                        string gameId = game.Id.ToString();
-                        if (!string.IsNullOrEmpty(gameId))
+                        string successStoryJsonFile = Path.Combine(_successStoryDataDir, $"{gameId}.json");
+                        string tempJsonFile = Path.Combine(_xeniaJsonTempDir, $"{gameId}.json");
+                        string achievementTextFile = Path.Combine(_xeniaAchievementsDir, $"{gameId}.txt");
+
+                        saved = ProcessAchievements(game, gameAchievements, successStoryJsonFile, tempJsonFile, achievementTextFile);
+
+                        // ProcessAchievements handles all persistence via SaveAchievementsAtomically
+                        // Trigger UI refresh if this is the selected game
+                        if (saved && API.Instance.MainView.SelectedGames?.FirstOrDefault()?.Id == game.Id)
                         {
-                            string successStoryJsonFile = Path.Combine(_successStoryDataDir, $"{gameId}.json");
-                            string tempJsonFile = Path.Combine(_xeniaJsonTempDir, $"{gameId}.json");
-                            string achievementTextFile = Path.Combine(_xeniaAchievementsDir, $"{gameId}.txt");
-
-                            ProcessAchievementsImproved(gameId, successStoryJsonFile, tempJsonFile, achievementTextFile, game);
-
-                            var oldData = SuccessStory.PluginDatabase.Get(game.Id, true);
-                            gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
-                            gameAchievements.CopyDiffTo(oldData);
-
-                            SuccessStory.PluginDatabase.Database.OnItemUpdated(
-                                new List<ItemUpdateEvent<GameAchievements>>() {
-                                    new ItemUpdateEvent<GameAchievements>(oldData, gameAchievements)
-                                });
-
-                            if (API.Instance.MainView.SelectedGames?.FirstOrDefault()?.Id == game.Id)
-                            {
-                                API.Instance.MainView.SelectGames(new List<Guid> { game.Id });
-                            }
+                            API.Instance.MainView.SelectGames(new List<Guid> { game.Id });
                         }
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    _logger.Error($"Xbox360: Error processing achievements: {ex.Message}");
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                    ShowNotificationPluginNoConfiguration();
                 }
             }
-            else if (!IsConfigured())
+            catch (Exception ex)
             {
-                ShowNotificationPluginNoConfiguration();
+                _logger.Error(ex, $"Xbox360: Error processing achievements for {game.Name}");
             }
 
-            gameAchievements.SetRaretyIndicator();
+            if (!saved)
+            {
+                _logger.Warn($"Xbox360: ProcessAchievements failed for {game.Name}, restoring cached data if available");
+                // Restore old data if possible to return something meaningful
+                gameAchievements = SuccessStory.PluginDatabase.Get(game.Id, true) ?? gameAchievements;
+            }
             return gameAchievements;
         }
 
-        private List<Achievement> ProcessAchievementsImproved(string gameId, string successStoryJsonFile, string tempJsonFile, string achievementTextFile, Game game)
+        private bool ProcessAchievements(Game game, GameAchievements gameAchievements, string successStoryJsonFile, string tempJsonFile, string achievementTextFile)
         {
             var achievements = new List<Achievement>();
 
@@ -148,14 +239,13 @@ namespace SuccessStory.Clients
                 SaveAchievementsAtomically(achievements, successStoryJsonFile, game);
 
                 _logger.Info($"Xbox360: Processed {unlockedAchievements.Count} unlocked achievements");
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.Error($"Xbox360: Failed to process achievements: {ex.Message}");
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                _logger.Error(ex, $"Xbox360: Failed to process achievements for {game.Name}");
+                return false;
             }
-
-            return achievements;
         }
 
         private Dictionary<string, DateTime> GetUnlockedAchievements(string achievementTextFile)
@@ -237,8 +327,7 @@ namespace SuccessStory.Clients
             }
             catch (Exception ex)
             {
-                _logger.Error($"Xbox360: Failed to parse existing achievements: {ex.Message}");
-                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                _logger.Error(ex, $"Xbox360: Failed to parse existing achievements from {jsonPath}");
             }
             return new List<Achievement>();
         }
@@ -274,12 +363,7 @@ namespace SuccessStory.Clients
                         var existingAchievement = gameAchievements.Items.FirstOrDefault(x => x.Name == newAchievement.Name);
                         if (existingAchievement != null)
                         {
-                            DateTime formattedDate = newAchievement.DateUnlocked.Value;
-                            existingAchievement.DateUnlocked = DateTime.ParseExact(
-                                formattedDate.ToString("yyyy-MM-ddTHH:mm:ss"),
-                                "yyyy-MM-ddTHH:mm:ss",
-                                System.Globalization.CultureInfo.InvariantCulture
-                            );
+                            existingAchievement.DateUnlocked = newAchievement.DateUnlocked.Value;
                         }
                     }
                 }
@@ -306,6 +390,7 @@ namespace SuccessStory.Clients
                     }
                     File.Copy(tempPath, finalPath);
                     gameAchievements.IsManual = true;
+                    gameAchievements.SetRaretyIndicator();
                     SuccessStory.PluginDatabase.AddOrUpdate(gameAchievements);
                     SuccessStory.PluginDatabase.SetThemesResources(game);
                 }
@@ -321,28 +406,6 @@ namespace SuccessStory.Clients
                 {
                     File.Delete(tempPath);
                 }
-                throw;
-            }
-        }
-
-        public void InitializeXeniaEnvironment(string xeniaPath)
-        {
-            try
-            {
-                _xeniaPath = xeniaPath;
-                InitializePaths();
-
-                if (!Directory.Exists(_xeniaAchievementsDir))
-                {
-                    Directory.CreateDirectory(_xeniaAchievementsDir);
-                }
-
-                string configPath = Path.Combine(Path.GetDirectoryName(_xeniaPath), "xenia-canary.config.toml");
-                UpdateXeniaConfig(configPath);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error($"Xbox360: Failed to initialize environment: {ex.Message}");
                 throw;
             }
         }
@@ -395,21 +458,87 @@ namespace SuccessStory.Clients
 
         public override bool IsConfigured()
         {
-            if (string.IsNullOrEmpty(_xeniaPath))
-            {
-                return false;
-            }
-
-            bool hasAchievementsDir = Directory.Exists(_xeniaAchievementsDir);
-            bool hasSuccessStoryDir = Directory.Exists(_successStoryDataDir);
-            bool hasConfigFile = File.Exists(Path.Combine(Path.GetDirectoryName(_xeniaPath), "xenia-canary.config.toml"));
-
-            return hasAchievementsDir && hasSuccessStoryDir && hasConfigFile;
+            EnsureInitialized();
+            // Note: _xeniaPath is normalized to a directory by InitializeXeniaEnvironment if called,
+            // but may still be a file path if only set via constructor. Check both file and directory existence.
+            return !string.IsNullOrEmpty(_xeniaPath) && (System.IO.Directory.Exists(_xeniaPath) || System.IO.File.Exists(_xeniaPath));
         }
 
         public override bool EnabledInSettings()
         {
-            return PluginDatabase.PluginSettings.Settings.EnableXbox360Achievements;
+            try
+            {
+                return SuccessStory.PluginDatabase?.PluginSettings?.Settings?.EnableXbox360Achievements ?? false;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Error checking EnabledInSettings for Xbox 360 achievements");
+                return false;
+            }
+        }
+
+        public void InitializeXeniaEnvironment(string xeniaPath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(xeniaPath))
+                {
+                    // Normalize path first
+                    string baseDir = NormalizeToDirectory(xeniaPath);
+                    
+                    // Use lock to prevent other threads from observing partially-reset state
+                    lock (_initLock)
+                    {
+                        _xeniaPath = baseDir;
+                        _isInitialized = false;
+                        EnsureInitialized();
+                    }
+
+                    // Try to ensure config contains achievement notifications
+                    // (done outside lock since it's not critical for initialization state)
+                    try
+                    {
+                        var cfg = Path.Combine(baseDir, "xenia_canary.config");
+                        UpdateXeniaConfig(cfg);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warn(ex, "Xbox360: Failed to update Xenia config during InitializeXeniaEnvironment");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Xbox360: InitializeXeniaEnvironment failed");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Normalizes a path to a directory path.
+        /// If the path exists as a directory or has a trailing separator, returns it as-is.
+        /// If the path exists as a file, returns its parent directory.
+        /// If the path doesn't exist, assumes it's intended to be a directory path and returns it as-is.
+        /// </summary>
+        private string NormalizeToDirectory(string path)
+        {
+            if (Directory.Exists(path) || 
+                path.EndsWith(Path.DirectorySeparatorChar.ToString()) || 
+                path.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+            {
+                return path;
+            }
+            
+            // Check if path is actually a file before getting its directory
+            // This prevents "C:\Xenia" (non-existent dir) from becoming "C:\" (parent)
+            if (File.Exists(path))
+            {
+                return Path.GetDirectoryName(path) ?? string.Empty;
+            }
+            
+            // Path doesn't exist - assume it's a directory path
+            // Note: This assumption may be incorrect if caller intended a non-existent file path
+            return path;
         }
     }
 }

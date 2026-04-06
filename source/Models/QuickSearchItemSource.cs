@@ -159,7 +159,10 @@ namespace SuccessStory.Models
                                     }
                                 }
                             }
-                            catch { }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            }
                             break;
 
                         case "<":
@@ -174,7 +177,10 @@ namespace SuccessStory.Models
                                     }
                                 }
                             }
-                            catch { }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            }
                             break;
 
                         default:
@@ -205,7 +211,10 @@ namespace SuccessStory.Models
                                     }
                                 }
                             }
-                            catch { }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            }
                             break;
 
                         default:
@@ -243,7 +252,10 @@ namespace SuccessStory.Models
                                     }
                                 }
                             }
-                            catch { }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            }
                             break;
 
                         case "<":
@@ -258,7 +270,10 @@ namespace SuccessStory.Models
                                     }
                                 }
                             }
-                            catch { }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            }
                             break;
 
                         default:
@@ -289,7 +304,10 @@ namespace SuccessStory.Models
                                     }
                                 }
                             }
-                            catch { }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                            }
                             break;
 
                         default:

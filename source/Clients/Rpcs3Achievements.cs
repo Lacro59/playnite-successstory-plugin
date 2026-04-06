@@ -163,12 +163,12 @@ namespace SuccessStory.Clients
                             try
                             {
                                 string dtHex = hexData.Substring(44, 14);
-                                DateTime dt = new DateTime(long.Parse(dtHex, NumberStyles.AllowHexSpecifier) * 10L);
+                                DateTime dt = new DateTime(long.Parse(dtHex, NumberStyles.AllowHexSpecifier) * 10L, DateTimeKind.Utc);
                                 allAchievements[id].DateUnlocked = dt;
 
                                 if (dt == DateTime.MinValue)
                                 {
-                                    dt = new DateTime(2000, 0, 0, 0, 0, 0);
+                                    dt = new DateTime(1982, 12, 15, 0, 0, 0, 0);
                                 }
                             }
                             catch (Exception ex)
@@ -188,6 +188,7 @@ namespace SuccessStory.Clients
             }
 
             gameAchievements.SetRaretyIndicator();
+            PluginDatabase.AddOrUpdate(gameAchievements);
             return gameAchievements;
         }
 
