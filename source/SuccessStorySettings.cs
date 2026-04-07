@@ -172,9 +172,6 @@ namespace SuccessStory
         public string RetroAchievementsKey { get; set; } = string.Empty;
         public List<RaConsoleAssociated> RaConsoleAssociateds { get; set; } = new List<RaConsoleAssociated>();
 
-        public bool EnableLocal { get; set; } = false;
-        public List<Folder> LocalPath { get; set; } = new List<Folder>();
-
         public bool EnableManual { get; set; } = false;
 
         public bool EnableGenshinImpact { get; set; } = false;
@@ -363,7 +360,6 @@ namespace SuccessStory
             Settings.RarityRareColor = SuccessStorySettingsView.RarityRareColor;
             Settings.RarityUltraRareColor = SuccessStorySettingsView.RarityUltraRareColor;
 
-            Settings.LocalPath = SuccessStorySettingsView.LocalPath;
             Settings.Rpcs3InstallationFolders = SuccessStorySettingsView.Rpcs3Path;
 
             Settings.CompletionStatus100Percent = SuccessStorySettingsView.CompletionStatus;
@@ -383,7 +379,19 @@ namespace SuccessStory
 
 
             Plugin.SavePluginSettings(Settings);
-            SuccessStory.PluginDatabase.PluginSettings = this;
+            if (SuccessStory.PluginDatabase != null)
+            {
+                if (SuccessStory.PluginDatabase.PluginSettings != null)
+                {
+                    // Assigning the Settings property will trigger the view model's PropertyChanged notification
+                    // (ObservableObject.SetValue implementation) so subscribed controls are notified.
+                    SuccessStory.PluginDatabase.PluginSettings.Settings = this.Settings;
+                }
+                else
+                {
+                    SuccessStory.PluginDatabase.PluginSettings = this;
+                }
+            }
 
             if (API.Instance.ApplicationInfo.Mode == ApplicationMode.Desktop)
             {

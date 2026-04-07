@@ -96,10 +96,6 @@ namespace SuccessStory.Views
                         }));
                     });
 
-
-                LocalPath = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.LocalPath);
-                PART_ItemsControl.ItemsSource = LocalPath;
-
                 Rpcs3Path = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.Rpcs3InstallationFolders);
                 PART_ItemsRpcs3Folder.ItemsSource = Rpcs3Path;
                 if (Rpcs3Path.Count > 0)
@@ -190,14 +186,14 @@ namespace SuccessStory.Views
 
         #region Exophase
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             lIsAuth.Content = ResourceProvider.GetString("LOCCommonLoginChecking");
 
             try
             {
                 SuccessStory.ExophaseAchievements.ResetCachedIsConnectedResult();
-                SuccessStory.ExophaseAchievements.Login();
+                await SuccessStory.ExophaseAchievements.Login();
 
                 Task task = Task.Run(() => CheckLogged())
                     .ContinueWith(antecedent =>
@@ -220,96 +216,6 @@ namespace SuccessStory.Views
         }
 
         #endregion
-
-        #region Local
-
-        private void ButtonAddLocalFolder_Click(object sender, RoutedEventArgs e)
-        {
-            PART_ItemsControl.ItemsSource = null;
-            LocalPath.Add(new Folder { FolderPath = "" });
-            PART_ItemsControl.ItemsSource = LocalPath;
-        }
-
-		private void ButtonSelectLocalFolder_Click(object sender, RoutedEventArgs e)
-		{
-			int indexFolder = int.Parse(((Button)sender).Tag.ToString());
-
-			string selectedFolder = API.Instance.Dialogs.SelectFolder();
-			if (!selectedFolder.IsNullOrEmpty())
-			{
-				if (IsValidAchievementFolder(selectedFolder))
-				{
-					PART_ItemsControl.ItemsSource = null;
-					LocalPath[indexFolder].FolderPath = selectedFolder;
-					PART_ItemsControl.ItemsSource = LocalPath;
-				}
-				else
-				{
-					API.Instance.Dialogs.ShowMessage(
-						"Select a folder which contains SteamAppID folder(s)\nFor Ali213 and Valve select a folder where the ALI213.ini or valve.ini file is located",
-						"Invalid Achievement Folder",
-						MessageBoxButton.OK,
-						MessageBoxImage.Warning);
-				}
-			}
-		}
-
-		private void DefaultDirs_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (sender is ComboBox comboBox && comboBox.SelectedItem is ComboBoxItem selectedItem)
-			{
-				string selectedPath = selectedItem.Content.ToString();
-
-				// Resolve environment variables in the path
-				selectedPath = Environment.ExpandEnvironmentVariables(selectedPath);
-
-				if (IsValidAchievementFolder(selectedPath))
-				{
-					PART_ItemsControl.ItemsSource = null;
-					LocalPath.Add(new Folder { FolderPath = selectedPath });
-					PART_ItemsControl.ItemsSource = LocalPath;
-				}
-				else
-				{
-					API.Instance.Dialogs.ShowMessage(
-						"The selected default directory does not contain the required files or folders.\nPlease verify the path or select a different directory.",
-						"Invalid Achievement Folder",
-						MessageBoxButton.OK,
-						MessageBoxImage.Warning);
-
-					comboBox.SelectedIndex = -1; // Clear selection
-				}
-			}
-		}
-
-		private void ButtonRemoveLocalFolder_Click(object sender, RoutedEventArgs e)
-        {
-            int indexFolder = int.Parse(((Button)sender).Tag.ToString());
-
-            PART_ItemsControl.ItemsSource = null;
-            LocalPath.RemoveAt(indexFolder);
-            PART_ItemsControl.ItemsSource = LocalPath;
-		}
-
-		private bool IsValidAchievementFolder(string folderPath)
-		{
-			if (string.IsNullOrEmpty(folderPath) || !Directory.Exists(folderPath))
-				return false;
-
-			// Check for SteamAppId subfolders
-			bool hasSteamAppIdFolders = Directory.GetDirectories(folderPath)
-				.Any(dir => int.TryParse(Path.GetFileName(dir), out _));
-
-			// Check for ALI213.ini
-			bool hasAli213File = File.Exists(Path.Combine(folderPath, "ALI213.ini"));
-
-			// Check for valve.ini
-			bool hasValveFile = File.Exists(Path.Combine(folderPath, "valve.ini"));
-
-			return hasSteamAppIdFolders || hasAli213File || hasValveFile;
-		}
-
-		#endregion
 
 		#region Rarity configuration
 
@@ -536,12 +442,13 @@ namespace SuccessStory.Views
 					if (Directory.Exists(selectedFolder))
 					{
 						// Look for ShadPS4's specific path structure
-						string userGameDataPath = Path.Combine(selectedFolder, "user", "game_data");
-						if (!Directory.Exists(userGameDataPath))
+                        string validGameDataPath = ShadPS4Achievements.GetGameDataPath(selectedFolder);
+
+						if (string.IsNullOrEmpty(validGameDataPath))
 						{
 							Logger.Warn($"No valid ShadPS4 game_data folder found in {selectedFolder}");
 							API.Instance.Dialogs.ShowMessage(
-								"Selected folder must be the ShadPS4 installation directory containing 'user/game_data' path",
+								"Selected folder must be the ShadPS4 installation directory containing 'user/game_data', 'launcher/game_data' or 'shadPS4/game_data' path",
 								"Invalid Folder",
 								MessageBoxButton.OK,
 								MessageBoxImage.Warning
@@ -550,12 +457,12 @@ namespace SuccessStory.Views
 						}
 
 						// Verify we can find at least one game with trophy data
-						bool hasTrophyData = Directory.GetDirectories(userGameDataPath)
+						bool hasTrophyData = Directory.GetDirectories(validGameDataPath)
 							.Any(titleDir => Directory.Exists(Path.Combine(titleDir, "trophyfiles")));
 
 						if (!hasTrophyData)
 						{
-							Logger.Warn($"No trophy data found in any game folder in {selectedFolder}");
+							Logger.Warn($"No trophy data found in any game folder in {selectedFolder} ({validGameDataPath})");
 							API.Instance.Dialogs.ShowMessage(
 								"No trophy data found in the selected folder. Make sure games with trophies have been run at least once.",
 								"No Trophy Data",

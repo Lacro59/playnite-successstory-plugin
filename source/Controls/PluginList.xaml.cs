@@ -1,4 +1,5 @@
 ﻿using CommonPluginsControls.Controls;
+using CommonPluginsShared;
 using CommonPluginsShared.Collections;
 using CommonPluginsShared.Controls;
 using CommonPluginsShared.Extensions;
@@ -176,6 +177,111 @@ namespace SuccessStory.Controls
             });
         }
 
+        private void UpdateSortUiFromOrderAchievement(OrderAchievement order)
+        {
+            if (order == null) return;
+
+            // Reset indices
+            NameIndex = 0;
+            CalIndex = 0;
+            RarityIndex = 0;
+
+            PART_SortNameOrder.Content = string.Empty;
+            PART_SortCalOrder.Content = string.Empty;
+            PART_SortRarityOrder.Content = string.Empty;
+
+            PART_SortName.Content = string.Empty;
+            PART_SortCal.Content = string.Empty;
+            PART_SortRarity.Content = string.Empty;
+
+            // First
+            switch (order.OrderAchievementTypeFirst)
+            {
+                case OrderAchievementType.AchievementName:
+                    NameIndex = 1;
+                    PART_SortNameOrder.Content = NameIndex;
+                    PART_SortName.Content = order.OrderTypeFirst == OrderType.Ascending ? NameAsc : NameDesc;
+                    break;
+
+                case OrderAchievementType.AchievementDateUnlocked:
+                    CalIndex = 1;
+                    PART_SortCalOrder.Content = CalIndex;
+                    PART_SortCal.Content = order.OrderTypeFirst == OrderType.Ascending ? CalAsc : CalDesc;
+                    break;
+
+                case OrderAchievementType.AchievementRarety:
+                    RarityIndex = 1;
+                    PART_SortRarityOrder.Content = RarityIndex;
+                    PART_SortRarity.Content = order.OrderTypeFirst == OrderType.Ascending ? RarityAsc : RarityDesc;
+                    break;
+            }
+
+            // Second
+            switch (order.OrderAchievementTypeSecond)
+            {
+                case OrderAchievementType.AchievementName:
+                    NameIndex = 2;
+                    PART_SortNameOrder.Content = NameIndex;
+                    PART_SortName.Content = order.OrderTypeSecond == OrderType.Ascending ? NameAsc : NameDesc;
+                    break;
+
+                case OrderAchievementType.AchievementDateUnlocked:
+                    CalIndex = 2;
+                    PART_SortCalOrder.Content = CalIndex;
+                    PART_SortCal.Content = order.OrderTypeSecond == OrderType.Ascending ? CalAsc : CalDesc;
+                    break;
+
+                case OrderAchievementType.AchievementRarety:
+                    RarityIndex = 2;
+                    PART_SortRarityOrder.Content = RarityIndex;
+                    PART_SortRarity.Content = order.OrderTypeSecond == OrderType.Ascending ? RarityAsc : RarityDesc;
+                    break;
+            }
+
+            // Third
+            switch (order.OrderAchievementTypeThird)
+            {
+                case OrderAchievementType.AchievementName:
+                    NameIndex = 3;
+                    PART_SortNameOrder.Content = NameIndex;
+                    PART_SortName.Content = order.OrderTypeThird == OrderType.Ascending ? NameAsc : NameDesc;
+                    break;
+
+                case OrderAchievementType.AchievementDateUnlocked:
+                    CalIndex = 3;
+                    PART_SortCalOrder.Content = CalIndex;
+                    PART_SortCal.Content = order.OrderTypeThird == OrderType.Ascending ? CalAsc : CalDesc;
+                    break;
+
+                case OrderAchievementType.AchievementRarety:
+                    RarityIndex = 3;
+                    PART_SortRarityOrder.Content = RarityIndex;
+                    PART_SortRarity.Content = order.OrderTypeThird == OrderType.Ascending ? RarityAsc : RarityDesc;
+                    break;
+            }
+
+            PART_SortGroupBy.IsChecked = order.OrderGroupByUnlocked;
+        }
+
+        protected override void PluginSettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            try
+            {
+                // Refresh local copy from saved settings so UI elements reflect current config
+                OrderAchievement = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement) ?? new OrderAchievement();
+                UpdateSortUiFromOrderAchievement(OrderAchievement);
+
+                // Call base to trigger GameContextChanged behavior
+                base.PluginSettings_PropertyChanged(sender, e);
+
+                // Re-apply ordering to current view
+                SetOrder(GameName);
+            }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
+        }
 
         public override void SetDefaultDataContext()
         {
@@ -233,7 +339,7 @@ namespace SuccessStory.Controls
             }
 
             GameAchievements gameAchievements = (GameAchievements)pluginGameData;
-            gameAchievements.OrderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement;
+            // gameAchievements.OrderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement;
 
             if (!gameAchievements.Items.FirstOrDefault().CategoryRpcs3.IsNullOrEmpty())
             {
@@ -250,7 +356,7 @@ namespace SuccessStory.Controls
             }
             else
             {
-                ControlDataContext.ItemsSource = gameAchievements.OrderItems;
+                ControlDataContext.ItemsSource = gameAchievements.GetOrderItems(PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement);
             }
 
             UpdateHardcoreMode(ShowHardcore);
@@ -265,9 +371,11 @@ namespace SuccessStory.Controls
             }
 
             GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
-            gameAchievements.OrderAchievement = OrderAchievement;
+            // gameAchievements.OrderAchievement = OrderAchievement;
 
-            ObservableCollection<Achievement> achievements = gameAchievements.OrderItems.Where(x => x.Category.IsEqual(categoryName)).ToObservable();
+            ObservableCollection<Achievement> achievements = gameAchievements.GetOrderItems(OrderAchievement)
+                .Where(x => x.Category.IsEqual(categoryName))
+                .ToObservable();
             ControlDataContext.ItemsSource = achievements;
         }
 
@@ -301,7 +409,10 @@ namespace SuccessStory.Controls
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Common.LogError(ex, false, true, PluginDatabase.PluginName);
+            }
         }
 
         #endregion
@@ -459,9 +570,8 @@ namespace SuccessStory.Controls
             if (GameContext != null)
             {
                 GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
-                gameAchievements.OrderAchievement = OrderAchievement;
 
-                ObservableCollection<Achievement> achievements = gameAchievements.OrderItems;
+                ObservableCollection<Achievement> achievements = gameAchievements.GetOrderItems(OrderAchievement);
                 if (!CategoryName.IsNullOrEmpty())
                 {
                     achievements = achievements.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();

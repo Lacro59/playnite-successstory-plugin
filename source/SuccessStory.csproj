@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildProjectDirectory)=/_/</PathMap>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
@@ -287,6 +288,7 @@
     <Compile Include="playnite-plugincommon\CommonPluginsControls\Views\OptionsDownloadData.xaml.cs">
       <DependentUpon>OptionsDownloadData.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\AchievementImageResolver.cs" />
     <Compile Include="Services\LZString.cs" />
     <Compile Include="Services\NDS.cs" />
     <Compile Include="Services\SuccessStoryDatabase.cs" />
@@ -621,7 +623,6 @@
     <Compile Include="Clients\Rpcs3Achievements.cs" />
     <Compile Include="Clients\Starcraft2Achievements.cs" />
     <Compile Include="Clients\SteamAchievements.cs" />
-    <Compile Include="Clients\SteamEmulators.cs" />
     <Compile Include="Clients\TrueAchievements.cs" />
     <Compile Include="Clients\WowAchievements.cs" />
     <Compile Include="Clients\XboxAchievements.cs" />

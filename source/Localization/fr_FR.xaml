@@ -39,7 +39,7 @@ Vous devez sélectionner &quot;{1}&quot; dans la configuration du plugin</sys:St
     <sys:String x:Key="LOCSuccessStoryNotificationsGogBadConfig">GOG n'a pas été correctement configuré dans les paramètres</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnDisabled">PSN est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsPsnNoAuthenticate">Utilisateur PSN n'est pas connecté</sys:String>
-    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">Le support de l'application EA est activé danss SuccessStory mais son intégration Playnite est inactive</sys:String>
+    <sys:String x:Key="LOCSuccessStoryNotificationsEaDisabled">Epic est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsEaNoAuthenticate">L'utilisateur EA n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxDisabled">Xbox est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsXboxNotAuthenticate">Utilisateur Xbox non authentifié</sys:String>
@@ -48,7 +48,7 @@ Vous devez sélectionner &quot;{1}&quot; dans la configuration du plugin</sys:St
 Associer la plate-forme dans les paramètres du plugin</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsRpcs3BadConfig">RPCS3 n'a pas été correctement configuré dans les paramètres</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsShadPS4BadConfig">ShadPS4 n'a pas été correctement configuré dans les paramètres</sys:String>
-	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Xbox360 Achievements have not been correctly configured in settings</sys:String>
+	<sys:String x:Key="LOCSuccessStoryNotificationsXbox360BadConfig">Les succès Xbox360 n'ont pas été correctement configurés dans les paramètres</sys:String>
 	<sys:String x:Key="LOCSuccessStoryNotificationsBattleNetDisabled">Battle.net est activé dans SuccessStory mais l'extension a été désactivée dans Playnite</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticate">L'utilisateur de Battle.net n'est pas authentifié</sys:String>
     <sys:String x:Key="LOCSuccessStoryNotificationsBattleNetNoAuthenticateOverwatch">L'utilisateur Overwatch de Battle.net n'est pas authentifié</sys:String>
@@ -87,8 +87,8 @@ Associer la plate-forme dans les paramètres du plugin</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableXbox">Activer les succès Xbox</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRetroAchievements">Activer les succès RetroAchievements</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableRpcs3Achievements">Activer les succès RPCS3</sys:String>
-	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Achievements">Enable ShadPS4 achievements</sys:String>
-	<sys:String x:Key="LOCSuccessStoryEnableXbox360Achievements">Enable Xbox 360 achievements</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Achievements">Activer les succès ShadPS4</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableXbox360Achievements">Activer les succès Xbox 360</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableManualAchievements">Activer les succès manuels</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOverwatchAchievements">Activer les accomplissements de Overwatch</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableSc2Achievements">Activer les succès de StarCraft II</sys:String>
@@ -98,9 +98,9 @@ Associer la plate-forme dans les paramètres du plugin</sys:String>
 
     <sys:String x:Key="LOCSuccessStorySteamNoApi">Désactiver l'utilisation de l'API (à utiliser lorsque vous n'avez pas de clé API)</sys:String>
 	<sys:String x:Key="LOCSuccessStoryEnableRpcs3HomeFolder">Dossier de l'utilisateur</sys:String>
-	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Folder">ShadPS4 user folder</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableShadPS4Folder">Dossier utilisateur ShadPS4</sys:String>
 
-	<sys:String x:Key="LOCSuccessStoryEnableXeniaFolder">Xenia__canary.exe location</sys:String>
+	<sys:String x:Key="LOCSuccessStoryEnableXeniaFolder">Emplacement Xenia__canary.exe</sys:String>
 
 	<sys:String x:Key="LOCSuccessStoryEnableRetroAchievementsView">Afficher une vue séparée pour les succès RetroAchievements</sys:String>
 

@@ -80,101 +80,104 @@ namespace SuccessStory.Models
         {
             get
             {
-                List<Achievement> OrderItems = Items;
-                IOrderedEnumerable<Achievement> OrderedItems = null;
+                return GetOrderItems(OrderAchievement);
+            }
+        }
 
-                if (OrderItems == null)
+        public ObservableCollection<Achievement> GetOrderItems(OrderAchievement orderAchievement)
+        {
+            List<Achievement> OrderItems = Items;
+            IOrderedEnumerable<Achievement> OrderedItems = null;
+
+            if (OrderItems == null)
+            {
+                return new ObservableCollection<Achievement>();
+            }
+
+            if (orderAchievement != null)
+            {
+                if (orderAchievement.OrderGroupByUnlocked)
                 {
-                    return new ObservableCollection<Achievement>();
+                    OrderedItems = OrderItems.OrderByDescending(x => x.IsUnlock);
                 }
 
-                if (OrderAchievement != null)
+                switch (orderAchievement.OrderAchievementTypeFirst)
                 {
-                    if (OrderAchievement.OrderGroupByUnlocked)
-                    {
-                        OrderedItems = OrderItems.OrderByDescending(x => x.IsUnlock);
-                    }
+                    case OrderAchievementType.AchievementName:
+                        OrderedItems = orderAchievement.OrderTypeFirst == OrderType.Ascending
+                            ? OrderedItems?.ThenBy(x => x.Name) ?? OrderItems.OrderBy(x => x.Name)
+                            : OrderedItems?.ThenByDescending(x => x.Name) ?? OrderItems.OrderByDescending(x => x.Name);
+                        break;
 
-                    switch (OrderAchievement.OrderAchievementTypeFirst)
-                    {
-                        case OrderAchievementType.AchievementName:
-                            OrderedItems = OrderAchievement.OrderTypeFirst == OrderType.Ascending
-                                ? OrderedItems?.ThenBy(x => x.Name) ?? OrderItems.OrderBy(x => x.Name)
-                                : OrderedItems?.ThenByDescending(x => x.Name) ?? OrderItems.OrderByDescending(x => x.Name);
-                            break;
+                    case OrderAchievementType.AchievementDateUnlocked:
+                        OrderedItems = orderAchievement.OrderTypeFirst == OrderType.Ascending
+                            ? OrderedItems?.ThenBy(x => x.DateWhenUnlocked) ?? OrderItems.OrderBy(x => x.DateWhenUnlocked)
+                            : OrderedItems?.ThenByDescending(x => x.DateWhenUnlocked) ?? OrderItems.OrderByDescending(x => x.DateWhenUnlocked);
+                        break;
 
-                        case OrderAchievementType.AchievementDateUnlocked:
-                            OrderedItems = OrderAchievement.OrderTypeFirst == OrderType.Ascending
-                                ? OrderedItems?.ThenBy(x => x.DateWhenUnlocked) ?? OrderItems.OrderBy(x => x.DateWhenUnlocked)
-                                : OrderedItems?.ThenByDescending(x => x.DateWhenUnlocked) ?? OrderItems.OrderByDescending(x => x.DateWhenUnlocked);
-                            break;
+                    case OrderAchievementType.AchievementRarety:
+                        OrderedItems = orderAchievement.OrderTypeFirst == OrderType.Ascending
+                            ? OrderedItems?.ThenBy(x => x.Percent) ?? OrderItems.OrderBy(x => x.Percent)
+                            : OrderedItems?.ThenByDescending(x => x.Percent) ?? OrderItems.OrderByDescending(x => x.Percent);
+                        break;
 
-                        case OrderAchievementType.AchievementRarety:
-                            OrderedItems = OrderAchievement.OrderTypeFirst == OrderType.Ascending
-                                ? OrderedItems?.ThenBy(x => x.Percent) ?? OrderItems.OrderBy(x => x.Percent)
-                                : OrderedItems?.ThenByDescending(x => x.Percent) ?? OrderItems.OrderByDescending(x => x.Percent);
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    switch (OrderAchievement.OrderAchievementTypeSecond)
-                    {
-                        case OrderAchievementType.AchievementName:
-                            OrderedItems = OrderAchievement.OrderTypeSecond == OrderType.Ascending
-                                ? OrderedItems.ThenBy(x => x.Name)
-                                : OrderedItems.ThenByDescending(x => x.Name);
-                            break;
-
-                        case OrderAchievementType.AchievementDateUnlocked:
-                            OrderedItems = OrderAchievement.OrderTypeSecond == OrderType.Ascending
-                                ? OrderedItems.ThenBy(x => x.DateWhenUnlocked)
-                                : OrderedItems.ThenByDescending(x => x.DateWhenUnlocked);
-                            break;
-
-                        case OrderAchievementType.AchievementRarety:
-                            OrderedItems = OrderAchievement.OrderTypeSecond == OrderType.Ascending
-                                ? OrderedItems.ThenBy(x => x.Percent)
-                                : OrderedItems.ThenByDescending(x => x.Percent);
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    switch (OrderAchievement.OrderAchievementTypeThird)
-                    {
-                        case OrderAchievementType.AchievementName:
-                            OrderedItems = OrderAchievement.OrderTypeThird == OrderType.Ascending
-                                ? OrderedItems.ThenBy(x => x.Name)
-                                : OrderedItems.ThenByDescending(x => x.Name);
-                            break;
-
-                        case OrderAchievementType.AchievementDateUnlocked:
-                            OrderedItems = OrderAchievement.OrderTypeThird == OrderType.Ascending
-                                ? OrderedItems.ThenBy(x => x.DateWhenUnlocked)
-                                : OrderedItems.ThenByDescending(x => x.DateWhenUnlocked);
-                            break;
-
-                        case OrderAchievementType.AchievementRarety:
-                            OrderedItems = OrderAchievement.OrderTypeThird == OrderType.Ascending
-                                ? OrderedItems.ThenBy(x => x.Percent)
-                                : OrderedItems.ThenByDescending(x => x.Percent);
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    OrderAchievement = null;
-
-                    return OrderedItems.ToObservable();
+                    default:
+                        break;
                 }
-                else
+
+                switch (orderAchievement.OrderAchievementTypeSecond)
                 {
-                    return OrderItems.ToObservable();
+                    case OrderAchievementType.AchievementName:
+                        OrderedItems = orderAchievement.OrderTypeSecond == OrderType.Ascending
+                            ? OrderedItems.ThenBy(x => x.Name)
+                            : OrderedItems.ThenByDescending(x => x.Name);
+                        break;
+
+                    case OrderAchievementType.AchievementDateUnlocked:
+                        OrderedItems = orderAchievement.OrderTypeSecond == OrderType.Ascending
+                            ? OrderedItems.ThenBy(x => x.DateWhenUnlocked)
+                            : OrderedItems.ThenByDescending(x => x.DateWhenUnlocked);
+                        break;
+
+                    case OrderAchievementType.AchievementRarety:
+                        OrderedItems = orderAchievement.OrderTypeSecond == OrderType.Ascending
+                            ? OrderedItems.ThenBy(x => x.Percent)
+                            : OrderedItems.ThenByDescending(x => x.Percent);
+                        break;
+
+                    default:
+                        break;
                 }
+
+                switch (orderAchievement.OrderAchievementTypeThird)
+                {
+                    case OrderAchievementType.AchievementName:
+                        OrderedItems = orderAchievement.OrderTypeThird == OrderType.Ascending
+                            ? OrderedItems.ThenBy(x => x.Name)
+                            : OrderedItems.ThenByDescending(x => x.Name);
+                        break;
+
+                    case OrderAchievementType.AchievementDateUnlocked:
+                        OrderedItems = orderAchievement.OrderTypeThird == OrderType.Ascending
+                            ? OrderedItems.ThenBy(x => x.DateWhenUnlocked)
+                            : OrderedItems.ThenByDescending(x => x.DateWhenUnlocked);
+                        break;
+
+                    case OrderAchievementType.AchievementRarety:
+                        OrderedItems = orderAchievement.OrderTypeThird == OrderType.Ascending
+                            ? OrderedItems.ThenBy(x => x.Percent)
+                            : OrderedItems.ThenByDescending(x => x.Percent);
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return OrderedItems != null ? OrderedItems.ToObservable() : OrderItems.ToObservable();
+            }
+            else
+            {
+                return OrderItems.ToObservable();
             }
         }
 

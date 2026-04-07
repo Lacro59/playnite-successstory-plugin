@@ -162,14 +162,6 @@ namespace SuccessStory
                         }
                         else
                         {
-                            if (PluginDatabase.PluginSettings.Settings.EnableLocal)
-                            {
-                                icon = TransformIcon.Get("Playnite") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playnite", SourceNameShort = "Playnite", IsCheck = false });
-
-                                icon = TransformIcon.Get("Hacked") + " ";
-                                FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Hacked", SourceNameShort = "Hacked", IsCheck = false });
-                            }
                             if (PluginDatabase.PluginSettings.Settings.EnableSteam)
                             {
                                 icon = TransformIcon.Get("Steam") + " ";
@@ -236,14 +228,6 @@ namespace SuccessStory
                     }
                     else
                     {
-                        if (PluginDatabase.PluginSettings.Settings.EnableLocal)
-                        {
-                            icon = TransformIcon.Get("Playnite") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Playnite", SourceNameShort = "Playnite", IsCheck = false });
-
-                            icon = TransformIcon.Get("Hacked") + " ";
-                            FilterSourceItems.Add(new ListSource { SourceName = ((icon.Length == 2) ? icon : string.Empty) + "Hacked", SourceNameShort = "Hacked", IsCheck = false });
-                        }
                         if (PluginDatabase.PluginSettings.Settings.EnableSteam)
                         {
                             icon = TransformIcon.Get("Steam") + " ";

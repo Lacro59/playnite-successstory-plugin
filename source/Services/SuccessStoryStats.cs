@@ -199,11 +199,6 @@ namespace SuccessStory.Services
                     {
                         chartLabelsList.Add("Playstation");
                     }
-                    if (PluginDatabase.PluginSettings.Settings.EnableLocal)
-                    {
-                        chartLabelsList.Add("Playnite");
-                        chartLabelsList.Add("Hacked");
-                    }
                     if (PluginDatabase.PluginSettings.Settings.EnableRpcs3Achievements)
                     {
                         chartLabelsList.Add("RPCS3");
