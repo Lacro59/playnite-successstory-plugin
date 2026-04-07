@@ -433,3 +433,15 @@ Packages:
       - 'Updated: EA achievements API'
       - 'Fixed: Exophase achievements (thanks to SiriosDev)'
       - 'Added: Support for XCloud'
+  - Version: 3.7.1
+    RequiredApiVersion: 6.13.0
+    ReleaseDate: 2026-04-07
+    PackageUrl: https://github.com/Lacro59/playnite-successstory-plugin/releases/download/v3.7.1/playnite-successstory-plugin_3_7_1.pext
+    Changelog:
+      - 'Updated: Localizations'
+      - 'Added: New option to enable Xbox 360 achievement retrieval'
+      - 'Improved: Xbox One achievement image downloading and refresh behavior (thanks to damirarh)'
+      - 'Improved: Achievement clients thread safety, async handling, cancellation support, and diagnostics'
+      - 'Improved: Steam, Epic, GOG, Exophase and TrueAchievements provider stability and fallback logic'
+      - 'Fixed: PS4/ShadPS4 timestamp conversion (Unix 10-digit support) (thanks to CaioSPereira21)'
+      - 'Fixed: Potential NullReferenceException and various minor issues (thanks to Wibias)'
