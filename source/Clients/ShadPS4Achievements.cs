@@ -37,38 +37,12 @@ namespace SuccessStory.Clients
                 if (string.IsNullOrEmpty(timestamp))
                     return null;
 
-                // Handle newer 10-digit Unix timestamps (seconds since 1970)
-                if (timestamp.Length <= 12)
-                {
-                    if (long.TryParse(timestamp, out long seconds))
-                    {
-                        return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(seconds).ToLocalTime();
-                    }
-                }
+                long seconds = long.Parse(timestamp);
 
-                // Parse the PS4 timestamp (Legacy 17-digit format)
-                ulong tickValue = ulong.Parse(timestamp);
-
-                // Divide by 1000 to get milliseconds instead of microseconds
-                long milliseconds = (long)(tickValue / 1000);
-
-                // Add milliseconds to PS4 epoch
-                DateTime utcTime = PS4Epoch.AddMilliseconds(milliseconds);
-
-                // Convert to local time
-                DateTime localTime = utcTime.ToLocalTime();
-
-                // Adjust the year by subtracting the offset
-                return new DateTime(
-                    localTime.Year - YearOffset,
-                    localTime.Month,
-                    localTime.Day,
-                    localTime.Hour,
-                    localTime.Minute,
-                    localTime.Second,
-                    localTime.Millisecond,
-                    localTime.Kind
-                );
+                return DateTimeOffset
+                    .FromUnixTimeSeconds(seconds)
+                    .ToLocalTime()
+                    .DateTime;
             }
             catch (Exception ex)
             {
