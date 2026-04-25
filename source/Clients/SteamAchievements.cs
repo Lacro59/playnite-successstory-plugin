@@ -505,6 +505,11 @@ namespace SuccessStory.Clients
             return SteamApi.IsConfigured();
         }
 
+        public override bool EnabledInSettings()
+        {
+            return PluginDatabase.PluginSettings.Settings.EnableSteam;
+        }
+
         #endregion
 
         /// <summary>
