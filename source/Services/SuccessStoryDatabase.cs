@@ -323,7 +323,6 @@ namespace SuccessStory.Services
             {
                 GenericAchievements achievementProvider = AchievementProviders[achievementSource];
                 RetroAchievements retroAchievementsProvider = achievementProvider as RetroAchievements;
-                PSNAchievements psnAchievementsProvider = achievementProvider as PSNAchievements;
 
                 Logger.Info($"Used {achievementProvider} for {game.Name} - {achievementSource}/{game.Source?.Name}/{game?.Platforms?.FirstOrDefault()?.Name}");
 
@@ -336,16 +335,6 @@ namespace SuccessStory.Services
                 else if (retroAchievementsProvider != null)
                 {
                     ((RetroAchievements)achievementProvider).GameId = 0;
-                }
-
-
-                if (psnAchievementsProvider != null && (!SuccessStory.IsFromMenu || !TEMPgameAchievements.CommunicationId.IsNullOrEmpty()))
-                {
-                    ((PSNAchievements)achievementProvider).CommunicationId = TEMPgameAchievements.CommunicationId;
-                }
-                else if (psnAchievementsProvider != null)
-                {
-                    ((PSNAchievements)achievementProvider).CommunicationId = null;
                 }
 
 
