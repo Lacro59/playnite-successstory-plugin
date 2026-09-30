@@ -374,7 +374,7 @@ namespace SuccessStory.Controls
             // gameAchievements.OrderAchievement = OrderAchievement;
 
             ObservableCollection<Achievement> achievements = gameAchievements.GetOrderItems(OrderAchievement)
-                .Where(x => x.Category.IsEqual(categoryName))
+                .Where(x => x.Category == categoryName)
                 .ToObservable();
             ControlDataContext.ItemsSource = achievements;
         }
@@ -574,7 +574,7 @@ namespace SuccessStory.Controls
                 ObservableCollection<Achievement> achievements = gameAchievements.GetOrderItems(OrderAchievement);
                 if (!CategoryName.IsNullOrEmpty())
                 {
-                    achievements = achievements.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
+                    achievements = achievements.Where(x => x.Category == CategoryName).ToObservable();
                 }
 
                 ControlDataContext.ItemsSource = gameName.IsNullOrEmpty()
