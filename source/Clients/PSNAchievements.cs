@@ -234,6 +234,39 @@ namespace SuccessStory.Clients
                                 }
                             }
 
+                            bool isEarned = (trophieUser?.Earned == true) || (trophieUser?.EarnedDateTime != null);
+                            AchProgression progression = null;
+
+                            if (!isEarned)
+                            {
+                                string targetValueStr = trophie.TrophyProgressTargetValue;
+                                if (targetValueStr.IsNullOrEmpty() && trophieUser != null)
+                                {
+                                    targetValueStr = trophieUser.TrophyProgressTargetValue;
+                                }
+
+                                if (!targetValueStr.IsNullOrEmpty() && int.TryParse(targetValueStr, out int max) && max > 0)
+                                {
+                                    int currentProgress = 0;
+                                    if (trophieUser != null && !trophieUser.Progress.IsNullOrEmpty())
+                                    {
+                                        if (int.TryParse(trophieUser.Progress, out int val))
+                                        {
+                                            currentProgress = val;
+                                        }
+                                    }
+
+                                    currentProgress = Math.Max(0, Math.Min(currentProgress, max));
+
+                                    progression = new AchProgression
+                                    {
+                                        Min = 0,
+                                        Max = max,
+                                        Value = currentProgress
+                                    };
+                                }
+                            }
+
                             allAchievements.Add(new Achievement
                             {
                                 ApiName = trophie.TrophyId.ToString(),
@@ -246,7 +279,8 @@ namespace SuccessStory.Clients
                                 IsHidden = trophie.TrophyHidden,
                                 Category = category,
                                 CategoryOrder = categoryOrder,
-                                CategoryIcon = categoryIcon
+                                CategoryIcon = categoryIcon,
+                                Progression = progression
                             });
                         }
 

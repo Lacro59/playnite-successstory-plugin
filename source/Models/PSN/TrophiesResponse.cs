@@ -50,5 +50,17 @@ namespace SuccessStory.Models.PSN
 
         [SerializationPropertyName("trophyEarnedRate")]
         public string TrophyEarnedRate { get; set; }
+
+        [SerializationPropertyName("trophyProgressTargetValue")]
+        public string TrophyProgressTargetValue { get; set; }
+
+        [SerializationPropertyName("progress")]
+        public string Progress { get; set; }
+
+        [SerializationPropertyName("progressRate")]
+        public string ProgressRate { get; set; }
+
+        [SerializationPropertyName("progressedDateTime")]
+        public DateTime? ProgressedDateTime { get; set; }
     }
 }
