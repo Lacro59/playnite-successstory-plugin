@@ -168,6 +168,14 @@ namespace SuccessStory
                         {
                             viewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
                         }
+                        else if (PluginDatabase.GameContext.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.PSNLibrary))
+                        {
+                            GameAchievements gameAchievements = PluginDatabase.Get(PluginDatabase.GameContext, true);
+                            bool hasCategories = (gameAchievements?.Items?.Select(x => x.Category).Where(c => !c.IsNullOrEmpty()).Distinct().Count() ?? 0) > 1;
+                            viewExtension = hasCategories
+                                ? (dynamic)new SuccessStoryCategoryView(PluginDatabase.GameContext)
+                                : (dynamic)new SuccessStoryOneGameView(PluginDatabase.GameContext);
+                        }
                         else
                         {
                             viewExtension = PluginDatabase.GameContext.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.SteamLibrary) && PluginSettings.Settings.SteamGroupData
@@ -355,6 +363,13 @@ namespace SuccessStory
                                     else if (PluginSettings.Settings.EnableGuildWars2 && gameMenu.Name.IsEqual("Guild Wars 2"))
                                     {
                                         ViewExtension = new SuccessStoryCategoryView(gameMenu);
+                                    }
+                                    else if (gameMenu.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.PSNLibrary))
+                                    {
+                                        bool hasCategories = (gameAchievements?.Items?.Select(x => x.Category).Where(c => !c.IsNullOrEmpty()).Distinct().Count() ?? 0) > 1;
+                                        ViewExtension = hasCategories
+                                            ? (dynamic)new SuccessStoryCategoryView(gameMenu)
+                                            : (dynamic)new SuccessStoryOneGameView(gameMenu);
                                     }
                                     else
                                     {
