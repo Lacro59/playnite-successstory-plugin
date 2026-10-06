@@ -193,12 +193,14 @@ namespace SuccessStory.Clients
 
                         allAchievements.Add(new Achievement
                         {
+                            ApiName = trophie.trophyId.ToString(),
                             Name = trophie.trophyName.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
                             Description = trophie.trophyDetail,
                             UrlUnlocked = trophie.trophyIconUrl.IsNullOrEmpty() ? "hidden_trophy.png" : trophie.trophyIconUrl,
                             DateUnlocked = (trophieUser?.earnedDateTime == null) ? null : trophieUser.earnedDateTime,
                             Percent = Percent == 0 ? 100 : Percent,
-                            GamerScore = GamerScore
+                            GamerScore = GamerScore,
+                            IsHidden = trophie.trophyHidden
                         });
                     }
 
