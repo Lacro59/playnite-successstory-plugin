@@ -117,6 +117,14 @@ namespace SuccessStory.Controls
             {
                 ViewExtension = new SuccessStoryCategoryView(PluginDatabase.GameContext);
             }
+            else if (PluginDatabase.GameContext.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.PSNLibrary))
+            {
+                GameAchievements gameAchievements = PluginDatabase.Get(PluginDatabase.GameContext, true);
+                bool hasCategories = (gameAchievements?.Items?.Select(x => x.Category).Where(c => !c.IsNullOrEmpty()).Distinct().Count() ?? 0) > 1;
+                ViewExtension = hasCategories
+                    ? (dynamic)new SuccessStoryCategoryView(PluginDatabase.GameContext)
+                    : (dynamic)new SuccessStoryOneGameView(PluginDatabase.GameContext);
+            }
             else
             {
                 ViewExtension = PluginDatabase.GameContext.PluginId == PlayniteTools.GetPluginId(PlayniteTools.ExternalPlugin.SteamLibrary) && PluginDatabase.PluginSettings.Settings.SteamGroupData

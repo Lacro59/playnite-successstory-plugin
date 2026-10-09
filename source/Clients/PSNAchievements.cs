@@ -1,4 +1,5 @@
-﻿using CommonPlayniteShared.PluginLibrary.PSNLibrary.Services;
+﻿using CommonPlayniteShared.Common;
+using CommonPlayniteShared.PluginLibrary.PSNLibrary.Services;
 using CommonPluginsShared;
 using CommonPluginsShared.Models;
 using CommonPluginsStores;
@@ -6,6 +7,7 @@ using Playnite.SDK.Data;
 using Playnite.SDK.Models;
 using SuccessStory.Models;
 using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,13 +16,15 @@ using CommonPlayniteShared.PluginLibrary.PSNLibrary.Models;
 using static CommonPluginsShared.PlayniteTools;
 using Playnite.SDK;
 using SuccessStory.Models.PSN;
-using CommonPluginsStores.Psn.Models;
+using System.Threading;
 
 namespace SuccessStory.Clients
 {
     // https://andshrew.github.io/PlayStation-Trophies/#/APIv2
     public class PSNAchievements : GenericAchievements
     {
+        private static readonly SemaphoreSlim _psnSemaphore = new SemaphoreSlim(1, 1);
+
         protected static PsnAllTrophies psnAllTrophies;
         internal static PsnAllTrophies PsnAllTrophies
         {
@@ -53,10 +57,9 @@ namespace SuccessStory.Clients
 
         private static string PsnDataPath { get; set; }
 
-        public string CommunicationId { get; set; }
-        
 
         private static string UrlBase => @"https://m.np.playstation.com/api/trophy/v1";
+        private static string UrlTrophyGroups => UrlBase + @"/npCommunicationIds/{0}/trophyGroups";
         private static string UrlTrophiesDetails => UrlBase + @"/npCommunicationIds/{0}/trophyGroups/all/trophies";
         private static string UrlTrophies => UrlBase + @"/users/me/npCommunicationIds/{0}/trophyGroups/all/trophies";
         private static string UrlAllTrophies => UrlBase + @"/users/me/trophyTitles";
@@ -75,162 +78,311 @@ namespace SuccessStory.Clients
             GameAchievements gameAchievements = SuccessStory.PluginDatabase.GetDefault(game);
             List<Achievement> allAchievements = new List<Achievement>();
 
-            string url = string.Empty;
-            string urlDetails = string.Empty;
-
-
-            if (IsConnected())
+            _psnSemaphore.Wait();
+            try
             {
-                try
+                string url = string.Empty;
+                string urlDetails = string.Empty;
+
+
+                if (IsConnected())
                 {
-                    PsnAPI.CheckAuthentication().GetAwaiter().GetResult();
-
-                    // TODO Old plugin, still useful?
-                    string[] split = game.GameId.Split('#');
-                    string gameId = split.Count() < 3 ? game.GameId : game.GameId.Split('#')[2];
-
-                    bool isPS5 = game.Platforms?.Where(x => x.Name.Contains("5")).Count() > 0;
-
-                    if (!CommunicationId.IsNullOrEmpty())
+                    try
                     {
-                        gameId = CommunicationId;
-                    }
+                        PsnAPI.CheckAuthentication().GetAwaiter().GetResult();
 
-                    if (!gameId.Contains("NPWR", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        try
+                        string gameId = PluginDatabase.Get(game, true)?.CommunicationId;
+                        if (gameId.IsNullOrEmpty())
                         {
-                            string urlTrophiesMobile = string.Format(TrophiesWithIdsMobileUrl, gameId);
-                            string webTrophiesMobileResult = Web.DownloadStringData(urlTrophiesMobile, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
-                            TrophyTitlesWithIdsMobile titles_part = Serialization.FromJson<TrophyTitlesWithIdsMobile>(webTrophiesMobileResult);
+                            // TODO Old plugin, still useful?
+                            string[] split = game.GameId.Split('#');
+                            gameId = split.Length < 3 ? game.GameId : split[2];
+                        }
 
-                            string tmp_GameId = titles_part?.titles?.FirstOrDefault()?.trophyTitles?.FirstOrDefault()?.npCommunicationId;
-                            if (!tmp_GameId.IsNullOrEmpty())
+                        bool isPS5 = game.Platforms?.Where(x => x.Name.Contains("5")).Count() > 0;
+
+                        if (!gameId.Contains("NPWR", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            try
                             {
-                                gameId = tmp_GameId;
-                            }
-                            else
-                            {
-                                tmp_GameId = GetNPWR_2(game.Name);
+                                string urlTrophiesMobile = string.Format(TrophiesWithIdsMobileUrl, gameId);
+                                string webTrophiesMobileResult = Web.DownloadStringData(urlTrophiesMobile, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
+                                TrophyTitlesWithIdsMobile titles_part = Serialization.FromJson<TrophyTitlesWithIdsMobile>(webTrophiesMobileResult);
+
+                                string tmp_GameId = titles_part?.titles?.FirstOrDefault()?.trophyTitles?.FirstOrDefault()?.npCommunicationId;
                                 if (!tmp_GameId.IsNullOrEmpty())
                                 {
                                     gameId = tmp_GameId;
                                 }
                                 else
                                 {
-                                    tmp_GameId = GetNPWR(game.Name);
+                                    tmp_GameId = GetNPWR_2(game.Name);
                                     if (!tmp_GameId.IsNullOrEmpty())
                                     {
                                         gameId = tmp_GameId;
                                     }
                                     else
                                     {
-                                        Logger.Warn($"No trophies found for {game.Name} - {gameId}");
-                                        gameAchievements.Items = allAchievements;
-                                        return gameAchievements;
+                                        tmp_GameId = GetNPWR(game.Name);
+                                        if (!tmp_GameId.IsNullOrEmpty())
+                                        {
+                                            gameId = tmp_GameId;
+                                        }
+                                        else
+                                        {
+                                            Logger.Warn($"No trophies found for {game.Name} - {gameId}");
+                                            gameAchievements.Items = allAchievements;
+                                            return gameAchievements;
+                                        }
                                     }
                                 }
                             }
+                            catch (Exception ex)
+                            {
+                                Common.LogError(ex, false, $"Error on PSNAchievements with {gameId}", true, PluginDatabase.PluginName);
+                            }
+                        }
+
+                        url = string.Format(UrlTrophies, gameId) + (isPS5 ? string.Empty : "?npServiceName=trophy");
+                        urlDetails = string.Format(UrlTrophiesDetails, gameId) + (isPS5 ? string.Empty : "?npServiceName=trophy");
+
+                        string response = string.Empty;
+                        TrophiesResponse trophies = new TrophiesResponse();
+                        try
+                        {
+                            response = Web.DownloadStringData(url, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
+                            trophies = Serialization.FromJson<TrophiesResponse>(response);
                         }
                         catch (Exception ex)
                         {
-                            Common.LogError(ex, false, $"Error on PSNAchievements with {gameId}", true, PluginDatabase.PluginName);
+                            Common.LogError(ex, false, true, PluginDatabase.PluginName);
                         }
-                    }
 
-                    url = string.Format(UrlTrophies, gameId) + (isPS5 ? string.Empty : "?npServiceName=trophy");
-                    urlDetails = string.Format(UrlTrophiesDetails, gameId) + (isPS5 ? string.Empty : "?npServiceName=trophy");
+                        TrophiesResponse trophiesDetails = null;
+                        try
+                        {
+                            string responseDetails = Web.DownloadStringData(urlDetails, PsnAPI.mobileToken.access_token, "", LocalLang).GetAwaiter().GetResult();
+                            trophiesDetails = Serialization.FromJson<TrophiesResponse>(responseDetails);
+                        }
+                        catch
+                        {
+                            Logger.Warn($"No trophiesDetails found for {game.Name} - {gameId}");
+                            gameAchievements.Items = allAchievements;
+                            return gameAchievements;
+                        }
 
-                    string response = string.Empty;
-                    Trophies trophies = new Trophies { trophies = new List<Trophie>() };
-                    try
-                    {
-                        response = Web.DownloadStringData(url, PsnAPI.mobileToken.access_token).GetAwaiter().GetResult();
-                        trophies = Serialization.FromJson<Trophies>(response);
+                        if (trophiesDetails?.Trophies == null)
+                        {
+                            Logger.Warn($"No trophiesDetails found for {game.Name} - {gameId}");
+                            gameAchievements.Items = allAchievements;
+                            return gameAchievements;
+                        }
+
+                        Dictionary<string, TrophyGroup> trophyGroups = new Dictionary<string, TrophyGroup>();
+                        if (trophiesDetails.HasTrophyGroups)
+                        {
+                            HashSet<string> requiredGroupIds = new HashSet<string>(
+                                trophiesDetails.Trophies
+                                    .Select(x => x.TrophyGroupId)
+                                    .Where(g => !g.IsNullOrEmpty())
+                            );
+
+                            trophyGroups = GetTrophyGroups(gameId, isPS5, requiredGroupIds);
+                        }
+
+                        foreach (Trophy trophie in trophiesDetails.Trophies)
+                        {
+                            Trophy trophieUser = trophies?.Trophies?.FirstOrDefault(x => x.TrophyId == trophie.TrophyId);
+                            _ = float.TryParse(trophieUser?.TrophyEarnedRate, NumberStyles.Float, CultureInfo.InvariantCulture, out float Percent);
+
+                            float GamerScore = 0;
+                            switch (trophie.TrophyType)
+                            {
+                                case "bronze":
+                                    GamerScore = 15;
+                                    break;
+                                case "silver":
+                                    GamerScore = 30;
+                                    break;
+                                case "gold":
+                                    GamerScore = 90;
+                                    break;
+                                case "platinum":
+                                    GamerScore = 300;
+                                    break;
+                                default:
+                                    GamerScore = 15;
+                                    break;
+                            }
+
+                            string category = string.Empty;
+                            int categoryOrder = 0;
+                            string categoryIcon = string.Empty;
+
+                            if (trophiesDetails.HasTrophyGroups && !trophie.TrophyGroupId.IsNullOrEmpty())
+                            {
+                                category = trophie.TrophyGroupId;
+                                categoryOrder = int.TryParse(trophie.TrophyGroupId, out int order) ? order : 0;
+
+                                if (trophyGroups.TryGetValue(trophie.TrophyGroupId, out TrophyGroup group))
+                                {
+                                    categoryIcon = group.TrophyGroupIconUrl ?? string.Empty;
+                                    if (!group.TrophyGroupName.IsNullOrEmpty())
+                                    {
+                                        category = group.TrophyGroupName;
+                                    }
+                                }
+                            }
+
+                            bool isEarned = (trophieUser?.Earned == true) || (trophieUser?.EarnedDateTime != null);
+                            AchProgression progression = null;
+
+                            if (!isEarned)
+                            {
+                                string targetValueStr = trophie.TrophyProgressTargetValue;
+                                if (targetValueStr.IsNullOrEmpty() && trophieUser != null)
+                                {
+                                    targetValueStr = trophieUser.TrophyProgressTargetValue;
+                                }
+
+                                if (!targetValueStr.IsNullOrEmpty() && int.TryParse(targetValueStr, out int max) && max > 0)
+                                {
+                                    int currentProgress = 0;
+                                    if (trophieUser != null && !trophieUser.Progress.IsNullOrEmpty())
+                                    {
+                                        if (int.TryParse(trophieUser.Progress, out int val))
+                                        {
+                                            currentProgress = val;
+                                        }
+                                    }
+
+                                    currentProgress = Math.Max(0, Math.Min(currentProgress, max));
+
+                                    progression = new AchProgression
+                                    {
+                                        Min = 0,
+                                        Max = max,
+                                        Value = currentProgress
+                                    };
+                                }
+                            }
+
+                            allAchievements.Add(new Achievement
+                            {
+                                ApiName = trophie.TrophyId.ToString(),
+                                Name = trophie.TrophyName.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryHiddenTrophy") : trophie.TrophyName,
+                                Description = trophie.TrophyDetail,
+                                UrlUnlocked = trophie.TrophyIconUrl.IsNullOrEmpty() ? "hidden_trophy.png" : trophie.TrophyIconUrl,
+                                DateUnlocked = trophieUser?.EarnedDateTime,
+                                Percent = Percent == 0 ? 100 : Percent,
+                                GamerScore = GamerScore,
+                                IsHidden = trophie.TrophyHidden,
+                                Category = category,
+                                CategoryOrder = categoryOrder,
+                                CategoryIcon = categoryIcon,
+                                Progression = progression
+                            });
+                        }
+
+                        gameAchievements.CommunicationId = gameId;
                     }
                     catch (Exception ex)
                     {
                         Common.LogError(ex, false, true, PluginDatabase.PluginName);
                     }
+                }
+                else
+                {
+                    ShowNotificationPluginNoAuthenticate(ExternalPlugin.PSNLibrary);
+                }
 
-                    Trophies trophiesDetails = null;
-                    try
-                    {
-                        string responseDetails = Web.DownloadStringData(urlDetails, PsnAPI.mobileToken.access_token, "", LocalLang).GetAwaiter().GetResult();
-                        trophiesDetails = Serialization.FromJson<Trophies>(responseDetails);
-                    }
-                    catch
-                    {
-                        Logger.Warn($"No trophiesDetails found for {game.Name} - {gameId}");
-                        gameAchievements.Items = allAchievements;
-                        return gameAchievements;
-                    }
 
-                    foreach (Trophie trophie in trophiesDetails?.trophies)
-                    {
-                        Trophie trophieUser = trophies.trophies.FirstOrDefault(x => x.trophyId == trophie.trophyId);
-                        _ = float.TryParse(trophieUser?.trophyEarnedRate, NumberStyles.Float, CultureInfo.InvariantCulture, out float Percent);
+                gameAchievements.Items = allAchievements;
 
-                        float GamerScore = 0;
-                        switch (trophie.trophyType)
+                // Set source link
+                if (gameAchievements.HasAchievements)
+                {
+                    gameAchievements.SourcesLink = new SourceLink
+                    {
+                        GameName = gameAchievements.Name,
+                        Name = "PSN",
+                        Url = url
+                    };
+                }
+
+                gameAchievements.SetRaretyIndicator();
+                PluginDatabase.AddOrUpdate(gameAchievements);
+                return gameAchievements;
+            }
+            finally
+            {
+                _psnSemaphore.Release();
+            }
+        }
+
+
+        private Dictionary<string, TrophyGroup> GetTrophyGroups(string gameId, bool isPS5, HashSet<string> requiredGroupIds)
+        {
+            Dictionary<string, TrophyGroup> groupsDict = new Dictionary<string, TrophyGroup>(StringComparer.InvariantCultureIgnoreCase);
+            string lang = LocalLang.IsNullOrEmpty() ? "default" : LocalLang;
+            string cacheFolder = Path.Combine(PluginDatabase.Paths.PluginCachePath, "PSN", "TrophyGroups", lang);
+            string cacheFile = Path.Combine(cacheFolder, $"{gameId}.json");
+
+            bool cacheValid = false;
+
+            if (File.Exists(cacheFile))
+            {
+                if (Serialization.TryFromJsonFile(cacheFile, out TrophyGroupsResponse cachedResponse) && cachedResponse?.TrophyGroups != null)
+                {
+                    foreach (TrophyGroup group in cachedResponse.TrophyGroups)
+                    {
+                        if (!group.TrophyGroupId.IsNullOrEmpty())
                         {
-                            case "bronze":
-                                GamerScore = 15;
-                                break;
-                            case "silver":
-                                GamerScore = 30;
-                                break;
-                            case "gold":
-                                GamerScore = 90;
-                                break;
-                            case "platinum":
-                                GamerScore = 300;
-                                break;
-                            default:
-                                GamerScore = 15;
-                                break;
+                            groupsDict[group.TrophyGroupId] = group;
+                        }
+                    }
+
+                    if (requiredGroupIds.All(id => groupsDict.ContainsKey(id)))
+                    {
+                        cacheValid = true;
+                    }
+                }
+            }
+
+            if (!cacheValid)
+            {
+                try
+                {
+                    string urlGroups = string.Format(UrlTrophyGroups, gameId) + (isPS5 ? string.Empty : "?npServiceName=trophy");
+                    string responseGroups = Web.DownloadStringData(urlGroups, PsnAPI.mobileToken.access_token, string.Empty, LocalLang).GetAwaiter().GetResult();
+                    if (!responseGroups.IsNullOrEmpty() && Serialization.TryFromJson(responseGroups, out TrophyGroupsResponse apiResponse) && apiResponse?.TrophyGroups != null)
+                    {
+                        groupsDict.Clear();
+                        foreach (TrophyGroup group in apiResponse.TrophyGroups)
+                        {
+                            if (!group.TrophyGroupId.IsNullOrEmpty())
+                            {
+                                groupsDict[group.TrophyGroupId] = group;
+                            }
                         }
 
-                        allAchievements.Add(new Achievement
+                        try
                         {
-                            Name = trophie.trophyName.IsNullOrEmpty() ? ResourceProvider.GetString("LOCSuccessStoryHiddenTrophy") : trophie.trophyName,
-                            Description = trophie.trophyDetail,
-                            UrlUnlocked = trophie.trophyIconUrl.IsNullOrEmpty() ? "hidden_trophy.png" : trophie.trophyIconUrl,
-                            DateUnlocked = (trophieUser?.earnedDateTime == null) ? null : trophieUser.earnedDateTime,
-                            Percent = Percent == 0 ? 100 : Percent,
-                            GamerScore = GamerScore
-                        });
+                            FileSystem.WriteStringToFileSafe(cacheFile, responseGroups);
+                        }
+                        catch (Exception ex)
+                        {
+                            Common.LogError(ex, false, $"Error saving PSN trophy groups cache for {gameId}", false, PluginDatabase.PluginName);
+                        }
                     }
-
-                    gameAchievements.CommunicationId = gameId;
                 }
                 catch (Exception ex)
                 {
-                    Common.LogError(ex, false, true, PluginDatabase.PluginName);
+                    Common.LogError(ex, false, $"Error fetching PSN trophy groups for {gameId}", false, PluginDatabase.PluginName);
                 }
             }
-            else
-            {
-                ShowNotificationPluginNoAuthenticate(ExternalPlugin.PSNLibrary);
-            }
 
-
-            gameAchievements.Items = allAchievements;
-
-            // Set source link
-            if (gameAchievements.HasAchievements)
-            {
-                gameAchievements.SourcesLink = new SourceLink
-                {
-                    GameName = gameAchievements.Name,
-                    Name = "PSN",
-                    Url = url
-                };
-            }
-
-            gameAchievements.SetRaretyIndicator();
-            PluginDatabase.AddOrUpdate(gameAchievements);
-            return gameAchievements;
+            return groupsDict;
         }
 
 

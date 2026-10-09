@@ -215,6 +215,8 @@
     <Compile Include="Models\RarityCache.cs" />
     <Compile Include="Models\Stats\AchProgressionTotal.cs" />
     <Compile Include="Models\PSN\TropyTitlesResponse.cs" />
+    <Compile Include="Models\PSN\TrophyGroupsResponse.cs" />
+    <Compile Include="Models\PSN\TrophiesResponse.cs" />
     <Compile Include="Models\RetroAchievements\RaConsole.cs" />
     <Compile Include="Models\RetroAchievements\RaGame.cs" />
     <Compile Include="Models\RetroAchievements\RaMd5List.cs" />
