@@ -83,15 +83,20 @@ namespace SuccessStory.Views
                 // Category
                 List<CategoryAchievement> categories = gameAchievements.Items
                     .DistinctBy(x => x.Category)
-                    .Select(x => new CategoryAchievement
+                    .Select(x =>
                     {
-                        Icon100Percent = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() == gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count() ? Path.Combine(PluginDatabase.Paths.PluginPath, "Resources\\badge.png") : string.Empty,
-                        CategoryIcon = x.ImageCategoryIcon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(gameAchievements.Icon) : x.ImageCategoryIcon,
-                        CategoryName = x.Category,
-                        CategoryOrder = x.CategoryOrder,
-                        Maximum = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count(),
-                        Value = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count(),
-                        Progression = gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category) && y.IsUnlock).Count() + " / " + gameAchievements.Items.Where(y => y.Category.IsEqual(x.Category)).Count()
+                        int total = gameAchievements.Items.Count(y => y.Category == x.Category);
+                        int unlocked = gameAchievements.Items.Count(y => y.Category == x.Category && y.IsUnlock);
+                        return new CategoryAchievement
+                        {
+                            Icon100Percent = total > 0 && unlocked == total ? Path.Combine(PluginDatabase.Paths.PluginPath, "Resources\\badge.png") : string.Empty,
+                            CategoryIcon = x.ImageCategoryIcon.IsNullOrEmpty() ? API.Instance.Database.GetFullFilePath(gameAchievements.Icon) : x.ImageCategoryIcon,
+                            CategoryName = x.Category,
+                            CategoryOrder = x.CategoryOrder,
+                            Maximum = total,
+                            Value = unlocked,
+                            Progression = $"{unlocked} / {total}"
+                        };
                     })
                     .OrderBy(x => x.CategoryOrder).ToList();
 
