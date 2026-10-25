@@ -146,6 +146,7 @@ Associate the platform in the plugin settings</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenIcon">Show hidden icon when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenTitle">Show hidden title when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryShowHiddenDescription">Show hidden description when achievement is locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryShowHiddenProgress">Show hidden progress when achievement is locked</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableRaretyIndicator">Show rarity indicator on achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryDisplayRarityValue">Show rarity value with achievements image</sys:String>
     <sys:String x:Key="LOCSuccessStoryEnableOneGameView">Only display the achievements of the game selected from the game menu</sys:String>
@@ -185,6 +186,12 @@ Especially useful for Xbox achievements with their larges images which are reduc
     <sys:String x:Key="LOCSuccessStoryListAchievements">List achievements</sys:String>
     <sys:String x:Key="LOCSuccessStoryAchievementSorting">Achievements sorting</sys:String>
     <sys:String x:Key="LOCSuccessStoryGroupByUnlocked">Group by unlocked when possible</sys:String>
+    <sys:String x:Key="LOCSuccessStoryRevealHiddenAchievements">Reveal hidden achievements</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterAll">All</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterLocked">Locked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterUnlocked">Unlocked</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterHidden">Hidden</sys:String>
+    <sys:String x:Key="LOCSuccessStoryFilterStandard">Standard</sys:String>
 
     <sys:String x:Key="LOCSuccessStoryFeatureAchievement">Feature to add if the game has achievements</sys:String>
 

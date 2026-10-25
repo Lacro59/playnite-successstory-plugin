@@ -44,7 +44,9 @@
                 <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="10" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="1" Name="PART_SortName" Content="&#xea64;" FontFamily="{DynamicResource CommonFont}" FontSize="16" Click="PART_SortName_Click" />
@@ -56,9 +58,60 @@
             <Button Grid.Column="5" Name="PART_SortRarity" Content="&#xea68;" FontFamily="{DynamicResource CommonFont}" FontSize="16" Click="PART_SortRarity_Click" />
             <Label Grid.Column="5" Name="PART_SortRarityOrder" Content="3" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,2,0" />
 
-            <CheckBox Grid.Column="7" Name="PART_SortGroupBy" Checked="PART_SortGroupBy_Checked" Unchecked="PART_SortGroupBy_Unchecked" VerticalAlignment="Center">
-                <Label Content="{DynamicResource LOCSuccessStoryGroupByUnlocked}" />
-            </CheckBox>
+            <ToggleButton Grid.Column="7" Name="PART_FilterButton" Content="&#xef29;" FontFamily="{DynamicResource FontIcoFont}" FontSize="16" Background="{DynamicResource ButtonBackgroundBrush}" />
+            <Ellipse Grid.Column="7" Name="PART_FilterActiveIndicator" Width="6" Height="6" Fill="{DynamicResource GlyphBrush}"
+                     VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,4,4" IsHitTestVisible="False" Visibility="Collapsed" />
+            <Popup Name="PART_FilterPopup" Placement="Custom" PlacementTarget="{Binding ElementName=PART_FilterButton}" Focusable="False" AllowsTransparency="True"
+                   IsOpen="{Binding IsChecked, ElementName=PART_FilterButton, Mode=TwoWay, Delay=100}" StaysOpen="False">
+                <Border Background="{DynamicResource PopupBackgroundBrush}"
+                        BorderThickness="{DynamicResource PopupBorderThickness}"
+                        BorderBrush="{DynamicResource PopupBorderBrush}"
+                        Padding="10">
+                    <StackPanel>
+                        <StackPanel>
+                            <RadioButton Name="PART_FilterLockAll" IsChecked="True" Checked="PART_Filter_Checked" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryFilterAll}" />
+                            </RadioButton>
+                            <RadioButton Name="PART_FilterLocked" Margin="0,8,0,0" Checked="PART_Filter_Checked" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryFilterLocked}" />
+                            </RadioButton>
+                            <RadioButton Name="PART_FilterUnlocked" Margin="0,8,0,0" Checked="PART_Filter_Checked" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryFilterUnlocked}" />
+                            </RadioButton>
+                        </StackPanel>
+                        <Separator Margin="0,8" />
+                        <StackPanel>
+                            <RadioButton Name="PART_FilterHiddenAll" IsChecked="True" Checked="PART_Filter_Checked" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryFilterAll}" />
+                            </RadioButton>
+                            <RadioButton Name="PART_FilterHidden" Margin="0,8,0,0" Checked="PART_Filter_Checked" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryFilterHidden}" />
+                            </RadioButton>
+                            <RadioButton Name="PART_FilterStandard" Margin="0,8,0,0" Checked="PART_Filter_Checked" VerticalAlignment="Center">
+                                <Label Content="{DynamicResource LOCSuccessStoryFilterStandard}" />
+                            </RadioButton>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+            <ToggleButton Grid.Column="9" Name="PART_OptionsButton" Content="&#xefe2;" FontFamily="{DynamicResource FontIcoFont}" FontSize="16" Background="{DynamicResource ButtonBackgroundBrush}" />
+            <Popup Name="PART_OptionsPopup" Placement="Custom" PlacementTarget="{Binding ElementName=PART_OptionsButton}" Focusable="False" AllowsTransparency="True"
+                   IsOpen="{Binding IsChecked, ElementName=PART_OptionsButton, Mode=TwoWay, Delay=100}" StaysOpen="False">
+                <Border Background="{DynamicResource PopupBackgroundBrush}"
+                        BorderThickness="{DynamicResource PopupBorderThickness}"
+                        BorderBrush="{DynamicResource PopupBorderBrush}"
+                        Padding="10">
+                    <StackPanel>
+                        <CheckBox Name="PART_SortGroupBy" Checked="PART_SortGroupBy_Checked" Unchecked="PART_SortGroupBy_Unchecked" VerticalAlignment="Center">
+                            <Label Content="{DynamicResource LOCSuccessStoryGroupByUnlocked}" />
+                        </CheckBox>
+                        <CheckBox Name="PART_RevealHidden" Margin="0,8,0,0" Checked="PART_RevealHidden_Checked" Unchecked="PART_RevealHidden_Unchecked" VerticalAlignment="Center">
+                            <Label Content="{DynamicResource LOCSuccessStoryRevealHiddenAchievements}" />
+                        </CheckBox>
+                    </StackPanel>
+                </Border>
+            </Popup>
         </Grid>
 
         <Grid Margin="0,0,0,10" Grid.Row="1">
@@ -127,6 +180,7 @@
                                                     <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenIcon}" Value="False" />
                                                     <Condition Binding="{Binding IsHidden}" Value="True" />
                                                     <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RevealHidden}" Value="False" />
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Effect">
                                                     <Setter.Value>
@@ -152,11 +206,7 @@
 
                             <DockPanel Grid.Column="1" Margin="10,0,0,0" LastChildFill="True">
                                 <DockPanel DockPanel.Dock="Top" LastChildFill="True">
-                                    <Grid DockPanel.Dock="Right">
-                                        <TextBlock TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
-                                                   Visibility="{Binding IsUnlock, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                   Text="{Binding DateWhenUnlocked, FallbackValue='1982-12-15 00:08:23', Converter={StaticResource LocalDateTimeConverter}}" />
-
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
                                         <Grid Width="120">
                                             <Grid.Style>
                                                 <Style TargetType="{x:Type Grid}">
@@ -168,6 +218,15 @@
                                                         <DataTrigger Binding="{Binding Progression}" Value="{x:Null}">
                                                             <Setter Property="Visibility" Value="Collapsed" />
                                                         </DataTrigger>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenProgress}" Value="False" />
+                                                                <Condition Binding="{Binding IsHidden}" Value="True" />
+                                                                <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RevealHidden}" Value="False" />
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Grid.Style>
@@ -176,7 +235,39 @@
                                                          Value="{Binding Progression.Value}" />
                                             <Label Content="{Binding Progression.Progression}" HorizontalAlignment="Center" />
                                         </Grid>
-                                    </Grid>
+
+                                        <TextBlock TextAlignment="Right" Foreground="{DynamicResource TextBrush}"
+                                                   Visibility="{Binding IsUnlock, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                   Text="{Binding DateWhenUnlocked, FallbackValue='1982-12-15 00:08:23', Converter={StaticResource LocalDateTimeConverter}}" />
+
+                                        <TextBlock Name="PART_LockIndicator" FontFamily="{DynamicResource FontIcoFont}" FontSize="14"
+                                                   VerticalAlignment="Center" Text="&#xec61;" Width="20" TextAlignment="Center"
+                                                   Foreground="{DynamicResource TextBrushDarker}" Opacity="0.6">
+                                            <TextBlock.Style>
+                                                <Style TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                                                <Condition Binding="{Binding Progression}" Value="{x:Null}" />
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </MultiDataTrigger>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenProgress}" Value="False" />
+                                                                <Condition Binding="{Binding IsHidden}" Value="True" />
+                                                                <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                                                <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RevealHidden}" Value="False" />
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
 
                                     <controls1:TextBlockTrimmed Text="{Binding Name, FallbackValue='Achievement Title'}" Foreground="{DynamicResource TextBrush}" TextTrimming="CharacterEllipsis">
                                         <TextBlock.Style>
@@ -187,6 +278,7 @@
                                                             <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenTitle}" Value="False" />
                                                             <Condition Binding="{Binding IsHidden}" Value="True" />
                                                             <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                                            <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RevealHidden}" Value="False" />
                                                         </MultiDataTrigger.Conditions>
                                                         <Setter Property="Effect">
                                                             <Setter.Value>
@@ -221,6 +313,7 @@
                                                         <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.ShowHiddenDescription}" Value="False" />
                                                         <Condition Binding="{Binding IsHidden}" Value="True" />
                                                         <Condition Binding="{Binding IsUnlock}" Value="False" />
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.RevealHidden}" Value="False" />
                                                     </MultiDataTrigger.Conditions>
                                                     <Setter Property="Effect">
                                                         <Setter.Value>

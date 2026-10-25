@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace SuccessStory.Controls
 {
@@ -73,7 +74,15 @@ namespace SuccessStory.Controls
             nameof(ShowHardcore),
             typeof(bool),
             typeof(PluginList),
-            new FrameworkPropertyMetadata(false, ControlsPropertyChangedCallback));
+            new FrameworkPropertyMetadata(false, OnShowHardcoreChanged));
+
+        private static void OnShowHardcoreChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is PluginList obj && e.NewValue != e.OldValue)
+            {
+                obj.SetOrder(obj.GameName);
+            }
+        }
 
         #endregion
 
@@ -81,6 +90,8 @@ namespace SuccessStory.Controls
         public PluginList()
         {
             InitializeComponent();
+            PART_FilterPopup.CustomPopupPlacementCallback = AlignPopupBottomRight;
+            PART_OptionsPopup.CustomPopupPlacementCallback = AlignPopupBottomRight;
             DataContext = ControlDataContext;
 
             OrderAchievement = Serialization.GetClone(PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement);
@@ -291,6 +302,7 @@ namespace SuccessStory.Controls
             bool ShowHiddenIcon = PluginDatabase.PluginSettings.Settings.ShowHiddenIcon;
             bool ShowHiddenTitle = PluginDatabase.PluginSettings.Settings.ShowHiddenTitle;
             bool ShowHiddenDescription = PluginDatabase.PluginSettings.Settings.ShowHiddenDescription;
+            bool ShowHiddenProgress = PluginDatabase.PluginSettings.Settings.ShowHiddenProgress;
             double Height = PluginDatabase.PluginSettings.Settings.IntegrationListHeight;
             double IconHeight = PluginDatabase.PluginSettings.Settings.IntegrationListIconHeight;
             if (IgnoreSettings)
@@ -311,8 +323,17 @@ namespace SuccessStory.Controls
             ControlDataContext.ShowHiddenIcon = ShowHiddenIcon;
             ControlDataContext.ShowHiddenTitle = ShowHiddenTitle;
             ControlDataContext.ShowHiddenDescription = ShowHiddenDescription;
+            ControlDataContext.ShowHiddenProgress = ShowHiddenProgress;
+            ControlDataContext.RevealHidden = false;
             ControlDataContext.Height = Height;
             ControlDataContext.IconHeight = IconHeight;
+
+            PART_FilterLockAll.IsChecked = true;
+            PART_FilterHiddenAll.IsChecked = true;
+            PART_FilterActiveIndicator.Visibility = Visibility.Collapsed;
+
+            PART_RevealHidden.IsChecked = false;
+            PART_RevealHidden.IsEnabled = !ShowHiddenIcon || !ShowHiddenTitle || !ShowHiddenDescription || !ShowHiddenProgress;
 
             ControlDataContext.ItemSize = new Size(300, 65);
             ControlDataContext.ColDefinied = ColDefinied;
@@ -320,10 +341,12 @@ namespace SuccessStory.Controls
             ControlDataContext.ItemsSource = new ObservableCollection<Achievement>();
 
 
+            GameName = string.Empty;
             foreach (object item in PART_TabControl.Items)
             {
                 ((TabItem)item).Visibility = Visibility.Collapsed;
                 ((TabItem)item).Header = string.Empty;
+                ((TabItem)item).Tag = null;
             }
 
 
@@ -341,7 +364,7 @@ namespace SuccessStory.Controls
             GameAchievements gameAchievements = (GameAchievements)pluginGameData;
             // gameAchievements.OrderAchievement = PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement;
 
-            if (!gameAchievements.Items.FirstOrDefault().CategoryRpcs3.IsNullOrEmpty())
+            if (!(gameAchievements.Items?.FirstOrDefault()?.CategoryRpcs3.IsNullOrEmpty() ?? true))
             {
                 List<string> Categories = gameAchievements.Items.Select(x => x.CategoryRpcs3).Distinct().ToList();
                 Categories.ForEach((x, idx) =>
@@ -356,27 +379,14 @@ namespace SuccessStory.Controls
             }
             else
             {
-                ControlDataContext.ItemsSource = gameAchievements.GetOrderItems(PluginDatabase.PluginSettings.Settings.IntegrationListOrderAchievement);
+                SetOrder(GameName);
             }
-
-            UpdateHardcoreMode(ShowHardcore);
         }
 
         public void SetDataCategory(string categoryName)
         {
             this.CategoryName = categoryName;
-            if (GameContext == null)
-            {
-                return;
-            }
-
-            GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
-            // gameAchievements.OrderAchievement = OrderAchievement;
-
-            ObservableCollection<Achievement> achievements = gameAchievements.GetOrderItems(OrderAchievement)
-                .Where(x => x.Category.IsEqual(categoryName))
-                .ToObservable();
-            ControlDataContext.ItemsSource = achievements;
+            SetOrder(GameName);
         }
 
         #region Events
@@ -418,6 +428,14 @@ namespace SuccessStory.Controls
         #endregion
 
         #region Filter
+
+        private CustomPopupPlacement[] AlignPopupBottomRight(Size popupSize, Size targetSize, Point offset)
+        {
+            return new[]
+            {
+                new CustomPopupPlacement(new Point(targetSize.Width - popupSize.Width, targetSize.Height), PopupPrimaryAxis.Horizontal)
+            };
+        }
 
         private void PART_SortName_Click(object sender, RoutedEventArgs e)
         {
@@ -474,6 +492,30 @@ namespace SuccessStory.Controls
             SetOrder(GameName);
         }
 
+        private void PART_Filter_Checked(object sender, RoutedEventArgs e)
+        {
+            if (PART_FilterPopup?.IsOpen == true)
+            {
+                SetOrder(GameName);
+            }
+        }
+
+        private void PART_RevealHidden_Checked(object sender, RoutedEventArgs e)
+        {
+            if (ControlDataContext != null)
+            {
+                ControlDataContext.RevealHidden = true;
+            }
+        }
+
+        private void PART_RevealHidden_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (ControlDataContext != null)
+            {
+                ControlDataContext.RevealHidden = false;
+            }
+        }
+
 
         private void ChangeIndex()
         {
@@ -502,6 +544,11 @@ namespace SuccessStory.Controls
 
         private void SetOrder(string gameName = "")
         {
+            if (OrderAchievement == null)
+            {
+                return;
+            }
+
             OrderAchievement.OrderGroupByUnlocked = (bool)PART_SortGroupBy.IsChecked;
 
             switch (NameIndex)
@@ -567,40 +614,59 @@ namespace SuccessStory.Controls
                     break;
             }
 
+            bool isFilterActive = (PART_FilterLocked?.IsChecked == true) ||
+                (PART_FilterUnlocked?.IsChecked == true) ||
+                (PART_FilterHidden?.IsChecked == true) ||
+                (PART_FilterStandard?.IsChecked == true);
+            if (PART_FilterActiveIndicator != null)
+            {
+                PART_FilterActiveIndicator.Visibility = isFilterActive ? Visibility.Visible : Visibility.Collapsed;
+            }
+
             if (GameContext != null)
             {
                 GameAchievements gameAchievements = PluginDatabase.Get(GameContext, true);
-
-                ObservableCollection<Achievement> achievements = gameAchievements.GetOrderItems(OrderAchievement);
-                if (!CategoryName.IsNullOrEmpty())
+                if (gameAchievements?.Items == null)
                 {
-                    achievements = achievements.Where(x => x.Category.IsEqual(CategoryName)).ToObservable();
+                    return;
                 }
 
-                ControlDataContext.ItemsSource = gameName.IsNullOrEmpty()
-                    ? achievements
-                    : achievements.Where(x => x.CategoryRpcs3.IsEqual(gameName)).ToObservable();
+                gameAchievements.Items.ForEach(x => x.ShowHardcore = ShowHardcore);
+
+                IEnumerable<Achievement> achievements = gameAchievements.GetOrderItems(OrderAchievement);
+                if (!CategoryName.IsNullOrEmpty())
+                {
+                    achievements = achievements.Where(x => x.Category.IsEqual(CategoryName));
+                }
+
+                if (!gameName.IsNullOrEmpty())
+                {
+                    achievements = achievements.Where(x => x.CategoryRpcs3.IsEqual(gameName));
+                }
+
+                if (PART_FilterLocked?.IsChecked == true)
+                {
+                    achievements = achievements.Where(x => !x.IsUnlock);
+                }
+                else if (PART_FilterUnlocked?.IsChecked == true)
+                {
+                    achievements = achievements.Where(x => x.IsUnlock);
+                }
+
+                if (PART_FilterHidden?.IsChecked == true)
+                {
+                    achievements = achievements.Where(x => x.IsHidden);
+                }
+                else if (PART_FilterStandard?.IsChecked == true)
+                {
+                    achievements = achievements.Where(x => !x.IsHidden);
+                }
+
+                ControlDataContext.ItemsSource = achievements.ToObservable();
             }
         }
 
         #endregion
-
-        private void UpdateHardcoreMode(bool showHardcore)
-        {
-            if (ControlDataContext?.ItemsSource == null)
-            {
-                return;
-            }
-
-            var updatedList = ControlDataContext.ItemsSource.Select(x =>
-            {
-                x.ShowHardcore = showHardcore;
-                return x;
-            }).ToList();
-
-            ControlDataContext.ItemsSource = new ObservableCollection<Achievement>(updatedList);
-            SetOrder(GameName);
-        }
     }
 
 
@@ -620,6 +686,12 @@ namespace SuccessStory.Controls
 
         private bool showHiddenDescription;
         public bool ShowHiddenDescription { get => showHiddenDescription; set => SetValue(ref showHiddenDescription, value); }
+
+        private bool showHiddenProgress;
+        public bool ShowHiddenProgress { get => showHiddenProgress; set => SetValue(ref showHiddenProgress, value); }
+
+        private bool revealHidden;
+        public bool RevealHidden { get => revealHidden; set => SetValue(ref revealHidden, value); }
 
         private double height;
         public double Height { get => height; set => SetValue(ref height, value); }

@@ -967,6 +967,10 @@
                             <CheckBox Grid.Row="4" IsChecked="{Binding Settings.ShowHiddenDescription}">
                                 <Label Content="{DynamicResource LOCSuccessStoryShowHiddenDescription}" />
                             </CheckBox>
+
+                            <CheckBox Grid.Row="6" IsChecked="{Binding Settings.ShowHiddenProgress}">
+                                <Label Content="{DynamicResource LOCSuccessStoryShowHiddenProgress}" />
+                            </CheckBox>
                         </Grid>
 
                         <Label Content="{DynamicResource LOCSuccessStoryListGames}" Margin="0,30,0,0" />

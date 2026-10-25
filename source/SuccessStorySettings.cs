@@ -38,6 +38,7 @@ namespace SuccessStory
         public bool ShowHiddenIcon { get; set; } = false;
         public bool ShowHiddenTitle { get; set; } = false;
         public bool ShowHiddenDescription { get; set; } = false;
+        public bool ShowHiddenProgress { get; set; } = false;
 
         public bool Auto100PercentCompleted { get; set; } = false;
         public CompletionStatus CompletionStatus100Percent { get; set; }
